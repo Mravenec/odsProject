@@ -1,0 +1,568 @@
+@startuml
+skinparam ClassBackgroundColor #FEFEFE
+skinparam ClassBorderColor #000000
+skinparam PackageStyle folder
+
+title Repositorio Integral del Marco de Indicadores ODS (Agenda 2030)
+
+package "Layer: Repository Interfaces" {
+
+    interface IOjetivo01PobrezaRepository {
+        /** 1.1.1 Proporción de la población que vive por debajo del umbral internacional de pobreza, desglosada por sexo, edad, situación laboral y ubicación geográfica (urbana o rural) [1, 2] */
+        + findIndicador_1_1_1()
+        /** 1.2.1 Proporción de la población que vive por debajo del umbral nacional de pobreza, desglosada por sexo y edad [2] */
+        + findIndicador_1_2_1()
+        /** 1.2.2 Proporción de hombres, mujeres y niños de todas las edades que viven en la pobreza, en todas sus dimensiones, con arreglo a las definiciones nacionales [2] */
+        + findIndicador_1_2_2()
+        /** 1.3.1 Proporción de la población cubierta por sistemas o niveles mínimos de protección social, desglosada por sexo, distinguiendo entre los niños, los desempleados, los ancianos, las personas con discapacidad, las mujeres embarazadas, los recién nacidos, las víctimas de accidentes de trabajo, los pobres y los vulnerables [3] */
+        + findIndicador_1_3_1()
+        /** 1.4.1 Proporción de la población que vive en hogares con acceso a los servicios básicos [4] */
+        + findIndicador_1_4_1()
+        /** 1.4.2 Proporción del total de la población adulta con derechos seguros de tenencia de la tierra: a) que posee documentación reconocida legalmente al respecto y b) considera seguros sus derechos, desglosada por sexo y tipo de tenencia [4, 5] */
+        + findIndicador_1_4_2()
+        /** 1.5.1 Número de personas muertas, desaparecidas y afectadas directamente atribuido a desastres por cada 100.000 habitantes [5, 6] */
+        + findIndicador_1_5_1()
+        /** 1.5.2 Pérdidas económicas directas atribuidas a los desastres en relación con el producto interno bruto (PIB) mundial [6] */
+        + findIndicador_1_5_2()
+        /** 1.5.3 Número de países que adoptan y aplican estrategias nacionales de reducción del riesgo de desastres en consonancia con el Marco de Sendái para la Reducción del Riesgo de Desastres 2015-2030 [6] */
+        + findIndicador_1_5_3()
+        /** 1.5.4 Proporción de gobiernos locales que adoptan y aplican estrategias locales de reducción del riesgo de desastres en consonancia con las estrategias nacionales de reducción del riesgo de desastres [7] */
+        + findIndicador_1_5_4()
+        /** 1.a.1 Total de subvenciones de asistencia oficial para el desarrollo destinadas a la reducción de la pobreza en porcentaje de la renta nacional bruta del país beneficiario [8] */
+        + findIndicador_1_a_1()
+        /** 1.a.2 Proporción del gasto público total que se dedica a servicios esenciales (educación, salud y protección social) [8] */
+        + findIndicador_1_a_2()
+        /** 1.b.1 Gasto público social en favor de los pobres [9] */
+        + findIndicador_1_b_1()
+    }
+
+    interface IObjetivo02HambreCeroRepository {
+        /** 2.1.1 Prevalencia de la subalimentación [10] */
+        + findIndicador_2_1_1()
+        /** 2.1.2 Prevalencia de la inseguridad alimentaria moderada o grave entre la población, según la escala de experiencia de inseguridad alimentaria [10] */
+        + findIndicador_2_1_2()
+        /** 2.2.1 Prevalencia del retraso del crecimiento (estatura para la edad, desviación típica < -2 de la mediana de los patrones de crecimiento infantil de la OMS) entre los niños menores de 5 años [11] */
+        + findIndicador_2_2_1()
+        /** 2.2.2 Prevalencia de la malnutrición (peso para la estatura, desviación típica > +2 o < -2 de la mediana de los patrones de crecimiento infantil de la OMS) entre los niños menores de 5 años, desglosada por tipo (emaciación y sobrepeso) [11, 12] */
+        + findIndicador_2_2_2()
+        /** 2.2.3 Prevalencia de la anemia en las mujeres de entre 15 y 49 años, desglosada por embarazo (porcentaje) [12] */
+        + findIndicador_2_2_3()
+        /** 2.2.4 Prevalencia del umbral mínimo de diversidad alimentaria, por grupo de población (niños de 6 a 23,9 meses y mujeres no embarazadas de 15 a 49 años) [12] */
+        + findIndicador_2_2_4()
+        /** 2.3.1 Volumen de producción por unidad de trabajo desglosado por tamaño y tipo de explotación (agropecuaria/ganadera/forestal) [13] */
+        + findIndicador_2_3_1()
+        /** 2.3.2 Media de ingresos de los productores de alimentos en pequeña escala, desglosada por sexo y condición indígena [13] */
+        + findIndicador_2_3_2()
+        /** 2.4.1 Proporción de la superficie agrícola en que se practica una agricultura productiva y sostenible [14] */
+        + findIndicador_2_4_1()
+        /** 2.5.1 Número de: a) recursos genéticos vegetales y b) animales para la alimentación y la agricultura preservados en instalaciones de conservación a medio y largo plazo [15, 16] */
+        + findIndicador_2_5_1()
+        /** 2.5.2 Proporción de razas y variedades locales y transfronterizas consideradas en riesgo de extinción [16] */
+        + findIndicador_2_5_2()
+        /** 2.a.1 Índice de orientación agrícola para el gasto público [17] */
+        + findIndicador_2_a_1()
+        /** 2.a.2 Total de corrientes oficiales de recursos (asistencia oficial para el desarrollo más otras corrientes oficiales) destinado al sector agrícola [17] */
+        + findIndicador_2_a_2()
+        /** 2.b.1 Subsidios a la exportación de productos agropecuarios [18] */
+        + findIndicador_2_b_1()
+        /** 2.c.1 Indicador de anomalías en los precios de los alimentos [18] */
+        + findIndicador_2_c_1()
+    }
+
+    interface IObjetivo03SaludBienestarRepository {
+        /** 3.1.1 Tasa de mortalidad materna [19] */
+        + findIndicador_3_1_1()
+        /** 3.1.2 Proporción de partos atendidos por personal sanitario especializado [19] */
+        + findIndicador_3_1_2()
+        /** 3.2.1 Tasa de mortalidad de niños menores de 5 años [19] */
+        + findIndicador_3_2_1()
+        /** 3.2.2 Tasa de mortalidad neonatal [20] */
+        + findIndicador_3_2_2()
+        /** 3.3.1 Número de nuevas infecciones por el VIH por cada 1.000 habitantes no infectados, desglosado por sexo, edad y poblaciones clave [21] */
+        + findIndicador_3_3_1()
+        /** 3.3.2 Incidencia de la tuberculosis por cada 100.000 habitantes [21] */
+        + findIndicador_3_3_2()
+        /** 3.3.3 Incidencia de la malaria por cada 1.000 habitantes [21] */
+        + findIndicador_3_3_3()
+        /** 3.3.4 Incidencia de la hepatitis B por cada 100.000 habitantes [21] */
+        + findIndicador_3_3_4()
+        /** 3.3.5 Número de personas que requieren intervenciones contra enfermedades tropicales desatendidas [21] */
+        + findIndicador_3_3_5()
+        /** 3.4.1 Tasa de mortalidad atribuida a las enfermedades cardiovasculares, el cáncer, la diabetes o las enfermedades respiratorias crónicas [22] */
+        + findIndicador_3_4_1()
+        /** 3.4.2 Tasa de mortalidad por suicidio [22] */
+        + findIndicador_3_4_2()
+        /** 3.5.1 Cobertura de los tratamientos (farmacológicos y psicosociales y servicios de rehabilitación y postratamiento) de trastornos por abuso de sustancias adictivas [22, 23] */
+        + findIndicador_3_5_1()
+        /** 3.5.2 Consumo de alcohol per cápita (a partir de los 15 años de edad) durante un año civil en litros de alcohol puro [23] */
+        + findIndicador_3_5_2()
+        /** 3.6.1 Tasa de mortalidad por lesiones debidas a accidentes de tráfico [23] */
+        + findIndicador_3_6_1()
+        /** 3.7.1 Proporción de mujeres en edad de procrear (entre 15 y 49 años) que cubren sus necesidades de planificación familiar con métodos modernos [24] */
+        + findIndicador_3_7_1()
+        /** 3.7.2 Tasa de fecundidad de las adolescentes (entre 10 y 14 años y entre 15 y 19 años) por cada 1.000 mujeres de ese grupo de edad [24] */
+        + findIndicador_3_7_2()
+        /** 3.8.1 Cobertura de los servicios de salud esenciales [25] */
+        + findIndicador_3_8_1()
+        /** 3.8.2 Proporción de la población con grandes gastos sanitarios por hogar como porcentaje del total de gastos o ingresos de los hogares [25] */
+        + findIndicador_3_8_2()
+        /** 3.9.1 Tasa de mortalidad atribuida a la contaminación de los hogares y del aire ambiente [25, 26] */
+        + findIndicador_3_9_1()
+        /** 3.9.2 Tasa de mortalidad atribuida al agua insalubre, el saneamiento deficiente y la falta de higiene (exposición a servicios insalubres de agua, saneamiento e higiene para todos (WASH)) [26] */
+        + findIndicador_3_9_2()
+        /** 3.9.3 Tasa de mortalidad atribuida a intoxicaciones involuntarias [26] */
+        + findIndicador_3_9_3()
+        /** 3.a.1 Prevalencia del consumo actual de tabaco a partir de los 15 años de edad (edades ajustadas) [27] */
+        + findIndicador_3_a_1()
+        /** 3.b.1 Proporción de la población inmunizada con todas las vacunas incluidas en cada programa nacional [28] */
+        + findIndicador_3_b_1()
+        /** 3.b.2 Total neto de asistencia oficial para el desarrollo destinado a los sectores de la investigación médica y la atención sanitaria básica [29] */
+        + findIndicador_3_b_2()
+        /** 3.b.3 Índice de acceso a los productos sanitarios [29] */
+        + findIndicador_3_b_3()
+        /** 3.c.1 Densidad y distribución del personal sanitario [29] */
+        + findIndicador_3_c_1()
+        /** 3.d.1 Capacidad prevista en el Reglamento Sanitario Internacional (RSI) y preparación para emergencias de salud [30] */
+        + findIndicador_3_d_1()
+        /** 3.d.2 Porcentaje de infecciones del torrente sanguíneo debidas a determinados organismos resistentes a los antimicrobianos seleccionados [30] */
+        + findIndicador_3_d_2()
+    }
+
+    interface IObjetivo04EducacionRepository {
+        /** 4.1.1 Proporción de niños y adolescentes que, a) en los grados 2 o 3, b) al final de la educación primaria y c) al final de la educación secundaria inferior, han alcanzado al menos un nivel mínimo de competencia en i) lectura y ii) matemáticas, desglosada por sexo [31] */
+        + findIndicador_4_1_1()
+        /** 4.1.2 Tasa de finalización (educación primaria, educación secundaria inferior y educación secundaria superior) [32] */
+        + findIndicador_4_1_2()
+        /** 4.2.1 Proporción de niños de 24 a 59 meses cuyo desarrollo es adecuado en cuanto a la salud, el aprendizaje y el bienestar psicosocial, desglosada por sexo [32] */
+        + findIndicador_4_2_1()
+        /** 4.2.2 Tasa de participación en el aprendizaje organizado (un año antes de la edad oficial de ingreso en la educación primaria), desglosada por sexo [33] */
+        + findIndicador_4_2_2()
+        /** 4.3.1 Tasa de participación de jóvenes y adultos en la educación y formación académica y no académica en los últimos 12 meses, desglosada por sexo [34] */
+        + findIndicador_4_3_1()
+        /** 4.4.1 Proporción de jóvenes y adultos con competencias en tecnología de la información y las comunicaciones (TIC), desglosada por tipo de competencia [34] */
+        + findIndicador_4_4_1()
+        /** 4.5.1 Índices de paridad (entre mujeres y hombres, zonas rurales y urbanas, quintiles de riqueza superior e inferior y grupos como los discapacitados, los pueblos indígenas y los afectados por los conflictos, a medida que se disponga de datos) para todos los indicadores de educación de esta lista que puedan desglosarse [35, 36] */
+        + findIndicador_4_5_1()
+        /** 4.6.1 Tasa de alfabetización de adultos/jóvenes [36] */
+        + findIndicador_4_6_1()
+        /** 4.7.1 Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo sostenible se incorporan en a) las políticas nacionales de educación, b) los planes de estudio, c) la formación de docentes y d) la evaluación de los estudiantes [37] */
+        + findIndicador_4_7_1()
+        /** 4.a.1 Proporción de escuelas que ofrecen servicios básicos, desglosada por tipo de servicio [38] */
+        + findIndicador_4_a_1()
+        /** 4.b.1 Volumen de la asistencia oficial para el desarrollo destinada a becas [39] */
+        + findIndicador_4_b_1()
+        /** 4.c.1 Proporción de docentes con las calificaciones mínimas requeridas, desglosada por nivel educativo [40] */
+        + findIndicador_4_c_1()
+    }
+
+    interface IObjetivo05GeneroRepository {
+        /** 5.1.1 Determinar si existen o no marcos jurídicos para promover, hacer cumplir y supervisar la igualdad y la no discriminación por razón de sexo [41] */
+        + findIndicador_5_1_1()
+        /** 5.2.1 Proporción de mujeres y niñas a partir de 15 años de edad que han sufrido violencia física, sexual o psicológica a manos de su actual o anterior pareja en los últimos 12 meses, desglosada por forma de violencia y edad [41, 42] */
+        + findIndicador_5_2_1()
+        /** 5.2.2 Proporción de mujeres y niñas a partir de 15 años de edad que han sufrido violencia sexual a manos de personas que no eran su pareja en los últimos 12 meses, desglosada por edad y lugar del hecho [42] */
+        + findIndicador_5_2_2()
+        /** 5.3.1 Proporción de mujeres de entre 20 y 24 años que estaban casadas o mantenían una unión estable antes de cumplir los 15 años y antes de cumplir los 18 años [42, 43] */
+        + findIndicador_5_3_1()
+        /** 5.3.2 Proporción de niñas y mujeres de entre 15 y 49 años que han sufrido mutilación genital femenina, desglosada por edad [43] */
+        + findIndicador_5_3_2()
+        /** 5.4.1 Proporción de tiempo dedicado al trabajo doméstico y asistencial no remunerado, desglosada por sexo, edad y ubicación [43, 44] */
+        + findIndicador_5_4_1()
+        /** 5.5.1 Proporción de escaños ocupados por mujeres en a) los parlamentos nacionales y b) los gobiernos locales [44] */
+        + findIndicador_5_5_1()
+        /** 5.5.2 Proporción de mujeres en cargos directivos [44] */
+        + findIndicador_5_5_2()
+        /** 5.6.1 Proporción de mujeres de entre 15 y 49 años que toman sus propias decisiones informadas sobre las relaciones sexuales, el uso de anticonceptivos y la atención de la salud reproductiva [45] */
+        + findIndicador_5_6_1()
+        /** 5.6.2 Número de países con leyes y reglamentos que garantizan a los hombres y las mujeres a partir de los 15 años de edad un acceso pleno e igualitario a los servicios de salud sexual y reproductiva y a la información y educación al respecto [45, 46] */
+        + findIndicador_5_6_2()
+        /** 5.a.1 a) Proporción del total de la población agrícola con derechos de propiedad o derechos seguros sobre tierras agrícolas, desglosada por sexo; y b) proporción de mujeres entre los propietarios o los titulares de derechos sobre tierras agrícolas, desglosada por tipo de tenencia [46] */
+        + findIndicador_5_a_1()
+        /** 5.a.2 Proporción de países cuyo ordenamiento jurídico (incluido el derecho consuetudinario) garantiza la igualdad de derechos de la mujer a la propiedad o el control de las tierras [47] */
+        + findIndicador_5_a_2()
+        /** 5.b.1 Proporción de personas que poseen un teléfono móvil, desglosada por sexo [48] */
+        + findIndicador_5_b_1()
+        /** 5.c.1 Proporción de países con sistemas para el seguimiento de la igualdad de género y el empoderamiento de las mujeres y la asignación de fondos públicos para ese fin [48] */
+        + findIndicador_5_c_1()
+    }
+
+    interface IObjetivo06AguaSaneamientoRepository {
+        /** 6.1.1 Proporción de la población que utiliza servicios de suministro de agua potable gestionados sin riesgos [49] */
+        + findIndicador_6_1_1()
+        /** 6.2.1 Proporción de la población que utiliza: a) servicios de saneamiento gestionados sin riesgos y b) instalaciones para el lavado de manos con agua y jabón [49, 50] */
+        + findIndicador_6_2_1()
+        /** 6.3.1 Proporción de los flujos de aguas residuales domésticas e industriales tratados de manera adecuada [50] */
+        + findIndicador_6_3_1()
+        /** 6.3.2 Proporción de masas de agua de buena calidad [51] */
+        + findIndicador_6_3_2()
+        /** 6.4.1 Cambio en el uso eficiente de los recursos hídricos con el paso del tiempo [51] */
+        + findIndicador_6_4_1()
+        /** 6.4.2 Nivel de estrés hídrico: extracción de agua dulce en proporción a los recursos de agua dulce disponibles [51] */
+        + findIndicador_6_4_2()
+        /** 6.5.1 Grado de gestión integrada de los recursos hídricos [52] */
+        + findIndicador_6_5_1()
+        /** 6.5.2 Proporción de la superficie de cuencas transfronterizas sujetas a arreglos operacionales para la cooperación en materia de aguas [52] */
+        + findIndicador_6_5_2()
+        /** 6.6.1 Cambio en la extensión de los ecosistemas relacionados con el agua con el paso del tiempo [53] */
+        + findIndicador_6_6_1()
+        /** 6.a.1 Volumen de la asistencia oficial para el desarrollo destinada al agua y el saneamiento que forma parte de un plan de gastos coordinados por el gobierno [53] */
+        + findIndicador_6_a_1()
+        /** 6.b.1 Proporción de dependencias administrativas locales que han establecido políticas y procedimientos operacionales para la participación de las comunidades locales en la gestión del agua y el saneamiento [54, 55] */
+        + findIndicador_6_b_1()
+    }
+
+    interface IObjetivo07EnergiaRepository {
+        /** 7.1.1 Proporción de la población que tiene acceso a la electricidad [55] */
+        + findIndicador_7_1_1()
+        /** 7.1.2 Proporción de la población cuya fuente primaria de energía son los combustibles y tecnologías limpios [55] */
+        + findIndicador_7_1_2()
+        /** 7.2.1 Proporción de energía renovable en el consumo final total de energía [56] */
+        + findIndicador_7_2_1()
+        /** 7.3.1 Intensidad energética medida en función de la energía primaria y el PIB [56] */
+        + findIndicador_7_3_1()
+        /** 7.a.1 Corrientes financieras internacionales hacia los países en desarrollo para apoyar la investigación y el desarrollo de energías limpias y la producción de energía renovable, incluidos los sistemas híbridos [57] */
+        + findIndicador_7_a_1()
+        /** 7.b.1 Capacidad instalada de generación de energía renovable en los países en desarrollo y en los países desarrollados (en vatios per cápita) [58] */
+        + findIndicador_7_b_1()
+    }
+
+    interface IObjetivo08CrecimientoEconomicoRepository {
+        /** 8.1.1 Tasa de crecimiento anual del PIB real per cápita [59] */
+        + findIndicador_8_1_1()
+        /** 8.2.1 Tasa de crecimiento anual del PIB real por persona empleada [59] */
+        + findIndicador_8_2_1()
+        /** 8.3.1 Proporción de empleo informal con respecto al empleo total, desglosada por sector y sexo [60] */
+        + findIndicador_8_3_1()
+        /** 8.4.1 Huella material en términos absolutos, huella material per cápita y huella material por PIB [60] */
+        + findIndicador_8_4_1()
+        /** 8.4.2 Consumo material interno en términos absolutos, consumo material interno per cápita y consumo material interno por PIB [61] */
+        + findIndicador_8_4_2()
+        /** 8.5.1 Ingreso medio por hora de las personas empleadas, desglosado por sexo, edad, ocupación y personas con discapacidad [61] */
+        + findIndicador_8_5_1()
+        /** 8.5.2 Tasa de desempleo, desglosada por sexo, edad y personas con discapacidad [61, 62] */
+        + findIndicador_8_5_2()
+        /** 8.6.1 Proporción de jóvenes (entre 15 y 24 años) que no cursan estudios, no están empleados ni reciben capacitación [62] */
+        + findIndicador_8_6_1()
+        /** 8.7.1 Proporción y número de niños de entre 5 y 17 años que realizan trabajo infantil, desglosados por sexo y edad [63] */
+        + findIndicador_8_7_1()
+        /** 8.8.1 Lesiones ocupacionales mortales y no mortales por cada 100.000 trabajadores, desglosadas por sexo y estatus migratorio [63, 64] */
+        + findIndicador_8_8_1()
+        /** 8.8.2 Nivel de cumplimiento nacional de los derechos laborales (libertad de asociación y negociación colectiva) con arreglo a las fuentes textuales de la Organización Internacional del Trabajo (OIT) y la legislación interna, desglosado por sexo y estatus migratorio [64] */
+        + findIndicador_8_8_2()
+        /** 8.9.1 PIB generado directamente por el turismo en proporción al PIB total y a la tasa de crecimiento [65] */
+        + findIndicador_8_9_1()
+        /** 8.9.2 Personas empleadas en el sector del turismo [65] */
+        + findIndicador_8_9_2()
+        /** 8.10.1 a) Número de sucursales de bancos comerciales por cada 100.000 adultos y b) número de cajeros automáticos por cada 100.000 adultos [65] */
+        + findIndicador_8_10_1()
+        /** 8.10.2 Proporción de adultos (a partir de 15 años de edad) que tienen una cuenta en un banco u otra institución financiera o un proveedor de servicios de dinero móvil [66] */
+        + findIndicador_8_10_2()
+        /** 8.a.1 Compromisos y desembolsos en relación con la iniciativa Ayuda para el Comercio [67] */
+        + findIndicador_8_a_1()
+        /** 8.b.1 Existencia de una estrategia nacional organizada y en marcha para el empleo de los jóvenes, como estrategia independiente o como parte de una estrategia nacional de empleo [67] */
+        + findIndicador_8_b_1()
+    }
+
+    interface IObjetivo09InfraestructuraRepository {
+        /** 9.1.1 Proporción de la población rural que vive a menos de 2 km de una carretera transitable todo el año [68] */
+        + findIndicador_9_1_1()
+        /** 9.1.2 Volumen de transporte de pasajeros y carga, desglosado por medio de transporte [68] */
+        + findIndicador_9_1_2()
+        /** 9.2.1 Valor añadido del sector manufacturo en proporción al PIB y per cápita [69] */
+        + findIndicador_9_2_1()
+        /** 9.2.2 Empleo del sector manufacturero en proporción al empleo total [69] */
+        + findIndicador_9_2_2()
+        /** 9.3.1 Proporción del valor añadido total del sector industrial correspondiente a las pequeñas industrias, según a) la clasificación internacional y b) las clasificaciones nacionales [70] */
+        + findIndicador_9_3_1()
+        /** 9.3.2 Proporción de las pequeñas industrias que han obtenido un préstamo o una línea de crédito [70] */
+        + findIndicador_9_3_2()
+        /** 9.4.1 Emisiones de CO2 por unidad de valor añadido [71] */
+        + findIndicador_9_4_1()
+        /** 9.5.1 Gastos en investigación y desarrollo en proporción al PIB [72] */
+        + findIndicador_9_5_1()
+        /** 9.5.2 Número de investigadores (en equivalente a tiempo completo) por cada millón de habitantes [72] */
+        + findIndicador_9_5_2()
+        /** 9.a.1 Total de apoyo internacional oficial (asistencia oficial para el desarrollo más otras corrientes oficiales de recursos) destinado a la infraestructura [73] */
+        + findIndicador_9_a_1()
+        /** 9.b.1 Proporción del valor añadido por la industria de tecnología mediana y alta en el valor añadido total [74] */
+        + findIndicador_9_b_1()
+        /** 9.c.1 Proporción de la población con cobertura de red móvil, desglosada por tecnología [74, 75] */
+        + findIndicador_9_c_1()
+    }
+
+    interface IObjetivo10ReduccionDesigualdadRepository {
+        /** 10.1.1 Tasas de crecimiento per cápita de los gastos o ingresos de los hogares del 40% más pobre de la población y la población total [75] */
+        + findIndicador_10_1_1()
+        /** 10.2.1 Proporción de personas que viven por debajo del 50% de la mediana de los ingresos, desglosada por sexo, edad y personas con discapacidad [76] */
+        + findIndicador_10_2_1()
+        /** 10.3.1 Proporción de la población que declara haberse sentido personalmente discriminada o acosada en los últimos 12 meses por motivos de discriminación prohibidos por el derecho internacional de los derechos humanos [76, 77] */
+        + findIndicador_10_3_1()
+        /** 10.4.1 Proporción del PIB generada por el trabajo [77] */
+        + findIndicador_10_4_1()
+        /** 10.4.2 Impacto redistributivo de la política fiscal en el índice de Gini [77] */
+        + findIndicador_10_4_2()
+        /** 10.5.1 Indicadores de solidez financiera [78] */
+        + findIndicador_10_5_1()
+        /** 10.6.1 Proporción de miembros y derechos de voto de los países en desarrollo en organizaciones internacionales [78] */
+        + findIndicador_10_6_1()
+        /** 10.7.1 Costo de la contratación sufragado por el empleado en proporción a los ingresos mensuales percibidos en el país de destino [79] */
+        + findIndicador_10_7_1()
+        /** 10.7.2 Proporción de países que han aplicado políticas migratorias bien gestionadas que facilitan la migración y la movilidad ordenadas, seguras, regulares y responsables de las personas [79, 80] */
+        + findIndicador_10_7_2()
+        /** 10.7.3 Número de personas que murieron o desaparecieron en el proceso de migración hacia un destino internacional [80] */
+        + findIndicador_10_7_3()
+        /** 10.7.4 Proporción de la población integrada por refugiados, desglosada por país de origen [80] */
+        + findIndicador_10_7_4()
+        /** 10.a.1 Proporción de líneas arancelarias que se aplican a las importaciones de los países menos adelantados y los países en desarrollo con arancel cero [80, 81] */
+        + findIndicador_10_a_1()
+        /** 10.b.1 Corrientes totales de recursos para el desarrollo (por ejemplo, asistencia oficial para el desarrollo, inversión extranjera directa y otras corrientes) [81, 82] */
+        + findIndicador_10_b_1()
+        /** 10.c.1 Costo de las remesas en proporción a las sumas remitidas [82] */
+        + findIndicador_10_c_1()
+    }
+
+    interface IObjetivo11CiudadesSosteniblesRepository {
+        /** 11.1.1 Proporción de la población urbana que vive en barrios marginales, asentamientos informales o viviendas inadecuadas [83] */
+        + findIndicador_11_1_1()
+        /** 11.2.1 Proporción de la población que tiene fácil acceso al transporte público, desglosada por sexo, edad y personas con discapacidad [84] */
+        + findIndicador_11_2_1()
+        /** 11.3.1 Relación entre la tasa de consumo de tierras y la tasa de crecimiento de la población [84] */
+        + findIndicador_11_3_1()
+        /** 11.3.2 Proporción de ciudades que cuentan con una estructura de participación directa de la sociedad civil en la planificación y la gestión urbanas y funcionan con regularidad y democráticamente [85] */
+        + findIndicador_11_3_2()
+        /** 11.4.1 Total de gastos per cápita destinados a la preservación, protección y conservación de todo el patrimonio cultural y natural, desglosado por fuente de financiación (pública y privada), tipo de patrimonio (cultural y natural) y nivel de gobierno (nacional, regional y local/municipal) [85, 86] */
+        + findIndicador_11_4_1()
+        /** 11.5.1 Número de personas muertas, desaparecidas y afectadas directamente atribuido a desastres por cada 100.000 personas [87] */
+        + findIndicador_11_5_1()
+        /** 11.5.2 Pérdidas económicas directas atribuidas a los desastres en relación con el producto interno bruto (PIB) mundial [87] */
+        + findIndicador_11_5_2()
+        /** 11.5.3 a) Daños en la infraestructura crítica y b) número de interrupciones de los servicios básicos, atribuidos a desastres [87, 88] */
+        + findIndicador_11_5_3()
+        /** 11.6.1 Proporción de residuos sólidos municipales recogidos y administrados en instalaciones controladas con respecto al total de residuos municipales generados, desglosada por ciudad [88] */
+        + findIndicador_11_6_1()
+        /** 11.6.2 Niveles medios anuales de partículas finas en suspensión (por ejemplo, PM2.5 y PM10) en las ciudades (ponderados según la población) [88, 89] */
+        + findIndicador_11_6_2()
+        /** 11.7.1 Proporción media de la superficie edificada de las ciudades que se dedica a espacios abiertos para uso público de todos, desglosada por sexo, edad y personas con discapacidad [89] */
+        + findIndicador_11_7_1()
+        /** 11.7.2 Proporción de personas que han sido víctimas de acoso no sexual o sexual en los últimos 12 meses, desglosada por sexo, edad, grado de discapacidad y lugar del hecho [89, 90] */
+        + findIndicador_11_7_2()
+        /** 11.a.1 Número de países que cuentan con políticas urbanas nacionales o planes de desarrollo regionales que a) responden a la dinámica de la población, b) garantizan un desarrollo territorial equilibrado y c) aumentan el margen fiscal local [90, 91] */
+        + findIndicador_11_a_1()
+        /** 11.b.1 Número de países que adoptan y aplican estrategias nacionales de reducción del riesgo de desastres en consonancia con el Marco de Sendái para la Reducción del Riesgo de Desastres 2015-2030 [92] */
+        + findIndicador_11_b_1()
+        /** 11.b.2 Proporción de gobiernos locales que adoptan y aplican estrategias locales de reducción del riesgo de desastres en consonancia con las estrategias nacionales de reducción del riesgo de desastres [92] */
+        + findIndicador_11_b_2()
+        /** 11.c.1 Total de asistencia oficial para el desarrollo y otros flujos oficiales destinados a infraestructuras urbanas o proyectos de infraestructuras urbanas, por sector [93] */
+        + findIndicador_11_c_1()
+    }
+
+    interface IObjetivo12ConsumoProduccionRepository {
+        /** 12.1.1 Número de países que elaboran, adoptan o aplican instrumentos de política destinados a apoyar la transición hacia modalidades de consumo y producción sostenibles [93, 94] */
+        + findIndicador_12_1_1()
+        /** 12.2.1 Huella material en términos absolutos, huella material per cápita y huella material por PIB [95] */
+        + findIndicador_12_2_1()
+        /** 12.2.2 Consumo material interno en términos absolutos, consumo material interno per cápita y consumo material interno por PIB [95] */
+        + findIndicador_12_2_2()
+        /** 12.3.1 a) Índice de pérdidas de alimentos y b) índice de desperdicio de alimentos [96] */
+        + findIndicador_12_3_1()
+        /** 12.4.1 Número de partes en los acuerdos ambientales multilaterales internacionales sobre desechos peligrosos y otros productos químicos que cumplen sus compromisos y obligaciones de transmitir información como se exige en cada uno de esos acuerdos [96, 97] */
+        + findIndicador_12_4_1()
+        /** 12.4.2 a) Desechos peligrosos generados per cápita y b) proporción de desechos peligrosos tratados, desglosados por tipo de tratamiento [97] */
+        + findIndicador_12_4_2()
+        /** 12.5.1 Tasa nacional de reciclado, en toneladas de material reciclado [97] */
+        + findIndicador_12_5_1()
+        /** 12.6.1 Número de empresas que publican informes sobre sostenibilidad [98] */
+        + findIndicador_12_6_1()
+        /** 12.7.1 Número de países que aplican políticas y planes de acción sostenibles en materia de adquisiciones públicas [98] */
+        + findIndicador_12_7_1()
+        /** 12.8.1 Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo sostenible se incorporan en a) las políticas nacionales de educación, b) los planes de estudio, c) la formación de docentes y d) la evaluación de los estudiantes [99] */
+        + findIndicador_12_8_1()
+        /** 12.a.1 Capacidad instalada de generación de energía renovable en los países en desarrollo y en los países desarrollados (en vatios per cápita) [100] */
+        + findIndicador_12_a_1()
+        /** 12.b.1 Aplicación de instrumentos normalizados de contabilidad para hacer un seguimiento de los aspectos económicos y ambientales de la sostenibilidad del turismo [100, 101] */
+        + findIndicador_12_b_1()
+        /** 12.c.1 Cuantía de los subsidios a los combustibles fósiles (producción y consumo) por unidad del PIB [101, 102] */
+        + findIndicador_12_c_1()
+    }
+
+    interface IObjetivo13AccionClimaRepository {
+        /** 13.1.1 Número de personas muertas, desaparecidas y afectadas directamente atribuido a desastres por cada 100.000 personas [102] */
+        + findIndicador_13_1_1()
+        /** 13.1.2 Número de países que adoptan y aplican estrategias nacionales de reducción del riesgo de desastres en consonancia con el Marco de Sendái para la Reducción del Riesgo de Desastres 2015-2030 [103] */
+        + findIndicador_13_1_2()
+        /** 13.1.3 Proporción de gobiernos locales que adoptan y aplican estrategias locales de reducción del riesgo de desastres en consonancia con las estrategias nacionales de reducción del riesgo de desastres [103] */
+        + findIndicador_13_1_3()
+        /** 13.2.1 Número de países con contribuciones determinadas a nivel nacional, estrategias a largo plazo, planes nacionales de adaptación y comunicaciones sobre la adaptación, notificadas a la secretaría de la Convención Marco de las Naciones Unidas sobre el Cambio Climático [104] */
+        + findIndicador_13_2_1()
+        /** 13.2.2 Emisiones totales de gases de efecto invernadero por año [104] */
+        + findIndicador_13_2_2()
+        /** 13.3.1 Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo sostenible se incorporan en a) las políticas nacionales de educación, b) los planes de estudio, c) la formación de docentes y d) la evaluación de los estudiantes [105] */
+        + findIndicador_13_3_1()
+        /** 13.a.1 Cantidades proporcionadas y movilizadas en dólares de los Estados Unidos al año en relación con el objetivo actual mantenido de movilización colectiva de 100.000 millones de dólares de aquí a 2025 [106] */
+        + findIndicador_13_a_1()
+        /** 13.b.1 Número de países menos adelantados y pequeños Estados insulares en desarrollo con contribuciones determinadas a nivel nacional, estrategias a largo plazo, planes nacionales de adaptación y comunicaciones sobre la adaptación, notificadas a la secretaría de la Convención Marco de las Naciones Unidas sobre el Cambio Climático [107, 108] */
+        + findIndicador_13_b_1()
+    }
+
+    interface IObjetivo14VidaSubmarinaRepository {
+        /** 14.1.1 a) Índice de eutrofización costera; y b) densidad de detritos plásticos [108, 109] */
+        + findIndicador_14_1_1()
+        /** 14.2.1 Número de países que aplican enfoques basados en los ecosistemas para gestionar las zonas marinas [109] */
+        + findIndicador_14_2_1()
+        /** 14.3.1 Acidez media del mar (pH) medida en un conjunto convenido de estaciones de muestreo representativas [110] */
+        + findIndicador_14_3_1()
+        /** 14.4.1 Proporción de poblaciones de peces cuyos niveles son biológicamente sostenibles [111] */
+        + findIndicador_14_4_1()
+        /** 14.5.1 Cobertura de las zonas protegidas en relación con las zonas marinas [111] */
+        + findIndicador_14_5_1()
+        /** 14.6.1 Grado de aplicación de instrumentos internacionales cuyo objetivo es combatir la pesca ilegal, no declarada y no reglamentada [112] */
+        + findIndicador_14_6_1()
+        /** 14.7.1 Proporción del PIB correspondiente a la pesca sostenible en los pequeños Estados insulares en desarrollo, en los países menos adelantados y en todos los países [113] */
+        + findIndicador_14_7_1()
+        /** 14.a.1 Proporción del presupuesto total de investigación asignada a la investigación en el campo de la tecnología marina [114] */
+        + findIndicador_14_a_1()
+        /** 14.b.1 Grado de aplicación de un marco jurídico, reglamentario, normativo o institucional que reconozca y proteja los derechos de acceso para la pesca en pequeña escala [114, 115] */
+        + findIndicador_14_b_1()
+        /** 14.c.1 Número de países que, mediante marcos jurídicos, normativos e institucionales, avanzan en la ratificación, la aceptación y la implementación de los instrumentos relacionados con los océanos que aplican el derecho internacional reflejado en la Convención de las Naciones Unidas sobre el Derecho del Mar para la conservación y el uso sostenible de los océanos y sus recursos [115, 116] */
+        + findIndicador_14_c_1()
+    }
+
+    interface IObjetivo15VidaEcosistemasRepository {
+        /** 15.1.1 Superficie forestal en proporción a la superficie total [117] */
+        + findIndicador_15_1_1()
+        /** 15.1.2 Proporción de lugares importantes para la biodiversidad terrestre y del agua dulce incluidos en zonas protegidas, desglosada por tipo de ecosistema [117, 118] */
+        + findIndicador_15_1_2()
+        /** 15.2.1 Avances hacia la gestión forestal sostenible [118] */
+        + findIndicador_15_2_1()
+        /** 15.3.1 Proporción de tierras degradadas en comparación con la superficie total [119] */
+        + findIndicador_15_3_1()
+        /** 15.4.1 Lugares importantes para la biodiversidad de las montañas incluidos en zonas protegidas [120] */
+        + findIndicador_15_4_1()
+        /** 15.4.2 a) Índice de cobertura verde de las montañas y b) proporción de terreno montañoso degradado [120] */
+        + findIndicador_15_4_2()
+        /** 15.5.1 Índice de la Lista Roja [121] */
+        + findIndicador_15_5_1()
+        /** 15.6.1 Número de países que han adoptado marcos legislativos, administrativos y normativos para asegurar una distribución justa y equitativa de los beneficios [121] */
+        + findIndicador_15_6_1()
+        /** 15.7.1 Proporción de especímenes de flora y fauna silvestre comercializados procedentes de la caza furtiva o el tráfico ilícito [122] */
+        + findIndicador_15_7_1()
+        /** 15.8.1 Proporción de países que han aprobado la legislación nacional pertinente y han destinado recursos suficientes para la prevención o el control de las especies exóticas invasoras [122, 123] */
+        + findIndicador_15_8_1()
+        /** 15.9.1 a) Número de países que han establecido metas nacionales acordes o similares a la Meta 14 del Marco Mundial de Biodiversidad de Kunming-Montreal en sus estrategias y planes de acción nacionales en materia de diversidad biológica y los progresos notificados en la consecución de dichas metas; y b) integración de la diversidad biológica en los sistemas nacionales de contabilidad y presentación de informes, definida como aplicación del Sistema de Contabilidad Ambiental y Económica [123, 124] */
+        + findIndicador_15_9_1()
+        /** 15.a.1 a) Asistencia oficial para el desarrollo destinada concretamente a la conservación y el uso sostenible de la biodiversidad y b) ingresos generados y financiación movilizada mediante instrumentos económicos pertinentes para la biodivers [124, 125] */
+        + findIndicador_15_a_1()
+        /** 15.b.1 a) Asistencia oficial para el desarrollo destinada concretamente a la conservación y el uso sostenible de la biodiversidad y b) ingresos generados y financiación movilizada mediante instrumentos económicos pertinentes para la biodivers [125, 126] */
+        + findIndicador_15_b_1()
+        /** 15.c.1 Proporción de especímenes de flora y fauna silvestre comercializados procedentes de la caza furtiva o el tráfico ilícito [126] */
+        + findIndicador_15_c_1()
+    }
+
+    interface IObjetivo16PazJusticiaRepository {
+        /** 16.1.1 Número de víctimas de homicidios intencionales por cada 100.000 habitantes, desglosado por sexo y edad [127] */
+        + findIndicador_16_1_1()
+        /** 16.1.2 Muertes relacionadas con conflictos por cada 100.000 habitantes, desglosadas por sexo, edad y causa [127] */
+        + findIndicador_16_1_2()
+        /** 16.1.3 Proporción de la población que ha sufrido a) violencia física, b) violencia psicológica o c) violencia sexual en los últimos 12 meses [127] */
+        + findIndicador_16_1_3()
+        /** 16.1.4 Proporción de la población que se siente segura al caminar sola en su zona de residencia después de que oscurece [127] */
+        + findIndicador_16_1_4()
+        /** 16.2.1 Proporción de niños de entre 1 y 17 años que han sufrido algún castigo físico o agresión psicológica a manos de sus cuidadores en el último mes [128] */
+        + findIndicador_16_2_1()
+        /** 16.2.2 Número de víctimas de la trata de personas por cada 100.000 habitantes, desglosado por sexo, edad y tipo de explotación [128] */
+        + findIndicador_16_2_2()
+        /** 16.2.3 Proporción de mujeres y hombres jóvenes de entre 18 y 29 años que sufrieron violencia sexual antes de cumplir los 18 años [128] */
+        + findIndicador_16_2_3()
+        /** 16.3.1 Proporción de víctimas de a) violencia física, b) violencia psicológica o c) violencia sexual en los últimos 12 meses que han notificado su victimización a las autoridades competentes u otros mecanismos de resolución de conflictos reconocidos oficialmente [129] */
+        + findIndicador_16_3_1()
+        /** 16.3.2 Proporción de detenidos que no han sido condenados en el conjunto de la población reclusa total [129] */
+        + findIndicador_16_3_2()
+        /** 16.3.3 Proporción de la población que se ha visto implicada en alguna controversia en los dos últimos años y ha accedido a algún mecanismo oficial u oficioso de solución de controversias, desglosada por tipo de mecanismo [129, 130] */
+        + findIndicador_16_3_3()
+        /** 16.4.1 Valor total de las corrientes financieras ilícitas entrantes y salientes (en dólares corrientes de los Estados Unidos) [130] */
+        + findIndicador_16_4_1()
+        /** 16.4.2 Proporción de armas incautadas, encontradas o entregadas cuyo origen o contexto ilícitos han sido determinados o establecidos por una autoridad competente, de conformidad con los instrumentos internacionales [130, 131] */
+        + findIndicador_16_4_2()
+        /** 16.5.1 Proporción de personas que han tenido al menos un contacto con un funcionario público y que han pagado un soborno a un funcionario público, o a las que un funcionario público les ha pedido un soborno, durante los últimos 12 meses [131, 132] */
+        + findIndicador_16_5_1()
+        /** 16.5.2 Proporción de negocios que han tenido al menos un contacto con un funcionario público y que han pagado un soborno a un funcionario público, o a los que un funcionario público les ha pedido un soborno, durante los últimos 12 meses [132] */
+        + findIndicador_16_5_2()
+        /** 16.6.1 Gastos primarios del gobierno en proporción al presupuesto aprobado originalmente, desglosados por sector (o por códigos presupuestarios o elementos similares) [132, 133] */
+        + findIndicador_16_6_1()
+        /** 16.6.2 Proporción de la población que se siente satisfecha con su última experiencia de los servicios públicos [133] */
+        + findIndicador_16_6_2()
+        /** 16.7.1 Proporciones de plazas en las instituciones nacionales y locales, entre ellas: a) las asambleas legislativas, b) la administración pública y c) el poder judicial, en comparación con la distribución nacional, desglosadas por sexo, edad, personas con discapacidad y grupos de población [133, 134] */
+        + findIndicador_16_7_1()
+        /** 16.7.2 Proporción de la población que considera que la adopción de decisiones es inclusiva y responde a sus necesidades, desglosada por sexo, edad, discapacidad y grupo de población [134] */
+        + findIndicador_16_7_2()
+        /** 16.8.1 Proporción de miembros y derechos de voto de los países en desarrollo en organizaciones internacionales [134] */
+        + findIndicador_16_8_1()
+        /** 16.9.1 Proporción de niños menores de 5 años cuyo nacimiento se ha registrado ante una autoridad civil, desglosada por edad [135] */
+        + findIndicador_16_9_1()
+        /** 16.10.1 Número de casos verificados de asesinato, secuestro, desaparición forzada, detención arbitraria y tortura de periodistas, miembros asociados de los medios de comunicación, sindicalistas y defensores de los derechos humanos, en los últimos 12 meses [135] */
+        + findIndicador_16_10_1()
+        /** 16.10.2 Número de países que adoptan y aplican garantías constitucionales, legales o normativas para el acceso público a la información [136] */
+        + findIndicador_16_10_2()
+        /** 16.a.1 Existencia de instituciones nacionales independientes de derechos humanos, en cumplimiento de los Principios de París [136] */
+        + findIndicador_16_a_1()
+        /** 16.b.1 Proporción de la población que declara haberse sentido personalmente discriminada o acosada en los últimos 12 meses por motivos de discriminación prohibidos por el derecho internacional de los derechos humanos [137] */
+        + findIndicador_16_b_1()
+    }
+
+    interface IObjetivo17AlianzasRepository {
+        /** 17.1.1 Total de ingresos del gobierno en proporción al PIB, desglosado por fuente [138] */
+        + findIndicador_17_1_1()
+        /** 17.1.2 Proporción del presupuesto nacional financiado por impuestos internos [139] */
+        + findIndicador_17_1_2()
+        /** 17.2.1 Asistencia oficial para el desarrollo neta, total y para los países menos adelantados en proporción al ingreso nacional bruto (INB) de los donantes del Comité de Asistencia para el Desarrollo de la OCDE [140] */
+        + findIndicador_17_2_1()
+        /** 17.3.1 Recursos financieros adicionales movilizados para los países en desarrollo procedentes de múltiples fuentes [141] */
+        + findIndicador_17_3_1()
+        /** 17.3.2 Volumen de remesas (en dólares de los Estados Unidos) en proporción al PIB total [141] */
+        + findIndicador_17_3_2()
+        /** 17.4.1 Servicio de la deuda en proporción a las exportaciones de bienes, servicios e ingresos primarios [142] */
+        + findIndicador_17_4_1()
+        /** 17.5.1 Número de países que adoptan y aplican sistemas de promoción de las inversiones en favor de los países en desarrollo, entre ellos los países menos adelantados [142] */
+        + findIndicador_17_5_1()
+        /** 17.6.1 Número de abonados a servicios de banda ancha fija por cada 100 habitantes, desglosado por velocidad [143] */
+        + findIndicador_17_6_1()
+        /** 17.7.1 Total de los fondos destinados a los países en desarrollo y los países desarrollados con el fin de promover el desarrollo, la transferencia y la difusión de tecnologías ecológicamente racionales [144, 145] */
+        + findIndicador_17_7_1()
+        /** 17.8.1 Proporción de personas que utilizan Internet [145] */
+        + findIndicador_17_8_1()
+        /** 17.9.1 Valor en dólares de la asistencia oficial para el desarrollo comprometida para los países en desarrollo [146] */
+        + findIndicador_17_9_1()
+        /** 17.10.1 Promedio arancelario mundial ponderado [147] */
+        + findIndicador_17_10_1()
+        /** 17.11.1 Participación de los países en desarrollo y los países menos adelantados en las exportaciones mundiales [147] */
+        + findIndicador_17_11_1()
+        /** 17.12.1 Promedio ponderado de los aranceles que enfrentan los países en desarrollo, los países menos adelantados y los pequeños Estados insulares en desarrollo [148] */
+        + findIndicador_17_12_1()
+        /** 17.13.1 Tablero macroeconómico [149] */
+        + findIndicador_17_13_1()
+        /** 17.14.1 Número de países que cuentan con mecanismos para mejorar la coherencia de las políticas de desarrollo sostenible [149] */
+        + findIndicador_17_14_1()
+        /** 17.15.1 Grado de utilización de los marcos de resultados y las herramientas de planificación de los propios países por los proveedores de cooperación para el desarrollo [150] */
+        + findIndicador_17_15_1()
+        /** 17.16.1 Número de países que informan de sus progresos en los marcos de múltiples interesados para el seguimiento de la eficacia de las actividades de desarrollo que apoyan el logro de los Objetivos de Desarrollo Sostenible [151] */
+        + findIndicador_17_16_1()
+        /** 17.17.1 Suma en dólares de los Estados Unidos prometida a las alianzas público-privadas centradas en la infraestructura [152] */
+        + findIndicador_17_17_1()
+        /** 17.18.1 Indicadores de la capacidad estadística [153] */
+        + findIndicador_17_18_1()
+        /** 17.18.2 Número de países cuya legislación nacional sobre estadísticas cumple los Principios Fundamentales de las Estadísticas Oficiales [153] */
+        + findIndicador_17_18_2()
+        /** 17.18.3 Número de países que cuentan con un plan estadístico nacional plenamente financiado y en proceso de aplicación, desglosado por fuente de financiación [153, 154] */
+        + findIndicador_17_18_3()
+        /** 17.19.1 Valor en dólares de todos los recursos proporcionados para fortalecer la capacidad estadística de los países en desarrollo [154] */
+        + findIndicador_17_19_1()
+        /** 17.19.2 Proporción de países que a) han realizado al menos un censo de población y vivienda en los últimos diez años; y b) han registrado el 100% de los nacimientos y el 80% de las defunciones [155] */
+        + findIndicador_17_19_2()
+    }
+}
+
+class PostgresSDGRepository implements IOjetivo01PobrezaRepository, IObjetivo02HambreCeroRepository, IObjetivo03SaludBienestarRepository, IObjetivo04EducacionRepository, IObjetivo05GeneroRepository, IObjetivo06AguaSaneamientoRepository, IObjetivo07EnergiaRepository, IObjetivo08CrecimientoEconomicoRepository, IObjetivo09InfraestructuraRepository, IObjetivo10ReduccionDesigualdadRepository, IObjetivo11CiudadesSosteniblesRepository, IObjetivo12ConsumoProduccionRepository, IObjetivo13AccionClimaRepository, IObjetivo14VidaSubmarinaRepository, IObjetivo15VidaEcosistemasRepository, IObjetivo16PazJusticiaRepository, IObjetivo17AlianzasRepository {
+    ' Implementación técnica de los 230+ indicadores [1-160]
+}
+
+@enduml
