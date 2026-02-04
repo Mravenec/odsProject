@@ -203,7 +203,7 @@ SELECT
     AVG(i.valor_actual) as valor_promedio_actual,
     p.created_at as fecha_creacion
 FROM proyectos p
-LEFT JOIN usuarios u ON p.usuario_id = u.id
+LEFT JOIN ods_login.usuarios u ON p.usuario_id = u.id
 LEFT JOIN indicadores i ON p.id = i.proyecto_id
 WHERE p.objetivo_id = 16
 GROUP BY p.id, p.nombre_proyecto, u.username, u.full_name, p.fecha_inicio, p.fecha_fin, p.estado, p.created_at
@@ -231,7 +231,7 @@ SELECT
     i.fuente_datos,
     i.updated_at as ultima_actualizacion
 FROM proyectos p
-LEFT JOIN usuarios u ON p.usuario_id = u.id
+LEFT JOIN ods_login.usuarios u ON p.usuario_id = u.id
 LEFT JOIN indicadores i ON p.id = i.proyecto_id
 WHERE p.objetivo_id = 16
 ORDER BY p.id, i.indicador_codigo;
@@ -388,7 +388,7 @@ SELECT
         ELSE CONCAT('Registro ', a.registro_id)
     END as descripcion_cambio
 FROM auditoria a
-LEFT JOIN usuarios u ON a.usuario_id = u.id
+LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
 WHERE a.fecha_cambio >= DATE_SUB(NOW(), INTERVAL 30 DAY)
 ORDER BY a.fecha_cambio DESC;
 
@@ -424,7 +424,7 @@ BEGIN
     SELECT 
         'TOTAL_USUARIOS' as metrica,
         COUNT(*) as valor
-    FROM usuarios
+    FROM ods_login.usuarios
     WHERE is_active = TRUE;
     
     -- Proyectos recientes
@@ -435,7 +435,7 @@ BEGIN
         p.estado,
         p.created_at
     FROM proyectos p
-    JOIN usuarios u ON p.usuario_id = u.id
+    JOIN ods_login.usuarios u ON p.usuario_id = u.id
     WHERE p.objetivo_id = 16
     ORDER BY p.created_at DESC
     LIMIT 5;
@@ -472,7 +472,7 @@ BEGIN
         p.estado,
         p.created_at
     FROM proyectos p
-    JOIN usuarios u ON p.usuario_id = u.id
+    JOIN ods_login.usuarios u ON p.usuario_id = u.id
     WHERE p.id = proyecto_id_param AND p.objetivo_id = 16;
     
     -- Indicadores del proyecto
@@ -519,7 +519,7 @@ BEGIN
         a.valores_nuevos,
         a.fecha_cambio
     FROM auditoria a
-    LEFT JOIN usuarios u ON a.usuario_id = u.id
+    LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
     WHERE a.tabla_afectada IN ('proyectos', 'indicadores', 'metas_proyecto')
     AND (a.registro_id = proyecto_id_param OR a.registro_id IN (
         SELECT id FROM indicadores WHERE proyecto_id = proyecto_id_param
@@ -536,8 +536,8 @@ CREATE INDEX idx_auditoria_fecha_tabla ON auditoria(fecha_cambio, tabla_afectada
 CREATE INDEX idx_mediciones_indicador_fecha ON mediciones_historicas(indicador_id, fecha_medicion DESC);
 
 -- Comentarios de la base de datos
-ALTER TABLE usuarios COMMENT 'Tabla de usuarios del sistema ODS16';
-ALTER TABLE proyectos COMMENT 'Proyectos creados por usuarios para ODS16';
+-- ALTER TABLE ods_login.usuarios COMMENT 'Tabla de usuarios del sistema ODS16';
+ALTER TABLE proyectos COMMENT 'Proyectos ODS16 creados por usuarios';
 ALTER TABLE metas_proyecto COMMENT 'Metas específicas establecidas por cada proyecto';
 ALTER TABLE indicadores COMMENT 'Indicadores medidos por cada proyecto';
 ALTER TABLE mediciones_historicas COMMENT 'Historial de mediciones de indicadores';
