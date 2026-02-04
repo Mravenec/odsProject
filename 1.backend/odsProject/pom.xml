@@ -212,11 +212,11 @@
                             <directory>src/main/java/com/projectods/database/jooq</directory>
                         </target>
                         <generate>
-                            <daos>true</daos>
+                            <daos>false</daos>
                             <pojos>true</pojos>
                             <jpaAnnotations>false</jpaAnnotations>
                             <validationAnnotations>true</validationAnnotations>
-                            <springAnnotations>true</springAnnotations>
+                            <springAnnotations>false</springAnnotations>
                         </generate>
                     </generator>
                 </configuration>
