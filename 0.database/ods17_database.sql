@@ -74,7 +74,7 @@ CREATE TABLE mediciones_historicas (
 );
 
 -- Tabla de auditoría de cambios
-CREATE TABLE auditoria (
+CREATE TABLE auditoria_ods17 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tabla_afectada VARCHAR(50) NOT NULL,
     registro_id INT NOT NULL,
@@ -98,7 +98,7 @@ CREATE TRIGGER auditoria_indicadores_insert
 AFTER INSERT ON indicadores
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods17 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('indicadores', NEW.id, 'INSERT', NULL, 
             JSON_OBJECT(
                 'proyecto_id', NEW.proyecto_id,
@@ -115,7 +115,7 @@ CREATE TRIGGER auditoria_indicadores_update
 AFTER UPDATE ON indicadores
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria (tabla_afectada, registro_id, accion, usuario_id, valores_anteriores, valores_nuevos)
+    INSERT INTO auditoria_ods17 (tabla_afectada, registro_id, accion, usuario_id, valores_anteriores, valores_nuevos)
     VALUES ('indicadores', NEW.id, 'UPDATE', NULL,
             JSON_OBJECT(
                 'valor_actual', OLD.valor_actual,
@@ -504,7 +504,7 @@ SELECT
              WHERE i.id = a.registro_id)
         ELSE CONCAT('Registro ', a.registro_id)
     END as descripcion_cambio
-FROM auditoria a
+FROM auditoria_ods17 a
 LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
 WHERE a.fecha_cambio >= DATE_SUB(NOW(), INTERVAL 30 DAY)
 ORDER BY a.fecha_cambio DESC;
@@ -635,7 +635,7 @@ BEGIN
         a.valores_anteriores,
         a.valores_nuevos,
         a.fecha_cambio
-    FROM auditoria a
+    FROM auditoria_ods17 a
     LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
     WHERE a.tabla_afectada IN ('proyectos', 'indicadores', 'metas_proyecto')
     AND (a.registro_id = proyecto_id_param OR a.registro_id IN (
@@ -649,7 +649,7 @@ DELIMITER ;
 
 -- Índices adicionales para optimización
 CREATE INDEX idx_indicadores_proyecto_valor ON indicadores(proyecto_id, valor_actual);
-CREATE INDEX idx_auditoria_fecha_tabla ON auditoria(fecha_cambio, tabla_afectada);
+CREATE INDEX idx_auditoria_fecha_tabla ON auditoria_ods17(fecha_cambio, tabla_afectada);
 CREATE INDEX idx_mediciones_indicador_fecha ON mediciones_historicas(indicador_id, fecha_medicion DESC);
 
 -- Comentarios de la base de datos
@@ -657,7 +657,7 @@ ALTER TABLE proyectos COMMENT 'Proyectos ODS17 creados por usuarios';
 ALTER TABLE metas_proyecto COMMENT 'Metas específicas establecidas por cada proyecto ODS17';
 ALTER TABLE indicadores COMMENT 'Indicadores medidos por cada proyecto ODS17';
 ALTER TABLE mediciones_historicas COMMENT 'Historial de mediciones de indicadores ODS17';
-ALTER TABLE auditoria COMMENT 'Auditoría de cambios en el sistema ODS17';
+ALTER TABLE auditoria_ods17 COMMENT 'Auditoría de cambios en el sistema ODS17';
 
 -- Vista final para verificar que todo está configurado correctamente
 SELECT 'Base de datos ODS17 creada exitosamente' as mensaje, NOW() as fecha_creacion;
