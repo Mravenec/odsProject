@@ -144,8 +144,8 @@
 									</schemata>
 								</database>
 								<target>
-									<packageName>com.odsProject.database.JOOQ</packageName>
-									<directory>target/generated-sources/jooq</directory>
+									<packageName>database.jooq</packageName>
+									<directory>src/main/java/com/odsProject</directory>
 								</target>
 							</generator>
 						</configuration>
