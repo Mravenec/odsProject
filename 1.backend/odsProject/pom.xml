@@ -144,7 +144,7 @@
 									</schemata>
 								</database>
 								<target>
-									<packageName>database.jooq</packageName>
+									<packageName>odsProject.database.jooq</packageName>
 									<directory>src/main/java/com/odsProject</directory>
 								</target>
 							</generator>
