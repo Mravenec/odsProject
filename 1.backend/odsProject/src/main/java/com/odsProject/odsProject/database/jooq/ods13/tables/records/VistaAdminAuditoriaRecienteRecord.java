@@ -215,4 +215,26 @@ public class VistaAdminAuditoriaRecienteRecord extends TableRecordImpl<VistaAdmi
         setDescripcionCambio(descripcionCambio);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised VistaAdminAuditoriaRecienteRecord
+     */
+    public VistaAdminAuditoriaRecienteRecord(com.odsProject.odsProject.database.jooq.ods13.tables.pojos.VistaAdminAuditoriaReciente value) {
+        super(VistaAdminAuditoriaReciente.VISTA_ADMIN_AUDITORIA_RECIENTE);
+
+        if (value != null) {
+            setId(value.getId());
+            setTablaAfectada(value.getTablaAfectada());
+            setRegistroId(value.getRegistroId());
+            setAccion(value.getAccion());
+            setUsuario(value.getUsuario());
+            setNombreUsuario(value.getNombreUsuario());
+            setValoresAnteriores(value.getValoresAnteriores());
+            setValoresNuevos(value.getValoresNuevos());
+            setFechaCambio(value.getFechaCambio());
+            setIpAddress(value.getIpAddress());
+            setDescripcionCambio(value.getDescripcionCambio());
+            resetChangedOnNotNull();
+        }
+    }
 }

@@ -215,4 +215,26 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
         setUpdatedAt(updatedAt);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised ProyectosRecord
+     */
+    public ProyectosRecord(com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Proyectos value) {
+        super(Proyectos.PROYECTOS);
+
+        if (value != null) {
+            setId(value.getId());
+            setUsuarioId(value.getUsuarioId());
+            setNombreProyecto(value.getNombreProyecto());
+            setObjetivoId(value.getObjetivoId());
+            setDescripcion(value.getDescripcion());
+            setFechaInicio(value.getFechaInicio());
+            setFechaFin(value.getFechaFin());
+            setMetaGeneral(value.getMetaGeneral());
+            setEstado(value.getEstado());
+            setCreatedAt(value.getCreatedAt());
+            setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
+        }
+    }
 }

@@ -289,4 +289,31 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
         setBio(bio);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised UsuariosRecord
+     */
+    public UsuariosRecord(com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Usuarios value) {
+        super(Usuarios.USUARIOS);
+
+        if (value != null) {
+            setId(value.getId());
+            setUsername(value.getUsername());
+            setEmail(value.getEmail());
+            setPasswordHash(value.getPasswordHash());
+            setRole(value.getRole());
+            setFullName(value.getFullName());
+            setPhone(value.getPhone());
+            setDepartment(value.getDepartment());
+            setOrganization(value.getOrganization());
+            setCreatedAt(value.getCreatedAt());
+            setUpdatedAt(value.getUpdatedAt());
+            setLastLogin(value.getLastLogin());
+            setIsActive(value.getIsActive());
+            setEmailVerified(value.getEmailVerified());
+            setProfileImage(value.getProfileImage());
+            setBio(value.getBio());
+            resetChangedOnNotNull();
+        }
+    }
 }

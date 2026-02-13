@@ -147,6 +147,10 @@
 									<packageName>com.odsProject.odsProject.database.jooq</packageName>
 									<directory>src/main/java</directory>
 								</target>
+								<generate>
+									<pojos>true</pojos>
+									<immutablePojos>true</immutablePojos>
+								</generate>
 							</generator>
 						</configuration>
 					</execution>

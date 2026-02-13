@@ -191,4 +191,25 @@ public class VistaAdminIntentosLoginRecord extends TableRecordImpl<VistaAdminInt
         setRole(role);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised VistaAdminIntentosLoginRecord
+     */
+    public VistaAdminIntentosLoginRecord(com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminIntentosLogin value) {
+        super(VistaAdminIntentosLogin.VISTA_ADMIN_INTENTOS_LOGIN);
+
+        if (value != null) {
+            setId(value.getId());
+            setUsername(value.getUsername());
+            setSuccess(value.getSuccess());
+            setFailureReason(value.getFailureReason());
+            setIpAddress(value.getIpAddress());
+            setUserAgent(value.getUserAgent());
+            setCreatedAt(value.getCreatedAt());
+            setPeriodo(value.getPeriodo());
+            setFullName(value.getFullName());
+            setRole(value.getRole());
+            resetChangedOnNotNull();
+        }
+    }
 }

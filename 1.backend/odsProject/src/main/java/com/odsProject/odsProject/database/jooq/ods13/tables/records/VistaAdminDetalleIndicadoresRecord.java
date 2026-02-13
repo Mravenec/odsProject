@@ -259,4 +259,28 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
         setUltimaActualizacion(ultimaActualizacion);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised VistaAdminDetalleIndicadoresRecord
+     */
+    public VistaAdminDetalleIndicadoresRecord(com.odsProject.odsProject.database.jooq.ods13.tables.pojos.VistaAdminDetalleIndicadores value) {
+        super(VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES);
+
+        if (value != null) {
+            setProyectoId(value.getProyectoId());
+            setNombreProyecto(value.getNombreProyecto());
+            setUsuarioCreador(value.getUsuarioCreador());
+            setIndicadorCodigo(value.getIndicadorCodigo());
+            setIndicadorDescripcion(value.getIndicadorDescripcion());
+            setValorActual(value.getValorActual());
+            setValorMeta(value.getValorMeta());
+            setUnidadMedida(value.getUnidadMedida());
+            setEstadoIndicador(value.getEstadoIndicador());
+            setPorcentajeLogro(value.getPorcentajeLogro());
+            setFechaMedicion(value.getFechaMedicion());
+            setFuenteDatos(value.getFuenteDatos());
+            setUltimaActualizacion(value.getUltimaActualizacion());
+            resetChangedOnNotNull();
+        }
+    }
 }

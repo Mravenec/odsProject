@@ -268,4 +268,30 @@ public class VistaAdminUsuariosRecord extends TableRecordImpl<VistaAdminUsuarios
         setLoginsFallidos_30d(loginsFallidos_30d);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised VistaAdminUsuariosRecord
+     */
+    public VistaAdminUsuariosRecord(com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuarios value) {
+        super(VistaAdminUsuarios.VISTA_ADMIN_USUARIOS);
+
+        if (value != null) {
+            setId(value.getId());
+            setUsername(value.getUsername());
+            setEmail(value.getEmail());
+            setFullName(value.getFullName());
+            setRole(value.getRole());
+            setDepartment(value.getDepartment());
+            setOrganization(value.getOrganization());
+            setCreatedAt(value.getCreatedAt());
+            setLastLogin(value.getLastLogin());
+            setIsActive(value.getIsActive());
+            setEmailVerified(value.getEmailVerified());
+            setSesionesActivas(value.getSesionesActivas());
+            setUltimaSesion(value.getUltimaSesion());
+            setLoginsExitosos_30d(value.getLoginsExitosos_30d());
+            setLoginsFallidos_30d(value.getLoginsFallidos_30d());
+            resetChangedOnNotNull();
+        }
+    }
 }

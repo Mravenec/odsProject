@@ -218,4 +218,26 @@ public class VistaAdminSesionesActivasRecord extends TableRecordImpl<VistaAdminS
         setEstadoSesion(estadoSesion);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised VistaAdminSesionesActivasRecord
+     */
+    public VistaAdminSesionesActivasRecord(com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminSesionesActivas value) {
+        super(VistaAdminSesionesActivas.VISTA_ADMIN_SESIONES_ACTIVAS);
+
+        if (value != null) {
+            setId(value.getId());
+            setSessionToken(value.getSessionToken());
+            setUsername(value.getUsername());
+            setFullName(value.getFullName());
+            setRole(value.getRole());
+            setIpAddress(value.getIpAddress());
+            setUserAgent(value.getUserAgent());
+            setCreatedAt(value.getCreatedAt());
+            setExpiresAt(value.getExpiresAt());
+            setSegundosRestantes(value.getSegundosRestantes());
+            setEstadoSesion(value.getEstadoSesion());
+            resetChangedOnNotNull();
+        }
+    }
 }

@@ -140,4 +140,21 @@ public class VistaAdminEstadisticasGeneralesRecord extends TableRecordImpl<Vista
         setIndicadores_16_1Logrados(indicadores_16_1Logrados);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised VistaAdminEstadisticasGeneralesRecord
+     */
+    public VistaAdminEstadisticasGeneralesRecord(com.odsProject.odsProject.database.jooq.ods16.tables.pojos.VistaAdminEstadisticasGenerales value) {
+        super(VistaAdminEstadisticasGenerales.VISTA_ADMIN_ESTADISTICAS_GENERALES);
+
+        if (value != null) {
+            setMetaCodigo(value.getMetaCodigo());
+            setMetaDescripcion(value.getMetaDescripcion());
+            setTotalProyectos(value.getTotalProyectos());
+            setProyectosConIndicadores(value.getProyectosConIndicadores());
+            setPromedioLogroMeta_16_1(value.getPromedioLogroMeta_16_1());
+            setIndicadores_16_1Logrados(value.getIndicadores_16_1Logrados());
+            resetChangedOnNotNull();
+        }
+    }
 }

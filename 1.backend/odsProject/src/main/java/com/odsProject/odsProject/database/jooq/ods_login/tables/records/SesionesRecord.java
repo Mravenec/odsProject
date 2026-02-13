@@ -183,4 +183,24 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
         setIsActive(isActive);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised SesionesRecord
+     */
+    public SesionesRecord(com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones value) {
+        super(Sesiones.SESIONES);
+
+        if (value != null) {
+            setId(value.getId());
+            setUsuarioId(value.getUsuarioId());
+            setSessionToken(value.getSessionToken());
+            setRefreshToken(value.getRefreshToken());
+            setIpAddress(value.getIpAddress());
+            setUserAgent(value.getUserAgent());
+            setCreatedAt(value.getCreatedAt());
+            setExpiresAt(value.getExpiresAt());
+            setIsActive(value.getIsActive());
+            resetChangedOnNotNull();
+        }
+    }
 }

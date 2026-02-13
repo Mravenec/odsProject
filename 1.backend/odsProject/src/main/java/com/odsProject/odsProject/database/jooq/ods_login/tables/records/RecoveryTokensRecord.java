@@ -168,4 +168,23 @@ public class RecoveryTokensRecord extends UpdatableRecordImpl<RecoveryTokensReco
         setIpAddress(ipAddress);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised RecoveryTokensRecord
+     */
+    public RecoveryTokensRecord(com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.RecoveryTokens value) {
+        super(RecoveryTokens.RECOVERY_TOKENS);
+
+        if (value != null) {
+            setId(value.getId());
+            setUsuarioId(value.getUsuarioId());
+            setToken(value.getToken());
+            setEmail(value.getEmail());
+            setCreatedAt(value.getCreatedAt());
+            setExpiresAt(value.getExpiresAt());
+            setUsed(value.getUsed());
+            setIpAddress(value.getIpAddress());
+            resetChangedOnNotNull();
+        }
+    }
 }

@@ -155,4 +155,22 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
         setCreatedAt(createdAt);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised MedicionesHistoricasRecord
+     */
+    public MedicionesHistoricasRecord(com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas value) {
+        super(MedicionesHistoricas.MEDICIONES_HISTORICAS);
+
+        if (value != null) {
+            setId(value.getId());
+            setIndicadorId(value.getIndicadorId());
+            setValorMedido(value.getValorMedido());
+            setFechaMedicion(value.getFechaMedicion());
+            setResponsable(value.getResponsable());
+            setMetodoMedicion(value.getMetodoMedicion());
+            setCreatedAt(value.getCreatedAt());
+            resetChangedOnNotNull();
+        }
+    }
 }

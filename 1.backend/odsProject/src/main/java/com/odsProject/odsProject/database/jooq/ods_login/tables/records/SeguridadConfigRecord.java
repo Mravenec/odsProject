@@ -123,4 +123,20 @@ public class SeguridadConfigRecord extends UpdatableRecordImpl<SeguridadConfigRe
         setUpdatedAt(updatedAt);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised SeguridadConfigRecord
+     */
+    public SeguridadConfigRecord(com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.SeguridadConfig value) {
+        super(SeguridadConfig.SEGURIDAD_CONFIG);
+
+        if (value != null) {
+            setId(value.getId());
+            setConfigKey(value.getConfigKey());
+            setConfigValue(value.getConfigValue());
+            setDescription(value.getDescription());
+            setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
+        }
+    }
 }

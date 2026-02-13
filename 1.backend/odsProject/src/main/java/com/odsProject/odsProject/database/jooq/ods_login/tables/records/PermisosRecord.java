@@ -139,4 +139,21 @@ public class PermisosRecord extends UpdatableRecordImpl<PermisosRecord> {
         setCreatedAt(createdAt);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised PermisosRecord
+     */
+    public PermisosRecord(com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Permisos value) {
+        super(Permisos.PERMISOS);
+
+        if (value != null) {
+            setId(value.getId());
+            setRole(value.getRole());
+            setResource(value.getResource());
+            setAction(value.getAction());
+            setDescription(value.getDescription());
+            setCreatedAt(value.getCreatedAt());
+            resetChangedOnNotNull();
+        }
+    }
 }

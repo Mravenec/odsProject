@@ -230,4 +230,27 @@ public class IndicadoresRecord extends UpdatableRecordImpl<IndicadoresRecord> {
         setUpdatedAt(updatedAt);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised IndicadoresRecord
+     */
+    public IndicadoresRecord(com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Indicadores value) {
+        super(Indicadores.INDICADORES);
+
+        if (value != null) {
+            setId(value.getId());
+            setProyectoId(value.getProyectoId());
+            setIndicadorCodigo(value.getIndicadorCodigo());
+            setIndicadorDescripcion(value.getIndicadorDescripcion());
+            setValorActual(value.getValorActual());
+            setValorMeta(value.getValorMeta());
+            setUnidadMedida(value.getUnidadMedida());
+            setFechaMedicion(value.getFechaMedicion());
+            setFuenteDatos(value.getFuenteDatos());
+            setObservaciones(value.getObservaciones());
+            setCreatedAt(value.getCreatedAt());
+            setUpdatedAt(value.getUpdatedAt());
+            resetChangedOnNotNull();
+        }
+    }
 }

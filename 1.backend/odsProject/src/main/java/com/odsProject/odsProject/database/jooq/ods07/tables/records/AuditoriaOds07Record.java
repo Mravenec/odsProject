@@ -183,4 +183,24 @@ public class AuditoriaOds07Record extends UpdatableRecordImpl<AuditoriaOds07Reco
         setIpAddress(ipAddress);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised AuditoriaOds07Record
+     */
+    public AuditoriaOds07Record(com.odsProject.odsProject.database.jooq.ods07.tables.pojos.AuditoriaOds07 value) {
+        super(AuditoriaOds07.AUDITORIA_ODS07);
+
+        if (value != null) {
+            setId(value.getId());
+            setTablaAfectada(value.getTablaAfectada());
+            setRegistroId(value.getRegistroId());
+            setAccion(value.getAccion());
+            setUsuarioId(value.getUsuarioId());
+            setValoresAnteriores(value.getValoresAnteriores());
+            setValoresNuevos(value.getValoresNuevos());
+            setFechaCambio(value.getFechaCambio());
+            setIpAddress(value.getIpAddress());
+            resetChangedOnNotNull();
+        }
+    }
 }

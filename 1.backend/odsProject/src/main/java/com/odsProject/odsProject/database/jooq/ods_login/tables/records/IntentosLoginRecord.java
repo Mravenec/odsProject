@@ -153,4 +153,22 @@ public class IntentosLoginRecord extends UpdatableRecordImpl<IntentosLoginRecord
         setCreatedAt(createdAt);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised IntentosLoginRecord
+     */
+    public IntentosLoginRecord(com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.IntentosLogin value) {
+        super(IntentosLogin.INTENTOS_LOGIN);
+
+        if (value != null) {
+            setId(value.getId());
+            setUsername(value.getUsername());
+            setIpAddress(value.getIpAddress());
+            setUserAgent(value.getUserAgent());
+            setSuccess(value.getSuccess());
+            setFailureReason(value.getFailureReason());
+            setCreatedAt(value.getCreatedAt());
+            resetChangedOnNotNull();
+        }
+    }
 }

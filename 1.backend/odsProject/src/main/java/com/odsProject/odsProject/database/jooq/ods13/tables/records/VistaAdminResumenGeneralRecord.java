@@ -267,4 +267,29 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
         setFechaCreacion(fechaCreacion);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised VistaAdminResumenGeneralRecord
+     */
+    public VistaAdminResumenGeneralRecord(com.odsProject.odsProject.database.jooq.ods13.tables.pojos.VistaAdminResumenGeneral value) {
+        super(VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL);
+
+        if (value != null) {
+            setProyectoId(value.getProyectoId());
+            setNombreProyecto(value.getNombreProyecto());
+            setUsuarioCreador(value.getUsuarioCreador());
+            setNombreUsuario(value.getNombreUsuario());
+            setFechaInicio(value.getFechaInicio());
+            setFechaFin(value.getFechaFin());
+            setEstado(value.getEstado());
+            setTotalIndicadores(value.getTotalIndicadores());
+            setIndicadoresLogrados(value.getIndicadoresLogrados());
+            setProgresoPorcentaje(value.getProgresoPorcentaje());
+            setValorMinimoActual(value.getValorMinimoActual());
+            setValorMaximoActual(value.getValorMaximoActual());
+            setValorPromedioActual(value.getValorPromedioActual());
+            setFechaCreacion(value.getFechaCreacion());
+            resetChangedOnNotNull();
+        }
+    }
 }

@@ -170,4 +170,23 @@ public class MetasProyectoRecord extends UpdatableRecordImpl<MetasProyectoRecord
         setCreatedAt(createdAt);
         resetChangedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised MetasProyectoRecord
+     */
+    public MetasProyectoRecord(com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MetasProyecto value) {
+        super(MetasProyecto.METAS_PROYECTO);
+
+        if (value != null) {
+            setId(value.getId());
+            setProyectoId(value.getProyectoId());
+            setMetaCodigo(value.getMetaCodigo());
+            setMetaDescripcion(value.getMetaDescripcion());
+            setValorMeta(value.getValorMeta());
+            setUnidadMedida(value.getUnidadMedida());
+            setFechaLimite(value.getFechaLimite());
+            setCreatedAt(value.getCreatedAt());
+            resetChangedOnNotNull();
+        }
+    }
 }
