@@ -4,14 +4,14 @@
 package com.odsProject.odsProject.database.jooq.ods_login.tables.pojos;
 
 
-import com.odsProject.odsProject.database.jooq.ods_login.enums.UsuariosRole;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import org.jooq.types.UByte;
+
 
 /**
- * Tabla principal de usuarios del sistema ODS
+ * Usuarios centrales; referenciados por todas las bases ods_XX
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Usuarios implements Serializable {
@@ -22,36 +22,34 @@ public class Usuarios implements Serializable {
     private final String username;
     private final String email;
     private final String passwordHash;
-    private final UsuariosRole role;
     private final String fullName;
-    private final String phone;
-    private final String department;
-    private final String organization;
+    private final Integer rolId;
+    private final Byte isActive;
+    private final Byte emailVerificado;
+    private final LocalDateTime ultimoLogin;
+    private final UByte intentosFallidos;
+    private final LocalDateTime bloqueadoHasta;
+    private final String tokenRecuperacion;
+    private final LocalDateTime tokenExpira;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-    private final LocalDateTime lastLogin;
-    private final Byte isActive;
-    private final Byte emailVerified;
-    private final String profileImage;
-    private final String bio;
 
     public Usuarios(Usuarios value) {
         this.id = value.id;
         this.username = value.username;
         this.email = value.email;
         this.passwordHash = value.passwordHash;
-        this.role = value.role;
         this.fullName = value.fullName;
-        this.phone = value.phone;
-        this.department = value.department;
-        this.organization = value.organization;
+        this.rolId = value.rolId;
+        this.isActive = value.isActive;
+        this.emailVerificado = value.emailVerificado;
+        this.ultimoLogin = value.ultimoLogin;
+        this.intentosFallidos = value.intentosFallidos;
+        this.bloqueadoHasta = value.bloqueadoHasta;
+        this.tokenRecuperacion = value.tokenRecuperacion;
+        this.tokenExpira = value.tokenExpira;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
-        this.lastLogin = value.lastLogin;
-        this.isActive = value.isActive;
-        this.emailVerified = value.emailVerified;
-        this.profileImage = value.profileImage;
-        this.bio = value.bio;
     }
 
     public Usuarios(
@@ -59,35 +57,33 @@ public class Usuarios implements Serializable {
         String username,
         String email,
         String passwordHash,
-        UsuariosRole role,
         String fullName,
-        String phone,
-        String department,
-        String organization,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt,
-        LocalDateTime lastLogin,
+        Integer rolId,
         Byte isActive,
-        Byte emailVerified,
-        String profileImage,
-        String bio
+        Byte emailVerificado,
+        LocalDateTime ultimoLogin,
+        UByte intentosFallidos,
+        LocalDateTime bloqueadoHasta,
+        String tokenRecuperacion,
+        LocalDateTime tokenExpira,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
-        this.role = role;
         this.fullName = fullName;
-        this.phone = phone;
-        this.department = department;
-        this.organization = organization;
+        this.rolId = rolId;
+        this.isActive = isActive;
+        this.emailVerificado = emailVerificado;
+        this.ultimoLogin = ultimoLogin;
+        this.intentosFallidos = intentosFallidos;
+        this.bloqueadoHasta = bloqueadoHasta;
+        this.tokenRecuperacion = tokenRecuperacion;
+        this.tokenExpira = tokenExpira;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.lastLogin = lastLogin;
-        this.isActive = isActive;
-        this.emailVerified = emailVerified;
-        this.profileImage = profileImage;
-        this.bio = bio;
     }
 
     /**
@@ -119,13 +115,6 @@ public class Usuarios implements Serializable {
     }
 
     /**
-     * Getter for <code>ods_login.usuarios.role</code>.
-     */
-    public UsuariosRole getRole() {
-        return this.role;
-    }
-
-    /**
      * Getter for <code>ods_login.usuarios.full_name</code>.
      */
     public String getFullName() {
@@ -133,24 +122,59 @@ public class Usuarios implements Serializable {
     }
 
     /**
-     * Getter for <code>ods_login.usuarios.phone</code>.
+     * Getter for <code>ods_login.usuarios.rol_id</code>.
      */
-    public String getPhone() {
-        return this.phone;
+    public Integer getRolId() {
+        return this.rolId;
     }
 
     /**
-     * Getter for <code>ods_login.usuarios.department</code>.
+     * Getter for <code>ods_login.usuarios.is_active</code>.
      */
-    public String getDepartment() {
-        return this.department;
+    public Byte getIsActive() {
+        return this.isActive;
     }
 
     /**
-     * Getter for <code>ods_login.usuarios.organization</code>.
+     * Getter for <code>ods_login.usuarios.email_verificado</code>.
      */
-    public String getOrganization() {
-        return this.organization;
+    public Byte getEmailVerificado() {
+        return this.emailVerificado;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.ultimo_login</code>.
+     */
+    public LocalDateTime getUltimoLogin() {
+        return this.ultimoLogin;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.intentos_fallidos</code>.
+     */
+    public UByte getIntentosFallidos() {
+        return this.intentosFallidos;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.bloqueado_hasta</code>.
+     */
+    public LocalDateTime getBloqueadoHasta() {
+        return this.bloqueadoHasta;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.token_recuperacion</code>.
+     */
+    public String getTokenRecuperacion() {
+        return this.tokenRecuperacion;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.token_expira</code>.
+     */
+    public LocalDateTime getTokenExpira() {
+        return this.tokenExpira;
     }
 
     /**
@@ -165,41 +189,6 @@ public class Usuarios implements Serializable {
      */
     public LocalDateTime getUpdatedAt() {
         return this.updatedAt;
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.last_login</code>.
-     */
-    public LocalDateTime getLastLogin() {
-        return this.lastLogin;
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.is_active</code>.
-     */
-    public Byte getIsActive() {
-        return this.isActive;
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.email_verified</code>.
-     */
-    public Byte getEmailVerified() {
-        return this.emailVerified;
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.profile_image</code>.
-     */
-    public String getProfileImage() {
-        return this.profileImage;
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.bio</code>.
-     */
-    public String getBio() {
-        return this.bio;
     }
 
     @Override
@@ -235,35 +224,59 @@ public class Usuarios implements Serializable {
         }
         else if (!this.passwordHash.equals(other.passwordHash))
             return false;
-        if (this.role == null) {
-            if (other.role != null)
-                return false;
-        }
-        else if (!this.role.equals(other.role))
-            return false;
         if (this.fullName == null) {
             if (other.fullName != null)
                 return false;
         }
         else if (!this.fullName.equals(other.fullName))
             return false;
-        if (this.phone == null) {
-            if (other.phone != null)
+        if (this.rolId == null) {
+            if (other.rolId != null)
                 return false;
         }
-        else if (!this.phone.equals(other.phone))
+        else if (!this.rolId.equals(other.rolId))
             return false;
-        if (this.department == null) {
-            if (other.department != null)
+        if (this.isActive == null) {
+            if (other.isActive != null)
                 return false;
         }
-        else if (!this.department.equals(other.department))
+        else if (!this.isActive.equals(other.isActive))
             return false;
-        if (this.organization == null) {
-            if (other.organization != null)
+        if (this.emailVerificado == null) {
+            if (other.emailVerificado != null)
                 return false;
         }
-        else if (!this.organization.equals(other.organization))
+        else if (!this.emailVerificado.equals(other.emailVerificado))
+            return false;
+        if (this.ultimoLogin == null) {
+            if (other.ultimoLogin != null)
+                return false;
+        }
+        else if (!this.ultimoLogin.equals(other.ultimoLogin))
+            return false;
+        if (this.intentosFallidos == null) {
+            if (other.intentosFallidos != null)
+                return false;
+        }
+        else if (!this.intentosFallidos.equals(other.intentosFallidos))
+            return false;
+        if (this.bloqueadoHasta == null) {
+            if (other.bloqueadoHasta != null)
+                return false;
+        }
+        else if (!this.bloqueadoHasta.equals(other.bloqueadoHasta))
+            return false;
+        if (this.tokenRecuperacion == null) {
+            if (other.tokenRecuperacion != null)
+                return false;
+        }
+        else if (!this.tokenRecuperacion.equals(other.tokenRecuperacion))
+            return false;
+        if (this.tokenExpira == null) {
+            if (other.tokenExpira != null)
+                return false;
+        }
+        else if (!this.tokenExpira.equals(other.tokenExpira))
             return false;
         if (this.createdAt == null) {
             if (other.createdAt != null)
@@ -277,36 +290,6 @@ public class Usuarios implements Serializable {
         }
         else if (!this.updatedAt.equals(other.updatedAt))
             return false;
-        if (this.lastLogin == null) {
-            if (other.lastLogin != null)
-                return false;
-        }
-        else if (!this.lastLogin.equals(other.lastLogin))
-            return false;
-        if (this.isActive == null) {
-            if (other.isActive != null)
-                return false;
-        }
-        else if (!this.isActive.equals(other.isActive))
-            return false;
-        if (this.emailVerified == null) {
-            if (other.emailVerified != null)
-                return false;
-        }
-        else if (!this.emailVerified.equals(other.emailVerified))
-            return false;
-        if (this.profileImage == null) {
-            if (other.profileImage != null)
-                return false;
-        }
-        else if (!this.profileImage.equals(other.profileImage))
-            return false;
-        if (this.bio == null) {
-            if (other.bio != null)
-                return false;
-        }
-        else if (!this.bio.equals(other.bio))
-            return false;
         return true;
     }
 
@@ -318,18 +301,17 @@ public class Usuarios implements Serializable {
         result = prime * result + ((this.username == null) ? 0 : this.username.hashCode());
         result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
         result = prime * result + ((this.passwordHash == null) ? 0 : this.passwordHash.hashCode());
-        result = prime * result + ((this.role == null) ? 0 : this.role.hashCode());
         result = prime * result + ((this.fullName == null) ? 0 : this.fullName.hashCode());
-        result = prime * result + ((this.phone == null) ? 0 : this.phone.hashCode());
-        result = prime * result + ((this.department == null) ? 0 : this.department.hashCode());
-        result = prime * result + ((this.organization == null) ? 0 : this.organization.hashCode());
+        result = prime * result + ((this.rolId == null) ? 0 : this.rolId.hashCode());
+        result = prime * result + ((this.isActive == null) ? 0 : this.isActive.hashCode());
+        result = prime * result + ((this.emailVerificado == null) ? 0 : this.emailVerificado.hashCode());
+        result = prime * result + ((this.ultimoLogin == null) ? 0 : this.ultimoLogin.hashCode());
+        result = prime * result + ((this.intentosFallidos == null) ? 0 : this.intentosFallidos.hashCode());
+        result = prime * result + ((this.bloqueadoHasta == null) ? 0 : this.bloqueadoHasta.hashCode());
+        result = prime * result + ((this.tokenRecuperacion == null) ? 0 : this.tokenRecuperacion.hashCode());
+        result = prime * result + ((this.tokenExpira == null) ? 0 : this.tokenExpira.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-        result = prime * result + ((this.lastLogin == null) ? 0 : this.lastLogin.hashCode());
-        result = prime * result + ((this.isActive == null) ? 0 : this.isActive.hashCode());
-        result = prime * result + ((this.emailVerified == null) ? 0 : this.emailVerified.hashCode());
-        result = prime * result + ((this.profileImage == null) ? 0 : this.profileImage.hashCode());
-        result = prime * result + ((this.bio == null) ? 0 : this.bio.hashCode());
         return result;
     }
 
@@ -341,18 +323,17 @@ public class Usuarios implements Serializable {
         sb.append(", ").append(username);
         sb.append(", ").append(email);
         sb.append(", ").append(passwordHash);
-        sb.append(", ").append(role);
         sb.append(", ").append(fullName);
-        sb.append(", ").append(phone);
-        sb.append(", ").append(department);
-        sb.append(", ").append(organization);
+        sb.append(", ").append(rolId);
+        sb.append(", ").append(isActive);
+        sb.append(", ").append(emailVerificado);
+        sb.append(", ").append(ultimoLogin);
+        sb.append(", ").append(intentosFallidos);
+        sb.append(", ").append(bloqueadoHasta);
+        sb.append(", ").append(tokenRecuperacion);
+        sb.append(", ").append(tokenExpira);
         sb.append(", ").append(createdAt);
         sb.append(", ").append(updatedAt);
-        sb.append(", ").append(lastLogin);
-        sb.append(", ").append(isActive);
-        sb.append(", ").append(emailVerified);
-        sb.append(", ").append(profileImage);
-        sb.append(", ").append(bio);
 
         sb.append(")");
         return sb.toString();

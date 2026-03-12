@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * Indicadores medidos por cada proyecto
+ * Indicadores medidos por cada proyecto ODS16
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Indicadores implements Serializable {

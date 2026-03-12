@@ -15,7 +15,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
- * Metas específicas establecidas por cada proyecto
+ * Metas específicas establecidas por cada proyecto ODS16
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class MetasProyectoRecord extends UpdatableRecordImpl<MetasProyectoRecord> {

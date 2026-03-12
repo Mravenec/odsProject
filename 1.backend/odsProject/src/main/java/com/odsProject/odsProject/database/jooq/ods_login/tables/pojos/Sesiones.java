@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * Sesiones activas de usuarios
+ * Control de sesiones activas por token
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Sesiones implements Serializable {
@@ -18,46 +18,42 @@ public class Sesiones implements Serializable {
 
     private final Integer id;
     private final Integer usuarioId;
-    private final String sessionToken;
-    private final String refreshToken;
+    private final String tokenHash;
     private final String ipAddress;
     private final String userAgent;
     private final LocalDateTime createdAt;
-    private final LocalDateTime expiresAt;
-    private final Byte isActive;
+    private final LocalDateTime expiraEn;
+    private final Byte revocada;
 
     public Sesiones(Sesiones value) {
         this.id = value.id;
         this.usuarioId = value.usuarioId;
-        this.sessionToken = value.sessionToken;
-        this.refreshToken = value.refreshToken;
+        this.tokenHash = value.tokenHash;
         this.ipAddress = value.ipAddress;
         this.userAgent = value.userAgent;
         this.createdAt = value.createdAt;
-        this.expiresAt = value.expiresAt;
-        this.isActive = value.isActive;
+        this.expiraEn = value.expiraEn;
+        this.revocada = value.revocada;
     }
 
     public Sesiones(
         Integer id,
         Integer usuarioId,
-        String sessionToken,
-        String refreshToken,
+        String tokenHash,
         String ipAddress,
         String userAgent,
         LocalDateTime createdAt,
-        LocalDateTime expiresAt,
-        Byte isActive
+        LocalDateTime expiraEn,
+        Byte revocada
     ) {
         this.id = id;
         this.usuarioId = usuarioId;
-        this.sessionToken = sessionToken;
-        this.refreshToken = refreshToken;
+        this.tokenHash = tokenHash;
         this.ipAddress = ipAddress;
         this.userAgent = userAgent;
         this.createdAt = createdAt;
-        this.expiresAt = expiresAt;
-        this.isActive = isActive;
+        this.expiraEn = expiraEn;
+        this.revocada = revocada;
     }
 
     /**
@@ -75,17 +71,10 @@ public class Sesiones implements Serializable {
     }
 
     /**
-     * Getter for <code>ods_login.sesiones.session_token</code>.
+     * Getter for <code>ods_login.sesiones.token_hash</code>.
      */
-    public String getSessionToken() {
-        return this.sessionToken;
-    }
-
-    /**
-     * Getter for <code>ods_login.sesiones.refresh_token</code>.
-     */
-    public String getRefreshToken() {
-        return this.refreshToken;
+    public String getTokenHash() {
+        return this.tokenHash;
     }
 
     /**
@@ -110,17 +99,17 @@ public class Sesiones implements Serializable {
     }
 
     /**
-     * Getter for <code>ods_login.sesiones.expires_at</code>.
+     * Getter for <code>ods_login.sesiones.expira_en</code>.
      */
-    public LocalDateTime getExpiresAt() {
-        return this.expiresAt;
+    public LocalDateTime getExpiraEn() {
+        return this.expiraEn;
     }
 
     /**
-     * Getter for <code>ods_login.sesiones.is_active</code>.
+     * Getter for <code>ods_login.sesiones.revocada</code>.
      */
-    public Byte getIsActive() {
-        return this.isActive;
+    public Byte getRevocada() {
+        return this.revocada;
     }
 
     @Override
@@ -144,17 +133,11 @@ public class Sesiones implements Serializable {
         }
         else if (!this.usuarioId.equals(other.usuarioId))
             return false;
-        if (this.sessionToken == null) {
-            if (other.sessionToken != null)
+        if (this.tokenHash == null) {
+            if (other.tokenHash != null)
                 return false;
         }
-        else if (!this.sessionToken.equals(other.sessionToken))
-            return false;
-        if (this.refreshToken == null) {
-            if (other.refreshToken != null)
-                return false;
-        }
-        else if (!this.refreshToken.equals(other.refreshToken))
+        else if (!this.tokenHash.equals(other.tokenHash))
             return false;
         if (this.ipAddress == null) {
             if (other.ipAddress != null)
@@ -174,17 +157,17 @@ public class Sesiones implements Serializable {
         }
         else if (!this.createdAt.equals(other.createdAt))
             return false;
-        if (this.expiresAt == null) {
-            if (other.expiresAt != null)
+        if (this.expiraEn == null) {
+            if (other.expiraEn != null)
                 return false;
         }
-        else if (!this.expiresAt.equals(other.expiresAt))
+        else if (!this.expiraEn.equals(other.expiraEn))
             return false;
-        if (this.isActive == null) {
-            if (other.isActive != null)
+        if (this.revocada == null) {
+            if (other.revocada != null)
                 return false;
         }
-        else if (!this.isActive.equals(other.isActive))
+        else if (!this.revocada.equals(other.revocada))
             return false;
         return true;
     }
@@ -195,13 +178,12 @@ public class Sesiones implements Serializable {
         int result = 1;
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.usuarioId == null) ? 0 : this.usuarioId.hashCode());
-        result = prime * result + ((this.sessionToken == null) ? 0 : this.sessionToken.hashCode());
-        result = prime * result + ((this.refreshToken == null) ? 0 : this.refreshToken.hashCode());
+        result = prime * result + ((this.tokenHash == null) ? 0 : this.tokenHash.hashCode());
         result = prime * result + ((this.ipAddress == null) ? 0 : this.ipAddress.hashCode());
         result = prime * result + ((this.userAgent == null) ? 0 : this.userAgent.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
-        result = prime * result + ((this.expiresAt == null) ? 0 : this.expiresAt.hashCode());
-        result = prime * result + ((this.isActive == null) ? 0 : this.isActive.hashCode());
+        result = prime * result + ((this.expiraEn == null) ? 0 : this.expiraEn.hashCode());
+        result = prime * result + ((this.revocada == null) ? 0 : this.revocada.hashCode());
         return result;
     }
 
@@ -211,13 +193,12 @@ public class Sesiones implements Serializable {
 
         sb.append(id);
         sb.append(", ").append(usuarioId);
-        sb.append(", ").append(sessionToken);
-        sb.append(", ").append(refreshToken);
+        sb.append(", ").append(tokenHash);
         sb.append(", ").append(ipAddress);
         sb.append(", ").append(userAgent);
         sb.append(", ").append(createdAt);
-        sb.append(", ").append(expiresAt);
-        sb.append(", ").append(isActive);
+        sb.append(", ").append(expiraEn);
+        sb.append(", ").append(revocada);
 
         sb.append(")");
         return sb.toString();

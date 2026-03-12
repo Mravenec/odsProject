@@ -82,7 +82,7 @@ public class Proyectos extends TableImpl<ProyectosRecord> {
     /**
      * The column <code>ods10.proyectos.objetivo_id</code>.
      */
-    public final TableField<ProyectosRecord, Integer> OBJETIVO_ID = createField(DSL.name("objetivo_id"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("10"), SQLDataType.INTEGER)), this, "");
+    public final TableField<ProyectosRecord, Integer> OBJETIVO_ID = createField(DSL.name("objetivo_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>ods10.proyectos.descripcion</code>.

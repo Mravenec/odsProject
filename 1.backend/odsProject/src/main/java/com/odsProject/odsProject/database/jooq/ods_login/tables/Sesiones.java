@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Sesiones activas de usuarios
+ * Control de sesiones activas por token
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Sesiones extends TableImpl<SesionesRecord> {
@@ -71,14 +71,9 @@ public class Sesiones extends TableImpl<SesionesRecord> {
     public final TableField<SesionesRecord, Integer> USUARIO_ID = createField(DSL.name("usuario_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>ods_login.sesiones.session_token</code>.
+     * The column <code>ods_login.sesiones.token_hash</code>.
      */
-    public final TableField<SesionesRecord, String> SESSION_TOKEN = createField(DSL.name("session_token"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>ods_login.sesiones.refresh_token</code>.
-     */
-    public final TableField<SesionesRecord, String> REFRESH_TOKEN = createField(DSL.name("refresh_token"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<SesionesRecord, String> TOKEN_HASH = createField(DSL.name("token_hash"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>ods_login.sesiones.ip_address</code>.
@@ -88,7 +83,7 @@ public class Sesiones extends TableImpl<SesionesRecord> {
     /**
      * The column <code>ods_login.sesiones.user_agent</code>.
      */
-    public final TableField<SesionesRecord, String> USER_AGENT = createField(DSL.name("user_agent"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+    public final TableField<SesionesRecord, String> USER_AGENT = createField(DSL.name("user_agent"), SQLDataType.VARCHAR(300).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>ods_login.sesiones.created_at</code>.
@@ -96,21 +91,21 @@ public class Sesiones extends TableImpl<SesionesRecord> {
     public final TableField<SesionesRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>ods_login.sesiones.expires_at</code>.
+     * The column <code>ods_login.sesiones.expira_en</code>.
      */
-    public final TableField<SesionesRecord, LocalDateTime> EXPIRES_AT = createField(DSL.name("expires_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<SesionesRecord, LocalDateTime> EXPIRA_EN = createField(DSL.name("expira_en"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
     /**
-     * The column <code>ods_login.sesiones.is_active</code>.
+     * The column <code>ods_login.sesiones.revocada</code>.
      */
-    public final TableField<SesionesRecord, Byte> IS_ACTIVE = createField(DSL.name("is_active"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("1"), SQLDataType.TINYINT)), this, "");
+    public final TableField<SesionesRecord, Byte> REVOCADA = createField(DSL.name("revocada"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
 
     private Sesiones(Name alias, Table<SesionesRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
 
     private Sesiones(Name alias, Table<SesionesRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("Sesiones activas de usuarios"), TableOptions.table(), where);
+        super(alias, null, aliased, parameters, DSL.comment("Control de sesiones activas por token"), TableOptions.table(), where);
     }
 
     /**
@@ -174,7 +169,7 @@ public class Sesiones extends TableImpl<SesionesRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.SESIONES_IDX_ACTIVE, Indexes.SESIONES_IDX_EXPIRES, Indexes.SESIONES_IDX_TOKEN, Indexes.SESIONES_IDX_USUARIO);
+        return Arrays.asList(Indexes.SESIONES_IDX_EXPIRA, Indexes.SESIONES_IDX_SESIONES_EXPIRA_REVOCADA, Indexes.SESIONES_IDX_TOKEN, Indexes.SESIONES_IDX_USUARIO);
     }
 
     @Override
@@ -189,7 +184,7 @@ public class Sesiones extends TableImpl<SesionesRecord> {
 
     @Override
     public List<UniqueKey<SesionesRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_SESIONES_REFRESH_TOKEN, Keys.KEY_SESIONES_SESSION_TOKEN);
+        return Arrays.asList(Keys.KEY_SESIONES_TOKEN_HASH);
     }
 
     @Override

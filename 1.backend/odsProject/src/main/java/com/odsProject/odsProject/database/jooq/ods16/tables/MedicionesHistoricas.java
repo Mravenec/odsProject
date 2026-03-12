@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Historial de mediciones de indicadores
+ * Historial de mediciones de indicadores ODS16
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class MedicionesHistoricas extends TableImpl<MedicionesHistoricasRecord> {
@@ -102,7 +102,7 @@ public class MedicionesHistoricas extends TableImpl<MedicionesHistoricasRecord> 
     }
 
     private MedicionesHistoricas(Name alias, Table<MedicionesHistoricasRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("Historial de mediciones de indicadores"), TableOptions.table(), where);
+        super(alias, null, aliased, parameters, DSL.comment("Historial de mediciones de indicadores ODS16"), TableOptions.table(), where);
     }
 
     /**

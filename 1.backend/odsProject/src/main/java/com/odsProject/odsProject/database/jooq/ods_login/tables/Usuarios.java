@@ -25,8 +25,9 @@ import com.odsProject.odsProject.database.jooq.ods17.tables.AuditoriaOds17.Audit
 import com.odsProject.odsProject.database.jooq.ods_login.Indexes;
 import com.odsProject.odsProject.database.jooq.ods_login.Keys;
 import com.odsProject.odsProject.database.jooq.ods_login.OdsLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.enums.UsuariosRole;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.RecoveryTokens.RecoveryTokensPath;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin.AuditoriaLoginPath;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds.PermisosOdsPath;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles.RolesPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones.SesionesPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.UsuariosRecord;
 
@@ -57,10 +58,11 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.UByte;
 
 
 /**
- * Tabla principal de usuarios del sistema ODS
+ * Usuarios centrales; referenciados por todas las bases ods_XX
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Usuarios extends TableImpl<UsuariosRecord> {
@@ -93,7 +95,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
     /**
      * The column <code>ods_login.usuarios.email</code>.
      */
-    public final TableField<UsuariosRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<UsuariosRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(150).nullable(false), this, "");
 
     /**
      * The column <code>ods_login.usuarios.password_hash</code>.
@@ -101,29 +103,49 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
     public final TableField<UsuariosRecord, String> PASSWORD_HASH = createField(DSL.name("password_hash"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>ods_login.usuarios.role</code>.
-     */
-    public final TableField<UsuariosRecord, UsuariosRole> ROLE = createField(DSL.name("role"), SQLDataType.VARCHAR(5).defaultValue(DSL.field(DSL.raw("'user'"), SQLDataType.VARCHAR)).asEnumDataType(UsuariosRole.class), this, "");
-
-    /**
      * The column <code>ods_login.usuarios.full_name</code>.
      */
-    public final TableField<UsuariosRecord, String> FULL_NAME = createField(DSL.name("full_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<UsuariosRecord, String> FULL_NAME = createField(DSL.name("full_name"), SQLDataType.VARCHAR(150).nullable(false), this, "");
 
     /**
-     * The column <code>ods_login.usuarios.phone</code>.
+     * The column <code>ods_login.usuarios.rol_id</code>.
      */
-    public final TableField<UsuariosRecord, String> PHONE = createField(DSL.name("phone"), SQLDataType.VARCHAR(20).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<UsuariosRecord, Integer> ROL_ID = createField(DSL.name("rol_id"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("2"), SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>ods_login.usuarios.department</code>.
+     * The column <code>ods_login.usuarios.is_active</code>.
      */
-    public final TableField<UsuariosRecord, String> DEPARTMENT = createField(DSL.name("department"), SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<UsuariosRecord, Byte> IS_ACTIVE = createField(DSL.name("is_active"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.field(DSL.raw("1"), SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>ods_login.usuarios.organization</code>.
+     * The column <code>ods_login.usuarios.email_verificado</code>.
      */
-    public final TableField<UsuariosRecord, String> ORGANIZATION = createField(DSL.name("organization"), SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<UsuariosRecord, Byte> EMAIL_VERIFICADO = createField(DSL.name("email_verificado"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>ods_login.usuarios.ultimo_login</code>.
+     */
+    public final TableField<UsuariosRecord, LocalDateTime> ULTIMO_LOGIN = createField(DSL.name("ultimo_login"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>ods_login.usuarios.intentos_fallidos</code>.
+     */
+    public final TableField<UsuariosRecord, UByte> INTENTOS_FALLIDOS = createField(DSL.name("intentos_fallidos"), SQLDataType.TINYINTUNSIGNED.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINTUNSIGNED)), this, "");
+
+    /**
+     * The column <code>ods_login.usuarios.bloqueado_hasta</code>.
+     */
+    public final TableField<UsuariosRecord, LocalDateTime> BLOQUEADO_HASTA = createField(DSL.name("bloqueado_hasta"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>ods_login.usuarios.token_recuperacion</code>.
+     */
+    public final TableField<UsuariosRecord, String> TOKEN_RECUPERACION = createField(DSL.name("token_recuperacion"), SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>ods_login.usuarios.token_expira</code>.
+     */
+    public final TableField<UsuariosRecord, LocalDateTime> TOKEN_EXPIRA = createField(DSL.name("token_expira"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>ods_login.usuarios.created_at</code>.
@@ -135,37 +157,12 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
      */
     public final TableField<UsuariosRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
 
-    /**
-     * The column <code>ods_login.usuarios.last_login</code>.
-     */
-    public final TableField<UsuariosRecord, LocalDateTime> LAST_LOGIN = createField(DSL.name("last_login"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * The column <code>ods_login.usuarios.is_active</code>.
-     */
-    public final TableField<UsuariosRecord, Byte> IS_ACTIVE = createField(DSL.name("is_active"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("1"), SQLDataType.TINYINT)), this, "");
-
-    /**
-     * The column <code>ods_login.usuarios.email_verified</code>.
-     */
-    public final TableField<UsuariosRecord, Byte> EMAIL_VERIFIED = createField(DSL.name("email_verified"), SQLDataType.TINYINT.defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)), this, "");
-
-    /**
-     * The column <code>ods_login.usuarios.profile_image</code>.
-     */
-    public final TableField<UsuariosRecord, String> PROFILE_IMAGE = createField(DSL.name("profile_image"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>ods_login.usuarios.bio</code>.
-     */
-    public final TableField<UsuariosRecord, String> BIO = createField(DSL.name("bio"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
-
     private Usuarios(Name alias, Table<UsuariosRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
 
     private Usuarios(Name alias, Table<UsuariosRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("Tabla principal de usuarios del sistema ODS"), TableOptions.table(), where);
+        super(alias, null, aliased, parameters, DSL.comment("Usuarios centrales; referenciados por todas las bases ods_XX"), TableOptions.table(), where);
     }
 
     /**
@@ -229,7 +226,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.USUARIOS_IDX_ACTIVE, Indexes.USUARIOS_IDX_EMAIL, Indexes.USUARIOS_IDX_ROLE, Indexes.USUARIOS_IDX_USERNAME);
+        return Arrays.asList(Indexes.USUARIOS_IDX_ACTIVO_ROL, Indexes.USUARIOS_IDX_EMAIL, Indexes.USUARIOS_IDX_ROL, Indexes.USUARIOS_IDX_USERNAME);
     }
 
     @Override
@@ -245,6 +242,23 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
     @Override
     public List<UniqueKey<UsuariosRecord>> getUniqueKeys() {
         return Arrays.asList(Keys.KEY_USUARIOS_EMAIL, Keys.KEY_USUARIOS_USERNAME);
+    }
+
+    @Override
+    public List<ForeignKey<UsuariosRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.USUARIOS_IBFK_1);
+    }
+
+    private transient RolesPath _roles;
+
+    /**
+     * Get the implicit join path to the <code>ods_login.roles</code> table.
+     */
+    public RolesPath roles() {
+        if (_roles == null)
+            _roles = new RolesPath(this, Keys.USUARIOS_IBFK_1, null);
+
+        return _roles;
     }
 
     private transient AuditoriaOds01Path _auditoriaOds01;
@@ -481,17 +495,30 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
         return _auditoriaOds17;
     }
 
-    private transient RecoveryTokensPath _recoveryTokens;
+    private transient AuditoriaLoginPath _auditoriaLogin;
 
     /**
      * Get the implicit to-many join path to the
-     * <code>ods_login.recovery_tokens</code> table
+     * <code>ods_login.auditoria_login</code> table
      */
-    public RecoveryTokensPath recoveryTokens() {
-        if (_recoveryTokens == null)
-            _recoveryTokens = new RecoveryTokensPath(this, null, Keys.RECOVERY_TOKENS_IBFK_1.getInverseKey());
+    public AuditoriaLoginPath auditoriaLogin() {
+        if (_auditoriaLogin == null)
+            _auditoriaLogin = new AuditoriaLoginPath(this, null, Keys.AUDITORIA_LOGIN_IBFK_1.getInverseKey());
 
-        return _recoveryTokens;
+        return _auditoriaLogin;
+    }
+
+    private transient PermisosOdsPath _permisosOds;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>ods_login.permisos_ods</code> table
+     */
+    public PermisosOdsPath permisosOds() {
+        if (_permisosOds == null)
+            _permisosOds = new PermisosOdsPath(this, null, Keys.PERMISOS_ODS_IBFK_1.getInverseKey());
+
+        return _permisosOds;
     }
 
     private transient SesionesPath _sesiones;

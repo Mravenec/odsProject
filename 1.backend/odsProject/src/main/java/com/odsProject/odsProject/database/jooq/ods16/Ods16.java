@@ -42,17 +42,17 @@ public class Ods16 extends SchemaImpl {
     public final AuditoriaOds16 AUDITORIA_ODS16 = AuditoriaOds16.AUDITORIA_ODS16;
 
     /**
-     * Indicadores medidos por cada proyecto
+     * Indicadores medidos por cada proyecto ODS16
      */
     public final Indicadores INDICADORES = Indicadores.INDICADORES;
 
     /**
-     * Historial de mediciones de indicadores
+     * Historial de mediciones de indicadores ODS16
      */
     public final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
 
     /**
-     * Metas específicas establecidas por cada proyecto
+     * Metas específicas establecidas por cada proyecto ODS16
      */
     public final MetasProyecto METAS_PROYECTO = MetasProyecto.METAS_PROYECTO;
 

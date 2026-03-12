@@ -4,17 +4,17 @@
 package com.odsProject.odsProject.database.jooq.ods_login.tables.records;
 
 
-import com.odsProject.odsProject.database.jooq.ods_login.enums.UsuariosRole;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 
 import java.time.LocalDateTime;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
+import org.jooq.types.UByte;
 
 
 /**
- * Tabla principal de usuarios del sistema ODS
+ * Usuarios centrales; referenciados por todas las bases ods_XX
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
@@ -78,171 +78,157 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     }
 
     /**
-     * Setter for <code>ods_login.usuarios.role</code>.
-     */
-    public void setRole(UsuariosRole value) {
-        set(4, value);
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.role</code>.
-     */
-    public UsuariosRole getRole() {
-        return (UsuariosRole) get(4);
-    }
-
-    /**
      * Setter for <code>ods_login.usuarios.full_name</code>.
      */
     public void setFullName(String value) {
-        set(5, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.full_name</code>.
      */
     public String getFullName() {
-        return (String) get(5);
+        return (String) get(4);
     }
 
     /**
-     * Setter for <code>ods_login.usuarios.phone</code>.
+     * Setter for <code>ods_login.usuarios.rol_id</code>.
      */
-    public void setPhone(String value) {
-        set(6, value);
+    public void setRolId(Integer value) {
+        set(5, value);
     }
 
     /**
-     * Getter for <code>ods_login.usuarios.phone</code>.
+     * Getter for <code>ods_login.usuarios.rol_id</code>.
      */
-    public String getPhone() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>ods_login.usuarios.department</code>.
-     */
-    public void setDepartment(String value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.department</code>.
-     */
-    public String getDepartment() {
-        return (String) get(7);
-    }
-
-    /**
-     * Setter for <code>ods_login.usuarios.organization</code>.
-     */
-    public void setOrganization(String value) {
-        set(8, value);
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.organization</code>.
-     */
-    public String getOrganization() {
-        return (String) get(8);
-    }
-
-    /**
-     * Setter for <code>ods_login.usuarios.created_at</code>.
-     */
-    public void setCreatedAt(LocalDateTime value) {
-        set(9, value);
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.created_at</code>.
-     */
-    public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(9);
-    }
-
-    /**
-     * Setter for <code>ods_login.usuarios.updated_at</code>.
-     */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(10, value);
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.updated_at</code>.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(10);
-    }
-
-    /**
-     * Setter for <code>ods_login.usuarios.last_login</code>.
-     */
-    public void setLastLogin(LocalDateTime value) {
-        set(11, value);
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.last_login</code>.
-     */
-    public LocalDateTime getLastLogin() {
-        return (LocalDateTime) get(11);
+    public Integer getRolId() {
+        return (Integer) get(5);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.is_active</code>.
      */
     public void setIsActive(Byte value) {
-        set(12, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.is_active</code>.
      */
     public Byte getIsActive() {
-        return (Byte) get(12);
+        return (Byte) get(6);
     }
 
     /**
-     * Setter for <code>ods_login.usuarios.email_verified</code>.
+     * Setter for <code>ods_login.usuarios.email_verificado</code>.
      */
-    public void setEmailVerified(Byte value) {
+    public void setEmailVerificado(Byte value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.email_verificado</code>.
+     */
+    public Byte getEmailVerificado() {
+        return (Byte) get(7);
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.ultimo_login</code>.
+     */
+    public void setUltimoLogin(LocalDateTime value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.ultimo_login</code>.
+     */
+    public LocalDateTime getUltimoLogin() {
+        return (LocalDateTime) get(8);
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.intentos_fallidos</code>.
+     */
+    public void setIntentosFallidos(UByte value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.intentos_fallidos</code>.
+     */
+    public UByte getIntentosFallidos() {
+        return (UByte) get(9);
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.bloqueado_hasta</code>.
+     */
+    public void setBloqueadoHasta(LocalDateTime value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.bloqueado_hasta</code>.
+     */
+    public LocalDateTime getBloqueadoHasta() {
+        return (LocalDateTime) get(10);
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.token_recuperacion</code>.
+     */
+    public void setTokenRecuperacion(String value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.token_recuperacion</code>.
+     */
+    public String getTokenRecuperacion() {
+        return (String) get(11);
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.token_expira</code>.
+     */
+    public void setTokenExpira(LocalDateTime value) {
+        set(12, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.token_expira</code>.
+     */
+    public LocalDateTime getTokenExpira() {
+        return (LocalDateTime) get(12);
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>ods_login.usuarios.email_verified</code>.
+     * Getter for <code>ods_login.usuarios.created_at</code>.
      */
-    public Byte getEmailVerified() {
-        return (Byte) get(13);
+    public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(13);
     }
 
     /**
-     * Setter for <code>ods_login.usuarios.profile_image</code>.
+     * Setter for <code>ods_login.usuarios.updated_at</code>.
      */
-    public void setProfileImage(String value) {
+    public void setUpdatedAt(LocalDateTime value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>ods_login.usuarios.profile_image</code>.
+     * Getter for <code>ods_login.usuarios.updated_at</code>.
      */
-    public String getProfileImage() {
-        return (String) get(14);
-    }
-
-    /**
-     * Setter for <code>ods_login.usuarios.bio</code>.
-     */
-    public void setBio(String value) {
-        set(15, value);
-    }
-
-    /**
-     * Getter for <code>ods_login.usuarios.bio</code>.
-     */
-    public String getBio() {
-        return (String) get(15);
+    public LocalDateTime getUpdatedAt() {
+        return (LocalDateTime) get(14);
     }
 
     // -------------------------------------------------------------------------
@@ -268,25 +254,24 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Create a detached, initialised UsuariosRecord
      */
-    public UsuariosRecord(Integer id, String username, String email, String passwordHash, UsuariosRole role, String fullName, String phone, String department, String organization, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime lastLogin, Byte isActive, Byte emailVerified, String profileImage, String bio) {
+    public UsuariosRecord(Integer id, String username, String email, String passwordHash, String fullName, Integer rolId, Byte isActive, Byte emailVerificado, LocalDateTime ultimoLogin, UByte intentosFallidos, LocalDateTime bloqueadoHasta, String tokenRecuperacion, LocalDateTime tokenExpira, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(Usuarios.USUARIOS);
 
         setId(id);
         setUsername(username);
         setEmail(email);
         setPasswordHash(passwordHash);
-        setRole(role);
         setFullName(fullName);
-        setPhone(phone);
-        setDepartment(department);
-        setOrganization(organization);
+        setRolId(rolId);
+        setIsActive(isActive);
+        setEmailVerificado(emailVerificado);
+        setUltimoLogin(ultimoLogin);
+        setIntentosFallidos(intentosFallidos);
+        setBloqueadoHasta(bloqueadoHasta);
+        setTokenRecuperacion(tokenRecuperacion);
+        setTokenExpira(tokenExpira);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
-        setLastLogin(lastLogin);
-        setIsActive(isActive);
-        setEmailVerified(emailVerified);
-        setProfileImage(profileImage);
-        setBio(bio);
         resetChangedOnNotNull();
     }
 
@@ -301,18 +286,17 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
             setUsername(value.getUsername());
             setEmail(value.getEmail());
             setPasswordHash(value.getPasswordHash());
-            setRole(value.getRole());
             setFullName(value.getFullName());
-            setPhone(value.getPhone());
-            setDepartment(value.getDepartment());
-            setOrganization(value.getOrganization());
+            setRolId(value.getRolId());
+            setIsActive(value.getIsActive());
+            setEmailVerificado(value.getEmailVerificado());
+            setUltimoLogin(value.getUltimoLogin());
+            setIntentosFallidos(value.getIntentosFallidos());
+            setBloqueadoHasta(value.getBloqueadoHasta());
+            setTokenRecuperacion(value.getTokenRecuperacion());
+            setTokenExpira(value.getTokenExpira());
             setCreatedAt(value.getCreatedAt());
             setUpdatedAt(value.getUpdatedAt());
-            setLastLogin(value.getLastLogin());
-            setIsActive(value.getIsActive());
-            setEmailVerified(value.getEmailVerified());
-            setProfileImage(value.getProfileImage());
-            setBio(value.getBio());
             resetChangedOnNotNull();
         }
     }

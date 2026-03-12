@@ -4,10 +4,12 @@
 package com.odsProject.odsProject.database.jooq.ods_login;
 
 
-import com.odsProject.odsProject.database.jooq.ods_login.tables.IntentosLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Permisos;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.RecoveryTokens;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.SeguridadConfig;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 
@@ -27,21 +29,26 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index SESIONES_IDX_ACTIVE = Internal.createIndex(DSL.name("idx_active"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.IS_ACTIVE }, false);
-    public static final Index USUARIOS_IDX_ACTIVE = Internal.createIndex(DSL.name("idx_active"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.IS_ACTIVE }, false);
+    public static final Index USUARIOS_IDX_ACTIVO_ROL = Internal.createIndex(DSL.name("idx_activo_rol"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.IS_ACTIVE, Usuarios.USUARIOS.ROL_ID }, false);
+    public static final Index AUDITORIA_LOGIN_IDX_AUDITORIA_LOGIN_FECHA_EVENTO = Internal.createIndex(DSL.name("idx_auditoria_login_fecha_evento"), AuditoriaLogin.AUDITORIA_LOGIN, new OrderField[] { AuditoriaLogin.AUDITORIA_LOGIN.FECHA_EVENTO, AuditoriaLogin.AUDITORIA_LOGIN.EVENTO }, false);
+    public static final Index INDICADORES_IDX_CODIGO = Internal.createIndex(DSL.name("idx_codigo"), Indicadores.INDICADORES, new OrderField[] { Indicadores.INDICADORES.INDICADOR_CODIGO }, false);
     public static final Index USUARIOS_IDX_EMAIL = Internal.createIndex(DSL.name("idx_email"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.EMAIL }, false);
-    public static final Index RECOVERY_TOKENS_IDX_EXPIRES = Internal.createIndex(DSL.name("idx_expires"), RecoveryTokens.RECOVERY_TOKENS, new OrderField[] { RecoveryTokens.RECOVERY_TOKENS.EXPIRES_AT }, false);
-    public static final Index SESIONES_IDX_EXPIRES = Internal.createIndex(DSL.name("idx_expires"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.EXPIRES_AT }, false);
-    public static final Index INTENTOS_LOGIN_IDX_IP_FECHA = Internal.createIndex(DSL.name("idx_ip_fecha"), IntentosLogin.INTENTOS_LOGIN, new OrderField[] { IntentosLogin.INTENTOS_LOGIN.IP_ADDRESS, IntentosLogin.INTENTOS_LOGIN.CREATED_AT }, false);
-    public static final Index SEGURIDAD_CONFIG_IDX_KEY = Internal.createIndex(DSL.name("idx_key"), SeguridadConfig.SEGURIDAD_CONFIG, new OrderField[] { SeguridadConfig.SEGURIDAD_CONFIG.CONFIG_KEY }, false);
-    public static final Index PERMISOS_IDX_RESOURCE = Internal.createIndex(DSL.name("idx_resource"), Permisos.PERMISOS, new OrderField[] { Permisos.PERMISOS.RESOURCE }, false);
-    public static final Index PERMISOS_IDX_ROLE = Internal.createIndex(DSL.name("idx_role"), Permisos.PERMISOS, new OrderField[] { Permisos.PERMISOS.ROLE }, false);
-    public static final Index USUARIOS_IDX_ROLE = Internal.createIndex(DSL.name("idx_role"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.ROLE }, false);
-    public static final Index INTENTOS_LOGIN_IDX_SUCCESS = Internal.createIndex(DSL.name("idx_success"), IntentosLogin.INTENTOS_LOGIN, new OrderField[] { IntentosLogin.INTENTOS_LOGIN.SUCCESS }, false);
-    public static final Index RECOVERY_TOKENS_IDX_TOKEN = Internal.createIndex(DSL.name("idx_token"), RecoveryTokens.RECOVERY_TOKENS, new OrderField[] { RecoveryTokens.RECOVERY_TOKENS.TOKEN }, false);
-    public static final Index SESIONES_IDX_TOKEN = Internal.createIndex(DSL.name("idx_token"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.SESSION_TOKEN }, false);
+    public static final Index PROYECTOS_IDX_ESTADO = Internal.createIndex(DSL.name("idx_estado"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.ESTADO }, false);
+    public static final Index SESIONES_IDX_EXPIRA = Internal.createIndex(DSL.name("idx_expira"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.EXPIRA_EN }, false);
+    public static final Index AUDITORIA_LOGIN_IDX_FECHA = Internal.createIndex(DSL.name("idx_fecha"), AuditoriaLogin.AUDITORIA_LOGIN, new OrderField[] { AuditoriaLogin.AUDITORIA_LOGIN.FECHA_EVENTO }, false);
+    public static final Index MEDICIONES_HISTORICAS_IDX_INDICADOR_FECHA = Internal.createIndex(DSL.name("idx_indicador_fecha"), MedicionesHistoricas.MEDICIONES_HISTORICAS, new OrderField[] { MedicionesHistoricas.MEDICIONES_HISTORICAS.INDICADOR_ID, MedicionesHistoricas.MEDICIONES_HISTORICAS.FECHA_MEDICION }, false);
+    public static final Index INDICADORES_IDX_INDICADORES_PROYECTO_VALOR = Internal.createIndex(DSL.name("idx_indicadores_proyecto_valor"), Indicadores.INDICADORES, new OrderField[] { Indicadores.INDICADORES.PROYECTO_ID, Indicadores.INDICADORES.VALOR_ACTUAL }, false);
+    public static final Index AUDITORIA_LOGIN_IDX_IP = Internal.createIndex(DSL.name("idx_ip"), AuditoriaLogin.AUDITORIA_LOGIN, new OrderField[] { AuditoriaLogin.AUDITORIA_LOGIN.IP_ADDRESS }, false);
+    public static final Index MEDICIONES_HISTORICAS_IDX_MEDICIONES_INDICADOR_FECHA = Internal.createIndex(DSL.name("idx_mediciones_indicador_fecha"), MedicionesHistoricas.MEDICIONES_HISTORICAS, new OrderField[] { MedicionesHistoricas.MEDICIONES_HISTORICAS.INDICADOR_ID, MedicionesHistoricas.MEDICIONES_HISTORICAS.FECHA_MEDICION }, false);
+    public static final Index PROYECTOS_IDX_OBJETIVO = Internal.createIndex(DSL.name("idx_objetivo"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.OBJETIVO_ID }, false);
+    public static final Index PERMISOS_ODS_IDX_ODS_NUM = Internal.createIndex(DSL.name("idx_ods_num"), PermisosOds.PERMISOS_ODS, new OrderField[] { PermisosOds.PERMISOS_ODS.ODS_NUM }, false);
+    public static final Index INDICADORES_IDX_PROYECTO_INDICADOR = Internal.createIndex(DSL.name("idx_proyecto_indicador"), Indicadores.INDICADORES, new OrderField[] { Indicadores.INDICADORES.PROYECTO_ID, Indicadores.INDICADORES.INDICADOR_CODIGO }, false);
+    public static final Index METAS_PROYECTO_IDX_PROYECTO_META = Internal.createIndex(DSL.name("idx_proyecto_meta"), MetasProyecto.METAS_PROYECTO, new OrderField[] { MetasProyecto.METAS_PROYECTO.PROYECTO_ID, MetasProyecto.METAS_PROYECTO.META_CODIGO }, false);
+    public static final Index USUARIOS_IDX_ROL = Internal.createIndex(DSL.name("idx_rol"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.ROL_ID }, false);
+    public static final Index SESIONES_IDX_SESIONES_EXPIRA_REVOCADA = Internal.createIndex(DSL.name("idx_sesiones_expira_revocada"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.EXPIRA_EN, Sesiones.SESIONES.REVOCADA }, false);
+    public static final Index SESIONES_IDX_TOKEN = Internal.createIndex(DSL.name("idx_token"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.TOKEN_HASH }, false);
     public static final Index USUARIOS_IDX_USERNAME = Internal.createIndex(DSL.name("idx_username"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.USERNAME }, false);
-    public static final Index INTENTOS_LOGIN_IDX_USERNAME_FECHA = Internal.createIndex(DSL.name("idx_username_fecha"), IntentosLogin.INTENTOS_LOGIN, new OrderField[] { IntentosLogin.INTENTOS_LOGIN.USERNAME, IntentosLogin.INTENTOS_LOGIN.CREATED_AT }, false);
-    public static final Index RECOVERY_TOKENS_IDX_USUARIO = Internal.createIndex(DSL.name("idx_usuario"), RecoveryTokens.RECOVERY_TOKENS, new OrderField[] { RecoveryTokens.RECOVERY_TOKENS.USUARIO_ID }, false);
+    public static final Index PROYECTOS_IDX_USUARIO = Internal.createIndex(DSL.name("idx_usuario"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.USUARIO_ID }, false);
     public static final Index SESIONES_IDX_USUARIO = Internal.createIndex(DSL.name("idx_usuario"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.USUARIO_ID }, false);
+    public static final Index AUDITORIA_LOGIN_IDX_USUARIO_EVENTO = Internal.createIndex(DSL.name("idx_usuario_evento"), AuditoriaLogin.AUDITORIA_LOGIN, new OrderField[] { AuditoriaLogin.AUDITORIA_LOGIN.USUARIO_ID, AuditoriaLogin.AUDITORIA_LOGIN.EVENTO }, false);
 }

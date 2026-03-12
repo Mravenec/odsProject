@@ -101,17 +101,17 @@ public class VistaAdminEstadisticasGeneralesRecord extends TableRecordImpl<Vista
 
     /**
      * Setter for
-     * <code>ods07.vista_admin_estadisticas_generales.indicadores_7_1_logrados</code>.
+     * <code>ods07.vista_admin_estadisticas_generales.indicadores_meta_7_1_logrados</code>.
      */
-    public void setIndicadores_7_1Logrados(Long value) {
+    public void setIndicadoresMeta_7_1Logrados(Long value) {
         set(5, value);
     }
 
     /**
      * Getter for
-     * <code>ods07.vista_admin_estadisticas_generales.indicadores_7_1_logrados</code>.
+     * <code>ods07.vista_admin_estadisticas_generales.indicadores_meta_7_1_logrados</code>.
      */
-    public Long getIndicadores_7_1Logrados() {
+    public Long getIndicadoresMeta_7_1Logrados() {
         return (Long) get(5);
     }
 
@@ -129,7 +129,7 @@ public class VistaAdminEstadisticasGeneralesRecord extends TableRecordImpl<Vista
     /**
      * Create a detached, initialised VistaAdminEstadisticasGeneralesRecord
      */
-    public VistaAdminEstadisticasGeneralesRecord(String metaCodigo, String metaDescripcion, Long totalProyectos, Long proyectosConIndicadores, BigDecimal promedioLogroMeta_7_1, Long indicadores_7_1Logrados) {
+    public VistaAdminEstadisticasGeneralesRecord(String metaCodigo, String metaDescripcion, Long totalProyectos, Long proyectosConIndicadores, BigDecimal promedioLogroMeta_7_1, Long indicadoresMeta_7_1Logrados) {
         super(VistaAdminEstadisticasGenerales.VISTA_ADMIN_ESTADISTICAS_GENERALES);
 
         setMetaCodigo(metaCodigo);
@@ -137,7 +137,7 @@ public class VistaAdminEstadisticasGeneralesRecord extends TableRecordImpl<Vista
         setTotalProyectos(totalProyectos);
         setProyectosConIndicadores(proyectosConIndicadores);
         setPromedioLogroMeta_7_1(promedioLogroMeta_7_1);
-        setIndicadores_7_1Logrados(indicadores_7_1Logrados);
+        setIndicadoresMeta_7_1Logrados(indicadoresMeta_7_1Logrados);
         resetChangedOnNotNull();
     }
 
@@ -153,7 +153,7 @@ public class VistaAdminEstadisticasGeneralesRecord extends TableRecordImpl<Vista
             setTotalProyectos(value.getTotalProyectos());
             setProyectosConIndicadores(value.getProyectosConIndicadores());
             setPromedioLogroMeta_7_1(value.getPromedioLogroMeta_7_1());
-            setIndicadores_7_1Logrados(value.getIndicadores_7_1Logrados());
+            setIndicadoresMeta_7_1Logrados(value.getIndicadoresMeta_7_1Logrados());
             resetChangedOnNotNull();
         }
     }

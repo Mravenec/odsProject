@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * Metas específicas establecidas por cada proyecto
+ * Metas específicas establecidas por cada proyecto ODS16
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class MetasProyecto implements Serializable {

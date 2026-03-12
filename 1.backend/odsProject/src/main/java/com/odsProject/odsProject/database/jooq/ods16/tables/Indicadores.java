@@ -43,7 +43,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Indicadores medidos por cada proyecto
+ * Indicadores medidos por cada proyecto ODS16
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Indicadores extends TableImpl<IndicadoresRecord> {
@@ -128,7 +128,7 @@ public class Indicadores extends TableImpl<IndicadoresRecord> {
     }
 
     private Indicadores(Name alias, Table<IndicadoresRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("Indicadores medidos por cada proyecto"), TableOptions.table(), where);
+        super(alias, null, aliased, parameters, DSL.comment("Indicadores medidos por cada proyecto ODS16"), TableOptions.table(), where);
     }
 
     /**

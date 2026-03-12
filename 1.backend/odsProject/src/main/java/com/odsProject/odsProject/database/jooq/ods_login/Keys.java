@@ -4,16 +4,22 @@
 package com.odsProject.odsProject.database.jooq.ods_login;
 
 
-import com.odsProject.odsProject.database.jooq.ods_login.tables.IntentosLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Permisos;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.RecoveryTokens;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.SeguridadConfig;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.records.IntentosLoginRecord;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.records.PermisosRecord;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.records.RecoveryTokensRecord;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SeguridadConfigRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.AuditoriaLoginRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.IndicadoresRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.MedicionesHistoricasRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.MetasProyectoRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.PermisosOdsRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.ProyectosRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.RolesRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SesionesRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.UsuariosRecord;
 
@@ -35,16 +41,17 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<IntentosLoginRecord> KEY_INTENTOS_LOGIN_PRIMARY = Internal.createUniqueKey(IntentosLogin.INTENTOS_LOGIN, DSL.name("KEY_intentos_login_PRIMARY"), new TableField[] { IntentosLogin.INTENTOS_LOGIN.ID }, true);
-    public static final UniqueKey<PermisosRecord> KEY_PERMISOS_PRIMARY = Internal.createUniqueKey(Permisos.PERMISOS, DSL.name("KEY_permisos_PRIMARY"), new TableField[] { Permisos.PERMISOS.ID }, true);
-    public static final UniqueKey<PermisosRecord> KEY_PERMISOS_UNIQUE_PERMISSION = Internal.createUniqueKey(Permisos.PERMISOS, DSL.name("KEY_permisos_unique_permission"), new TableField[] { Permisos.PERMISOS.ROLE, Permisos.PERMISOS.RESOURCE, Permisos.PERMISOS.ACTION }, true);
-    public static final UniqueKey<RecoveryTokensRecord> KEY_RECOVERY_TOKENS_PRIMARY = Internal.createUniqueKey(RecoveryTokens.RECOVERY_TOKENS, DSL.name("KEY_recovery_tokens_PRIMARY"), new TableField[] { RecoveryTokens.RECOVERY_TOKENS.ID }, true);
-    public static final UniqueKey<RecoveryTokensRecord> KEY_RECOVERY_TOKENS_TOKEN = Internal.createUniqueKey(RecoveryTokens.RECOVERY_TOKENS, DSL.name("KEY_recovery_tokens_token"), new TableField[] { RecoveryTokens.RECOVERY_TOKENS.TOKEN }, true);
-    public static final UniqueKey<SeguridadConfigRecord> KEY_SEGURIDAD_CONFIG_CONFIG_KEY = Internal.createUniqueKey(SeguridadConfig.SEGURIDAD_CONFIG, DSL.name("KEY_seguridad_config_config_key"), new TableField[] { SeguridadConfig.SEGURIDAD_CONFIG.CONFIG_KEY }, true);
-    public static final UniqueKey<SeguridadConfigRecord> KEY_SEGURIDAD_CONFIG_PRIMARY = Internal.createUniqueKey(SeguridadConfig.SEGURIDAD_CONFIG, DSL.name("KEY_seguridad_config_PRIMARY"), new TableField[] { SeguridadConfig.SEGURIDAD_CONFIG.ID }, true);
+    public static final UniqueKey<AuditoriaLoginRecord> KEY_AUDITORIA_LOGIN_PRIMARY = Internal.createUniqueKey(AuditoriaLogin.AUDITORIA_LOGIN, DSL.name("KEY_auditoria_login_PRIMARY"), new TableField[] { AuditoriaLogin.AUDITORIA_LOGIN.ID }, true);
+    public static final UniqueKey<IndicadoresRecord> KEY_INDICADORES_PRIMARY = Internal.createUniqueKey(Indicadores.INDICADORES, DSL.name("KEY_indicadores_PRIMARY"), new TableField[] { Indicadores.INDICADORES.ID }, true);
+    public static final UniqueKey<MedicionesHistoricasRecord> KEY_MEDICIONES_HISTORICAS_PRIMARY = Internal.createUniqueKey(MedicionesHistoricas.MEDICIONES_HISTORICAS, DSL.name("KEY_mediciones_historicas_PRIMARY"), new TableField[] { MedicionesHistoricas.MEDICIONES_HISTORICAS.ID }, true);
+    public static final UniqueKey<MetasProyectoRecord> KEY_METAS_PROYECTO_PRIMARY = Internal.createUniqueKey(MetasProyecto.METAS_PROYECTO, DSL.name("KEY_metas_proyecto_PRIMARY"), new TableField[] { MetasProyecto.METAS_PROYECTO.ID }, true);
+    public static final UniqueKey<PermisosOdsRecord> KEY_PERMISOS_ODS_PRIMARY = Internal.createUniqueKey(PermisosOds.PERMISOS_ODS, DSL.name("KEY_permisos_ods_PRIMARY"), new TableField[] { PermisosOds.PERMISOS_ODS.ID }, true);
+    public static final UniqueKey<PermisosOdsRecord> KEY_PERMISOS_ODS_UK_USUARIO_ODS = Internal.createUniqueKey(PermisosOds.PERMISOS_ODS, DSL.name("KEY_permisos_ods_uk_usuario_ods"), new TableField[] { PermisosOds.PERMISOS_ODS.USUARIO_ID, PermisosOds.PERMISOS_ODS.ODS_NUM }, true);
+    public static final UniqueKey<ProyectosRecord> KEY_PROYECTOS_PRIMARY = Internal.createUniqueKey(Proyectos.PROYECTOS, DSL.name("KEY_proyectos_PRIMARY"), new TableField[] { Proyectos.PROYECTOS.ID }, true);
+    public static final UniqueKey<RolesRecord> KEY_ROLES_NOMBRE = Internal.createUniqueKey(Roles.ROLES, DSL.name("KEY_roles_nombre"), new TableField[] { Roles.ROLES.NOMBRE }, true);
+    public static final UniqueKey<RolesRecord> KEY_ROLES_PRIMARY = Internal.createUniqueKey(Roles.ROLES, DSL.name("KEY_roles_PRIMARY"), new TableField[] { Roles.ROLES.ID }, true);
     public static final UniqueKey<SesionesRecord> KEY_SESIONES_PRIMARY = Internal.createUniqueKey(Sesiones.SESIONES, DSL.name("KEY_sesiones_PRIMARY"), new TableField[] { Sesiones.SESIONES.ID }, true);
-    public static final UniqueKey<SesionesRecord> KEY_SESIONES_REFRESH_TOKEN = Internal.createUniqueKey(Sesiones.SESIONES, DSL.name("KEY_sesiones_refresh_token"), new TableField[] { Sesiones.SESIONES.REFRESH_TOKEN }, true);
-    public static final UniqueKey<SesionesRecord> KEY_SESIONES_SESSION_TOKEN = Internal.createUniqueKey(Sesiones.SESIONES, DSL.name("KEY_sesiones_session_token"), new TableField[] { Sesiones.SESIONES.SESSION_TOKEN }, true);
+    public static final UniqueKey<SesionesRecord> KEY_SESIONES_TOKEN_HASH = Internal.createUniqueKey(Sesiones.SESIONES, DSL.name("KEY_sesiones_token_hash"), new TableField[] { Sesiones.SESIONES.TOKEN_HASH }, true);
     public static final UniqueKey<UsuariosRecord> KEY_USUARIOS_EMAIL = Internal.createUniqueKey(Usuarios.USUARIOS, DSL.name("KEY_usuarios_email"), new TableField[] { Usuarios.USUARIOS.EMAIL }, true);
     public static final UniqueKey<UsuariosRecord> KEY_USUARIOS_PRIMARY = Internal.createUniqueKey(Usuarios.USUARIOS, DSL.name("KEY_usuarios_PRIMARY"), new TableField[] { Usuarios.USUARIOS.ID }, true);
     public static final UniqueKey<UsuariosRecord> KEY_USUARIOS_USERNAME = Internal.createUniqueKey(Usuarios.USUARIOS, DSL.name("KEY_usuarios_username"), new TableField[] { Usuarios.USUARIOS.USERNAME }, true);
@@ -53,6 +60,12 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<RecoveryTokensRecord, UsuariosRecord> RECOVERY_TOKENS_IBFK_1 = Internal.createForeignKey(RecoveryTokens.RECOVERY_TOKENS, DSL.name("recovery_tokens_ibfk_1"), new TableField[] { RecoveryTokens.RECOVERY_TOKENS.USUARIO_ID }, Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
+    public static final ForeignKey<AuditoriaLoginRecord, UsuariosRecord> AUDITORIA_LOGIN_IBFK_1 = Internal.createForeignKey(AuditoriaLogin.AUDITORIA_LOGIN, DSL.name("auditoria_login_ibfk_1"), new TableField[] { AuditoriaLogin.AUDITORIA_LOGIN.USUARIO_ID }, Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
+    public static final ForeignKey<IndicadoresRecord, ProyectosRecord> INDICADORES_IBFK_1 = Internal.createForeignKey(Indicadores.INDICADORES, DSL.name("indicadores_ibfk_1"), new TableField[] { Indicadores.INDICADORES.PROYECTO_ID }, Keys.KEY_PROYECTOS_PRIMARY, new TableField[] { Proyectos.PROYECTOS.ID }, true);
+    public static final ForeignKey<MedicionesHistoricasRecord, IndicadoresRecord> MEDICIONES_HISTORICAS_IBFK_1 = Internal.createForeignKey(MedicionesHistoricas.MEDICIONES_HISTORICAS, DSL.name("mediciones_historicas_ibfk_1"), new TableField[] { MedicionesHistoricas.MEDICIONES_HISTORICAS.INDICADOR_ID }, Keys.KEY_INDICADORES_PRIMARY, new TableField[] { Indicadores.INDICADORES.ID }, true);
+    public static final ForeignKey<MetasProyectoRecord, ProyectosRecord> METAS_PROYECTO_IBFK_1 = Internal.createForeignKey(MetasProyecto.METAS_PROYECTO, DSL.name("metas_proyecto_ibfk_1"), new TableField[] { MetasProyecto.METAS_PROYECTO.PROYECTO_ID }, Keys.KEY_PROYECTOS_PRIMARY, new TableField[] { Proyectos.PROYECTOS.ID }, true);
+    public static final ForeignKey<PermisosOdsRecord, UsuariosRecord> PERMISOS_ODS_IBFK_1 = Internal.createForeignKey(PermisosOds.PERMISOS_ODS, DSL.name("permisos_ods_ibfk_1"), new TableField[] { PermisosOds.PERMISOS_ODS.USUARIO_ID }, Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
+    public static final ForeignKey<ProyectosRecord, UsuariosRecord> PROYECTOS_IBFK_1 = Internal.createForeignKey(Proyectos.PROYECTOS, DSL.name("proyectos_ibfk_1"), new TableField[] { Proyectos.PROYECTOS.USUARIO_ID }, Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
     public static final ForeignKey<SesionesRecord, UsuariosRecord> SESIONES_IBFK_1 = Internal.createForeignKey(Sesiones.SESIONES, DSL.name("sesiones_ibfk_1"), new TableField[] { Sesiones.SESIONES.USUARIO_ID }, Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
+    public static final ForeignKey<UsuariosRecord, RolesRecord> USUARIOS_IBFK_1 = Internal.createForeignKey(Usuarios.USUARIOS, DSL.name("usuarios_ibfk_1"), new TableField[] { Usuarios.USUARIOS.ROL_ID }, Keys.KEY_ROLES_PRIMARY, new TableField[] { Roles.ROLES.ID }, true);
 }

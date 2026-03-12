@@ -13,7 +13,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
- * Sesiones activas de usuarios
+ * Control de sesiones activas por token
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
@@ -49,101 +49,87 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     }
 
     /**
-     * Setter for <code>ods_login.sesiones.session_token</code>.
+     * Setter for <code>ods_login.sesiones.token_hash</code>.
      */
-    public void setSessionToken(String value) {
+    public void setTokenHash(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>ods_login.sesiones.session_token</code>.
+     * Getter for <code>ods_login.sesiones.token_hash</code>.
      */
-    public String getSessionToken() {
+    public String getTokenHash() {
         return (String) get(2);
-    }
-
-    /**
-     * Setter for <code>ods_login.sesiones.refresh_token</code>.
-     */
-    public void setRefreshToken(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>ods_login.sesiones.refresh_token</code>.
-     */
-    public String getRefreshToken() {
-        return (String) get(3);
     }
 
     /**
      * Setter for <code>ods_login.sesiones.ip_address</code>.
      */
     public void setIpAddress(String value) {
-        set(4, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>ods_login.sesiones.ip_address</code>.
      */
     public String getIpAddress() {
-        return (String) get(4);
+        return (String) get(3);
     }
 
     /**
      * Setter for <code>ods_login.sesiones.user_agent</code>.
      */
     public void setUserAgent(String value) {
-        set(5, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>ods_login.sesiones.user_agent</code>.
      */
     public String getUserAgent() {
-        return (String) get(5);
+        return (String) get(4);
     }
 
     /**
      * Setter for <code>ods_login.sesiones.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(6, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>ods_login.sesiones.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
+        return (LocalDateTime) get(5);
+    }
+
+    /**
+     * Setter for <code>ods_login.sesiones.expira_en</code>.
+     */
+    public void setExpiraEn(LocalDateTime value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.sesiones.expira_en</code>.
+     */
+    public LocalDateTime getExpiraEn() {
         return (LocalDateTime) get(6);
     }
 
     /**
-     * Setter for <code>ods_login.sesiones.expires_at</code>.
+     * Setter for <code>ods_login.sesiones.revocada</code>.
      */
-    public void setExpiresAt(LocalDateTime value) {
+    public void setRevocada(Byte value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>ods_login.sesiones.expires_at</code>.
+     * Getter for <code>ods_login.sesiones.revocada</code>.
      */
-    public LocalDateTime getExpiresAt() {
-        return (LocalDateTime) get(7);
-    }
-
-    /**
-     * Setter for <code>ods_login.sesiones.is_active</code>.
-     */
-    public void setIsActive(Byte value) {
-        set(8, value);
-    }
-
-    /**
-     * Getter for <code>ods_login.sesiones.is_active</code>.
-     */
-    public Byte getIsActive() {
-        return (Byte) get(8);
+    public Byte getRevocada() {
+        return (Byte) get(7);
     }
 
     // -------------------------------------------------------------------------
@@ -169,18 +155,17 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     /**
      * Create a detached, initialised SesionesRecord
      */
-    public SesionesRecord(Integer id, Integer usuarioId, String sessionToken, String refreshToken, String ipAddress, String userAgent, LocalDateTime createdAt, LocalDateTime expiresAt, Byte isActive) {
+    public SesionesRecord(Integer id, Integer usuarioId, String tokenHash, String ipAddress, String userAgent, LocalDateTime createdAt, LocalDateTime expiraEn, Byte revocada) {
         super(Sesiones.SESIONES);
 
         setId(id);
         setUsuarioId(usuarioId);
-        setSessionToken(sessionToken);
-        setRefreshToken(refreshToken);
+        setTokenHash(tokenHash);
         setIpAddress(ipAddress);
         setUserAgent(userAgent);
         setCreatedAt(createdAt);
-        setExpiresAt(expiresAt);
-        setIsActive(isActive);
+        setExpiraEn(expiraEn);
+        setRevocada(revocada);
         resetChangedOnNotNull();
     }
 
@@ -193,13 +178,12 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
         if (value != null) {
             setId(value.getId());
             setUsuarioId(value.getUsuarioId());
-            setSessionToken(value.getSessionToken());
-            setRefreshToken(value.getRefreshToken());
+            setTokenHash(value.getTokenHash());
             setIpAddress(value.getIpAddress());
             setUserAgent(value.getUserAgent());
             setCreatedAt(value.getCreatedAt());
-            setExpiresAt(value.getExpiresAt());
-            setIsActive(value.getIsActive());
+            setExpiraEn(value.getExpiraEn());
+            setRevocada(value.getRevocada());
             resetChangedOnNotNull();
         }
     }

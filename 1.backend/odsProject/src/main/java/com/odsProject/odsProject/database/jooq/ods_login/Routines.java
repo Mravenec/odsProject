@@ -4,10 +4,9 @@
 package com.odsProject.odsProject.database.jooq.ods_login;
 
 
-import com.odsProject.odsProject.database.jooq.ods_login.routines.SpCerrarSesion;
-import com.odsProject.odsProject.database.jooq.ods_login.routines.SpCrearSesion;
-import com.odsProject.odsProject.database.jooq.ods_login.routines.SpValidarLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.routines.SpValidarSesion;
+import com.odsProject.odsProject.database.jooq.ods_login.routines.SpAdminUsuarios;
+import com.odsProject.odsProject.database.jooq.ods_login.routines.SpLogin;
+import com.odsProject.odsProject.database.jooq.ods_login.routines.SpLogout;
 
 import org.jooq.Configuration;
 
@@ -19,70 +18,47 @@ import org.jooq.Configuration;
 public class Routines {
 
     /**
-     * Call <code>ods_login.sp_cerrar_sesion</code>
+     * Call <code>ods_login.sp_admin_usuarios</code>
      */
-    public static SpCerrarSesion spCerrarSesion(
+    public static void spAdminUsuarios(
           Configuration configuration
-        , String pSessionToken
     ) {
-        SpCerrarSesion p = new SpCerrarSesion();
-        p.setPSessionToken(pSessionToken);
+        SpAdminUsuarios p = new SpAdminUsuarios();
 
         p.execute(configuration);
-        return p;
     }
 
     /**
-     * Call <code>ods_login.sp_crear_sesion</code>
+     * Call <code>ods_login.sp_login</code>
      */
-    public static SpCrearSesion spCrearSesion(
+    public static void spLogin(
           Configuration configuration
-        , Integer pUsuarioId
-        , String pIpAddress
+        , String pEmail
+        , String pPasswordHash
+        , String pIp
         , String pUserAgent
     ) {
-        SpCrearSesion p = new SpCrearSesion();
-        p.setPUsuarioId(pUsuarioId);
-        p.setPIpAddress(pIpAddress);
+        SpLogin p = new SpLogin();
+        p.setPEmail(pEmail);
+        p.setPPasswordHash(pPasswordHash);
+        p.setPIp(pIp);
         p.setPUserAgent(pUserAgent);
 
         p.execute(configuration);
-        return p;
     }
 
     /**
-     * Call <code>ods_login.sp_validar_login</code>
+     * Call <code>ods_login.sp_logout</code>
      */
-    public static SpValidarLogin spValidarLogin(
+    public static void spLogout(
           Configuration configuration
-        , String pUsername
-        , String pPassword
-        , String pIpAddress
-        , String pUserAgent
+        , String pTokenHash
+        , String pIp
     ) {
-        SpValidarLogin p = new SpValidarLogin();
-        p.setPUsername(pUsername);
-        p.setPPassword(pPassword);
-        p.setPIpAddress(pIpAddress);
-        p.setPUserAgent(pUserAgent);
+        SpLogout p = new SpLogout();
+        p.setPTokenHash(pTokenHash);
+        p.setPIp(pIp);
 
         p.execute(configuration);
-        return p;
-    }
-
-    /**
-     * Call <code>ods_login.sp_validar_sesion</code>
-     */
-    public static SpValidarSesion spValidarSesion(
-          Configuration configuration
-        , String pSessionToken
-        , String pIpAddress
-    ) {
-        SpValidarSesion p = new SpValidarSesion();
-        p.setPSessionToken(pSessionToken);
-        p.setPIpAddress(pIpAddress);
-
-        p.execute(configuration);
-        return p;
     }
 }

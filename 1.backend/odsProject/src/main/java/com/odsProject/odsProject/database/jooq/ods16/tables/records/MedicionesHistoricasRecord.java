@@ -15,7 +15,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
- * Historial de mediciones de indicadores
+ * Historial de mediciones de indicadores ODS16
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHistoricasRecord> {

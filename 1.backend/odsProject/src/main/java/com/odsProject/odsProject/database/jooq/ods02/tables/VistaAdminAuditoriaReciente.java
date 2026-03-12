@@ -79,7 +79,7 @@ public class VistaAdminAuditoriaReciente extends TableImpl<VistaAdminAuditoriaRe
      * The column
      * <code>ods02.vista_admin_auditoria_reciente.nombre_usuario</code>.
      */
-    public final TableField<VistaAdminAuditoriaRecienteRecord, String> NOMBRE_USUARIO = createField(DSL.name("nombre_usuario"), SQLDataType.VARCHAR(100), this, "");
+    public final TableField<VistaAdminAuditoriaRecienteRecord, String> NOMBRE_USUARIO = createField(DSL.name("nombre_usuario"), SQLDataType.VARCHAR(150), this, "");
 
     /**
      * The column

@@ -27,17 +27,17 @@ public class Tables {
     public static final AuditoriaOds16 AUDITORIA_ODS16 = AuditoriaOds16.AUDITORIA_ODS16;
 
     /**
-     * Indicadores medidos por cada proyecto
+     * Indicadores medidos por cada proyecto ODS16
      */
     public static final Indicadores INDICADORES = Indicadores.INDICADORES;
 
     /**
-     * Historial de mediciones de indicadores
+     * Historial de mediciones de indicadores ODS16
      */
     public static final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
 
     /**
-     * Metas específicas establecidas por cada proyecto
+     * Metas específicas establecidas por cada proyecto ODS16
      */
     public static final MetasProyecto METAS_PROYECTO = MetasProyecto.METAS_PROYECTO;
 

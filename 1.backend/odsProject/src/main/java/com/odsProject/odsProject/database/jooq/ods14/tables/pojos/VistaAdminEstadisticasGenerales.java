@@ -21,7 +21,7 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
     private final Long totalProyectos;
     private final Long proyectosConIndicadores;
     private final BigDecimal promedioLogroMeta_14_1;
-    private final Long indicadores_14_1Logrados;
+    private final Long indicadoresMeta_14_1Logrados;
 
     public VistaAdminEstadisticasGenerales(VistaAdminEstadisticasGenerales value) {
         this.metaCodigo = value.metaCodigo;
@@ -29,7 +29,7 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         this.totalProyectos = value.totalProyectos;
         this.proyectosConIndicadores = value.proyectosConIndicadores;
         this.promedioLogroMeta_14_1 = value.promedioLogroMeta_14_1;
-        this.indicadores_14_1Logrados = value.indicadores_14_1Logrados;
+        this.indicadoresMeta_14_1Logrados = value.indicadoresMeta_14_1Logrados;
     }
 
     public VistaAdminEstadisticasGenerales(
@@ -38,14 +38,14 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         Long totalProyectos,
         Long proyectosConIndicadores,
         BigDecimal promedioLogroMeta_14_1,
-        Long indicadores_14_1Logrados
+        Long indicadoresMeta_14_1Logrados
     ) {
         this.metaCodigo = metaCodigo;
         this.metaDescripcion = metaDescripcion;
         this.totalProyectos = totalProyectos;
         this.proyectosConIndicadores = proyectosConIndicadores;
         this.promedioLogroMeta_14_1 = promedioLogroMeta_14_1;
-        this.indicadores_14_1Logrados = indicadores_14_1Logrados;
+        this.indicadoresMeta_14_1Logrados = indicadoresMeta_14_1Logrados;
     }
 
     /**
@@ -90,10 +90,10 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
 
     /**
      * Getter for
-     * <code>ods14.vista_admin_estadisticas_generales.indicadores_14_1_logrados</code>.
+     * <code>ods14.vista_admin_estadisticas_generales.indicadores_meta_14_1_logrados</code>.
      */
-    public Long getIndicadores_14_1Logrados() {
-        return this.indicadores_14_1Logrados;
+    public Long getIndicadoresMeta_14_1Logrados() {
+        return this.indicadoresMeta_14_1Logrados;
     }
 
     @Override
@@ -135,11 +135,11 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         }
         else if (!this.promedioLogroMeta_14_1.equals(other.promedioLogroMeta_14_1))
             return false;
-        if (this.indicadores_14_1Logrados == null) {
-            if (other.indicadores_14_1Logrados != null)
+        if (this.indicadoresMeta_14_1Logrados == null) {
+            if (other.indicadoresMeta_14_1Logrados != null)
                 return false;
         }
-        else if (!this.indicadores_14_1Logrados.equals(other.indicadores_14_1Logrados))
+        else if (!this.indicadoresMeta_14_1Logrados.equals(other.indicadoresMeta_14_1Logrados))
             return false;
         return true;
     }
@@ -153,7 +153,7 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         result = prime * result + ((this.totalProyectos == null) ? 0 : this.totalProyectos.hashCode());
         result = prime * result + ((this.proyectosConIndicadores == null) ? 0 : this.proyectosConIndicadores.hashCode());
         result = prime * result + ((this.promedioLogroMeta_14_1 == null) ? 0 : this.promedioLogroMeta_14_1.hashCode());
-        result = prime * result + ((this.indicadores_14_1Logrados == null) ? 0 : this.indicadores_14_1Logrados.hashCode());
+        result = prime * result + ((this.indicadoresMeta_14_1Logrados == null) ? 0 : this.indicadoresMeta_14_1Logrados.hashCode());
         return result;
     }
 
@@ -166,7 +166,7 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         sb.append(", ").append(totalProyectos);
         sb.append(", ").append(proyectosConIndicadores);
         sb.append(", ").append(promedioLogroMeta_14_1);
-        sb.append(", ").append(indicadores_14_1Logrados);
+        sb.append(", ").append(indicadoresMeta_14_1Logrados);
 
         sb.append(")");
         return sb.toString();

@@ -21,7 +21,7 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
     private final Long totalProyectos;
     private final Long proyectosConIndicadores;
     private final BigDecimal promedioLogroMeta_7_1;
-    private final Long indicadores_7_1Logrados;
+    private final Long indicadoresMeta_7_1Logrados;
 
     public VistaAdminEstadisticasGenerales(VistaAdminEstadisticasGenerales value) {
         this.metaCodigo = value.metaCodigo;
@@ -29,7 +29,7 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         this.totalProyectos = value.totalProyectos;
         this.proyectosConIndicadores = value.proyectosConIndicadores;
         this.promedioLogroMeta_7_1 = value.promedioLogroMeta_7_1;
-        this.indicadores_7_1Logrados = value.indicadores_7_1Logrados;
+        this.indicadoresMeta_7_1Logrados = value.indicadoresMeta_7_1Logrados;
     }
 
     public VistaAdminEstadisticasGenerales(
@@ -38,14 +38,14 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         Long totalProyectos,
         Long proyectosConIndicadores,
         BigDecimal promedioLogroMeta_7_1,
-        Long indicadores_7_1Logrados
+        Long indicadoresMeta_7_1Logrados
     ) {
         this.metaCodigo = metaCodigo;
         this.metaDescripcion = metaDescripcion;
         this.totalProyectos = totalProyectos;
         this.proyectosConIndicadores = proyectosConIndicadores;
         this.promedioLogroMeta_7_1 = promedioLogroMeta_7_1;
-        this.indicadores_7_1Logrados = indicadores_7_1Logrados;
+        this.indicadoresMeta_7_1Logrados = indicadoresMeta_7_1Logrados;
     }
 
     /**
@@ -90,10 +90,10 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
 
     /**
      * Getter for
-     * <code>ods07.vista_admin_estadisticas_generales.indicadores_7_1_logrados</code>.
+     * <code>ods07.vista_admin_estadisticas_generales.indicadores_meta_7_1_logrados</code>.
      */
-    public Long getIndicadores_7_1Logrados() {
-        return this.indicadores_7_1Logrados;
+    public Long getIndicadoresMeta_7_1Logrados() {
+        return this.indicadoresMeta_7_1Logrados;
     }
 
     @Override
@@ -135,11 +135,11 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         }
         else if (!this.promedioLogroMeta_7_1.equals(other.promedioLogroMeta_7_1))
             return false;
-        if (this.indicadores_7_1Logrados == null) {
-            if (other.indicadores_7_1Logrados != null)
+        if (this.indicadoresMeta_7_1Logrados == null) {
+            if (other.indicadoresMeta_7_1Logrados != null)
                 return false;
         }
-        else if (!this.indicadores_7_1Logrados.equals(other.indicadores_7_1Logrados))
+        else if (!this.indicadoresMeta_7_1Logrados.equals(other.indicadoresMeta_7_1Logrados))
             return false;
         return true;
     }
@@ -153,7 +153,7 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         result = prime * result + ((this.totalProyectos == null) ? 0 : this.totalProyectos.hashCode());
         result = prime * result + ((this.proyectosConIndicadores == null) ? 0 : this.proyectosConIndicadores.hashCode());
         result = prime * result + ((this.promedioLogroMeta_7_1 == null) ? 0 : this.promedioLogroMeta_7_1.hashCode());
-        result = prime * result + ((this.indicadores_7_1Logrados == null) ? 0 : this.indicadores_7_1Logrados.hashCode());
+        result = prime * result + ((this.indicadoresMeta_7_1Logrados == null) ? 0 : this.indicadoresMeta_7_1Logrados.hashCode());
         return result;
     }
 
@@ -166,7 +166,7 @@ public class VistaAdminEstadisticasGenerales implements Serializable {
         sb.append(", ").append(totalProyectos);
         sb.append(", ").append(proyectosConIndicadores);
         sb.append(", ").append(promedioLogroMeta_7_1);
-        sb.append(", ").append(indicadores_7_1Logrados);
+        sb.append(", ").append(indicadoresMeta_7_1Logrados);
 
         sb.append(")");
         return sb.toString();

@@ -71,7 +71,7 @@ public class VistaAdminResumenGeneral extends TableImpl<VistaAdminResumenGeneral
     /**
      * The column <code>ods17.vista_admin_resumen_general.nombre_usuario</code>.
      */
-    public final TableField<VistaAdminResumenGeneralRecord, String> NOMBRE_USUARIO = createField(DSL.name("nombre_usuario"), SQLDataType.VARCHAR(100), this, "");
+    public final TableField<VistaAdminResumenGeneralRecord, String> NOMBRE_USUARIO = createField(DSL.name("nombre_usuario"), SQLDataType.VARCHAR(150), this, "");
 
     /**
      * The column <code>ods17.vista_admin_resumen_general.fecha_inicio</code>.
@@ -134,7 +134,7 @@ public class VistaAdminResumenGeneral extends TableImpl<VistaAdminResumenGeneral
     }
 
     private VistaAdminResumenGeneral(Name alias, Table<VistaAdminResumenGeneralRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_resumen_general` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`username` AS `usuario_creador`,`u`.`full_name` AS `nombre_usuario`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin`,`p`.`estado` AS `estado`,count(distinct `i`.`id`) AS `total_indicadores`,count(distinct case when `i`.`valor_actual` >= `i`.`valor_meta` then `i`.`id` end) AS `indicadores_logrados`,round(case when count(distinct `i`.`id`) > 0 then count(distinct case when `i`.`valor_actual` >= `i`.`valor_meta` then `i`.`id` end) * 100.0 / count(distinct `i`.`id`) else 0 end,2) AS `progreso_porcentaje`,min(`i`.`valor_actual`) AS `valor_minimo_actual`,max(`i`.`valor_actual`) AS `valor_maximo_actual`,avg(`i`.`valor_actual`) AS `valor_promedio_actual`,`p`.`created_at` AS `fecha_creacion` from ((`ods17`.`proyectos` `p` left join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods17`.`indicadores` `i` on(`p`.`id` = `i`.`proyecto_id`)) where `p`.`objetivo_id` = 17 group by `p`.`id`,`p`.`nombre_proyecto`,`u`.`username`,`u`.`full_name`,`p`.`fecha_inicio`,`p`.`fecha_fin`,`p`.`estado`,`p`.`created_at` order by `p`.`created_at` desc"), where);
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_resumen_general` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`username` AS `usuario_creador`,`u`.`full_name` AS `nombre_usuario`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin`,`p`.`estado` AS `estado`,count(distinct `i`.`id`) AS `total_indicadores`,count(distinct case when `i`.`valor_actual` >= `i`.`valor_meta` then `i`.`id` end) AS `indicadores_logrados`,round(case when count(distinct `i`.`id`) > 0 then count(distinct case when `i`.`valor_actual` >= `i`.`valor_meta` then `i`.`id` end) * 100.0 / count(distinct `i`.`id`) else 0 end,2) AS `progreso_porcentaje`,min(`i`.`valor_actual`) AS `valor_minimo_actual`,max(`i`.`valor_actual`) AS `valor_maximo_actual`,avg(`i`.`valor_actual`) AS `valor_promedio_actual`,`p`.`created_at` AS `fecha_creacion` from ((`ods17`.`proyectos` `p` left join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods17`.`indicadores` `i` on(`p`.`id` = `i`.`proyecto_id`)) group by `p`.`id`,`p`.`nombre_proyecto`,`u`.`username`,`u`.`full_name`,`p`.`fecha_inicio`,`p`.`fecha_fin`,`p`.`estado`,`p`.`created_at` order by `p`.`created_at` desc"), where);
     }
 
     /**

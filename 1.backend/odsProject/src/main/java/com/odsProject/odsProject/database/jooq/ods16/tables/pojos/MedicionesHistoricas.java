@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * Historial de mediciones de indicadores
+ * Historial de mediciones de indicadores ODS16
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class MedicionesHistoricas implements Serializable {

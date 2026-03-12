@@ -15,7 +15,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
- * Indicadores medidos por cada proyecto
+ * Indicadores medidos por cada proyecto ODS16
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class IndicadoresRecord extends UpdatableRecordImpl<IndicadoresRecord> {

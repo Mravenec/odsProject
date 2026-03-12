@@ -4,15 +4,19 @@
 package com.odsProject.odsProject.database.jooq.ods_login;
 
 
-import com.odsProject.odsProject.database.jooq.ods_login.tables.IntentosLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Permisos;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.RecoveryTokens;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.SeguridadConfig;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminIntentosLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminSesionesActivas;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuarios;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminAuditoriaLoginReciente;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminDetalleIndicadores;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminResumenGeneral;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuariosActivos;
 
 
 /**
@@ -22,47 +26,67 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuari
 public class Tables {
 
     /**
-     * Registro de intentos de login para seguridad
+     * Registro de todos los eventos de autenticación
      */
-    public static final IntentosLogin INTENTOS_LOGIN = IntentosLogin.INTENTOS_LOGIN;
+    public static final AuditoriaLogin AUDITORIA_LOGIN = AuditoriaLogin.AUDITORIA_LOGIN;
 
     /**
-     * Permisos por rol en el sistema
+     * The table <code>ods_login.indicadores</code>.
      */
-    public static final Permisos PERMISOS = Permisos.PERMISOS;
+    public static final Indicadores INDICADORES = Indicadores.INDICADORES;
 
     /**
-     * Tokens para recuperación de contraseña
+     * The table <code>ods_login.mediciones_historicas</code>.
      */
-    public static final RecoveryTokens RECOVERY_TOKENS = RecoveryTokens.RECOVERY_TOKENS;
+    public static final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
 
     /**
-     * Configuración de seguridad del sistema
+     * The table <code>ods_login.metas_proyecto</code>.
      */
-    public static final SeguridadConfig SEGURIDAD_CONFIG = SeguridadConfig.SEGURIDAD_CONFIG;
+    public static final MetasProyecto METAS_PROYECTO = MetasProyecto.METAS_PROYECTO;
 
     /**
-     * Sesiones activas de usuarios
+     * Qué ODS puede gestionar cada usuario
+     */
+    public static final PermisosOds PERMISOS_ODS = PermisosOds.PERMISOS_ODS;
+
+    /**
+     * The table <code>ods_login.proyectos</code>.
+     */
+    public static final Proyectos PROYECTOS = Proyectos.PROYECTOS;
+
+    /**
+     * Catálogo de roles del sistema ODS
+     */
+    public static final Roles ROLES = Roles.ROLES;
+
+    /**
+     * Control de sesiones activas por token
      */
     public static final Sesiones SESIONES = Sesiones.SESIONES;
 
     /**
-     * Tabla principal de usuarios del sistema ODS
+     * Usuarios centrales; referenciados por todas las bases ods_XX
      */
     public static final Usuarios USUARIOS = Usuarios.USUARIOS;
 
     /**
-     * The table <code>ods_login.vista_admin_intentos_login</code>.
+     * The table <code>ods_login.vista_admin_auditoria_login_reciente</code>.
      */
-    public static final VistaAdminIntentosLogin VISTA_ADMIN_INTENTOS_LOGIN = VistaAdminIntentosLogin.VISTA_ADMIN_INTENTOS_LOGIN;
+    public static final VistaAdminAuditoriaLoginReciente VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE = VistaAdminAuditoriaLoginReciente.VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE;
 
     /**
-     * The table <code>ods_login.vista_admin_sesiones_activas</code>.
+     * The table <code>ods_login.vista_admin_detalle_indicadores</code>.
      */
-    public static final VistaAdminSesionesActivas VISTA_ADMIN_SESIONES_ACTIVAS = VistaAdminSesionesActivas.VISTA_ADMIN_SESIONES_ACTIVAS;
+    public static final VistaAdminDetalleIndicadores VISTA_ADMIN_DETALLE_INDICADORES = VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
 
     /**
-     * The table <code>ods_login.vista_admin_usuarios</code>.
+     * The table <code>ods_login.vista_admin_resumen_general</code>.
      */
-    public static final VistaAdminUsuarios VISTA_ADMIN_USUARIOS = VistaAdminUsuarios.VISTA_ADMIN_USUARIOS;
+    public static final VistaAdminResumenGeneral VISTA_ADMIN_RESUMEN_GENERAL = VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
+
+    /**
+     * The table <code>ods_login.vista_admin_usuarios_activos</code>.
+     */
+    public static final VistaAdminUsuariosActivos VISTA_ADMIN_USUARIOS_ACTIVOS = VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS;
 }

@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Metas específicas establecidas por cada proyecto
+ * Metas específicas establecidas por cada proyecto ODS16
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class MetasProyecto extends TableImpl<MetasProyectoRecord> {
@@ -107,7 +107,7 @@ public class MetasProyecto extends TableImpl<MetasProyectoRecord> {
     }
 
     private MetasProyecto(Name alias, Table<MetasProyectoRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("Metas específicas establecidas por cada proyecto"), TableOptions.table(), where);
+        super(alias, null, aliased, parameters, DSL.comment("Metas específicas establecidas por cada proyecto ODS16"), TableOptions.table(), where);
     }
 
     /**
