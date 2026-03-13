@@ -61,7 +61,6 @@ com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\VistaAdminUsuario
 com\odsProject\odsProject\database\jooq\ods_login\Tables.class
 com\odsProject\odsProject\database\jooq\ods13\tables\records\MedicionesHistoricasRecord.class
 com\odsProject\odsProject\database\jooq\ods_login\tables\records\ProyectosRecord.class
-com\odsProject\odsProject\model\IndicatorData.class
 com\odsProject\odsProject\database\jooq\ods02\Keys.class
 com\odsProject\odsProject\database\jooq\ods02\tables\Proyectos$ProyectosPath.class
 com\odsProject\odsProject\database\jooq\ods14\tables\records\MetasProyectoRecord.class
@@ -112,7 +111,6 @@ com\odsProject\odsProject\database\jooq\ods06\enums\ProyectosEstado.class
 com\odsProject\odsProject\database\jooq\ods06\tables\records\VistaAdminResumenGeneralRecord.class
 com\odsProject\odsProject\database\jooq\ods13\enums\VistaAdminResumenGeneralEstado.class
 com\odsProject\odsProject\database\jooq\ods10\Indexes.class
-com\odsProject\odsProject\controller\interfaces\IOjetivo01PobrezaController.class
 com\odsProject\odsProject\database\jooq\ods12\tables\MedicionesHistoricas$MedicionesHistoricasPath.class
 com\odsProject\odsProject\database\jooq\ods03\tables\MetasProyecto.class
 com\odsProject\odsProject\database\jooq\ods01\tables\VistaAdminEstadisticasGenerales.class
@@ -396,7 +394,6 @@ com\odsProject\odsProject\database\jooq\ods10\tables\VistaAdminResumenGeneral.cl
 com\odsProject\odsProject\database\jooq\ods04\Keys.class
 com\odsProject\odsProject\database\jooq\ods12\routines\SpAdminDashboard.class
 com\odsProject\odsProject\database\jooq\ods07\tables\records\ProyectosRecord.class
-com\odsProject\odsProject\repository\interfaces\IOjetivo01PobrezaRepository.class
 com\odsProject\odsProject\database\jooq\ods04\tables\records\IndicadoresRecord.class
 com\odsProject\odsProject\database\jooq\ods06\tables\Proyectos$ProyectosPath.class
 com\odsProject\odsProject\database\jooq\ods03\tables\records\MedicionesHistoricasRecord.class
@@ -602,7 +599,6 @@ com\odsProject\odsProject\database\jooq\ods02\tables\Indicadores$IndicadoresPath
 com\odsProject\odsProject\database\jooq\ods02\tables\Indicadores.class
 com\odsProject\odsProject\database\jooq\ods08\Routines.class
 com\odsProject\odsProject\database\jooq\ods11\tables\records\VistaAdminEstadisticasGeneralesRecord.class
-com\odsProject\odsProject\service\interfaces\IOjetivo01PobrezaService.class
 com\odsProject\odsProject\database\jooq\ods16\enums\VistaAdminResumenGeneralEstado.class
 com\odsProject\odsProject\database\jooq\ods13\enums\ProyectosEstado.class
 com\odsProject\odsProject\database\jooq\ods04\tables\records\VistaAdminDetalleIndicadoresRecord.class
