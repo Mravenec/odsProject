@@ -1,14 +1,25 @@
 package com.odsProject.odsProject.service.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MedicionesHistoricas;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 3: Salud y Bienestar
  * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 3
+ * Extiende IOdsBaseService con tipos específicos de ODS03
  */
-public interface IObjetivo03SaludBienestarService {
+public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos  
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 3: Salud y Bienestar

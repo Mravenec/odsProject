@@ -1,15 +1,27 @@
 package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Controlador para el Objetivo 10: Reducción de las Desigualdades
  * Define los endpoints REST para los indicadores del Objetivo de Desarrollo Sostenible 10
+ * Extiende IOdsBaseController con tipos específicos de ODS10
  */
-public interface IObjetivo10ReduccionDesigualdadController {
+@RequestMapping("/api/ods/10")
+public interface IObjetivo10ReduccionDesigualdadController extends IOdsBaseController<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 10: Reducción de las Desigualdades

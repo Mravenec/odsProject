@@ -1,14 +1,25 @@
 package com.odsProject.odsProject.service.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MedicionesHistoricas;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 4: Educación de Calidad
  * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 4
+ * Extiende IOdsBaseService con tipos específicos de ODS04
  */
-public interface IObjetivo04EducacionService {
+public interface IObjetivo04EducacionService extends IOdsBaseService<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 4: Educación de Calidad
@@ -142,4 +153,92 @@ public interface IObjetivo04EducacionService {
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    
+    // ── Métodos CRUD y Utilidades (para alinear con Repository) ──
+    
+    /**
+     * Obtiene todos los proyectos del ODS 4
+     * 
+     * @return Lista de todos los proyectos del objetivo 4
+     */
+    List<Proyectos> getAllProjectsOds04();
+    
+    /**
+     * Obtiene un proyecto del ODS 4 por su ID
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Optional con el proyecto encontrado
+     */
+    Optional<Proyectos> getProjectOds04ById(Integer proyectoId);
+    
+    /**
+     * Obtiene las metas de un proyecto del ODS 4
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de metas del proyecto
+     */
+    List<MetasProyecto> getAllMetasProyectoOds04(Integer proyectoId);
+    
+    /**
+     * Obtiene una meta de proyecto del ODS 4 por su ID
+     * 
+     * @param metaId ID de la meta
+     * @return Optional con la meta encontrada
+     */
+    Optional<MetasProyecto> getMetaProyectoOds04ById(Integer metaId);
+    
+    /**
+     * Obtiene las mediciones históricas de un indicador del ODS 4
+     * 
+     * @param indicadorId ID del indicador
+     * @return Lista de mediciones históricas
+     */
+    List<MedicionesHistoricas> getAllMedicionesHistoricasOds04(Integer indicadorId);
+    
+    /**
+     * Obtiene una medición histórica del ODS 4 por su ID
+     * 
+     * @param medicionId ID de la medición
+     * @return Optional con la medición encontrada
+     */
+    Optional<MedicionesHistoricas> getMedicionHistoricaOds04ById(Integer medicionId);
+    
+    /**
+     * Valida los datos de un indicador del ODS 4
+     * 
+     * @param indicador Datos del indicador a validar
+     * @return true si los datos son válidos, false otherwise
+     */
+    Boolean validateIndicatorData(Indicadores indicador);
+    
+    /**
+     * Calcula el progreso de un proyecto del ODS 4
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Porcentaje de progreso (0-100)
+     */
+    Double calculateProjectProgress(Integer proyectoId);
+    
+    /**
+     * Obtiene estadísticas generales del ODS 4
+     * 
+     * @return Map con estadísticas del objetivo
+     */
+    java.util.Map<String, Object> getOds04Statistics();
+    
+    /**
+     * Verifica si un proyecto del ODS 4 existe
+     * 
+     * @param proyectoId ID del proyecto
+     * @return true si existe, false otherwise
+     */
+    Boolean projectExists(Integer proyectoId);
+    
+    /**
+     * Verifica si un indicador del ODS 4 existe
+     * 
+     * @param indicadorId ID del indicador
+     * @return true si existe, false otherwise
+     */
+    Boolean indicatorExists(Integer indicadorId);
 }

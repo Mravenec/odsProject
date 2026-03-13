@@ -1,14 +1,25 @@
 package com.odsProject.odsProject.service.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MedicionesHistoricas;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 15: Vida de Ecosistemas Terrestres
  * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 15
+ * Extiende IOdsBaseService con tipos específicos de ODS15
  */
-public interface IObjetivo15VidaEcosistemasService {
+public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos  
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 15: Vida de Ecosistemas Terrestres

@@ -1,14 +1,25 @@
 package com.odsProject.odsProject.service.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MedicionesHistoricas;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 1: Fin de la Pobreza
  * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 1
+ * Extiende IOdsBaseService con tipos específicos de ODS01
  */
-public interface IObjetivo01PobrezaService {
+public interface IObjetivo01PobrezaService extends IOdsBaseService<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 1: Fin de la Pobreza
@@ -151,4 +162,92 @@ public interface IObjetivo01PobrezaService {
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    
+    // ── Métodos CRUD y Utilidades (para alinear con Repository) ──
+    
+    /**
+     * Obtiene todos los proyectos del ODS 1
+     * 
+     * @return Lista de todos los proyectos del objetivo 1
+     */
+    List<Proyectos> getAllProjectsOds01();
+    
+    /**
+     * Obtiene un proyecto del ODS 1 por su ID
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Optional con el proyecto encontrado
+     */
+    Optional<Proyectos> getProjectOds01ById(Integer proyectoId);
+    
+    /**
+     * Obtiene las metas de un proyecto del ODS 1
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de metas del proyecto
+     */
+    List<MetasProyecto> getAllMetasProyectoOds01(Integer proyectoId);
+    
+    /**
+     * Obtiene una meta de proyecto del ODS 1 por su ID
+     * 
+     * @param metaId ID de la meta
+     * @return Optional con la meta encontrada
+     */
+    Optional<MetasProyecto> getMetaProyectoOds01ById(Integer metaId);
+    
+    /**
+     * Obtiene las mediciones históricas de un indicador del ODS 1
+     * 
+     * @param indicadorId ID del indicador
+     * @return Lista de mediciones históricas
+     */
+    List<MedicionesHistoricas> getAllMedicionesHistoricasOds01(Integer indicadorId);
+    
+    /**
+     * Obtiene una medición histórica del ODS 1 por su ID
+     * 
+     * @param medicionId ID de la medición
+     * @return Optional con la medición encontrada
+     */
+    Optional<MedicionesHistoricas> getMedicionHistoricaOds01ById(Integer medicionId);
+    
+    /**
+     * Valida los datos de un indicador del ODS 1
+     * 
+     * @param indicador Datos del indicador a validar
+     * @return true si los datos son válidos, false otherwise
+     */
+    Boolean validateIndicatorData(Indicadores indicador);
+    
+    /**
+     * Calcula el progreso de un proyecto del ODS 1
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Porcentaje de progreso (0-100)
+     */
+    Double calculateProjectProgress(Integer proyectoId);
+    
+    /**
+     * Obtiene estadísticas generales del ODS 1
+     * 
+     * @return Map con estadísticas del objetivo
+     */
+    java.util.Map<String, Object> getOds01Statistics();
+    
+    /**
+     * Verifica si un proyecto del ODS 1 existe
+     * 
+     * @param proyectoId ID del proyecto
+     * @return true si existe, false otherwise
+     */
+    Boolean projectExists(Integer proyectoId);
+    
+    /**
+     * Verifica si un indicador del ODS 1 existe
+     * 
+     * @param indicadorId ID del indicador
+     * @return true si existe, false otherwise
+     */
+    Boolean indicatorExists(Integer indicadorId);
 }

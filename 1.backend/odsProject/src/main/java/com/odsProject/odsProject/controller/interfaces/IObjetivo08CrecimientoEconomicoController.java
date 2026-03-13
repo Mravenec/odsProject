@@ -1,15 +1,27 @@
 package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Controlador para el Objetivo 8: Trabajo Decente y Crecimiento Económico
  * Define los endpoints REST para los indicadores del Objetivo de Desarrollo Sostenible 8
+ * Extiende IOdsBaseController con tipos específicos de ODS08
  */
-public interface IObjetivo08CrecimientoEconomicoController {
+@RequestMapping("/api/ods/08")
+public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseController<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 8: Trabajo Decente y Crecimiento Económico

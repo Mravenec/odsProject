@@ -1,14 +1,25 @@
 package com.odsProject.odsProject.service.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MedicionesHistoricas;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 5: Igualdad de Género
  * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 5
+ * Extiende IOdsBaseService con tipos específicos de ODS05
  */
-public interface IObjetivo05GeneroService {
+public interface IObjetivo05GeneroService extends IOdsBaseService<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos  
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 5: Igualdad de Género

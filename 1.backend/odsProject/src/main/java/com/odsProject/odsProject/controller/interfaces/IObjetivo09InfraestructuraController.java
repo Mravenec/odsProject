@@ -1,15 +1,27 @@
 package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Controlador para el Objetivo 9: Industria, Innovación e Infraestructura
  * Define los endpoints REST para los indicadores del Objetivo de Desarrollo Sostenible 9
+ * Extiende IOdsBaseController con tipos específicos de ODS09
  */
-public interface IObjetivo09InfraestructuraController {
+@RequestMapping("/api/ods/09")
+public interface IObjetivo09InfraestructuraController extends IOdsBaseController<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 9: Industria, Innovación e Infraestructura

@@ -1,15 +1,27 @@
 package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Controlador para el Objetivo 2: Hambre Cero
  * Define los endpoints REST para los indicadores del Objetivo de Desarrollo Sostenible 2
+ * Extiende IOdsBaseController con tipos específicos de ODS02
  */
-public interface IObjetivo02HambreCeroController {
+@RequestMapping("/api/ods/02")
+public interface IObjetivo02HambreCeroController extends IOdsBaseController<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 2: Hambre Cero

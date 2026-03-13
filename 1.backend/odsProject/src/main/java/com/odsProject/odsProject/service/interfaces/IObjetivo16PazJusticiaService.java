@@ -1,14 +1,25 @@
 package com.odsProject.odsProject.service.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MedicionesHistoricas;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 16: Paz, Justicia e Instituciones Sólidas
  * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 16
+ * Extiende IOdsBaseService con tipos específicos de ODS16
  */
-public interface IObjetivo16PazJusticiaService {
+public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos  
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 16: Paz, Justicia e Instituciones Sólidas

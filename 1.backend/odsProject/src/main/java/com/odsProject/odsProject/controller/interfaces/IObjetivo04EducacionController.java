@@ -1,15 +1,27 @@
 package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Controlador para el Objetivo 4: Educación de Calidad
  * Define los endpoints REST para los indicadores del Objetivo de Desarrollo Sostenible 4
+ * Extiende IOdsBaseController con tipos específicos de ODS04
  */
-public interface IObjetivo04EducacionController {
+@RequestMapping("/api/ods/04")
+public interface IObjetivo04EducacionController extends IOdsBaseController<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 4: Educación de Calidad

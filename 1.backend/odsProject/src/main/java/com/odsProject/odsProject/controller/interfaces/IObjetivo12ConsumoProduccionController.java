@@ -1,7 +1,11 @@
 package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,14 @@ import java.util.Optional;
  * Interfaz de Controlador para el Objetivo 12: Producción y Consumo Responsables
  * Define los endpoints REST para los indicadores del Objetivo de Desarrollo Sostenible 12
  */
-public interface IObjetivo12ConsumoProduccionController {
+@RequestMapping("/api/ods/12")
+public interface IObjetivo12ConsumoProduccionController extends IOdsBaseController<
+    Indicadores,
+    Proyectos,
+    MetasProyecto,
+    MedicionesHistoricas,
+    Object
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 12: Producción y Consumo Responsables

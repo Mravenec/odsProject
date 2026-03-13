@@ -1,14 +1,25 @@
 package com.odsProject.odsProject.service.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MedicionesHistoricas;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 14: Vida Submarina
  * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 14
+ * Extiende IOdsBaseService con tipos específicos de ODS14
  */
-public interface IObjetivo14VidaSubmarinaService {
+public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
+    Indicadores,     // T - Indicadores
+    Proyectos,       // P - Proyectos  
+    MetasProyecto,   // M - MetasProyecto
+    MedicionesHistoricas, // MH - MedicionesHistoricas
+    Object           // A - Auditoria (placeholder)
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 14: Vida Submarina

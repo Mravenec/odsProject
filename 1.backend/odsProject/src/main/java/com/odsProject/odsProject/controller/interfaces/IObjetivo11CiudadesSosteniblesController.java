@@ -1,7 +1,11 @@
 package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,14 @@ import java.util.Optional;
  * Interfaz de Controlador para el Objetivo 11: Ciudades y Comunidades Sostenibles
  * Define los endpoints REST para los indicadores del Objetivo de Desarrollo Sostenible 11
  */
-public interface IObjetivo11CiudadesSosteniblesController {
+@RequestMapping("/api/ods/11")
+public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseController<
+    Indicadores,
+    Proyectos,
+    MetasProyecto,
+    MedicionesHistoricas,
+    Object
+> {
     
     /**
      * Obtiene todos los indicadores del Objetivo 11: Ciudades y Comunidades Sostenibles
