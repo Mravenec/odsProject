@@ -6,6 +6,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
 import com.odsProject.odsProject.repository.LoginRepository;
@@ -322,16 +323,14 @@ public class LoginService implements ILoginService {
      * {@inheritDoc}
      */
     @Override
-    public List<VistaAdminUsuariosActivos> getVistaUsuariosActivos() {
-        return loginRepository.findVistaUsuariosActivos();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<VistaAdminResumenGeneral> getVistaResumenGeneral() {
-        return loginRepository.findVistaResumenGeneral();
+    public Boolean assignRolToUsuario(Integer usuarioId, Integer rolId) {
+        try {
+            // This would need to be implemented in the repository
+            // For now, return true as placeholder
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -346,29 +345,16 @@ public class LoginService implements ILoginService {
      * {@inheritDoc}
      */
     @Override
-    public Boolean assignRolToUsuario(Integer usuarioId, Integer rolId) {
-        try {
-            // Verificar que usuario y rol existen
-            if (loginRepository.findUsuarioById(usuarioId).isEmpty() ||
-                loginRepository.findRolById(rolId).isEmpty()) {
-                return false;
-            }
-            
-            // Asignar rol (simplificado - necesitaría método en repositorio)
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public List<VistaAdminUsuariosActivos> getVistaUsuariosActivos() {
+        return loginRepository.findVistaUsuariosActivos();
     }
-
-    // ── Gestión de Sesiones ──
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Sesiones> getActiveSessions(Integer usuarioId) {
-        return loginRepository.findSesionesByUsuario(usuarioId);
+    public List<VistaAdminResumenGeneral> getVistaResumenGeneral() {
+        return loginRepository.findVistaResumenGeneral();
     }
 
     /**
@@ -406,6 +392,14 @@ public class LoginService implements ILoginService {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Sesiones> getActiveSessions(Integer usuarioId) {
+        return loginRepository.findSesionesByUsuario(usuarioId);
     }
 
     // ── Permisos ODS ──
@@ -503,14 +497,6 @@ public class LoginService implements ILoginService {
      * {@inheritDoc}
      */
     @Override
-    public List<Map<String, Object>> getVistaDetalleIndicadores(Integer proyectoId) {
-        return loginRepository.findVistaDetalleIndicadores(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Map<String, Object> getEstadisticasSistema() {
         return loginRepository.getEstadisticasSistema();
     }
@@ -585,6 +571,14 @@ public class LoginService implements ILoginService {
                 "fechaLimpieza", LocalDateTime.now()
             );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<VistaAdminDetalleIndicadores> getVistaDetalleIndicadores(Integer proyectoId) {
+        return loginRepository.findVistaDetalleIndicadores(proyectoId);
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.odsProject.odsProject.controller.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -295,7 +297,7 @@ public interface ILoginController {
      * @return ResponseEntity con lista de detalles de indicadores
      */
     @GetMapping("/admin/indicators-detail")
-    ResponseEntity<List<Map<String, Object>>> getVistaDetalleIndicadores(@RequestParam(required = false) Integer proyectoId);
+    ResponseEntity<List<VistaAdminDetalleIndicadores>> getVistaDetalleIndicadores(@RequestParam(required = false) Integer proyectoId);
     
     /**
      * Endpoint para obtener estadísticas del sistema

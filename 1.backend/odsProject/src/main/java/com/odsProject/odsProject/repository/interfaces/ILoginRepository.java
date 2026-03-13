@@ -249,9 +249,9 @@ public interface ILoginRepository {
      * Obtiene detalles de indicadores para vista administrativa
      * 
      * @param proyectoId ID del proyecto (opcional)
-     * @return Lista de detalles de indicadores como mapas
+     * @return Lista de detalles de indicadores
      */
-    List<Map<String, Object>> findVistaDetalleIndicadores(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findVistaDetalleIndicadores(Integer proyectoId);
     
     // ─── Stored Procedures ───
     

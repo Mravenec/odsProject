@@ -10,6 +10,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
 import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEvento;
@@ -438,8 +439,8 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/admin/indicators-detail")
-    public ResponseEntity<List<Map<String, Object>>> getVistaDetalleIndicadores(@RequestParam(required = false) Integer proyectoId) {
-        List<Map<String, Object>> result = loginService.getVistaDetalleIndicadores(proyectoId);
+    public ResponseEntity<List<VistaAdminDetalleIndicadores>> getVistaDetalleIndicadores(@RequestParam(required = false) Integer proyectoId) {
+        List<VistaAdminDetalleIndicadores> result = loginService.getVistaDetalleIndicadores(proyectoId);
         return ResponseEntity.ok(result);
     }
 
