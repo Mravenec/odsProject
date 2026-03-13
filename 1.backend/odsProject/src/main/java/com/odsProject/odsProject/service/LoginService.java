@@ -6,7 +6,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
 import com.odsProject.odsProject.repository.LoginRepository;
@@ -504,7 +503,7 @@ public class LoginService implements ILoginService {
      * {@inheritDoc}
      */
     @Override
-    public List<VistaAdminDetalleIndicadores> getVistaDetalleIndicadores(Integer proyectoId) {
+    public List<Map<String, Object>> getVistaDetalleIndicadores(Integer proyectoId) {
         return loginRepository.findVistaDetalleIndicadores(proyectoId);
     }
 

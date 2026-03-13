@@ -12,7 +12,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOd
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEvento;
 
 import java.util.HashMap;
@@ -440,24 +439,8 @@ public class LoginController implements ILoginController {
     @Override
     @GetMapping("/admin/indicators-detail")
     public ResponseEntity<List<Map<String, Object>>> getVistaDetalleIndicadores(@RequestParam(required = false) Integer proyectoId) {
-        List<VistaAdminDetalleIndicadores> result = loginService.getVistaDetalleIndicadores(proyectoId);
-        return ResponseEntity.ok(result.stream().map(indicator -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("proyectoId", indicator.getProyectoId());
-            map.put("nombreProyecto", indicator.getNombreProyecto());
-            map.put("usuarioCreador", indicator.getUsuarioCreador());
-            map.put("indicadorCodigo", indicator.getIndicadorCodigo());
-            map.put("indicadorDescripcion", indicator.getIndicadorDescripcion());
-            map.put("valorActual", indicator.getValorActual());
-            map.put("valorMeta", indicator.getValorMeta());
-            map.put("unidadMedida", indicator.getUnidadMedida());
-            map.put("estadoIndicador", indicator.getEstadoIndicador());
-            map.put("porcentajeLogro", indicator.getPorcentajeLogro());
-            map.put("fechaMedicion", indicator.getFechaMedicion());
-            map.put("fuenteDatos", indicator.getFuenteDatos());
-            map.put("ultimaActualizacion", indicator.getUltimaActualizacion());
-            return map;
-        }).collect(java.util.stream.Collectors.toList()));
+        List<Map<String, Object>> result = loginService.getVistaDetalleIndicadores(proyectoId);
+        return ResponseEntity.ok(result);
     }
 
     /**

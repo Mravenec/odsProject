@@ -6,7 +6,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
 import com.odsProject.odsProject.database.jooq.ods_login.routines.SpAdminUsuarios;
@@ -356,14 +355,14 @@ public class LoginRepository implements ILoginRepository {
      * {@inheritDoc}
      */
     @Override
-    public List<VistaAdminDetalleIndicadores> findVistaDetalleIndicadores(Integer proyectoId) {
+    public List<Map<String, Object>> findVistaDetalleIndicadores(Integer proyectoId) {
         if (proyectoId != null) {
             return dsl.selectFrom(VISTA_ADMIN_DETALLE_INDICADORES)
                     .where(VISTA_ADMIN_DETALLE_INDICADORES.PROYECTO_ID.eq(proyectoId))
-                    .fetchInto(VistaAdminDetalleIndicadores.class);
+                    .fetchMaps();
         } else {
             return dsl.selectFrom(VISTA_ADMIN_DETALLE_INDICADORES)
-                    .fetchInto(VistaAdminDetalleIndicadores.class);
+                    .fetchMaps();
         }
     }
 
