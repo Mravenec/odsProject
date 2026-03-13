@@ -61,6 +61,14 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
     Optional<Indicadores> findIndicador_13_2_2(Integer proyectoId);
     
     /**
+     * 13.2.3 Indicador adicional para meta 13.2
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 13.2.3
+     */
+    Optional<Indicadores> findIndicador_13_2_3(Integer proyectoId);
+    
+    /**
      * 13.3.1 Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo sostenible 
      * se incorporan en a) las políticas nacionales de educación, b) los planes de estudio, c) la formación de docentes 
      * y d) la evaluación de los estudiantes [104]
@@ -69,6 +77,14 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @return Datos del indicador 13.3.1
      */
     Optional<Indicadores> findIndicador_13_3_1(Integer proyectoId);
+    
+    /**
+     * 13.3.2 Indicador adicional para meta 13.3
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 13.3.2
+     */
+    Optional<Indicadores> findIndicador_13_3_2(Integer proyectoId);
     
     /**
      * 13.a.1 Cantidades proporcionadas y movilizadas en dólares de los Estados Unidos al año 
@@ -87,6 +103,14 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @return Datos del indicador 13.b.1
      */
     Optional<Indicadores> findIndicador_13_b_1(Integer proyectoId);
+    
+    /**
+     * 13.b.2 Indicador adicional para meta 13.b
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 13.b.2
+     */
+    Optional<Indicadores> findIndicador_13_b_2(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS13

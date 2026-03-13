@@ -84,6 +84,15 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
     Optional<Indicadores> getIndicador_7_b_1(Integer proyectoId);
     
     /**
+     * Obtiene el indicador 7.c.1
+     * Flujos financieros internacionales a países en desarrollo en apoyo a la investigación y desarrollo de energías limpias y producción de energía renovable
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 7.c.1
+     */
+    Optional<Indicadores> getIndicador_7_c_1(Integer proyectoId);
+    
+    /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS07
      * 
      * @param proyectoId ID del proyecto
@@ -99,4 +108,53 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    
+    // ── Métodos específicos del ODS07 ──
+    
+    /**
+     * Obtiene todos los proyectos del ODS07
+     * 
+     * @return Lista de todos los proyectos del ODS07
+     */
+    List<Proyectos> getAllProjectsOds07();
+    
+    /**
+     * Obtiene un proyecto del ODS07 por su ID
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Optional con el proyecto encontrado
+     */
+    Optional<Proyectos> getProjectOds07ById(Integer proyectoId);
+    
+    /**
+     * Obtiene todas las metas de proyecto del ODS07
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de metas del proyecto
+     */
+    List<MetasProyecto> getAllMetasProyectoOds07(Integer proyectoId);
+    
+    /**
+     * Obtiene una meta de proyecto del ODS07 por su ID
+     * 
+     * @param metaId ID de la meta
+     * @return Optional con la meta encontrada
+     */
+    Optional<MetasProyecto> getMetaProyectoOds07ById(Integer metaId);
+    
+    /**
+     * Obtiene todas las mediciones históricas del ODS07
+     * 
+     * @param indicadorId ID del indicador
+     * @return Lista de mediciones históricas
+     */
+    List<MedicionesHistoricas> getAllMedicionesHistoricasOds07(Integer indicadorId);
+    
+    /**
+     * Obtiene una medición histórica del ODS07 por su ID
+     * 
+     * @param medicionId ID de la medición
+     * @return Optional con la medición encontrada
+     */
+    Optional<MedicionesHistoricas> getMedicionHistoricaOds07ById(Integer medicionId);
 }

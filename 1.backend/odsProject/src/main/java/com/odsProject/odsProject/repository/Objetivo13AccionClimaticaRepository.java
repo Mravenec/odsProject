@@ -125,6 +125,39 @@ public class Objetivo13AccionClimaticaRepository implements IObjetivo13AccionCli
                 .fetchOptionalInto(Indicadores.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Indicadores> findIndicador_13_2_3(Integer proyectoId) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADORES.INDICADOR_CODIGO.eq("13.2.3"))
+                .fetchOptionalInto(Indicadores.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Indicadores> findIndicador_13_3_2(Integer proyectoId) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADORES.INDICADOR_CODIGO.eq("13.3.2"))
+                .fetchOptionalInto(Indicadores.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Indicadores> findIndicador_13_b_2(Integer proyectoId) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADORES.INDICADOR_CODIGO.eq("13.b.2"))
+                .fetchOptionalInto(Indicadores.class);
+    }
+
     // ── Métodos Agregados (usando stored procedures del ODS13) ──
 
     /**

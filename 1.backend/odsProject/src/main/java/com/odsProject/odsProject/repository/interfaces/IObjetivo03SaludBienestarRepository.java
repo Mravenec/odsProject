@@ -132,6 +132,14 @@ public interface IObjetivo03SaludBienestarRepository extends IOdsBaseRepository<
     Optional<Indicadores> findIndicador_3_6_1(Integer proyectoId);
     
     /**
+     * 3.6.2 Tasa de mortalidad por lesiones debidas a accidentes laborales [23]
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 3.6.2
+     */
+    Optional<Indicadores> findIndicador_3_6_2(Integer proyectoId);
+    
+    /**
      * 3.7.1 Proporción de mujeres en edad de procrear (entre 15 y 49 años) que cubren sus necesidades 
      * de planificación familiar con métodos modernos [24]
      * 

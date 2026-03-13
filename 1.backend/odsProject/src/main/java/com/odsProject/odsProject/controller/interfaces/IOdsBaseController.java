@@ -241,4 +241,42 @@ public interface IOdsBaseController<T, P, M, MH, A> {
     ResponseEntity<Double> getProjectProgress(
         @PathVariable Integer proyectoId
     );
+
+    // ── Endpoints de Verificación de Existencia ──
+
+    /**
+     * GET /api/ods/{odsId}/proyecto/{proyectoId}/existe
+     * Verifica si un proyecto existe
+     */
+    @GetMapping("/proyecto/{proyectoId}/existe")
+    ResponseEntity<Boolean> existsProyecto(
+        @PathVariable Integer proyectoId
+    );
+
+    /**
+     * GET /api/ods/{odsId}/indicador/{indicadorId}/existe
+     * Verifica si un indicador existe
+     */
+    @GetMapping("/indicador/{indicadorId}/existe")
+    ResponseEntity<Boolean> existsIndicador(
+        @PathVariable Integer indicadorId
+    );
+
+    /**
+     * GET /api/ods/{odsId}/meta/{metaId}/existe
+     * Verifica si una meta existe
+     */
+    @GetMapping("/meta/{metaId}/existe")
+    ResponseEntity<Boolean> existsMetaProyecto(
+        @PathVariable Integer metaId
+    );
+
+    /**
+     * GET /api/ods/{odsId}/medicion/{medicionId}/existe
+     * Verifica si una medición histórica existe
+     */
+    @GetMapping("/medicion/{medicionId}/existe")
+    ResponseEntity<Boolean> existsMedicionHistorica(
+        @PathVariable Integer medicionId
+    );
 }

@@ -6,6 +6,7 @@ import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MetasProyecto;
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -156,6 +157,15 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
     Optional<Indicadores> getIndicador_3_6_1(Integer proyectoId);
     
     /**
+     * Obtiene el indicador 3.6.2
+     * Muertes por lesiones en carretera
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 3.6.2
+     */
+    Optional<Indicadores> getIndicador_3_6_2(Integer proyectoId);
+    
+    /**
      * Obtiene el indicador 3.7.1
      * Mujeres que cubren necesidades de planificación familiar
      * 
@@ -297,4 +307,108 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    
+    // ── Métodos CRUD y Utilidades (para alinear con Repository) ──
+    
+    /**
+     * Obtiene todos los proyectos del ODS03
+     * 
+     * @return Lista de todos los proyectos del ODS03
+     */
+    List<Proyectos> getAllProjectsOds03();
+    
+    /**
+     * Obtiene un proyecto del ODS03 por su ID
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Optional con el proyecto encontrado
+     */
+    Optional<Proyectos> getProjectOds03ById(Integer proyectoId);
+    
+    /**
+     * Obtiene todas las metas de proyecto del ODS03
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todas las metas del proyecto
+     */
+    List<MetasProyecto> getAllMetasProyectoOds03(Integer proyectoId);
+    
+    /**
+     * Obtiene una meta de proyecto del ODS03 por su ID
+     * 
+     * @param metaId ID de la meta
+     * @return Optional con la meta encontrada
+     */
+    Optional<MetasProyecto> getMetaProyectoOds03ById(Integer metaId);
+    
+    /**
+     * Obtiene todas las mediciones históricas del ODS03
+     * 
+     * @param indicadorId ID del indicador
+     * @return Lista de todas las mediciones históricas
+     */
+    List<MedicionesHistoricas> getAllMedicionesHistoricasOds03(Integer indicadorId);
+    
+    /**
+     * Obtiene una medición histórica del ODS03 por su ID
+     * 
+     * @param medicionId ID de la medición
+     * @return Optional con la medición encontrada
+     */
+    Optional<MedicionesHistoricas> getMedicionHistoricaOds03ById(Integer medicionId);
+    
+    /**
+     * Valida los datos de un indicador
+     * 
+     * @param indicador Datos del indicador a validar
+     * @return true si los datos son válidos, false otherwise
+     */
+    Boolean validateIndicatorData(Indicadores indicador);
+    
+    /**
+     * Calcula el progreso de un proyecto
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Porcentaje de progreso (0.0 - 100.0)
+     */
+    Double calculateProjectProgress(Integer proyectoId);
+    
+    /**
+     * Obtiene estadísticas del ODS03
+     * 
+     * @return Map con estadísticas generales
+     */
+    Map<String, Object> getOds03Statistics();
+    
+    /**
+     * Verifica si un proyecto existe
+     * 
+     * @param proyectoId ID del proyecto
+     * @return true si existe, false otherwise
+     */
+    Boolean projectExists(Integer proyectoId);
+    
+    /**
+     * Verifica si un indicador existe
+     * 
+     * @param indicadorId ID del indicador
+     * @return true si existe, false otherwise
+     */
+    Boolean indicatorExists(Integer indicadorId);
+    
+    /**
+     * Verifica si una meta de proyecto existe
+     * 
+     * @param metaId ID de la meta
+     * @return true si existe, false otherwise
+     */
+    Boolean existsMetaProyecto(Integer metaId);
+    
+    /**
+     * Verifica si una medición histórica existe
+     * 
+     * @param medicionId ID de la medición
+     * @return true si existe, false otherwise
+     */
+    Boolean existsMedicionHistorica(Integer medicionId);
 }

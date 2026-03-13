@@ -103,6 +103,17 @@ public class Objetivo07EnergiaRepository implements IObjetivo07EnergiaRepository
                 .fetchOptionalInto(Indicadores.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Indicadores> findIndicador_7_c_1(Integer proyectoId) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADORES.INDICADOR_CODIGO.eq("7.c.1"))
+                .fetchOptionalInto(Indicadores.class);
+    }
+
     // ── Métodos Agregados (usando stored procedures del ODS07) ──
 
     /**

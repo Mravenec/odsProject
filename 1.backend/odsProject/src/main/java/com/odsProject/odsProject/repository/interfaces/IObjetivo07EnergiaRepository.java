@@ -66,6 +66,14 @@ public interface IObjetivo07EnergiaRepository extends IOdsBaseRepository<Indicad
     Optional<Indicadores> findIndicador_7_b_1(Integer proyectoId);
     
     /**
+     * 7.c.1 Proporción de la población que tiene acceso a tecnologías de energía limpia y renovable [57]
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 7.c.1
+     */
+    Optional<Indicadores> findIndicador_7_c_1(Integer proyectoId);
+    
+    /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS07
      * 
      * @param proyectoId ID del proyecto

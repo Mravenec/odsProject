@@ -195,6 +195,17 @@ public class Objetivo03SaludBienestarRepository implements IObjetivo03SaludBiene
      * {@inheritDoc}
      */
     @Override
+    public Optional<Indicadores> findIndicador_3_6_2(Integer proyectoId) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADORES.INDICADOR_CODIGO.eq("3.6.2"))
+                .fetchOptionalInto(Indicadores.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Optional<Indicadores> findIndicador_3_7_1(Integer proyectoId) {
         return dsl.selectFrom(INDICADORES)
                 .where(INDICADORES.PROYECTO_ID.eq(proyectoId))

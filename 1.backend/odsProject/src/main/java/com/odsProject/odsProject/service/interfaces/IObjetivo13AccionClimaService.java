@@ -75,6 +75,15 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
     Optional<Indicadores> getIndicador_13_2_2(Integer proyectoId);
     
     /**
+     * Obtiene el indicador 13.2.3
+     * Integración de medidas de mitigación y adaptación al cambio climático
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 13.2.3
+     */
+    Optional<Indicadores> getIndicador_13_2_3(Integer proyectoId);
+    
+    /**
      * Obtiene el indicador 13.3.1
      * Grado en que se incorpora educación para el cambio climático
      * 
@@ -82,6 +91,15 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @return Datos del indicador 13.3.1
      */
     Optional<Indicadores> getIndicador_13_3_1(Integer proyectoId);
+    
+    /**
+     * Obtiene el indicador 13.3.2
+     * Número de países que han comunicado la creación o fortalecimiento de mecanismos
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 13.3.2
+     */
+    Optional<Indicadores> getIndicador_13_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.a.1
@@ -100,6 +118,15 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @return Datos del indicador 13.b.1
      */
     Optional<Indicadores> getIndicador_13_b_1(Integer proyectoId);
+    
+    /**
+     * Obtiene el indicador 13.b.2
+     * Procedimientos de planificación e implementación de la gestión del riesgo de desastres
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Datos del indicador 13.b.2
+     */
+    Optional<Indicadores> getIndicador_13_b_2(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS13
