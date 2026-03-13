@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.AuditoriaOds16;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 16
  * Usa jOOQ con datasource ods16
  */
-public interface IObjetivo16PazJusticiaRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo16PazJusticiaRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds16> {
     
     /**
      * 16.1.1 Número de víctimas de homicidios intencionales por cada 100.000 habitantes, 

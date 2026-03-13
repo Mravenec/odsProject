@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.AuditoriaOds17;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 17
  * Usa jOOQ con datasource ods17
  */
-public interface IObjetivo17AlianzasRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo17AlianzasRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds17> {
     
     /**
      * 17.1.1 Total de ingresos del gobierno en proporción al PIB, desglosado por fuente [138]

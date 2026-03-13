@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.AuditoriaOds05;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 5
  * Usa jOOQ con datasource ods05
  */
-public interface IObjetivo05GeneroRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo05GeneroRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds05> {
     
     /**
      * 5.1.1 Determinar si existen o no marcos jurídicos para promover, hacer cumplir y supervisar 

@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.AuditoriaOds15;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 15
  * Usa jOOQ con datasource ods15
  */
-public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds15> {
     
     /**
      * 15.1.1 Superficie forestal en proporción a la superficie total [117]

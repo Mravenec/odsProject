@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.AuditoriaOds06;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 6
  * Usa jOOQ con datasource ods06
  */
-public interface IObjetivo06AguaSaneamientoRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo06AguaSaneamientoRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds06> {
     
     /**
      * 6.1.1 Proporción de la población que utiliza servicios de suministro de agua potable gestionados sin riesgos [49]

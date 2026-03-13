@@ -6,8 +6,8 @@ import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MetasProyecto;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.AuditoriaOds01;
 import com.odsProject.odsProject.database.jooq.ods01.routines.SpAdminReporteProyecto;
+import com.odsProject.odsProject.database.jooq.ods01.routines.SpAdminDashboard;
 import com.odsProject.odsProject.repository.interfaces.IObjetivo01PobrezaRepository;
-import com.odsProject.odsProject.repository.interfaces.IOdsBaseRepository;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,11 +18,15 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.odsProject.odsProject.database.jooq.ods01.tables.Indicadores.INDICADORES;
+import static com.odsProject.odsProject.database.jooq.ods01.tables.Proyectos.PROYECTOS;
+import static com.odsProject.odsProject.database.jooq.ods01.tables.MetasProyecto.METAS_PROYECTO;
+import static com.odsProject.odsProject.database.jooq.ods01.tables.MedicionesHistoricas.MEDICIONES_HISTORICAS;
+import static com.odsProject.odsProject.database.jooq.ods01.tables.AuditoriaOds01.AUDITORIA_ODS01;
 
 /**
  * Implementación del Repositorio para el Objetivo 1: Fin de la Pobreza
  * Implementa los métodos para acceder a los indicadores del ODS1 usando jOOQ
- * Usa datasource ods01 y stored procedures del IOdsBaseRepository
+ * Usa datasource ods01 y sus propios stored procedures
  */
 @Repository
 public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository {
@@ -30,9 +34,6 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
     @Autowired
     @Qualifier("ods01DslContext")
     private DSLContext dsl;
-
-    @Autowired
-    private IOdsBaseRepository<Indicadores> baseRepository;
 
     // ── Indicadores Específicos del ODS01 ──
 
@@ -216,163 +217,168 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
 
     // ── Implementación de IOdsBaseRepository ──
 
-    /**
-     * {@inheritDoc}
-     */
+    // Proyectos
     @Override
     public List<Proyectos> findAllProyectos() {
-        return baseRepository.findAllProyectos();
+        return dsl.selectFrom(PROYECTOS)
+                .fetchInto(Proyectos.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Proyectos> findProyectoById(Integer id) {
-        return baseRepository.findProyectoById(id);
+        return dsl.selectFrom(PROYECTOS)
+                .where(PROYECTOS.ID.eq(id))
+                .fetchOptionalInto(Proyectos.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Proyectos> findProyectosByUsuario(Integer usuarioId) {
-        return baseRepository.findProyectosByUsuario(usuarioId);
+        return dsl.selectFrom(PROYECTOS)
+                .where(PROYECTOS.USUARIO_ID.eq(usuarioId))
+                .fetchInto(Proyectos.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Proyectos> findProyectosByEstado(String estado) {
-        return baseRepository.findProyectosByEstado(estado);
+        return dsl.selectFrom(PROYECTOS)
+                .where(PROYECTOS.ESTADO.cast(String.class).eq(estado))
+                .fetchInto(Proyectos.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Proyectos saveProyecto(Proyectos proyecto) {
-        return baseRepository.saveProyecto(proyecto);
+        return dsl.insertInto(PROYECTOS)
+                .set(dsl.newRecord(PROYECTOS, proyecto))
+                .returning()
+                .fetchOneInto(Proyectos.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Proyectos updateProyecto(Proyectos proyecto) {
-        return baseRepository.updateProyecto(proyecto);
+        return dsl.update(PROYECTOS)
+                .set(dsl.newRecord(PROYECTOS, proyecto))
+                .where(PROYECTOS.ID.eq(proyecto.getId()))
+                .returning()
+                .fetchOneInto(Proyectos.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void deleteProyecto(Integer id) {
-        baseRepository.deleteProyecto(id);
+        dsl.deleteFrom(PROYECTOS)
+                .where(PROYECTOS.ID.eq(id))
+                .execute();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    // Indicadores
     @Override
     public List<Indicadores> findIndicadoresByProyecto(Integer proyectoId) {
-        return baseRepository.findIndicadoresByProyecto(proyectoId);
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .fetchInto(Indicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Indicadores> findIndicadorByCodigo(Integer proyectoId, String codigo) {
-        return baseRepository.findIndicadorByCodigo(proyectoId, codigo);
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADORES.INDICADOR_CODIGO.eq(codigo))
+                .fetchOptionalInto(Indicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Indicadores> findIndicadoresByCodigoPrefix(String prefix) {
-        return baseRepository.findIndicadoresByCodigoPrefix(prefix);
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.INDICADOR_CODIGO.like(prefix + "%"))
+                .fetchInto(Indicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Indicadores saveIndicador(Indicadores indicador) {
-        return baseRepository.saveIndicador(indicador);
+        return dsl.insertInto(INDICADORES)
+                .set(dsl.newRecord(INDICADORES, indicador))
+                .returning()
+                .fetchOneInto(Indicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Indicadores updateIndicador(Indicadores indicador) {
-        return baseRepository.updateIndicador(indicador);
+        return dsl.update(INDICADORES)
+                .set(dsl.newRecord(INDICADORES, indicador))
+                .where(INDICADORES.ID.eq(indicador.getId()))
+                .returning()
+                .fetchOneInto(Indicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    // Metas
     @Override
     public List<MetasProyecto> findMetasByProyecto(Integer proyectoId) {
-        return baseRepository.findMetasByProyecto(proyectoId);
+        return dsl.selectFrom(METAS_PROYECTO)
+                .where(METAS_PROYECTO.PROYECTO_ID.eq(proyectoId))
+                .fetchInto(MetasProyecto.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
-        return baseRepository.saveMetaProyecto(meta);
+        return dsl.insertInto(METAS_PROYECTO)
+                .set(dsl.newRecord(METAS_PROYECTO, meta))
+                .returning()
+                .fetchOneInto(MetasProyecto.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    // Mediciones
     @Override
     public List<MedicionesHistoricas> findMedicionesByIndicador(Integer indicadorId) {
-        return baseRepository.findMedicionesByIndicador(indicadorId);
+        return dsl.selectFrom(MEDICIONES_HISTORICAS)
+                .where(MEDICIONES_HISTORICAS.INDICADOR_ID.eq(indicadorId))
+                .fetchInto(MedicionesHistoricas.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MedicionesHistoricas saveMedicion(MedicionesHistoricas medicion) {
-        return baseRepository.saveMedicion(medicion);
+        return dsl.insertInto(MEDICIONES_HISTORICAS)
+                .set(dsl.newRecord(MEDICIONES_HISTORICAS, medicion))
+                .returning()
+                .fetchOneInto(MedicionesHistoricas.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    // Auditoría
     @Override
     public List<AuditoriaOds01> findAuditoriaReciente(Integer dias) {
-        return baseRepository.findAuditoriaReciente(dias);
+        return dsl.selectFrom(AUDITORIA_ODS01)
+                .where("{0} >= DATE_SUB(NOW(), INTERVAL ? DAY)", AUDITORIA_ODS01.FECHA_CAMBIO, dias)
+                .fetchInto(AuditoriaOds01.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<AuditoriaOds01> findAuditoriaByRegistro(String tablaAfectada, Integer registroId) {
-        return baseRepository.findAuditoriaByRegistro(tablaAfectada, registroId);
+        return dsl.selectFrom(AUDITORIA_ODS01)
+                .where(AUDITORIA_ODS01.TABLA_AFECTADA.eq(tablaAfectada))
+                .and(AUDITORIA_ODS01.REGISTRO_ID.eq(registroId))
+                .fetchInto(AuditoriaOds01.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    // Stored Procedures
     @Override
     public Map<String, Object> spAdminDashboard() {
-        return baseRepository.spAdminDashboard();
+        SpAdminDashboard sp = new SpAdminDashboard();
+        sp.execute(dsl.configuration());
+        
+        return Map.of(
+            "status", "executed",
+            "message", "Dashboard procedure executed for ODS01"
+        );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<String, Object> spAdminReporteProyecto(Integer proyectoId) {
-        return baseRepository.spAdminReporteProyecto(proyectoId);
+        SpAdminReporteProyecto sp = new SpAdminReporteProyecto();
+        sp.setProyectoIdParam(proyectoId);
+        sp.execute(dsl.configuration());
+        
+        return Map.of(
+            "status", "executed",
+            "proyectoId", proyectoId,
+            "message", "Reporte procedure executed for ODS01"
+        );
     }
 }

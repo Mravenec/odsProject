@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.AuditoriaOds10;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 10
  * Usa jOOQ con datasource ods10
  */
-public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds10> {
     
     /**
      * 10.1.1 Tasas de crecimiento per cápita de los gastos o ingresos de los hogares del 40% más pobre 

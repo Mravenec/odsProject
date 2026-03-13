@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.AuditoriaOds13;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 13
  * Usa jOOQ con datasource ods13
  */
-public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds13> {
     
     /**
      * 13.1.1 Número de personas muertas, desaparecidas y afectadas directamente atribuido 

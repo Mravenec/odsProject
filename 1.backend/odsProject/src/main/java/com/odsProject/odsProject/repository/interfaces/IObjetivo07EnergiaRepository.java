@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.AuditoriaOds07;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 7
  * Usa jOOQ con datasource ods07
  */
-public interface IObjetivo07EnergiaRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo07EnergiaRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds07> {
     
     /**
      * 7.1.1 Proporción de la población que tiene acceso a la electricidad [55]

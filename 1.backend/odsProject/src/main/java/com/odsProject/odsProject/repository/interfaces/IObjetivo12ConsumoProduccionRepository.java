@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.AuditoriaOds12;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 12
  * Usa jOOQ con datasource ods12
  */
-public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds12> {
     
     /**
      * 12.1.1 Número de países que elaboran, adoptan o aplican instrumentos de política destinados 

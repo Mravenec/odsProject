@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.AuditoriaOds14;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 14
  * Usa jOOQ con datasource ods14
  */
-public interface IObjetivo14VidaSubmarinaRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo14VidaSubmarinaRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds14> {
     
     /**
      * 14.1.1 a) Índice de eutrofización costera; y b) densidad de detritos plásticos [108, 109]

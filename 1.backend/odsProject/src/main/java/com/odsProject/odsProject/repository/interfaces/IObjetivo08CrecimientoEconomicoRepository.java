@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.AuditoriaOds08;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 8
  * Usa jOOQ con datasource ods08
  */
-public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds08> {
     
     /**
      * 8.1.1 Tasa de crecimiento anual del PIB real per cápita [59]

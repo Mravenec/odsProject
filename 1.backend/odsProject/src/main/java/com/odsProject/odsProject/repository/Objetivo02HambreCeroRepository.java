@@ -1,7 +1,12 @@
 package com.odsProject.odsProject.repository;
 
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.AuditoriaOds02;
 import com.odsProject.odsProject.database.jooq.ods02.routines.SpAdminReporteProyecto;
+import com.odsProject.odsProject.database.jooq.ods02.routines.SpAdminDashboard;
 import com.odsProject.odsProject.repository.interfaces.IObjetivo02HambreCeroRepository;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +14,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.odsProject.odsProject.database.jooq.ods02.tables.Indicadores.INDICADORES;
+import static com.odsProject.odsProject.database.jooq.ods02.tables.Proyectos.PROYECTOS;
+import static com.odsProject.odsProject.database.jooq.ods02.tables.MetasProyecto.METAS_PROYECTO;
+import static com.odsProject.odsProject.database.jooq.ods02.tables.MedicionesHistoricas.MEDICIONES_HISTORICAS;
+import static com.odsProject.odsProject.database.jooq.ods02.tables.AuditoriaOds02.AUDITORIA_ODS02;
 
 /**
  * Implementación del Repositorio para el Objetivo 2: Hambre Cero
@@ -225,5 +235,228 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
                 .and(INDICADORES.INDICADOR_CODIGO.like(metaPrefix + ".%"))
                 .fetchInto(Indicadores.class);
+    }
+
+    // ── Implementación de IOdsBaseRepository ──
+
+    // Proyectos
+    @Override
+    public List<Proyectos> findAllProyectos() {
+        return dsl.selectFrom(PROYECTOS)
+                .fetchInto(Proyectos.class);
+    }
+
+    @Override
+    public Optional<Proyectos> findProyectoById(Integer id) {
+        return dsl.selectFrom(PROYECTOS)
+                .where(PROYECTOS.ID.eq(id))
+                .fetchOptionalInto(Proyectos.class);
+    }
+
+    @Override
+    public List<Proyectos> findProyectosByUsuario(Integer usuarioId) {
+        return dsl.selectFrom(PROYECTOS)
+                .where(PROYECTOS.USUARIO_ID.eq(usuarioId))
+                .fetchInto(Proyectos.class);
+    }
+
+    @Override
+    public List<Proyectos> findProyectosByEstado(String estado) {
+        return dsl.selectFrom(PROYECTOS)
+                .where(PROYECTOS.ESTADO.cast(String.class).eq(estado))
+                .fetchInto(Proyectos.class);
+    }
+
+    @Override
+    public Proyectos saveProyecto(Proyectos proyecto) {
+        return dsl.insertInto(PROYECTOS)
+                .set(dsl.newRecord(PROYECTOS, proyecto))
+                .returning()
+                .fetchOneInto(Proyectos.class);
+    }
+
+    @Override
+    public Proyectos updateProyecto(Proyectos proyecto) {
+        return dsl.update(PROYECTOS)
+                .set(dsl.newRecord(PROYECTOS, proyecto))
+                .where(PROYECTOS.ID.eq(proyecto.getId()))
+                .returning()
+                .fetchOneInto(Proyectos.class);
+    }
+
+    @Override
+    public void deleteProyecto(Integer id) {
+        dsl.deleteFrom(PROYECTOS)
+                .where(PROYECTOS.ID.eq(id))
+                .execute();
+    }
+
+    // Indicadores
+    @Override
+    public List<Indicadores> findIndicadoresByProyecto(Integer proyectoId) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .fetchInto(Indicadores.class);
+    }
+
+    @Override
+    public Optional<Indicadores> findIndicadorByCodigo(Integer proyectoId, String codigo) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADORES.INDICADOR_CODIGO.eq(codigo))
+                .fetchOptionalInto(Indicadores.class);
+    }
+
+    @Override
+    public List<Indicadores> findIndicadoresByCodigoPrefix(String prefix) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.INDICADOR_CODIGO.like(prefix + "%"))
+                .fetchInto(Indicadores.class);
+    }
+
+    @Override
+    public Indicadores saveIndicador(Indicadores indicador) {
+        return dsl.insertInto(INDICADORES)
+                .set(dsl.newRecord(INDICADORES, indicador))
+                .returning()
+                .fetchOneInto(Indicadores.class);
+    }
+
+    @Override
+    public Indicadores updateIndicador(Indicadores indicador) {
+        return dsl.update(INDICADORES)
+                .set(dsl.newRecord(INDICADORES, indicador))
+                .where(INDICADORES.ID.eq(indicador.getId()))
+                .returning()
+                .fetchOneInto(Indicadores.class);
+    }
+
+    // Metas
+    @Override
+    public List<MetasProyecto> findMetasByProyecto(Integer proyectoId) {
+        return dsl.selectFrom(METAS_PROYECTO)
+                .where(METAS_PROYECTO.PROYECTO_ID.eq(proyectoId))
+                .fetchInto(MetasProyecto.class);
+    }
+
+    @Override
+    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+        return dsl.insertInto(METAS_PROYECTO)
+                .set(dsl.newRecord(METAS_PROYECTO, meta))
+                .returning()
+                .fetchOneInto(MetasProyecto.class);
+    }
+
+    // Mediciones
+    @Override
+    public List<MedicionesHistoricas> findMedicionesByIndicador(Integer indicadorId) {
+        return dsl.selectFrom(MEDICIONES_HISTORICAS)
+                .where(MEDICIONES_HISTORICAS.INDICADOR_ID.eq(indicadorId))
+                .fetchInto(MedicionesHistoricas.class);
+    }
+
+    @Override
+    public MedicionesHistoricas saveMedicion(MedicionesHistoricas medicion) {
+        return dsl.insertInto(MEDICIONES_HISTORICAS)
+                .set(dsl.newRecord(MEDICIONES_HISTORICAS, medicion))
+                .returning()
+                .fetchOneInto(MedicionesHistoricas.class);
+    }
+
+    // Auditoría
+    @Override
+    public List<AuditoriaOds02> findAuditoriaReciente(Integer dias) {
+        return dsl.selectFrom(AUDITORIA_ODS02)
+                .where("{0} >= DATE_SUB(NOW(), INTERVAL ? DAY)", AUDITORIA_ODS02.FECHA_CAMBIO, dias)
+                .fetchInto(AuditoriaOds02.class);
+    }
+
+    @Override
+    public List<AuditoriaOds02> findAuditoriaByRegistro(String tablaAfectada, Integer registroId) {
+        return dsl.selectFrom(AUDITORIA_ODS02)
+                .where(AUDITORIA_ODS02.TABLA_AFECTADA.eq(tablaAfectada))
+                .and(AUDITORIA_ODS02.REGISTRO_ID.eq(registroId))
+                .fetchInto(AuditoriaOds02.class);
+    }
+
+    // Stored Procedures
+    @Override
+    public Map<String, Object> spAdminDashboard() {
+        SpAdminDashboard sp = new SpAdminDashboard();
+        sp.execute(dsl.configuration());
+        
+        return Map.of(
+            "status", "executed",
+            "message", "Dashboard procedure executed for ODS02"
+        );
+    }
+
+    @Override
+    public Map<String, Object> spAdminReporteProyecto(Integer proyectoId) {
+        SpAdminReporteProyecto sp = new SpAdminReporteProyecto();
+        sp.setProyectoIdParam(proyectoId);
+        sp.execute(dsl.configuration());
+        
+        return Map.of(
+            "status", "executed",
+            "proyectoId", proyectoId,
+            "message", "Reporte procedure executed for ODS02"
+        );
+    }
+
+    // ── Métodos específicos del ODS02 ──
+
+    @Override
+    public List<Proyectos> findAllProyectosOds02() {
+        return dsl.selectFrom(PROYECTOS)
+                .fetchInto(Proyectos.class);
+    }
+
+    @Override
+    public Optional<Proyectos> findProyectoOds02ById(Integer proyectoId) {
+        return dsl.selectFrom(PROYECTOS)
+                .where(PROYECTOS.ID.eq(proyectoId))
+                .fetchOptionalInto(Proyectos.class);
+    }
+
+    @Override
+    public List<MetasProyecto> findAllMetasProyectoOds02(Integer proyectoId) {
+        return dsl.selectFrom(METAS_PROYECTO)
+                .where(METAS_PROYECTO.PROYECTO_ID.eq(proyectoId))
+                .fetchInto(MetasProyecto.class);
+    }
+
+    @Override
+    public Optional<MetasProyecto> findMetaProyectoOds02ById(Integer metaId) {
+        return dsl.selectFrom(METAS_PROYECTO)
+                .where(METAS_PROYECTO.ID.eq(metaId))
+                .fetchOptionalInto(MetasProyecto.class);
+    }
+
+    @Override
+    public List<MedicionesHistoricas> findAllMedicionesHistoricasOds02(Integer indicadorId) {
+        return dsl.selectFrom(MEDICIONES_HISTORICAS)
+                .where(MEDICIONES_HISTORICAS.INDICADOR_ID.eq(indicadorId))
+                .fetchInto(MedicionesHistoricas.class);
+    }
+
+    @Override
+    public Optional<MedicionesHistoricas> findMedicionHistoricaOds02ById(Integer medicionId) {
+        return dsl.selectFrom(MEDICIONES_HISTORICAS)
+                .where(MEDICIONES_HISTORICAS.ID.eq(medicionId))
+                .fetchOptionalInto(MedicionesHistoricas.class);
+    }
+
+    @Override
+    public List<AuditoriaOds02> findAllAuditoriasOds02() {
+        return dsl.selectFrom(AUDITORIA_ODS02)
+                .fetchInto(AuditoriaOds02.class);
+    }
+
+    @Override
+    public Optional<AuditoriaOds02> findAuditoriaOds02ById(Integer auditoriaId) {
+        return dsl.selectFrom(AUDITORIA_ODS02)
+                .where(AUDITORIA_ODS02.ID.eq(auditoriaId))
+                .fetchOptionalInto(AuditoriaOds02.class);
     }
 }

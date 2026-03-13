@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.AuditoriaOds03;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 3
  * Usa jOOQ con datasource ods03
  */
-public interface IObjetivo03SaludBienestarRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo03SaludBienestarRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds03> {
     
     /**
      * 3.1.1 Tasa de mortalidad materna [19]

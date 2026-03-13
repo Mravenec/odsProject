@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.AuditoriaOds04;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 4
  * Usa jOOQ con datasource ods04
  */
-public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds04> {
     
     /**
      * 4.1.1 Proporción de niños y adolescentes que, a) en los grados 2 o 3, 

@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.AuditoriaOds09;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 9
  * Usa jOOQ con datasource ods09
  */
-public interface IObjetivo09InfraestructuraRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo09InfraestructuraRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds09> {
     
     /**
      * 9.1.1 Proporción de la población rural que vive a menos de 2 km de una carretera transitable todo el año [68]

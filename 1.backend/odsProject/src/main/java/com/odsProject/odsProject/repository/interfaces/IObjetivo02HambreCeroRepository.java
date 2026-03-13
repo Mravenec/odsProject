@@ -1,6 +1,10 @@
 package com.odsProject.odsProject.repository.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.AuditoriaOds02;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +13,9 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 2
  * Usa jOOQ con datasource ods02
  */
-public interface IObjetivo02HambreCeroRepository {
+public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds02> {
+    
+    // ── Indicadores Específicos del ODS02 ──
     
     /**
      * 2.1.1 Prevalencia de la subalimentación [10]
@@ -157,4 +163,15 @@ public interface IObjetivo02HambreCeroRepository {
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    
+    // ── Métodos específicos del ODS02 ──
+    
+    List<Proyectos> findAllProyectosOds02();
+    Optional<Proyectos> findProyectoOds02ById(Integer proyectoId);
+    List<MetasProyecto> findAllMetasProyectoOds02(Integer proyectoId);
+    Optional<MetasProyecto> findMetaProyectoOds02ById(Integer metaId);
+    List<MedicionesHistoricas> findAllMedicionesHistoricasOds02(Integer indicadorId);
+    Optional<MedicionesHistoricas> findMedicionHistoricaOds02ById(Integer medicionId);
+    List<AuditoriaOds02> findAllAuditoriasOds02();
+    Optional<AuditoriaOds02> findAuditoriaOds02ById(Integer auditoriaId);
 }
