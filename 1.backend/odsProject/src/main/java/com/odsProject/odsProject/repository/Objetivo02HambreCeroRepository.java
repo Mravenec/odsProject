@@ -240,12 +240,18 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
     // ── Implementación de IOdsBaseRepository ──
 
     // Proyectos
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Proyectos> findAllProyectos() {
         return dsl.selectFrom(PROYECTOS)
                 .fetchInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Proyectos> findProyectoById(Integer id) {
         return dsl.selectFrom(PROYECTOS)
@@ -253,6 +259,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchOptionalInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Proyectos> findProyectosByUsuario(Integer usuarioId) {
         return dsl.selectFrom(PROYECTOS)
@@ -260,6 +269,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Proyectos> findProyectosByEstado(String estado) {
         return dsl.selectFrom(PROYECTOS)
@@ -267,6 +279,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Proyectos saveProyecto(Proyectos proyecto) {
         return dsl.insertInto(PROYECTOS)
@@ -275,6 +290,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchOneInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Proyectos updateProyecto(Proyectos proyecto) {
         return dsl.update(PROYECTOS)
@@ -284,6 +302,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchOneInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteProyecto(Integer id) {
         dsl.deleteFrom(PROYECTOS)
@@ -292,6 +313,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
     }
 
     // Indicadores
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Indicadores> findIndicadoresByProyecto(Integer proyectoId) {
         return dsl.selectFrom(INDICADORES)
@@ -299,21 +323,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchInto(Indicadores.class);
     }
 
-    @Override
-    public Optional<Indicadores> findIndicadorByCodigo(Integer proyectoId, String codigo) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq(codigo))
-                .fetchOptionalInto(Indicadores.class);
-    }
-
-    @Override
-    public List<Indicadores> findIndicadoresByCodigoPrefix(String prefix) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.INDICADOR_CODIGO.like(prefix + "%"))
-                .fetchInto(Indicadores.class);
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Indicadores saveIndicador(Indicadores indicador) {
         return dsl.insertInto(INDICADORES)
@@ -322,6 +334,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchOneInto(Indicadores.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Indicadores updateIndicador(Indicadores indicador) {
         return dsl.update(INDICADORES)
@@ -331,7 +346,31 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchOneInto(Indicadores.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Indicadores> findIndicadorByCodigo(Integer proyectoId, String codigo) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADORES.INDICADOR_CODIGO.eq(codigo))
+                .fetchOptionalInto(Indicadores.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Indicadores> findIndicadoresByCodigoPrefix(String prefix) {
+        return dsl.selectFrom(INDICADORES)
+                .where(INDICADORES.INDICADOR_CODIGO.like(prefix + "%"))
+                .fetchInto(Indicadores.class);
+    }
+
     // Metas
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<MetasProyecto> findMetasByProyecto(Integer proyectoId) {
         return dsl.selectFrom(METAS_PROYECTO)
@@ -339,6 +378,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchInto(MetasProyecto.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
         return dsl.insertInto(METAS_PROYECTO)
@@ -348,6 +390,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
     }
 
     // Mediciones
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<MedicionesHistoricas> findMedicionesByIndicador(Integer indicadorId) {
         return dsl.selectFrom(MEDICIONES_HISTORICAS)
@@ -355,6 +400,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchInto(MedicionesHistoricas.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MedicionesHistoricas saveMedicion(MedicionesHistoricas medicion) {
         return dsl.insertInto(MEDICIONES_HISTORICAS)
@@ -364,6 +412,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
     }
 
     // Auditoría
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AuditoriaOds02> findAuditoriaReciente(Integer dias) {
         return dsl.selectFrom(AUDITORIA_ODS02)
@@ -371,6 +422,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchInto(AuditoriaOds02.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AuditoriaOds02> findAuditoriaByRegistro(String tablaAfectada, Integer registroId) {
         return dsl.selectFrom(AUDITORIA_ODS02)
@@ -380,6 +434,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
     }
 
     // Stored Procedures
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, Object> spAdminDashboard() {
         SpAdminDashboard sp = new SpAdminDashboard();
@@ -391,6 +448,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, Object> spAdminReporteProyecto(Integer proyectoId) {
         SpAdminReporteProyecto sp = new SpAdminReporteProyecto();
@@ -406,12 +466,18 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
 
     // ── Métodos específicos del ODS02 ──
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Proyectos> findAllProyectosOds02() {
         return dsl.selectFrom(PROYECTOS)
                 .fetchInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Proyectos> findProyectoOds02ById(Integer proyectoId) {
         return dsl.selectFrom(PROYECTOS)
@@ -419,6 +485,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchOptionalInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<MetasProyecto> findAllMetasProyectoOds02(Integer proyectoId) {
         return dsl.selectFrom(METAS_PROYECTO)
@@ -426,6 +495,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchInto(MetasProyecto.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<MetasProyecto> findMetaProyectoOds02ById(Integer metaId) {
         return dsl.selectFrom(METAS_PROYECTO)
@@ -433,6 +505,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchOptionalInto(MetasProyecto.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<MedicionesHistoricas> findAllMedicionesHistoricasOds02(Integer indicadorId) {
         return dsl.selectFrom(MEDICIONES_HISTORICAS)
@@ -440,6 +515,9 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchInto(MedicionesHistoricas.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<MedicionesHistoricas> findMedicionHistoricaOds02ById(Integer medicionId) {
         return dsl.selectFrom(MEDICIONES_HISTORICAS)
@@ -447,12 +525,18 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
                 .fetchOptionalInto(MedicionesHistoricas.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AuditoriaOds02> findAllAuditoriasOds02() {
         return dsl.selectFrom(AUDITORIA_ODS02)
                 .fetchInto(AuditoriaOds02.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<AuditoriaOds02> findAuditoriaOds02ById(Integer auditoriaId) {
         return dsl.selectFrom(AUDITORIA_ODS02)

@@ -240,4 +240,68 @@ public interface IObjetivo17AlianzasRepository extends IOdsBaseRepository<Indica
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    
+    // ── Métodos específicos del ODS17 ──
+    
+    /**
+     * Encuentra todos los proyectos del ODS17
+     * 
+     * @return Lista de todos los proyectos del ODS17
+     */
+    List<Proyectos> findAllProyectosOds17();
+    
+    /**
+     * Encuentra un proyecto del ODS17 por su ID
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Optional con el proyecto encontrado
+     */
+    Optional<Proyectos> findProyectoOds17ById(Integer proyectoId);
+    
+    /**
+     * Encuentra todas las metas de proyecto del ODS17
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de metas del proyecto
+     */
+    List<MetasProyecto> findAllMetasProyectoOds17(Integer proyectoId);
+    
+    /**
+     * Encuentra una meta de proyecto del ODS17 por su ID
+     * 
+     * @param metaId ID de la meta
+     * @return Optional con la meta encontrada
+     */
+    Optional<MetasProyecto> findMetaProyectoOds17ById(Integer metaId);
+    
+    /**
+     * Encuentra todas las mediciones históricas del ODS17
+     * 
+     * @param indicadorId ID del indicador
+     * @return Lista de mediciones históricas
+     */
+    List<MedicionesHistoricas> findAllMedicionesHistoricasOds17(Integer indicadorId);
+    
+    /**
+     * Encuentra una medición histórica del ODS17 por su ID
+     * 
+     * @param medicionId ID de la medición
+     * @return Optional con la medición encontrada
+     */
+    Optional<MedicionesHistoricas> findMedicionHistoricaOds17ById(Integer medicionId);
+    
+    /**
+     * Encuentra todas las auditorías del ODS17
+     * 
+     * @return Lista de todas las auditorías
+     */
+    List<AuditoriaOds17> findAllAuditoriasOds17();
+    
+    /**
+     * Encuentra una auditoría del ODS17 por su ID
+     * 
+     * @param auditoriaId ID de la auditoría
+     * @return Optional con la auditoría encontrada
+     */
+    Optional<AuditoriaOds17> findAuditoriaOds17ById(Integer auditoriaId);
 }

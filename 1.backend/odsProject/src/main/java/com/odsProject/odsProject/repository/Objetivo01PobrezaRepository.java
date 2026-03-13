@@ -218,12 +218,18 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
     // ── Implementación de IOdsBaseRepository ──
 
     // Proyectos
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Proyectos> findAllProyectos() {
         return dsl.selectFrom(PROYECTOS)
                 .fetchInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Proyectos> findProyectoById(Integer id) {
         return dsl.selectFrom(PROYECTOS)
@@ -231,6 +237,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchOptionalInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Proyectos> findProyectosByUsuario(Integer usuarioId) {
         return dsl.selectFrom(PROYECTOS)
@@ -238,6 +247,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Proyectos> findProyectosByEstado(String estado) {
         return dsl.selectFrom(PROYECTOS)
@@ -245,6 +257,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Proyectos saveProyecto(Proyectos proyecto) {
         return dsl.insertInto(PROYECTOS)
@@ -253,6 +268,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchOneInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Proyectos updateProyecto(Proyectos proyecto) {
         return dsl.update(PROYECTOS)
@@ -262,6 +280,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchOneInto(Proyectos.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteProyecto(Integer id) {
         dsl.deleteFrom(PROYECTOS)
@@ -270,6 +291,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
     }
 
     // Indicadores
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Indicadores> findIndicadoresByProyecto(Integer proyectoId) {
         return dsl.selectFrom(INDICADORES)
@@ -277,6 +301,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchInto(Indicadores.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Indicadores> findIndicadorByCodigo(Integer proyectoId, String codigo) {
         return dsl.selectFrom(INDICADORES)
@@ -285,6 +312,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchOptionalInto(Indicadores.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Indicadores> findIndicadoresByCodigoPrefix(String prefix) {
         return dsl.selectFrom(INDICADORES)
@@ -292,6 +322,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchInto(Indicadores.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Indicadores saveIndicador(Indicadores indicador) {
         return dsl.insertInto(INDICADORES)
@@ -300,6 +333,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchOneInto(Indicadores.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Indicadores updateIndicador(Indicadores indicador) {
         return dsl.update(INDICADORES)
@@ -310,6 +346,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
     }
 
     // Metas
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<MetasProyecto> findMetasByProyecto(Integer proyectoId) {
         return dsl.selectFrom(METAS_PROYECTO)
@@ -317,6 +356,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchInto(MetasProyecto.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
         return dsl.insertInto(METAS_PROYECTO)
@@ -326,6 +368,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
     }
 
     // Mediciones
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<MedicionesHistoricas> findMedicionesByIndicador(Integer indicadorId) {
         return dsl.selectFrom(MEDICIONES_HISTORICAS)
@@ -333,6 +378,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchInto(MedicionesHistoricas.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MedicionesHistoricas saveMedicion(MedicionesHistoricas medicion) {
         return dsl.insertInto(MEDICIONES_HISTORICAS)
@@ -342,6 +390,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
     }
 
     // Auditoría
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AuditoriaOds01> findAuditoriaReciente(Integer dias) {
         return dsl.selectFrom(AUDITORIA_ODS01)
@@ -349,6 +400,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
                 .fetchInto(AuditoriaOds01.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AuditoriaOds01> findAuditoriaByRegistro(String tablaAfectada, Integer registroId) {
         return dsl.selectFrom(AUDITORIA_ODS01)
@@ -358,6 +412,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
     }
 
     // Stored Procedures
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, Object> spAdminDashboard() {
         SpAdminDashboard sp = new SpAdminDashboard();
@@ -369,6 +426,9 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, Object> spAdminReporteProyecto(Integer proyectoId) {
         SpAdminReporteProyecto sp = new SpAdminReporteProyecto();
@@ -380,5 +440,85 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
             "proyectoId", proyectoId,
             "message", "Reporte procedure executed for ODS01"
         );
+    }
+
+    // ── Métodos específicos del ODS01 ──
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Proyectos> findAllProyectosOds01() {
+        return dsl.selectFrom(PROYECTOS)
+                .fetchInto(Proyectos.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Proyectos> findProyectoOds01ById(Integer proyectoId) {
+        return dsl.selectFrom(PROYECTOS)
+                .where(PROYECTOS.ID.eq(proyectoId))
+                .fetchOptionalInto(Proyectos.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<MetasProyecto> findAllMetasProyectoOds01(Integer proyectoId) {
+        return dsl.selectFrom(METAS_PROYECTO)
+                .where(METAS_PROYECTO.PROYECTO_ID.eq(proyectoId))
+                .fetchInto(MetasProyecto.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<MetasProyecto> findMetaProyectoOds01ById(Integer metaId) {
+        return dsl.selectFrom(METAS_PROYECTO)
+                .where(METAS_PROYECTO.ID.eq(metaId))
+                .fetchOptionalInto(MetasProyecto.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<MedicionesHistoricas> findAllMedicionesHistoricasOds01(Integer indicadorId) {
+        return dsl.selectFrom(MEDICIONES_HISTORICAS)
+                .where(MEDICIONES_HISTORICAS.INDICADOR_ID.eq(indicadorId))
+                .fetchInto(MedicionesHistoricas.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<MedicionesHistoricas> findMedicionHistoricaOds01ById(Integer medicionId) {
+        return dsl.selectFrom(MEDICIONES_HISTORICAS)
+                .where(MEDICIONES_HISTORICAS.ID.eq(medicionId))
+                .fetchOptionalInto(MedicionesHistoricas.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<AuditoriaOds01> findAllAuditoriasOds01() {
+        return dsl.selectFrom(AUDITORIA_ODS01)
+                .fetchInto(AuditoriaOds01.class);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<AuditoriaOds01> findAuditoriaOds01ById(Integer auditoriaId) {
+        return dsl.selectFrom(AUDITORIA_ODS01)
+                .where(AUDITORIA_ODS01.ID.eq(auditoriaId))
+                .fetchOptionalInto(AuditoriaOds01.class);
     }
 }

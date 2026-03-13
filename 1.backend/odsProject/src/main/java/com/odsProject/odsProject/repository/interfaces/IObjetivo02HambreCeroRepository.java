@@ -166,12 +166,65 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
     
     // ── Métodos específicos del ODS02 ──
     
+    /**
+     * Encuentra todos los proyectos del ODS02
+     * 
+     * @return Lista de todos los proyectos del ODS02
+     */
     List<Proyectos> findAllProyectosOds02();
+    
+    /**
+     * Encuentra un proyecto del ODS02 por su ID
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Optional con el proyecto encontrado
+     */
     Optional<Proyectos> findProyectoOds02ById(Integer proyectoId);
+    
+    /**
+     * Encuentra todas las metas de proyecto del ODS02
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de metas del proyecto
+     */
     List<MetasProyecto> findAllMetasProyectoOds02(Integer proyectoId);
+    
+    /**
+     * Encuentra una meta de proyecto del ODS02 por su ID
+     * 
+     * @param metaId ID de la meta
+     * @return Optional con la meta encontrada
+     */
     Optional<MetasProyecto> findMetaProyectoOds02ById(Integer metaId);
+    
+    /**
+     * Encuentra todas las mediciones históricas del ODS02
+     * 
+     * @param indicadorId ID del indicador
+     * @return Lista de mediciones históricas
+     */
     List<MedicionesHistoricas> findAllMedicionesHistoricasOds02(Integer indicadorId);
+    
+    /**
+     * Encuentra una medición histórica del ODS02 por su ID
+     * 
+     * @param medicionId ID de la medición
+     * @return Optional con la medición encontrada
+     */
     Optional<MedicionesHistoricas> findMedicionHistoricaOds02ById(Integer medicionId);
+    
+    /**
+     * Encuentra todas las auditorías del ODS02
+     * 
+     * @return Lista de todas las auditorías
+     */
     List<AuditoriaOds02> findAllAuditoriasOds02();
+    
+    /**
+     * Encuentra una auditoría del ODS02 por su ID
+     * 
+     * @param auditoriaId ID de la auditoría
+     * @return Optional con la auditoría encontrada
+     */
     Optional<AuditoriaOds02> findAuditoriaOds02ById(Integer auditoriaId);
 }
