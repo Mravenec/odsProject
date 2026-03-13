@@ -1,0 +1,1682 @@
+@startuml
+skinparam ClassBackgroundColor #FEFEFE
+skinparam ClassBorderColor #000000
+skinparam PackageStyle folder
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 80
+
+title Arquitectura jOOQ - Sistema ODS Agenda 2030 (MySQL Multi-Datasource)
+
+' ══════════════════════════════════════════════════════════════
+' ENTITIES (compartidas, mapeadas desde ods_common.sql)
+' ══════════════════════════════════════════════════════════════
+
+package "Layer: Entities (ods_common)" {
+
+    class Proyecto {
+        - id: Integer
+        - usuarioId: Integer
+        - nombreProyecto: String
+        - objetivoId: Integer
+        - descripcion: String
+        - fechaInicio: LocalDate
+        - fechaFin: LocalDate
+        - metaGeneral: String
+        - estado: EstadoProyecto
+        - createdAt: LocalDateTime
+        - updatedAt: LocalDateTime
+    }
+
+    class MetaProyecto {
+        - id: Integer
+        - proyectoId: Integer
+        - metaCodigo: String
+        - metaDescripcion: String
+        - valorMeta: BigDecimal
+        - unidadMedida: String
+        - fechaLimite: LocalDate
+        - createdAt: LocalDateTime
+    }
+
+    class Indicador {
+        - id: Integer
+        - proyectoId: Integer
+        - indicadorCodigo: String
+        - indicadorDescripcion: String
+        - valorActual: BigDecimal
+        - valorMeta: BigDecimal
+        - unidadMedida: String
+        - fechaMedicion: LocalDate
+        - fuenteDatos: String
+        - observaciones: String
+        - createdAt: LocalDateTime
+        - updatedAt: LocalDateTime
+    }
+
+    class MedicionHistorica {
+        - id: Integer
+        - indicadorId: Integer
+        - valorMedido: BigDecimal
+        - fechaMedicion: LocalDate
+        - responsable: String
+        - metodoMedicion: String
+        - createdAt: LocalDateTime
+    }
+
+    class AuditoriaOds {
+        - id: Integer
+        - tablaAfectada: String
+        - registroId: Integer
+        - accion: String
+        - usuarioId: Integer
+        - valoresAnteriores: String
+        - valoresNuevos: String
+        - fechaCambio: LocalDateTime
+        - ipAddress: String
+    }
+
+    enum EstadoProyecto {
+        PLANIFICACION
+        ACTIVO
+        COMPLETADO
+        CANCELADO
+    }
+
+    Proyecto --> EstadoProyecto
+    MetaProyecto --> Proyecto : proyectoId
+    Indicador --> Proyecto : proyectoId
+    MedicionHistorica --> Indicador : indicadorId
+}
+
+package "Layer: Entities (ods_login)" {
+
+    class Usuario {
+        - id: Integer
+        - username: String
+        - email: String
+        - passwordHash: String
+        - fullName: String
+        - rolId: Integer
+        - isActive: Boolean
+        - emailVerificado: Boolean
+        - ultimoLogin: LocalDateTime
+        - intentosFallidos: Integer
+        - bloqueadoHasta: LocalDateTime
+        - tokenRecuperacion: String
+        - tokenExpira: LocalDateTime
+        - createdAt: LocalDateTime
+        - updatedAt: LocalDateTime
+    }
+
+    class Rol {
+        - id: Integer
+        - nombre: String
+        - descripcion: String
+        - createdAt: LocalDateTime
+    }
+
+    class Sesion {
+        - id: Integer
+        - usuarioId: Integer
+        - tokenHash: String
+        - ipAddress: String
+        - userAgent: String
+        - createdAt: LocalDateTime
+        - expiraEn: LocalDateTime
+        - revocada: Boolean
+    }
+
+    Usuario --> Rol : rolId
+    Sesion --> Usuario : usuarioId
+    Proyecto --> Usuario : usuarioId
+}
+
+' ══════════════════════════════════════════════════════════════
+' INTERFACES BASE (contratos comunes jOOQ)
+' ══════════════════════════════════════════════════════════════
+
+package "Layer: Repository Base" {
+
+    interface IOdsBaseRepository<T> {
+        ' ── Proyectos ──
+        + findAllProyectos() : List<Proyecto>
+        + findProyectoById(id: Integer) : Optional<Proyecto>
+        + findProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + findProyectosByEstado(estado: EstadoProyecto) : List<Proyecto>
+        + saveProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(id: Integer) : void
+        ' ── Indicadores ──
+        + findIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + findIndicadorByCodigo(proyectoId: Integer, codigo: String) : Optional<Indicador>
+        + findIndicadoresByCodigoPrefix(prefix: String) : List<Indicador>
+        + saveIndicador(indicador: Indicador) : Indicador
+        + updateIndicador(indicador: Indicador) : Indicador
+        ' ── Metas ──
+        + findMetasByProyecto(proyectoId: Integer) : List<MetaProyecto>
+        + saveMetaProyecto(meta: MetaProyecto) : MetaProyecto
+        ' ── Mediciones ──
+        + findMedicionesByIndicador(indicadorId: Integer) : List<MedicionHistorica>
+        + saveMedicion(medicion: MedicionHistorica) : MedicionHistorica
+        ' ── Auditoría ──
+        + findAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + findAuditoriaByRegistro(tablaAfectada: String, registroId: Integer) : List<AuditoriaOds>
+        ' ── Stored Procedures ──
+        + spAdminDashboard() : Map<String, Object>
+        + spAdminReporteProyecto(proyectoId: Integer) : Map<String, Object>
+    }
+
+    interface ILoginRepository {
+        + findUsuarioById(id: Integer) : Optional<Usuario>
+        + findUsuarioByUsername(username: String) : Optional<Usuario>
+        + findUsuarioByEmail(email: String) : Optional<Usuario>
+        + findUsuariosActivos() : List<Usuario>
+        + saveUsuario(usuario: Usuario) : Usuario
+        + updateUltimoLogin(usuarioId: Integer) : void
+        + incrementarIntentosFallidos(usuarioId: Integer) : void
+        + bloquearUsuario(usuarioId: Integer, hasta: LocalDateTime) : void
+        + findSesionByToken(tokenHash: String) : Optional<Sesion>
+        + saveSesion(sesion: Sesion) : Sesion
+        + revocarSesion(tokenHash: String) : void
+        + revocarSesionesByUsuario(usuarioId: Integer) : void
+    }
+}
+
+' ══════════════════════════════════════════════════════════════
+' REPOSITORIES - ODS ESPECÍFICOS (17 interfaces)
+' Cada método findIndicador_X_Y_Z() usa jOOQ:
+'   dsl.selectFrom(INDICADORES)
+'       .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
+'       .and(INDICADORES.INDICADOR_CODIGO.eq("X.Y.Z"))
+'       .fetchInto(Indicador.class)
+' ══════════════════════════════════════════════════════════════
+
+package "Layer: Repository Interfaces" {
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 01 - FIN DE LA POBREZA  [datasource: ods01]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo01PobrezaRepository extends IOdsBaseRepository {
+        ' Meta 1.1 - Pobreza extrema internacional
+        + findIndicador_1_1_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 1.2 - Pobreza nacional
+        + findIndicador_1_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_2_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 1.3 - Protección social
+        + findIndicador_1_3_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 1.4 - Acceso a servicios y tierra
+        + findIndicador_1_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_4_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 1.5 - Resiliencia ante desastres
+        + findIndicador_1_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_5_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_5_4(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 1.a - Movilización de recursos
+        + findIndicador_1_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_a_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 1.b - Marcos de política
+        + findIndicador_1_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS01 ──
+        + findAllIndicadoresByProyectoOds01(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 02 - HAMBRE CERO  [datasource: ods02]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository {
+        ' Meta 2.1 - Subalimentación e inseguridad alimentaria
+        + findIndicador_2_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_1_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 2.2 - Malnutrición
+        + findIndicador_2_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_2_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_2_4(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 2.3 - Productividad agrícola
+        + findIndicador_2_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_3_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 2.4 - Agricultura sostenible
+        + findIndicador_2_4_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 2.5 - Diversidad genética
+        + findIndicador_2_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_5_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 2.a - Inversión agrícola
+        + findIndicador_2_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_a_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 2.b - Comercio agropecuario
+        + findIndicador_2_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 2.c - Precios de alimentos
+        + findIndicador_2_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS02 ──
+        + findAllIndicadoresByProyectoOds02(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 03 - SALUD Y BIENESTAR  [datasource: ods03]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo03SaludBienestarRepository extends IOdsBaseRepository {
+        ' Meta 3.1 - Mortalidad materna
+        + findIndicador_3_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_1_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.2 - Mortalidad infantil
+        + findIndicador_3_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_2_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.3 - Enfermedades transmisibles
+        + findIndicador_3_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_3_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_3_4(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_3_5(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.4 - Enfermedades no transmisibles
+        + findIndicador_3_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_4_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.5 - Adicciones
+        + findIndicador_3_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_5_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.6 - Accidentes de tráfico
+        + findIndicador_3_6_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.7 - Salud reproductiva
+        + findIndicador_3_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_7_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.8 - Cobertura sanitaria universal
+        + findIndicador_3_8_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_8_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.9 - Contaminación y mortalidad ambiental
+        + findIndicador_3_9_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_9_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_9_3(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.a - Tabaco
+        + findIndicador_3_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.b - Medicamentos y vacunas
+        + findIndicador_3_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_b_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_b_3(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.c - Personal sanitario
+        + findIndicador_3_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 3.d - Seguridad sanitaria
+        + findIndicador_3_d_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_d_2(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS03 ──
+        + findAllIndicadoresByProyectoOds03(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 04 - EDUCACIÓN DE CALIDAD  [datasource: ods04]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo04EducacionRepository extends IOdsBaseRepository {
+        ' Meta 4.1 - Educación primaria y secundaria
+        + findIndicador_4_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_1_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 4.2 - Primera infancia
+        + findIndicador_4_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_2_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 4.3 - Educación superior y formación
+        + findIndicador_4_3_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 4.4 - Competencias TIC
+        + findIndicador_4_4_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 4.5 - Paridad e igualdad
+        + findIndicador_4_5_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 4.6 - Alfabetización
+        + findIndicador_4_6_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 4.7 - Educación para desarrollo sostenible
+        + findIndicador_4_7_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 4.a - Infraestructura educativa
+        + findIndicador_4_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 4.b - Becas
+        + findIndicador_4_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 4.c - Docentes calificados
+        + findIndicador_4_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS04 ──
+        + findAllIndicadoresByProyectoOds04(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 05 - IGUALDAD DE GÉNERO  [datasource: ods05]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo05GeneroRepository extends IOdsBaseRepository {
+        ' Meta 5.1 - No discriminación
+        + findIndicador_5_1_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 5.2 - Violencia contra la mujer
+        + findIndicador_5_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_2_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 5.3 - Matrimonio infantil y mutilación
+        + findIndicador_5_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_3_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 5.4 - Trabajo no remunerado
+        + findIndicador_5_4_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 5.5 - Participación política
+        + findIndicador_5_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_5_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 5.6 - Salud reproductiva
+        + findIndicador_5_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_6_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 5.a - Derechos económicos
+        + findIndicador_5_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_a_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 5.b - Tecnología
+        + findIndicador_5_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 5.c - Políticas de igualdad
+        + findIndicador_5_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS05 ──
+        + findAllIndicadoresByProyectoOds05(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 06 - AGUA LIMPIA Y SANEAMIENTO  [datasource: ods06]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo06AguaSaneamientoRepository extends IOdsBaseRepository {
+        ' Meta 6.1 - Agua potable
+        + findIndicador_6_1_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 6.2 - Saneamiento e higiene
+        + findIndicador_6_2_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 6.3 - Calidad del agua
+        + findIndicador_6_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_3_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 6.4 - Uso eficiente
+        + findIndicador_6_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_4_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 6.5 - Gestión integrada
+        + findIndicador_6_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_5_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 6.6 - Ecosistemas hídricos
+        + findIndicador_6_6_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 6.a - Cooperación internacional
+        + findIndicador_6_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 6.b - Gestión comunitaria
+        + findIndicador_6_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS06 ──
+        + findAllIndicadoresByProyectoOds06(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 07 - ENERGÍA ASEQUIBLE  [datasource: ods07]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo07EnergiaRepository extends IOdsBaseRepository {
+        ' Meta 7.1 - Acceso a energía
+        + findIndicador_7_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_7_1_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 7.2 - Energía renovable
+        + findIndicador_7_2_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 7.3 - Eficiencia energética
+        + findIndicador_7_3_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 7.a - Cooperación para energía limpia
+        + findIndicador_7_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 7.b - Capacidad instalada renovable
+        + findIndicador_7_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS07 ──
+        + findAllIndicadoresByProyectoOds07(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 08 - TRABAJO DECENTE Y CRECIMIENTO ECONÓMICO  [datasource: ods08]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepository {
+        ' Meta 8.1 - Crecimiento del PIB
+        + findIndicador_8_1_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.2 - Productividad
+        + findIndicador_8_2_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.3 - Empleo informal
+        + findIndicador_8_3_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.4 - Recursos materiales
+        + findIndicador_8_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_4_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.5 - Empleo pleno y decente
+        + findIndicador_8_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_5_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.6 - Jóvenes NINI
+        + findIndicador_8_6_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.7 - Trabajo infantil
+        + findIndicador_8_7_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.8 - Derechos laborales
+        + findIndicador_8_8_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_8_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.9 - Turismo sostenible
+        + findIndicador_8_9_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_9_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.10 - Servicios financieros
+        + findIndicador_8_10_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_10_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.a - Ayuda para el comercio
+        + findIndicador_8_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 8.b - Empleo juvenil
+        + findIndicador_8_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS08 ──
+        + findAllIndicadoresByProyectoOds08(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 09 - INDUSTRIA, INNOVACIÓN E INFRAESTRUCTURA  [datasource: ods09]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo09InfraestructuraRepository extends IOdsBaseRepository {
+        ' Meta 9.1 - Infraestructura de transporte
+        + findIndicador_9_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_1_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 9.2 - Industrialización
+        + findIndicador_9_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_2_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 9.3 - Pequeñas industrias
+        + findIndicador_9_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_3_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 9.4 - Modernización sostenible
+        + findIndicador_9_4_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 9.5 - Investigación e innovación
+        + findIndicador_9_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_5_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 9.a - Apoyo a países en desarrollo
+        + findIndicador_9_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 9.b - Industria tecnológica
+        + findIndicador_9_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 9.c - Conectividad móvil
+        + findIndicador_9_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS09 ──
+        + findAllIndicadoresByProyectoOds09(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 10 - REDUCCIÓN DE DESIGUALDADES  [datasource: ods10]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepository {
+        ' Meta 10.1 - Crecimiento ingresos bajos
+        + findIndicador_10_1_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 10.2 - Inclusión social
+        + findIndicador_10_2_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 10.3 - Igualdad de oportunidades
+        + findIndicador_10_3_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 10.4 - Políticas fiscales
+        + findIndicador_10_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_4_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 10.5 - Regulación financiera
+        + findIndicador_10_5_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 10.6 - Representación global
+        + findIndicador_10_6_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 10.7 - Migración
+        + findIndicador_10_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_7_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_7_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_7_4(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 10.a - Trato especial países en desarrollo
+        + findIndicador_10_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 10.b - Flujos financieros
+        + findIndicador_10_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 10.c - Remesas
+        + findIndicador_10_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS10 ──
+        + findAllIndicadoresByProyectoOds10(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 11 - CIUDADES SOSTENIBLES  [datasource: ods11]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo11CiudadesSosteniblesRepository extends IOdsBaseRepository {
+        ' Meta 11.1 - Vivienda adecuada
+        + findIndicador_11_1_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 11.2 - Transporte público
+        + findIndicador_11_2_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 11.3 - Urbanización sostenible
+        + findIndicador_11_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_3_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 11.4 - Patrimonio cultural
+        + findIndicador_11_4_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 11.5 - Desastres urbanos
+        + findIndicador_11_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_5_3(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 11.6 - Impacto ambiental
+        + findIndicador_11_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_6_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 11.7 - Espacios públicos
+        + findIndicador_11_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_7_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 11.a - Políticas urbanas nacionales
+        + findIndicador_11_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 11.b - Reducción riesgo desastres
+        + findIndicador_11_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_b_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 11.c - Asistencia infraestructura urbana
+        + findIndicador_11_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS11 ──
+        + findAllIndicadoresByProyectoOds11(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 12 - PRODUCCIÓN Y CONSUMO RESPONSABLE  [datasource: ods12]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseRepository {
+        ' Meta 12.1 - Marco de consumo sostenible
+        + findIndicador_12_1_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.2 - Gestión sostenible recursos
+        + findIndicador_12_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_2_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.3 - Pérdida de alimentos
+        + findIndicador_12_3_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.4 - Productos químicos y desechos
+        + findIndicador_12_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_4_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.5 - Reciclado
+        + findIndicador_12_5_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.6 - Informes de sostenibilidad
+        + findIndicador_12_6_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.7 - Adquisiciones públicas
+        + findIndicador_12_7_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.8 - Educación sostenible
+        + findIndicador_12_8_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.a - Capacidad tecnológica
+        + findIndicador_12_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.b - Turismo sostenible
+        + findIndicador_12_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 12.c - Subsidios combustibles fósiles
+        + findIndicador_12_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS12 ──
+        + findAllIndicadoresByProyectoOds12(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 13 - ACCIÓN POR EL CLIMA  [datasource: ods13]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository {
+        ' Meta 13.1 - Resiliencia climática y desastres
+        + findIndicador_13_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_1_3(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 13.2 - Políticas climáticas nacionales
+        + findIndicador_13_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_2_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 13.3 - Educación climática
+        + findIndicador_13_3_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 13.a - Financiamiento climático
+        + findIndicador_13_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 13.b - Países vulnerables
+        + findIndicador_13_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS13 ──
+        + findAllIndicadoresByProyectoOds13(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 14 - VIDA SUBMARINA  [datasource: ods14]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo14VidaSubmarinaRepository extends IOdsBaseRepository {
+        ' Meta 14.1 - Contaminación marina
+        + findIndicador_14_1_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 14.2 - Ecosistemas marinos
+        + findIndicador_14_2_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 14.3 - Acidificación oceánica
+        + findIndicador_14_3_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 14.4 - Pesca sostenible
+        + findIndicador_14_4_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 14.5 - Zonas marinas protegidas
+        + findIndicador_14_5_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 14.6 - Pesca ilegal
+        + findIndicador_14_6_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 14.7 - Recursos marinos países insulares
+        + findIndicador_14_7_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 14.a - Investigación oceanográfica
+        + findIndicador_14_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 14.b - Pesca artesanal
+        + findIndicador_14_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 14.c - Derecho del mar
+        + findIndicador_14_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS14 ──
+        + findAllIndicadoresByProyectoOds14(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 15 - VIDA DE ECOSISTEMAS TERRESTRES  [datasource: ods15]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository {
+        ' Meta 15.1 - Ecosistemas terrestres y dulceacuícolas
+        + findIndicador_15_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_1_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.2 - Gestión forestal sostenible
+        + findIndicador_15_2_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.3 - Desertificación
+        + findIndicador_15_3_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.4 - Ecosistemas de montaña
+        + findIndicador_15_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_4_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.5 - Biodiversidad
+        + findIndicador_15_5_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.6 - Recursos genéticos
+        + findIndicador_15_6_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.7 - Caza furtiva
+        + findIndicador_15_7_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.8 - Especies invasoras
+        + findIndicador_15_8_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.9 - Biodiversidad en planificación nacional
+        + findIndicador_15_9_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.a - Financiamiento biodiversidad
+        + findIndicador_15_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.b - Financiamiento forestal
+        + findIndicador_15_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 15.c - Lucha contra tráfico de especies
+        + findIndicador_15_c_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS15 ──
+        + findAllIndicadoresByProyectoOds15(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 16 - PAZ, JUSTICIA E INSTITUCIONES SÓLIDAS  [datasource: ods16]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo16PazJusticiaRepository extends IOdsBaseRepository {
+        ' Meta 16.1 - Reducción de la violencia
+        + findIndicador_16_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_1_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_1_4(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.2 - Protección de niños
+        + findIndicador_16_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_2_3(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.3 - Estado de derecho
+        + findIndicador_16_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_3_3(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.4 - Flujos financieros ilícitos
+        + findIndicador_16_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_4_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.5 - Corrupción y soborno
+        + findIndicador_16_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_5_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.6 - Instituciones eficaces
+        + findIndicador_16_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_6_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.7 - Participación inclusiva
+        + findIndicador_16_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_7_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.8 - Representación global
+        + findIndicador_16_8_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.9 - Identidad jurídica
+        + findIndicador_16_9_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.10 - Acceso a la información
+        + findIndicador_16_10_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_10_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.a - Instituciones de derechos humanos
+        + findIndicador_16_a_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 16.b - No discriminación
+        + findIndicador_16_b_1(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS16 ──
+        + findAllIndicadoresByProyectoOds16(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    ' ─────────────────────────────────────────────────────────
+    ' ODS 17 - ALIANZAS PARA LOS OBJETIVOS  [datasource: ods17]
+    ' ─────────────────────────────────────────────────────────
+    interface IObjetivo17AlianzasRepository extends IOdsBaseRepository {
+        ' Meta 17.1 - Finanzas públicas
+        + findIndicador_17_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_1_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.2 - AOD países desarrollados
+        + findIndicador_17_2_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.3 - Movilización de recursos
+        + findIndicador_17_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_3_2(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.4 - Deuda de países en desarrollo
+        + findIndicador_17_4_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.5 - Inversión países en desarrollo
+        + findIndicador_17_5_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.6 - Tecnología y acceso internet
+        + findIndicador_17_6_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.7 - Tecnologías ecológicas
+        + findIndicador_17_7_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.8 - Uso de internet
+        + findIndicador_17_8_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.9 - Capacidad estadística
+        + findIndicador_17_9_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.10 - Sistema comercial multilateral
+        + findIndicador_17_10_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.11 - Exportaciones países en desarrollo
+        + findIndicador_17_11_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.12 - Acceso mercados países menos adelantados
+        + findIndicador_17_12_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.13 - Estabilidad macroeconómica
+        + findIndicador_17_13_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.14 - Coherencia de políticas
+        + findIndicador_17_14_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.15 - Marcos nacionales de resultados
+        + findIndicador_17_15_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.16 - Alianzas mundiales para el desarrollo
+        + findIndicador_17_16_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.17 - Alianzas público-privadas
+        + findIndicador_17_17_1(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.18 - Datos, monitoreo y rendición de cuentas
+        + findIndicador_17_18_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_18_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_18_3(proyectoId: Integer) : Optional<Indicador>
+        ' Meta 17.19 - Estadísticas nacionales
+        + findIndicador_17_19_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_19_2(proyectoId: Integer) : Optional<Indicador>
+        ' ── Consultas agregadas propias ODS17 ──
+        + findAllIndicadoresByProyectoOds17(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+}
+
+' ══════════════════════════════════════════════════════════════
+' IMPLEMENTATIONS (jOOQ DSLContext por datasource)
+' ══════════════════════════════════════════════════════════════
+
+package "Layer: Repository Implementations (jOOQ)" {
+
+    abstract class OdsBaseRepositoryImpl {
+        # dsl: DSLContext
+        # OdsBaseRepositoryImpl(dsl: DSLContext)
+        + findAllProyectos() : List<Proyecto>
+        + findProyectoById(id: Integer) : Optional<Proyecto>
+        + findProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + findProyectosByEstado(estado: EstadoProyecto) : List<Proyecto>
+        + saveProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(id: Integer) : void
+        + findIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + findIndicadorByCodigo(proyectoId: Integer, codigo: String) : Optional<Indicador>
+        + findIndicadoresByCodigoPrefix(prefix: String) : List<Indicador>
+        + saveIndicador(indicador: Indicador) : Indicador
+        + updateIndicador(indicador: Indicador) : Indicador
+        + findMetasByProyecto(proyectoId: Integer) : List<MetaProyecto>
+        + saveMetaProyecto(meta: MetaProyecto) : MetaProyecto
+        + findMedicionesByIndicador(indicadorId: Integer) : List<MedicionHistorica>
+        + saveMedicion(medicion: MedicionHistorica) : MedicionHistorica
+        + findAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + findAuditoriaByRegistro(tablaAfectada: String, registroId: Integer) : List<AuditoriaOds>
+        + spAdminDashboard() : Map<String, Object>
+        + spAdminReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        ' ── Método protegido reutilizado por todas las implementaciones ──
+        # findIndicadorByCodigoExacto(proyectoId: Integer, codigo: String) : Optional<Indicador>
+    }
+
+    class Objetivo01PobrezaRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo01PobrezaRepository {
+        ' DSLContext apunta a datasource: ods01
+        + findIndicador_1_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_4_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_5_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_5_4(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_a_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_1_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds01(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo02HambreCeroRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo02HambreCeroRepository {
+        ' DSLContext apunta a datasource: ods02
+        + findIndicador_2_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_2_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_2_4(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_a_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_2_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds02(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo03SaludBienestarRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo03SaludBienestarRepository {
+        ' DSLContext apunta a datasource: ods03
+        + findIndicador_3_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_3_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_3_4(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_3_5(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_4_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_7_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_8_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_8_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_9_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_9_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_9_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_b_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_b_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_d_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_3_d_2(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds03(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo04EducacionRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo04EducacionRepository {
+        ' DSLContext apunta a datasource: ods04
+        + findIndicador_4_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_4_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds04(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo05GeneroRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo05GeneroRepository {
+        ' DSLContext apunta a datasource: ods05
+        + findIndicador_5_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_6_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_a_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_5_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds05(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo06AguaSaneamientoRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo06AguaSaneamientoRepository {
+        ' DSLContext apunta a datasource: ods06
+        + findIndicador_6_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_4_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_6_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds06(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo07EnergiaRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo07EnergiaRepository {
+        ' DSLContext apunta a datasource: ods07
+        + findIndicador_7_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_7_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_7_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_7_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_7_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_7_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds07(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo08CrecimientoEconomicoRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo08CrecimientoEconomicoRepository {
+        ' DSLContext apunta a datasource: ods08
+        + findIndicador_8_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_4_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_8_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_8_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_9_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_9_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_10_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_10_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_8_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds08(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo09InfraestructuraRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo09InfraestructuraRepository {
+        ' DSLContext apunta a datasource: ods09
+        + findIndicador_9_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_9_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds09(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo10ReduccionDesigualdadRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo10ReduccionDesigualdadRepository {
+        ' DSLContext apunta a datasource: ods10
+        + findIndicador_10_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_4_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_7_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_7_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_7_4(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_10_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds10(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo11CiudadesSosteniblesRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo11CiudadesSosteniblesRepository {
+        ' DSLContext apunta a datasource: ods11
+        + findIndicador_11_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_5_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_6_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_7_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_b_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_11_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds11(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo12ConsumoProduccionRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo12ConsumoProduccionRepository {
+        ' DSLContext apunta a datasource: ods12
+        + findIndicador_12_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_4_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_8_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_12_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds12(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo13AccionClimaRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo13AccionClimaRepository {
+        ' DSLContext apunta a datasource: ods13
+        + findIndicador_13_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_1_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_13_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds13(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo14VidaSubmarinaRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo14VidaSubmarinaRepository {
+        ' DSLContext apunta a datasource: ods14
+        + findIndicador_14_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_14_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_14_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_14_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_14_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_14_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_14_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_14_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_14_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_14_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds14(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo15VidaEcosistemasRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo15VidaEcosistemasRepository {
+        ' DSLContext apunta a datasource: ods15
+        + findIndicador_15_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_4_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_8_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_9_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_15_c_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds15(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo16PazJusticiaRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo16PazJusticiaRepository {
+        ' DSLContext apunta a datasource: ods16
+        + findIndicador_16_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_1_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_1_4(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_2_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_2_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_3_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_4_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_5_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_6_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_7_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_8_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_9_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_10_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_10_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_a_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_16_b_1(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds16(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo17AlianzasRepositoryImpl extends OdsBaseRepositoryImpl implements IObjetivo17AlianzasRepository {
+        ' DSLContext apunta a datasource: ods17
+        + findIndicador_17_1_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_1_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_2_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_3_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_3_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_4_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_5_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_6_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_7_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_8_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_9_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_10_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_11_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_12_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_13_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_14_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_15_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_16_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_17_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_18_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_18_2(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_18_3(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_19_1(proyectoId: Integer) : Optional<Indicador>
+        + findIndicador_17_19_2(proyectoId: Integer) : Optional<Indicador>
+        + findAllIndicadoresByProyectoOds17(proyectoId: Integer) : List<Indicador>
+        + findIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class LoginRepositoryImpl implements ILoginRepository {
+        ' DSLContext apunta a datasource: ods_login
+        # dsl: DSLContext
+        + findUsuarioById(id: Integer) : Optional<Usuario>
+        + findUsuarioByUsername(username: String) : Optional<Usuario>
+        + findUsuarioByEmail(email: String) : Optional<Usuario>
+        + findUsuariosActivos() : List<Usuario>
+        + saveUsuario(usuario: Usuario) : Usuario
+        + updateUltimoLogin(usuarioId: Integer) : void
+        + incrementarIntentosFallidos(usuarioId: Integer) : void
+        + bloquearUsuario(usuarioId: Integer, hasta: LocalDateTime) : void
+        + findSesionByToken(tokenHash: String) : Optional<Sesion>
+        + saveSesion(sesion: Sesion) : Sesion
+        + revocarSesion(tokenHash: String) : void
+        + revocarSesionesByUsuario(usuarioId: Integer) : void
+    }
+}
+
+' ══════════════════════════════════════════════════════════════
+' SERVICES (uno por ODS + Login)
+' ══════════════════════════════════════════════════════════════
+
+package "Layer: Services" {
+
+    interface IOdsBaseService {
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+    }
+
+    class Objetivo01PobrezaService implements IOdsBaseService {
+        - repo: IObjetivo01PobrezaRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicador_1_1_1(proyectoId: Integer) : Optional<Indicador>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo02HambreCeroService implements IOdsBaseService {
+        - repo: IObjetivo02HambreCeroRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo03SaludBienestarService implements IOdsBaseService {
+        - repo: IObjetivo03SaludBienestarRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo04EducacionService implements IOdsBaseService {
+        - repo: IObjetivo04EducacionRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo05GeneroService implements IOdsBaseService {
+        - repo: IObjetivo05GeneroRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo06AguaSaneamientoService implements IOdsBaseService {
+        - repo: IObjetivo06AguaSaneamientoRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo07EnergiaService implements IOdsBaseService {
+        - repo: IObjetivo07EnergiaRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo08CrecimientoEconomicoService implements IOdsBaseService {
+        - repo: IObjetivo08CrecimientoEconomicoRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo09InfraestructuraService implements IOdsBaseService {
+        - repo: IObjetivo09InfraestructuraRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo10ReduccionDesigualdadService implements IOdsBaseService {
+        - repo: IObjetivo10ReduccionDesigualdadRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo11CiudadesSosteniblesService implements IOdsBaseService {
+        - repo: IObjetivo11CiudadesSosteniblesRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo12ConsumoProduccionService implements IOdsBaseService {
+        - repo: IObjetivo12ConsumoProduccionRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo13AccionClimaService implements IOdsBaseService {
+        - repo: IObjetivo13AccionClimaRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo14VidaSubmarinaService implements IOdsBaseService {
+        - repo: IObjetivo14VidaSubmarinaRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo15VidaEcosistemasService implements IOdsBaseService {
+        - repo: IObjetivo15VidaEcosistemasRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo16PazJusticiaService implements IOdsBaseService {
+        - repo: IObjetivo16PazJusticiaRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class Objetivo17AlianzasService implements IOdsBaseService {
+        - repo: IObjetivo17AlianzasRepository
+        + getDashboard() : Map<String, Object>
+        + getReporteProyecto(proyectoId: Integer) : Map<String, Object>
+        + getProyectosByUsuario(usuarioId: Integer) : List<Proyecto>
+        + createProyecto(proyecto: Proyecto) : Proyecto
+        + updateProyecto(proyecto: Proyecto) : Proyecto
+        + deleteProyecto(proyectoId: Integer) : void
+        + getIndicadoresByProyecto(proyectoId: Integer) : List<Indicador>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : MedicionHistorica
+        + getAuditoriaReciente(dias: Integer) : List<AuditoriaOds>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : List<Indicador>
+    }
+
+    class LoginService {
+        - repo: ILoginRepository
+        + login(username: String, password: String) : Optional<Sesion>
+        + logout(tokenHash: String) : void
+        + getUsuarioActual(tokenHash: String) : Optional<Usuario>
+        + registrarUsuario(usuario: Usuario) : Usuario
+        + cambiarPassword(usuarioId: Integer, nuevaPassword: String) : void
+        + validarToken(tokenHash: String) : Boolean
+    }
+}
+
+' ══════════════════════════════════════════════════════════════
+' CONTROLLERS (REST - uno por ODS + Login)
+' ══════════════════════════════════════════════════════════════
+
+package "Layer: Controllers (REST)" {
+
+    abstract class OdsBaseController {
+        # service: IOdsBaseService
+        + getDashboard() : ResponseEntity<?>
+        + getReporteProyecto(proyectoId: Integer) : ResponseEntity<?>
+        + getProyectosByUsuario(usuarioId: Integer) : ResponseEntity<List<Proyecto>>
+        + createProyecto(proyecto: Proyecto) : ResponseEntity<Proyecto>
+        + updateProyecto(proyectoId: Integer, proyecto: Proyecto) : ResponseEntity<Proyecto>
+        + deleteProyecto(proyectoId: Integer) : ResponseEntity<Void>
+        + getIndicadoresByProyecto(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresByMeta(proyectoId: Integer, metaPrefix: String) : ResponseEntity<List<Indicador>>
+        + registrarMedicion(indicadorId: Integer, medicion: MedicionHistorica) : ResponseEntity<MedicionHistorica>
+        + getAuditoriaReciente(dias: Integer) : ResponseEntity<List<AuditoriaOds>>
+    }
+
+    class Objetivo01PobrezaController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods01")
+        - service: Objetivo01PobrezaService
+        + getIndicador_1_1_1(proyectoId: Integer) : ResponseEntity<Indicador>
+        + getIndicadoresMeta_1_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_1_2(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_1_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_1_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_1_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo02HambreCeroController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods02")
+        - service: Objetivo02HambreCeroService
+        + getIndicadoresMeta_2_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_2_2(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_2_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_2_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_2_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo03SaludBienestarController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods03")
+        - service: Objetivo03SaludBienestarService
+        + getIndicadoresMeta_3_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_3_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_3_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_3_8(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_3_9(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo04EducacionController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods04")
+        - service: Objetivo04EducacionService
+        + getIndicadoresMeta_4_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_4_2(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_4_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_4_7(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo05GeneroController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods05")
+        - service: Objetivo05GeneroService
+        + getIndicadoresMeta_5_2(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_5_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_5_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_5_6(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo06AguaSaneamientoController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods06")
+        - service: Objetivo06AguaSaneamientoService
+        + getIndicadoresMeta_6_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_6_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_6_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_6_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo07EnergiaController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods07")
+        - service: Objetivo07EnergiaService
+        + getIndicadoresMeta_7_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_7_2(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_7_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo08CrecimientoEconomicoController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods08")
+        - service: Objetivo08CrecimientoEconomicoService
+        + getIndicadoresMeta_8_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_8_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_8_7(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_8_8(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_8_10(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo09InfraestructuraController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods09")
+        - service: Objetivo09InfraestructuraService
+        + getIndicadoresMeta_9_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_9_2(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_9_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_9_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo10ReduccionDesigualdadController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods10")
+        - service: Objetivo10ReduccionDesigualdadService
+        + getIndicadoresMeta_10_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_10_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_10_7(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo11CiudadesSosteniblesController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods11")
+        - service: Objetivo11CiudadesSosteniblesService
+        + getIndicadoresMeta_11_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_11_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_11_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_11_6(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_11_7(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo12ConsumoProduccionController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods12")
+        - service: Objetivo12ConsumoProduccionService
+        + getIndicadoresMeta_12_2(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_12_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_12_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_12_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo13AccionClimaController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods13")
+        - service: Objetivo13AccionClimaService
+        + getIndicadoresMeta_13_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_13_2(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_13_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo14VidaSubmarinaController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods14")
+        - service: Objetivo14VidaSubmarinaService
+        + getIndicadoresMeta_14_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_14_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_14_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_14_6(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo15VidaEcosistemasController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods15")
+        - service: Objetivo15VidaEcosistemasService
+        + getIndicadoresMeta_15_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_15_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_15_4(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_15_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_15_9(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo16PazJusticiaController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods16")
+        - service: Objetivo16PazJusticiaService
+        + getIndicadoresMeta_16_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_16_2(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_16_3(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_16_5(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_16_6(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_16_10(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class Objetivo17AlianzasController extends OdsBaseController {
+        ' @RequestMapping("/api/v1/ods17")
+        - service: Objetivo17AlianzasService
+        + getIndicadoresMeta_17_1(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_17_6(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_17_8(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_17_16(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_17_17(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_17_18(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+        + getIndicadoresMeta_17_19(proyectoId: Integer) : ResponseEntity<List<Indicador>>
+    }
+
+    class LoginController {
+        ' @RequestMapping("/api/v1/auth")
+        - service: LoginService
+        + login(request: LoginRequest) : ResponseEntity<?>
+        + logout(token: String) : ResponseEntity<Void>
+        + getUsuarioActual(token: String) : ResponseEntity<Usuario>
+        + registrar(usuario: Usuario) : ResponseEntity<Usuario>
+        + cambiarPassword(request: ChangePasswordRequest) : ResponseEntity<Void>
+    }
+}
+
+' ══════════════════════════════════════════════════════════════
+' RELACIONES Service → Repository (representativas)
+' ══════════════════════════════════════════════════════════════
+
+Objetivo01PobrezaService --> IObjetivo01PobrezaRepository
+Objetivo02HambreCeroService --> IObjetivo02HambreCeroRepository
+Objetivo03SaludBienestarService --> IObjetivo03SaludBienestarRepository
+Objetivo04EducacionService --> IObjetivo04EducacionRepository
+Objetivo05GeneroService --> IObjetivo05GeneroRepository
+Objetivo06AguaSaneamientoService --> IObjetivo06AguaSaneamientoRepository
+Objetivo07EnergiaService --> IObjetivo07EnergiaRepository
+Objetivo08CrecimientoEconomicoService --> IObjetivo08CrecimientoEconomicoRepository
+Objetivo09InfraestructuraService --> IObjetivo09InfraestructuraRepository
+Objetivo10ReduccionDesigualdadService --> IObjetivo10ReduccionDesigualdadRepository
+Objetivo11CiudadesSosteniblesService --> IObjetivo11CiudadesSosteniblesRepository
+Objetivo12ConsumoProduccionService --> IObjetivo12ConsumoProduccionRepository
+Objetivo13AccionClimaService --> IObjetivo13AccionClimaRepository
+Objetivo14VidaSubmarinaService --> IObjetivo14VidaSubmarinaRepository
+Objetivo15VidaEcosistemasService --> IObjetivo15VidaEcosistemasRepository
+Objetivo16PazJusticiaService --> IObjetivo16PazJusticiaRepository
+Objetivo17AlianzasService --> IObjetivo17AlianzasRepository
+LoginService --> ILoginRepository
+
+' ══════════════════════════════════════════════════════════════
+' RELACIONES Controller → Service (representativas)
+' ══════════════════════════════════════════════════════════════
+
+Objetivo01PobrezaController --> Objetivo01PobrezaService
+Objetivo02HambreCeroController --> Objetivo02HambreCeroService
+Objetivo03SaludBienestarController --> Objetivo03SaludBienestarService
+Objetivo04EducacionController --> Objetivo04EducacionService
+Objetivo05GeneroController --> Objetivo05GeneroService
+Objetivo06AguaSaneamientoController --> Objetivo06AguaSaneamientoService
+Objetivo07EnergiaController --> Objetivo07EnergiaService
+Objetivo08CrecimientoEconomicoController --> Objetivo08CrecimientoEconomicoService
+Objetivo09InfraestructuraController --> Objetivo09InfraestructuraService
+Objetivo10ReduccionDesigualdadController --> Objetivo10ReduccionDesigualdadService
+Objetivo11CiudadesSosteniblesController --> Objetivo11CiudadesSosteniblesService
+Objetivo12ConsumoProduccionController --> Objetivo12ConsumoProduccionService
+Objetivo13AccionClimaController --> Objetivo13AccionClimaService
+Objetivo14VidaSubmarinaController --> Objetivo14VidaSubmarinaService
+Objetivo15VidaEcosistemasController --> Objetivo15VidaEcosistemasService
+Objetivo16PazJusticiaController --> Objetivo16PazJusticiaService
+Objetivo17AlianzasController --> Objetivo17AlianzasService
+LoginController --> LoginService
+
+@enduml
