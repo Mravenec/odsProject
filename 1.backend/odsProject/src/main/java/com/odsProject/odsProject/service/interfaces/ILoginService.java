@@ -291,9 +291,9 @@ public interface ILoginService {
      * Obtiene detalles de indicadores para vista administrativa
      * 
      * @param proyectoId ID del proyecto (opcional)
-     * @return Lista de detalles de indicadores
+     * @return Lista de detalles de indicadores como mapas
      */
-    List<VistaAdminDetalleIndicadores> getVistaDetalleIndicadores(Integer proyectoId);
+    List<Map<String, Object>> getVistaDetalleIndicadores(Integer proyectoId);
     
     /**
      * Obtiene estadísticas del sistema de login

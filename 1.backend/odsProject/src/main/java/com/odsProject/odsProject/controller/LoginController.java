@@ -58,6 +58,9 @@ public class LoginController implements ILoginController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @GetMapping("/auth/validate")
     public ResponseEntity<Map<String, Object>> validateToken(@RequestHeader("Authorization") String token) {
@@ -69,6 +72,9 @@ public class LoginController implements ILoginController {
         }).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @PostMapping("/auth/refresh")
     public ResponseEntity<Map<String, String>> refreshToken(@RequestHeader("Authorization") String token) {
@@ -78,6 +84,9 @@ public class LoginController implements ILoginController {
 
     // ── Gestión de Usuarios ──
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @PostMapping("/users/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody Map<String, Object> userRequest) {
@@ -85,6 +94,9 @@ public class LoginController implements ILoginController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @GetMapping("/users/{id}")
     public ResponseEntity<Map<String, Object>> getUsuarioById(@PathVariable Integer id) {
@@ -96,6 +108,9 @@ public class LoginController implements ILoginController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @GetMapping("/users/username/{username}")
     public ResponseEntity<Map<String, Object>> getUsuarioByUsername(@PathVariable String username) {
@@ -107,6 +122,9 @@ public class LoginController implements ILoginController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @PutMapping("/users/{id}")
     public ResponseEntity<Map<String, Object>> updateUsuario(@PathVariable Integer id, @RequestBody Map<String, Object> userRequest) {
@@ -114,6 +132,9 @@ public class LoginController implements ILoginController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @PostMapping("/users/change-password")
     public ResponseEntity<Boolean> changePassword(@RequestBody Map<String, String> passwordRequest) {
@@ -121,6 +142,9 @@ public class LoginController implements ILoginController {
         return ResponseEntity.ok(false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @PostMapping("/users/recovery")
     public ResponseEntity<Boolean> initiatePasswordRecovery(@RequestBody Map<String, String> emailRequest) {
@@ -129,6 +153,9 @@ public class LoginController implements ILoginController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @PostMapping("/users/reset-password")
     public ResponseEntity<Boolean> resetPassword(@RequestBody Map<String, String> resetRequest) {
@@ -136,6 +163,9 @@ public class LoginController implements ILoginController {
         return ResponseEntity.ok(false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @GetMapping("/users/verify-recovery/{token}")
     public ResponseEntity<Map<String, Object>> validateRecoveryToken(@PathVariable String token) {
@@ -149,6 +179,9 @@ public class LoginController implements ILoginController {
 
     // ── Gestión de Roles ──
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @GetMapping("/roles")
     public ResponseEntity<List<Map<String, Object>>> getAllRoles() {
@@ -156,6 +189,9 @@ public class LoginController implements ILoginController {
         return ResponseEntity.ok(List.of());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @GetMapping("/roles/{id}")
     public ResponseEntity<Map<String, Object>> getRolById(@PathVariable Integer id) {
@@ -168,6 +204,9 @@ public class LoginController implements ILoginController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @PostMapping("/users/assign-role")
     public ResponseEntity<Boolean> assignRolToUsuario(@RequestBody Map<String, Integer> assignmentRequest) {
@@ -217,6 +256,9 @@ public class LoginController implements ILoginController {
 
     // ── Permisos ODS ──
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @GetMapping("/users/{id}/permits")
     public ResponseEntity<List<Map<String, Object>>> getPermisosByUsuario(@PathVariable Integer usuarioId) {
@@ -265,6 +307,9 @@ public class LoginController implements ILoginController {
 
     // ── Auditoría y Seguridad ──
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @GetMapping("/users/{id}/login-history")
     public ResponseEntity<List<Map<String, Object>>> getLoginHistory(@PathVariable Integer usuarioId, @RequestParam(defaultValue = "30") Integer dias) {
@@ -278,6 +323,9 @@ public class LoginController implements ILoginController {
         }).collect(java.util.stream.Collectors.toList()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @GetMapping("/auth/failed-attempts")
     public ResponseEntity<List<Map<String, Object>>> getFailedLoginAttempts(@RequestParam(defaultValue = "24") Integer horas) {
@@ -291,6 +339,9 @@ public class LoginController implements ILoginController {
         }).collect(java.util.stream.Collectors.toList()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @PostMapping("/users/block")
     public ResponseEntity<Boolean> blockUsuario(@RequestBody Map<String, Object> blockRequest) {

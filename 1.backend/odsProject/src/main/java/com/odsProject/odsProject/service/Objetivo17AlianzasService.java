@@ -245,59 +245,42 @@ public class Objetivo17AlianzasService implements IObjetivo17AlianzasService {
     // ── Métodos CRUD y Utilidades (para alinear con Repository) ──
 
     /**
-     * Obtiene todos los proyectos del ODS17
-     * 
-     * @return Lista de todos los proyectos del ODS17
+     * {@inheritDoc}
      */
     public List<Proyectos> getAllProjectsOds17() {
         return objetivo17AlianzasRepository.findAllProyectosOds17();
     }
 
     /**
-     * Obtiene un proyecto del ODS17 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Optional con el proyecto encontrado
+     * {@inheritDoc}
      */
     public Optional<Proyectos> getProjectOds17ById(Integer proyectoId) {
         return objetivo17AlianzasRepository.findProyectoOds17ById(proyectoId);
     }
 
     /**
-     * Obtiene todas las metas de proyecto del ODS17
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todas las metas del proyecto ODS17
+     * {@inheritDoc}
      */
     public List<MetasProyecto> getAllMetasProyectoOds17(Integer proyectoId) {
         return objetivo17AlianzasRepository.findAllMetasProyectoOds17(proyectoId);
     }
 
     /**
-     * Obtiene una meta de proyecto del ODS17 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return Optional con la meta encontrada
+     * {@inheritDoc}
      */
     public Optional<MetasProyecto> getMetaProyectoOds17ById(Integer metaId) {
         return objetivo17AlianzasRepository.findMetaProyectoOds17ById(metaId);
     }
 
     /**
-     * Obtiene todas las mediciones históricas del ODS17
-     * 
-     * @param indicadorId ID del indicador
-     * @return Lista de todas las mediciones históricas del ODS17
+     * {@inheritDoc}
      */
     public List<MedicionesHistoricas> getAllMedicionesHistoricasOds17(Integer indicadorId) {
         return objetivo17AlianzasRepository.findAllMedicionesHistoricasOds17(indicadorId);
     }
 
     /**
-     * Obtiene una medición histórica del ODS17 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return Optional con la medición encontrada
+     * {@inheritDoc}
      */
     public Optional<MedicionesHistoricas> getMedicionHistoricaOds17ById(Integer medicionId) {
         return objetivo17AlianzasRepository.findMedicionHistoricaOds17ById(medicionId);
@@ -315,9 +298,7 @@ public class Objetivo17AlianzasService implements IObjetivo17AlianzasService {
     }
 
     /**
-     * Obtiene estadísticas específicas del ODS17
-     * 
-     * @return Map con estadísticas del ODS17
+     * {@inheritDoc}
      */
     public Map<String, Object> getOds17Statistics() {
         List<Proyectos> proyectos = objetivo17AlianzasRepository.findAllProyectosOds17();
@@ -332,20 +313,14 @@ public class Objetivo17AlianzasService implements IObjetivo17AlianzasService {
     }
 
     /**
-     * Verifica si un proyecto del ODS17 existe
-     * 
-     * @param proyectoId ID del proyecto
-     * @return true si existe, false otherwise
+     * {@inheritDoc}
      */
     public Boolean projectExists(Integer proyectoId) {
         return objetivo17AlianzasRepository.findProyectoOds17ById(proyectoId).isPresent();
     }
 
     /**
-     * Verifica si un indicador del ODS17 existe
-     * 
-     * @param indicadorId ID del indicador
-     * @return true si existe, false otherwise
+     * {@inheritDoc}
      */
     public Boolean indicatorExists(Integer indicadorId) {
         return true;
