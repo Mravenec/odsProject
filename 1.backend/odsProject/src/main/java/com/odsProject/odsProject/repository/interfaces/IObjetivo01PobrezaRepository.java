@@ -6,7 +6,7 @@ import com.odsProject.odsProject.model.IndicatorData;
  * Interfaz del Repositorio para el Objetivo 1: Fin de la Pobreza
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 1
  */
-public interface IOjetivo01PobrezaRepository {
+public interface IObjetivo01PobrezaRepository {
     
     /**
      * 1.1.1 Proporción de la población que vive por debajo del umbral internacional de pobreza, 

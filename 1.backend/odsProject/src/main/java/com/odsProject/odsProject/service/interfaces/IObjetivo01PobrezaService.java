@@ -7,7 +7,7 @@ import java.util.List;
  * Interfaz de Servicio para el Objetivo 1: Fin de la Pobreza
  * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 1
  */
-public interface IOjetivo01PobrezaService {
+public interface IObjetivo01PobrezaService {
     
     /**
      * Obtiene todos los indicadores del Objetivo 1: Fin de la Pobreza

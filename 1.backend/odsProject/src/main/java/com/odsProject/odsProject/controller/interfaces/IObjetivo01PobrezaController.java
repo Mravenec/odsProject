@@ -8,7 +8,7 @@ import java.util.List;
  * Interfaz de Controlador para el Objetivo 1: Fin de la Pobreza
  * Define los endpoints REST para los indicadores del Objetivo de Desarrollo Sostenible 1
  */
-public interface IOjetivo01PobrezaController {
+public interface IObjetivo01PobrezaController {
     
     /**
      * Obtiene todos los indicadores del Objetivo 1: Fin de la Pobreza
