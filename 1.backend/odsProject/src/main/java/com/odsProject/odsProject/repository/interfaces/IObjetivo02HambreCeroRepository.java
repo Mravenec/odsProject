@@ -9,7 +9,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 2
  * Usa jOOQ con datasource ods02
  */
-public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indicadores> {
+public interface IObjetivo02HambreCeroRepository {
     
     /**
      * 2.1.1 Prevalencia de la subalimentación [10]
