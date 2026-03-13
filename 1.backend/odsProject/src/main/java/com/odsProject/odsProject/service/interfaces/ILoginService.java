@@ -353,4 +353,11 @@ public interface ILoginService {
      * @return Map con resultados de la limpieza
      */
     Map<String, Object> cleanupExpiredData();
+    
+    /**
+     * Verifica el estado de salud del servicio
+     * 
+     * @return Map con información del estado del servicio
+     */
+    Map<String, String> healthCheck();
 }

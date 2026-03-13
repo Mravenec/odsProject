@@ -587,4 +587,29 @@ public class LoginService implements ILoginService {
             );
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> healthCheck() {
+        try {
+            // Simple health check - verify database connectivity
+            loginRepository.findAllRoles(); // Simple query to test DB connection
+            
+            return Map.of(
+                "status", "UP",
+                "service", "LoginService",
+                "timestamp", LocalDateTime.now().toString(),
+                "database", "CONNECTED"
+            );
+        } catch (Exception e) {
+            return Map.of(
+                "status", "DOWN",
+                "service", "LoginService",
+                "timestamp", LocalDateTime.now().toString(),
+                "database", "ERROR: " + e.getMessage()
+            );
+        }
+    }
 }
