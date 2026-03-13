@@ -1,8 +1,9 @@
 package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
-import com.odsProject.odsProject.model.IndicatorData;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Indicadores;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Interfaz de Controlador para el Objetivo 1: Fin de la Pobreza
@@ -13,111 +14,125 @@ public interface IObjetivo01PobrezaController {
     /**
      * Obtiene todos los indicadores del Objetivo 1: Fin de la Pobreza
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores
      */
-    ResponseEntity<List<IndicatorData>> getAllIndicators();
+    ResponseEntity<List<Indicadores>> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.1.1
      * Proporción de la población que vive por debajo del umbral internacional de pobreza
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.1.1
      */
-    ResponseEntity<IndicatorData> getIndicador_1_1_1();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.2.1
      * Proporción de la población que vive por debajo del umbral nacional de pobreza
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.2.1
      */
-    ResponseEntity<IndicatorData> getIndicador_1_2_1();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.2.2
      * Proporción de personas que viven en la pobreza multidimensional
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.2.2
      */
-    ResponseEntity<IndicatorData> getIndicador_1_2_2();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.3.1
      * Proporción de la población cubierta por sistemas de protección social
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.3.1
      */
-    ResponseEntity<IndicatorData> getIndicador_1_3_1();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.4.1
      * Proporción de la población con acceso a servicios básicos
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.4.1
      */
-    ResponseEntity<IndicatorData> getIndicador_1_4_1();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.4.2
      * Proporción de población con derechos seguros de tenencia de tierra
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.4.2
      */
-    ResponseEntity<IndicatorData> getIndicador_1_4_2();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.5.1
      * Personas afectadas por desastres por cada 100.000 habitantes
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.5.1
      */
-    ResponseEntity<IndicatorData> getIndicador_1_5_1();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.5.2
      * Pérdidas económicas por desastres en relación con el PIB mundial
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.5.2
      */
-    ResponseEntity<IndicatorData> getIndicador_1_5_2();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.5.3
      * Países con estrategias nacionales de reducción del riesgo de desastres
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.5.3
      */
-    ResponseEntity<IndicatorData> getIndicador_1_5_3();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_5_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.5.4
      * Gobiernos locales con estrategias locales de reducción del riesgo de desastres
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.5.4
      */
-    ResponseEntity<IndicatorData> getIndicador_1_5_4();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_5_4(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.a.1
      * AOD destinada a reducción de la pobreza en porcentaje de la RNB
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.a.1
      */
-    ResponseEntity<IndicatorData> getIndicador_1_a_1();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.a.2
      * Proporción del gasto público en servicios esenciales
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.a.2
      */
-    ResponseEntity<IndicatorData> getIndicador_1_a_2();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_a_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.b.1
      * Gasto público social en favor de los pobres
      * 
+     * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 1.b.1
      */
-    ResponseEntity<IndicatorData> getIndicador_1_b_1();
+    ResponseEntity<Optional<Indicadores>> getIndicador_1_b_1(Integer proyectoId);
 }
