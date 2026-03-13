@@ -71,4 +71,21 @@ public interface IObjetivo07EnergiaService {
      * @return Datos del indicador 7.b.1
      */
     Optional<Indicadores> getIndicador_7_b_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS07
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
+    List<Indicadores> findAllIndicadoresByProyectoOds07(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS07
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "7.1", "7.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
+    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

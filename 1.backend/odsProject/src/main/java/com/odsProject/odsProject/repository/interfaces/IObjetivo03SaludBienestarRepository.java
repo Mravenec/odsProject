@@ -246,7 +246,20 @@ public interface IObjetivo03SaludBienestarRepository extends IOdsBaseRepository<
      */
     Optional<Indicadores> findIndicador_3_d_2(Integer proyectoId);
     
-    // ── Consultas agregadas propias ODS03 ──
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS03
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
     List<Indicadores> findAllIndicadoresByProyectoOds03(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS03
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "3.1", "3.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

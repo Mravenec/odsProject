@@ -234,4 +234,21 @@ public interface IObjetivo16PazJusticiaController {
      * @return ResponseEntity con los datos del indicador 16.b.1
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_16_b_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS16
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds16(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS16
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "16.1", "16.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

@@ -141,7 +141,20 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      */
     Optional<Indicadores> findIndicador_2_c_1(Integer proyectoId);
     
-    // ── Consultas agregadas propias ODS02 ──
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS02
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
     List<Indicadores> findAllIndicadoresByProyectoOds02(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS02
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "2.1", "2.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

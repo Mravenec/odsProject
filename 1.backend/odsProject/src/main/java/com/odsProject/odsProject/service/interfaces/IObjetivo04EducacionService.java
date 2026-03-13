@@ -125,4 +125,21 @@ public interface IObjetivo04EducacionService {
      * @return Datos del indicador 4.c.1
      */
     Optional<Indicadores> getIndicador_4_c_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS04
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
+    List<Indicadores> findAllIndicadoresByProyectoOds04(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS04
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "4.1", "4.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
+    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

@@ -136,7 +136,20 @@ public interface IObjetivo05GeneroRepository extends IOdsBaseRepository<Indicado
      */
     Optional<Indicadores> findIndicador_5_c_1(Integer proyectoId);
     
-    // ── Consultas agregadas propias ODS05 ──
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS05
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
     List<Indicadores> findAllIndicadoresByProyectoOds05(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS05
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "5.1", "5.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

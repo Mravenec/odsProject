@@ -144,4 +144,21 @@ public interface IObjetivo15VidaEcosistemasController {
      * @return ResponseEntity con los datos del indicador 15.c.1
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_15_c_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS15
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds15(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS15
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "15.1", "15.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

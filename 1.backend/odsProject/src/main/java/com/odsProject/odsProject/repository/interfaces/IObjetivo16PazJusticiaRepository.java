@@ -228,7 +228,20 @@ public interface IObjetivo16PazJusticiaRepository extends IOdsBaseRepository<Ind
      */
     Optional<Indicadores> findIndicador_16_b_1(Integer proyectoId);
     
-    // ── Consultas agregadas propias ODS16 ──
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS16
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
     List<Indicadores> findAllIndicadoresByProyectoOds16(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS16
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "16.1", "16.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

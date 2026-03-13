@@ -109,7 +109,20 @@ public interface IObjetivo09InfraestructuraRepository extends IOdsBaseRepository
      */
     Optional<Indicadores> findIndicador_9_c_1(Integer proyectoId);
     
-    // ── Consultas agregadas propias ODS09 ──
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS09
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
     List<Indicadores> findAllIndicadoresByProyectoOds09(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS09
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "9.1", "9.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

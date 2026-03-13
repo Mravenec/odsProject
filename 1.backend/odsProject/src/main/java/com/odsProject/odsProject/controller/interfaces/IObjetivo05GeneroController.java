@@ -144,4 +144,21 @@ public interface IObjetivo05GeneroController {
      * @return ResponseEntity con los datos del indicador 5.c.1
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_5_c_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS05
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds05(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS05
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "5.1", "5.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

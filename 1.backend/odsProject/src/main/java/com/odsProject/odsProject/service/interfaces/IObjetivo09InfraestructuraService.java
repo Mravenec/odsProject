@@ -125,4 +125,21 @@ public interface IObjetivo09InfraestructuraService {
      * @return Datos del indicador 9.c.1
      */
     Optional<Indicadores> getIndicador_9_c_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS09
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
+    List<Indicadores> findAllIndicadoresByProyectoOds09(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS09
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "9.1", "9.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
+    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

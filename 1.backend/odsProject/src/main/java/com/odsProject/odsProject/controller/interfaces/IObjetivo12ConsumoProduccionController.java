@@ -135,4 +135,21 @@ public interface IObjetivo12ConsumoProduccionController {
      * @return ResponseEntity con los datos del indicador 12.c.1
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_12_c_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS12
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds12(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS12
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "12.1", "12.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

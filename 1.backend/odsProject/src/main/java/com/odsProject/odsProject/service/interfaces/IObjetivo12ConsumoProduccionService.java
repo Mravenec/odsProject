@@ -134,4 +134,21 @@ public interface IObjetivo12ConsumoProduccionService {
      * @return Datos del indicador 12.c.1
      */
     Optional<Indicadores> getIndicador_12_c_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS12
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
+    List<Indicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS12
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "12.1", "12.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
+    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

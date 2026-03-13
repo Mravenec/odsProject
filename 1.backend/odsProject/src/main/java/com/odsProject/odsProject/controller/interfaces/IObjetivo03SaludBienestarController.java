@@ -270,4 +270,21 @@ public interface IObjetivo03SaludBienestarController {
      * @return ResponseEntity con los datos del indicador 3.d.2
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_3_d_2(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS03
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds03(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS03
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "3.1", "3.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

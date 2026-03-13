@@ -117,4 +117,21 @@ public interface IObjetivo06AguaSaneamientoController {
      * @return ResponseEntity con los datos del indicador 6.b.1
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_6_b_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS06
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds06(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS06
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "6.1", "6.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

@@ -107,4 +107,21 @@ public interface IObjetivo14VidaSubmarinaService {
      * @return Datos del indicador 14.c.1
      */
     Optional<Indicadores> getIndicador_14_c_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS14
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
+    List<Indicadores> findAllIndicadoresByProyectoOds14(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS14
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "14.1", "14.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
+    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

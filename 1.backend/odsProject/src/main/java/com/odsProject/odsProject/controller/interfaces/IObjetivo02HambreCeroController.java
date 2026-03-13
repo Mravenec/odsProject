@@ -153,4 +153,21 @@ public interface IObjetivo02HambreCeroController {
      * @return ResponseEntity con los datos del indicador 2.c.1
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_2_c_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS02
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds02(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS02
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "2.1", "2.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

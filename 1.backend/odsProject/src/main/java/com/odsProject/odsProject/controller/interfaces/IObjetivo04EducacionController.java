@@ -126,4 +126,21 @@ public interface IObjetivo04EducacionController {
      * @return ResponseEntity con los datos del indicador 4.c.1
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_4_c_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS04
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds04(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS04
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "4.1", "4.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

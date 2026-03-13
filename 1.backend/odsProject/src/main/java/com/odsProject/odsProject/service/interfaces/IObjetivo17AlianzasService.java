@@ -233,4 +233,21 @@ public interface IObjetivo17AlianzasService {
      * @return Datos del indicador 17.19.2
      */
     Optional<Indicadores> getIndicador_17_19_2(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS17
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
+    List<Indicadores> findAllIndicadoresByProyectoOds17(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS17
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "17.1", "17.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
+    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

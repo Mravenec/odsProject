@@ -90,4 +90,21 @@ public interface IObjetivo13AccionClimaController {
      * @return ResponseEntity con los datos del indicador 13.b.1
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_13_b_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS13
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds13(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS13
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "13.1", "13.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

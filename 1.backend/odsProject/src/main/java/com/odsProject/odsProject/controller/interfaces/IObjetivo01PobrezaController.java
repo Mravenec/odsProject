@@ -135,4 +135,21 @@ public interface IObjetivo01PobrezaController {
      * @return ResponseEntity con los datos del indicador 1.b.1
      */
     ResponseEntity<Optional<Indicadores>> getIndicador_1_b_1(Integer proyectoId);
+    
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS01
+     * 
+     * @param proyectoId ID del proyecto
+     * @return ResponseEntity con la lista de todos los indicadores del proyecto
+     */
+    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds01(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS01
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "1.1", "1.2")
+     * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
+     */
+    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

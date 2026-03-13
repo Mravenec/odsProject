@@ -84,7 +84,20 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      */
     Optional<Indicadores> findIndicador_13_b_1(Integer proyectoId);
     
-    // ── Consultas agregadas propias ODS13 ──
+    /**
+     * Encuentra todos los indicadores asociados a un proyecto específico del ODS13
+     * 
+     * @param proyectoId ID del proyecto
+     * @return Lista de todos los indicadores del proyecto
+     */
     List<Indicadores> findAllIndicadoresByProyectoOds13(Integer proyectoId);
+    
+    /**
+     * Encuentra indicadores filtrando por meta específica del ODS13
+     * 
+     * @param proyectoId ID del proyecto
+     * @param metaPrefix Prefijo de la meta (ej: "13.1", "13.2")
+     * @return Lista de indicadores que pertenecen a la meta especificada
+     */
     List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }
