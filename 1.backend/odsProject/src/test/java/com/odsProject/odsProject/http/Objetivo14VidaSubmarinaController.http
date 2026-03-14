@@ -1,0 +1,274 @@
+### Objetivo 14: Vida Submarina - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 14
+@indicadorId = 14
+@metaId = 14
+@medicionId = 14
+
+# ── Indicadores Específicos del ODS14 ──
+
+### Obtener todos los indicadores del ODS14
+GET {{baseUrl}}/api/ods/14/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.1.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.2.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.3.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.4.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.5.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.6.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.7.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.7.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.a.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.b.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.c.1
+GET {{baseUrl}}/api/ods/14/indicadores/14.c.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.c.2
+GET {{baseUrl}}/api/ods/14/indicadores/14.c.2?proyectoId={{proyectoId}}
+
+### Encontrar todos los indicadores por proyecto
+GET {{baseUrl}}/api/ods/14/indicadores/proyecto?proyectoId={{proyectoId}}
+
+### Encontrar indicadores por meta
+GET {{baseUrl}}/api/ods/14/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=14.1
+
+# ── Proyectos ──
+
+### Obtener todos los proyectos del ODS14
+GET {{baseUrl}}/api/ods/14/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/14/proyectos/{{proyectoId}}
+
+### Obtener todas las metas de proyecto
+GET {{baseUrl}}/api/ods/14/proyectos/{{proyectoId}}/metas
+
+### Obtener meta por ID
+GET {{baseUrl}}/api/ods/14/metas/{{metaId}}
+
+### Obtener todas las mediciones históricas
+GET {{baseUrl}}/api/ods/14/indicadores/historicas/{{indicadorId}}
+
+### Obtener medición histórica por ID
+GET {{baseUrl}}/api/ods/14/mediciones/{{medicionId}}
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/14/progreso/{{proyectoId}}
+
+### Obtener estadísticas del ODS14
+GET {{baseUrl}}/api/ods/14/estadisticas
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/14/proyectos/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/14/indicadores/{{indicadorId}}/existe
+
+# ── CRUD Operaciones ──
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/14/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Vida Submarina Test",
+  "descripcion": "Proyecto de prueba para ODS14",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 290000.0,
+  "estado": "ACTIVO"
+}
+
+### Validar proyecto
+POST {{baseUrl}}/api/ods/14/validar/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Validación Submarina",
+  "descripcion": "Proyecto para validar ODS14",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 145000.0,
+  "estado": "ACTIVO"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombre": "Proyecto Submarina Actualizado",
+  "descripcion": "Proyecto actualizado para ODS14",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 315000.0,
+  "estado": "ACTIVO"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}
+
+### Crear nuevo indicador
+POST {{baseUrl}}/api/ods/14/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "14.1.1",
+  "nombre": "Indicador Submarina Test",
+  "descripcion": "Indicador de prueba para ODS14",
+  "valorActual": 54.5,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Validar indicador
+POST {{baseUrl}}/api/ods/14/validar/indicador
+Content-Type: application/json
+
+{
+  "codigo": "14.2.1",
+  "nombre": "Indicador Validación Submarina",
+  "descripcion": "Indicador para validar ODS14",
+  "valorActual": 40.0,
+  "valorMeta": 65.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/14/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "14.1.1",
+  "nombre": "Indicador Submarina Actualizado",
+  "descripcion": "Indicador actualizado para ODS14",
+  "valorActual": 58.0,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar indicador
+DELETE {{baseUrl}}/api/ods/14/indicadores/{{indicadorId}}
+
+### Crear nueva meta
+POST {{baseUrl}}/api/ods/14/metas
+Content-Type: application/json
+
+{
+  "codigo": "14.1",
+  "descripcion": "Meta de prueba ODS14",
+  "valorMeta": 100.0,
+  "valorActual": 54.5,
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar meta
+PUT {{baseUrl}}/api/ods/14/metas/{{metaId}}
+Content-Type: application/json
+
+{
+  "id": {{metaId}},
+  "codigo": "14.1",
+  "descripcion": "Meta actualizada ODS14",
+  "valorMeta": 100.0,
+  "valorActual": 56.0,
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar meta
+DELETE {{baseUrl}}/api/ods/14/metas/{{metaId}}
+
+### Crear nueva medición histórica
+POST {{baseUrl}}/api/ods/14/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 52.5,
+  "observaciones": "Medición de prueba ODS14"
+}
+
+### Actualizar medición histórica
+PUT {{baseUrl}}/api/ods/14/mediciones/{{medicionId}}
+Content-Type: application/json
+
+{
+  "id": {{medicionId}},
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 54.0,
+  "observaciones": "Medición actualizada ODS14"
+}
+
+### Eliminar medición histórica
+DELETE {{baseUrl}}/api/ods/14/mediciones/{{medicionId}}
+
+# ── IOdsBaseController Methods ──
+
+### Obtener todos los proyectos (base)
+GET {{baseUrl}}/api/ods/14/all-proyectos
+
+### Obtener proyecto por ID (base)
+GET {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores (base)
+GET {{baseUrl}}/api/ods/14/base-indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador por ID (base)
+GET {{baseUrl}}/api/ods/14/indicadores/{{indicadorId}}
+
+### Obtener metas de proyecto
+GET {{baseUrl}}/api/ods/14/metas?proyectoId={{proyectoId}}
+
+### Obtener meta por ID (base)
+GET {{baseUrl}}/api/ods/14/metas/{{metaId}}
+
+### Obtener mediciones históricas
+GET {{baseUrl}}/api/ods/14/mediciones?indicadorId={{indicadorId}}
+
+### Obtener medición histórica por ID (base)
+GET {{baseUrl}}/api/ods/14/mediciones/{{medicionId}}
+
+### Obtener estadísticas (base)
+GET {{baseUrl}}/api/ods/14/base-estadisticas
+
+### Obtener progreso del proyecto (base)
+GET {{baseUrl}}/api/ods/14/base-progreso/{{proyectoId}}
+
+### Verificar existencia de proyecto (base)
+GET {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}/existe
+
+### Verificar existencia de indicador (base)
+GET {{baseUrl}}/api/ods/14/indicador/{{indicadorId}}/existe
+
+### Verificar existencia de meta (base)
+GET {{baseUrl}}/api/ods/14/meta/{{metaId}}/existe
+
+### Verificar existencia de medición histórica (base)
+GET {{baseUrl}}/api/ods/14/medicion/{{medicionId}}/existe

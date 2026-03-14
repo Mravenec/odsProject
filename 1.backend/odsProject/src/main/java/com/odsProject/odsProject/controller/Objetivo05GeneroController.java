@@ -206,7 +206,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @GetMapping("/proyectos")
     public ResponseEntity<List<Proyectos>> getAllProjectsOds05() {
-        List<Proyectos> result = objetivo05GeneroService.getAllProjectsOds05();
+        List<Proyectos> result = objetivo05GeneroService.findAllProyectos();
         return ResponseEntity.ok(result);
     }
 
@@ -218,7 +218,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @GetMapping("/proyectos/{proyectoId}")
     public ResponseEntity<Proyectos> getProjectOds05ById(@PathVariable Integer proyectoId) {
-        Optional<Proyectos> result = objetivo05GeneroService.getProjectOds05ById(proyectoId);
+        Optional<Proyectos> result = objetivo05GeneroService.findProyectoById(proyectoId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -230,7 +230,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
     public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds05(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo05GeneroService.getAllMetasProyectoOds05(proyectoId);
+        List<MetasProyecto> result = objetivo05GeneroService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -242,7 +242,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @GetMapping("/metas/{metaId}")
     public ResponseEntity<MetasProyecto> getMetaProyectoOds05ById(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo05GeneroService.getMetaProyectoOds05ById(metaId);
+        Optional<MetasProyecto> result = objetivo05GeneroService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -254,7 +254,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @GetMapping("/indicadores/historicas/{indicadorId}")
     public ResponseEntity<List<MedicionesHistoricas>> getAllMedicionesHistoricasOds05(@PathVariable Integer indicadorId) {
-        List<MedicionesHistoricas> result = objetivo05GeneroService.getAllMedicionesHistoricasOds05(indicadorId);
+        List<MedicionesHistoricas> result = objetivo05GeneroService.findAllMedicionesHistoricas(indicadorId);
         return ResponseEntity.ok(result);
     }
 
@@ -266,7 +266,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @GetMapping("/mediciones/{medicionId}")
     public ResponseEntity<MedicionesHistoricas> getMedicionHistoricaOds05ById(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo05GeneroService.getMedicionHistoricaOds05ById(medicionId);
+        Optional<MedicionesHistoricas> result = objetivo05GeneroService.findMedicionHistoricaById(medicionId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -289,7 +289,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @GetMapping("/estadisticas")
     public ResponseEntity<java.util.Map<String, Object>> getOds05Statistics() {
-        java.util.Map<String, Object> result = objetivo05GeneroService.getOds05Statistics();
+        java.util.Map<String, Object> result = objetivo05GeneroService.getOdsStatistics();
         return ResponseEntity.ok(result);
     }
 
@@ -301,7 +301,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @GetMapping("/proyectos/{proyectoId}/existe")
     public ResponseEntity<Boolean> projectExists(@PathVariable Integer proyectoId) {
-        Boolean result = objetivo05GeneroService.projectExists(proyectoId);
+        Boolean result = objetivo05GeneroService.existsProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -313,7 +313,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @GetMapping("/indicadores/{indicadorId}/existe")
     public ResponseEntity<Boolean> indicatorExists(@PathVariable Integer indicadorId) {
-        Boolean result = objetivo05GeneroService.indicatorExists(indicadorId);
+        Boolean result = objetivo05GeneroService.existsIndicador(indicadorId);
         return ResponseEntity.ok(result);
     }
 

@@ -1,0 +1,313 @@
+### Objetivo 03: Salud y Bienestar - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 3
+@indicadorId = 3
+@metaId = 3
+@medicionId = 3
+
+# ── Indicadores Específicos del ODS03 ──
+
+### Obtener todos los indicadores del ODS03
+GET {{baseUrl}}/api/ods/3/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.1.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.1.2
+GET {{baseUrl}}/api/ods/3/indicadores/3.1.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.2.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.2.2
+GET {{baseUrl}}/api/ods/3/indicadores/3.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.3.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.3.2
+GET {{baseUrl}}/api/ods/3/indicadores/3.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.4.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.4.2
+GET {{baseUrl}}/api/ods/3/indicadores/3.4.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.5.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.5.2
+GET {{baseUrl}}/api/ods/3/indicadores/3.5.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.6.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.7.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.7.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.7.2
+GET {{baseUrl}}/api/ods/3/indicadores/3.7.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.8.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.8.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.8.2
+GET {{baseUrl}}/api/ods/3/indicadores/3.8.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.9.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.9.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.9.2
+GET {{baseUrl}}/api/ods/3/indicadores/3.9.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.9.3
+GET {{baseUrl}}/api/ods/3/indicadores/3.9.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.a.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.b.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.b.2
+GET {{baseUrl}}/api/ods/3/indicadores/3.b.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.b.3
+GET {{baseUrl}}/api/ods/3/indicadores/3.b.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.c.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.c.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.d.1
+GET {{baseUrl}}/api/ods/3/indicadores/3.d.1?proyectoId={{proyectoId}}
+
+### Encontrar todos los indicadores por proyecto
+GET {{baseUrl}}/api/ods/3/indicadores/proyecto?proyectoId={{proyectoId}}
+
+### Encontrar indicadores por meta
+GET {{baseUrl}}/api/ods/3/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=3.1
+
+# ── Proyectos ──
+
+### Obtener todos los proyectos del ODS03
+GET {{baseUrl}}/api/ods/3/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/3/proyectos/{{proyectoId}}
+
+### Obtener todas las metas de proyecto
+GET {{baseUrl}}/api/ods/3/proyectos/{{proyectoId}}/metas
+
+### Obtener meta por ID
+GET {{baseUrl}}/api/ods/3/metas/{{metaId}}
+
+### Obtener todas las mediciones históricas
+GET {{baseUrl}}/api/ods/3/indicadores/historicas/{{indicadorId}}
+
+### Obtener medición histórica por ID
+GET {{baseUrl}}/api/ods/3/mediciones/{{medicionId}}
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/3/progreso/{{proyectoId}}
+
+### Obtener estadísticas del ODS03
+GET {{baseUrl}}/api/ods/3/estadisticas
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/3/proyectos/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/3/indicadores/{{indicadorId}}/existe
+
+# ── CRUD Operaciones ──
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/3/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Salud y Bienestar Test",
+  "descripcion": "Proyecto de prueba para ODS3",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 200000.0,
+  "estado": "ACTIVO"
+}
+
+### Validar proyecto
+POST {{baseUrl}}/api/ods/3/validar/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Validación Salud",
+  "descripcion": "Proyecto para validar ODS3",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 100000.0,
+  "estado": "ACTIVO"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/3/proyecto/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombre": "Proyecto Salud Actualizado",
+  "descripcion": "Proyecto actualizado para ODS3",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 225000.0,
+  "estado": "ACTIVO"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/3/proyecto/{{proyectoId}}
+
+### Crear nuevo indicador
+POST {{baseUrl}}/api/ods/3/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "3.1.1",
+  "nombre": "Indicador Salud Test",
+  "descripcion": "Indicador de prueba para ODS3",
+  "valorActual": 80.5,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Validar indicador
+POST {{baseUrl}}/api/ods/3/validar/indicador
+Content-Type: application/json
+
+{
+  "codigo": "3.2.1",
+  "nombre": "Indicador Validación Salud",
+  "descripcion": "Indicador para validar ODS3",
+  "valorActual": 65.0,
+  "valorMeta": 85.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/3/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "3.1.1",
+  "nombre": "Indicador Salud Actualizado",
+  "descripcion": "Indicador actualizado para ODS3",
+  "valorActual": 85.0,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar indicador
+DELETE {{baseUrl}}/api/ods/3/indicadores/{{indicadorId}}
+
+### Crear nueva meta
+POST {{baseUrl}}/api/ods/3/metas
+Content-Type: application/json
+
+{
+  "codigo": "3.1",
+  "descripcion": "Meta de prueba ODS3",
+  "valorMeta": 100.0,
+  "valorActual": 80.5,
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar meta
+PUT {{baseUrl}}/api/ods/3/metas/{{metaId}}
+Content-Type: application/json
+
+{
+  "id": {{metaId}},
+  "codigo": "3.1",
+  "descripcion": "Meta actualizada ODS3",
+  "valorMeta": 100.0,
+  "valorActual": 82.0,
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar meta
+DELETE {{baseUrl}}/api/ods/3/metas/{{metaId}}
+
+### Crear nueva medición histórica
+POST {{baseUrl}}/api/ods/3/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 78.5,
+  "observaciones": "Medición de prueba ODS3"
+}
+
+### Actualizar medición histórica
+PUT {{baseUrl}}/api/ods/3/mediciones/{{medicionId}}
+Content-Type: application/json
+
+{
+  "id": {{medicionId}},
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 80.0,
+  "observaciones": "Medición actualizada ODS3"
+}
+
+### Eliminar medición histórica
+DELETE {{baseUrl}}/api/ods/3/mediciones/{{medicionId}}
+
+# ── IOdsBaseController Methods ──
+
+### Obtener todos los proyectos (base)
+GET {{baseUrl}}/api/ods/3/all-proyectos
+
+### Obtener proyecto por ID (base)
+GET {{baseUrl}}/api/ods/3/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores (base)
+GET {{baseUrl}}/api/ods/3/base-indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador por ID (base)
+GET {{baseUrl}}/api/ods/3/indicadores/{{indicadorId}}
+
+### Obtener metas de proyecto
+GET {{baseUrl}}/api/ods/3/metas?proyectoId={{proyectoId}}
+
+### Obtener meta por ID (base)
+GET {{baseUrl}}/api/ods/3/metas/{{metaId}}
+
+### Obtener mediciones históricas
+GET {{baseUrl}}/api/ods/3/mediciones?indicadorId={{indicadorId}}
+
+### Obtener medición histórica por ID (base)
+GET {{baseUrl}}/api/ods/3/mediciones/{{medicionId}}
+
+### Obtener estadísticas (base)
+GET {{baseUrl}}/api/ods/3/base-estadisticas
+
+### Obtener progreso del proyecto (base)
+GET {{baseUrl}}/api/ods/3/base-progreso/{{proyectoId}}
+
+### Verificar existencia de proyecto (base)
+GET {{baseUrl}}/api/ods/3/proyecto/{{proyectoId}}/existe
+
+### Verificar existencia de indicador (base)
+GET {{baseUrl}}/api/ods/3/indicador/{{indicadorId}}/existe
+
+### Verificar existencia de meta (base)
+GET {{baseUrl}}/api/ods/3/meta/{{metaId}}/existe
+
+### Verificar existencia de medición histórica (base)
+GET {{baseUrl}}/api/ods/3/medicion/{{medicionId}}/existe

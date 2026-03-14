@@ -1,0 +1,313 @@
+### Objetivo 16: Paz, Justicia e Instituciones Sólidas - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 16
+@indicadorId = 16
+@metaId = 16
+@medicionId = 16
+
+# ── Indicadores Específicos del ODS16 ──
+
+### Obtener todos los indicadores del ODS16
+GET {{baseUrl}}/api/ods/16/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.1.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.1.2
+GET {{baseUrl}}/api/ods/16/indicadores/16.1.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.1.3
+GET {{baseUrl}}/api/ods/16/indicadores/16.1.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.1.4
+GET {{baseUrl}}/api/ods/16/indicadores/16.1.4?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.2.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.2.2
+GET {{baseUrl}}/api/ods/16/indicadores/16.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.2.3
+GET {{baseUrl}}/api/ods/16/indicadores/16.2.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.3.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.3.2
+GET {{baseUrl}}/api/ods/16/indicadores/16.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.3.3
+GET {{baseUrl}}/api/ods/16/indicadores/16.3.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.4.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.4.2
+GET {{baseUrl}}/api/ods/16/indicadores/16.4.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.5.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.5.2
+GET {{baseUrl}}/api/ods/16/indicadores/16.5.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.6.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.6.2
+GET {{baseUrl}}/api/ods/16/indicadores/16.6.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.7.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.7.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.7.2
+GET {{baseUrl}}/api/ods/16/indicadores/16.7.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.8.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.8.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.9.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.9.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.10.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.10.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.10.2
+GET {{baseUrl}}/api/ods/16/indicadores/16.10.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.a.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.b.1
+GET {{baseUrl}}/api/ods/16/indicadores/16.b.1?proyectoId={{proyectoId}}
+
+### Encontrar todos los indicadores por proyecto
+GET {{baseUrl}}/api/ods/16/indicadores/proyecto?proyectoId={{proyectoId}}
+
+### Encontrar indicadores por meta
+GET {{baseUrl}}/api/ods/16/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=16.1
+
+# ── Proyectos ──
+
+### Obtener todos los proyectos del ODS16
+GET {{baseUrl}}/api/ods/16/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/16/proyectos/{{proyectoId}}
+
+### Obtener todas las metas de proyecto
+GET {{baseUrl}}/api/ods/16/proyectos/{{proyectoId}}/metas
+
+### Obtener meta por ID
+GET {{baseUrl}}/api/ods/16/metas/{{metaId}}
+
+### Obtener todas las mediciones históricas
+GET {{baseUrl}}/api/ods/16/indicadores/historicas/{{indicadorId}}
+
+### Obtener medición histórica por ID
+GET {{baseUrl}}/api/ods/16/mediciones/{{medicionId}}
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/16/progreso/{{proyectoId}}
+
+### Obtener estadísticas del ODS16
+GET {{baseUrl}}/api/ods/16/estadisticas
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/16/proyectos/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/16/indicadores/{{indicadorId}}/existe
+
+# ── CRUD Operaciones ──
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/16/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Paz Justicia Test",
+  "descripcion": "Proyecto de prueba para ODS16",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 340000.0,
+  "estado": "ACTIVO"
+}
+
+### Validar proyecto
+POST {{baseUrl}}/api/ods/16/validar/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Validación Paz",
+  "descripcion": "Proyecto para validar ODS16",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 170000.0,
+  "estado": "ACTIVO"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombre": "Proyecto Paz Actualizado",
+  "descripcion": "Proyecto actualizado para ODS16",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 365000.0,
+  "estado": "ACTIVO"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}
+
+### Crear nuevo indicador
+POST {{baseUrl}}/api/ods/16/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "16.1.1",
+  "nombre": "Indicador Paz Test",
+  "descripcion": "Indicador de prueba para ODS16",
+  "valorActual": 61.5,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Validar indicador
+POST {{baseUrl}}/api/ods/16/validar/indicador
+Content-Type: application/json
+
+{
+  "codigo": "16.2.1",
+  "nombre": "Indicador Validación Paz",
+  "descripcion": "Indicador para validar ODS16",
+  "valorActual": 47.0,
+  "valorMeta": 72.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/16/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "16.1.1",
+  "nombre": "Indicador Paz Actualizado",
+  "descripcion": "Indicador actualizado para ODS16",
+  "valorActual": 65.0,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar indicador
+DELETE {{baseUrl}}/api/ods/16/indicadores/{{indicadorId}}
+
+### Crear nueva meta
+POST {{baseUrl}}/api/ods/16/metas
+Content-Type: application/json
+
+{
+  "codigo": "16.1",
+  "descripcion": "Meta de prueba ODS16",
+  "valorMeta": 100.0,
+  "valorActual": 61.5,
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar meta
+PUT {{baseUrl}}/api/ods/16/metas/{{metaId}}
+Content-Type: application/json
+
+{
+  "id": {{metaId}},
+  "codigo": "16.1",
+  "descripcion": "Meta actualizada ODS16",
+  "valorMeta": 100.0,
+  "valorActual": 63.0,
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar meta
+DELETE {{baseUrl}}/api/ods/16/metas/{{metaId}}
+
+### Crear nueva medición histórica
+POST {{baseUrl}}/api/ods/16/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 59.5,
+  "observaciones": "Medición de prueba ODS16"
+}
+
+### Actualizar medición histórica
+PUT {{baseUrl}}/api/ods/16/mediciones/{{medicionId}}
+Content-Type: application/json
+
+{
+  "id": {{medicionId}},
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 61.0,
+  "observaciones": "Medición actualizada ODS16"
+}
+
+### Eliminar medición histórica
+DELETE {{baseUrl}}/api/ods/16/mediciones/{{medicionId}}
+
+# ── IOdsBaseController Methods ──
+
+### Obtener todos los proyectos (base)
+GET {{baseUrl}}/api/ods/16/all-proyectos
+
+### Obtener proyecto por ID (base)
+GET {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores (base)
+GET {{baseUrl}}/api/ods/16/base-indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador por ID (base)
+GET {{baseUrl}}/api/ods/16/indicadores/{{indicadorId}}
+
+### Obtener metas de proyecto
+GET {{baseUrl}}/api/ods/16/metas?proyectoId={{proyectoId}}
+
+### Obtener meta por ID (base)
+GET {{baseUrl}}/api/ods/16/metas/{{metaId}}
+
+### Obtener mediciones históricas
+GET {{baseUrl}}/api/ods/16/mediciones?indicadorId={{indicadorId}}
+
+### Obtener medición histórica por ID (base)
+GET {{baseUrl}}/api/ods/16/mediciones/{{medicionId}}
+
+### Obtener estadísticas (base)
+GET {{baseUrl}}/api/ods/16/base-estadisticas
+
+### Obtener progreso del proyecto (base)
+GET {{baseUrl}}/api/ods/16/base-progreso/{{proyectoId}}
+
+### Verificar existencia de proyecto (base)
+GET {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}/existe
+
+### Verificar existencia de indicador (base)
+GET {{baseUrl}}/api/ods/16/indicador/{{indicadorId}}/existe
+
+### Verificar existencia de meta (base)
+GET {{baseUrl}}/api/ods/16/meta/{{metaId}}/existe
+
+### Verificar existencia de medición histórica (base)
+GET {{baseUrl}}/api/ods/16/medicion/{{medicionId}}/existe

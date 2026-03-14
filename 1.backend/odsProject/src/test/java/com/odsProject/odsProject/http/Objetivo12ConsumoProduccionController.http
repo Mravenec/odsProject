@@ -1,0 +1,298 @@
+### Objetivo 12: Producción y Consumo Responsables - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 12
+@indicadorId = 12
+@metaId = 12
+@medicionId = 12
+
+# ── Indicadores Específicos del ODS12 ──
+
+### Obtener todos los indicadores del ODS12
+GET {{baseUrl}}/api/ods/12/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.1.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.2.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.2.2
+GET {{baseUrl}}/api/ods/12/indicadores/12.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.3.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.3.2
+GET {{baseUrl}}/api/ods/12/indicadores/12.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.4.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.4.2
+GET {{baseUrl}}/api/ods/12/indicadores/12.4.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.5.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.6.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.6.2
+GET {{baseUrl}}/api/ods/12/indicadores/12.6.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.7.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.7.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.8.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.8.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.8.2
+GET {{baseUrl}}/api/ods/12/indicadores/12.8.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.a.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.b.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.c.1
+GET {{baseUrl}}/api/ods/12/indicadores/12.c.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.c.2
+GET {{baseUrl}}/api/ods/12/indicadores/12.c.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.c.3
+GET {{baseUrl}}/api/ods/12/indicadores/12.c.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.c.4
+GET {{baseUrl}}/api/ods/12/indicadores/12.c.4?proyectoId={{proyectoId}}
+
+### Encontrar todos los indicadores por proyecto
+GET {{baseUrl}}/api/ods/12/indicadores/proyecto?proyectoId={{proyectoId}}
+
+### Encontrar indicadores por meta
+GET {{baseUrl}}/api/ods/12/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=12.1
+
+# ── Proyectos ──
+
+### Obtener todos los proyectos del ODS12
+GET {{baseUrl}}/api/ods/12/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/12/proyectos/{{proyectoId}}
+
+### Obtener todas las metas de proyecto
+GET {{baseUrl}}/api/ods/12/proyectos/{{proyectoId}}/metas
+
+### Obtener meta por ID
+GET {{baseUrl}}/api/ods/12/metas/{{metaId}}
+
+### Obtener todas las mediciones históricas
+GET {{baseUrl}}/api/ods/12/indicadores/historicas/{{indicadorId}}
+
+### Obtener medición histórica por ID
+GET {{baseUrl}}/api/ods/12/mediciones/{{medicionId}}
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/12/progreso/{{proyectoId}}
+
+### Obtener estadísticas del ODS12
+GET {{baseUrl}}/api/ods/12/estadisticas
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/12/proyectos/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/12/indicadores/{{indicadorId}}/existe
+
+# ── CRUD Operaciones ──
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/12/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Consumo Producción Test",
+  "descripcion": "Proyecto de prueba para ODS12",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 210000.0,
+  "estado": "ACTIVO"
+}
+
+### Validar proyecto
+POST {{baseUrl}}/api/ods/12/validar/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Validación Consumo",
+  "descripcion": "Proyecto para validar ODS12",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 105000.0,
+  "estado": "ACTIVO"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombre": "Proyecto Consumo Actualizado",
+  "descripcion": "Proyecto actualizado para ODS12",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 235000.0,
+  "estado": "ACTIVO"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}
+
+### Crear nuevo indicador
+POST {{baseUrl}}/api/ods/12/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "12.1.1",
+  "nombre": "Indicador Consumo Test",
+  "descripcion": "Indicador de prueba para ODS12",
+  "valorActual": 56.5,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Validar indicador
+POST {{baseUrl}}/api/ods/12/validar/indicador
+Content-Type: application/json
+
+{
+  "codigo": "12.2.1",
+  "nombre": "Indicador Validación Consumo",
+  "descripcion": "Indicador para validar ODS12",
+  "valorActual": 42.0,
+  "valorMeta": 65.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/12/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "12.1.1",
+  "nombre": "Indicador Consumo Actualizado",
+  "descripcion": "Indicador actualizado para ODS12",
+  "valorActual": 60.0,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar indicador
+DELETE {{baseUrl}}/api/ods/12/indicadores/{{indicadorId}}
+
+### Crear nueva meta
+POST {{baseUrl}}/api/ods/12/metas
+Content-Type: application/json
+
+{
+  "codigo": "12.1",
+  "descripcion": "Meta de prueba ODS12",
+  "valorMeta": 100.0,
+  "valorActual": 56.5,
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar meta
+PUT {{baseUrl}}/api/ods/12/metas/{{metaId}}
+Content-Type: application/json
+
+{
+  "id": {{metaId}},
+  "codigo": "12.1",
+  "descripcion": "Meta actualizada ODS12",
+  "valorMeta": 100.0,
+  "valorActual": 58.0,
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar meta
+DELETE {{baseUrl}}/api/ods/12/metas/{{metaId}}
+
+### Crear nueva medición histórica
+POST {{baseUrl}}/api/ods/12/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 54.5,
+  "observaciones": "Medición de prueba ODS12"
+}
+
+### Actualizar medición histórica
+PUT {{baseUrl}}/api/ods/12/mediciones/{{medicionId}}
+Content-Type: application/json
+
+{
+  "id": {{medicionId}},
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 56.0,
+  "observaciones": "Medición actualizada ODS12"
+}
+
+### Eliminar medición histórica
+DELETE {{baseUrl}}/api/ods/12/mediciones/{{medicionId}}
+
+# ── IOdsBaseController Methods ──
+
+### Obtener todos los proyectos (base)
+GET {{baseUrl}}/api/ods/12/all-proyectos
+
+### Obtener proyecto por ID (base)
+GET {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores (base)
+GET {{baseUrl}}/api/ods/12/base-indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador por ID (base)
+GET {{baseUrl}}/api/ods/12/indicadores/{{indicadorId}}
+
+### Obtener metas de proyecto
+GET {{baseUrl}}/api/ods/12/metas?proyectoId={{proyectoId}}
+
+### Obtener meta por ID (base)
+GET {{baseUrl}}/api/ods/12/metas/{{metaId}}
+
+### Obtener mediciones históricas
+GET {{baseUrl}}/api/ods/12/mediciones?indicadorId={{indicadorId}}
+
+### Obtener medición histórica por ID (base)
+GET {{baseUrl}}/api/ods/12/mediciones/{{medicionId}}
+
+### Obtener estadísticas (base)
+GET {{baseUrl}}/api/ods/12/base-estadisticas
+
+### Obtener progreso del proyecto (base)
+GET {{baseUrl}}/api/ods/12/base-progreso/{{proyectoId}}
+
+### Verificar existencia de proyecto (base)
+GET {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}/existe
+
+### Verificar existencia de indicador (base)
+GET {{baseUrl}}/api/ods/12/indicador/{{indicadorId}}/existe
+
+### Verificar existencia de meta (base)
+GET {{baseUrl}}/api/ods/12/meta/{{metaId}}/existe
+
+### Verificar existencia de medición histórica (base)
+GET {{baseUrl}}/api/ods/12/medicion/{{medicionId}}/existe

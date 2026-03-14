@@ -1,0 +1,280 @@
+### Objetivo 07: Energía Asequible y No Contaminante - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 7
+@indicadorId = 7
+@metaId = 7
+@medicionId = 7
+
+# ── Indicadores Específicos del ODS07 ──
+
+### Obtener todos los indicadores del ODS07
+GET {{baseUrl}}/api/ods/7/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.1.1
+GET {{baseUrl}}/api/ods/7/indicadores/7.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.1.2
+GET {{baseUrl}}/api/ods/7/indicadores/7.1.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.2.1
+GET {{baseUrl}}/api/ods/7/indicadores/7.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.2.2
+GET {{baseUrl}}/api/ods/7/indicadores/7.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.2.3
+GET {{baseUrl}}/api/ods/7/indicadores/7.2.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.3.1
+GET {{baseUrl}}/api/ods/7/indicadores/7.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.3.2
+GET {{baseUrl}}/api/ods/7/indicadores/7.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.a.1
+GET {{baseUrl}}/api/ods/7/indicadores/7.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.b.1
+GET {{baseUrl}}/api/ods/7/indicadores/7.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.b.2
+GET {{baseUrl}}/api/ods/7/indicadores/7.b.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.b.3
+GET {{baseUrl}}/api/ods/7/indicadores/7.b.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.b.4
+GET {{baseUrl}}/api/ods/7/indicadores/7.b.4?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.c.1
+GET {{baseUrl}}/api/ods/7/indicadores/7.c.1?proyectoId={{proyectoId}}
+
+### Encontrar todos los indicadores por proyecto
+GET {{baseUrl}}/api/ods/7/indicadores/proyecto?proyectoId={{proyectoId}}
+
+### Encontrar indicadores por meta
+GET {{baseUrl}}/api/ods/7/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=7.1
+
+# ── Proyectos ──
+
+### Obtener todos los proyectos del ODS07
+GET {{baseUrl}}/api/ods/7/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/7/proyectos/{{proyectoId}}
+
+### Obtener todas las metas de proyecto
+GET {{baseUrl}}/api/ods/7/proyectos/{{proyectoId}}/metas
+
+### Obtener meta por ID
+GET {{baseUrl}}/api/ods/7/metas/{{metaId}}
+
+### Obtener todas las mediciones históricas
+GET {{baseUrl}}/api/ods/7/indicadores/historicas/{{indicadorId}}
+
+### Obtener medición histórica por ID
+GET {{baseUrl}}/api/ods/7/mediciones/{{medicionId}}
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/7/progreso/{{proyectoId}}
+
+### Obtener estadísticas del ODS07
+GET {{baseUrl}}/api/ods/7/estadisticas
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/7/proyectos/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/7/indicadores/{{indicadorId}}/existe
+
+# ── CRUD Operaciones ──
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/7/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Energía Test",
+  "descripcion": "Proyecto de prueba para ODS7",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 300000.0,
+  "estado": "ACTIVO"
+}
+
+### Validar proyecto
+POST {{baseUrl}}/api/ods/7/validar/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Validación Energía",
+  "descripcion": "Proyecto para validar ODS7",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 150000.0,
+  "estado": "ACTIVO"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/7/proyecto/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombre": "Proyecto Energía Actualizado",
+  "descripcion": "Proyecto actualizado para ODS7",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 325000.0,
+  "estado": "ACTIVO"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/7/proyecto/{{proyectoId}}
+
+### Crear nuevo indicador
+POST {{baseUrl}}/api/ods/7/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "7.1.1",
+  "nombre": "Indicador Energía Test",
+  "descripcion": "Indicador de prueba para ODS7",
+  "valorActual": 55.5,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Validar indicador
+POST {{baseUrl}}/api/ods/7/validar/indicador
+Content-Type: application/json
+
+{
+  "codigo": "7.2.1",
+  "nombre": "Indicador Validación Energía",
+  "descripcion": "Indicador para validar ODS7",
+  "valorActual": 40.0,
+  "valorMeta": 70.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/7/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "7.1.1",
+  "nombre": "Indicador Energía Actualizado",
+  "descripcion": "Indicador actualizado para ODS7",
+  "valorActual": 60.0,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar indicador
+DELETE {{baseUrl}}/api/ods/7/indicadores/{{indicadorId}}
+
+### Crear nueva meta
+POST {{baseUrl}}/api/ods/7/metas
+Content-Type: application/json
+
+{
+  "codigo": "7.1",
+  "descripcion": "Meta de prueba ODS7",
+  "valorMeta": 100.0,
+  "valorActual": 55.5,
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar meta
+PUT {{baseUrl}}/api/ods/7/metas/{{metaId}}
+Content-Type: application/json
+
+{
+  "id": {{metaId}},
+  "codigo": "7.1",
+  "descripcion": "Meta actualizada ODS7",
+  "valorMeta": 100.0,
+  "valorActual": 57.0,
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar meta
+DELETE {{baseUrl}}/api/ods/7/metas/{{metaId}}
+
+### Crear nueva medición histórica
+POST {{baseUrl}}/api/ods/7/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 53.5,
+  "observaciones": "Medición de prueba ODS7"
+}
+
+### Actualizar medición histórica
+PUT {{baseUrl}}/api/ods/7/mediciones/{{medicionId}}
+Content-Type: application/json
+
+{
+  "id": {{medicionId}},
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 55.0,
+  "observaciones": "Medición actualizada ODS7"
+}
+
+### Eliminar medición histórica
+DELETE {{baseUrl}}/api/ods/7/mediciones/{{medicionId}}
+
+# ── IOdsBaseController Methods ──
+
+### Obtener todos los proyectos (base)
+GET {{baseUrl}}/api/ods/7/all-proyectos
+
+### Obtener proyecto por ID (base)
+GET {{baseUrl}}/api/ods/7/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores (base)
+GET {{baseUrl}}/api/ods/7/base-indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador por ID (base)
+GET {{baseUrl}}/api/ods/7/indicadores/{{indicadorId}}
+
+### Obtener metas de proyecto
+GET {{baseUrl}}/api/ods/7/metas?proyectoId={{proyectoId}}
+
+### Obtener meta por ID (base)
+GET {{baseUrl}}/api/ods/7/metas/{{metaId}}
+
+### Obtener mediciones históricas
+GET {{baseUrl}}/api/ods/7/mediciones?indicadorId={{indicadorId}}
+
+### Obtener medición histórica por ID (base)
+GET {{baseUrl}}/api/ods/7/mediciones/{{medicionId}}
+
+### Obtener estadísticas (base)
+GET {{baseUrl}}/api/ods/7/base-estadisticas
+
+### Obtener progreso del proyecto (base)
+GET {{baseUrl}}/api/ods/7/base-progreso/{{proyectoId}}
+
+### Verificar existencia de proyecto (base)
+GET {{baseUrl}}/api/ods/7/proyecto/{{proyectoId}}/existe
+
+### Verificar existencia de indicador (base)
+GET {{baseUrl}}/api/ods/7/indicador/{{indicadorId}}/existe
+
+### Verificar existencia de meta (base)
+GET {{baseUrl}}/api/ods/7/meta/{{metaId}}/existe
+
+### Verificar existencia de medición histórica (base)
+GET {{baseUrl}}/api/ods/7/medicion/{{medicionId}}/existe

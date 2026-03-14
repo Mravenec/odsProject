@@ -1,0 +1,280 @@
+### Objetivo 05: Igualdad de Género - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 5
+@indicadorId = 5
+@metaId = 5
+@medicionId = 5
+
+# ── Indicadores Específicos del ODS05 ──
+
+### Obtener todos los indicadores del ODS05
+GET {{baseUrl}}/api/ods/5/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.1.1
+GET {{baseUrl}}/api/ods/5/indicadores/5.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.2.1
+GET {{baseUrl}}/api/ods/5/indicadores/5.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.2.2
+GET {{baseUrl}}/api/ods/5/indicadores/5.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.3.1
+GET {{baseUrl}}/api/ods/5/indicadores/5.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.3.2
+GET {{baseUrl}}/api/ods/5/indicadores/5.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.4.1
+GET {{baseUrl}}/api/ods/5/indicadores/5.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.4.2
+GET {{baseUrl}}/api/ods/5/indicadores/5.4.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.5.1
+GET {{baseUrl}}/api/ods/5/indicadores/5.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.5.2
+GET {{baseUrl}}/api/ods/5/indicadores/5.5.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.a.1
+GET {{baseUrl}}/api/ods/5/indicadores/5.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.a.2
+GET {{baseUrl}}/api/ods/5/indicadores/5.a.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.b.1
+GET {{baseUrl}}/api/ods/5/indicadores/5.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.c.1
+GET {{baseUrl}}/api/ods/5/indicadores/5.c.1?proyectoId={{proyectoId}}
+
+### Encontrar todos los indicadores por proyecto
+GET {{baseUrl}}/api/ods/5/indicadores/proyecto?proyectoId={{proyectoId}}
+
+### Encontrar indicadores por meta
+GET {{baseUrl}}/api/ods/5/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=5.1
+
+# ── Proyectos ──
+
+### Obtener todos los proyectos del ODS05
+GET {{baseUrl}}/api/ods/5/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/5/proyectos/{{proyectoId}}
+
+### Obtener todas las metas de proyecto
+GET {{baseUrl}}/api/ods/5/proyectos/{{proyectoId}}/metas
+
+### Obtener meta por ID
+GET {{baseUrl}}/api/ods/5/metas/{{metaId}}
+
+### Obtener todas las mediciones históricas
+GET {{baseUrl}}/api/ods/5/indicadores/historicas/{{indicadorId}}
+
+### Obtener medición histórica por ID
+GET {{baseUrl}}/api/ods/5/mediciones/{{medicionId}}
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/5/progreso/{{proyectoId}}
+
+### Obtener estadísticas del ODS05
+GET {{baseUrl}}/api/ods/5/estadisticas
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/5/proyectos/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/5/indicadores/{{indicadorId}}/existe
+
+# ── CRUD Operaciones ──
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/5/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Igualdad de Género Test",
+  "descripcion": "Proyecto de prueba para ODS5",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 120000.0,
+  "estado": "ACTIVO"
+}
+
+### Validar proyecto
+POST {{baseUrl}}/api/ods/5/validar/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Validación Género",
+  "descripcion": "Proyecto para validar ODS5",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 60000.0,
+  "estado": "ACTIVO"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/5/proyecto/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombre": "Proyecto Género Actualizado",
+  "descripcion": "Proyecto actualizado para ODS5",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 135000.0,
+  "estado": "ACTIVO"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/5/proyecto/{{proyectoId}}
+
+### Crear nuevo indicador
+POST {{baseUrl}}/api/ods/5/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "5.1.1",
+  "nombre": "Indicador Género Test",
+  "descripcion": "Indicador de prueba para ODS5",
+  "valorActual": 65.5,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Validar indicador
+POST {{baseUrl}}/api/ods/5/validar/indicador
+Content-Type: application/json
+
+{
+  "codigo": "5.2.1",
+  "nombre": "Indicador Validación Género",
+  "descripcion": "Indicador para validar ODS5",
+  "valorActual": 50.0,
+  "valorMeta": 75.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/5/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "5.1.1",
+  "nombre": "Indicador Género Actualizado",
+  "descripcion": "Indicador actualizado para ODS5",
+  "valorActual": 70.0,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar indicador
+DELETE {{baseUrl}}/api/ods/5/indicadores/{{indicadorId}}
+
+### Crear nueva meta
+POST {{baseUrl}}/api/ods/5/metas
+Content-Type: application/json
+
+{
+  "codigo": "5.1",
+  "descripcion": "Meta de prueba ODS5",
+  "valorMeta": 100.0,
+  "valorActual": 65.5,
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar meta
+PUT {{baseUrl}}/api/ods/5/metas/{{metaId}}
+Content-Type: application/json
+
+{
+  "id": {{metaId}},
+  "codigo": "5.1",
+  "descripcion": "Meta actualizada ODS5",
+  "valorMeta": 100.0,
+  "valorActual": 67.0,
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar meta
+DELETE {{baseUrl}}/api/ods/5/metas/{{metaId}}
+
+### Crear nueva medición histórica
+POST {{baseUrl}}/api/ods/5/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 63.5,
+  "observaciones": "Medición de prueba ODS5"
+}
+
+### Actualizar medición histórica
+PUT {{baseUrl}}/api/ods/5/mediciones/{{medicionId}}
+Content-Type: application/json
+
+{
+  "id": {{medicionId}},
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 65.0,
+  "observaciones": "Medición actualizada ODS5"
+}
+
+### Eliminar medición histórica
+DELETE {{baseUrl}}/api/ods/5/mediciones/{{medicionId}}
+
+# ── IOdsBaseController Methods ──
+
+### Obtener todos los proyectos (base)
+GET {{baseUrl}}/api/ods/5/all-proyectos
+
+### Obtener proyecto por ID (base)
+GET {{baseUrl}}/api/ods/5/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores (base)
+GET {{baseUrl}}/api/ods/5/base-indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador por ID (base)
+GET {{baseUrl}}/api/ods/5/indicadores/{{indicadorId}}
+
+### Obtener metas de proyecto
+GET {{baseUrl}}/api/ods/5/metas?proyectoId={{proyectoId}}
+
+### Obtener meta por ID (base)
+GET {{baseUrl}}/api/ods/5/metas/{{metaId}}
+
+### Obtener mediciones históricas
+GET {{baseUrl}}/api/ods/5/mediciones?indicadorId={{indicadorId}}
+
+### Obtener medición histórica por ID (base)
+GET {{baseUrl}}/api/ods/5/mediciones/{{medicionId}}
+
+### Obtener estadísticas (base)
+GET {{baseUrl}}/api/ods/5/base-estadisticas
+
+### Obtener progreso del proyecto (base)
+GET {{baseUrl}}/api/ods/5/base-progreso/{{proyectoId}}
+
+### Verificar existencia de proyecto (base)
+GET {{baseUrl}}/api/ods/5/proyecto/{{proyectoId}}/existe
+
+### Verificar existencia de indicador (base)
+GET {{baseUrl}}/api/ods/5/indicador/{{indicadorId}}/existe
+
+### Verificar existencia de meta (base)
+GET {{baseUrl}}/api/ods/5/meta/{{metaId}}/existe
+
+### Verificar existencia de medición histórica (base)
+GET {{baseUrl}}/api/ods/5/medicion/{{medicionId}}/existe

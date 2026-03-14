@@ -1,0 +1,313 @@
+### Objetivo 17: Alianzas para Lograr los Objetivos - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 17
+@indicadorId = 17
+@metaId = 17
+@medicionId = 17
+
+# ── Indicadores Específicos del ODS17 ──
+
+### Obtener todos los indicadores del ODS17
+GET {{baseUrl}}/api/ods/17/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.1.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.1.2
+GET {{baseUrl}}/api/ods/17/indicadores/17.1.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.2.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.3.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.3.2
+GET {{baseUrl}}/api/ods/17/indicadores/17.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.4.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.5.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.6.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.7.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.7.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.8.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.8.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.9.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.9.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.10.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.10.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.11.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.11.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.12.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.12.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.13.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.13.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.14.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.14.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.15.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.15.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.16.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.16.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.17.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.17.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.18.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.18.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.18.2
+GET {{baseUrl}}/api/ods/17/indicadores/17.18.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.18.3
+GET {{baseUrl}}/api/ods/17/indicadores/17.18.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.19.1
+GET {{baseUrl}}/api/ods/17/indicadores/17.19.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.19.2
+GET {{baseUrl}}/api/ods/17/indicadores/17.19.2?proyectoId={{proyectoId}}
+
+### Encontrar todos los indicadores por proyecto
+GET {{baseUrl}}/api/ods/17/indicadores/proyecto?proyectoId={{proyectoId}}
+
+### Encontrar indicadores por meta
+GET {{baseUrl}}/api/ods/17/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=17.1
+
+# ── Proyectos ──
+
+### Obtener todos los proyectos del ODS17
+GET {{baseUrl}}/api/ods/17/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/17/proyectos/{{proyectoId}}
+
+### Obtener todas las metas de proyecto
+GET {{baseUrl}}/api/ods/17/proyectos/{{proyectoId}}/metas
+
+### Obtener meta por ID
+GET {{baseUrl}}/api/ods/17/metas/{{metaId}}
+
+### Obtener todas las mediciones históricas
+GET {{baseUrl}}/api/ods/17/indicadores/historicas/{{indicadorId}}
+
+### Obtener medición histórica por ID
+GET {{baseUrl}}/api/ods/17/mediciones/{{medicionId}}
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/17/progreso/{{proyectoId}}
+
+### Obtener estadísticas del ODS17
+GET {{baseUrl}}/api/ods/17/estadisticas
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/17/proyectos/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/17/indicadores/{{indicadorId}}/existe
+
+# ── CRUD Operaciones ──
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/17/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Alianzas Test",
+  "descripcion": "Proyecto de prueba para ODS17",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 400000.0,
+  "estado": "ACTIVO"
+}
+
+### Validar proyecto
+POST {{baseUrl}}/api/ods/17/validar/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Validación Alianzas",
+  "descripcion": "Proyecto para validar ODS17",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 200000.0,
+  "estado": "ACTIVO"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombre": "Proyecto Alianzas Actualizado",
+  "descripcion": "Proyecto actualizado para ODS17",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 425000.0,
+  "estado": "ACTIVO"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}
+
+### Crear nuevo indicador
+POST {{baseUrl}}/api/ods/17/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "17.1.1",
+  "nombre": "Indicador Alianzas Test",
+  "descripcion": "Indicador de prueba para ODS17",
+  "valorActual": 66.5,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Validar indicador
+POST {{baseUrl}}/api/ods/17/validar/indicador
+Content-Type: application/json
+
+{
+  "codigo": "17.2.1",
+  "nombre": "Indicador Validación Alianzas",
+  "descripcion": "Indicador para validar ODS17",
+  "valorActual": 52.0,
+  "valorMeta": 77.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/17/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "17.1.1",
+  "nombre": "Indicador Alianzas Actualizado",
+  "descripcion": "Indicador actualizado para ODS17",
+  "valorActual": 70.0,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar indicador
+DELETE {{baseUrl}}/api/ods/17/indicadores/{{indicadorId}}
+
+### Crear nueva meta
+POST {{baseUrl}}/api/ods/17/metas
+Content-Type: application/json
+
+{
+  "codigo": "17.1",
+  "descripcion": "Meta de prueba ODS17",
+  "valorMeta": 100.0,
+  "valorActual": 66.5,
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar meta
+PUT {{baseUrl}}/api/ods/17/metas/{{metaId}}
+Content-Type: application/json
+
+{
+  "id": {{metaId}},
+  "codigo": "17.1",
+  "descripcion": "Meta actualizada ODS17",
+  "valorMeta": 100.0,
+  "valorActual": 68.0,
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar meta
+DELETE {{baseUrl}}/api/ods/17/metas/{{metaId}}
+
+### Crear nueva medición histórica
+POST {{baseUrl}}/api/ods/17/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 64.5,
+  "observaciones": "Medición de prueba ODS17"
+}
+
+### Actualizar medición histórica
+PUT {{baseUrl}}/api/ods/17/mediciones/{{medicionId}}
+Content-Type: application/json
+
+{
+  "id": {{medicionId}},
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 66.0,
+  "observaciones": "Medición actualizada ODS17"
+}
+
+### Eliminar medición histórica
+DELETE {{baseUrl}}/api/ods/17/mediciones/{{medicionId}}
+
+# ── IOdsBaseController Methods ──
+
+### Obtener todos los proyectos (base)
+GET {{baseUrl}}/api/ods/17/all-proyectos
+
+### Obtener proyecto por ID (base)
+GET {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores (base)
+GET {{baseUrl}}/api/ods/17/base-indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador por ID (base)
+GET {{baseUrl}}/api/ods/17/indicadores/{{indicadorId}}
+
+### Obtener metas de proyecto
+GET {{baseUrl}}/api/ods/17/metas?proyectoId={{proyectoId}}
+
+### Obtener meta por ID (base)
+GET {{baseUrl}}/api/ods/17/metas/{{metaId}}
+
+### Obtener mediciones históricas
+GET {{baseUrl}}/api/ods/17/mediciones?indicadorId={{indicadorId}}
+
+### Obtener medición histórica por ID (base)
+GET {{baseUrl}}/api/ods/17/mediciones/{{medicionId}}
+
+### Obtener estadísticas (base)
+GET {{baseUrl}}/api/ods/17/base-estadisticas
+
+### Obtener progreso del proyecto (base)
+GET {{baseUrl}}/api/ods/17/base-progreso/{{proyectoId}}
+
+### Verificar existencia de proyecto (base)
+GET {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}/existe
+
+### Verificar existencia de indicador (base)
+GET {{baseUrl}}/api/ods/17/indicador/{{indicadorId}}/existe
+
+### Verificar existencia de meta (base)
+GET {{baseUrl}}/api/ods/17/meta/{{metaId}}/existe
+
+### Verificar existencia de medición histórica (base)
+GET {{baseUrl}}/api/ods/17/medicion/{{medicionId}}/existe

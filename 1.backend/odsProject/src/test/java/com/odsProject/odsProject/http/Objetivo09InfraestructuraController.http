@@ -1,0 +1,280 @@
+### Objetivo 09: Industria, Innovación e Infraestructura - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 9
+@indicadorId = 9
+@metaId = 9
+@medicionId = 9
+
+# ── Indicadores Específicos del ODS09 ──
+
+### Obtener todos los indicadores del ODS09
+GET {{baseUrl}}/api/ods/9/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.1.1
+GET {{baseUrl}}/api/ods/9/indicadores/9.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.1.2
+GET {{baseUrl}}/api/ods/9/indicadores/9.1.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.2.1
+GET {{baseUrl}}/api/ods/9/indicadores/9.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.2.2
+GET {{baseUrl}}/api/ods/9/indicadores/9.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.2.3
+GET {{baseUrl}}/api/ods/9/indicadores/9.2.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.3.1
+GET {{baseUrl}}/api/ods/9/indicadores/9.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.3.2
+GET {{baseUrl}}/api/ods/9/indicadores/9.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.4.1
+GET {{baseUrl}}/api/ods/9/indicadores/9.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.5.1
+GET {{baseUrl}}/api/ods/9/indicadores/9.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.5.2
+GET {{baseUrl}}/api/ods/9/indicadores/9.5.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.a.1
+GET {{baseUrl}}/api/ods/9/indicadores/9.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.b.1
+GET {{baseUrl}}/api/ods/9/indicadores/9.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.c.1
+GET {{baseUrl}}/api/ods/9/indicadores/9.c.1?proyectoId={{proyectoId}}
+
+### Encontrar todos los indicadores por proyecto
+GET {{baseUrl}}/api/ods/9/indicadores/proyecto?proyectoId={{proyectoId}}
+
+### Encontrar indicadores por meta
+GET {{baseUrl}}/api/ods/9/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=9.1
+
+# ── Proyectos ──
+
+### Obtener todos los proyectos del ODS09
+GET {{baseUrl}}/api/ods/9/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/9/proyectos/{{proyectoId}}
+
+### Obtener todas las metas de proyecto
+GET {{baseUrl}}/api/ods/9/proyectos/{{proyectoId}}/metas
+
+### Obtener meta por ID
+GET {{baseUrl}}/api/ods/9/metas/{{metaId}}
+
+### Obtener todas las mediciones históricas
+GET {{baseUrl}}/api/ods/9/indicadores/historicas/{{indicadorId}}
+
+### Obtener medición histórica por ID
+GET {{baseUrl}}/api/ods/9/mediciones/{{medicionId}}
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/9/progreso/{{proyectoId}}
+
+### Obtener estadísticas del ODS09
+GET {{baseUrl}}/api/ods/9/estadisticas
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/9/proyectos/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/9/indicadores/{{indicadorId}}/existe
+
+# ── CRUD Operaciones ──
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/9/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Infraestructura Test",
+  "descripcion": "Proyecto de prueba para ODS9",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 350000.0,
+  "estado": "ACTIVO"
+}
+
+### Validar proyecto
+POST {{baseUrl}}/api/ods/9/validar/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Validación Infraestructura",
+  "descripcion": "Proyecto para validar ODS9",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 175000.0,
+  "estado": "ACTIVO"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/9/proyecto/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombre": "Proyecto Infraestructura Actualizado",
+  "descripcion": "Proyecto actualizado para ODS9",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 375000.0,
+  "estado": "ACTIVO"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/9/proyecto/{{proyectoId}}
+
+### Crear nuevo indicador
+POST {{baseUrl}}/api/ods/9/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "9.1.1",
+  "nombre": "Indicador Infraestructura Test",
+  "descripcion": "Indicador de prueba para ODS9",
+  "valorActual": 62.5,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Validar indicador
+POST {{baseUrl}}/api/ods/9/validar/indicador
+Content-Type: application/json
+
+{
+  "codigo": "9.2.1",
+  "nombre": "Indicador Validación Infraestructura",
+  "descripcion": "Indicador para validar ODS9",
+  "valorActual": 48.0,
+  "valorMeta": 70.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/9/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "9.1.1",
+  "nombre": "Indicador Infraestructura Actualizado",
+  "descripcion": "Indicador actualizado para ODS9",
+  "valorActual": 66.0,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar indicador
+DELETE {{baseUrl}}/api/ods/9/indicadores/{{indicadorId}}
+
+### Crear nueva meta
+POST {{baseUrl}}/api/ods/9/metas
+Content-Type: application/json
+
+{
+  "codigo": "9.1",
+  "descripcion": "Meta de prueba ODS9",
+  "valorMeta": 100.0,
+  "valorActual": 62.5,
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar meta
+PUT {{baseUrl}}/api/ods/9/metas/{{metaId}}
+Content-Type: application/json
+
+{
+  "id": {{metaId}},
+  "codigo": "9.1",
+  "descripcion": "Meta actualizada ODS9",
+  "valorMeta": 100.0,
+  "valorActual": 64.0,
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar meta
+DELETE {{baseUrl}}/api/ods/9/metas/{{metaId}}
+
+### Crear nueva medición histórica
+POST {{baseUrl}}/api/ods/9/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 60.5,
+  "observaciones": "Medición de prueba ODS9"
+}
+
+### Actualizar medición histórica
+PUT {{baseUrl}}/api/ods/9/mediciones/{{medicionId}}
+Content-Type: application/json
+
+{
+  "id": {{medicionId}},
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 62.0,
+  "observaciones": "Medición actualizada ODS9"
+}
+
+### Eliminar medición histórica
+DELETE {{baseUrl}}/api/ods/9/mediciones/{{medicionId}}
+
+# ── IOdsBaseController Methods ──
+
+### Obtener todos los proyectos (base)
+GET {{baseUrl}}/api/ods/9/all-proyectos
+
+### Obtener proyecto por ID (base)
+GET {{baseUrl}}/api/ods/9/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores (base)
+GET {{baseUrl}}/api/ods/9/base-indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador por ID (base)
+GET {{baseUrl}}/api/ods/9/indicadores/{{indicadorId}}
+
+### Obtener metas de proyecto
+GET {{baseUrl}}/api/ods/9/metas?proyectoId={{proyectoId}}
+
+### Obtener meta por ID (base)
+GET {{baseUrl}}/api/ods/9/metas/{{metaId}}
+
+### Obtener mediciones históricas
+GET {{baseUrl}}/api/ods/9/mediciones?indicadorId={{indicadorId}}
+
+### Obtener medición histórica por ID (base)
+GET {{baseUrl}}/api/ods/9/mediciones/{{medicionId}}
+
+### Obtener estadísticas (base)
+GET {{baseUrl}}/api/ods/9/base-estadisticas
+
+### Obtener progreso del proyecto (base)
+GET {{baseUrl}}/api/ods/9/base-progreso/{{proyectoId}}
+
+### Verificar existencia de proyecto (base)
+GET {{baseUrl}}/api/ods/9/proyecto/{{proyectoId}}/existe
+
+### Verificar existencia de indicador (base)
+GET {{baseUrl}}/api/ods/9/indicador/{{indicadorId}}/existe
+
+### Verificar existencia de meta (base)
+GET {{baseUrl}}/api/ods/9/meta/{{metaId}}/existe
+
+### Verificar existencia de medición histórica (base)
+GET {{baseUrl}}/api/ods/9/medicion/{{medicionId}}/existe

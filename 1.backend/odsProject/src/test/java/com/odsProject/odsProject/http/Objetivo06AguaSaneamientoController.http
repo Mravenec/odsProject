@@ -1,0 +1,277 @@
+### Objetivo 06: Agua Limpia y Saneamiento - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 6
+@indicadorId = 6
+@metaId = 6
+@medicionId = 6
+
+# ── Indicadores Específicos del ODS06 ──
+
+### Obtener todos los indicadores del ODS06
+GET {{baseUrl}}/api/ods/6/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.1.1
+GET {{baseUrl}}/api/ods/6/indicadores/6.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.2.1
+GET {{baseUrl}}/api/ods/6/indicadores/6.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.2.2
+GET {{baseUrl}}/api/ods/6/indicadores/6.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.3.1
+GET {{baseUrl}}/api/ods/6/indicadores/6.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.3.2
+GET {{baseUrl}}/api/ods/6/indicadores/6.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.4.1
+GET {{baseUrl}}/api/ods/6/indicadores/6.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.4.2
+GET {{baseUrl}}/api/ods/6/indicadores/6.4.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.5.1
+GET {{baseUrl}}/api/ods/6/indicadores/6.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.6.1
+GET {{baseUrl}}/api/ods/6/indicadores/6.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.a.1
+GET {{baseUrl}}/api/ods/6/indicadores/6.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.b.1
+GET {{baseUrl}}/api/ods/6/indicadores/6.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.c.1
+GET {{baseUrl}}/api/ods/6/indicadores/6.c.1?proyectoId={{proyectoId}}
+
+### Encontrar todos los indicadores por proyecto
+GET {{baseUrl}}/api/ods/6/indicadores/proyecto?proyectoId={{proyectoId}}
+
+### Encontrar indicadores por meta
+GET {{baseUrl}}/api/ods/6/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=6.1
+
+# ── Proyectos ──
+
+### Obtener todos los proyectos del ODS06
+GET {{baseUrl}}/api/ods/6/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/6/proyectos/{{proyectoId}}
+
+### Obtener todas las metas de proyecto
+GET {{baseUrl}}/api/ods/6/proyectos/{{proyectoId}}/metas
+
+### Obtener meta por ID
+GET {{baseUrl}}/api/ods/6/metas/{{metaId}}
+
+### Obtener todas las mediciones históricas
+GET {{baseUrl}}/api/ods/6/indicadores/historicas/{{indicadorId}}
+
+### Obtener medición histórica por ID
+GET {{baseUrl}}/api/ods/6/mediciones/{{medicionId}}
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/6/progreso/{{proyectoId}}
+
+### Obtener estadísticas del ODS06
+GET {{baseUrl}}/api/ods/6/estadisticas
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/6/proyectos/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/6/indicadores/{{indicadorId}}/existe
+
+# ── CRUD Operaciones ──
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/6/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Agua y Saneamiento Test",
+  "descripcion": "Proyecto de prueba para ODS6",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 250000.0,
+  "estado": "ACTIVO"
+}
+
+### Validar proyecto
+POST {{baseUrl}}/api/ods/6/validar/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Validación Agua",
+  "descripcion": "Proyecto para validar ODS6",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 125000.0,
+  "estado": "ACTIVO"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/6/proyecto/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombre": "Proyecto Agua Actualizado",
+  "descripcion": "Proyecto actualizado para ODS6",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 275000.0,
+  "estado": "ACTIVO"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/6/proyecto/{{proyectoId}}
+
+### Crear nuevo indicador
+POST {{baseUrl}}/api/ods/6/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "6.1.1",
+  "nombre": "Indicador Agua Test",
+  "descripcion": "Indicador de prueba para ODS6",
+  "valorActual": 70.5,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Validar indicador
+POST {{baseUrl}}/api/ods/6/validar/indicador
+Content-Type: application/json
+
+{
+  "codigo": "6.2.1",
+  "nombre": "Indicador Validación Agua",
+  "descripcion": "Indicador para validar ODS6",
+  "valorActual": 55.0,
+  "valorMeta": 80.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/6/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "6.1.1",
+  "nombre": "Indicador Agua Actualizado",
+  "descripcion": "Indicador actualizado para ODS6",
+  "valorActual": 75.0,
+  "valorMeta": 100.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar indicador
+DELETE {{baseUrl}}/api/ods/6/indicadores/{{indicadorId}}
+
+### Crear nueva meta
+POST {{baseUrl}}/api/ods/6/metas
+Content-Type: application/json
+
+{
+  "codigo": "6.1",
+  "descripcion": "Meta de prueba ODS6",
+  "valorMeta": 100.0,
+  "valorActual": 70.5,
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar meta
+PUT {{baseUrl}}/api/ods/6/metas/{{metaId}}
+Content-Type: application/json
+
+{
+  "id": {{metaId}},
+  "codigo": "6.1",
+  "descripcion": "Meta actualizada ODS6",
+  "valorMeta": 100.0,
+  "valorActual": 72.0,
+  "proyectoId": {{proyectoId}}
+}
+
+### Eliminar meta
+DELETE {{baseUrl}}/api/ods/6/metas/{{metaId}}
+
+### Crear nueva medición histórica
+POST {{baseUrl}}/api/ods/6/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 68.5,
+  "observaciones": "Medición de prueba ODS6"
+}
+
+### Actualizar medición histórica
+PUT {{baseUrl}}/api/ods/6/mediciones/{{medicionId}}
+Content-Type: application/json
+
+{
+  "id": {{medicionId}},
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 70.0,
+  "observaciones": "Medición actualizada ODS6"
+}
+
+### Eliminar medición histórica
+DELETE {{baseUrl}}/api/ods/6/mediciones/{{medicionId}}
+
+# ── IOdsBaseController Methods ──
+
+### Obtener todos los proyectos (base)
+GET {{baseUrl}}/api/ods/6/all-proyectos
+
+### Obtener proyecto por ID (base)
+GET {{baseUrl}}/api/ods/6/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores (base)
+GET {{baseUrl}}/api/ods/6/base-indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador por ID (base)
+GET {{baseUrl}}/api/ods/6/indicadores/{{indicadorId}}
+
+### Obtener metas de proyecto
+GET {{baseUrl}}/api/ods/6/metas?proyectoId={{proyectoId}}
+
+### Obtener meta por ID (base)
+GET {{baseUrl}}/api/ods/6/metas/{{metaId}}
+
+### Obtener mediciones históricas
+GET {{baseUrl}}/api/ods/6/mediciones?indicadorId={{indicadorId}}
+
+### Obtener medición histórica por ID (base)
+GET {{baseUrl}}/api/ods/6/mediciones/{{medicionId}}
+
+### Obtener estadísticas (base)
+GET {{baseUrl}}/api/ods/6/base-estadisticas
+
+### Obtener progreso del proyecto (base)
+GET {{baseUrl}}/api/ods/6/base-progreso/{{proyectoId}}
+
+### Verificar existencia de proyecto (base)
+GET {{baseUrl}}/api/ods/6/proyecto/{{proyectoId}}/existe
+
+### Verificar existencia de indicador (base)
+GET {{baseUrl}}/api/ods/6/indicador/{{indicadorId}}/existe
+
+### Verificar existencia de meta (base)
+GET {{baseUrl}}/api/ods/6/meta/{{metaId}}/existe
+
+### Verificar existencia de medición histórica (base)
+GET {{baseUrl}}/api/ods/6/medicion/{{medicionId}}/existe
