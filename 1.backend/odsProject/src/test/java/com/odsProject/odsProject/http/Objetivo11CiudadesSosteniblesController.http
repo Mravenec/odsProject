@@ -61,6 +61,30 @@ GET {{baseUrl}}/api/ods/11/indicadores/11.b.2?proyectoId={{proyectoId}}
 ### Obtener indicador 11.c.1
 GET {{baseUrl}}/api/ods/11/indicadores/11.c.1?proyectoId={{proyectoId}}
 
+### Obtener indicador 11.6.1
+GET {{baseUrl}}/api/ods/11/indicadores/11.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 11.6.2
+GET {{baseUrl}}/api/ods/11/indicadores/11.6.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 11.7.1
+GET {{baseUrl}}/api/ods/11/indicadores/11.7.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 11.7.2
+GET {{baseUrl}}/api/ods/11/indicadores/11.7.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 11.a.1
+GET {{baseUrl}}/api/ods/11/indicadores/11.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 11.b.1
+GET {{baseUrl}}/api/ods/11/indicadores/11.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 11.b.2
+GET {{baseUrl}}/api/ods/11/indicadores/11.b.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 11.c.1
+GET {{baseUrl}}/api/ods/11/indicadores/11.c.1?proyectoId={{proyectoId}}
+
 ### Encontrar todos los indicadores por proyecto
 GET {{baseUrl}}/api/ods/11/indicadores/proyecto?proyectoId={{proyectoId}}
 

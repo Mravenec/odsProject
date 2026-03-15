@@ -82,9 +82,6 @@ GET {{baseUrl}}/api/ods/17/indicadores/17.18.3?proyectoId={{proyectoId}}
 ### Obtener indicador 17.19.1
 GET {{baseUrl}}/api/ods/17/indicadores/17.19.1?proyectoId={{proyectoId}}
 
-### Obtener indicador 17.19.2
-GET {{baseUrl}}/api/ods/17/indicadores/17.19.2?proyectoId={{proyectoId}}
-
 ### Encontrar todos los indicadores por proyecto
 GET {{baseUrl}}/api/ods/17/indicadores/proyecto?proyectoId={{proyectoId}}
 

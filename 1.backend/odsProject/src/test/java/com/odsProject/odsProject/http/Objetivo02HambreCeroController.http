@@ -11,80 +11,95 @@
 # ── Indicadores Específicos del ODS02 ──
 
 ### Obtener todos los indicadores del ODS02
-GET {{baseUrl}}/api/ods/2/indicadores?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.1.1
-GET {{baseUrl}}/api/ods/2/indicadores/2.1.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.1.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.1.2
-GET {{baseUrl}}/api/ods/2/indicadores/2.1.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.1.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.2.1
-GET {{baseUrl}}/api/ods/2/indicadores/2.2.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.2.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.2.2
-GET {{baseUrl}}/api/ods/2/indicadores/2.2.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.2.3
+GET {{baseUrl}}/api/ods/02/indicadores/2.2.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.2.4
+GET {{baseUrl}}/api/ods/02/indicadores/2.2.4?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.3.1
-GET {{baseUrl}}/api/ods/2/indicadores/2.3.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.3.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.3.2
-GET {{baseUrl}}/api/ods/2/indicadores/2.3.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.3.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.4.1
-GET {{baseUrl}}/api/ods/2/indicadores/2.4.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.4.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.5.1
-GET {{baseUrl}}/api/ods/2/indicadores/2.5.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.5.2
+GET {{baseUrl}}/api/ods/02/indicadores/2.5.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.a.1
-GET {{baseUrl}}/api/ods/2/indicadores/2.a.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.a.2
+GET {{baseUrl}}/api/ods/02/indicadores/2.a.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.b.1
+GET {{baseUrl}}/api/ods/02/indicadores/2.b.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 2.c.1
-GET {{baseUrl}}/api/ods/2/indicadores/2.c.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/2.c.1?proyectoId={{proyectoId}}
 
 ### Encontrar todos los indicadores por proyecto
-GET {{baseUrl}}/api/ods/2/indicadores/proyecto?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/indicadores/proyecto?proyectoId={{proyectoId}}
 
 ### Encontrar indicadores por meta
-GET {{baseUrl}}/api/ods/2/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=2.1
+GET {{baseUrl}}/api/ods/02/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=2.1
 
 # ── Proyectos ──
 
 ### Obtener todos los proyectos del ODS02
-GET {{baseUrl}}/api/ods/2/proyectos
+GET {{baseUrl}}/api/ods/02/proyectos
 
 ### Obtener proyecto por ID
-GET {{baseUrl}}/api/ods/2/proyectos/{{proyectoId}}
+GET {{baseUrl}}/api/ods/02/proyectos/{{proyectoId}}
 
 ### Obtener todas las metas de proyecto
-GET {{baseUrl}}/api/ods/2/proyectos/{{proyectoId}}/metas
+GET {{baseUrl}}/api/ods/02/proyectos/{{proyectoId}}/metas
 
 ### Obtener meta por ID
-GET {{baseUrl}}/api/ods/2/metas/{{metaId}}
+GET {{baseUrl}}/api/ods/02/metas/{{metaId}}
 
 ### Obtener todas las mediciones históricas
-GET {{baseUrl}}/api/ods/2/indicadores/historicas/{{indicadorId}}
+GET {{baseUrl}}/api/ods/02/indicadores/historicas/{{indicadorId}}
 
 ### Obtener medición histórica por ID
-GET {{baseUrl}}/api/ods/2/mediciones/{{medicionId}}
+GET {{baseUrl}}/api/ods/02/mediciones/{{medicionId}}
 
 ### Calcular progreso del proyecto
-GET {{baseUrl}}/api/ods/2/progreso/{{proyectoId}}
+GET {{baseUrl}}/api/ods/02/progreso/{{proyectoId}}
 
 ### Obtener estadísticas del ODS02
-GET {{baseUrl}}/api/ods/2/estadisticas
+GET {{baseUrl}}/api/ods/02/estadisticas
 
 ### Verificar si proyecto existe
-GET {{baseUrl}}/api/ods/2/proyectos/{{proyectoId}}/existe
+GET {{baseUrl}}/api/ods/02/proyectos/{{proyectoId}}/existe
 
 ### Verificar si indicador existe
-GET {{baseUrl}}/api/ods/2/indicadores/{{indicadorId}}/existe
+GET {{baseUrl}}/api/ods/02/indicadores/{{indicadorId}}/existe
 
 # ── CRUD Operaciones ──
 
 ### Crear nuevo proyecto
-POST {{baseUrl}}/api/ods/2/proyecto
+POST {{baseUrl}}/api/ods/02/proyecto
 Content-Type: application/json
 
 {
@@ -97,7 +112,7 @@ Content-Type: application/json
 }
 
 ### Validar proyecto
-POST {{baseUrl}}/api/ods/2/validar/proyecto
+POST {{baseUrl}}/api/ods/02/validar/proyecto
 Content-Type: application/json
 
 {
@@ -110,7 +125,7 @@ Content-Type: application/json
 }
 
 ### Actualizar proyecto
-PUT {{baseUrl}}/api/ods/2/proyecto/{{proyectoId}}
+PUT {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}
 Content-Type: application/json
 
 {
@@ -124,10 +139,10 @@ Content-Type: application/json
 }
 
 ### Eliminar proyecto
-DELETE {{baseUrl}}/api/ods/2/proyecto/{{proyectoId}}
+DELETE {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}
 
 ### Crear nuevo indicador
-POST {{baseUrl}}/api/ods/2/indicadores
+POST {{baseUrl}}/api/ods/02/indicadores
 Content-Type: application/json
 
 {
@@ -141,7 +156,7 @@ Content-Type: application/json
 }
 
 ### Validar indicador
-POST {{baseUrl}}/api/ods/2/validar/indicador
+POST {{baseUrl}}/api/ods/02/validar/indicador
 Content-Type: application/json
 
 {
@@ -155,7 +170,7 @@ Content-Type: application/json
 }
 
 ### Actualizar indicador
-PUT {{baseUrl}}/api/ods/2/indicadores/{{indicadorId}}
+PUT {{baseUrl}}/api/ods/02/indicadores/{{indicadorId}}
 Content-Type: application/json
 
 {
@@ -170,10 +185,10 @@ Content-Type: application/json
 }
 
 ### Eliminar indicador
-DELETE {{baseUrl}}/api/ods/2/indicadores/{{indicadorId}}
+DELETE {{baseUrl}}/api/ods/02/indicadores/{{indicadorId}}
 
 ### Crear nueva meta
-POST {{baseUrl}}/api/ods/2/metas
+POST {{baseUrl}}/api/ods/02/metas
 Content-Type: application/json
 
 {
@@ -185,7 +200,7 @@ Content-Type: application/json
 }
 
 ### Actualizar meta
-PUT {{baseUrl}}/api/ods/2/metas/{{metaId}}
+PUT {{baseUrl}}/api/ods/02/metas/{{metaId}}
 Content-Type: application/json
 
 {
@@ -198,10 +213,10 @@ Content-Type: application/json
 }
 
 ### Eliminar meta
-DELETE {{baseUrl}}/api/ods/2/metas/{{metaId}}
+DELETE {{baseUrl}}/api/ods/02/metas/{{metaId}}
 
 ### Crear nueva medición histórica
-POST {{baseUrl}}/api/ods/2/mediciones
+POST {{baseUrl}}/api/ods/02/mediciones
 Content-Type: application/json
 
 {
@@ -212,7 +227,7 @@ Content-Type: application/json
 }
 
 ### Actualizar medición histórica
-PUT {{baseUrl}}/api/ods/2/mediciones/{{medicionId}}
+PUT {{baseUrl}}/api/ods/02/mediciones/{{medicionId}}
 Content-Type: application/json
 
 {
@@ -224,48 +239,48 @@ Content-Type: application/json
 }
 
 ### Eliminar medición histórica
-DELETE {{baseUrl}}/api/ods/2/mediciones/{{medicionId}}
+DELETE {{baseUrl}}/api/ods/02/mediciones/{{medicionId}}
 
 # ── IOdsBaseController Methods ──
 
 ### Obtener todos los proyectos (base)
-GET {{baseUrl}}/api/ods/2/all-proyectos
+GET {{baseUrl}}/api/ods/02/all-proyectos
 
 ### Obtener proyecto por ID (base)
-GET {{baseUrl}}/api/ods/2/proyecto/{{proyectoId}}
+GET {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores (base)
-GET {{baseUrl}}/api/ods/2/base-indicadores?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/base-indicadores?proyectoId={{proyectoId}}
 
 ### Obtener indicador por ID (base)
-GET {{baseUrl}}/api/ods/2/indicadores/{{indicadorId}}
+GET {{baseUrl}}/api/ods/02/indicadores/{{indicadorId}}
 
 ### Obtener metas de proyecto
-GET {{baseUrl}}/api/ods/2/metas?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/02/metas?proyectoId={{proyectoId}}
 
 ### Obtener meta por ID (base)
-GET {{baseUrl}}/api/ods/2/metas/{{metaId}}
+GET {{baseUrl}}/api/ods/02/metas/{{metaId}}
 
 ### Obtener mediciones históricas
-GET {{baseUrl}}/api/ods/2/mediciones?indicadorId={{indicadorId}}
+GET {{baseUrl}}/api/ods/02/mediciones?indicadorId={{indicadorId}}
 
 ### Obtener medición histórica por ID (base)
-GET {{baseUrl}}/api/ods/2/mediciones/{{medicionId}}
+GET {{baseUrl}}/api/ods/02/mediciones/{{medicionId}}
 
 ### Obtener estadísticas (base)
-GET {{baseUrl}}/api/ods/2/base-estadisticas
+GET {{baseUrl}}/api/ods/02/base-estadisticas
 
 ### Obtener progreso del proyecto (base)
-GET {{baseUrl}}/api/ods/2/base-progreso/{{proyectoId}}
+GET {{baseUrl}}/api/ods/02/base-progreso/{{proyectoId}}
 
 ### Verificar existencia de proyecto (base)
-GET {{baseUrl}}/api/ods/2/proyecto/{{proyectoId}}/existe
+GET {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}/existe
 
 ### Verificar existencia de indicador (base)
-GET {{baseUrl}}/api/ods/2/indicador/{{indicadorId}}/existe
+GET {{baseUrl}}/api/ods/02/indicador/{{indicadorId}}/existe
 
 ### Verificar existencia de meta (base)
-GET {{baseUrl}}/api/ods/2/meta/{{metaId}}/existe
+GET {{baseUrl}}/api/ods/02/meta/{{metaId}}/existe
 
 ### Verificar existencia de medición histórica (base)
-GET {{baseUrl}}/api/ods/2/medicion/{{medicionId}}/existe
+GET {{baseUrl}}/api/ods/02/medicion/{{medicionId}}/existe

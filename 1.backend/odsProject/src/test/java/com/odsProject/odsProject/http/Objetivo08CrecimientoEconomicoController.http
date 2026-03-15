@@ -11,128 +11,128 @@
 # ── Indicadores Específicos del ODS08 ──
 
 ### Obtener todos los indicadores del ODS08
-GET {{baseUrl}}/api/ods/8/indicadores?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.1.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.1.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.1.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.2.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.2.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.2.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.3.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.3.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.3.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.3.2
-GET {{baseUrl}}/api/ods/8/indicadores/8.3.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.3.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.4.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.4.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.4.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.4.2
-GET {{baseUrl}}/api/ods/8/indicadores/8.4.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.4.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.5.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.5.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.5.2
-GET {{baseUrl}}/api/ods/8/indicadores/8.5.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.5.3
-GET {{baseUrl}}/api/ods/8/indicadores/8.5.3?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.3?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.5.4
-GET {{baseUrl}}/api/ods/8/indicadores/8.5.4?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.4?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.5.5
-GET {{baseUrl}}/api/ods/8/indicadores/8.5.5?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.5?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.6.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.6.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.6.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.7.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.7.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.7.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.8.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.8.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.8.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.8.2
-GET {{baseUrl}}/api/ods/8/indicadores/8.8.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.8.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.9.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.9.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.9.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.9.2
-GET {{baseUrl}}/api/ods/8/indicadores/8.9.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.9.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.10.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.10.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.10.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.10.2
-GET {{baseUrl}}/api/ods/8/indicadores/8.10.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.10.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.10.3
-GET {{baseUrl}}/api/ods/8/indicadores/8.10.3?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.10.3?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.10.4
-GET {{baseUrl}}/api/ods/8/indicadores/8.10.4?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.10.4?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.10.5
-GET {{baseUrl}}/api/ods/8/indicadores/8.10.5?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.10.5?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.10.6
-GET {{baseUrl}}/api/ods/8/indicadores/8.10.6?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.10.6?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.10.7
-GET {{baseUrl}}/api/ods/8/indicadores/8.10.7?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.10.7?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.a.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.a.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.a.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 8.b.1
-GET {{baseUrl}}/api/ods/8/indicadores/8.b.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/8.b.1?proyectoId={{proyectoId}}
 
 ### Encontrar todos los indicadores por proyecto
-GET {{baseUrl}}/api/ods/8/indicadores/proyecto?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/indicadores/proyecto?proyectoId={{proyectoId}}
 
 ### Encontrar indicadores por meta
-GET {{baseUrl}}/api/ods/8/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=8.1
+GET {{baseUrl}}/api/ods/08/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=8.1
 
 # ── Proyectos ──
 
 ### Obtener todos los proyectos del ODS08
-GET {{baseUrl}}/api/ods/8/proyectos
+GET {{baseUrl}}/api/ods/08/proyectos
 
 ### Obtener proyecto por ID
-GET {{baseUrl}}/api/ods/8/proyectos/{{proyectoId}}
+GET {{baseUrl}}/api/ods/08/proyectos/{{proyectoId}}
 
 ### Obtener todas las metas de proyecto
-GET {{baseUrl}}/api/ods/8/proyectos/{{proyectoId}}/metas
+GET {{baseUrl}}/api/ods/08/proyectos/{{proyectoId}}/metas
 
 ### Obtener meta por ID
-GET {{baseUrl}}/api/ods/8/metas/{{metaId}}
+GET {{baseUrl}}/api/ods/08/metas/{{metaId}}
 
 ### Obtener todas las mediciones históricas
-GET {{baseUrl}}/api/ods/8/indicadores/historicas/{{indicadorId}}
+GET {{baseUrl}}/api/ods/08/indicadores/historicas/{{indicadorId}}
 
 ### Obtener medición histórica por ID
-GET {{baseUrl}}/api/ods/8/mediciones/{{medicionId}}
+GET {{baseUrl}}/api/ods/08/mediciones/{{medicionId}}
 
 ### Calcular progreso del proyecto
-GET {{baseUrl}}/api/ods/8/progreso/{{proyectoId}}
+GET {{baseUrl}}/api/ods/08/progreso/{{proyectoId}}
 
 ### Obtener estadísticas del ODS08
-GET {{baseUrl}}/api/ods/8/estadisticas
+GET {{baseUrl}}/api/ods/08/estadisticas
 
 ### Verificar si proyecto existe
-GET {{baseUrl}}/api/ods/8/proyectos/{{proyectoId}}/existe
+GET {{baseUrl}}/api/ods/08/proyectos/{{proyectoId}}/existe
 
 ### Verificar si indicador existe
-GET {{baseUrl}}/api/ods/8/indicadores/{{indicadorId}}/existe
+GET {{baseUrl}}/api/ods/08/indicadores/{{indicadorId}}/existe
 
 # ── CRUD Operaciones ──
 
 ### Crear nuevo proyecto
-POST {{baseUrl}}/api/ods/8/proyecto
+POST {{baseUrl}}/api/ods/08/proyecto
 Content-Type: application/json
 
 {
@@ -145,7 +145,7 @@ Content-Type: application/json
 }
 
 ### Validar proyecto
-POST {{baseUrl}}/api/ods/8/validar/proyecto
+POST {{baseUrl}}/api/ods/08/validar/proyecto
 Content-Type: application/json
 
 {
@@ -158,7 +158,7 @@ Content-Type: application/json
 }
 
 ### Actualizar proyecto
-PUT {{baseUrl}}/api/ods/8/proyecto/{{proyectoId}}
+PUT {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}
 Content-Type: application/json
 
 {
@@ -172,10 +172,10 @@ Content-Type: application/json
 }
 
 ### Eliminar proyecto
-DELETE {{baseUrl}}/api/ods/8/proyecto/{{proyectoId}}
+DELETE {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}
 
 ### Crear nuevo indicador
-POST {{baseUrl}}/api/ods/8/indicadores
+POST {{baseUrl}}/api/ods/08/indicadores
 Content-Type: application/json
 
 {
@@ -189,7 +189,7 @@ Content-Type: application/json
 }
 
 ### Validar indicador
-POST {{baseUrl}}/api/ods/8/validar/indicador
+POST {{baseUrl}}/api/ods/08/validar/indicador
 Content-Type: application/json
 
 {
@@ -203,7 +203,7 @@ Content-Type: application/json
 }
 
 ### Actualizar indicador
-PUT {{baseUrl}}/api/ods/8/indicadores/{{indicadorId}}
+PUT {{baseUrl}}/api/ods/08/indicadores/{{indicadorId}}
 Content-Type: application/json
 
 {
@@ -218,10 +218,10 @@ Content-Type: application/json
 }
 
 ### Eliminar indicador
-DELETE {{baseUrl}}/api/ods/8/indicadores/{{indicadorId}}
+DELETE {{baseUrl}}/api/ods/08/indicadores/{{indicadorId}}
 
 ### Crear nueva meta
-POST {{baseUrl}}/api/ods/8/metas
+POST {{baseUrl}}/api/ods/08/metas
 Content-Type: application/json
 
 {
@@ -233,7 +233,7 @@ Content-Type: application/json
 }
 
 ### Actualizar meta
-PUT {{baseUrl}}/api/ods/8/metas/{{metaId}}
+PUT {{baseUrl}}/api/ods/08/metas/{{metaId}}
 Content-Type: application/json
 
 {
@@ -246,10 +246,10 @@ Content-Type: application/json
 }
 
 ### Eliminar meta
-DELETE {{baseUrl}}/api/ods/8/metas/{{metaId}}
+DELETE {{baseUrl}}/api/ods/08/metas/{{metaId}}
 
 ### Crear nueva medición histórica
-POST {{baseUrl}}/api/ods/8/mediciones
+POST {{baseUrl}}/api/ods/08/mediciones
 Content-Type: application/json
 
 {
@@ -260,7 +260,7 @@ Content-Type: application/json
 }
 
 ### Actualizar medición histórica
-PUT {{baseUrl}}/api/ods/8/mediciones/{{medicionId}}
+PUT {{baseUrl}}/api/ods/08/mediciones/{{medicionId}}
 Content-Type: application/json
 
 {
@@ -272,48 +272,48 @@ Content-Type: application/json
 }
 
 ### Eliminar medición histórica
-DELETE {{baseUrl}}/api/ods/8/mediciones/{{medicionId}}
+DELETE {{baseUrl}}/api/ods/08/mediciones/{{medicionId}}
 
 # ── IOdsBaseController Methods ──
 
 ### Obtener todos los proyectos (base)
-GET {{baseUrl}}/api/ods/8/all-proyectos
+GET {{baseUrl}}/api/ods/08/all-proyectos
 
 ### Obtener proyecto por ID (base)
-GET {{baseUrl}}/api/ods/8/proyecto/{{proyectoId}}
+GET {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores (base)
-GET {{baseUrl}}/api/ods/8/base-indicadores?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/base-indicadores?proyectoId={{proyectoId}}
 
 ### Obtener indicador por ID (base)
-GET {{baseUrl}}/api/ods/8/indicadores/{{indicadorId}}
+GET {{baseUrl}}/api/ods/08/indicadores/{{indicadorId}}
 
 ### Obtener metas de proyecto
-GET {{baseUrl}}/api/ods/8/metas?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/08/metas?proyectoId={{proyectoId}}
 
 ### Obtener meta por ID (base)
-GET {{baseUrl}}/api/ods/8/metas/{{metaId}}
+GET {{baseUrl}}/api/ods/08/metas/{{metaId}}
 
 ### Obtener mediciones históricas
-GET {{baseUrl}}/api/ods/8/mediciones?indicadorId={{indicadorId}}
+GET {{baseUrl}}/api/ods/08/mediciones?indicadorId={{indicadorId}}
 
 ### Obtener medición histórica por ID (base)
-GET {{baseUrl}}/api/ods/8/mediciones/{{medicionId}}
+GET {{baseUrl}}/api/ods/08/mediciones/{{medicionId}}
 
 ### Obtener estadísticas (base)
-GET {{baseUrl}}/api/ods/8/base-estadisticas
+GET {{baseUrl}}/api/ods/08/base-estadisticas
 
 ### Obtener progreso del proyecto (base)
-GET {{baseUrl}}/api/ods/8/base-progreso/{{proyectoId}}
+GET {{baseUrl}}/api/ods/08/base-progreso/{{proyectoId}}
 
 ### Verificar existencia de proyecto (base)
-GET {{baseUrl}}/api/ods/8/proyecto/{{proyectoId}}/existe
+GET {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}/existe
 
 ### Verificar existencia de indicador (base)
-GET {{baseUrl}}/api/ods/8/indicador/{{indicadorId}}/existe
+GET {{baseUrl}}/api/ods/08/indicador/{{indicadorId}}/existe
 
 ### Verificar existencia de meta (base)
-GET {{baseUrl}}/api/ods/8/meta/{{metaId}}/existe
+GET {{baseUrl}}/api/ods/08/meta/{{metaId}}/existe
 
 ### Verificar existencia de medición histórica (base)
-GET {{baseUrl}}/api/ods/8/medicion/{{medicionId}}/existe
+GET {{baseUrl}}/api/ods/08/medicion/{{medicionId}}/existe

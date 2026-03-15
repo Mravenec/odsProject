@@ -43,9 +43,6 @@ GET {{baseUrl}}/api/ods/14/indicadores/14.b.1?proyectoId={{proyectoId}}
 ### Obtener indicador 14.c.1
 GET {{baseUrl}}/api/ods/14/indicadores/14.c.1?proyectoId={{proyectoId}}
 
-### Obtener indicador 14.c.2
-GET {{baseUrl}}/api/ods/14/indicadores/14.c.2?proyectoId={{proyectoId}}
-
 ### Encontrar todos los indicadores por proyecto
 GET {{baseUrl}}/api/ods/14/indicadores/proyecto?proyectoId={{proyectoId}}
 

@@ -11,89 +11,89 @@
 # ── Indicadores Específicos del ODS07 ──
 
 ### Obtener todos los indicadores del ODS07
-GET {{baseUrl}}/api/ods/7/indicadores?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.1.1
-GET {{baseUrl}}/api/ods/7/indicadores/7.1.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.1.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.1.2
-GET {{baseUrl}}/api/ods/7/indicadores/7.1.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.1.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.2.1
-GET {{baseUrl}}/api/ods/7/indicadores/7.2.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.2.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.2.2
-GET {{baseUrl}}/api/ods/7/indicadores/7.2.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.2.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.2.3
-GET {{baseUrl}}/api/ods/7/indicadores/7.2.3?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.2.3?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.3.1
-GET {{baseUrl}}/api/ods/7/indicadores/7.3.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.3.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.3.2
-GET {{baseUrl}}/api/ods/7/indicadores/7.3.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.3.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.a.1
-GET {{baseUrl}}/api/ods/7/indicadores/7.a.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.a.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.b.1
-GET {{baseUrl}}/api/ods/7/indicadores/7.b.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.b.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.b.2
-GET {{baseUrl}}/api/ods/7/indicadores/7.b.2?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.b.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.b.3
-GET {{baseUrl}}/api/ods/7/indicadores/7.b.3?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.b.3?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.b.4
-GET {{baseUrl}}/api/ods/7/indicadores/7.b.4?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.b.4?proyectoId={{proyectoId}}
 
 ### Obtener indicador 7.c.1
-GET {{baseUrl}}/api/ods/7/indicadores/7.c.1?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/7.c.1?proyectoId={{proyectoId}}
 
 ### Encontrar todos los indicadores por proyecto
-GET {{baseUrl}}/api/ods/7/indicadores/proyecto?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/indicadores/proyecto?proyectoId={{proyectoId}}
 
 ### Encontrar indicadores por meta
-GET {{baseUrl}}/api/ods/7/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=7.1
+GET {{baseUrl}}/api/ods/07/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=7.1
 
 # ── Proyectos ──
 
 ### Obtener todos los proyectos del ODS07
-GET {{baseUrl}}/api/ods/7/proyectos
+GET {{baseUrl}}/api/ods/07/proyectos
 
 ### Obtener proyecto por ID
-GET {{baseUrl}}/api/ods/7/proyectos/{{proyectoId}}
+GET {{baseUrl}}/api/ods/07/proyectos/{{proyectoId}}
 
 ### Obtener todas las metas de proyecto
-GET {{baseUrl}}/api/ods/7/proyectos/{{proyectoId}}/metas
+GET {{baseUrl}}/api/ods/07/proyectos/{{proyectoId}}/metas
 
 ### Obtener meta por ID
-GET {{baseUrl}}/api/ods/7/metas/{{metaId}}
+GET {{baseUrl}}/api/ods/07/metas/{{metaId}}
 
 ### Obtener todas las mediciones históricas
-GET {{baseUrl}}/api/ods/7/indicadores/historicas/{{indicadorId}}
+GET {{baseUrl}}/api/ods/07/indicadores/historicas/{{indicadorId}}
 
 ### Obtener medición histórica por ID
-GET {{baseUrl}}/api/ods/7/mediciones/{{medicionId}}
+GET {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
 
 ### Calcular progreso del proyecto
-GET {{baseUrl}}/api/ods/7/progreso/{{proyectoId}}
+GET {{baseUrl}}/api/ods/07/progreso/{{proyectoId}}
 
 ### Obtener estadísticas del ODS07
-GET {{baseUrl}}/api/ods/7/estadisticas
+GET {{baseUrl}}/api/ods/07/estadisticas
 
 ### Verificar si proyecto existe
-GET {{baseUrl}}/api/ods/7/proyectos/{{proyectoId}}/existe
+GET {{baseUrl}}/api/ods/07/proyectos/{{proyectoId}}/existe
 
 ### Verificar si indicador existe
-GET {{baseUrl}}/api/ods/7/indicadores/{{indicadorId}}/existe
+GET {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}/existe
 
 # ── CRUD Operaciones ──
 
 ### Crear nuevo proyecto
-POST {{baseUrl}}/api/ods/7/proyecto
+POST {{baseUrl}}/api/ods/07/proyecto
 Content-Type: application/json
 
 {
@@ -106,7 +106,7 @@ Content-Type: application/json
 }
 
 ### Validar proyecto
-POST {{baseUrl}}/api/ods/7/validar/proyecto
+POST {{baseUrl}}/api/ods/07/validar/proyecto
 Content-Type: application/json
 
 {
@@ -119,7 +119,7 @@ Content-Type: application/json
 }
 
 ### Actualizar proyecto
-PUT {{baseUrl}}/api/ods/7/proyecto/{{proyectoId}}
+PUT {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
 Content-Type: application/json
 
 {
@@ -133,10 +133,10 @@ Content-Type: application/json
 }
 
 ### Eliminar proyecto
-DELETE {{baseUrl}}/api/ods/7/proyecto/{{proyectoId}}
+DELETE {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
 
 ### Crear nuevo indicador
-POST {{baseUrl}}/api/ods/7/indicadores
+POST {{baseUrl}}/api/ods/07/indicadores
 Content-Type: application/json
 
 {
@@ -150,7 +150,7 @@ Content-Type: application/json
 }
 
 ### Validar indicador
-POST {{baseUrl}}/api/ods/7/validar/indicador
+POST {{baseUrl}}/api/ods/07/validar/indicador
 Content-Type: application/json
 
 {
@@ -164,7 +164,7 @@ Content-Type: application/json
 }
 
 ### Actualizar indicador
-PUT {{baseUrl}}/api/ods/7/indicadores/{{indicadorId}}
+PUT {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}
 Content-Type: application/json
 
 {
@@ -179,10 +179,10 @@ Content-Type: application/json
 }
 
 ### Eliminar indicador
-DELETE {{baseUrl}}/api/ods/7/indicadores/{{indicadorId}}
+DELETE {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}
 
 ### Crear nueva meta
-POST {{baseUrl}}/api/ods/7/metas
+POST {{baseUrl}}/api/ods/07/metas
 Content-Type: application/json
 
 {
@@ -194,7 +194,7 @@ Content-Type: application/json
 }
 
 ### Actualizar meta
-PUT {{baseUrl}}/api/ods/7/metas/{{metaId}}
+PUT {{baseUrl}}/api/ods/07/metas/{{metaId}}
 Content-Type: application/json
 
 {
@@ -207,10 +207,10 @@ Content-Type: application/json
 }
 
 ### Eliminar meta
-DELETE {{baseUrl}}/api/ods/7/metas/{{metaId}}
+DELETE {{baseUrl}}/api/ods/07/metas/{{metaId}}
 
 ### Crear nueva medición histórica
-POST {{baseUrl}}/api/ods/7/mediciones
+POST {{baseUrl}}/api/ods/07/mediciones
 Content-Type: application/json
 
 {
@@ -221,7 +221,7 @@ Content-Type: application/json
 }
 
 ### Actualizar medición histórica
-PUT {{baseUrl}}/api/ods/7/mediciones/{{medicionId}}
+PUT {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
 Content-Type: application/json
 
 {
@@ -233,48 +233,48 @@ Content-Type: application/json
 }
 
 ### Eliminar medición histórica
-DELETE {{baseUrl}}/api/ods/7/mediciones/{{medicionId}}
+DELETE {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
 
 # ── IOdsBaseController Methods ──
 
 ### Obtener todos los proyectos (base)
-GET {{baseUrl}}/api/ods/7/all-proyectos
+GET {{baseUrl}}/api/ods/07/all-proyectos
 
 ### Obtener proyecto por ID (base)
-GET {{baseUrl}}/api/ods/7/proyecto/{{proyectoId}}
+GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores (base)
-GET {{baseUrl}}/api/ods/7/base-indicadores?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/base-indicadores?proyectoId={{proyectoId}}
 
 ### Obtener indicador por ID (base)
-GET {{baseUrl}}/api/ods/7/indicadores/{{indicadorId}}
+GET {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}
 
 ### Obtener metas de proyecto
-GET {{baseUrl}}/api/ods/7/metas?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/07/metas?proyectoId={{proyectoId}}
 
 ### Obtener meta por ID (base)
-GET {{baseUrl}}/api/ods/7/metas/{{metaId}}
+GET {{baseUrl}}/api/ods/07/metas/{{metaId}}
 
 ### Obtener mediciones históricas
-GET {{baseUrl}}/api/ods/7/mediciones?indicadorId={{indicadorId}}
+GET {{baseUrl}}/api/ods/07/mediciones?indicadorId={{indicadorId}}
 
 ### Obtener medición histórica por ID (base)
-GET {{baseUrl}}/api/ods/7/mediciones/{{medicionId}}
+GET {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
 
 ### Obtener estadísticas (base)
-GET {{baseUrl}}/api/ods/7/base-estadisticas
+GET {{baseUrl}}/api/ods/07/base-estadisticas
 
 ### Obtener progreso del proyecto (base)
-GET {{baseUrl}}/api/ods/7/base-progreso/{{proyectoId}}
+GET {{baseUrl}}/api/ods/07/base-progreso/{{proyectoId}}
 
 ### Verificar existencia de proyecto (base)
-GET {{baseUrl}}/api/ods/7/proyecto/{{proyectoId}}/existe
+GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}/existe
 
 ### Verificar existencia de indicador (base)
-GET {{baseUrl}}/api/ods/7/indicador/{{indicadorId}}/existe
+GET {{baseUrl}}/api/ods/07/indicador/{{indicadorId}}/existe
 
 ### Verificar existencia de meta (base)
-GET {{baseUrl}}/api/ods/7/meta/{{metaId}}/existe
+GET {{baseUrl}}/api/ods/07/meta/{{metaId}}/existe
 
 ### Verificar existencia de medición histórica (base)
-GET {{baseUrl}}/api/ods/7/medicion/{{medicionId}}/existe
+GET {{baseUrl}}/api/ods/07/medicion/{{medicionId}}/existe

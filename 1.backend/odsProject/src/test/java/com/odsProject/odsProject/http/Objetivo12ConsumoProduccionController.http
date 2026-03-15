@@ -25,9 +25,6 @@ GET {{baseUrl}}/api/ods/12/indicadores/12.2.2?proyectoId={{proyectoId}}
 ### Obtener indicador 12.3.1
 GET {{baseUrl}}/api/ods/12/indicadores/12.3.1?proyectoId={{proyectoId}}
 
-### Obtener indicador 12.3.2
-GET {{baseUrl}}/api/ods/12/indicadores/12.3.2?proyectoId={{proyectoId}}
-
 ### Obtener indicador 12.4.1
 GET {{baseUrl}}/api/ods/12/indicadores/12.4.1?proyectoId={{proyectoId}}
 
@@ -40,17 +37,11 @@ GET {{baseUrl}}/api/ods/12/indicadores/12.5.1?proyectoId={{proyectoId}}
 ### Obtener indicador 12.6.1
 GET {{baseUrl}}/api/ods/12/indicadores/12.6.1?proyectoId={{proyectoId}}
 
-### Obtener indicador 12.6.2
-GET {{baseUrl}}/api/ods/12/indicadores/12.6.2?proyectoId={{proyectoId}}
-
 ### Obtener indicador 12.7.1
 GET {{baseUrl}}/api/ods/12/indicadores/12.7.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 12.8.1
 GET {{baseUrl}}/api/ods/12/indicadores/12.8.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 12.8.2
-GET {{baseUrl}}/api/ods/12/indicadores/12.8.2?proyectoId={{proyectoId}}
 
 ### Obtener indicador 12.a.1
 GET {{baseUrl}}/api/ods/12/indicadores/12.a.1?proyectoId={{proyectoId}}
@@ -60,15 +51,6 @@ GET {{baseUrl}}/api/ods/12/indicadores/12.b.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 12.c.1
 GET {{baseUrl}}/api/ods/12/indicadores/12.c.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 12.c.2
-GET {{baseUrl}}/api/ods/12/indicadores/12.c.2?proyectoId={{proyectoId}}
-
-### Obtener indicador 12.c.3
-GET {{baseUrl}}/api/ods/12/indicadores/12.c.3?proyectoId={{proyectoId}}
-
-### Obtener indicador 12.c.4
-GET {{baseUrl}}/api/ods/12/indicadores/12.c.4?proyectoId={{proyectoId}}
 
 ### Encontrar todos los indicadores por proyecto
 GET {{baseUrl}}/api/ods/12/indicadores/proyecto?proyectoId={{proyectoId}}

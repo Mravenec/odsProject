@@ -31,23 +31,11 @@ GET {{baseUrl}}/api/ods/13/indicadores/13.2.2?proyectoId={{proyectoId}}
 ### Obtener indicador 13.3.1
 GET {{baseUrl}}/api/ods/13/indicadores/13.3.1?proyectoId={{proyectoId}}
 
-### Obtener indicador 13.3.2
-GET {{baseUrl}}/api/ods/13/indicadores/13.3.2?proyectoId={{proyectoId}}
-
 ### Obtener indicador 13.a.1
 GET {{baseUrl}}/api/ods/13/indicadores/13.a.1?proyectoId={{proyectoId}}
 
 ### Obtener indicador 13.b.1
 GET {{baseUrl}}/api/ods/13/indicadores/13.b.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 13.b.2
-GET {{baseUrl}}/api/ods/13/indicadores/13.b.2?proyectoId={{proyectoId}}
-
-### Obtener indicador 13.c.1
-GET {{baseUrl}}/api/ods/13/indicadores/13.c.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 13.c.2
-GET {{baseUrl}}/api/ods/13/indicadores/13.c.2?proyectoId={{proyectoId}}
 
 ### Encontrar todos los indicadores por proyecto
 GET {{baseUrl}}/api/ods/13/indicadores/proyecto?proyectoId={{proyectoId}}
