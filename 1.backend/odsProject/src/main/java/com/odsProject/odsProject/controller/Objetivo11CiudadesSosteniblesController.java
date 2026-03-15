@@ -254,18 +254,7 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una meta de proyecto del ODS11 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return ResponseEntity con la meta encontrada
-     */
-    @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyectoOds11ById(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo11CiudadesSosteniblesService.findMetaProyectoById(metaId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Obtiene todas las mediciones históricas del ODS11
      * 
@@ -278,18 +267,7 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una medición histórica del ODS11 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return ResponseEntity con la medición encontrada
-     */
-    @GetMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> getMedicionHistoricaOds11ById(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo11CiudadesSosteniblesService.findMedicionHistoricaById(medicionId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Calcula el progreso de un proyecto del ODS11
      * 

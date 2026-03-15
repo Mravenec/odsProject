@@ -1,3 +1,4 @@
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\config\JooqConfig.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\interfaces\ILoginController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\interfaces\IObjetivo01PobrezaController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\interfaces\IObjetivo02HambreCeroController.java
@@ -20,6 +21,21 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\LoginController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo01PobrezaController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo02HambreCeroController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo03SaludBienestarController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo04EducacionController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo05GeneroController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo06AguaSaneamientoController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo07EnergiaController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo08CrecimientoEconomicoController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo09InfraestructuraController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo10ReduccionDesigualdadController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo11CiudadesSosteniblesController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo12ConsumoProduccionController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo13AccionClimaController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo14VidaSubmarinaController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo15VidaEcosistemasController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo16PazJusticiaController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\Objetivo17AlianzasController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\DefaultCatalog.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods01\enums\ProyectosEstado.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods01\enums\VistaAdminResumenGeneralEstado.java

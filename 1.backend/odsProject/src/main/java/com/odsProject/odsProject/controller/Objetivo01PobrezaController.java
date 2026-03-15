@@ -274,18 +274,7 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una meta de proyecto del ODS01 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return ResponseEntity con la meta encontrada
-     */
-    @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyectoOds01ById(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo01PobrezaService.getMetaProyectoOds01ById(metaId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Obtiene todas las mediciones históricas del ODS01
      * 
@@ -298,18 +287,7 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una medición histórica del ODS01 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return ResponseEntity con la medición encontrada
-     */
-    @GetMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> getMedicionHistoricaOds01ById(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo01PobrezaService.getMedicionHistoricaOds01ById(medicionId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Calcula el progreso de un proyecto del ODS01
      * 

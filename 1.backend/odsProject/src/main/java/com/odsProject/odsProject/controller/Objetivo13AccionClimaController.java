@@ -174,18 +174,7 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una meta de proyecto del ODS13 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return ResponseEntity con la meta encontrada
-     */
-    @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyectoOds13ById(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo13AccionClimaService.findMetaProyectoById(metaId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Obtiene todas las mediciones históricas del ODS13
      * 
@@ -198,18 +187,7 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una medición histórica del ODS13 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return ResponseEntity con la medición encontrada
-     */
-    @GetMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> getMedicionHistoricaOds13ById(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo13AccionClimaService.findMedicionHistoricaById(medicionId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Calcula el progreso de un proyecto del ODS13
      * 

@@ -215,24 +215,14 @@ public class Objetivo02HambreCeroController implements IObjetivo02HambreCeroCont
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyectoOds02ById(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo02HambreCeroService.getMetaProyectoOds02ById(metaId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     @GetMapping("/indicadores/historicas/{indicadorId}")
     public ResponseEntity<List<MedicionesHistoricas>> getAllMedicionesHistoricasOds02(@PathVariable Integer indicadorId) {
         List<MedicionesHistoricas> result = objetivo02HambreCeroService.getAllMedicionesHistoricasOds02(indicadorId);
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> getMedicionHistoricaOds02ById(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo02HambreCeroService.getMedicionHistoricaOds02ById(medicionId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     @GetMapping("/progreso/{proyectoId}")
     public ResponseEntity<Double> calculateProjectProgress(@PathVariable Integer proyectoId) {
         Double result = objetivo02HambreCeroService.calculateProjectProgress(proyectoId);

@@ -32,7 +32,7 @@ import static com.odsProject.odsProject.database.jooq.ods02.tables.AuditoriaOds0
 public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepository {
 
     @Autowired
-    @Qualifier("ods02DslContext")
+    @Qualifier("dslOds02")
     private DSLContext dsl;
 
     // ── Indicadores Específicos del ODS02 ──

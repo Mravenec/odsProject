@@ -334,18 +334,7 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una meta de proyecto del ODS17 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return ResponseEntity con la meta encontrada
-     */
-    @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyectoOds17ById(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo17AlianzasService.findMetaProyectoById(metaId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Obtiene todas las mediciones históricas del ODS17
      * 
@@ -358,18 +347,7 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una medición histórica del ODS17 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return ResponseEntity con la medición encontrada
-     */
-    @GetMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> getMedicionHistoricaOds17ById(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo17AlianzasService.findMedicionHistoricaById(medicionId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Calcula el progreso de un proyecto del ODS17
      * 

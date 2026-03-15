@@ -374,18 +374,7 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una meta de proyecto del ODS03 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return ResponseEntity con la meta encontrada
-     */
-    @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyectoOds03ById(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo03SaludBienestarService.getMetaProyectoOds03ById(metaId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Obtiene todas las mediciones históricas del ODS03
      * 
@@ -398,18 +387,7 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Obtiene una medición histórica del ODS03 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return ResponseEntity con la medición encontrada
-     */
-    @GetMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> getMedicionHistoricaOds03ById(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo03SaludBienestarService.getMedicionHistoricaOds03ById(medicionId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    
     /**
      * Calcula el progreso de un proyecto del ODS03
      * 
