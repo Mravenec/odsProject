@@ -11,7 +11,7 @@
 # ── Indicadores Específicos del ODS01 ──
 
 ### Obtener todos los indicadores del ODS01
-GET {{baseUrl}}/api/ods/1/indicadores?proyectoId={{proyectoId}}
+GET {{baseUrl}}/api/ods/01/indicadores?proyectoId={{proyectoId}}
 
 ### Obtener indicador 1.1.1
 GET {{baseUrl}}/api/ods/1/indicadores/1.1.1?proyectoId={{proyectoId}}
