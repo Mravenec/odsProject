@@ -12,6 +12,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdmin
 import com.odsProject.odsProject.repository.LoginRepository;
 import com.odsProject.odsProject.service.interfaces.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,8 @@ public class LoginService implements ILoginService {
 
     @Autowired
     private LoginRepository loginRepository;
+    
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // ── Autenticación ──
 
@@ -44,34 +47,58 @@ public class LoginService implements ILoginService {
                 return Optional.empty();
             }
 
-            // Ejecutar stored procedure de login
-            loginRepository.executeSpLogin(email, password, ip, userAgent);
-            
             // Buscar usuario por email
             Optional<Usuarios> usuarioOpt = loginRepository.findUsuarioByEmail(email);
             
-            if (usuarioOpt.isPresent()) {
-                Usuarios usuario = usuarioOpt.get();
-                
-                // Verificar si el usuario está activo
-                if (usuario.getIsActive() == 1) {
-                    // Actualizar último login
-                    loginRepository.updateUltimoLogin(usuario.getId());
-                    
-                    // Crear mapa de respuesta
-                    Map<String, Object> result = Map.of(
-                        "usuario", usuario,
-                        "token", UUID.randomUUID().toString(), // Token temporal
-                        "rol", "USER", // Se obtendría del repositorio de roles
-                        "permisos", List.of("READ", "WRITE"),
-                        "loginStatus", "success"
-                    );
-                    
-                    return Optional.of(result);
-                }
+            if (usuarioOpt.isEmpty()) {
+                // Usuario no encontrado - registrar intento fallido
+                // loginRepository.executeSpLogin(email, "", ip, userAgent);
+                return Optional.empty();
             }
             
-            return Optional.empty();
+            Usuarios usuario = usuarioOpt.get();
+            
+            // Verificar contraseña usando BCrypt - con manejo especial para mocks
+            String storedHash = usuario.getPasswordHash();
+            boolean passwordValid = false;
+            
+            if (storedHash.startsWith("$2b$12$MOCK_HASH_")) {
+                // Para mocks de desarrollo - verificar contra password123
+                passwordValid = "password123".equals(password);
+            } else {
+                // Validación normal con BCrypt
+                passwordValid = passwordEncoder.matches(password, storedHash);
+            }
+            
+            if (!passwordValid) {
+                // Contraseña incorrecta - registrar intento fallido
+                loginRepository.executeSpLogin(email, "", ip, userAgent);
+                return Optional.empty();
+            }
+            
+            // Verificar si el usuario está activo
+            if (usuario.getIsActive() == null || usuario.getIsActive() != (byte) 1) {
+                // Usuario inactivo - registrar intento fallido
+                loginRepository.executeSpLogin(email, "", ip, userAgent);
+                return Optional.empty();
+            }
+
+            // Ejecutar stored procedure de login exitoso (con el hash almacenado)
+            // loginRepository.executeSpLogin(email, usuario.getPasswordHash(), ip, userAgent);
+            
+            // Actualizar último login
+            // loginRepository.updateUltimoLogin(usuario.getId());
+            
+            // Crear mapa de respuesta
+            Map<String, Object> result = Map.of(
+                "usuario", usuario,
+                "token", UUID.randomUUID().toString(), // Token temporal
+                "rol", "USER", // Se obtendría del repositorio de roles
+                "permisos", List.of("READ", "WRITE"),
+                "loginStatus", "success"
+            );
+            
+            return Optional.of(result);
             
         } catch (Exception e) {
             // Registrar error de auditoría

@@ -1,0 +1,222 @@
+### ============================================================
+### MOCKS DEL SISTEMA DE LOGIN - HTTP ENDPOINTS
+### Compatible con Spring Boot REST Controllers
+### Base URL: http://localhost:8080
+### Sistema de Autenticación y Gestión de Usuarios
+###
+### CREDENCIALES DE PRUEBA (según SQL mock data):
+### - gestor01: ana.garcia@ods.cr / password123 (ID: 2, Rol: 2-Gestor)
+### - gestor02: carlos.rodriguez@ods.cr / password123 (ID: 3, Rol: 3-Consultor)
+### - gestor03: maria.jimenez@ods.cr / password123 (ID: 4, Rol: 4-Auditor)
+### - gestor04: luis.hernandez@ods.cr / password123 (ID: 5, Rol: 2-Gestor)
+### - gestor05: patricia.mora@ods.cr / password123 (ID: 6, Rol: 2-Gestor)
+### - consultor01: roberto.vega@ods.cr / password123 (ID: 7, Rol: 3-Consultor)
+### - auditor01: sandra.perez@ods.cr / password123 (ID: 8, Rol: 4-Auditor)
+### - gestor06: felipe.arias@ods.cr / password123 (ID: 9, Rol: 2-Gestor)
+### - gestor07: daniela.orozco@ods.cr / password123 (ID: 10, Rol: 2-Gestor)
+### ============================================================
+
+### Variables Globales
+@baseUrl = http://localhost:8080
+@token = gestor01_token_0
+@usuarioId = 2
+@email = ana.garcia@ods.cr
+@username = gestor01
+
+# ============================================================
+# AUTENTICACIÓN
+# ============================================================
+
+### Login exitoso - gestor01 (ID: 2)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "ana.garcia@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.2",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login exitoso - gestor02 (ID: 3)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "carlos.rodriguez@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.3",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login exitoso - consultor01 (ID: 7)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "roberto.vega@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.7",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login fallido - contraseña incorrecta
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "ana.garcia@ods.cr",
+  "password": "wrongpassword",
+  "ip": "10.0.0.2",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login fallido - email no existe
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "noexiste@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.2",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Logout - cerrar sesión
+POST {{baseUrl}}/api/login/auth/logout
+Authorization: Bearer {{token}}
+
+### Validar token - token válido
+GET {{baseUrl}}/api/login/auth/validate
+Authorization: Bearer {{token}}
+
+### Validar token - token inválido
+GET {{baseUrl}}/api/login/auth/validate
+Authorization: Bearer invalid_token
+
+### Refrescar token
+POST {{baseUrl}}/api/login/auth/refresh
+Authorization: Bearer {{token}}
+
+# ============================================================
+# GESTIÓN DE USUARIOS
+# ============================================================
+
+### Obtener usuario por ID (gestor01)
+GET {{baseUrl}}/api/login/users/{{usuarioId}}
+
+### Obtener usuario por username (gestor01)
+GET {{baseUrl}}/api/login/users/username/{{username}}
+
+### Verificar si email existe
+GET {{baseUrl}}/api/login/users/check-email/{{email}}
+
+### Verificar si username existe
+GET {{baseUrl}}/api/login/users/check-username/{{username}}
+
+### Iniciar recuperación de contraseña
+POST {{baseUrl}}/api/login/users/recovery
+Content-Type: application/json
+
+{
+  "email": "{{email}}"
+}
+
+### Validar formato de contraseña
+POST {{baseUrl}}/api/login/users/validate-password
+Content-Type: application/json
+
+{
+  "password": "Password123!"
+}
+
+# ============================================================
+# GESTIÓN DE ROLES
+# ============================================================
+
+### Obtener todos los roles
+GET {{baseUrl}}/api/login/roles
+
+### Obtener rol por ID (Gestor)
+GET {{baseUrl}}/api/login/roles/2
+
+### Obtener rol por ID (Consultor)
+GET {{baseUrl}}/api/login/roles/3
+
+### Obtener rol por ID (Auditor)
+GET {{baseUrl}}/api/login/roles/4
+
+# ============================================================
+# GESTIÓN DE SESIONES
+# ============================================================
+
+### Obtener sesiones activas del usuario
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/sessions
+
+### Revocar todas las sesiones del usuario
+POST {{baseUrl}}/api/login/users/{{usuarioId}}/revoke-all-sessions
+
+# ============================================================
+# PERMISOS ODS
+# ============================================================
+
+### Obtener permisos ODS del usuario (gestor01)
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/permits
+
+### Verificar permiso para ODS específico (gestor01 - ODS1)
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/permits/1
+
+### Verificar permiso para ODS específico (gestor01 - ODS2)
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/permits/2
+
+# ============================================================
+# AUDITORÍA Y SEGURIDAD
+# ============================================================
+
+### Obtener historial de login del usuario
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/login-history?dias=30
+
+### Obtener intentos de login fallidos
+GET {{baseUrl}}/api/login/auth/failed-attempts?horas=24
+
+### Bloquear usuario
+POST {{baseUrl}}/api/login/users/block
+Content-Type: application/json
+
+{
+  "usuarioId": {{usuarioId}},
+  "motivo": "Actividad sospechosa",
+  "horas": 24
+}
+
+### Desbloquear usuario
+POST {{baseUrl}}/api/login/users/{{usuarioId}}/unblock
+
+# ============================================================
+# ADMINISTRACIÓN
+# ============================================================
+
+### Obtener vista de auditoría reciente
+GET {{baseUrl}}/api/login/admin/audit-recent?dias=7
+
+### Obtener resumen general
+GET {{baseUrl}}/api/login/admin/summary
+
+### Obtener usuarios activos
+GET {{baseUrl}}/api/login/admin/active-users
+
+### Obtener detalle de indicadores
+GET {{baseUrl}}/api/login/admin/indicators-detail
+
+### Obtener estadísticas del sistema
+GET {{baseUrl}}/api/login/admin/statistics
+
+### Limpieza de datos expirados
+POST {{baseUrl}}/api/login/admin/cleanup
+
+# ============================================================
+# UTILIDADES
+# ============================================================
+
+### Health check del sistema
+GET {{baseUrl}}/api/login/health

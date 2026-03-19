@@ -4,7 +4,6 @@ import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.jooq.SQLDialect;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +23,13 @@ public class JooqConfig {
 
     @Bean
     @Primary
-    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create()
+                .url("jdbc:mariadb://localhost:3306/ods_login")
+                .username("root")
+                .password("123456")
+                .driverClassName("org.mariadb.jdbc.Driver")
+                .build();
     }
 
     // ── DataSource para ODS01 ──
