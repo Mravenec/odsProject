@@ -98,6 +98,20 @@ public class LoginService implements ILoginService {
                 "loginStatus", "success"
             );
             
+            // Crear y guardar sesión
+            String token = (String) result.get("token");
+            Sesiones nuevaSesion = new Sesiones(
+                null, // id - se genera automáticamente
+                usuario.getId(),
+                token,
+                ip,
+                userAgent,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusHours(24), // expira en 24 horas
+                (byte) 0 // no revocada
+            );
+            loginRepository.saveSesion(nuevaSesion);
+            
             return Optional.of(result);
             
         } catch (Exception e) {
@@ -139,8 +153,14 @@ public class LoginService implements ILoginService {
                 return Optional.empty();
             }
             
+            // Extraer token del header Authorization (formato: "Bearer <token>")
+            String actualToken = token;
+            if (token.startsWith("Bearer ")) {
+                actualToken = token.substring(7); // Remover "Bearer "
+            }
+            
             // Buscar sesión por token
-            Optional<Sesiones> sesionOpt = loginRepository.findSesionByToken(token);
+            Optional<Sesiones> sesionOpt = loginRepository.findSesionByToken(actualToken);
             
             if (sesionOpt.isPresent()) {
                 Sesiones sesion = sesionOpt.get();

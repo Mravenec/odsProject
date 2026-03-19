@@ -1,0 +1,1454 @@
+### ============================================================
+### MOCKS COMPLETOS DEL SISTEMA ODS - HTTP ENDPOINTS
+### Compatible con Spring Boot REST Controllers
+### Base URL: http://localhost:8080
+### Todos los ODS (1-17) cubiertos
+### ============================================================
+
+### Variables Globales
+@baseUrl = http://localhost:8080
+@proyectoId = 1
+@indicadorId = 1
+@metaId = 1
+@medicionId = 1
+
+# ============================================================
+# SISTEMA DE LOGIN - AUTENTICACIÓN Y GESTIÓN DE USUARIOS
+# Compatible con LoginController.java
+# ============================================================
+
+
+### ============================================================
+### SISTEMA DE LOGIN - AUTENTICACIÓN Y GESTIÓN DE USUARIOS
+### Compatible con LoginController.java
+### ============================================================
+
+### Variables de Login
+@token = gestor01_token_0
+@email = ana.garcia@ods.cr
+@usuarioId = 2
+
+# ============================================================
+# AUTENTICACIÓN
+# ============================================================
+
+### Login exitoso - gestor01 (ID: 2, Rol: Gestor)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "ana.garcia@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.2",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login exitoso - gestor02 (ID: 3, Rol: Consultor)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "carlos.rodriguez@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.3",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login exitoso - gestor03 (ID: 4, Rol: Auditor)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "maria.jimenez@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.4",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login exitoso - consultor01 (ID: 7, Rol: Consultor)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "roberto.vega@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.7",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login exitoso - auditor01 (ID: 8, Rol: Auditor)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "sandra.perez@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.8",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login fallido - contraseña incorrecta
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "ana.garcia@ods.cr",
+  "password": "wrongpassword",
+  "ip": "10.0.0.2",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Login fallido - email no existe
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "noexiste@ods.cr",
+  "password": "password123",
+  "ip": "10.0.0.2",
+  "userAgent": "Mozilla/5.0 (Mock Browser)"
+}
+
+### Logout - cerrar sesión
+POST {{baseUrl}}/api/login/auth/logout
+Authorization: Bearer {{token}}
+
+### Validar token - token válido
+GET {{baseUrl}}/api/login/auth/validate
+Authorization: Bearer {{token}}
+
+### Validar token - token inválido
+GET {{baseUrl}}/api/login/auth/validate
+Authorization: Bearer invalid_token
+
+### Refrescar token
+POST {{baseUrl}}/api/login/auth/refresh
+Authorization: Bearer {{token}}
+
+### Obtener usuario por ID (gestor01)
+GET {{baseUrl}}/api/login/users/{{usuarioId}}
+
+### Obtener usuario por username (gestor01)
+GET {{baseUrl}}/api/login/users/username/gestor01
+
+### Verificar si email existe
+GET {{baseUrl}}/api/login/users/check-email/{{email}}
+
+### Verificar si username existe
+GET {{baseUrl}}/api/login/users/check-username/gestor01
+
+### Iniciar recuperación de contraseña
+POST {{baseUrl}}/api/login/users/recovery
+Content-Type: application/json
+
+{
+  "email": "{{email}}"
+}
+
+### Validar formato de contraseña
+POST {{baseUrl}}/api/login/users/validate-password
+Content-Type: application/json
+
+{
+  "password": "Password123!"
+}
+
+### Obtener todos los roles
+GET {{baseUrl}}/api/login/roles
+
+### Obtener rol por ID (Gestor)
+GET {{baseUrl}}/api/login/roles/2
+
+### Obtener rol por ID (Consultor)
+GET {{baseUrl}}/api/login/roles/3
+
+### Obtener rol por ID (Auditor)
+GET {{baseUrl}}/api/login/roles/4
+
+### Obtener sesiones activas del usuario
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/sessions
+
+### Revocar todas las sesiones del usuario
+POST {{baseUrl}}/api/login/users/{{usuarioId}}/revoke-all-sessions
+
+### Obtener permisos ODS del usuario (gestor01)
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/permits
+
+### Verificar permiso para ODS específico (gestor01 - ODS1)
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/permits/1
+
+### Verificar permiso para ODS específico (gestor01 - ODS2)
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/permits/2
+
+### Verificar permiso para ODS específico (consultor01 - ODS1)
+GET {{baseUrl}}/api/login/users/7/permits/1
+
+### Obtener historial de login del usuario
+GET {{baseUrl}}/api/login/users/{{usuarioId}}/login-history?dias=30
+
+### Obtener intentos de login fallidos
+GET {{baseUrl}}/api/login/auth/failed-attempts?horas=24
+
+### Bloquear usuario
+POST {{baseUrl}}/api/login/users/block
+Content-Type: application/json
+
+{
+  "usuarioId": {{usuarioId}},
+  "motivo": "Actividad sospechosa",
+  "horas": 24
+}
+
+### Desbloquear usuario
+POST {{baseUrl}}/api/login/users/{{usuarioId}}/unblock
+
+### Obtener vista de auditoría reciente
+GET {{baseUrl}}/api/login/admin/audit-recent?dias=7
+
+### Obtener resumen general
+GET {{baseUrl}}/api/login/admin/summary
+
+### Obtener usuarios activos
+GET {{baseUrl}}/api/login/admin/active-users
+
+### Obtener detalle de indicadores
+GET {{baseUrl}}/api/login/admin/indicators-detail
+
+### Obtener estadísticas del sistema
+GET {{baseUrl}}/api/login/admin/statistics
+
+### Limpieza de datos expirados
+POST {{baseUrl}}/api/login/admin/cleanup
+
+### Health check del sistema
+GET {{baseUrl}}/api/login/health
+
+# ============================================================
+# ODS 01: FIN DE LA POBREZA
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/01/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/01/proyecto/{{proyectoId}}
+
+### Crear proyecto de prueba para ODS01
+POST {{baseUrl}}/api/ods/01/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Reducción Pobreza 2024",
+  "descripcion": "Proyecto piloto para reducir la pobreza en comunidades rurales",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 250000.0,
+  "estado": "ACTIVO",
+  "usuarioId": 2
+}
+
+### Obtener todos los indicadores del ODS01
+GET {{baseUrl}}/api/ods/01/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.1.1 - Proporción de la población que vive por debajo del umbral internacional de la pobreza
+GET {{baseUrl}}/api/ods/01/indicadores/1.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.2.1 - Proporción de la población que vive por debajo del umbral nacional de la pobreza
+GET {{baseUrl}}/api/ods/01/indicadores/1.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.2.2 - Proporción de hombres y mujeres que viven en la pobreza
+GET {{baseUrl}}/api/ods/01/indicadores/1.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.3.1 - Proporción de la población cubierta por sistemas de protección social
+GET {{baseUrl}}/api/ods/01/indicadores/1.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.4.1 - Proporción de la población que vive en hogares con acceso a servicios básicos
+GET {{baseUrl}}/api/ods/01/indicadores/1.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.5.1 - Proporción del presupuesto público destinado a servicios básicos
+GET {{baseUrl}}/api/ods/01/indicadores/1.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.5.2 - Proporción del gasto público en servicios esenciales
+GET {{baseUrl}}/api/ods/01/indicadores/1.5.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.5.3 - Número de personas que reciben beneficios de protección social
+GET {{baseUrl}}/api/ods/01/indicadores/1.5.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.5.4 - Proporción de la población con acceso a servicios financieros
+GET {{baseUrl}}/api/ods/01/indicadores/1.5.4?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.a.1 - Recursos públicos para la pobreza
+GET {{baseUrl}}/api/ods/01/indicadores/1.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.b.1 - Programas de protección social
+GET {{baseUrl}}/api/ods/01/indicadores/1.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.c.1 - Estrategias de desarrollo
+GET {{baseUrl}}/api/ods/01/indicadores/1.c.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 1.d.1 - Asistencia oficial para el desarrollo
+GET {{baseUrl}}/api/ods/01/indicadores/1.d.1?proyectoId={{proyectoId}}
+
+### Crear indicador de prueba para ODS01
+POST {{baseUrl}}/api/ods/01/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "1.1.1",
+  "nombre": "Proporción población bajo umbral pobreza",
+  "descripcion": "Medición de población viviendo por debajo del umbral internacional de pobreza",
+  "valorActual": 15.5,
+  "valorMeta": 5.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/01/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "1.1.1",
+  "nombre": "Proporción población bajo umbral pobreza Actualizado",
+  "descripcion": "Medición actualizada de pobreza",
+  "valorActual": 14.8,
+  "valorMeta": 5.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Crear medición histórica de prueba
+POST {{baseUrl}}/api/ods/01/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 16.2,
+  "observaciones": "Medición trimestral de indicador de pobreza"
+}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/01/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/01/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/01/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/01/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/01/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 02: HAMBRE CERO
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/02/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS02
+GET {{baseUrl}}/api/ods/02/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.1.1 - Prevalencia de la subnutrición
+GET {{baseUrl}}/api/ods/02/indicadores/2.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.1.2 - Prevalencia de la inseguridad alimentaria
+GET {{baseUrl}}/api/ods/02/indicadores/2.1.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.2.1 - Prevalencia del retraso en el crecimiento
+GET {{baseUrl}}/api/ods/02/indicadores/2.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.2.2 - Prevalencia de la emaciación
+GET {{baseUrl}}/api/ods/02/indicadores/2.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.2.3 - Prevalencia del sobrepeso
+GET {{baseUrl}}/api/ods/02/indicadores/2.2.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.3.1 - Volumen de producción agrícola
+GET {{baseUrl}}/api/ods/02/indicadores/2.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.3.2 - Productividad agrícola
+GET {{baseUrl}}/api/ods/02/indicadores/2.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.4.1 - Proporción de área agrícola bajo producción sostenible
+GET {{baseUrl}}/api/ods/02/indicadores/2.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.5.1 - Recursos genéticos vegetales
+GET {{baseUrl}}/api/ods/02/indicadores/2.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.5.2 - Recursos genéticos animales
+GET {{baseUrl}}/api/ods/02/indicadores/2.5.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.a.1 - Inversión agrícola
+GET {{baseUrl}}/api/ods/02/indicadores/2.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 2.b.1 - Subsidios agrícolas
+GET {{baseUrl}}/api/ods/02/indicadores/2.b.1?proyectoId}}
+
+### Obtener indicador 2.c.1 - Estabilidad alimentaria
+GET {{baseUrl}}/api/ods/02/indicadores/2.c.1?proyectoId={{proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/02/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/02/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/02/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/02/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 03: SALUD Y BIENESTAR
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/03/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/03/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS03
+GET {{baseUrl}}/api/ods/03/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.1.1 - Tasa de mortalidad materna
+GET {{baseUrl}}/api/ods/03/indicadores/3.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.1.2 - Proporción de partos atendidos
+GET {{baseUrl}}/api/ods/03/indicadores/3.1.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.2.1 - Tasa de mortalidad neonatal
+GET {{baseUrl}}/api/ods/03/indicadores/3.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.2.2 - Tasa de mortalidad infantil
+GET {{baseUrl}}/api/ods/03/indicadores/3.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.3.1 - Incidencia de malaria
+GET {{baseUrl}}/api/ods/03/indicadores/3.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.3.2 - Incidencia de tuberculosis
+GET {{baseUrl}}/api/ods/03/indicadores/3.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.3.3 - Incidencia de VIH
+GET {{baseUrl}}/api/ods/03/indicadores/3.3.3?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.3.4 - Mortalidad por hepatitis
+GET {{baseUrl}}/api/ods/03/indicadores/3.3.4?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.3.5 - Mortalidad por enfermedades tropicales
+GET {{baseUrl}}/api/ods/03/indicadores/3.3.5?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.4.1 - Tasa de mortalidad por suicidio
+GET {{baseUrl}}/api/ods/03/indicadores/3.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.4.2 - Mortalidad por abuso de sustancias
+GET {{baseUrl}}/api/ods/03/indicadores/3.4.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.5.1 - Tratamiento de abuso de sustancias
+GET {{baseUrl}}/api/ods/03/indicadores/3.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.5.2 - Consumo de alcohol per cápita
+GET {{baseUrl}}/api/ods/03/indicadores/3.5.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.6.1 - Tasa de mortalidad por accidentes de tráfico
+GET {{baseUrl}}/api/ods/03/indicadores/3.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.7.1 - Planificación familiar
+GET {{baseUrl}}/api/ods/03/indicadores/3.7.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.7.2 - Tasa de fecundidad adolescente
+GET {{baseUrl}}/api/ods/03/indicadores/3.7.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.8.1 - Cobertura de servicios de salud
+GET {{baseUrl}}/api/ods/03/indicadores/3.8.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.8.2 - Mortalidad por contaminación
+GET {{baseUrl}}/api/ods/03/indicadores/3.8.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.9.1 - Mortalidad por enfermedades transmitidas
+GET {{baseUrl}}/api/ods/03/indicadores/3.9.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.9.2 - Mortalidad por envenenamiento
+GET {{baseUrl}}/api/ods/03/indicadores/3.9.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.a.1 - Cobertura sanitaria universal
+GET {{baseUrl}}/api/ods/03/indicadores/3.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.b.1 - Vacunación universal
+GET {{baseUrl}}/api/ods/03/indicadores/3.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.c.1 - Personal de salud
+GET {{baseUrl}}/api/ods/03/indicadores/3.c.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 3.d.1 - Capacidad de respuesta a emergencias
+GET {{baseUrl}}/api/ods/03/indicadores/3.d.1?proyectoId={{proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/03/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/03/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/03/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/03/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/03/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 04: EDUCACIÓN DE CALIDAD
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/04/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/04/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS04
+GET {{baseUrl}}/api/ods/04/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.1.1 - Educación primaria y secundaria completada
+GET {{baseUrl}}/api/ods/04/indicadores/4.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.2.1 - Desarrollo en la primera infancia
+GET {{baseUrl}}/api/ods/04/indicadores/4.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.3.1 - Educación superior completada
+GET {{baseUrl}}/api/ods/04/indicadores/4.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.4.1 - Competencias en lectura y matemáticas
+GET {{baseUrl}}/api/ods/04/indicadores/4.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.5.1 - Igualdad de género en educación
+GET {{baseUrl}}/api/ods/04/indicadores/4.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.6.1 - Alfabetización
+GET {{baseUrl}}/api/ods/04/indicadores/4.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.7.1 - Educación para el desarrollo sostenible
+GET {{baseUrl}}/api/ods/04/indicadores/4.7.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.a.1 - Instalaciones educativas
+GET {{baseUrl}}/api/ods/04/indicadores/4.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.b.1 - Becas de educación superior
+GET {{baseUrl}}/api/ods/04/indicadores/4.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 4.c.1 - Formación de docentes
+GET {{baseUrl}}/api/ods/04/indicadores/4.c.1?proyectoId={{proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/04/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/04/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/04/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/04/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/04/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 05: IGUALDAD DE GÉNERO
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/05/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/05/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS05
+GET {{baseUrl}}/api/ods/05/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.1.1 - Marcos jurídicos para igualdad
+GET {{baseUrl}}/api/ods/05/indicadores/5.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.2.1 - Violencia de pareja
+GET {{baseUrl}}/api/ods/05/indicadores/5.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.2.2 - Violencia sexual
+GET {{baseUrl}}/api/ods/05/indicadores/5.2.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.3.1 - Matrimonio infantil
+GET {{baseUrl}}/api/ods/05/indicadores/5.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.3.2 - Mutilación genital femenina
+GET {{baseUrl}}/api/ods/05/indicadores/5.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.4.1 - Trabajo doméstico no remunerado
+GET {{baseUrl}}/api/ods/05/indicadores/5.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.5.1 - Mujeres en parlamentos
+GET {{baseUrl}}/api/ods/05/indicadores/5.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.5.2 - Mujeres en cargos directivos
+GET {{baseUrl}}/api/ods/05/indicadores/5.5.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.6.1 - Decisión sobre salud reproductiva
+GET {{baseUrl}}/api/ods/05/indicadores/5.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.6.2 - Acceso a salud sexual y reproductiva
+GET {{baseUrl}}/api/ods/05/indicadores/5.6.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.a.1 - Derechos sobre tierras agrícolas
+GET {{baseUrl}}/api/ods/05/indicadores/5.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.a.2 - Igualdad de derechos a la tierra
+GET {{baseUrl}}/api/ods/05/indicadores/5.a.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.b.1 - Propiedad de teléfono móvil
+GET {{baseUrl}}/api/ods/05/indicadores/5.b.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 5.c.1 - Sistemas de seguimiento de igualdad
+GET {{baseUrl}}/api/ods/05/indicadores/5.c.1?proyectoId={{proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/05/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/05/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/05/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/05/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/05/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 06: AGUA LIMPIA Y SANEAMIENTO
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/06/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/06/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS06
+GET {{baseUrl}}/api/ods/06/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.1.1 - Acceso al agua potable
+GET {{baseUrl}}/api/ods/06/indicadores/6.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.2.1 - Acceso a saneamiento
+GET {{baseUrl}}/api/ods/06/indicadores/6.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.3.1 - Calidad del agua
+GET {{baseUrl}}/api/ods/06/indicadores/6.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.3.2 - Tratamiento de aguas residuales
+GET {{baseUrl}}/api/ods/06/indicadores/6.3.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.4.1 - Uso eficiente del agua
+GET {{baseUrl}}/api/ods/06/indicadores/6.4.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.4.2 - Estrés hídrico
+GET {{baseUrl}}/api/ods/06/indicadores/6.4.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.5.1 - Gestión integrada del agua
+GET {{baseUrl}}/api/ods/06/indicadores/6.5.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.5.2 - Cooperación transfronteriza
+GET {{baseUrl}}/api/ods/06/indicadores/6.5.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.6.1 - Ecosistemas relacionados con el agua
+GET {{baseUrl}}/api/ods/06/indicadores/6.6.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.a.1 - Cooperación internacional
+GET {{baseUrl}}/api/ods/06/indicadores/6.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 6.b.1 - Participación comunitaria
+GET {{baseUrl}}/api/ods/06/indicadores/6.b.1?proyectoId={{proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/06/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/06/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/06/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/06/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/06/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 07: ENERGÍA ASEQUIBLE Y NO CONTAMINANTE
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/07/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS07
+GET {{baseUrl}}/api/ods/07/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.1.1 - Acceso a electricidad
+GET {{baseUrl}}/api/ods/07/indicadores/7.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.1.2 - Acceso a combustibles limpios
+GET {{baseUrl}}/api/ods/07/indicadores/7.1.2?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.2.1 - Energías renovables
+GET {{baseUrl}}/api/ods/07/indicadores/7.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.3.1 - Eficiencia energética
+GET {{baseUrl}}/api/ods/07/indicadores/7.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.a.1 - Acceso a investigación energética
+GET {{baseUrl}}/api/ods/07/indicadores/7.a.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 7.b.1 - Inversión en energía limpia
+GET {{baseUrl}}/api/ods/07/indicadores/7.b.1?proyectoId={{proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/07/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/07/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/07/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 08: TRABAJO DECENTE Y CRECIMIENTO ECONÓMICO
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/08/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS08
+GET {{baseUrl}}/api/ods/08/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 8.1.1 - Crecimiento económico anual
+GET {{baseUrl}}/api/ods/08/indicadores/8.1.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 8.2.1 - Productividad laboral
+GET {{baseUrl}}/api/ods/08/indicadores/8.2.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 8.3.1 - Tasa de empleo informal
+GET {{baseUrl}}/api/ods/08/indicadores/8.3.1?proyectoId={{proyectoId}}
+
+### Obtener indicador 8.4.1 - Intensidad de carbono
+GET {{baseUrl}}/api/ods/08/indicadores/8.4.1?proyectoId}}
+
+### Obtener indicador 8.5.1 - Tasa de desempleo
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.1?proyectoId}}
+
+### Obtener indicador 8.5.2 - Proporción de jóvenes no empleados
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.2?proyectoId}}
+
+### Obtener indicador 8.5.3 - Proporción de empleo informal
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.3?proyectoId}}
+
+### Obtener indicador 8.5.4 - Tasa de lesiones laborales
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.4?proyectoId}}
+
+### Obtener indicador 8.5.5 - Tasa de empleo femenino
+GET {{baseUrl}}/api/ods/08/indicadores/8.5.5?proyectoId}}
+
+### Obtener indicador 8.6.1 - Proporción de jóvenes fuera del sistema educativo
+GET {{baseUrl}}/api/ods/08/indicadores/8.6.1?proyectoId}}
+
+### Obtener indicador 8.7.1 - Trabajo infantil y forzoso
+GET {{baseUrl}}/api/ods/08/indicadores/8.7.1?proyectoId}}
+
+### Obtener indicador 8.8.1 - Tasa de mortalidad laboral
+GET {{baseUrl}}/api/ods/08/indicadores/8.8.1?proyectoId}}
+
+### Obtener indicador 8.8.2 - Nivel de seguridad laboral
+GET {{baseUrl}}/api/ods/08/indicadores/8.8.2?proyectoId}}
+
+### Obtener indicador 8.9.1 - Proporción del turismo en el PIB
+GET {{baseUrl}}/api/ods/08/indicadores/8.9.1?proyectoId}}
+
+### Obtener indicador 8.10.1 - Acceso a servicios financieros
+GET {{baseUrl}}/api/ods/08/indicadores/8.10.1?proyectoId}}
+
+### Obtener indicador 8.10.2 - Proporción de adultos con cuentas bancarias
+GET {{baseUrl}}/api/ods/08/indicadores/8.10.2?proyectoId}}
+
+### Obtener indicador 8.a.1 - Ayuda para el desarrollo
+GET {{baseUrl}}/api/ods/08/indicadores/8.a.1?proyectoId}}
+
+### Obtener indicador 8.b.1 - Políticas de desarrollo
+GET {{baseUrl}}/api/ods/08/indicadores/8.b.1?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/08/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/08/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/08/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/08/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 09: INDUSTRIA, INNOVACIÓN E INFRAESTRUCTURA
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/09/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/09/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS09
+GET {{baseUrl}}/api/ods/09/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 9.1.1 - Proporción de la población rural con acceso a carreteras
+GET {{baseUrl}}/api/ods/09/indicadores/9.1.1?proyectoId}}
+
+### Obtener indicador 9.1.2 - Proporción de pasajeros de ferrocarril
+GET {{baseUrl}}/api/ods/09/indicadores/9.1.2?proyectoId}}
+
+### Obtener indicador 9.2.1 - Proporción del empleo industrial
+GET {{baseUrl}}/api/ods/09/indicadores/9.2.1?proyectoId}}
+
+### Obtener indicador 9.2.2 - Empleo industrial por género
+GET {{baseUrl}}/api/ods/09/indicadores/9.2.2?proyectoId}}
+
+### Obtener indicador 9.3.1 - Proporción del valor añadido industrial
+GET {{baseUrl}}/api/ods/09/indicadores/9.3.1?proyectoId}}
+
+### Obtener indicador 9.4.1 - Intensidad de uso de materiales
+GET {{baseUrl}}/api/ods/09/indicadores/9.4.1?proyectoId}}
+
+### Obtener indicador 9.5.1 - Investigación y desarrollo
+GET {{baseUrl}}/api/ods/09/indicadores/9.5.1?proyectoId}}
+
+### Obtener indicador 9.5.2 - Investigadores por millón de habitantes
+GET {{baseUrl}}/api/ods/09/indicadores/9.5.2?proyectoId}}
+
+### Obtener indicador 9.a.1 - Infraestructura de transporte
+GET {{baseUrl}}/api/ods/09/indicadores/9.a.1?proyectoId}}
+
+### Obtener indicador 9.b.1 - Industrias de media y alta tecnología
+GET {{baseUrl}}/api/ods/09/indicadores/9.b.1?proyectoId}}
+
+### Obtener indicador 9.c.1 - Acceso a TIC
+GET {{baseUrl}}/api/ods/09/indicadores/9.c.1?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/09/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/09/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/09/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/09/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/09/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 10: REDUCCIÓN DE LAS DESIGUALDADES
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/10/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS10
+GET {{baseUrl}}/api/ods/10/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 10.1.1 - Tasa de crecimiento del ingreso
+GET {{baseUrl}}/api/ods/10/indicadores/10.1.1?proyectoId}}
+
+### Obtener indicador 10.2.1 - Proporción de personas viviendo por debajo del 50% de la mediana
+GET {{baseUrl}}/api/ods/10/indicadores/10.2.1?proyectoId}}
+
+### Obtener indicador 10.3.1 - Proporción de población pobre
+GET {{baseUrl}}/api/ods/10/indicadores/10.3.1?proyectoId}}
+
+### Obtener indicador 10.4.1 - Participación en la política
+GET {{baseUrl}}/api/ods/10/indicadores/10.4.1?proyectoId}}
+
+### Obtener indicador 10.5.1 - Índice de igualdad salarial
+GET {{baseUrl}}/api/ods/10/indicadores/10.5.1?proyectoId}}
+
+### Obtener indicador 10.6.1 - Representación en instituciones
+GET {{baseUrl}}/api/ods/10/indicadores/10.6.1?proyectoId}}
+
+### Obtener indicador 10.7.1 - Gastos en asistencia
+GET {{baseUrl}}/api/ods/10/indicadores/10.7.1?proyectoId}}
+
+### Obtener indicador 10.7.2 - Remesas como proporción del PIB
+GET {{baseUrl}}/api/ods/10/indicadores/10.7.2?proyectoId}}
+
+### Obtener indicador 10.a.1 - Aranceles de importación
+GET {{baseUrl}}/api/ods/10/indicadores/10.a.1?proyectoId}}
+
+### Obtener indicador 10.b.1 - Flujo de asistencia oficial
+GET {{baseUrl}}/api/ods/10/indicadores/10.b.1?proyectoId}}
+
+### Obtener indicador 10.c.1 - Costo de envío de remesas
+GET {{baseUrl}}/api/ods/10/indicadores/10.c.1?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/10/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/10/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/10/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/10/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 11: CIUDADES Y COMUNIDADES SOSTENIBLES
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/11/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS11
+GET {{baseUrl}}/api/ods/11/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 11.1.1 - Proporción de población urbana en barrios marginales
+GET {{baseUrl}}/api/ods/11/indicadores/11.1.1?proyectoId}}
+
+### Obtener indicador 11.2.1 - Proporción de población con acceso a transporte público
+GET {{baseUrl}}/api/ods/11/indicadores/11.2.1?proyectoId}}
+
+### Obtener indicador 11.3.1 - Relación entre tasa de uso del suelo y tasa de crecimiento
+GET {{baseUrl}}/api/ods/11/indicadores/11.3.1?proyectoId}}
+
+### Obtener indicador 11.4.1 - Proporción de desechos sólidos recolectados
+GET {{baseUrl}}/api/ods/11/indicadores/11.4.1?proyectoId}}
+
+### Obtener indicador 11.5.1 - Número de personas fallecidas por desastres
+GET {{baseUrl}}/api/ods/11/indicadores/11.5.1?proyectoId}}
+
+### Obtener indicador 11.5.2 - Pérdidas económicas por desastres
+GET {{baseUrl}}/api/ods/11/indicadores/11.5.2?proyectoId}}
+
+### Obtener indicador 11.6.1 - Proporción de desechos sólidos tratados
+GET {{baseUrl}}/api/ods/11/indicadores/11.6.1?proyectoId}}
+
+### Obtener indicador 11.6.2 - Concentración de partículas PM2.5
+GET {{baseUrl}}/api/ods/11/indicadores/11.6.2?proyectoId}}
+
+### Obtener indicador 11.7.1 - Proporción de espacio verde urbano
+GET {{baseUrl}}/api/ods/11/indicadores/11.7.1?proyectoId}}
+
+### Obtener indicador 11.a.1 - Ciudades con planes de desarrollo
+GET {{baseUrl}}/api/ods/11/indicadores/11.a.1?proyectoId}}
+
+### Obtener indicador 11.b.1 - Proporción de ciudades con planes de reducción de riesgos
+GET {{baseUrl}}/api/ods/11/indicadores/11.b.1?proyectoId}}
+
+### Obtener indicador 11.c.1 - Apoyo financiero para ciudades
+GET {{baseUrl}}/api/ods/11/indicadores/11.c.1?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/11/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/11/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/11/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/11/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 12: PRODUCCIÓN Y CONSUMO RESPONSABLES
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/12/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS12
+GET {{baseUrl}}/api/ods/12/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 12.1.1 - Uso de materiales per cápita
+GET {{baseUrl}}/api/ods/12/indicadores/12.1.1?proyectoId}}
+
+### Obtener indicador 12.2.1 - Huella material per cápita
+GET {{baseUrl}}/api/ods/12/indicadores/12.2.1?proyectoId}}
+
+### Obtener indicador 12.2.2 - Uso doméstico de materiales
+GET {{baseUrl}}/api/ods/12/indicadores/12.2.2?proyectoId}}
+
+### Obtener indicador 12.3.1 - Pérdida de alimentos per cápita
+GET {{baseUrl}}/api/ods/12/indicadores/12.3.1?proyectoId}}
+
+### Obtener indicador 12.4.1 - Generación de desechos peligrosos
+GET {{baseUrl}}/api/ods/12/indicadores/12.4.1?proyectoId}}
+
+### Obtener indicador 12.4.2 - Gestión de desechos peligrosos
+GET {{baseUrl}}/api/ods/12/indicadores/12.4.2?proyectoId}}
+
+### Obtener indicador 12.5.1 - Tasa de reciclaje
+GET {{baseUrl}}/api/ods/12/indicadores/12.5.1?proyectoId}}
+
+### Obtener indicador 12.6.1 - Empresas con informes de sostenibilidad
+GET {{baseUrl}}/api/ods/12/indicadores/12.6.1?proyectoId}}
+
+### Obtener indicador 12.7.1 - Prácticas de adquisición sostenible
+GET {{baseUrl}}/api/ods/12/indicadores/12.7.1?proyectoId}}
+
+### Obtener indicador 12.8.1 - Educación para el desarrollo sostenible
+GET {{baseUrl}}/api/ods/12/indicadores/12.8.1?proyectoId}}
+
+### Obtener indicador 12.a.1 - Apoyo a países en desarrollo
+GET {{baseUrl}}/api/ods/12/indicadores/12.a.1?proyectoId}}
+
+### Obtener indicador 12.b.1 - Políticas de turismo sostenible
+GET {{baseUrl}}/api/ods/12/indicadores/12.b.1?proyectoId}}
+
+### Obtener indicador 12.c.1 - Subsidios ambientales
+GET {{baseUrl}}/api/ods/12/indicadores/12.c.1?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/12/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/12/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/12/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/12/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 13: ACCIÓN POR EL CLIMA
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/13/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS13
+GET {{baseUrl}}/api/ods/13/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 13.1.1 - Número de países con estrategias de reducción de riesgos
+GET {{baseUrl}}/api/ods/13/indicadores/13.1.1?proyectoId}}
+
+### Obtener indicador 13.1.2 - Número de personas afectadas por desastres
+GET {{baseUrl}}/api/ods/13/indicadores/13.1.2?proyectoId}}
+
+### Obtener indicador 13.2.1 - Contribuciones nacionales determinadas
+GET {{baseUrl}}/api/ods/13/indicadores/13.2.1?proyectoId}}
+
+### Obtener indicador 13.2.2 - Emisiones totales de gases de efecto invernadero
+GET {{baseUrl}}/api/ods/13/indicadores/13.2.2?proyectoId}}
+
+### Obtener indicador 13.3.1 - Integración de medidas climáticas
+GET {{baseUrl}}/api/ods/13/indicadores/13.3.1?proyectoId}}
+
+### Obtener indicador 13.3.2 - Capacidad de adaptación climática
+GET {{baseUrl}}/api/ods/13/indicadores/13.3.2?proyectoId}}
+
+### Obtener indicador 13.a.1 - Movilización de recursos financieros
+GET {{baseUrl}}/api/ods/13/indicadores/13.a.1?proyectoId}}
+
+### Obtener indicador 13.b.1 - Planes de acción climática
+GET {{baseUrl}}/api/ods/13/indicadores/13.b.1?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/13/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/13/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/13/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/13/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 14: VIDA SUBMARINA
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/14/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS14
+GET {{baseUrl}}/api/ods/14/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 14.1.1 - Índice de eutrofización costera
+GET {{baseUrl}}/api/ods/14/indicadores/14.1.1?proyectoId}}
+
+### Obtener indicador 14.2.1 - Proporción de zonas marinas protegidas
+GET {{baseUrl}}/api/ods/14/indicadores/14.2.1?proyectoId}}
+
+### Obtener indicador 14.3.1 - Índice de acidificación oceánica
+GET {{baseUrl}}/api/ods/14/indicadores/14.3.1?proyectoId}}
+
+### Obtener indicador 14.4.1 - Pesca sostenible
+GET {{baseUrl}}/api/ods/14/indicadores/14.4.1?proyectoId}}
+
+### Obtener indicador 14.5.1 - Cobertura de áreas marinas protegidas
+GET {{baseUrl}}/api/ods/14/indicadores/14.5.1?proyectoId}}
+
+### Obtener indicador 14.6.1 - Proporción de pesca sostenible
+GET {{baseUrl}}/api/ods/14/indicadores/14.6.1?proyectoId}}
+
+### Obtener indicador 14.7.1 - Beneficios económicos del turismo marino
+GET {{baseUrl}}/api/ods/14/indicadores/14.7.1?proyectoId}}
+
+### Obtener indicador 14.a.1 - Contribución del océano a la economía
+GET {{baseUrl}}/api/ods/14/indicadores/14.a.1?proyectoId}}
+
+### Obtener indicador 14.b.1 - Pesca artesanal y pequeña escala
+GET {{baseUrl}}/api/ods/14/indicadores/14.b.1?proyectoId}}
+
+### Obtener indicador 14.c.1 - Capacidad de investigación marina
+GET {{baseUrl}}/api/ods/14/indicadores/14.c.1?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/14/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/14/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/14/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/14/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 15: VIDA DE ECOSISTEMAS TERRESTRES
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/15/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS15
+GET {{baseUrl}}/api/ods/15/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 15.1.1 - Proporción de superficie forestal
+GET {{baseUrl}}/api/ods/15/indicadores/15.1.1?proyectoId}}
+
+### Obtener indicador 15.1.2 - Proporción de áreas protegidas
+GET {{baseUrl}}/api/ods/15/indicadores/15.1.2?proyectoId}}
+
+### Obtener indicador 15.2.1 - Progreso en la gestión sostenible de bosques
+GET {{baseUrl}}/api/ods/15/indicadores/15.2.1?proyectoId}}
+
+### Obtener indicador 15.3.1 - Proporción de tierra degradada
+GET {{baseUrl}}/api/ods/15/indicadores/15.3.1?proyectoId}}
+
+### Obtener indicador 15.4.1 - Cobertura de áreas protegidas
+GET {{baseUrl}}/api/ods/15/indicadores/15.4.1?proyectoId}}
+
+### Obtener indicador 15.5.1 - Índice de la Lista Roja
+GET {{baseUrl}}/api/ods/15/indicadores/15.5.1?proyectoId}}
+
+### Obtener indicador 15.6.1 - Especies protegidas
+GET {{baseUrl}}/api/ods/15/indicadores/15.6.1?proyectoId}}
+
+### Obtener indicador 15.7.1 - Tráfico de vida silvestre
+GET {{baseUrl}}/api/ods/15/indicadores/15.7.1?proyectoId}}
+
+### Obtener indicador 15.8.1 - Especies invasoras
+GET {{baseUrl}}/api/ods/15/indicadores/15.8.1?proyectoId}}
+
+### Obtener indicador 15.9.1 - Biodiversidad genética
+GET {{baseUrl}}/api/ods/15/indicadores/15.9.1?proyectoId}}
+
+### Obtener indicador 15.a.1 - Recursos financieros para conservación
+GET {{baseUrl}}/api/ods/15/indicadores/15.a.1?proyectoId}}
+
+### Obtener indicador 15.b.1 - Programas de desarrollo sostenible
+GET {{baseUrl}}/api/ods/15/indicadores/15.b.1?proyectoId}}
+
+### Obtener indicador 15.c.1 - Combate a la caza furtiva
+GET {{baseUrl}}/api/ods/15/indicadores/15.c.1?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/15/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/15/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/15/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/15/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 16: PAZ, JUSTICIA E INSTITUCIONES SÓLIDAS
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/16/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS16
+GET {{baseUrl}}/api/ods/16/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 16.1.1 - Tasa de homicidios
+GET {{baseUrl}}/api/ods/16/indicadores/16.1.1?proyectoId}}
+
+### Obtener indicador 16.1.2 - Muertes relacionadas con conflictos
+GET {{baseUrl}}/api/ods/16/indicadores/16.1.2?proyectoId}}
+
+### Obtener indicador 16.1.3 - Proporción de población que se siente segura
+GET {{baseUrl}}/api/ods/16/indicadores/16.1.3?proyectoId}}
+
+### Obtener indicador 16.1.4 - Proporción de población que ha sufrido violencia
+GET {{baseUrl}}/api/ods/16/indicadores/16.1.4?proyectoId}}
+
+### Obtener indicador 16.2.1 - Proporción de niños que sufren violencia
+GET {{baseUrl}}/api/ods/16/indicadores/16.2.1?proyectoId}}
+
+### Obtener indicador 16.2.2 - Trata de personas
+GET {{baseUrl}}/api/ods/16/indicadores/16.2.2?proyectoId}}
+
+### Obtener indicador 16.2.3 - Proporción de jóvenes en conflicto con la ley
+GET {{baseUrl}}/api/ods/16/indicadores/16.2.3?proyectoId}}
+
+### Obtener indicador 16.3.1 - Proporción de víctimas que denuncian crímenes
+GET {{baseUrl}}/api/ods/16/indicadores/16.3.1?proyectoId}}
+
+### Obtener indicador 16.3.2 - Tasa de condenas no privativas de libertad
+GET {{baseUrl}}/api/ods/16/indicadores/16.3.2?proyectoId}}
+
+### Obtener indicador 16.4.1 - Flujo financiero ilícito
+GET {{baseUrl}}/api/ods/16/indicadores/16.4.1?proyectoId}}
+
+### Obtener indicador 16.4.2 - Proporción de armas recuperadas
+GET {{baseUrl}}/api/ods/16/indicadores/16.4.2?proyectoId}}
+
+### Obtener indicador 16.5.1 - Proporción de sobornos
+GET {{baseUrl}}/api/ods/16/indicadores/16.5.1?proyectoId}}
+
+### Obtener indicador 16.5.2 - Empresas que reciben sobornos
+GET {{baseUrl}}/api/ods/16/indicadores/16.5.2?proyectoId}}
+
+### Obtener indicador 16.6.1 - Gastos gubernamentales
+GET {{baseUrl}}/api/ods/16/indicadores/16.6.1?proyectoId}}
+
+### Obtener indicador 16.6.2 - Proporción de población con documentos
+GET {{baseUrl}}/api/ods/16/indicadores/16.6.2?proyectoId}}
+
+### Obtener indicador 16.7.1 - Proporción de mujeres en instituciones públicas
+GET {{baseUrl}}/api/ods/16/indicadores/16.7.1?proyectoId}}
+
+### Obtener indicador 16.7.2 - Proporción de población con acceso a información
+GET {{baseUrl}}/api/ods/16/indicadores/16.7.2?proyectoId}}
+
+### Obtener indicador 16.8.1 - Proporción de países con planes de desarrollo
+GET {{baseUrl}}/api/ods/16/indicadores/16.8.1?proyectoId}}
+
+### Obtener indicador 16.9.1 - Proporción de niños menores de 5 años registrados
+GET {{baseUrl}}/api/ods/16/indicadores/16.9.1?proyectoId}}
+
+### Obtener indicador 16.10.1 - Independencia de las instituciones nacionales
+GET {{baseUrl}}/api/ods/16/indicadores/16.10.1?proyectoId}}
+
+### Obtener indicador 16.10.2 - Proporción de población con acceso a justicia
+GET {{baseUrl}}/api/ods/16/indicadores/16.10.2?proyectoId}}
+
+### Obtener indicador 16.a.1 - Existencia de instituciones nacionales independientes
+GET {{baseUrl}}/api/ods/16/indicadores/16.a.1?proyectoId}}
+
+### Obtener indicador 16.b.1 - Proporción de población que se siente segura caminando sola
+GET {{baseUrl}}/api/ods/16/indicadores/16.b.1?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/16/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/16/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/16/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/16/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# ODS 17: ALIANZAS PARA LOGRAR LOS OBJETIVOS
+# ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/17/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}
+
+### Obtener todos los indicadores del ODS17
+GET {{baseUrl}}/api/ods/17/indicadores?proyectoId={{proyectoId}}
+
+### Obtener indicador 17.1.1 - Recursos financieros movilizados
+GET {{baseUrl}}/api/ods/17/indicadores/17.1.1?proyectoId}}
+
+### Obtener indicador 17.1.2 - Ayuda oficial para el desarrollo
+GET {{baseUrl}}/api/ods/17/indicadores/17.1.2?proyectoId}}
+
+### Obtener indicador 17.2.1 - Inversión extranjera directa
+GET {{baseUrl}}/api/ods/17/indicadores/17.2.1?proyectoId}}
+
+### Obtener indicador 17.3.1 - Remesas como proporción del PIB
+GET {{baseUrl}}/api/ods/17/indicadores/17.3.1?proyectoId}}
+
+### Obtener indicador 17.3.2 - Transferencias de tecnología
+GET {{baseUrl}}/api/ods/17/indicadores/17.3.2?proyectoId}}
+
+### Obtener indicador 17.4.1 - Deuda externa total
+GET {{baseUrl}}/api/ods/17/indicadores/17.4.1?proyectoId}}
+
+### Obtener indicador 17.5.1 - Número de países que adoptan políticas
+GET {{baseUrl}}/api/ods/17/indicadores/17.5.1?proyectoId}}
+
+### Obtener indicador 17.6.1 - Suscripciones a internet de banda ancha fija
+GET {{baseUrl}}/api/ods/17/indicadores/17.6.1?proyectoId}}
+
+### Obtener indicador 17.7.1 - Proporción de población con acceso a internet
+GET {{baseUrl}}/api/ods/17/indicadores/17.7.1?proyectoId}}
+
+### Obtener indicador 17.8.1 - Proporción de población que usa internet
+GET {{baseUrl}}/api/ods/17/indicadores/17.8.1?proyectoId}}
+
+### Obtener indicador 17.9.1 - Existencia de estrategias de desarrollo
+GET {{baseUrl}}/api/ods/17/indicadores/17.9.1?proyectoId}}
+
+### Obtener indicador 17.10.1 - Aranceles de importación ponderados
+GET {{baseUrl}}/api/ods/17/indicadores/17.10.1?proyectoId}}
+
+### Obtener indicador 17.11.1 - Contribuciones financieras
+GET {{baseUrl}}/api/ods/17/indicadores/17.11.1?proyectoId}}
+
+### Obtener indicador 17.12.1 - Ayuda no reembolsable
+GET {{baseUrl}}/api/ods/17/indicadores/17.12.1?proyectoId}}
+
+### Obtener indicador 17.13.1 - Estabilidad macroeconómica
+GET {{baseUrl}}/api/ods/17/indicadores/17.13.1?proyectoId}}
+
+### Obtener indicador 17.14.1 - Coherencia de políticas
+GET {{baseUrl}}/api/ods/17/indicadores/17.14.1?proyectoId}}
+
+### Obtener indicador 17.15.1 - Uso de marcos de resultados
+GET {{baseUrl}}/api/ods/17/indicadores/17.15.1?proyectoId}}
+
+### Obtener indicador 17.16.1 - Progreso en la implementación de marcos
+GET {{baseUrl}}/api/ods/17/indicadores/17.16.1?proyectoId}}
+
+### Obtener indicador 17.17.1 - Publicación de datos estadísticos
+GET {{baseUrl}}/api/ods/17/indicadores/17.17.1?proyectoId}}
+
+### Obtener indicador 17.18.1 - Capacidades estadísticas
+GET {{baseUrl}}/api/ods/17/indicadores/17.18.1?proyectoId}}
+
+### Obtener indicador 17.18.2 - Proporción de países con estadísticas
+GET {{baseUrl}}/api/ods/17/indicadores/17.18.2?proyectoId}}
+
+### Obtener indicador 17.18.3 - Financiamiento para estadísticas
+GET {{baseUrl}}/api/ods/17/indicadores/17.18.3?proyectoId}}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/17/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/17/base-progreso/{{proyectoId}}
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/17/indicadores/{{indicadorId}}/existe
+
+### Verificar si medición histórica existe
+GET {{baseUrl}}/api/ods/17/medicion/{{medicionId}}/existe
+
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}/existe
+
+# ============================================================
+# FIN DEL ARCHIVO DE MOCKS HTTP
+# ============================================================
