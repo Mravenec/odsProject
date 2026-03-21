@@ -18,7 +18,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEve
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Controlador REST para el Sistema de Login
