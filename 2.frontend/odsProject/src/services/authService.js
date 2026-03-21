@@ -1,97 +1,66 @@
-// Mock de autenticación - simula una API real
-const mockUsers = [
-  {
-    id: 1,
-    username: 'admin',
-    password: 'admin123',
-    role: 'admin',
-    name: 'Administrador',
-    email: 'admin@projectODS.com'
-  },
-  {
-    id: 2,
-    username: 'user',
-    password: 'user123',
-    role: 'user',
-    name: 'Usuario',
-    email: 'user@projectODS.com'
-  }
-];
-
-// Simula delay de red
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+import api from './api';
 
 export const authService = {
-  // Login mock
+  // Login real
   async login(credentials) {
-    await delay(1000); // Simula tiempo de respuesta del servidor
-    
-    const { username, password } = credentials;
-    const user = mockUsers.find(u => u.username === username && u.password === password);
-    
-    if (user) {
-      // Simula token JWT
-      const token = btoa(JSON.stringify({ 
-        id: user.id, 
-        role: user.role, 
-        exp: Date.now() + 3600000 // 1 hora
-      }));
+    try {
+      const response = await api.post('/login/auth/login', {
+        email: credentials.username, // El Frontend pide username, el Backend asume que es email
+        password: credentials.password,
+        ip: "127.0.0.1",
+        userAgent: "React Frontend"
+      });
+      
+      const { token, userId, email, role, nombre } = response.data;
       
       return {
         success: true,
         data: {
           user: {
-            id: user.id,
-            username: user.username,
-            name: user.name,
-            email: user.email,
-            role: user.role
+            id: userId || response.data.id || 1,
+            username: credentials.username,
+            name: nombre || credentials.username,
+            email: email || credentials.username,
+            role: role || 'admin'
           },
-          token
+          token: token || response.data.token
         }
       };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || 'Credenciales inválidas'
+      };
     }
-    
-    return {
-      success: false,
-      error: 'Credenciales inválidas'
-    };
   },
 
-  // Verificación de token
+  // Verificación de token real
   async verifyToken(token) {
-    await delay(500);
-    
     try {
-      const decoded = JSON.parse(atob(token));
-      
-      if (decoded.exp < Date.now()) {
-        return { success: false, error: 'Token expirado' };
-      }
-      
-      const user = mockUsers.find(u => u.id === decoded.id);
-      if (user) {
-        return {
-          success: true,
-          data: {
-            id: user.id,
-            username: user.username,
-            name: user.name,
-            email: user.email,
-            role: user.role
-          }
-        };
-      }
-      
-      return { success: false, error: 'Usuario no encontrado' };
+      const response = await api.get('/login/auth/validate');
+      return {
+        success: true,
+        data: {
+          id: response.data.userId || 1,
+          username: 'usuario',
+          name: response.data.nombre || 'Usuario Autorizado',
+          email: response.data.email || 'usuario@ods.cr',
+          role: response.data.role || 'admin'
+        }
+      };
     } catch (error) {
       return { success: false, error: 'Token inválido' };
     }
   },
 
-  // Logout
+  // Logout real
   async logout() {
-    await delay(300);
-    return { success: true };
+    try {
+      await api.post('/login/auth/logout');
+      return { success: true };
+    } catch (error) {
+      // Incluso si falla en el servidor, permitimos limpiar el frontend
+      return { success: true };
+    }
   }
 };

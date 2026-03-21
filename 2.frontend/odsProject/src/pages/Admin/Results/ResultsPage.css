@@ -1,0 +1,81 @@
+.admin-review-page {
+  min-height: 100vh;
+  padding-bottom: 5rem;
+}
+
+.review-header {
+  background: white;
+  border-bottom: 1px solid var(--border-color);
+  padding: 2rem 0;
+  margin-bottom: 2.5rem;
+}
+
+.review-header-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-title-area h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.review-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.project-info-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.info-grid-review {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.info-item h5 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.info-item p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.results-analysis-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: #0f172a;
+}
+
+.indicators-group-shared {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.summary-section-admin {
+  margin-top: 3rem;
+  max-width: 600px;
+  margin-inline: auto;
+}

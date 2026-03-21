@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { projectService } from '../services/projectService';
+import { useAuth } from '../../hooks/useAuth.jsx';
+import { useProjects } from '../../hooks/useProjects.jsx';
+import './ProjectCreationPage.css';
 
 const ProjectCreationPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { createProject, loading, error: projectsError } = useProjects();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -16,8 +18,6 @@ const ProjectCreationPage = () => {
     endDate: ''
   });
   const [availableIndicators, setAvailableIndicators] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const objectives = [
     { id: 1, name: 'Fin de la Pobreza', service: 'objetivo01Service' },
@@ -181,22 +181,19 @@ const ProjectCreationPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
 
     try {
       const projectData = {
         ...formData,
-        userId: user.id,
-        status: 'active'
+        userId: user.id
       };
 
-      await projectService.createProject(projectData);
-      navigate('/dashboard');
+      const result = await createProject(projectData);
+      if (result.success) {
+        navigate('/dashboard');
+      }
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      console.error('Error creating project:', err);
     }
   };
 
@@ -205,152 +202,155 @@ const ProjectCreationPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Crear Nuevo Proyecto ODS</h1>
-          
-          {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
-              <p className="text-red-600">{error}</p>
-            </div>
-          )}
+    <div className="project-creation-page fade-in">
+      <div className="page-header-simple">
+        <button onClick={() => navigate('/dashboard')} className="btn-back" title="Volver al Dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+        <h1>Crear Proyecto ODS</h1>
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nombre del Proyecto
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+      <main className="form-container">
+        <form onSubmit={handleSubmit} className="modern-form">
+          <section className="form-section">
+            <div className="section-title">
+              <span className="step-number">1</span>
+              <h3>Información Básica</h3>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Descripción
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                rows="3"
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Objetivo ODS
-              </label>
-              <select
-                name="objective"
-                value={formData.objective}
-                onChange={handleInputChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Seleccionar Objetivo</option>
-                {objectives.map(objective => (
-                  <option key={objective.id} value={objective.id}>
-                    {objective.id}. {objective.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Fecha de Inicio
-                </label>
+            
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Nombre del Proyecto</label>
                 <input
-                  type="date"
-                  name="startDate"
-                  value={formData.startDate}
+                  type="text"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
+                  placeholder="Ej: Reducción de brecha digital en comunidades rurales"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Fecha de Fin
-                </label>
-                <input
-                  type="date"
-                  name="endDate"
-                  value={formData.endDate}
+
+              <div className="form-group">
+                <label>Descripción</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
                   onChange={handleInputChange}
+                  placeholder="Describe brevemente los objetivos y el alcance del proyecto..."
+                  rows="4"
                   required
-                  min={formData.startDate}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
+
+              <div className="form-group">
+                <label>Objetivo ODS</label>
+                <select
+                  name="objective"
+                  value={formData.objective}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccionar Objetivo</option>
+                  {objectives.map(objective => (
+                    <option key={objective.id} value={objective.id}>
+                      {objective.id}. {objective.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group-row">
+                <div className="form-group">
+                  <label>Fecha Inicio</label>
+                  <input
+                    type="date"
+                    name="startDate"
+                    value={formData.startDate}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Fecha Fin</label>
+                  <input
+                    type="date"
+                    name="endDate"
+                    value={formData.endDate}
+                    onChange={handleInputChange}
+                    required
+                    min={formData.startDate}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="form-section">
+            <div className="section-title">
+              <span className="step-number">2</span>
+              <h3>Selección de Indicadores</h3>
+              <p className="section-subtitle">Selecciona los indicadores que medirás en este proyecto.</p>
             </div>
 
-            {availableIndicators.length > 0 && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-4">
-                  Indicadores a Medir
-                </label>
-                <div className="space-y-3 max-h-64 overflow-y-auto border border-gray-200 rounded-md p-4">
-                  {availableIndicators.map(indicator => (
-                    <div key={indicator} className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          id={indicator}
-                          checked={formData.indicators.includes(indicator)}
-                          onChange={() => handleIndicatorToggle(indicator)}
-                          className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                        />
-                        <label htmlFor={indicator} className="text-sm text-gray-700">
-                          {formatIndicatorName(indicator)}
-                        </label>
-                      </div>
+            {availableIndicators.length > 0 ? (
+              <div className="indicators-grid">
+                {availableIndicators.map(indicator => (
+                  <div 
+                    key={indicator} 
+                    className={`indicator-chip ${formData.indicators.includes(indicator) ? 'active' : ''}`}
+                    onClick={() => handleIndicatorToggle(indicator)}
+                  >
+                    <span className="chip-icon">{formData.indicators.includes(indicator) ? '✓' : '+'}</span>
+                    <div className="chip-content">
+                      <span className="chip-label">{formatIndicatorName(indicator)}</span>
                       {formData.indicators.includes(indicator) && (
                         <input
                           type="number"
                           step="0.01"
-                          placeholder="Valor objetivo"
+                          placeholder="Meta"
                           value={formData.targetValues[indicator] || ''}
+                          onClick={(e) => e.stopPropagation()}
                           onChange={(e) => handleTargetValueChange(indicator, e.target.value)}
                           required
-                          className="w-32 px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="target-input-sm"
                         />
                       )}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
+            ) : (
+                <p className="no-indicators-msg">Selecciona un objetivo para ver sus indicadores.</p>
             )}
+          </section>
 
-            <div className="flex justify-end space-x-4">
-              <button
-                type="button"
-                onClick={() => navigate('/dashboard')}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                disabled={loading || !formData.indicators.length}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {loading ? 'Creando...' : 'Crear Proyecto'}
-              </button>
+          {projectsError && (
+            <div className="error-banner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>{projectsError}</span>
             </div>
-          </form>
-        </div>
-      </div>
+          )}
+
+          <div className="form-actions">
+            <button 
+              type="button" 
+              className="btn-secondary" 
+              onClick={() => navigate('/dashboard')}
+              disabled={loading}
+            >
+              Cancelar
+            </button>
+            <button 
+              type="submit" 
+              className={`btn-primary ${loading ? 'loading' : ''}`}
+              disabled={loading || formData.indicators.length === 0}
+            >
+              {loading ? <span className="spinner"></span> : 'Crear Proyecto ODS'}
+            </button>
+          </div>
+        </form>
+      </main>
     </div>
   );
 };

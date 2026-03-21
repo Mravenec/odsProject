@@ -1,13 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import DashboardPage from './pages/DashboardPage.jsx';
-import ProjectCreationPage from './pages/ProjectCreationPage.jsx';
-import ProjectResultsPage from './pages/ProjectResultsPage.jsx';
-import AdminProjectOverviewPage from './pages/AdminProjectOverviewPage.jsx';
-import AdminResultsReviewPage from './pages/AdminResultsReviewPage.jsx';
-import './styles/App.css';
+import LoginPage from './pages/LoginPage/LoginPage.jsx';
+import DashboardPage from './pages/DashboardPage/DashboardPage.jsx';
+import ProjectCreationPage from './pages/ProjectCreationPage/ProjectCreationPage.jsx';
+import ProjectResultsPage from './pages/ProjectResultsPage/ProjectResultsPage.jsx';
+import AdminProjectOverviewPage from './pages/Admin/Overview/OverviewPage.jsx';
+import AdminResultsReviewPage from './pages/Admin/Results/ResultsPage.jsx';
 
 function App() {
   return (
