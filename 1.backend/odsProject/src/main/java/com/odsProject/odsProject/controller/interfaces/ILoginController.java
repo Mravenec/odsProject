@@ -165,7 +165,7 @@ public interface ILoginController {
      * @return ResponseEntity con lista de sesiones activas
      */
     @GetMapping("/users/{id}/sessions")
-    ResponseEntity<List<Map<String, Object>>> getActiveSessions(@PathVariable Integer usuarioId);
+    ResponseEntity<List<Map<String, Object>>> getActiveSessions(@PathVariable("id") Integer usuarioId);
     
     /**
      * Endpoint para revocar otras sesiones del usuario
@@ -183,7 +183,7 @@ public interface ILoginController {
      * @return ResponseEntity con número de sesiones revocadas
      */
     @PostMapping("/users/{id}/revoke-all-sessions")
-    ResponseEntity<Integer> revokeAllSessions(@PathVariable Integer usuarioId);
+    ResponseEntity<Integer> revokeAllSessions(@PathVariable("id") Integer usuarioId);
     
     // ── Permisos ODS ──
     
@@ -194,7 +194,7 @@ public interface ILoginController {
      * @return ResponseEntity con lista de permisos ODS
      */
     @GetMapping("/users/{id}/permits")
-    ResponseEntity<List<Map<String, Object>>> getPermisosByUsuario(@PathVariable Integer usuarioId);
+    ResponseEntity<List<Map<String, Object>>> getPermisosByUsuario(@PathVariable("id") Integer usuarioId);
     
     /**
      * Endpoint para verificar permiso ODS de usuario
@@ -204,7 +204,7 @@ public interface ILoginController {
      * @return ResponseEntity con resultado de la verificación
      */
     @GetMapping("/users/{id}/permits/{odsId}")
-    ResponseEntity<Boolean> hasPermisoOds(@PathVariable Integer usuarioId, @PathVariable Integer odsId);
+    ResponseEntity<Boolean> hasPermisoOds(@PathVariable("id") Integer usuarioId, @PathVariable Integer odsId);
     
     /**
      * Endpoint para otorgar permiso ODS a usuario
@@ -234,7 +234,7 @@ public interface ILoginController {
      * @return ResponseEntity con lista de registros de auditoría
      */
     @GetMapping("/users/{id}/login-history")
-    ResponseEntity<List<Map<String, Object>>> getLoginHistory(@PathVariable Integer usuarioId, @RequestParam(defaultValue = "30") Integer dias);
+    ResponseEntity<List<Map<String, Object>>> getLoginHistory(@PathVariable("id") Integer usuarioId, @RequestParam(defaultValue = "30") Integer dias);
     
     /**
      * Endpoint para obtener intentos fallidos recientes
@@ -261,7 +261,7 @@ public interface ILoginController {
      * @return ResponseEntity con resultado de la operación
      */
     @PostMapping("/users/{id}/unblock")
-    ResponseEntity<Boolean> unblockUsuario(@PathVariable Integer usuarioId);
+    ResponseEntity<Boolean> unblockUsuario(@PathVariable("id") Integer usuarioId);
     
     // ── Administración ──
     

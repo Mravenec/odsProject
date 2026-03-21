@@ -89,11 +89,16 @@ public class LoginService implements ILoginService {
             // Actualizar último login
             // loginRepository.updateUltimoLogin(usuario.getId());
             
+            // Obtener rol
+            // Obtener rol
+            Optional<Roles> rolOpt = loginRepository.findRolById(usuario.getRolId());
+            String rolName = rolOpt.isPresent() ? rolOpt.get().getNombre() : "USER";
+
             // Crear mapa de respuesta
             Map<String, Object> result = Map.of(
                 "usuario", usuario,
                 "token", UUID.randomUUID().toString(), // Token temporal
-                "rol", "USER", // Se obtendría del repositorio de roles
+                "rol", rolName, // Rol real desde DB
                 "permisos", List.of("READ", "WRITE"),
                 "loginStatus", "success"
             );

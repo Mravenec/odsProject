@@ -47,12 +47,17 @@ public class LoginController implements ILoginController {
 
         var result = loginService.authenticate(email, password, ip, userAgent);
         if (result.isPresent()) {
+            Map<String, Object> authData = result.get();
+            com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Usuarios usuario = 
+                (com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Usuarios) authData.get("usuario");
+
             Map<String, Object> response = Map.of(
                 "success", true,
                 "message", "Login successful for " + email,
-                "token", UUID.randomUUID().toString(),
-                "userId", 2,
-                "role", "GESTOR"
+                "token", authData.get("token"),
+                "userId", usuario.getId(),
+                "role", authData.get("rol"),
+                "email", email
             );
             return ResponseEntity.ok(response);
         } else {
@@ -237,7 +242,7 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/users/{id}/sessions")
-    public ResponseEntity<List<Map<String, Object>>> getActiveSessions(@PathVariable Integer usuarioId) {
+    public ResponseEntity<List<Map<String, Object>>> getActiveSessions(@PathVariable("id") Integer usuarioId) {
         List<Sesiones> result = loginService.getActiveSessions(usuarioId);
         return ResponseEntity.ok(result.stream().map(session -> {
             Map<String, Object> map = new HashMap<>();
@@ -265,7 +270,7 @@ public class LoginController implements ILoginController {
      */
     @Override
     @PostMapping("/users/{id}/revoke-all-sessions")
-    public ResponseEntity<Integer> revokeAllSessions(@PathVariable Integer usuarioId) {
+    public ResponseEntity<Integer> revokeAllSessions(@PathVariable("id") Integer usuarioId) {
         Integer result = loginService.revokeAllSessions(usuarioId);
         return ResponseEntity.ok(result);
     }
@@ -277,7 +282,7 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/users/{id}/permits")
-    public ResponseEntity<List<Map<String, Object>>> getPermisosByUsuario(@PathVariable Integer usuarioId) {
+    public ResponseEntity<List<Map<String, Object>>> getPermisosByUsuario(@PathVariable("id") Integer usuarioId) {
         List<PermisosOds> result = loginService.getPermisosByUsuario(usuarioId);
         return ResponseEntity.ok(result.stream().map(permiso -> {
             Map<String, Object> map = new HashMap<>();
@@ -292,7 +297,7 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/users/{id}/permits/{odsId}")
-    public ResponseEntity<Boolean> hasPermisoOds(@PathVariable Integer usuarioId, @PathVariable Integer odsId) {
+    public ResponseEntity<Boolean> hasPermisoOds(@PathVariable("id") Integer usuarioId, @PathVariable Integer odsId) {
         Boolean result = loginService.hasPermisoOds(usuarioId, odsId);
         return ResponseEntity.ok(result);
     }
@@ -328,7 +333,7 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/users/{id}/login-history")
-    public ResponseEntity<List<Map<String, Object>>> getLoginHistory(@PathVariable Integer usuarioId, @RequestParam(defaultValue = "30") Integer dias) {
+    public ResponseEntity<List<Map<String, Object>>> getLoginHistory(@PathVariable("id") Integer usuarioId, @RequestParam(defaultValue = "30") Integer dias) {
         List<AuditoriaLogin> result = loginService.getLoginHistory(usuarioId, dias);
         return ResponseEntity.ok(result.stream().map(audit -> {
             Map<String, Object> map = new HashMap<>();
@@ -373,7 +378,7 @@ public class LoginController implements ILoginController {
      */
     @Override
     @PostMapping("/users/{id}/unblock")
-    public ResponseEntity<Boolean> unblockUsuario(@PathVariable Integer usuarioId) {
+    public ResponseEntity<Boolean> unblockUsuario(@PathVariable("id") Integer usuarioId) {
         Boolean result = loginService.unblockUsuario(usuarioId);
         return ResponseEntity.ok(result);
     }
