@@ -33,6 +33,7 @@
 # ============================================================
 
 ### Login exitoso - gestor01 (ID: 2, Rol: Gestor)
+# @name loginRequest
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
@@ -44,6 +45,7 @@ Content-Type: application/json
 }
 
 ### Login exitoso - gestor02 (ID: 3, Rol: Consultor)
+# @name loginRequest
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
@@ -55,6 +57,7 @@ Content-Type: application/json
 }
 
 ### Login exitoso - gestor03 (ID: 4, Rol: Auditor)
+# @name loginRequest
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
@@ -66,6 +69,7 @@ Content-Type: application/json
 }
 
 ### Login exitoso - consultor01 (ID: 7, Rol: Consultor)
+# @name loginRequest
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
@@ -77,6 +81,7 @@ Content-Type: application/json
 }
 
 ### Login exitoso - auditor01 (ID: 8, Rol: Auditor)
+# @name loginRequest
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
@@ -111,11 +116,11 @@ Content-Type: application/json
 
 ### Logout - cerrar sesión
 POST {{baseUrl}}/api/login/auth/logout
-Authorization: Bearer {{token}}
+Authorization: Bearer {{loginRequest.response.body.token}}
 
 ### Validar token - token válido
 GET {{baseUrl}}/api/login/auth/validate
-Authorization: Bearer {{token}}
+Authorization: Bearer {{loginRequest.response.body.token}}
 
 ### Validar token - token inválido
 GET {{baseUrl}}/api/login/auth/validate
@@ -123,11 +128,7 @@ Authorization: Bearer invalid_token
 
 ### Refrescar token
 POST {{baseUrl}}/api/login/auth/refresh
-Authorization: Bearer {{token}}
-
-# ============================================================
-# GESTIÓN DE USUARIOS
-# ============================================================
+Authorization: Bearer {{loginRequest.response.body.token}}
 
 ### Obtener usuario por ID (gestor01)
 GET {{baseUrl}}/api/login/users/{{usuarioId}}
@@ -157,10 +158,6 @@ Content-Type: application/json
   "password": "Password123!"
 }
 
-# ============================================================
-# GESTIÓN DE ROLES
-# ============================================================
-
 ### Obtener todos los roles
 GET {{baseUrl}}/api/login/roles
 
@@ -173,19 +170,11 @@ GET {{baseUrl}}/api/login/roles/3
 ### Obtener rol por ID (Auditor)
 GET {{baseUrl}}/api/login/roles/4
 
-# ============================================================
-# GESTIÓN DE SESIONES
-# ============================================================
-
 ### Obtener sesiones activas del usuario
 GET {{baseUrl}}/api/login/users/{{usuarioId}}/sessions
 
 ### Revocar todas las sesiones del usuario
 POST {{baseUrl}}/api/login/users/{{usuarioId}}/revoke-all-sessions
-
-# ============================================================
-# PERMISOS ODS
-# ============================================================
 
 ### Obtener permisos ODS del usuario (gestor01)
 GET {{baseUrl}}/api/login/users/{{usuarioId}}/permits
@@ -198,10 +187,6 @@ GET {{baseUrl}}/api/login/users/{{usuarioId}}/permits/2
 
 ### Verificar permiso para ODS específico (consultor01 - ODS1)
 GET {{baseUrl}}/api/login/users/7/permits/1
-
-# ============================================================
-# AUDITORÍA Y SEGURIDAD
-# ============================================================
 
 ### Obtener historial de login del usuario
 GET {{baseUrl}}/api/login/users/{{usuarioId}}/login-history?dias=30
@@ -222,10 +207,6 @@ Content-Type: application/json
 ### Desbloquear usuario
 POST {{baseUrl}}/api/login/users/{{usuarioId}}/unblock
 
-# ============================================================
-# ADMINISTRACIÓN
-# ============================================================
-
 ### Obtener vista de auditoría reciente
 GET {{baseUrl}}/api/login/admin/audit-recent?dias=7
 
@@ -244,16 +225,32 @@ GET {{baseUrl}}/api/login/admin/statistics
 ### Limpieza de datos expirados
 POST {{baseUrl}}/api/login/admin/cleanup
 
-# ============================================================
-# UTILIDADES
-# ============================================================
-
 ### Health check del sistema
 GET {{baseUrl}}/api/login/health
 
 # ============================================================
 # ODS 01: FIN DE LA POBREZA
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/01/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/01/proyecto/{{proyectoId}}
+
+### Crear proyecto de prueba para ODS01
+POST {{baseUrl}}/api/ods/01/proyecto
+Content-Type: application/json
+
+{
+  "nombre": "Proyecto Reducción Pobreza 2024",
+  "descripcion": "Proyecto piloto para reducir la pobreza en comunidades rurales",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "presupuesto": 250000.0,
+  "estado": "ACTIVO",
+  "usuarioId": 2
+}
 
 ### Obtener todos los indicadores del ODS01
 GET {{baseUrl}}/api/ods/01/indicadores?proyectoId={{proyectoId}}
@@ -297,15 +294,70 @@ GET {{baseUrl}}/api/ods/01/indicadores/1.c.1?proyectoId={{proyectoId}}
 ### Obtener indicador 1.d.1 - Asistencia oficial para el desarrollo
 GET {{baseUrl}}/api/ods/01/indicadores/1.d.1?proyectoId={{proyectoId}}
 
+### Crear indicador de prueba para ODS01
+POST {{baseUrl}}/api/ods/01/indicadores
+Content-Type: application/json
+
+{
+  "codigo": "1.1.1",
+  "nombre": "Proporción población bajo umbral pobreza",
+  "descripcion": "Medición de población viviendo por debajo del umbral internacional de pobreza",
+  "valorActual": 15.5,
+  "valorMeta": 5.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Actualizar indicador
+PUT {{baseUrl}}/api/ods/01/indicadores/{{indicadorId}}
+Content-Type: application/json
+
+{
+  "id": {{indicadorId}},
+  "codigo": "1.1.1",
+  "nombre": "Proporción población bajo umbral pobreza Actualizado",
+  "descripcion": "Medición actualizada de pobreza",
+  "valorActual": 14.8,
+  "valorMeta": 5.0,
+  "unidadMedida": "porcentaje",
+  "proyectoId": {{proyectoId}}
+}
+
+### Crear medición histórica de prueba
+POST {{baseUrl}}/api/ods/01/mediciones
+Content-Type: application/json
+
+{
+  "indicadorId": {{indicadorId}},
+  "fechaMedicion": "2024-01-15",
+  "valor": 16.2,
+  "observaciones": "Medición trimestral de indicador de pobreza"
+}
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/01/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/01/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/01/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/01/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/01/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 02: HAMBRE CERO
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/02/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS02
 GET {{baseUrl}}/api/ods/02/indicadores?proyectoId={{proyectoId}}
@@ -349,15 +401,30 @@ GET {{baseUrl}}/api/ods/02/indicadores/2.b.1?proyectoId}}
 ### Obtener indicador 2.c.1 - Estabilidad alimentaria
 GET {{baseUrl}}/api/ods/02/indicadores/2.c.1?proyectoId={{proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/02/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/02/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/02/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/02/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 03: SALUD Y BIENESTAR
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/03/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/03/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS03
 GET {{baseUrl}}/api/ods/03/indicadores?proyectoId={{proyectoId}}
@@ -434,15 +501,30 @@ GET {{baseUrl}}/api/ods/03/indicadores/3.c.1?proyectoId={{proyectoId}}
 ### Obtener indicador 3.d.1 - Capacidad de respuesta a emergencias
 GET {{baseUrl}}/api/ods/03/indicadores/3.d.1?proyectoId={{proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/03/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/03/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/03/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/03/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/03/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 04: EDUCACIÓN DE CALIDAD
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/04/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/04/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS04
 GET {{baseUrl}}/api/ods/04/indicadores?proyectoId={{proyectoId}}
@@ -477,15 +559,30 @@ GET {{baseUrl}}/api/ods/04/indicadores/4.b.1?proyectoId={{proyectoId}}
 ### Obtener indicador 4.c.1 - Formación de docentes
 GET {{baseUrl}}/api/ods/04/indicadores/4.c.1?proyectoId={{proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/04/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/04/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/04/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/04/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/04/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 05: IGUALDAD DE GÉNERO
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/05/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/05/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS05
 GET {{baseUrl}}/api/ods/05/indicadores?proyectoId={{proyectoId}}
@@ -532,15 +629,30 @@ GET {{baseUrl}}/api/ods/05/indicadores/5.b.1?proyectoId={{proyectoId}}
 ### Obtener indicador 5.c.1 - Sistemas de seguimiento de igualdad
 GET {{baseUrl}}/api/ods/05/indicadores/5.c.1?proyectoId={{proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/05/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/05/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/05/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/05/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/05/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 06: AGUA LIMPIA Y SANEAMIENTO
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/06/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/06/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS06
 GET {{baseUrl}}/api/ods/06/indicadores?proyectoId={{proyectoId}}
@@ -578,15 +690,30 @@ GET {{baseUrl}}/api/ods/06/indicadores/6.a.1?proyectoId={{proyectoId}}
 ### Obtener indicador 6.b.1 - Participación comunitaria
 GET {{baseUrl}}/api/ods/06/indicadores/6.b.1?proyectoId={{proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/06/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/06/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/06/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/06/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/06/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 07: ENERGÍA ASEQUIBLE Y NO CONTAMINANTE
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/07/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS07
 GET {{baseUrl}}/api/ods/07/indicadores?proyectoId={{proyectoId}}
@@ -609,15 +736,30 @@ GET {{baseUrl}}/api/ods/07/indicadores/7.a.1?proyectoId={{proyectoId}}
 ### Obtener indicador 7.b.1 - Inversión en energía limpia
 GET {{baseUrl}}/api/ods/07/indicadores/7.b.1?proyectoId={{proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/07/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/07/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/07/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 08: TRABAJO DECENTE Y CRECIMIENTO ECONÓMICO
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/08/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS08
 GET {{baseUrl}}/api/ods/08/indicadores?proyectoId={{proyectoId}}
@@ -676,15 +818,30 @@ GET {{baseUrl}}/api/ods/08/indicadores/8.a.1?proyectoId}}
 ### Obtener indicador 8.b.1 - Políticas de desarrollo
 GET {{baseUrl}}/api/ods/08/indicadores/8.b.1?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/08/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/08/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/08/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/08/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 09: INDUSTRIA, INNOVACIÓN E INFRAESTRUCTURA
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/09/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/09/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS09
 GET {{baseUrl}}/api/ods/09/indicadores?proyectoId={{proyectoId}}
@@ -722,15 +879,30 @@ GET {{baseUrl}}/api/ods/09/indicadores/9.b.1?proyectoId}}
 ### Obtener indicador 9.c.1 - Acceso a TIC
 GET {{baseUrl}}/api/ods/09/indicadores/9.c.1?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/09/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/09/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/09/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/09/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/09/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 10: REDUCCIÓN DE LAS DESIGUALDADES
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/10/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS10
 GET {{baseUrl}}/api/ods/10/indicadores?proyectoId={{proyectoId}}
@@ -768,15 +940,30 @@ GET {{baseUrl}}/api/ods/10/indicadores/10.b.1?proyectoId}}
 ### Obtener indicador 10.c.1 - Costo de envío de remesas
 GET {{baseUrl}}/api/ods/10/indicadores/10.c.1?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/10/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/10/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/10/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/10/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 11: CIUDADES Y COMUNIDADES SOSTENIBLES
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/11/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS11
 GET {{baseUrl}}/api/ods/11/indicadores?proyectoId={{proyectoId}}
@@ -817,15 +1004,30 @@ GET {{baseUrl}}/api/ods/11/indicadores/11.b.1?proyectoId}}
 ### Obtener indicador 11.c.1 - Apoyo financiero para ciudades
 GET {{baseUrl}}/api/ods/11/indicadores/11.c.1?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/11/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/11/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/11/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/11/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 12: PRODUCCIÓN Y CONSUMO RESPONSABLES
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/12/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS12
 GET {{baseUrl}}/api/ods/12/indicadores?proyectoId={{proyectoId}}
@@ -869,15 +1071,30 @@ GET {{baseUrl}}/api/ods/12/indicadores/12.b.1?proyectoId}}
 ### Obtener indicador 12.c.1 - Subsidios ambientales
 GET {{baseUrl}}/api/ods/12/indicadores/12.c.1?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/12/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/12/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/12/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/12/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 13: ACCIÓN POR EL CLIMA
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/13/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS13
 GET {{baseUrl}}/api/ods/13/indicadores?proyectoId={{proyectoId}}
@@ -906,15 +1123,30 @@ GET {{baseUrl}}/api/ods/13/indicadores/13.a.1?proyectoId}}
 ### Obtener indicador 13.b.1 - Planes de acción climática
 GET {{baseUrl}}/api/ods/13/indicadores/13.b.1?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/13/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/13/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/13/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/13/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 14: VIDA SUBMARINA
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/14/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS14
 GET {{baseUrl}}/api/ods/14/indicadores?proyectoId={{proyectoId}}
@@ -949,15 +1181,30 @@ GET {{baseUrl}}/api/ods/14/indicadores/14.b.1?proyectoId}}
 ### Obtener indicador 14.c.1 - Capacidad de investigación marina
 GET {{baseUrl}}/api/ods/14/indicadores/14.c.1?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/14/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/14/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/14/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/14/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 15: VIDA DE ECOSISTEMAS TERRESTRES
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/15/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS15
 GET {{baseUrl}}/api/ods/15/indicadores?proyectoId={{proyectoId}}
@@ -1001,15 +1248,30 @@ GET {{baseUrl}}/api/ods/15/indicadores/15.b.1?proyectoId}}
 ### Obtener indicador 15.c.1 - Combate a la caza furtiva
 GET {{baseUrl}}/api/ods/15/indicadores/15.c.1?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/15/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/15/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/15/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/15/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 16: PAZ, JUSTICIA E INSTITUCIONES SÓLIDAS
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/16/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS16
 GET {{baseUrl}}/api/ods/16/indicadores?proyectoId={{proyectoId}}
@@ -1083,15 +1345,30 @@ GET {{baseUrl}}/api/ods/16/indicadores/16.a.1?proyectoId}}
 ### Obtener indicador 16.b.1 - Proporción de población que se siente segura caminando sola
 GET {{baseUrl}}/api/ods/16/indicadores/16.b.1?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/16/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/16/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/16/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/16/medicion/{{medicionId}}/existe
 
+### Verificar existencia de proyecto
+GET {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}/existe
+
 # ============================================================
 # ODS 17: ALIANZAS PARA LOGRAR LOS OBJETIVOS
 # ============================================================
+
+### Obtener todos los proyectos
+GET {{baseUrl}}/api/ods/17/all-proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}
 
 ### Obtener todos los indicadores del ODS17
 GET {{baseUrl}}/api/ods/17/indicadores?proyectoId={{proyectoId}}
@@ -1162,170 +1439,20 @@ GET {{baseUrl}}/api/ods/17/indicadores/17.18.2?proyectoId}}
 ### Obtener indicador 17.18.3 - Financiamiento para estadísticas
 GET {{baseUrl}}/api/ods/17/indicadores/17.18.3?proyectoId}}
 
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/17/base-estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/17/base-progreso/{{proyectoId}}
+
 ### Verificar si indicador existe
 GET {{baseUrl}}/api/ods/17/indicadores/{{indicadorId}}/existe
 
 ### Verificar si medición histórica existe
 GET {{baseUrl}}/api/ods/17/medicion/{{medicionId}}/existe
 
-# ============================================================
-# ENDPOINTS COMUNES PARA TODOS LOS ODS
-# ============================================================
-
-# Para cada ODS (01-17), también están disponibles estos endpoints:
-
-### Obtener todos los proyectos
-GET {{baseUrl}}/api/ods/01/all-proyectos
-GET {{baseUrl}}/api/ods/02/all-proyectos
-GET {{baseUrl}}/api/ods/03/all-proyectos
-GET {{baseUrl}}/api/ods/04/all-proyectos
-GET {{baseUrl}}/api/ods/05/all-proyectos
-GET {{baseUrl}}/api/ods/06/all-proyectos
-GET {{baseUrl}}/api/ods/07/all-proyectos
-GET {{baseUrl}}/api/ods/08/all-proyectos
-GET {{baseUrl}}/api/ods/09/all-proyectos
-GET {{baseUrl}}/api/ods/10/all-proyectos
-GET {{baseUrl}}/api/ods/11/all-proyectos
-GET {{baseUrl}}/api/ods/12/all-proyectos
-GET {{baseUrl}}/api/ods/13/all-proyectos
-GET {{baseUrl}}/api/ods/14/all-proyectos
-GET {{baseUrl}}/api/ods/15/all-proyectos
-GET {{baseUrl}}/api/ods/16/all-proyectos
-GET {{baseUrl}}/api/ods/17/all-proyectos
-
-### Obtener proyecto por ID
-GET {{baseUrl}}/api/ods/01/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/03/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/04/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/05/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/06/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/09/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}
-GET {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}
-
-### Obtener estadísticas del ODS
-GET {{baseUrl}}/api/ods/01/base-estadisticas
-GET {{baseUrl}}/api/ods/02/base-estadisticas
-GET {{baseUrl}}/api/ods/03/base-estadisticas
-GET {{baseUrl}}/api/ods/04/base-estadisticas
-GET {{baseUrl}}/api/ods/05/base-estadisticas
-GET {{baseUrl}}/api/ods/06/base-estadisticas
-GET {{baseUrl}}/api/ods/07/base-estadisticas
-GET {{baseUrl}}/api/ods/08/base-estadisticas
-GET {{baseUrl}}/api/ods/09/base-estadisticas
-GET {{baseUrl}}/api/ods/10/base-estadisticas
-GET {{baseUrl}}/api/ods/11/base-estadisticas
-GET {{baseUrl}}/api/ods/12/base-estadisticas
-GET {{baseUrl}}/api/ods/13/base-estadisticas
-GET {{baseUrl}}/api/ods/14/base-estadisticas
-GET {{baseUrl}}/api/ods/15/base-estadisticas
-GET {{baseUrl}}/api/ods/16/base-estadisticas
-GET {{baseUrl}}/api/ods/17/base-estadisticas
-
-### Calcular progreso del proyecto
-GET {{baseUrl}}/api/ods/01/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/02/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/03/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/04/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/05/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/06/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/07/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/08/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/09/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/10/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/11/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/12/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/13/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/14/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/15/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/16/base-progreso/{{proyectoId}}
-GET {{baseUrl}}/api/ods/17/base-progreso/{{proyectoId}}
-
 ### Verificar existencia de proyecto
-GET {{baseUrl}}/api/ods/01/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/02/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/03/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/04/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/05/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/06/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/08/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/09/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}/existe
-GET {{baseUrl}}/api/ods/16/proyecto/{{proyectoId}}/existe
 GET {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}/existe
-
-# ============================================================
-# EJEMPLOS DE USO CON DATOS DE PRUEBA
-# ============================================================
-
-### Crear proyecto de prueba para ODS01
-POST {{baseUrl}}/api/ods/01/proyecto
-Content-Type: application/json
-
-{
-  "nombre": "Proyecto Reducción Pobreza 2024",
-  "descripcion": "Proyecto piloto para reducir la pobreza en comunidades rurales",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "presupuesto": 250000.0,
-  "estado": "ACTIVO",
-  "usuarioId": 2
-}
-
-### Crear indicador de prueba para ODS01
-POST {{baseUrl}}/api/ods/01/indicadores
-Content-Type: application/json
-
-{
-  "codigo": "1.1.1",
-  "nombre": "Proporción población bajo umbral pobreza",
-  "descripcion": "Medición de población viviendo por debajo del umbral internacional de pobreza",
-  "valorActual": 15.5,
-  "valorMeta": 5.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
-}
-
-### Crear medición histórica de prueba
-POST {{baseUrl}}/api/ods/01/mediciones
-Content-Type: application/json
-
-{
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 16.2,
-  "observaciones": "Medición trimestral de indicador de pobreza"
-}
-
-### Actualizar indicador
-PUT {{baseUrl}}/api/ods/01/indicadores/{{indicadorId}}
-Content-Type: application/json
-
-{
-  "id": {{indicadorId}},
-  "codigo": "1.1.1",
-  "nombre": "Proporción población bajo umbral pobreza Actualizado",
-  "descripcion": "Medición actualizada de pobreza",
-  "valorActual": 14.8,
-  "valorMeta": 5.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
-}
 
 # ============================================================
 # FIN DEL ARCHIVO DE MOCKS HTTP

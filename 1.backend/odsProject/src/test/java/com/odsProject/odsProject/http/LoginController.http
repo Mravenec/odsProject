@@ -28,6 +28,7 @@
 # ============================================================
 
 ### Login exitoso - gestor01 (ID: 2)
+# @name loginRequest
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
@@ -39,6 +40,7 @@ Content-Type: application/json
 }
 
 ### Login exitoso - gestor02 (ID: 3)
+# @name loginRequest
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
@@ -50,6 +52,7 @@ Content-Type: application/json
 }
 
 ### Login exitoso - consultor01 (ID: 7)
+# @name loginRequest
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
@@ -84,11 +87,11 @@ Content-Type: application/json
 
 ### Logout - cerrar sesión
 POST {{baseUrl}}/api/login/auth/logout
-Authorization: Bearer {{token}}
+Authorization: Bearer {{loginRequest.response.body.token}}
 
 ### Validar token - token válido
 GET {{baseUrl}}/api/login/auth/validate
-Authorization: Bearer {{token}}
+Authorization: Bearer {{loginRequest.response.body.token}}
 
 ### Validar token - token inválido
 GET {{baseUrl}}/api/login/auth/validate
@@ -96,7 +99,7 @@ Authorization: Bearer invalid_token
 
 ### Refrescar token
 POST {{baseUrl}}/api/login/auth/refresh
-Authorization: Bearer {{token}}
+Authorization: Bearer {{loginRequest.response.body.token}}
 
 # ============================================================
 # GESTIÓN DE USUARIOS
