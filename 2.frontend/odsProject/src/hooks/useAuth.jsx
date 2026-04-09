@@ -16,15 +16,18 @@ export const AuthProvider = ({ children }) => {
       
       if (token) {
         try {
+          console.log('[Auth] Verificando token persistido...');
           const response = await authService.verifyToken(token);
-          if (response.success) {
-            setUser(response.data);
+          if (response.success && response.data?.user) {
+            console.log('[Auth] Usuario verificado correctamente:', response.data.user);
+            setUser(response.data.user);
             setIsAuthenticated(true);
           } else {
+            console.warn('[Auth] Token inválido o sin datos de usuario');
             localStorage.removeItem('token');
           }
         } catch (error) {
-          console.error('Error verificando token:', error);
+          console.error('[Auth] Error en verificación de sesión:', error);
           localStorage.removeItem('token');
         }
       }
@@ -77,6 +80,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAdmin = () => hasRole('admin');
+  const isGestor = () => hasRole('gestor');
   const isUser = () => hasRole('user');
 
   const value = {
@@ -87,6 +91,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     hasRole,
     isAdmin,
+    isGestor,
     isUser
   };
 

@@ -1,13 +1,13 @@
 .shared-results-summary {
   background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl);
+  border: 1px solid var(--ods-border-slate);
+  border-radius: 1.5rem;
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--ods-card-shadow);
   gap: 2rem;
 }
 
@@ -18,6 +18,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .progress-ring {
@@ -29,19 +32,19 @@
 .progress-ring-track {
   fill: none;
   stroke: #f1f5f9;
-  stroke-width: 8;
+  stroke-width: 10;
 }
 
 .progress-ring-fill {
   fill: none;
-  stroke-width: 8;
+  stroke-width: 10;
   stroke-linecap: round;
-  transition: stroke-dashoffset 1s ease-in-out;
+  transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.progress-ring-fill.success { stroke: var(--success); }
-.progress-ring-fill.warning { stroke: var(--warning); }
-.progress-ring-fill.danger { stroke: var(--error); }
+.progress-ring-fill.success { stroke: var(--ods-accent-green); filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.2)); }
+.progress-ring-fill.warning { stroke: #f59e0b; filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.2)); }
+.progress-ring-fill.danger { stroke: var(--ods-accent-red); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.2)); }
 
 .circle-content {
   position: absolute;

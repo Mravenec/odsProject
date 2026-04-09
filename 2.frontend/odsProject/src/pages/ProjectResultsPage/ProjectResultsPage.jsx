@@ -1,8 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth.jsx';
-import { useProjects } from '../../hooks/useProjects.jsx';
-import { formatDate, formatIndicatorName, getAchievementClass } from '../../utils/formatters';
+import { 
+  FileText, 
+  MapPin, 
+  Target, 
+  Calendar, 
+  CheckCircle2, 
+  Download, 
+  ArrowLeft,
+  LayoutGrid,
+  Building
+} from 'lucide-react';
+import { 
+  formatDate, 
+  formatIndicatorName, 
+  getAchievementClass,
+  getObjectiveName,
+  getOdsColor 
+} from '../../utils/formatters';
 import IndicatorCard from '../../components/projects/IndicatorCard/IndicatorCard';
 import ResultsSummary from '../../components/projects/ResultsSummary/ResultsSummary';
 import './ProjectResultsPage.css';
@@ -15,7 +28,8 @@ const ProjectResultsPage = () => {
     loading: projectsLoading, 
     fetchUserProjects, 
     getProjectResults,
-    updateProjectResults 
+    updateProjectResults,
+    calculateIndicatorAchievement
   } = useProjects();
   
   const [project, setProject] = useState(null);
@@ -24,6 +38,7 @@ const ProjectResultsPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [results, setResults] = useState(null);
+  const [paramValues, setParamValues] = useState({});
 
   useEffect(() => {
     fetchProject();
@@ -32,7 +47,8 @@ const ProjectResultsPage = () => {
   const fetchProject = async () => {
     try {
       setLoading(true);
-      const userProjects = await fetchUserProjects(user.id);
+      // Usar el ID del usuario actual para filtrar
+      const userProjects = await fetchUserProjects(user?.id);
       const currentProject = userProjects.find(p => p.id === parseInt(projectId));
       
       if (!currentProject) {
@@ -47,10 +63,22 @@ const ProjectResultsPage = () => {
         setResults(resultsData);
       } else {
         const initialFormData = {};
+        const initialParamValues = {};
+        
         currentProject.indicators.forEach(indicator => {
           initialFormData[indicator] = '';
+          
+          const config = currentProject.indicatorConfigs?.[indicator];
+          if (config && config.parameters) {
+            initialParamValues[indicator] = {};
+            config.parameters.forEach(p => {
+              initialParamValues[indicator][p.name] = '';
+            });
+          }
         });
+        
         setFormData(initialFormData);
+        setParamValues(initialParamValues);
       }
     } catch (err) {
       setError(err.message);
@@ -66,15 +94,38 @@ const ProjectResultsPage = () => {
     }));
   };
 
+  const handleParamChange = (indicator, paramName, value) => {
+    setParamValues(prev => ({
+      ...prev,
+      [indicator]: {
+        ...(prev[indicator] || {}),
+        [paramName]: value
+      }
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     setError('');
 
     try {
+      const finalValues = { ...formData };
+      
+      if (project.indicatorConfigs) {
+        Object.keys(project.indicatorConfigs).forEach(indicator => {
+          const config = project.indicatorConfigs[indicator];
+          if (config && config.formula && paramValues[indicator]) {
+            const { value } = calculateIndicatorAchievement(config, paramValues[indicator]);
+            finalValues[indicator] = value;
+          }
+        });
+      }
+
       const resultsData = {
         projectId: project.id,
-        finalValues: formData
+        finalValues: finalValues,
+        paramValues: paramValues
       };
 
       const updateRes = await updateProjectResults(resultsData, project.objective);
@@ -94,116 +145,198 @@ const ProjectResultsPage = () => {
 
   if (loading || projectsLoading) {
     return (
-      <div className="dashboard-loading">
+      <div className="global-loader-container">
         <div className="loader"></div>
-        <p>Procesando métricas de impacto...</p>
+        <div className="loader-content">
+          <p>Generando reporte de impacto...</p>
+          <span className="loader-subtext">Analizando métricas ODS vinculadas</span>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="project-results-page fade-in">
-      <header className="results-header">
-        <div className="results-header-container">
-          <div className="header-top">
-            <div className="project-badge-icon">🎯</div>
-            <div className="project-title-area">
-              <h1>{project.name}</h1>
-              <p className="project-subtitle">Resultados y Medición de Impacto ODS</p>
+    <div className="project-results-page premium-view fade-in">
+      <header className="premium-nav">
+        <div className="container nav-content">
+          <div className="nav-left">
+            <button className="btn-back-square" onClick={() => navigate('/dashboard')}>
+              <ArrowLeft size={20} />
+            </button>
+            <div className="nav-title-group">
+              <div className="nav-icon-box blue">
+                <Building size={20} />
+              </div>
+              <div>
+                <h1>Detalle del Reporte</h1>
+                <p>Análisis exhaustivo de impacto</p>
+              </div>
             </div>
           </div>
-          
-          <div className="header-stats-row">
-            <div className="header-stat-item">
-              <span className="header-stat-label">Objetivo</span>
-              <span className="header-stat-value">ODS {project.objective}</span>
-            </div>
-            <div className="header-stat-item">
-              <span className="header-stat-label">Periodo</span>
-              <span className="header-stat-value">{formatDate(project.startDate)} - {formatDate(project.endDate, false)}</span>
-            </div>
-            <div className="header-stat-item">
-              <span className="header-stat-label">Estado</span>
-              <span className={`role-tag ${project.status === 'completed' ? 'user' : 'admin'}`}>
-                {project.status === 'completed' ? 'Finalizado' : 'En Medición'}
-              </span>
-            </div>
+          <div className="nav-right">
+            <button className="btn-export-csv" onClick={() => window.print()}>
+              <Download size={16} />
+              Exportar Reporte
+            </button>
           </div>
         </div>
       </header>
 
-      <main className="results-content">
-        {error && (
-          <div className="error-banner">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-            <span>{error}</span>
-          </div>
-        )}
-
-        <div className="results-grid">
-          <section className="indicators-section">
-            <h2>{results ? 'Análisis de Indicadores' : 'Ingresar Valores Finales'}</h2>
+      <main className="premium-main">
+        <div className="report-grid">
+          {/* Card 1: Información General */}
+          <section className="report-card info-card">
+            <div className="card-header">
+              <FileText size={20} className="icon-blue" />
+              <h2>Información General</h2>
+            </div>
             
-            {results ? (
-              <div className="indicators-list-shared">
-                {results.indicatorResults.map((result, index) => (
-                  <IndicatorCard 
-                    key={index}
-                    {...result}
-                    index={index + 1}
-                    mode="view"
-                  />
-                ))}
+            <div className="card-body vertical-gap">
+              <div className="data-group">
+                <label>Nombre del Proyecto</label>
+                <h3>{project.name}</h3>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="modern-form">
-                <div className="indicators-list-shared">
-                  {project.indicators.map((indicator, index) => (
-                    <IndicatorCard 
-                      key={index}
-                      indicator={indicator}
-                      targetValue={project.targetValues[indicator]}
-                      mode="input"
-                      inputValue={formData[indicator] || ''}
-                      onInputChange={handleInputChange}
-                      index={index + 1}
-                    />
-                  ))}
+
+              <div className="data-group">
+                <label className="flex-items">
+                  <Target size={14} /> Objetivo General
+                </label>
+                <div className="description-box">
+                  {project.description || 'Sin descripción detallada disponible.'}
                 </div>
-                <div className="form-actions-results">
-                  <button type="button" className="btn-secondary" onClick={() => navigate('/dashboard')}>
-                    Cancelar
-                  </button>
-                  <button type="submit" className="btn-primary" disabled={submitting}>
-                    {submitting ? <span className="spinner"></span> : 'Finalizar Medición'}
-                  </button>
+              </div>
+
+              <div className="date-grid">
+                <div className="date-item">
+                  <label>
+                    <Calendar size={14} /> Inicio
+                  </label>
+                  <div className="date-status">
+                    <span className="dot green"></span>
+                    <span className="date-text">{formatDate(project.startDate)}</span>
+                  </div>
                 </div>
-              </form>
-            )}
+                <div className="date-item">
+                  <label>
+                    <Calendar size={14} /> Finalización
+                  </label>
+                  <div className="date-status">
+                    <span className="dot red"></span>
+                    <span className="date-text">{formatDate(project.endDate, false)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
 
-          <aside className="sidebar-results">
-            {results && (
-              <ResultsSummary 
-                overallScore={results.overallScore}
-                indicatorsAchieved={results.indicatorsAchieved}
-                totalIndicators={results.totalIndicators}
-              />
-            )}
-
-            <div className="action-card-results">
-              <h4>Acciones del Proyecto</h4>
-              <button className="btn-outline-full" onClick={() => window.print()}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                Exportar Reporte
-              </button>
-              <button className="btn-outline-full" onClick={() => navigate('/dashboard')}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                Ir al Dashboard
-              </button>
+          {/* Card 2: Ubicación */}
+          <section className="report-card location-card">
+            <div className="card-header">
+              <MapPin size={20} className="icon-green" />
+              <h2>Ubicación Geográfica</h2>
             </div>
-          </aside>
+
+            <div className="card-body location-stack">
+              <div className="location-pill province">
+                <label>Provincia</label>
+                <span>{project.provinciaNombre || 'San José'}</span>
+              </div>
+              <div className="location-pill canton">
+                <label>Cantón</label>
+                <span>{project.cantonNombre || 'Central'}</span>
+              </div>
+              <div className="location-pill district">
+                <label>Distrito</label>
+                <span>{project.distritoNombre || 'Carmen'}</span>
+              </div>
+            </div>
+          </section>
         </div>
+
+      <div className="indicators-report-section">
+        <div className="section-header-row">
+          <div className="header-subtitle-group">
+            <CheckCircle2 size={20} className="icon-amber" />
+            <h2>Objetivos de Desarrollo Sostenible</h2>
+          </div>
+          <div className="ods-count-badge">
+            {project.objective ? '1 ODS Vinculado' : 'Sin ODS vinculados'}
+          </div>
+        </div>
+
+        <div className="ods-impact-list">
+          {/* En este proyecto, el objetivo es el ODS principal */}
+          <div className="ods-impact-item">
+            <div className="ods-summary-header">
+              <div 
+                className="ods-number-box" 
+                style={{ backgroundColor: getOdsColor(project.objective) }}
+              >
+                {project.objective}
+              </div>
+              <span className="ods-full-name">Objetivo {project.objective}: {getObjectiveName(project.objective)}</span>
+            </div>
+
+            <div className="indicators-grid-layout">
+              {results ? (
+                results.indicatorResults.map((result, index) => (
+                  <div key={index} className="indicator-report-wrapper">
+                    <IndicatorCard 
+                      {...result}
+                      index={index + 1}
+                      mode="view"
+                      config={project.indicatorConfigs?.[result.indicator]}
+                    />
+                  </div>
+                ))
+              ) : (
+                <form onSubmit={handleSubmit} className="modern-form">
+                  <div className="indicators-entry-list">
+                    {project.indicators.map((indicator, index) => {
+                      const config = project.indicatorConfigs?.[indicator];
+                      const { value, achievement } = calculateIndicatorAchievement(config, paramValues[indicator] || {});
+                      
+                      return (
+                        <IndicatorCard 
+                          key={index}
+                          indicator={indicator}
+                          targetValue={project.targetValues[indicator]}
+                          mode="input"
+                          inputValue={formData[indicator] || ''}
+                          onInputChange={handleInputChange}
+                          index={index + 1}
+                          config={config}
+                          paramValues={paramValues[indicator] || {}}
+                          onParamChange={handleParamChange}
+                          calculatedValue={value}
+                          currentAchievement={achievement}
+                        />
+                      );
+                    })}
+                  </div>
+                  <div className="form-submit-footer">
+                    <button type="button" className="btn-secondary-flat" onClick={() => navigate('/dashboard')}>
+                      Cancelar
+                    </button>
+                    <button type="submit" className="btn-primary-glow" disabled={submitting}>
+                      {submitting ? <span className="spinner"></span> : 'Publicar Medición de Impacto'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {results && (
+        <div className="report-footer">
+          <button className="btn-print-full" onClick={() => window.print()}>
+            <Download size={18} />
+            Descargar Reporte Completo (PDF)
+          </button>
+        </div>
+      )}
       </main>
     </div>
   );

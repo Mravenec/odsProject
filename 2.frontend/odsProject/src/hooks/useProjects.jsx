@@ -1,10 +1,18 @@
 import { useState, useCallback } from 'react';
 import { projectService } from '../services/projectService';
+import { geoService } from '../services/geoService';
+import { evaluationEngine } from '../utils/evaluationEngine';
 
 export const useProjects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  // Geography states
+  const [provincias, setProvincias] = useState([]);
+  const [cantones, setCantones] = useState([]);
+  const [distritos, setDistritos] = useState([]);
+  const [loadingGeo, setLoadingGeo] = useState(false);
 
   const fetchUserProjects = useCallback(async (userId, odsId) => {
     setLoading(true);
@@ -107,6 +115,71 @@ export const useProjects = () => {
     }
   };
 
+  // --- Geography Methods ---
+  
+  const fetchProvincias = useCallback(async () => {
+    setLoadingGeo(true);
+    try {
+      const data = await geoService.getProvincias();
+      setProvincias(Array.isArray(data) ? data : []);
+      return data;
+    } catch (err) {
+      setError(err.message);
+      return [];
+    } finally {
+      setLoadingGeo(false);
+    }
+  }, []);
+
+  const fetchCantones = useCallback(async (provinciaId) => {
+    if (!provinciaId) {
+      setCantones([]);
+      setDistritos([]);
+      return [];
+    }
+    setLoadingGeo(true);
+    try {
+      const data = await geoService.getCantones(provinciaId);
+      setCantones(Array.isArray(data) ? data : []);
+      setDistritos([]); // Reset districts when province changes
+      return data;
+    } catch (err) {
+      setError(err.message);
+      return [];
+    } finally {
+      setLoadingGeo(false);
+    }
+  }, []);
+
+  const fetchDistritos = useCallback(async (cantonId) => {
+    if (!cantonId) {
+      setDistritos([]);
+      return [];
+    }
+    setLoadingGeo(true);
+    try {
+      const data = await geoService.getDistritos(cantonId);
+      setDistritos(Array.isArray(data) ? data : []);
+      return data;
+    } catch (err) {
+      setError(err.message);
+      return [];
+    } finally {
+      setLoadingGeo(false);
+    }
+  }, []);
+
+  // --- Evaluation Methods ---
+
+  const calculateIndicatorAchievement = (config, paramValues) => {
+    if (!config || !config.formula) return { value: 0, achievement: 0 };
+    
+    const value = evaluationEngine.evaluateFormula(config.formula, paramValues);
+    const achievement = evaluationEngine.calculateAchievement(value, config.goal);
+    
+    return { value, achievement };
+  };
+
   return {
     projects,
     loading,
@@ -117,6 +190,16 @@ export const useProjects = () => {
     createProject,
     getProjectResults,
     updateProjectResults,
-    deleteProject
+    deleteProject,
+    // Geography
+    provincias,
+    cantones,
+    distritos,
+    loadingGeo,
+    fetchProvincias,
+    fetchCantones,
+    fetchDistritos,
+    // Evaluation
+    calculateIndicatorAchievement
   };
 };

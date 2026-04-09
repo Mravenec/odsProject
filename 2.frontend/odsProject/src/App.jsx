@@ -19,9 +19,22 @@ function App() {
 }
 
 function AppContent() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
+  const hasToken = !!localStorage.getItem('token');
   
-  if (!isAuthenticated) {
+  if (loading) {
+    return (
+      <div className="global-loader-container">
+        <div className="loader"></div>
+        <div className="loader-content">
+          <p>Sincronizando con ODS Core...</p>
+          <span className="loader-subtext">Verificando credenciales de {hasToken ? 'sesión' : 'acceso'}</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user || !user.id) {
     return <LoginPage />;
   }
 

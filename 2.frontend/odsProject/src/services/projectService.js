@@ -40,8 +40,14 @@ export const projectService = {
       descripcion: projectData.description,
       fechaInicio: projectData.startDate,
       fechaFin: projectData.endDate,
-      presupuesto: 0, // No está en el form actual, ponemos 0
-      estado: 'ACTIVO'
+      presupuesto: 0, 
+      estado: 'ACTIVO',
+      provincia: projectData.provinciaNombre,
+      canton: projectData.cantonNombre,
+      distrito: projectData.distritoNombre,
+      provinciaId: projectData.provinciaId,
+      cantonId: projectData.cantonId,
+      distritoId: projectData.distritoId
     };
 
     try {
@@ -139,7 +145,8 @@ export const projectService = {
       status: (p.estado || 'active').toLowerCase(),
       startDate: p.fechaInicio,
       endDate: p.fechaFin,
-      indicators: [] // El backend no devuelve indicadores directo en la lista de proyectos
+      indicators: p.indicadores || [],
+      indicatorConfigs: p.configuracionIndicadores || p.indicator_configs || {}
     };
   }
 };

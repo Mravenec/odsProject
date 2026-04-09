@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
+import { getOdsColor } from '../../utils/formatters';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
@@ -176,24 +177,46 @@ const DashboardPage = () => {
                 {projects.length > 0 ? (
                   <div className="projects-list">
                     {projects.map(project => (
-                      <div key={project.id} className="project-item-card">
-                        <div className="project-status">
-                          <span className={`dot ${project.status}`}></span>
+                      <div key={project.id} className="project-item-card enriched">
+                        <div className="project-card-badge-ods" style={{ backgroundColor: getOdsColor(project.objective) }}>
+                          {project.objective}
                         </div>
+                        
                         <div className="project-main-info">
-                          <h4>{project.name}</h4>
-                          <span className="project-ods">ODS {project.objective}</span>
+                          <div className="title-row">
+                            <h4>{project.name}</h4>
+                            <span className={`status-pill ${project.status}`}>
+                              {project.status === 'active' || project.status === 'activo' ? 'En Curso' : 'Completado'}
+                            </span>
+                          </div>
+                          
+                          <p className="project-desc-snippet">{project.description}</p>
+                          
+                          <div className="project-location-badges">
+                            {project.provinciaNombre && (
+                              <span className="location-badge province">📍 {project.provinciaNombre}</span>
+                            )}
+                            {project.cantonNombre && (
+                              <span className="location-badge canton">{project.cantonNombre}</span>
+                            )}
+                            {project.distritoNombre && (
+                              <span className="location-badge district">{project.distritoNombre}</span>
+                            )}
+                          </div>
                         </div>
+
                         <div className="project-meta-info">
-                          <span className="label">Fin: {formatDate(project.endDate)}</span>
+                          <span className="label">Meta ODS {project.objective}</span>
                           <span className="indicators-count">{project.indicators.length} indicadores</span>
+                          <span className="date-info">Vence: {formatDate(project.endDate)}</span>
                         </div>
+
                         <div className="project-button">
                           <button 
-                            className="btn-action-sm"
+                            className="btn-action-primary"
                             onClick={() => navigate(`/projects/${project.id}/results`)}
                           >
-                            {project.status === 'active' || project.status === 'activo' ? 'Medir' : 'Ver'}
+                            {project.status === 'active' || project.status === 'activo' ? 'Medir Impacto' : 'Ver Reporte'}
                           </button>
                         </div>
                       </div>

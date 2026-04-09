@@ -1,356 +1,522 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  ArrowLeft, 
+  ChevronRight, 
+  ChevronLeft, 
+  Check, 
+  Settings, 
+  Target, 
+  Calendar, 
+  MapPin, 
+  Users, 
+  Info,
+  Layers,
+  LayoutGrid,
+  FileText
+} from 'lucide-react';
+
+// Hooks y Servicios
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
+import { getObjectiveName, getOdsColor, odsColors } from '../../utils/formatters';
+
+// Servicios de Objetivos
+import { objetivo01Service } from '../../services/objetivo01Service';
+import { objetivo02Service } from '../../services/objetivo02Service';
+import { objetivo03Service } from '../../services/objetivo03Service';
+import { objetivo04Service } from '../../services/objetivo04Service';
+import { objetivo05Service } from '../../services/objetivo05Service';
+import { objetivo06Service } from '../../services/objetivo06Service';
+import { objetivo07Service } from '../../services/objetivo07Service';
+import { objetivo08Service } from '../../services/objetivo08Service';
+import { objetivo09Service } from '../../services/objetivo09Service';
+import { objetivo10Service } from '../../services/objetivo10Service';
+import { objetivo11Service } from '../../services/objetivo11Service';
+import { objetivo12Service } from '../../services/objetivo12Service';
+import { objetivo13Service } from '../../services/objetivo13Service';
+import { objetivo14Service } from '../../services/objetivo14Service';
+import { objetivo15Service } from '../../services/objetivo15Service';
+import { objetivo16Service } from '../../services/objetivo16Service';
+import { objetivo17Service } from '../../services/objetivo17Service';
+
+import IndicatorConfigModal from '../../components/projects/IndicatorConfigModal/IndicatorConfigModal';
 import './ProjectCreationPage.css';
 
+// Mapeo dinámico de servicios
+const SERVICES_MAP = {
+  1: objetivo01Service, 2: objetivo02Service, 3: objetivo03Service, 4: objetivo04Service,
+  5: objetivo05Service, 6: objetivo06Service, 7: objetivo07Service, 8: objetivo08Service,
+  9: objetivo09Service, 10: objetivo10Service, 11: objetivo11Service, 12: objetivo12Service,
+  13: objetivo13Service, 14: objetivo14Service, 15: objetivo15Service, 16: objetivo16Service,
+  17: objetivo17Service
+};
+
+const AREAS_UTN = ["AEAS Sede Atenas", "AEAS Sede Central", "AEAS Sede Guanacaste", "AEAS Sede Puntarenas", "AEAS Sede San Carlos"];
+const RESPONSABLES_MOCK = ["Ileana Cartín Guerrero", "Marco Tulio López Durán", "Ana Laura Zamora", "Roberto Rojas"];
+
+const SDG_INDICATORS_CATALOG = {
+  // ODS 1
+  "1.1.1": "Proporción de la población que vive por debajo del umbral internacional de pobreza",
+  "1.2.1": "Proporción de la población que vive por debajo del umbral nacional de pobreza",
+  "1.4.1": "Proporción de la población que vive en hogares con acceso a los servicios básicos",
+  // ODS 2
+  "2.1.1": "Prevalencia de la subalimentación",
+  "2.2.1": "Prevalencia del retraso del crecimiento entre los niños menores de 5 años",
+  // ODS 3
+  "3.1.1": "Tasa de mortalidad materna",
+  "3.2.1": "Tasa de mortalidad de niños menores de 5 años",
+  "3.3.1": "Número de nuevas infecciones por el VIH por cada 1.000 personas",
+  // ODS 4
+  "4.1.1": "Proporción de niños y jóvenes que alcanzan un nivel mínimo de competencia en lectura y matemáticas",
+  "4.3.1": "Tasa de participación de los jóvenes y adultos en la enseñanza y formación académica",
+  // ODS 5
+  "5.1.1": "Existencia de marcos jurídicos para promover la igualdad y la no discriminación",
+  "5.5.1": "Proporción de escaños ocupados por mujeres en los parlamentos nacionales",
+  // ODS 6
+  "6.1.1": "Proporción de la población que dispone de servicios de agua potable",
+  "6.2.1": "Proporción de la población que utiliza servicios de saneamiento gestionados de forma segura",
+  // ODS 7
+  "7.1.1": "Proporción de la población que tiene acceso a la electricidad",
+  "7.2.1": "Cuota de la energía renovable en el consumo final total de energía",
+  // ODS 8
+  "8.1.1": "Tasa de crecimiento anual del PIB real por persona empleada",
+  "8.5.1": "Ingreso por hora medio de empleadas y empleados",
+  // ODS 9
+  "9.1.1": "Proporción de la población rural que vive a menos de 2 km de una carretera transitable",
+  "9.2.1": "Valor añadido de la industria manufacturera como proporción del PIB",
+  // ODS 10
+  "10.1.1": "Tasas de crecimiento del gasto o los ingresos de los hogares por habitante",
+  "10.4.1": "Proporción del PIB que corresponde a los ingresos de los trabajadores",
+  // ODS 11
+  "11.1.1": "Proporción de la población urbana que vive en barrios marginales",
+  "11.3.1": "Relación entre la tasa de consumo de tierras y la tasa de crecimiento de la población",
+  // ODS 13
+  "13.1.1": "Número de personas muertas, desaparecidas y afectadas directamente por desastres",
+  // ODS 16
+  "16.1.1": "Número de víctimas de homicidio doloso por cada 100.000 habitantes",
+  "16.5.1": "Proporción de personas que han tenido al menos un contacto con un funcionario público y que han pagado un soborno"
+};
+
 const ProjectCreationPage = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const { createProject, loading, error: projectsError } = useProjects();
+  const [currentStep, setCurrentStep] = useState(1);
+  
+  const { 
+    createProject, 
+    loading: projectsLoading, 
+    error: projectsError,
+    provincias,
+    cantones,
+    distritos,
+    loadingGeo,
+    fetchProvincias,
+    fetchCantones,
+    fetchDistritos
+  } = useProjects();
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    objective: '',
-    indicators: [],
-    targetValues: {},
+    area: '',
+    responsable: '',
     startDate: '',
-    endDate: ''
+    endDate: '',
+    provinciaId: '',
+    cantonId: '',
+    distritoId: '',
+    provinciaNombre: '',
+    cantonNombre: '',
+    distritoNombre: '',
+    selectedOds: [],
+    primaryOds: null,
+    indicators: []
   });
-  const [availableIndicators, setAvailableIndicators] = useState([]);
 
-  const objectives = [
-    { id: 1, name: 'Fin de la Pobreza', service: 'objetivo01Service' },
-    { id: 2, name: 'Hambre Cero', service: 'objetivo02Service' },
-    { id: 3, name: 'Salud y Bienestar', service: 'objetivo03Service' },
-    { id: 4, name: 'Educación de Calidad', service: 'objetivo04Service' },
-    { id: 5, name: 'Igualdad de Género', service: 'objetivo05Service' },
-    { id: 6, name: 'Agua Limpia y Saneamiento', service: 'objetivo06Service' },
-    { id: 7, name: 'Energía Asequible y No Contaminante', service: 'objetivo07Service' },
-    { id: 8, name: 'Trabajo Decente y Crecimiento Económico', service: 'objetivo08Service' },
-    { id: 9, name: 'Industria, Innovación e Infraestructura', service: 'objetivo09Service' },
-    { id: 10, name: 'Reducción de las Desigualdades', service: 'objetivo10Service' },
-    { id: 11, name: 'Ciudades y Comunidades Sostenibles', service: 'objetivo11Service' },
-    { id: 12, name: 'Producción y Consumo Responsables', service: 'objetivo12Service' },
-    { id: 13, name: 'Acción por el Clima', service: 'objetivo13Service' },
-    { id: 14, name: 'Vida Submarina', service: 'objetivo14Service' },
-    { id: 15, name: 'Vida de Ecosistemas Terrestres', service: 'objetivo15Service' },
-    { id: 16, name: 'Paz, Justicia e Instituciones Sólidas', service: 'objetivo16Service' },
-    { id: 17, name: 'Alianzas para Lograr los Objetivos', service: 'objetivo17Service' }
-  ];
+  const [indicatorConfigs, setIndicatorConfigs] = useState({});
+  const [configuringIndicator, setConfiguringIndicator] = useState(null);
+  const [expandedOds, setExpandedOds] = useState(null);
+  
+  // Nuevo estado para metadatos reales de la BD
+  const [indicatorMetadata, setIndicatorMetadata] = useState({});
+  const [loadingMetadata, setLoadingMetadata] = useState({});
 
-  const indicatorNames = {
-    objetivo01Service: [
-      'povertyRate', 'extremePovertyRate', 'socialProtectionCoverage',
-      'governmentSocialSpending', 'povertyGapRatio', 'multidimensionalPovertyIndex',
-      'vulnerableEmployment', 'informalEmployment', 'unemploymentRate', 'incomeInequality'
-    ],
-    objetivo02Service: [
-      'prevalenceUndernourishment', 'foodInsecurityPrevalence', 'stuntingChildren',
-      'wastingChildren', 'overweightChildren', 'anemiaWomen', 'agriculturalProductivity',
-      'smallholderAccess', 'geneticDiversity', 'livestockDiversity'
-    ],
-    objetivo03Service: [
-      'maternalMortalityRate', 'skilledBirthAttendance', 'neonatalMortalityRate',
-      'under5MortalityRate', 'tuberculosisIncidence', 'malariaIncidence', 'hepatitisBIncidence',
-      'hivIncidence', 'ncdPrematureMortality', 'suicideMortalityRate'
-    ],
-    objetivo04Service: [
-      'literacyRate', 'primaryEducationCompletion', 'secondaryEducationCompletion',
-      'earlyChildhoodEducation', 'genderParityIndex', 'teacherTrainingRatio',
-      'pupilTeacherRatio', 'educationExpenditureGDP', 'schoolInfrastructure', 'digitalLiteracy'
-    ],
-    objetivo05Service: [
-      'parliamentarySeatsWomen', 'managerialPositionsWomen', 'laborForceParticipation',
-      'unpaidCareWork', 'genderPayGap', 'violenceAgainstWomen', 'earlyMarriage',
-      'reproductiveHealthRights', 'economicEmpowerment', 'educationGenderParity'
-    ],
-    objetivo06Service: [
-      'safeDrinkingWaterAccess', 'basicSanitationAccess', 'hygieneFacilitiesAccess',
-      'wastewaterTreatment', 'waterQuality', 'waterUseEfficiency', 'waterStressLevel',
-      'freshwaterEcosystems', 'transboundaryCooperation', 'communityWaterManagement'
-    ],
-    objetivo07Service: [
-      'electricityAccess', 'cleanCookingSolutions', 'renewableEnergyShare',
-      'energyEfficiency', 'energyIntensity', 'cleanEnergyInvestment', 'energyAccessReliability',
-      'energyAffordability', 'solarEnergyCapacity', 'windEnergyCapacity'
-    ],
-    objetivo08Service: [
-      'gdpGrowthRate', 'laborProductivity', 'unemploymentRate', 'youthUnemployment',
-      'informalEmployment', 'workingPoverty', 'occupationalSafety', 'equalPayGender',
-      'laborRightsProtection', 'tourismContribution'
-    ],
-    objetivo09Service: [
-      'manufacturingValueAdded', 'industrialEmployment', 'smallIndustryAccess',
-      'infrastructureCoverage', 'roadDensity', 'internetAccess', 'mobilePhoneCoverage',
-      'broadbandSubscription', 'researchDevelopmentSpending', 'researchersPerMillion'
-    ],
-    objetivo10Service: [
-      'incomeGiniCoefficient', 'palmaRatio', 'bottom40Share', 'socialProtectionCoverage',
-      'laborShareGDP', 'remittanceFlows', 'migrationPolicies', 'tariffBarriers',
-      'developmentAssistance', 'financialInclusion'
-    ],
-    objetivo11Service: [
-      'urbanPopulationSlums', 'publicTransportAccess', 'urbanAirQuality',
-      'municipalWasteManagement', 'greenSpacePerCapita', 'urbanDisasterDeaths',
-      'housingAffordability', 'culturalHeritageProtection', 'urbanPlanningCapacity', 'roadSafety'
-    ],
-    objetivo12Service: [
-      'materialFootprint', 'domesticMaterialConsumption', 'foodWasteReduction',
-      'chemicalWasteManagement', 'recyclingRate', 'sustainableTourism', 'corporateSustainability',
-      'publicProcurementSustainability', 'foodLossReduction', 'packagingWasteReduction'
-    ],
-    objetivo13Service: [
-      'climateAdaptationPlans', 'earlyWarningSystems', 'climateEducation',
-      'mitigationPlanning', 'climateFinance', 'disasterRiskReduction', 'climateResilience',
-      'renewableEnergyTransition', 'carbonPricing', 'climateTechnologyTransfer'
-    ],
-    objetivo14Service: [
-      'marinePollutionPrevention', 'marineProtectedAreas', 'oceanAcidification',
-      'sustainableFisheries', 'marineBiodiversity', 'coastalEcosystemHealth', 'oceanGovernance',
-      'marineResearchFunding', 'plasticPollutionReduction', 'coralReefProtection'
-    ],
-    objetivo15Service: [
-      'forestAreaChange', 'protectedAreasCoverage', 'biodiversityIndex',
-      'endangeredSpeciesProtection', 'ecosystemRestoration', 'sustainableForestManagement',
-      'desertificationControl', 'mountainEcosystemProtection', 'wetlandConservation',
-      'wildlifeTraffickingPrevention'
-    ],
-    objetivo16Service: [
-      'violenceReduction', 'conflictRelatedDeaths', 'humanTraffickingPrevention',
-      'birthRegistration', 'ruleOfLaw', 'corruptionPerception', 'publicTrustInstitutions',
-      'accessToJustice', 'judicialIndependence', 'governmentEffectiveness'
-    ],
-    objetivo17Service: [
-      'officialDevelopmentAssistance', 'privateInvestmentFlows', 'remittanceCosts',
-      'debtSustainability', 'tradeBarriers', 'technologyTransfer', 'internetAccessDeveloping',
-      'multilateralCooperation', 'policyCoherence', 'dataAvailability'
-    ]
-  };
+  // Carga inicial de geografía
+  useEffect(() => {
+    fetchProvincias();
+  }, [fetchProvincias]);
 
   useEffect(() => {
-    if (formData.objective) {
-      const selectedObjective = objectives.find(obj => obj.id === parseInt(formData.objective));
-      if (selectedObjective) {
-        setAvailableIndicators(indicatorNames[selectedObjective.service] || []);
-        setFormData(prev => ({
-          ...prev,
-          indicators: [],
-          targetValues: {}
-        }));
-      }
+    if (formData.provinciaId) fetchCantones(formData.provinciaId);
+  }, [formData.provinciaId, fetchCantones]);
+
+  useEffect(() => {
+    if (formData.cantonId) fetchDistritos(formData.cantonId);
+  }, [formData.cantonId, fetchDistritos]);
+
+  // Cargar metadatos cuando se expande un ODS
+  useEffect(() => {
+    if (expandedOds && !loadingMetadata[expandedOds] && !hasMetadataForOds(expandedOds)) {
+      loadOdsMetadata(expandedOds);
     }
-  }, [formData.objective]);
+  }, [expandedOds]);
+
+  const hasMetadataForOds = (odsId) => {
+    const service = SERVICES_MAP[odsId];
+    if (!service) return true;
+    const codes = Object.keys(service).filter(k => k.startsWith('getIndicador_'));
+    return codes.every(k => indicatorMetadata[k.replace('getIndicador_', '').replace(/_/g, '.')]);
+  };
+
+  const loadOdsMetadata = async (odsId) => {
+    const service = SERVICES_MAP[odsId];
+    if (!service) return;
+
+    setLoadingMetadata(prev => ({ ...prev, [odsId]: true }));
+    
+    const methods = Object.keys(service).filter(key => key.startsWith('getIndicador_'));
+    
+    try {
+      const results = await Promise.allSettled(
+        methods.map(async (method) => {
+          const code = method.replace('getIndicador_', '').replace(/_/g, '.');
+          try {
+            const data = await service[method]();
+            return { code, data };
+          } catch (e) {
+            console.error(`Error loading indicator ${code}:`, e);
+            return { code, error: true };
+          }
+        })
+      );
+
+      const newMetadata = {};
+      results.forEach(res => {
+        if (res.status === 'fulfilled' && !res.value.error) {
+          const dbDescription = res.value.data.description;
+          // Fallback al catálogo oficial si la BD devuelve algo vacío o genérico "Indicador X"
+          const fallbackDescription = SDG_INDICATORS_CATALOG[res.value.code];
+          
+          newMetadata[res.value.code] = {
+            description: (dbDescription && dbDescription.length > 5 && !dbDescription.includes('Indicador')) 
+              ? dbDescription 
+              : (fallbackDescription || `Seguimiento de metas técnicas para indicador ${res.value.code}`),
+            unit: res.value.data.unit
+          };
+        }
+      });
+
+      setIndicatorMetadata(prev => ({ ...prev, ...newMetadata }));
+    } finally {
+      setLoadingMetadata(prev => ({ ...prev, [odsId]: false }));
+    }
+  };
+
+  const getIndicatorsForOds = (odsId) => {
+    const service = SERVICES_MAP[odsId];
+    if (!service) return [];
+    
+    return Object.keys(service)
+      .filter(key => key.startsWith('getIndicador_'))
+      .map(key => key.replace('getIndicador_', '').replace(/_/g, '.'));
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleIndicatorToggle = (indicator) => {
+  const handleGeoChange = (e) => {
+    const { name, value } = e.target;
+    let nombre = '';
+    if (name === 'provinciaId') {
+      nombre = provincias.find(p => p.id === value)?.nombre || '';
+      setFormData(prev => ({ ...prev, provinciaId: value, provinciaNombre: nombre, cantonId: '', distritoId: '' }));
+    } else if (name === 'cantonId') {
+      nombre = cantones.find(c => c.id === value)?.nombre || '';
+      setFormData(prev => ({ ...prev, cantonId: value, cantonNombre: nombre, distritoId: '' }));
+    } else if (name === 'distritoId') {
+      nombre = distritos.find(d => d.id === value)?.nombre || '';
+      setFormData(prev => ({ ...prev, distritoId: value, distritoNombre: nombre }));
+    }
+  };
+
+  const toggleOds = (odsId) => {
     setFormData(prev => {
-      const newIndicators = prev.indicators.includes(indicator)
-        ? prev.indicators.filter(ind => ind !== indicator)
-        : [...prev.indicators, indicator];
-      
-      const newTargetValues = { ...prev.targetValues };
-      if (!newIndicators.includes(indicator)) {
-        delete newTargetValues[indicator];
-      }
+      const isSelected = prev.selectedOds.includes(odsId);
+      const newSelected = isSelected 
+        ? prev.selectedOds.filter(id => id !== odsId)
+        : [...prev.selectedOds, odsId];
       
       return {
         ...prev,
-        indicators: newIndicators,
-        targetValues: newTargetValues
+        selectedOds: newSelected,
+        primaryOds: newSelected.length > 0 ? newSelected[0] : null
       };
     });
   };
 
-  const handleTargetValueChange = (indicator, value) => {
-    setFormData(prev => ({
-      ...prev,
-      targetValues: {
-        ...prev.targetValues,
-        [indicator]: value
-      }
-    }));
+  // Guardia de Seguridad
+  if (authLoading || !user || !user.id) {
+    return (
+      <div className="global-loader-container">
+        <div className="loader"></div>
+        <p>Sincronizando portal...</p>
+      </div>
+    );
+  }
+
+  const toggleIndicator = (indicatorCode) => {
+    setFormData(prev => {
+      const isSelected = prev.indicators.includes(indicatorCode);
+      return {
+        ...prev,
+        indicators: isSelected
+          ? prev.indicators.filter(i => i !== indicatorCode)
+          : [...prev.indicators, indicatorCode]
+      };
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (currentStep === 1) {
+      setCurrentStep(2);
+      window.scrollTo(0, 0);
+      return;
+    }
 
     try {
-      const projectData = {
+      const finalData = {
         ...formData,
+        objective: formData.primaryOds,
+        indicatorConfigs,
         userId: user.id
       };
-
-      const result = await createProject(projectData);
-      if (result.success) {
-        navigate('/dashboard');
-      }
+      const result = await createProject(finalData);
+      if (result.success) navigate('/dashboard');
     } catch (err) {
-      console.error('Error creating project:', err);
+      console.error('Submit Error:', err);
     }
-  };
-
-  const formatIndicatorName = (indicator) => {
-    return indicator.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
   };
 
   return (
     <div className="project-creation-page fade-in">
-      <div className="page-header-simple">
-        <button onClick={() => navigate('/dashboard')} className="btn-back" title="Volver al Dashboard">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        </button>
-        <h1>Crear Proyecto ODS</h1>
-      </div>
+      <header className="page-header">
+        <div className="header-left">
+          <button onClick={() => currentStep === 1 ? navigate('/dashboard') : setCurrentStep(1)} className="btn-back">
+            <ArrowLeft size={20} />
+          </button>
+          <h1>{currentStep === 1 ? 'Diseño de Proyecto' : 'Configuración Técnica'}</h1>
+        </div>
+        
+        <div className="stepper">
+          <div className={`step ${currentStep >= 1 ? 'active' : ''} ${currentStep > 1 ? 'completed' : ''}`}>
+            {currentStep > 1 ? <Check size={20} /> : '1'}
+          </div>
+          <div className={`step ${currentStep >= 2 ? 'active' : ''}`}>2</div>
+        </div>
+      </header>
 
-      <main className="form-container">
-        <form onSubmit={handleSubmit} className="modern-form">
-          <section className="form-section">
-            <div className="section-title">
-              <span className="step-number">1</span>
-              <h3>Información Básica</h3>
-            </div>
-            
-            <div className="form-grid">
-              <div className="form-group">
-                <label>Nombre del Proyecto</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="Ej: Reducción de brecha digital en comunidades rurales"
-                  required
-                />
+      <main className="form-card">
+        <form onSubmit={handleSubmit}>
+          {currentStep === 1 ? (
+            <div className="step-content">
+              <div className="section-intro">
+                <Info size={18} />
+                <p>Complete los datos básicos para iniciar la planificación estratégica del proyecto en la UTN.</p>
               </div>
 
-              <div className="form-group">
-                <label>Descripción</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  placeholder="Describe brevemente los objetivos y el alcance del proyecto..."
-                  rows="4"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Objetivo ODS</label>
-                <select
-                  name="objective"
-                  value={formData.objective}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option value="">Seleccionar Objetivo</option>
-                  {objectives.map(objective => (
-                    <option key={objective.id} value={objective.id}>
-                      {objective.id}. {objective.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group-row">
-                <div className="form-group">
-                  <label>Fecha Inicio</label>
-                  <input
-                    type="date"
-                    name="startDate"
-                    value={formData.startDate}
-                    onChange={handleInputChange}
-                    required
-                  />
+              <div className="form-grid">
+                <div className="form-group full-width">
+                  <label><FileText size={14} /> Nombre del Proyecto</label>
+                  <input name="name" value={formData.name} onChange={handleInputChange} required placeholder="Ej: Fortalecimiento de la Economía Circular en Región Huetar" />
                 </div>
+
                 <div className="form-group">
-                  <label>Fecha Fin</label>
-                  <input
-                    type="date"
-                    name="endDate"
-                    value={formData.endDate}
-                    onChange={handleInputChange}
-                    required
-                    min={formData.startDate}
-                  />
+                  <label><Layers size={14} /> Área Responsable</label>
+                  <select name="area" value={formData.area} onChange={handleInputChange} required>
+                    <option value="">Seleccione área institucional</option>
+                    {AREAS_UTN.map(a => <option key={a} value={a}>{a}</option>)}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label><Users size={14} /> Responsable Técnico</label>
+                  <select name="responsable" value={formData.responsable} onChange={handleInputChange} required>
+                    <option value="">Seleccione personal académico</option>
+                    {RESPONSABLES_MOCK.map(r => <option key={r} value={r}>{r}</option>)}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label><Calendar size={14} /> Inicio Estimado</label>
+                  <input type="date" name="startDate" value={formData.startDate} onChange={handleInputChange} required />
+                </div>
+
+                <div className="form-group">
+                  <label><Calendar size={14} /> Finalización Impacto</label>
+                  <input type="date" name="endDate" value={formData.endDate} onChange={handleInputChange} required />
+                </div>
+
+                <div className="form-group">
+                  <label><MapPin size={14} /> Provincia</label>
+                  <select name="provinciaId" value={formData.provinciaId} onChange={handleGeoChange} required>
+                    <option value="">Seleccione Provincia</option>
+                    {provincias.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label><MapPin size={14} /> Cantón</label>
+                  <select name="cantonId" value={formData.cantonId} onChange={handleGeoChange} required disabled={!formData.provinciaId}>
+                    <option value="">Seleccione Cantón</option>
+                    {cantones.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+                  </select>
+                </div>
+
+                <div className="form-group full-width">
+                  <label><Target size={14} /> Justificación y Descripción</label>
+                  <textarea name="description" value={formData.description} onChange={handleInputChange} rows="4" placeholder="Describa cómo este proyecto soluciona una problemática específica..." />
                 </div>
               </div>
             </div>
-          </section>
-
-          <section className="form-section">
-            <div className="section-title">
-              <span className="step-number">2</span>
-              <h3>Selección de Indicadores</h3>
-              <p className="section-subtitle">Selecciona los indicadores que medirás en este proyecto.</p>
-            </div>
-
-            {availableIndicators.length > 0 ? (
-              <div className="indicators-grid">
-                {availableIndicators.map(indicator => (
+          ) : (
+            <div className="step-content">
+              <div className="ods-grid-header">
+                <LayoutGrid size={18} />
+                <h3>Selección de Impacto ODS</h3>
+              </div>
+              
+              <div className="ods-selection-grid">
+                {Object.keys(odsColors).map(odsId => (
                   <div 
-                    key={indicator} 
-                    className={`indicator-chip ${formData.indicators.includes(indicator) ? 'active' : ''}`}
-                    onClick={() => handleIndicatorToggle(indicator)}
+                    key={odsId} 
+                    className={`ods-card ${formData.selectedOds.includes(parseInt(odsId)) ? 'selected' : ''}`}
+                    style={{ backgroundColor: odsColors[odsId] }}
+                    onClick={() => toggleOds(parseInt(odsId))}
                   >
-                    <span className="chip-icon">{formData.indicators.includes(indicator) ? '✓' : '+'}</span>
-                    <div className="chip-content">
-                      <span className="chip-label">{formatIndicatorName(indicator)}</span>
-                      {formData.indicators.includes(indicator) && (
-                        <input
-                          type="number"
-                          step="0.01"
-                          placeholder="Meta"
-                          value={formData.targetValues[indicator] || ''}
-                          onClick={(e) => e.stopPropagation()}
-                          onChange={(e) => handleTargetValueChange(indicator, e.target.value)}
-                          required
-                          className="target-input-sm"
-                        />
-                      )}
-                    </div>
+                    <span className="ods-number">{odsId}</span>
+                    <span className="ods-title">{getObjectiveName(odsId)}</span>
+                    {formData.selectedOds.includes(parseInt(odsId)) && (
+                      <div className="selection-overlay">
+                        <Check size={12} />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
-            ) : (
-                <p className="no-indicators-msg">Selecciona un objetivo para ver sus indicadores.</p>
-            )}
-          </section>
 
-          {projectsError && (
-            <div className="error-banner">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-              <span>{projectsError}</span>
+              {formData.selectedOds.length > 0 && (
+                <div className="indicators-panel fade-in">
+                  <div className="section-header">
+                    <Settings size={18} />
+                    <h3>Configuración de Indicadores</h3>
+                  </div>
+                  
+                  {formData.selectedOds.map(odsId => {
+                    const indicators = getIndicatorsForOds(odsId);
+                    const isLoaded = !loadingMetadata[odsId];
+                    return (
+                      <div key={odsId} className={`ods-accordion ${expandedOds === odsId ? 'open' : ''}`}>
+                        <div className="accordion-header" onClick={() => setExpandedOds(expandedOds === odsId ? null : odsId)} style={{ borderLeft: `4px solid ${odsColors[odsId]}` }}>
+                          <span className="ods-badge" style={{ backgroundColor: odsColors[odsId] }}>ODS {odsId}</span>
+                          <span className="ods-name">{getObjectiveName(odsId)}</span>
+                          <div className="header-right">
+                            <span className="count-badge">{indicators.filter(i => formData.indicators.includes(i)).length} / {indicators.length}</span>
+                            {!isLoaded && expandedOds === odsId ? <div className="spinner-xs"></div> : <ChevronRight className="chevron" size={20} />}
+                          </div>
+                        </div>
+                        
+                        {expandedOds === odsId && (
+                          <div className="accordion-content">
+                            {!isLoaded ? (
+                              <div className="metadata-loader">
+                                <div className="spinner-sm"></div>
+                                <span>Sincronizando indicadores con base de datos...</span>
+                              </div>
+                            ) : (
+                              <div className="indicators-selection-list">
+                                {indicators.map(code => {
+                                  const meta = indicatorMetadata[code];
+                                  return (
+                                    <div key={code} className={`indicator-li ${formData.indicators.includes(code) ? 'selected' : ''}`}>
+                                      <div className="indicator-main" onClick={() => toggleIndicator(code)}>
+                                        <div className="checkbox">{formData.indicators.includes(code) && <Check size={12} />}</div>
+                                        <div className="indicator-info">
+                                          <div className="indicator-top-row">
+                                            <span className="code">{code}</span>
+                                            {meta?.unit && <span className="unit-badge">{meta.unit}</span>}
+                                          </div>
+                                          <span className="label">
+                                            {meta?.description || `Indicador ${code}`}
+                                          </span>
+                                        </div>
+                                      </div>
+                                      
+                                      {formData.indicators.includes(code) && (
+                                        <button 
+                                          type="button" 
+                                          className={`btn-config ${indicatorConfigs[code] ? 'active' : ''}`}
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setConfiguringIndicator(code);
+                                          }}
+                                        >
+                                          <Settings size={14} />
+                                          {indicatorConfigs[code] ? 'Configurado' : 'Configurar'}
+                                        </button>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
           <div className="form-actions">
             <button 
               type="button" 
-              className="btn-secondary" 
-              onClick={() => navigate('/dashboard')}
-              disabled={loading}
+              className="btn-premium btn-secondary" 
+              onClick={() => currentStep === 1 ? navigate('/dashboard') : setCurrentStep(1)}
             >
-              Cancelar
+              {currentStep === 1 ? 'Cancelar' : 'Anterior'}
             </button>
             <button 
               type="submit" 
-              className={`btn-primary ${loading ? 'loading' : ''}`}
-              disabled={loading || formData.indicators.length === 0}
+              className="btn-premium btn-primary" 
+              disabled={projectsLoading || (currentStep === 2 && formData.selectedOds.length === 0)}
             >
-              {loading ? <span className="spinner"></span> : 'Crear Proyecto ODS'}
+              {currentStep === 1 ? (
+                <>Siguiente <ChevronRight size={18} /></>
+              ) : (
+                projectsLoading ? 'Creando...' : 'Finalizar y Crear Proyecto'
+              )}
             </button>
           </div>
         </form>
       </main>
+
+      {configuringIndicator && (
+        <IndicatorConfigModal 
+          indicator={configuringIndicator}
+          existingConfig={indicatorConfigs[configuringIndicator]}
+          onSave={(config) => {
+            setIndicatorConfigs(prev => ({ ...prev, [configuringIndicator]: config }));
+            setConfiguringIndicator(null);
+          }}
+          onClose={() => setConfiguringIndicator(null)}
+        />
+      )}
     </div>
   );
 };
