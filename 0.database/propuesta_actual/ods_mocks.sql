@@ -20,15 +20,15 @@ USE ods_login;
 
 -- USUARIOS DE PRUEBA (9 usuarios + admin ya existente)
 INSERT INTO usuarios (username, email, password_hash, full_name, rol_id, is_active, email_verificado, ultimo_login) VALUES
-  ('gestor01', 'ana.garcia@ods.cr', '$2b$12$MOCK_HASH_GESTOR01', 'Ana García López', 2, TRUE, TRUE, NOW() - INTERVAL 21 DAY),
-  ('gestor02', 'carlos.rodriguez@ods.cr', '$2b$12$MOCK_HASH_GESTOR02', 'Carlos Rodríguez Mora', 3, TRUE, TRUE, NOW() - INTERVAL 4 DAY),
-  ('gestor03', 'maria.jimenez@ods.cr', '$2b$12$MOCK_HASH_GESTOR03', 'María Jiménez Solano', 4, TRUE, TRUE, NOW() - INTERVAL 1 DAY),
-  ('gestor04', 'luis.hernandez@ods.cr', '$2b$12$MOCK_HASH_GESTOR04', 'Luis Hernández Vargas', 2, TRUE, TRUE, NOW() - INTERVAL 24 DAY),
-  ('gestor05', 'patricia.mora@ods.cr', '$2b$12$MOCK_HASH_GESTOR05', 'Patricia Mora Salas', 2, TRUE, TRUE, NOW() - INTERVAL 9 DAY),
-  ('consultor01', 'roberto.vega@ods.cr', '$2b$12$MOCK_HASH_CONSULTOR01', 'Roberto Vega Castro', 3, TRUE, TRUE, NOW() - INTERVAL 8 DAY),
-  ('auditor01', 'sandra.perez@ods.cr', '$2b$12$MOCK_HASH_AUDITOR01', 'Sandra Pérez Núñez', 4, TRUE, TRUE, NOW() - INTERVAL 8 DAY),
-  ('gestor06', 'felipe.arias@ods.cr', '$2b$12$MOCK_HASH_GESTOR06', 'Felipe Arias Díaz', 2, TRUE, TRUE, NOW() - INTERVAL 5 DAY),
-  ('gestor07', 'daniela.orozco@ods.cr', '$2b$12$MOCK_HASH_GESTOR07', 'Daniela Orozco Fonseca', 2, TRUE, TRUE, NOW() - INTERVAL 24 DAY);
+  ('gestor01', 'ana.garcia@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Ana García López', 2, TRUE, TRUE, NOW() - INTERVAL 21 DAY),
+  ('gestor02', 'carlos.rodriguez@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Carlos Rodríguez Mora', 3, TRUE, TRUE, NOW() - INTERVAL 4 DAY),
+  ('gestor03', 'maria.jimenez@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'María Jiménez Solano', 4, TRUE, TRUE, NOW() - INTERVAL 1 DAY),
+  ('gestor04', 'luis.hernandez@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Luis Hernández Vargas', 2, TRUE, TRUE, NOW() - INTERVAL 24 DAY),
+  ('gestor05', 'patricia.mora@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Patricia Mora Salas', 2, TRUE, TRUE, NOW() - INTERVAL 9 DAY),
+  ('consultor01', 'roberto.vega@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Roberto Vega Castro', 3, TRUE, TRUE, NOW() - INTERVAL 8 DAY),
+  ('auditor01', 'sandra.perez@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Sandra Pérez Núñez', 4, TRUE, TRUE, NOW() - INTERVAL 8 DAY),
+  ('gestor06', 'felipe.arias@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Felipe Arias Díaz', 2, TRUE, TRUE, NOW() - INTERVAL 5 DAY),
+  ('gestor07', 'daniela.orozco@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Daniela Orozco Fonseca', 2, TRUE, TRUE, NOW() - INTERVAL 24 DAY);
 
 -- SESIONES ACTIVAS
 INSERT INTO sesiones (usuario_id, token_hash, ip_address, user_agent, expira_en) VALUES

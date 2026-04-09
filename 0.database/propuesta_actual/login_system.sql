@@ -370,11 +370,12 @@ CREATE INDEX idx_sesiones_expira_revocada      ON sesiones(expira_en, revocada);
 -- DATOS DE EJEMPLO: usuario administrador inicial
 -- IMPORTANTE: cambiar la contraseña en producción
 -- password_hash corresponde a bcrypt de 'Admin1234!'
+-- LOGIN: admin@ods.local / Admin1234!
 -- ────────────────────────────────────────────────────────────
 
 INSERT INTO usuarios (username, email, password_hash, full_name, rol_id, is_active, email_verificado)
 VALUES ('admin', 'admin@ods.local',
-        '$2b$12$PLACEHOLDER_HASH_CAMBIAR_EN_PRODUCCION',
+        '$2b$12$Mz3n8g34Ig8QllOrTDPKP.CiqYrhzBYy4l3JsJLmp1paGYZkPlBSy',
         'Administrador del Sistema', 1, TRUE, TRUE);
 
 -- ────────────────────────────────────────────────────────────
