@@ -73,6 +73,15 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  
+  // Catálogos
+  const getSedes = React.useCallback(async () => {
+    return await authService.getSedes();
+  }, []);
+
+  const getActiveUsers = React.useCallback(async () => {
+    return await authService.getActiveUsers();
+  }, []);
 
   // Verificar permisos
   const hasRole = (role) => {
@@ -89,6 +98,8 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated,
     login,
     logout,
+    getSedes,
+    getActiveUsers,
     hasRole,
     isAdmin,
     isGestor,

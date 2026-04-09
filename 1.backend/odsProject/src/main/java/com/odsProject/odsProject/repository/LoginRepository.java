@@ -9,6 +9,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdmin
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.routines.SpAdminUsuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.routines.SpLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.routines.SpLogout;
@@ -32,6 +33,7 @@ import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdmi
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
+import static com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes.SEDES;
 
 /**
  * Implementación del Repositorio para el Sistema de Login
@@ -184,6 +186,27 @@ public class LoginRepository implements ILoginRepository {
         return dsl.selectFrom(ROLES)
                 .where(ROLES.NOMBRE.eq(nombre))
                 .fetchOptionalInto(Roles.class);
+    }
+
+    // ── Sedes ──
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Sedes> findAllSedes() {
+        return dsl.selectFrom(SEDES)
+                .fetchInto(Sedes.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Sedes> findSedeById(Integer id) {
+        return dsl.selectFrom(SEDES)
+                .where(SEDES.ID.eq(id))
+                .fetchOptionalInto(Sedes.class);
     }
 
     // ── Sesiones ──

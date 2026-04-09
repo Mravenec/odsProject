@@ -145,7 +145,6 @@ com\odsProject\odsProject\database\jooq\ods12\tables\pojos\Indicadores.class
 com\odsProject\odsProject\database\jooq\ods08\tables\pojos\VistaAdminResumenGeneral.class
 com\odsProject\odsProject\database\jooq\ods12\tables\pojos\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\database\jooq\ods13\tables\records\VistaAdminResumenGeneralRecord.class
-com\odsProject\odsProject\database\jooq\ods_login\Indexes.class
 com\odsProject\odsProject\database\jooq\ods05\tables\AuditoriaOds05.class
 com\odsProject\odsProject\database\jooq\ods14\Indexes.class
 com\odsProject\odsProject\controller\interfaces\IObjetivo11CiudadesSosteniblesController.class
@@ -174,6 +173,7 @@ com\odsProject\odsProject\database\jooq\ods05\Keys.class
 com\odsProject\odsProject\database\jooq\ods06\tables\records\VistaAdminDetalleIndicadoresRecord.class
 com\odsProject\odsProject\controller\interfaces\ILoginController.class
 com\odsProject\odsProject\database\jooq\ods06\tables\AuditoriaOds06.class
+com\odsProject\odsProject\database\jooq\ods_login\tables\records\SedesRecord.class
 com\odsProject\odsProject\database\jooq\DefaultCatalog.class
 com\odsProject\odsProject\database\jooq\ods08\routines\SpAdminDashboard.class
 com\odsProject\odsProject\database\jooq\ods17\tables\pojos\VistaAdminDetalleIndicadores.class
@@ -199,6 +199,7 @@ com\odsProject\odsProject\database\jooq\ods13\tables\pojos\Indicadores.class
 com\odsProject\odsProject\database\jooq\ods14\tables\pojos\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\database\jooq\ods04\tables\pojos\Proyectos.class
 com\odsProject\odsProject\database\jooq\ods01\tables\pojos\VistaAdminResumenGeneral.class
+com\odsProject\odsProject\database\jooq\ods_login\tables\Sedes$SedesPath.class
 com\odsProject\odsProject\controller\LoginController.class
 com\odsProject\odsProject\database\jooq\ods02\tables\VistaAdminResumenGeneral.class
 com\odsProject\odsProject\database\jooq\ods11\tables\pojos\AuditoriaOds11.class
@@ -327,6 +328,7 @@ com\odsProject\odsProject\database\jooq\ods04\tables\pojos\VistaAdminAuditoriaRe
 com\odsProject\odsProject\database\jooq\ods04\tables\records\VistaAdminResumenGeneralRecord.class
 com\odsProject\odsProject\database\jooq\ods06\tables\pojos\VistaAdminResumenGeneral.class
 com\odsProject\odsProject\database\jooq\ods06\tables\MedicionesHistoricas$MedicionesHistoricasPath.class
+com\odsProject\odsProject\database\jooq\ods_login\tables\Sedes.class
 com\odsProject\odsProject\database\jooq\ods07\tables\pojos\Indicadores.class
 com\odsProject\odsProject\database\jooq\ods02\tables\pojos\Proyectos.class
 com\odsProject\odsProject\database\jooq\ods06\tables\pojos\Indicadores.class
@@ -360,7 +362,6 @@ com\odsProject\odsProject\database\jooq\ods14\enums\ProyectosEstado.class
 com\odsProject\odsProject\database\jooq\ods13\Ods13.class
 com\odsProject\odsProject\database\jooq\ods05\tables\records\VistaAdminAuditoriaRecienteRecord.class
 com\odsProject\odsProject\database\jooq\ods01\tables\MedicionesHistoricas.class
-com\odsProject\odsProject\database\jooq\ods_login\Keys.class
 com\odsProject\odsProject\database\jooq\ods10\tables\pojos\MedicionesHistoricas.class
 com\odsProject\odsProject\database\jooq\ods13\tables\pojos\VistaAdminDetalleIndicadores.class
 com\odsProject\odsProject\database\jooq\ods11\routines\SpAdminReporteProyecto.class
@@ -618,6 +619,7 @@ com\odsProject\odsProject\database\jooq\ods04\tables\pojos\AuditoriaOds04.class
 com\odsProject\odsProject\database\jooq\ods16\enums\VistaAdminResumenGeneralEstado.class
 com\odsProject\odsProject\database\jooq\ods13\enums\ProyectosEstado.class
 com\odsProject\odsProject\database\jooq\ods04\tables\records\VistaAdminDetalleIndicadoresRecord.class
+com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\Sedes.class
 com\odsProject\odsProject\database\jooq\ods03\tables\pojos\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\controller\Objetivo06AguaSaneamientoController.class
 com\odsProject\odsProject\database\jooq\ods14\tables\AuditoriaOds14$AuditoriaOds14Path.class

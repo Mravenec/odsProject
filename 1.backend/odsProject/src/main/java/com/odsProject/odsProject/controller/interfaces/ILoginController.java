@@ -156,6 +156,25 @@ public interface ILoginController {
     @PostMapping("/users/assign-role")
     ResponseEntity<Boolean> assignRolToUsuario(@RequestBody Map<String, Integer> assignmentRequest);
     
+    // ── Sedes ──
+    
+    /**
+     * Endpoint para obtener todas las sedes
+     * 
+     * @return ResponseEntity con lista de sedes
+     */
+    @GetMapping("/sedes")
+    ResponseEntity<List<Map<String, Object>>> getAllSedes();
+    
+    /**
+     * Endpoint para obtener sede por ID
+     * 
+     * @param id ID de la sede
+     * @return ResponseEntity con datos de la sede
+     */
+    @GetMapping("/sedes/{id}")
+    ResponseEntity<Map<String, Object>> getSedeById(@PathVariable Integer id);
+    
     // ── Gestión de Sesiones ──
     
     /**

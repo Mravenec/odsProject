@@ -21,6 +21,7 @@ public class VistaAdminUsuariosActivos implements Serializable {
     private final String fullName;
     private final String email;
     private final String rol;
+    private final String sede;
     private final LocalDateTime ultimoLogin;
     private final LocalDateTime createdAt;
     private final String odsPermitidos;
@@ -31,6 +32,7 @@ public class VistaAdminUsuariosActivos implements Serializable {
         this.fullName = value.fullName;
         this.email = value.email;
         this.rol = value.rol;
+        this.sede = value.sede;
         this.ultimoLogin = value.ultimoLogin;
         this.createdAt = value.createdAt;
         this.odsPermitidos = value.odsPermitidos;
@@ -42,6 +44,7 @@ public class VistaAdminUsuariosActivos implements Serializable {
         String fullName,
         String email,
         String rol,
+        String sede,
         LocalDateTime ultimoLogin,
         LocalDateTime createdAt,
         String odsPermitidos
@@ -51,6 +54,7 @@ public class VistaAdminUsuariosActivos implements Serializable {
         this.fullName = fullName;
         this.email = email;
         this.rol = rol;
+        this.sede = sede;
         this.ultimoLogin = ultimoLogin;
         this.createdAt = createdAt;
         this.odsPermitidos = odsPermitidos;
@@ -89,6 +93,13 @@ public class VistaAdminUsuariosActivos implements Serializable {
      */
     public String getRol() {
         return this.rol;
+    }
+
+    /**
+     * Getter for <code>ods_login.vista_admin_usuarios_activos.sede</code>.
+     */
+    public String getSede() {
+        return this.sede;
     }
 
     /**
@@ -154,6 +165,12 @@ public class VistaAdminUsuariosActivos implements Serializable {
         }
         else if (!this.rol.equals(other.rol))
             return false;
+        if (this.sede == null) {
+            if (other.sede != null)
+                return false;
+        }
+        else if (!this.sede.equals(other.sede))
+            return false;
         if (this.ultimoLogin == null) {
             if (other.ultimoLogin != null)
                 return false;
@@ -184,6 +201,7 @@ public class VistaAdminUsuariosActivos implements Serializable {
         result = prime * result + ((this.fullName == null) ? 0 : this.fullName.hashCode());
         result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
         result = prime * result + ((this.rol == null) ? 0 : this.rol.hashCode());
+        result = prime * result + ((this.sede == null) ? 0 : this.sede.hashCode());
         result = prime * result + ((this.ultimoLogin == null) ? 0 : this.ultimoLogin.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.odsPermitidos == null) ? 0 : this.odsPermitidos.hashCode());
@@ -199,6 +217,7 @@ public class VistaAdminUsuariosActivos implements Serializable {
         sb.append(", ").append(fullName);
         sb.append(", ").append(email);
         sb.append(", ").append(rol);
+        sb.append(", ").append(sede);
         sb.append(", ").append(ultimoLogin);
         sb.append(", ").append(createdAt);
         sb.append(", ").append(odsPermitidos);

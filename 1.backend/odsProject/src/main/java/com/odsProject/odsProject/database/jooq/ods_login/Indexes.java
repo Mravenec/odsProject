@@ -45,6 +45,7 @@ public class Indexes {
     public static final Index INDICADORES_IDX_PROYECTO_INDICADOR = Internal.createIndex(DSL.name("idx_proyecto_indicador"), Indicadores.INDICADORES, new OrderField[] { Indicadores.INDICADORES.PROYECTO_ID, Indicadores.INDICADORES.INDICADOR_CODIGO }, false);
     public static final Index METAS_PROYECTO_IDX_PROYECTO_META = Internal.createIndex(DSL.name("idx_proyecto_meta"), MetasProyecto.METAS_PROYECTO, new OrderField[] { MetasProyecto.METAS_PROYECTO.PROYECTO_ID, MetasProyecto.METAS_PROYECTO.META_CODIGO }, false);
     public static final Index USUARIOS_IDX_ROL = Internal.createIndex(DSL.name("idx_rol"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.ROL_ID }, false);
+    public static final Index USUARIOS_IDX_SEDE = Internal.createIndex(DSL.name("idx_sede"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.SEDE_ID }, false);
     public static final Index SESIONES_IDX_SESIONES_EXPIRA_REVOCADA = Internal.createIndex(DSL.name("idx_sesiones_expira_revocada"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.EXPIRA_EN, Sesiones.SESIONES.REVOCADA }, false);
     public static final Index SESIONES_IDX_TOKEN = Internal.createIndex(DSL.name("idx_token"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.TOKEN_HASH }, false);
     public static final Index USUARIOS_IDX_USERNAME = Internal.createIndex(DSL.name("idx_username"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.USERNAME }, false);

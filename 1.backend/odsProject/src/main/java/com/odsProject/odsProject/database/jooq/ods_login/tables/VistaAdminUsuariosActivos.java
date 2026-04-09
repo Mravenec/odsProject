@@ -75,6 +75,11 @@ public class VistaAdminUsuariosActivos extends TableImpl<VistaAdminUsuariosActiv
     public final TableField<VistaAdminUsuariosActivosRecord, String> ROL = createField(DSL.name("rol"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
+     * The column <code>ods_login.vista_admin_usuarios_activos.sede</code>.
+     */
+    public final TableField<VistaAdminUsuariosActivosRecord, String> SEDE = createField(DSL.name("sede"), SQLDataType.VARCHAR(100), this, "");
+
+    /**
      * The column
      * <code>ods_login.vista_admin_usuarios_activos.ultimo_login</code>.
      */
@@ -97,7 +102,7 @@ public class VistaAdminUsuariosActivos extends TableImpl<VistaAdminUsuariosActiv
     }
 
     private VistaAdminUsuariosActivos(Name alias, Table<VistaAdminUsuariosActivosRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_usuarios_activos` as select `u`.`id` AS `id`,`u`.`username` AS `username`,`u`.`full_name` AS `full_name`,`u`.`email` AS `email`,`r`.`nombre` AS `rol`,`u`.`ultimo_login` AS `ultimo_login`,`u`.`created_at` AS `created_at`,group_concat(`p`.`ods_num` order by `p`.`ods_num` ASC separator ', ') AS `ods_permitidos` from ((`ods_login`.`usuarios` `u` join `ods_login`.`roles` `r` on(`u`.`rol_id` = `r`.`id`)) left join `ods_login`.`permisos_ods` `p` on(`u`.`id` = `p`.`usuario_id`)) where `u`.`is_active` = 1 group by `u`.`id`,`u`.`username`,`u`.`full_name`,`u`.`email`,`r`.`nombre`,`u`.`ultimo_login`,`u`.`created_at` order by `u`.`full_name`"), where);
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_usuarios_activos` as select `u`.`id` AS `id`,`u`.`username` AS `username`,`u`.`full_name` AS `full_name`,`u`.`email` AS `email`,`r`.`nombre` AS `rol`,`s`.`nombre` AS `sede`,`u`.`ultimo_login` AS `ultimo_login`,`u`.`created_at` AS `created_at`,group_concat(`p`.`ods_num` order by `p`.`ods_num` ASC separator ', ') AS `ods_permitidos` from (((`ods_login`.`usuarios` `u` join `ods_login`.`roles` `r` on(`u`.`rol_id` = `r`.`id`)) left join `ods_login`.`sedes` `s` on(`u`.`sede_id` = `s`.`id`)) left join `ods_login`.`permisos_ods` `p` on(`u`.`id` = `p`.`usuario_id`)) where `u`.`is_active` = 1 group by `u`.`id`,`u`.`username`,`u`.`full_name`,`u`.`email`,`r`.`nombre`,`s`.`nombre`,`u`.`ultimo_login`,`u`.`created_at` order by `u`.`full_name`"), where);
     }
 
     /**

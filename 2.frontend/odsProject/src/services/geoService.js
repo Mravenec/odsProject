@@ -12,13 +12,20 @@ export const geoService = {
    */
   async getProvincias() {
     try {
-      const response = await axios.get(`${GEO_API_BASE_URL}/provincias`);
+      const response = await axios.get(`${GEO_API_BASE_URL}/provincias?perPage=100`);
       // La API devuelve { status, statusCode, message, data: [...] }
       const rawData = response.data?.data || [];
-      return rawData.map(p => ({
-        id: String(p.idProvincia),
-        nombre: p.descripcion
-      }));
+      return rawData.map(p => {
+        let nombre = p.descripcion;
+        // Corrección de la API interna: Los labels de Heredia y Cartago están invertidos en el catálogo de provincias
+        if (p.idProvincia === 3) nombre = "Cartago";
+        if (p.idProvincia === 4) nombre = "Heredia";
+        
+        return {
+          id: String(p.idProvincia),
+          nombre: nombre
+        };
+      });
     } catch (error) {
       console.error('Error fetching provincias:', error);
       return [];
@@ -31,7 +38,7 @@ export const geoService = {
   async getCantones(provinciaId) {
     if (!provinciaId) return [];
     try {
-      const response = await axios.get(`${GEO_API_BASE_URL}/provincias/${provinciaId}/cantones`);
+      const response = await axios.get(`${GEO_API_BASE_URL}/provincias/${provinciaId}/cantones?perPage=100`);
       const rawData = response.data?.data || [];
       return rawData.map(c => ({
         id: String(c.idCanton),
@@ -49,7 +56,7 @@ export const geoService = {
   async getDistritos(cantonId) {
     if (!cantonId) return [];
     try {
-      const response = await axios.get(`${GEO_API_BASE_URL}/cantones/${cantonId}/distritos`);
+      const response = await axios.get(`${GEO_API_BASE_URL}/cantones/${cantonId}/distritos?perPage=100`);
       const rawData = response.data?.data || [];
       return rawData.map(d => ({
         id: String(d.idDistrito),

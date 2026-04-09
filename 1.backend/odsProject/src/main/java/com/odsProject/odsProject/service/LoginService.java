@@ -9,6 +9,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdmin
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sedes;
 import com.odsProject.odsProject.repository.LoginRepository;
 import com.odsProject.odsProject.service.interfaces.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -383,6 +384,24 @@ public class LoginService implements ILoginService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // ── Sedes ──
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Sedes> getAllSedes() {
+        return loginRepository.findAllSedes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Sedes> getSedeById(Integer id) {
+        return loginRepository.findSedeById(id);
     }
 
     /**

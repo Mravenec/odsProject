@@ -11,6 +11,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.MetasProyecto;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.AuditoriaLoginRecord;
@@ -20,6 +21,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.records.MetasPro
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.PermisosOdsRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.ProyectosRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.RolesRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SedesRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SesionesRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.UsuariosRecord;
 
@@ -50,6 +52,8 @@ public class Keys {
     public static final UniqueKey<ProyectosRecord> KEY_PROYECTOS_PRIMARY = Internal.createUniqueKey(Proyectos.PROYECTOS, DSL.name("KEY_proyectos_PRIMARY"), new TableField[] { Proyectos.PROYECTOS.ID }, true);
     public static final UniqueKey<RolesRecord> KEY_ROLES_NOMBRE = Internal.createUniqueKey(Roles.ROLES, DSL.name("KEY_roles_nombre"), new TableField[] { Roles.ROLES.NOMBRE }, true);
     public static final UniqueKey<RolesRecord> KEY_ROLES_PRIMARY = Internal.createUniqueKey(Roles.ROLES, DSL.name("KEY_roles_PRIMARY"), new TableField[] { Roles.ROLES.ID }, true);
+    public static final UniqueKey<SedesRecord> KEY_SEDES_NOMBRE = Internal.createUniqueKey(Sedes.SEDES, DSL.name("KEY_sedes_nombre"), new TableField[] { Sedes.SEDES.NOMBRE }, true);
+    public static final UniqueKey<SedesRecord> KEY_SEDES_PRIMARY = Internal.createUniqueKey(Sedes.SEDES, DSL.name("KEY_sedes_PRIMARY"), new TableField[] { Sedes.SEDES.ID }, true);
     public static final UniqueKey<SesionesRecord> KEY_SESIONES_PRIMARY = Internal.createUniqueKey(Sesiones.SESIONES, DSL.name("KEY_sesiones_PRIMARY"), new TableField[] { Sesiones.SESIONES.ID }, true);
     public static final UniqueKey<SesionesRecord> KEY_SESIONES_TOKEN_HASH = Internal.createUniqueKey(Sesiones.SESIONES, DSL.name("KEY_sesiones_token_hash"), new TableField[] { Sesiones.SESIONES.TOKEN_HASH }, true);
     public static final UniqueKey<UsuariosRecord> KEY_USUARIOS_EMAIL = Internal.createUniqueKey(Usuarios.USUARIOS, DSL.name("KEY_usuarios_email"), new TableField[] { Usuarios.USUARIOS.EMAIL }, true);
@@ -68,4 +72,5 @@ public class Keys {
     public static final ForeignKey<ProyectosRecord, UsuariosRecord> PROYECTOS_IBFK_1 = Internal.createForeignKey(Proyectos.PROYECTOS, DSL.name("proyectos_ibfk_1"), new TableField[] { Proyectos.PROYECTOS.USUARIO_ID }, Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
     public static final ForeignKey<SesionesRecord, UsuariosRecord> SESIONES_IBFK_1 = Internal.createForeignKey(Sesiones.SESIONES, DSL.name("sesiones_ibfk_1"), new TableField[] { Sesiones.SESIONES.USUARIO_ID }, Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
     public static final ForeignKey<UsuariosRecord, RolesRecord> USUARIOS_IBFK_1 = Internal.createForeignKey(Usuarios.USUARIOS, DSL.name("usuarios_ibfk_1"), new TableField[] { Usuarios.USUARIOS.ROL_ID }, Keys.KEY_ROLES_PRIMARY, new TableField[] { Roles.ROLES.ID }, true);
+    public static final ForeignKey<UsuariosRecord, SedesRecord> USUARIOS_IBFK_2 = Internal.createForeignKey(Usuarios.USUARIOS, DSL.name("usuarios_ibfk_2"), new TableField[] { Usuarios.USUARIOS.SEDE_ID }, Keys.KEY_SEDES_PRIMARY, new TableField[] { Sedes.SEDES.ID }, true);
 }

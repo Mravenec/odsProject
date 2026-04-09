@@ -19,6 +19,7 @@ import {
 // Hooks y Servicios
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
+import { useGeo } from '../../hooks/useGeo.jsx';
 import { getObjectiveName, getOdsColor, odsColors } from '../../utils/formatters';
 
 // Servicios de Objetivos
@@ -51,9 +52,6 @@ const SERVICES_MAP = {
   13: objetivo13Service, 14: objetivo14Service, 15: objetivo15Service, 16: objetivo16Service,
   17: objetivo17Service
 };
-
-const AREAS_UTN = ["AEAS Sede Atenas", "AEAS Sede Central", "AEAS Sede Guanacaste", "AEAS Sede Puntarenas", "AEAS Sede San Carlos"];
-const RESPONSABLES_MOCK = ["Ileana Cartín Guerrero", "Marco Tulio López Durán", "Ana Laura Zamora", "Roberto Rojas"];
 
 const SDG_INDICATORS_CATALOG = {
   // ODS 1
@@ -99,14 +97,17 @@ const SDG_INDICATORS_CATALOG = {
 };
 
 const ProjectCreationPage = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, getSedes, getActiveUsers } = useAuth();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   
   const { 
     createProject, 
     loading: projectsLoading, 
-    error: projectsError,
+    error: projectsError
+  } = useProjects();
+
+  const {
     provincias,
     cantones,
     distritos,
@@ -114,7 +115,7 @@ const ProjectCreationPage = () => {
     fetchProvincias,
     fetchCantones,
     fetchDistritos
-  } = useProjects();
+  } = useGeo();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -141,6 +142,39 @@ const ProjectCreationPage = () => {
   // Nuevo estado para metadatos reales de la BD
   const [indicatorMetadata, setIndicatorMetadata] = useState({});
   const [loadingMetadata, setLoadingMetadata] = useState({});
+
+  // Catálogos reales
+  const [catalogSedes, setCatalogSedes] = useState([]);
+  const [academicPersonnel, setAcademicPersonnel] = useState([]);
+  const [loadingResources, setLoadingResources] = useState(true);
+
+  // Carga de catálogos institucionales
+  useEffect(() => {
+    const loadCatalogs = async () => {
+      setLoadingResources(true);
+      try {
+        const [sedesRes, personnelRes] = await Promise.all([
+          getSedes(),
+          getActiveUsers()
+        ]);
+        
+        if (sedesRes.success) {
+          setCatalogSedes(sedesRes.data);
+        }
+        
+        if (personnelRes.success) {
+          // Filtrar o mapear personal si es necesario
+          setAcademicPersonnel(personnelRes.data);
+        }
+      } catch (error) {
+        console.error('[ProjectCreation] Error cargando catálogos:', error);
+      } finally {
+        setLoadingResources(false);
+      }
+    };
+
+    loadCatalogs();
+  }, [getSedes, getActiveUsers]);
 
   // Carga inicial de geografía
   useEffect(() => {
@@ -213,6 +247,12 @@ const ProjectCreationPage = () => {
     }
   };
 
+  // Filtrado de personal académico según el área seleccionada
+  const filteredPersonnel = useMemo(() => {
+    if (!formData.area) return academicPersonnel;
+    return academicPersonnel.filter(p => p.sede === formData.area);
+  }, [academicPersonnel, formData.area]);
+
   const getIndicatorsForOds = (odsId) => {
     const service = SERVICES_MAP[odsId];
     if (!service) return [];
@@ -224,7 +264,17 @@ const ProjectCreationPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => {
+      const newState = { ...prev, [name]: value };
+      
+      // Si el usuario cambia el Area manualmente, limpiamos el responsable 
+      // para que el filtro surta efecto y no queden datos inconsistentes
+      if (name === 'area') {
+        newState.responsable = '';
+      }
+      
+      return newState;
+    });
   };
 
   const handleGeoChange = (e) => {
@@ -240,6 +290,20 @@ const ProjectCreationPage = () => {
       nombre = distritos.find(d => d.id === value)?.nombre || '';
       setFormData(prev => ({ ...prev, distritoId: value, distritoNombre: nombre }));
     }
+  };
+
+  const handleResponsableChange = (e) => {
+    const selectedValue = e.target.value;
+    
+    // Buscar los datos del personal seleccionado para auto-asignar la sede
+    const staffMember = academicPersonnel.find(p => p.fullName === selectedValue);
+    
+    setFormData(prev => ({
+      ...prev,
+      responsable: selectedValue,
+      // Si el personal tiene una sede asignada en la BD, se auto-selecciona el área
+      area: staffMember?.sede || prev.area
+    }));
   };
 
   const toggleOds = (odsId) => {
@@ -336,17 +400,41 @@ const ProjectCreationPage = () => {
 
                 <div className="form-group">
                   <label><Layers size={14} /> Área Responsable</label>
-                  <select name="area" value={formData.area} onChange={handleInputChange} required>
-                    <option value="">Seleccione área institucional</option>
-                    {AREAS_UTN.map(a => <option key={a} value={a}>{a}</option>)}
+                  <select 
+                    name="area" 
+                    value={formData.area} 
+                    onChange={handleInputChange} 
+                    required 
+                    disabled={loadingResources}
+                  >
+                    <option value="">
+                      {loadingResources ? 'Cargando áreas...' : 'Seleccione área institucional'}
+                    </option>
+                    {catalogSedes.map(sede => (
+                      <option key={sede.id} value={sede.nombre}>
+                        {sede.nombre}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
                 <div className="form-group">
                   <label><Users size={14} /> Responsable Técnico</label>
-                  <select name="responsable" value={formData.responsable} onChange={handleInputChange} required>
-                    <option value="">Seleccione personal académico</option>
-                    {RESPONSABLES_MOCK.map(r => <option key={r} value={r}>{r}</option>)}
+                  <select 
+                    name="responsable" 
+                    value={formData.responsable} 
+                    onChange={handleResponsableChange} 
+                    required
+                    disabled={loadingResources}
+                  >
+                    <option value="">
+                      {loadingResources ? 'Cargando personal...' : (formData.area ? 'Seleccione personal de esta sede' : 'Seleccione personal académico')}
+                    </option>
+                    {filteredPersonnel.map(person => (
+                      <option key={person.id} value={person.fullName}>
+                        {person.fullName}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -373,6 +461,14 @@ const ProjectCreationPage = () => {
                   <select name="cantonId" value={formData.cantonId} onChange={handleGeoChange} required disabled={!formData.provinciaId}>
                     <option value="">Seleccione Cantón</option>
                     {cantones.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label><MapPin size={14} /> Distrito</label>
+                  <select name="distritoId" value={formData.distritoId} onChange={handleGeoChange} required disabled={!formData.cantonId}>
+                    <option value="">Seleccione Distrito</option>
+                    {distritos.map(d => <option key={d.id} value={d.id}>{d.nombre}</option>)}
                   </select>
                 </div>
 

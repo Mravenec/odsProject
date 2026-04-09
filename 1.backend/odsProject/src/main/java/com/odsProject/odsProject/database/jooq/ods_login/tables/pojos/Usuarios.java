@@ -24,6 +24,7 @@ public class Usuarios implements Serializable {
     private final String passwordHash;
     private final String fullName;
     private final Integer rolId;
+    private final Integer sedeId;
     private final Byte isActive;
     private final Byte emailVerificado;
     private final LocalDateTime ultimoLogin;
@@ -41,6 +42,7 @@ public class Usuarios implements Serializable {
         this.passwordHash = value.passwordHash;
         this.fullName = value.fullName;
         this.rolId = value.rolId;
+        this.sedeId = value.sedeId;
         this.isActive = value.isActive;
         this.emailVerificado = value.emailVerificado;
         this.ultimoLogin = value.ultimoLogin;
@@ -59,6 +61,7 @@ public class Usuarios implements Serializable {
         String passwordHash,
         String fullName,
         Integer rolId,
+        Integer sedeId,
         Byte isActive,
         Byte emailVerificado,
         LocalDateTime ultimoLogin,
@@ -75,6 +78,7 @@ public class Usuarios implements Serializable {
         this.passwordHash = passwordHash;
         this.fullName = fullName;
         this.rolId = rolId;
+        this.sedeId = sedeId;
         this.isActive = isActive;
         this.emailVerificado = emailVerificado;
         this.ultimoLogin = ultimoLogin;
@@ -126,6 +130,13 @@ public class Usuarios implements Serializable {
      */
     public Integer getRolId() {
         return this.rolId;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.sede_id</code>.
+     */
+    public Integer getSedeId() {
+        return this.sedeId;
     }
 
     /**
@@ -236,6 +247,12 @@ public class Usuarios implements Serializable {
         }
         else if (!this.rolId.equals(other.rolId))
             return false;
+        if (this.sedeId == null) {
+            if (other.sedeId != null)
+                return false;
+        }
+        else if (!this.sedeId.equals(other.sedeId))
+            return false;
         if (this.isActive == null) {
             if (other.isActive != null)
                 return false;
@@ -303,6 +320,7 @@ public class Usuarios implements Serializable {
         result = prime * result + ((this.passwordHash == null) ? 0 : this.passwordHash.hashCode());
         result = prime * result + ((this.fullName == null) ? 0 : this.fullName.hashCode());
         result = prime * result + ((this.rolId == null) ? 0 : this.rolId.hashCode());
+        result = prime * result + ((this.sedeId == null) ? 0 : this.sedeId.hashCode());
         result = prime * result + ((this.isActive == null) ? 0 : this.isActive.hashCode());
         result = prime * result + ((this.emailVerificado == null) ? 0 : this.emailVerificado.hashCode());
         result = prime * result + ((this.ultimoLogin == null) ? 0 : this.ultimoLogin.hashCode());
@@ -325,6 +343,7 @@ public class Usuarios implements Serializable {
         sb.append(", ").append(passwordHash);
         sb.append(", ").append(fullName);
         sb.append(", ").append(rolId);
+        sb.append(", ").append(sedeId);
         sb.append(", ").append(isActive);
         sb.append(", ").append(emailVerificado);
         sb.append(", ").append(ultimoLogin);

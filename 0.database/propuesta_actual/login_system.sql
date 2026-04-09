@@ -32,6 +32,18 @@ INSERT INTO roles (nombre, descripcion) VALUES
     ('auditor',     'Acceso a registros de auditoría de todos los ODS');
 
 -- ────────────────────────────────────────────────────────────
+-- TABLA: sedes
+-- Catálogo de sedes/unidades académicas
+-- ────────────────────────────────────────────────────────────
+
+CREATE TABLE sedes (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    nombre      VARCHAR(100) NOT NULL UNIQUE,
+    descripcion VARCHAR(255),
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ────────────────────────────────────────────────────────────
 -- TABLA: usuarios
 -- Tabla central referenciada por TODOS los ods_XX
 -- ────────────────────────────────────────────────────────────
@@ -43,6 +55,7 @@ CREATE TABLE usuarios (
     password_hash       VARCHAR(255) NOT NULL,          -- bcrypt / argon2
     full_name           VARCHAR(150) NOT NULL,
     rol_id              INT          NOT NULL DEFAULT 2, -- 'gestor' por defecto
+    sede_id             INT          NULL,               -- Sede a la que pertenece
     is_active           BOOLEAN      NOT NULL DEFAULT TRUE,
     email_verificado    BOOLEAN      NOT NULL DEFAULT FALSE,
     ultimo_login        TIMESTAMP    NULL,
@@ -52,10 +65,12 @@ CREATE TABLE usuarios (
     token_expira        TIMESTAMP    NULL,
     created_at          TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (rol_id) REFERENCES roles(id) ON UPDATE CASCADE,
+    FOREIGN KEY (rol_id)  REFERENCES roles(id) ON UPDATE CASCADE,
+    FOREIGN KEY (sede_id) REFERENCES sedes(id) ON DELETE SET NULL,
     INDEX idx_email      (email),
     INDEX idx_username   (username),
     INDEX idx_rol        (rol_id),
+    INDEX idx_sede       (sede_id),
     INDEX idx_activo_rol (is_active, rol_id)
 );
 
@@ -116,7 +131,8 @@ CREATE TABLE auditoria_login (
                     'CAMBIO_PASSWORD',
                     'CUENTA_BLOQUEADA',
                     'SESION_EXPIRADA',
-                    'REGISTRO'
+                    'REGISTRO',
+                    'CAMBIO_SEDE'
                 ) NOT NULL,
     ip_address  VARCHAR(45),
     user_agent  VARCHAR(300),
@@ -147,6 +163,16 @@ BEGIN
         INSERT INTO auditoria_login (usuario_id, email_intento, evento, detalle)
         VALUES (NEW.id, NEW.email, 'CUENTA_BLOQUEADA',
                 CONCAT('Bloqueada hasta: ', NEW.bloqueado_hasta));
+    END IF;
+
+    -- Registrar cambio de Sede
+    IF (OLD.sede_id IS NULL AND NEW.sede_id IS NOT NULL) OR 
+       (OLD.sede_id IS NOT NULL AND NEW.sede_id IS NULL) OR
+       (OLD.sede_id <> NEW.sede_id) THEN
+        INSERT INTO auditoria_login (usuario_id, email_intento, evento, detalle)
+        VALUES (NEW.id, NEW.email, 'CAMBIO_SEDE', 
+                CONCAT('Sede anterior ID: ', IFNULL(OLD.sede_id, 'Ninguna'), 
+                       ' -> Nueva Sede ID: ', IFNULL(NEW.sede_id, 'Ninguna')));
     END IF;
 END//
 DELIMITER ;
@@ -216,9 +242,12 @@ BEGIN
                u.full_name,
                u.email,
                r.nombre     AS rol,
+               s.nombre     AS sede,
+               u.sede_id,
                u.ultimo_login
         FROM   usuarios u
         JOIN   roles r ON u.rol_id = r.id
+        LEFT   JOIN sedes s ON u.sede_id = s.id
         WHERE  u.id = v_id;
 
     -- Contraseña incorrecta
@@ -295,6 +324,7 @@ BEGIN
     -- Listado completo de usuarios con su rol
     SELECT u.id, u.username, u.full_name, u.email,
            r.nombre     AS rol,
+           s.nombre     AS sede,
            u.is_active,
            u.ultimo_login,
            u.intentos_fallidos,
@@ -302,6 +332,7 @@ BEGIN
            u.created_at
     FROM   usuarios u
     JOIN   roles r ON u.rol_id = r.id
+    LEFT   JOIN sedes s ON u.sede_id = s.id
     ORDER  BY u.created_at DESC;
 
     -- Últimos 20 eventos de login
@@ -326,15 +357,17 @@ SELECT
     u.full_name,
     u.email,
     r.nombre        AS rol,
+    s.nombre        AS sede,
     u.ultimo_login,
     u.created_at,
     GROUP_CONCAT(p.ods_num ORDER BY p.ods_num SEPARATOR ', ')
                     AS ods_permitidos
 FROM  usuarios u
 JOIN  roles r    ON u.rol_id = r.id
+LEFT  JOIN sedes s ON u.sede_id = s.id
 LEFT  JOIN permisos_ods p ON u.id = p.usuario_id
 WHERE u.is_active = TRUE
-GROUP BY u.id, u.username, u.full_name, u.email, r.nombre,
+GROUP BY u.id, u.username, u.full_name, u.email, r.nombre, s.nombre,
          u.ultimo_login, u.created_at
 ORDER BY u.full_name;
 
@@ -383,6 +416,7 @@ VALUES ('admin', 'admin@ods.local',
 -- ────────────────────────────────────────────────────────────
 
 ALTER TABLE roles          COMMENT 'Catálogo de roles del sistema ODS';
+ALTER TABLE sedes          COMMENT 'Catálogo de sedes/unidades académicas';
 ALTER TABLE usuarios       COMMENT 'Usuarios centrales; referenciados por todas las bases ods_XX';
 ALTER TABLE sesiones       COMMENT 'Control de sesiones activas por token';
 ALTER TABLE permisos_ods   COMMENT 'Qué ODS puede gestionar cada usuario';

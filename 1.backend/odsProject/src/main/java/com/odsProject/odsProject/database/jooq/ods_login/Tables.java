@@ -11,6 +11,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.MetasProyecto;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminAuditoriaLoginReciente;
@@ -59,6 +60,11 @@ public class Tables {
      * Catálogo de roles del sistema ODS
      */
     public static final Roles ROLES = Roles.ROLES;
+
+    /**
+     * Catálogo de sedes/unidades académicas
+     */
+    public static final Sedes SEDES = Sedes.SEDES;
 
     /**
      * Control de sesiones activas por token

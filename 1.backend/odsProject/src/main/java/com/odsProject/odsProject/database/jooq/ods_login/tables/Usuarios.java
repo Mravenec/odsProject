@@ -28,6 +28,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.OdsLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin.AuditoriaLoginPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds.PermisosOdsPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles.RolesPath;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes.SedesPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones.SesionesPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.UsuariosRecord;
 
@@ -111,6 +112,11 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
      * The column <code>ods_login.usuarios.rol_id</code>.
      */
     public final TableField<UsuariosRecord, Integer> ROL_ID = createField(DSL.name("rol_id"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("2"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>ods_login.usuarios.sede_id</code>.
+     */
+    public final TableField<UsuariosRecord, Integer> SEDE_ID = createField(DSL.name("sede_id"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>ods_login.usuarios.is_active</code>.
@@ -226,7 +232,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.USUARIOS_IDX_ACTIVO_ROL, Indexes.USUARIOS_IDX_EMAIL, Indexes.USUARIOS_IDX_ROL, Indexes.USUARIOS_IDX_USERNAME);
+        return Arrays.asList(Indexes.USUARIOS_IDX_ACTIVO_ROL, Indexes.USUARIOS_IDX_EMAIL, Indexes.USUARIOS_IDX_ROL, Indexes.USUARIOS_IDX_SEDE, Indexes.USUARIOS_IDX_USERNAME);
     }
 
     @Override
@@ -246,7 +252,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
 
     @Override
     public List<ForeignKey<UsuariosRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USUARIOS_IBFK_1);
+        return Arrays.asList(Keys.USUARIOS_IBFK_1, Keys.USUARIOS_IBFK_2);
     }
 
     private transient RolesPath _roles;
@@ -259,6 +265,18 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
             _roles = new RolesPath(this, Keys.USUARIOS_IBFK_1, null);
 
         return _roles;
+    }
+
+    private transient SedesPath _sedes;
+
+    /**
+     * Get the implicit join path to the <code>ods_login.sedes</code> table.
+     */
+    public SedesPath sedes() {
+        if (_sedes == null)
+            _sedes = new SedesPath(this, Keys.USUARIOS_IBFK_2, null);
+
+        return _sedes;
     }
 
     private transient AuditoriaOds01Path _auditoriaOds01;

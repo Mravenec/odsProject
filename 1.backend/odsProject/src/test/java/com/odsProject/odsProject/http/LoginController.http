@@ -147,6 +147,16 @@ GET {{baseUrl}}/api/login/roles/3
 GET {{baseUrl}}/api/login/roles/4
 
 # ============================================================
+# GESTIÓN DE SEDES
+# ============================================================
+
+### Obtener todas las sedes
+GET {{baseUrl}}/api/login/sedes
+
+### Obtener sede por ID (Sede Central)
+GET {{baseUrl}}/api/login/sedes/2
+
+# ============================================================
 # GESTIÓN DE SESIONES
 # ============================================================
 

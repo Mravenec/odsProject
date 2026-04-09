@@ -13,6 +13,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdmin
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEvento;
 
 import java.util.HashMap;
@@ -234,6 +235,40 @@ public class LoginController implements ILoginController {
         return ResponseEntity.ok(false);
     }
 
+    // ── Sedes ──
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @GetMapping("/sedes")
+    public ResponseEntity<List<Map<String, Object>>> getAllSedes() {
+        List<Sedes> sedes = loginService.getAllSedes();
+        return ResponseEntity.ok(sedes.stream().map(sede -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", sede.getId());
+            map.put("nombre", sede.getNombre());
+            map.put("descripcion", sede.getDescripcion());
+            return map;
+        }).collect(java.util.stream.Collectors.toList()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @GetMapping("/sedes/{id}")
+    public ResponseEntity<Map<String, Object>> getSedeById(@PathVariable Integer id) {
+        var result = loginService.getSedeById(id);
+        return result.map(sede -> {
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", sede.getId());
+            response.put("nombre", sede.getNombre());
+            response.put("descripcion", sede.getDescripcion());
+            return ResponseEntity.ok(response);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
     // ── Gestión de Sesiones ──
 
     /**
@@ -447,6 +482,7 @@ public class LoginController implements ILoginController {
             map.put("fullName", user.getFullName());
             map.put("email", user.getEmail());
             map.put("rol", user.getRol());
+            map.put("sede", user.getSede());
             map.put("ultimoLogin", user.getUltimoLogin());
             map.put("createdAt", user.getCreatedAt());
             map.put("odsPermitidos", user.getOdsPermitidos());

@@ -106,129 +106,143 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.sede_id</code>.
+     */
+    public void setSedeId(Integer value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.sede_id</code>.
+     */
+    public Integer getSedeId() {
+        return (Integer) get(6);
+    }
+
+    /**
      * Setter for <code>ods_login.usuarios.is_active</code>.
      */
     public void setIsActive(Byte value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.is_active</code>.
      */
     public Byte getIsActive() {
-        return (Byte) get(6);
+        return (Byte) get(7);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.email_verificado</code>.
      */
     public void setEmailVerificado(Byte value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.email_verificado</code>.
      */
     public Byte getEmailVerificado() {
-        return (Byte) get(7);
+        return (Byte) get(8);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.ultimo_login</code>.
      */
     public void setUltimoLogin(LocalDateTime value) {
-        set(8, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.ultimo_login</code>.
      */
     public LocalDateTime getUltimoLogin() {
-        return (LocalDateTime) get(8);
+        return (LocalDateTime) get(9);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.intentos_fallidos</code>.
      */
     public void setIntentosFallidos(UByte value) {
-        set(9, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.intentos_fallidos</code>.
      */
     public UByte getIntentosFallidos() {
-        return (UByte) get(9);
+        return (UByte) get(10);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.bloqueado_hasta</code>.
      */
     public void setBloqueadoHasta(LocalDateTime value) {
-        set(10, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.bloqueado_hasta</code>.
      */
     public LocalDateTime getBloqueadoHasta() {
-        return (LocalDateTime) get(10);
+        return (LocalDateTime) get(11);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.token_recuperacion</code>.
      */
     public void setTokenRecuperacion(String value) {
-        set(11, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.token_recuperacion</code>.
      */
     public String getTokenRecuperacion() {
-        return (String) get(11);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.token_expira</code>.
      */
     public void setTokenExpira(LocalDateTime value) {
-        set(12, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.token_expira</code>.
      */
     public LocalDateTime getTokenExpira() {
-        return (LocalDateTime) get(12);
+        return (LocalDateTime) get(13);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(13, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(13);
+        return (LocalDateTime) get(14);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.updated_at</code>.
      */
     public void setUpdatedAt(LocalDateTime value) {
-        set(14, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>ods_login.usuarios.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(14);
+        return (LocalDateTime) get(15);
     }
 
     // -------------------------------------------------------------------------
@@ -254,7 +268,7 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Create a detached, initialised UsuariosRecord
      */
-    public UsuariosRecord(Integer id, String username, String email, String passwordHash, String fullName, Integer rolId, Byte isActive, Byte emailVerificado, LocalDateTime ultimoLogin, UByte intentosFallidos, LocalDateTime bloqueadoHasta, String tokenRecuperacion, LocalDateTime tokenExpira, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UsuariosRecord(Integer id, String username, String email, String passwordHash, String fullName, Integer rolId, Integer sedeId, Byte isActive, Byte emailVerificado, LocalDateTime ultimoLogin, UByte intentosFallidos, LocalDateTime bloqueadoHasta, String tokenRecuperacion, LocalDateTime tokenExpira, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(Usuarios.USUARIOS);
 
         setId(id);
@@ -263,6 +277,7 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
         setPasswordHash(passwordHash);
         setFullName(fullName);
         setRolId(rolId);
+        setSedeId(sedeId);
         setIsActive(isActive);
         setEmailVerificado(emailVerificado);
         setUltimoLogin(ultimoLogin);
@@ -288,6 +303,7 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
             setPasswordHash(value.getPasswordHash());
             setFullName(value.getFullName());
             setRolId(value.getRolId());
+            setSedeId(value.getSedeId());
             setIsActive(value.getIsActive());
             setEmailVerificado(value.getEmailVerificado());
             setUltimoLogin(value.getUltimoLogin());

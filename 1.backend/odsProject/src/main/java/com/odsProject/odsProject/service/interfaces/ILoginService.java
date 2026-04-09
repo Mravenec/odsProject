@@ -9,6 +9,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdmin
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sedes;
 
 import java.util.List;
 import java.util.Map;
@@ -161,6 +162,23 @@ public interface ILoginService {
      * @return true si se asignó correctamente, false otherwise
      */
     Boolean assignRolToUsuario(Integer usuarioId, Integer rolId);
+    
+    // ── Sedes ──
+    
+    /**
+     * Obtiene todas las sedes del sistema
+     * 
+     * @return Lista de sedes disponibles
+     */
+    List<Sedes> getAllSedes();
+    
+    /**
+     * Obtiene una sede por su ID
+     * 
+     * @param id ID de la sede
+     * @return Optional con la sede encontrada
+     */
+    Optional<Sedes> getSedeById(Integer id);
     
     // ── Gestión de Sesiones ──
     

@@ -9,6 +9,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdmin
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.routines.SpLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.routines.SpLogout;
 
@@ -127,6 +128,23 @@ public interface ILoginRepository {
      * @return Optional con el rol encontrado
      */
     Optional<Roles> findRolByNombre(String nombre);
+    
+    // ── Sedes ──
+    
+    /**
+     * Obtiene todas las sedes del sistema
+     * 
+     * @return Lista de sedes disponibles
+     */
+    List<Sedes> findAllSedes();
+    
+    /**
+     * Busca una sede por su ID
+     * 
+     * @param id ID de la sede
+     * @return Optional con la sede encontrada
+     */
+    Optional<Sedes> findSedeById(Integer id);
     
     // ── Sesiones ──
     

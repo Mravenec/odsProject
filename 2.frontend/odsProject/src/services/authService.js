@@ -104,5 +104,29 @@ export const authService = {
     } catch (error) {
       return { success: true };
     }
+  },
+
+  // ── Catálogos y Datos Administrativos ──
+
+  // Obtener catálogo de sedes
+  async getSedes() {
+    try {
+      const response = await api.get('/login/sedes');
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('[AuthService] Error obteniendo sedes:', error);
+      return { success: false, error: 'No se pudo cargar el catálogo de sedes' };
+    }
+  },
+
+  // Obtener usuarios activos (para responsables técnicos/académicos)
+  async getActiveUsers() {
+    try {
+      const response = await api.get('/login/admin/active-users');
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('[AuthService] Error obteniendo usuarios activos:', error);
+      return { success: false, error: 'No se pudo cargar la lista de personal académico' };
+    }
   }
 };

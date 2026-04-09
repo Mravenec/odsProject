@@ -675,6 +675,7 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\PermisosOds.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\Proyectos.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\Roles.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\Sedes.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\Sesiones.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\Usuarios.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\VistaAdminAuditoriaLoginReciente.java
@@ -689,6 +690,7 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\records\PermisosOdsRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\records\ProyectosRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\records\RolesRecord.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\records\SedesRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\records\SesionesRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\records\UsuariosRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\records\VistaAdminAuditoriaLoginRecienteRecord.java
@@ -696,6 +698,7 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\records\VistaAdminResumenGeneralRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\records\VistaAdminUsuariosActivosRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\Roles.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\Sedes.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\Sesiones.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\Usuarios.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_login\tables\VistaAdminAuditoriaLoginReciente.java

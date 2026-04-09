@@ -90,11 +90,25 @@ public class VistaAdminUsuariosActivosRecord extends TableRecordImpl<VistaAdminU
     }
 
     /**
+     * Setter for <code>ods_login.vista_admin_usuarios_activos.sede</code>.
+     */
+    public void setSede(String value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.vista_admin_usuarios_activos.sede</code>.
+     */
+    public String getSede() {
+        return (String) get(5);
+    }
+
+    /**
      * Setter for
      * <code>ods_login.vista_admin_usuarios_activos.ultimo_login</code>.
      */
     public void setUltimoLogin(LocalDateTime value) {
-        set(5, value);
+        set(6, value);
     }
 
     /**
@@ -102,7 +116,7 @@ public class VistaAdminUsuariosActivosRecord extends TableRecordImpl<VistaAdminU
      * <code>ods_login.vista_admin_usuarios_activos.ultimo_login</code>.
      */
     public LocalDateTime getUltimoLogin() {
-        return (LocalDateTime) get(5);
+        return (LocalDateTime) get(6);
     }
 
     /**
@@ -110,7 +124,7 @@ public class VistaAdminUsuariosActivosRecord extends TableRecordImpl<VistaAdminU
      * <code>ods_login.vista_admin_usuarios_activos.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
@@ -118,7 +132,7 @@ public class VistaAdminUsuariosActivosRecord extends TableRecordImpl<VistaAdminU
      * <code>ods_login.vista_admin_usuarios_activos.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(6);
+        return (LocalDateTime) get(7);
     }
 
     /**
@@ -126,7 +140,7 @@ public class VistaAdminUsuariosActivosRecord extends TableRecordImpl<VistaAdminU
      * <code>ods_login.vista_admin_usuarios_activos.ods_permitidos</code>.
      */
     public void setOdsPermitidos(String value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
@@ -134,7 +148,7 @@ public class VistaAdminUsuariosActivosRecord extends TableRecordImpl<VistaAdminU
      * <code>ods_login.vista_admin_usuarios_activos.ods_permitidos</code>.
      */
     public String getOdsPermitidos() {
-        return (String) get(7);
+        return (String) get(8);
     }
 
     // -------------------------------------------------------------------------
@@ -151,7 +165,7 @@ public class VistaAdminUsuariosActivosRecord extends TableRecordImpl<VistaAdminU
     /**
      * Create a detached, initialised VistaAdminUsuariosActivosRecord
      */
-    public VistaAdminUsuariosActivosRecord(Integer id, String username, String fullName, String email, String rol, LocalDateTime ultimoLogin, LocalDateTime createdAt, String odsPermitidos) {
+    public VistaAdminUsuariosActivosRecord(Integer id, String username, String fullName, String email, String rol, String sede, LocalDateTime ultimoLogin, LocalDateTime createdAt, String odsPermitidos) {
         super(VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS);
 
         setId(id);
@@ -159,6 +173,7 @@ public class VistaAdminUsuariosActivosRecord extends TableRecordImpl<VistaAdminU
         setFullName(fullName);
         setEmail(email);
         setRol(rol);
+        setSede(sede);
         setUltimoLogin(ultimoLogin);
         setCreatedAt(createdAt);
         setOdsPermitidos(odsPermitidos);
@@ -177,6 +192,7 @@ public class VistaAdminUsuariosActivosRecord extends TableRecordImpl<VistaAdminU
             setFullName(value.getFullName());
             setEmail(value.getEmail());
             setRol(value.getRol());
+            setSede(value.getSede());
             setUltimoLogin(value.getUltimoLogin());
             setCreatedAt(value.getCreatedAt());
             setOdsPermitidos(value.getOdsPermitidos());

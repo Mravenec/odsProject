@@ -1,18 +1,11 @@
 import { useState, useCallback } from 'react';
 import { projectService } from '../services/projectService';
-import { geoService } from '../services/geoService';
 import { evaluationEngine } from '../utils/evaluationEngine';
 
 export const useProjects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  // Geography states
-  const [provincias, setProvincias] = useState([]);
-  const [cantones, setCantones] = useState([]);
-  const [distritos, setDistritos] = useState([]);
-  const [loadingGeo, setLoadingGeo] = useState(false);
 
   const fetchUserProjects = useCallback(async (userId, odsId) => {
     setLoading(true);
@@ -115,59 +108,6 @@ export const useProjects = () => {
     }
   };
 
-  // --- Geography Methods ---
-  
-  const fetchProvincias = useCallback(async () => {
-    setLoadingGeo(true);
-    try {
-      const data = await geoService.getProvincias();
-      setProvincias(Array.isArray(data) ? data : []);
-      return data;
-    } catch (err) {
-      setError(err.message);
-      return [];
-    } finally {
-      setLoadingGeo(false);
-    }
-  }, []);
-
-  const fetchCantones = useCallback(async (provinciaId) => {
-    if (!provinciaId) {
-      setCantones([]);
-      setDistritos([]);
-      return [];
-    }
-    setLoadingGeo(true);
-    try {
-      const data = await geoService.getCantones(provinciaId);
-      setCantones(Array.isArray(data) ? data : []);
-      setDistritos([]); // Reset districts when province changes
-      return data;
-    } catch (err) {
-      setError(err.message);
-      return [];
-    } finally {
-      setLoadingGeo(false);
-    }
-  }, []);
-
-  const fetchDistritos = useCallback(async (cantonId) => {
-    if (!cantonId) {
-      setDistritos([]);
-      return [];
-    }
-    setLoadingGeo(true);
-    try {
-      const data = await geoService.getDistritos(cantonId);
-      setDistritos(Array.isArray(data) ? data : []);
-      return data;
-    } catch (err) {
-      setError(err.message);
-      return [];
-    } finally {
-      setLoadingGeo(false);
-    }
-  }, []);
 
   // --- Evaluation Methods ---
 
@@ -191,14 +131,6 @@ export const useProjects = () => {
     getProjectResults,
     updateProjectResults,
     deleteProject,
-    // Geography
-    provincias,
-    cantones,
-    distritos,
-    loadingGeo,
-    fetchProvincias,
-    fetchCantones,
-    fetchDistritos,
     // Evaluation
     calculateIndicatorAchievement
   };

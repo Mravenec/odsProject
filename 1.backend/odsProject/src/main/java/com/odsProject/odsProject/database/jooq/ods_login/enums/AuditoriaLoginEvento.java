@@ -29,7 +29,9 @@ public enum AuditoriaLoginEvento implements EnumType {
 
     SESION_EXPIRADA("SESION_EXPIRADA"),
 
-    REGISTRO("REGISTRO");
+    REGISTRO("REGISTRO"),
+
+    CAMBIO_SEDE("CAMBIO_SEDE");
 
     private final String literal;
 
