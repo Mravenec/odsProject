@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo05GeneroService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo05GeneroController;
@@ -32,8 +32,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo05GeneroService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo05GeneroService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.2.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_2_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_2_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_2_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_2_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.3.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_3_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_3_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_3_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_3_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.5.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_5_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_5_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_5_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_5_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.6.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_6_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_6_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_6_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_6_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.a.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_a_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_a_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_a_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_a_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -162,8 +162,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -172,8 +172,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/5.c.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_5_c_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo05GeneroService.getIndicador_5_c_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_5_c_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.getIndicador_5_c_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -182,8 +182,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds05(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo05GeneroService.findAllIndicadoresByProyectoOds05(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds05(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo05GeneroService.findAllIndicadoresByProyectoOds05(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -192,8 +192,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo05GeneroService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo05GeneroService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -229,8 +229,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS05
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds05(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo05GeneroService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds05(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo05GeneroService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -362,8 +362,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo05GeneroService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo05GeneroService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -372,8 +372,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo05GeneroService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo05GeneroService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -382,8 +382,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo05GeneroService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo05GeneroService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -392,7 +392,7 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo05GeneroService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -402,8 +402,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo05GeneroService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo05GeneroService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -422,8 +422,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo05GeneroService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo05GeneroService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -432,8 +432,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo05GeneroService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo05GeneroService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -442,8 +442,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo05GeneroService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo05GeneroService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -452,8 +452,8 @@ public class Objetivo05GeneroController implements IObjetivo05GeneroController {
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo05GeneroService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo05GeneroService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

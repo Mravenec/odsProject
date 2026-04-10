@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.repository.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.AuditoriaOds02;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 2
  * Usa jOOQ con datasource ods02
  */
-public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds02> {
+public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds02> {
     
     // ── Indicadores Específicos del ODS02 ──
     
@@ -23,7 +23,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.1.1
      */
-    Optional<Indicadores> findIndicador_2_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_1_1(Integer proyectoId);
     
     /**
      * 2.1.2 Prevalencia de la inseguridad alimentaria moderada o grave entre la población, 
@@ -32,7 +32,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.1.2
      */
-    Optional<Indicadores> findIndicador_2_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_1_2(Integer proyectoId);
     
     /**
      * 2.2.1 Prevalencia del retraso del crecimiento (estatura para la edad, desviación típica < -2 
@@ -41,7 +41,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.2.1
      */
-    Optional<Indicadores> findIndicador_2_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_2_1(Integer proyectoId);
     
     /**
      * 2.2.2 Prevalencia de la malnutrición (peso para la estatura, desviación típica > +2 o < -2 
@@ -51,7 +51,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.2.2
      */
-    Optional<Indicadores> findIndicador_2_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_2_2(Integer proyectoId);
     
     /**
      * 2.2.3 Prevalencia de la anemia en las mujeres de entre 15 y 49 años, 
@@ -60,7 +60,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.2.3
      */
-    Optional<Indicadores> findIndicador_2_2_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_2_3(Integer proyectoId);
     
     /**
      * 2.2.4 Prevalencia del umbral mínimo de diversidad alimentaria, por grupo de población 
@@ -69,7 +69,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.2.4
      */
-    Optional<Indicadores> findIndicador_2_2_4(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_2_4(Integer proyectoId);
     
     /**
      * 2.3.1 Volumen de producción por unidad de trabajo desglosado por tamaño y tipo de explotación 
@@ -78,7 +78,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.3.1
      */
-    Optional<Indicadores> findIndicador_2_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_3_1(Integer proyectoId);
     
     /**
      * 2.3.2 Media de ingresos de los productores de alimentos en pequeña escala, 
@@ -87,7 +87,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.3.2
      */
-    Optional<Indicadores> findIndicador_2_3_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_3_2(Integer proyectoId);
     
     /**
      * 2.4.1 Proporción de la superficie agrícola en que se practica una agricultura productiva y sostenible [14]
@@ -95,7 +95,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.4.1
      */
-    Optional<Indicadores> findIndicador_2_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_4_1(Integer proyectoId);
     
     /**
      * 2.5.1 Número de: a) recursos genéticos vegetales y b) animales para la alimentación y la agricultura 
@@ -104,7 +104,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.5.1
      */
-    Optional<Indicadores> findIndicador_2_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_5_1(Integer proyectoId);
     
     /**
      * 2.5.2 Proporción de razas y variedades locales y transfronterizas consideradas en riesgo de extinción [16]
@@ -112,7 +112,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.5.2
      */
-    Optional<Indicadores> findIndicador_2_5_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_5_2(Integer proyectoId);
     
     /**
      * 2.a.1 Índice de orientación agrícola para el gasto público [17]
@@ -120,7 +120,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.a.1
      */
-    Optional<Indicadores> findIndicador_2_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_a_1(Integer proyectoId);
     
     /**
      * 2.a.2 Total de corrientes oficiales de recursos (asistencia oficial para el desarrollo más otras corrientes oficiales) 
@@ -129,7 +129,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.a.2
      */
-    Optional<Indicadores> findIndicador_2_a_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_a_2(Integer proyectoId);
     
     /**
      * 2.b.1 Subsidios a la exportación de productos agropecuarios [18]
@@ -137,7 +137,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.b.1
      */
-    Optional<Indicadores> findIndicador_2_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_b_1(Integer proyectoId);
     
     /**
      * 2.c.1 Indicador de anomalías en los precios de los alimentos [18]
@@ -145,7 +145,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 2.c.1
      */
-    Optional<Indicadores> findIndicador_2_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_2_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS02
@@ -153,7 +153,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds02(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds02(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS02
@@ -162,7 +162,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param metaPrefix Prefijo de la meta (ej: "2.1", "2.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos específicos del ODS02 ──
     
@@ -187,7 +187,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param proyectoId ID del proyecto
      * @return Lista de metas del proyecto
      */
-    List<MetasProyecto> findAllMetasProyectoOds02(Integer proyectoId);
+    List<ProyectoIndicadorParametros> findAllMetasProyectoOds02(Integer proyectoId);
     
     /**
      * Encuentra una meta de proyecto del ODS02 por su ID
@@ -195,7 +195,7 @@ public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<Indi
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> findMetaProyectoOds02ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> findMetaProyectoOds02ById(Integer metaId);
     
     /**
      * Encuentra todas las mediciones históricas del ODS02

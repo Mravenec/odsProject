@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo08CrecimientoEconomicoRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo08CrecimientoEconomicoService;
@@ -30,7 +30,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_1_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_2_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_2_1(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_3_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_3_1(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_4_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_4_1(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_4_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_4_2(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_4_2(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_5_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_5_1(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_5_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_5_2(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_5_2(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_6_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_6_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_6_1(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_7_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_7_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_7_1(proyectoId);
     }
 
@@ -110,7 +110,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_8_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_8_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_8_1(proyectoId);
     }
 
@@ -118,7 +118,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_8_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_8_2(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_8_2(proyectoId);
     }
 
@@ -126,7 +126,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_9_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_9_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_9_1(proyectoId);
     }
 
@@ -134,7 +134,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_9_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_9_2(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_9_2(proyectoId);
     }
 
@@ -142,7 +142,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_10_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_10_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_10_1(proyectoId);
     }
 
@@ -150,7 +150,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_10_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_10_2(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_10_2(proyectoId);
     }
 
@@ -158,7 +158,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_a_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_a_1(proyectoId);
     }
 
@@ -166,7 +166,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_8_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_8_b_1(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicador_8_b_1(proyectoId);
     }
 
@@ -174,7 +174,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds08(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds08(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findAllIndicadoresByProyectoOds08(proyectoId);
     }
 
@@ -182,7 +182,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo08CrecimientoEconomicoRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -205,14 +205,14 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
     /**
      * {@inheritDoc}
      */
-    public List<MetasProyecto> getAllMetasProyectoOds08(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> getAllMetasProyectoOds08(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findAllMetasProyectoOds08(proyectoId);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Optional<MetasProyecto> getMetaProyectoOds08ById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> getMetaProyectoOds08ById(Integer metaId) {
         return objetivo08CrecimientoEconomicoRepository.findMetaProyectoOds08ById(metaId);
     }
 
@@ -234,10 +234,10 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 
@@ -246,7 +246,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      */
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = objetivo08CrecimientoEconomicoRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo08CrecimientoEconomicoRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream()
             .filter(ind -> ind.getValorActual() != null)
@@ -259,7 +259,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      */
     public Map<String, Object> getOds08Statistics() {
         List<Proyectos> proyectos = objetivo08CrecimientoEconomicoRepository.findAllProyectosOds08();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo08CrecimientoEconomicoRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(
@@ -334,7 +334,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -342,7 +342,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
@@ -350,7 +350,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo08CrecimientoEconomicoRepository.saveIndicador(indicador);
     }
 
@@ -358,7 +358,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo08CrecimientoEconomicoRepository.updateIndicador(indicador);
     }
 
@@ -374,7 +374,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo08CrecimientoEconomicoRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -382,7 +382,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo08CrecimientoEconomicoRepository.findMetaProyectoOds08ById(metaId);
     }
 
@@ -390,7 +390,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo08CrecimientoEconomicoRepository.saveMetaProyecto(meta);
     }
 
@@ -398,7 +398,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 

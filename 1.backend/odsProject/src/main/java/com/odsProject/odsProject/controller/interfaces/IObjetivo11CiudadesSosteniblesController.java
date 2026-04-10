@@ -2,9 +2,9 @@ package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +15,9 @@ import java.util.Optional;
  */
 @RequestMapping("/api/ods/11")
 public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseController<
-    Indicadores,
+    ProyectoIndicadores,
     Proyectos,
-    MetasProyecto,
+    ProyectoIndicadorParametros,
     MedicionesHistoricas,
     Object
 > {
@@ -28,7 +28,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores
      */
-    ResponseEntity<List<Indicadores>> getAllIndicators(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.1.1
@@ -37,7 +37,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.1.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_1_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.2.1
@@ -46,7 +46,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.2.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_2_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.3.1
@@ -55,7 +55,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.3.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_3_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.3.2
@@ -64,7 +64,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.3.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_3_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.4.1
@@ -73,7 +73,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.4.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_4_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.5.1
@@ -82,7 +82,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.5.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_5_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.5.2
@@ -91,7 +91,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.5.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_5_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.5.3
@@ -100,7 +100,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.5.3
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_5_3(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_5_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.6.1
@@ -109,7 +109,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.6.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_6_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.6.2
@@ -118,7 +118,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.6.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_6_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_6_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.7.1
@@ -127,7 +127,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.7.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_7_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.7.2
@@ -136,7 +136,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.7.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_7_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_7_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.a.1
@@ -145,7 +145,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.a.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_a_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.b.1
@@ -154,7 +154,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.b.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_b_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.b.2
@@ -163,7 +163,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.b.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_b_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_b_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 11.c.1
@@ -172,7 +172,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 11.c.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_11_c_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS11
@@ -180,7 +180,7 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores del proyecto
      */
-    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds11(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds11(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS11
@@ -189,5 +189,5 @@ public interface IObjetivo11CiudadesSosteniblesController extends IOdsBaseContro
      * @param metaPrefix Prefijo de la meta (ej: "11.1", "11.2")
      * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
      */
-    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

@@ -130,12 +130,15 @@ POST {{baseUrl}}/api/ods/10/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Reducción Desigualdad Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Reducción Desigualdad Test",
+  "objetivoId": 10,
   "descripcion": "Proyecto de prueba para ODS10",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 160000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Reducir la desigualdad en y entre los países",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -143,12 +146,12 @@ POST {{baseUrl}}/api/ods/10/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Desigualdad",
-  "descripcion": "Proyecto para validar ODS10",
+  "nombreProyecto": "Proyecto Validación Desigualdad",
+  "usuarioId": 2,
+  "objetivoId": 10,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 80000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -157,29 +160,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Desigualdad Actualizado",
+  "nombreProyecto": "Proyecto Desigualdad Actualizado",
   "descripcion": "Proyecto actualizado para ODS10",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 175000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Desigualdad",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 120 = 10.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/10/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "10.1.1",
-  "nombre": "Indicador Desigualdad Test",
-  "descripcion": "Indicador de prueba para ODS10",
-  "valorActual": 58.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 120,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -187,13 +188,10 @@ POST {{baseUrl}}/api/ods/10/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "10.2.1",
-  "nombre": "Indicador Validación Desigualdad",
-  "descripcion": "Indicador para validar ODS10",
-  "valorActual": 45.0,
-  "valorMeta": 70.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 120,
+  "metaValor": 85.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -202,41 +200,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "10.1.1",
-  "nombre": "Indicador Desigualdad Actualizado",
-  "descripcion": "Indicador actualizado para ODS10",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 120,
   "valorActual": 62.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/10/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/10/metas
 Content-Type: application/json
 
 {
-  "codigo": "10.1",
-  "descripcion": "Meta de prueba ODS10",
-  "valorMeta": 100.0,
-  "valorActual": 58.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "ingreso_per_capita_mas_pobre",
+  "tipoDato": "Double"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/10/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "10.1",
-  "descripcion": "Meta actualizada ODS10",
-  "valorMeta": 100.0,
-  "valorActual": 60.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "ingreso_per_capita_media",
+  "tipoDato": "Double"
 }
 
 ### Eliminar meta
@@ -247,10 +239,11 @@ POST {{baseUrl}}/api/ods/10/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 56.5,
-  "observaciones": "Medición de prueba ODS10"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 78.5,
+  "fechaMedicion": "2024-08-15",
+  "responsable": "Admin Desigualdad",
+  "observaciones": "Monitoreo social"
 }
 
 ### Actualizar medición histórica
@@ -259,14 +252,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 58.0,
-  "observaciones": "Medición actualizada ODS10"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 80.0,
+  "fechaMedicion": "2024-08-15",
+  "responsable": "Admin Desig Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/10/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

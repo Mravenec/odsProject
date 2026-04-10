@@ -127,12 +127,15 @@ POST {{baseUrl}}/api/ods/17/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Alianzas Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Alianzas ODS Test",
+  "objetivoId": 17,
   "descripcion": "Proyecto de prueba para ODS17",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 400000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Fortalecer los medios de ejecución y revitalizar la Alianza Mundial para el Desarrollo Sostenible",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -140,12 +143,12 @@ POST {{baseUrl}}/api/ods/17/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Alianzas",
-  "descripcion": "Proyecto para validar ODS17",
+  "nombreProyecto": "Proyecto Validación Alianzas",
+  "usuarioId": 2,
+  "objetivoId": 17,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 200000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -154,29 +157,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Alianzas Actualizado",
+  "nombreProyecto": "Proyecto Alianzas Actualizado",
   "descripcion": "Proyecto actualizado para ODS17",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 425000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Alianzas",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/17/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 225 = 17.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/17/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "17.1.1",
-  "nombre": "Indicador Alianzas Test",
-  "descripcion": "Indicador de prueba para ODS17",
-  "valorActual": 66.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 225,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 20.0,
+  "metaUnidad": "Porcentaje PIB"
 }
 
 ### Validar indicador
@@ -184,13 +185,10 @@ POST {{baseUrl}}/api/ods/17/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "17.2.1",
-  "nombre": "Indicador Validación Alianzas",
-  "descripcion": "Indicador para validar ODS17",
-  "valorActual": 52.0,
-  "valorMeta": 77.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 225,
+  "metaValor": 15.0,
+  "metaUnidad": "Porcentaje PIB"
 }
 
 ### Actualizar indicador
@@ -199,41 +197,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "17.1.1",
-  "nombre": "Indicador Alianzas Actualizado",
-  "descripcion": "Indicador actualizado para ODS17",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 225,
   "valorActual": 70.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 20.0,
+  "metaUnidad": "Porcentaje PIB"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/17/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/17/metas
 Content-Type: application/json
 
 {
-  "codigo": "17.1",
-  "descripcion": "Meta de prueba ODS17",
-  "valorMeta": 100.0,
-  "valorActual": 66.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "recursos_fiscales_movilizados",
+  "tipoDato": "Double"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/17/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "17.1",
-  "descripcion": "Meta actualizada ODS17",
-  "valorMeta": 100.0,
-  "valorActual": 68.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "pib_total_estimado",
+  "tipoDato": "Double"
 }
 
 ### Eliminar meta
@@ -244,10 +236,11 @@ POST {{baseUrl}}/api/ods/17/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 64.5,
-  "observaciones": "Medición de prueba ODS17"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 15.5,
+  "fechaMedicion": "2024-12-20",
+  "responsable": "Admin Alianzas",
+  "observaciones": "Datos de hacienda pública"
 }
 
 ### Actualizar medición histórica
@@ -256,14 +249,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 66.0,
-  "observaciones": "Medición actualizada ODS17"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 16.0,
+  "fechaMedicion": "2024-12-20",
+  "responsable": "Admin Alianzas Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/17/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

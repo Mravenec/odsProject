@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS12
  */
 public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -27,7 +27,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.1.1
      */
-    Optional<Indicadores> getIndicador_12_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.2.1
@@ -45,7 +45,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.2.1
      */
-    Optional<Indicadores> getIndicador_12_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.2.2
@@ -54,7 +54,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.2.2
      */
-    Optional<Indicadores> getIndicador_12_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.3.1
@@ -63,7 +63,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.3.1
      */
-    Optional<Indicadores> getIndicador_12_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.4.1
@@ -72,7 +72,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.4.1
      */
-    Optional<Indicadores> getIndicador_12_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.4.2
@@ -81,7 +81,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.4.2
      */
-    Optional<Indicadores> getIndicador_12_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.5.1
@@ -90,7 +90,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.5.1
      */
-    Optional<Indicadores> getIndicador_12_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.6.1
@@ -99,7 +99,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.6.1
      */
-    Optional<Indicadores> getIndicador_12_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.7.1
@@ -108,7 +108,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.7.1
      */
-    Optional<Indicadores> getIndicador_12_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.8.1
@@ -117,7 +117,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.8.1
      */
-    Optional<Indicadores> getIndicador_12_8_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_8_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.a.1
@@ -126,7 +126,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.a.1
      */
-    Optional<Indicadores> getIndicador_12_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.b.1
@@ -135,7 +135,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.b.1
      */
-    Optional<Indicadores> getIndicador_12_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.c.1
@@ -144,7 +144,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.c.1
      */
-    Optional<Indicadores> getIndicador_12_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_12_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS12
@@ -152,7 +152,7 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS12
@@ -161,5 +161,5 @@ public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "12.1", "12.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

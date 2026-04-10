@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo04EducacionService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo04EducacionController;
@@ -32,8 +32,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo04EducacionService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo04EducacionService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.1.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_1_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_1_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_1_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_1_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.2.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_2_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_2_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_2_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_2_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.7.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_7_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_7_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_7_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_7_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/4.c.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_4_c_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo04EducacionService.getIndicador_4_c_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_4_c_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.getIndicador_4_c_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -162,8 +162,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds04(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo04EducacionService.findAllIndicadoresByProyectoOds04(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds04(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo04EducacionService.findAllIndicadoresByProyectoOds04(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -172,8 +172,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo04EducacionService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo04EducacionService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -209,8 +209,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS04
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds04(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo04EducacionService.getAllMetasProyectoOds04(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds04(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo04EducacionService.getAllMetasProyectoOds04(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -342,8 +342,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo04EducacionService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo04EducacionService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -352,8 +352,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo04EducacionService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo04EducacionService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -362,8 +362,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo04EducacionService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo04EducacionService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -372,7 +372,7 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo04EducacionService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -382,8 +382,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo04EducacionService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo04EducacionService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -402,8 +402,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo04EducacionService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo04EducacionService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -412,8 +412,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo04EducacionService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo04EducacionService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -422,8 +422,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo04EducacionService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo04EducacionService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -432,8 +432,8 @@ public class Objetivo04EducacionController implements IObjetivo04EducacionContro
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo04EducacionService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo04EducacionService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

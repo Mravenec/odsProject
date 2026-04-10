@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo10ReduccionDesigualdadService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo10ReduccionDesigualdadController;
@@ -32,8 +32,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo10ReduccionDesigualdadService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.4.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_4_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_4_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_4_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_4_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.7.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_7_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_7_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_7_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_7_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.7.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_7_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_7_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_7_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_7_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.7.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_7_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_7_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_7_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_7_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.7.4")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_7_4(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_7_4(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_7_4(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_7_4(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -162,8 +162,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -172,8 +172,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/10.c.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_10_c_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_c_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_10_c_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.getIndicador_10_c_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -182,8 +182,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds10(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo10ReduccionDesigualdadService.findAllIndicadoresByProyectoOds10(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds10(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.findAllIndicadoresByProyectoOds10(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -192,8 +192,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo10ReduccionDesigualdadService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -229,8 +229,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS10
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds10(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo10ReduccionDesigualdadService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds10(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo10ReduccionDesigualdadService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -362,8 +362,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo10ReduccionDesigualdadService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -372,8 +372,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo10ReduccionDesigualdadService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo10ReduccionDesigualdadService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -382,8 +382,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo10ReduccionDesigualdadService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo10ReduccionDesigualdadService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -392,7 +392,7 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo10ReduccionDesigualdadService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -402,8 +402,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo10ReduccionDesigualdadService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo10ReduccionDesigualdadService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -422,8 +422,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo10ReduccionDesigualdadService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo10ReduccionDesigualdadService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -432,8 +432,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo10ReduccionDesigualdadService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo10ReduccionDesigualdadService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -442,8 +442,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo10ReduccionDesigualdadService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo10ReduccionDesigualdadService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -452,8 +452,8 @@ public class Objetivo10ReduccionDesigualdadController implements IObjetivo10Redu
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo10ReduccionDesigualdadService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo10ReduccionDesigualdadService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

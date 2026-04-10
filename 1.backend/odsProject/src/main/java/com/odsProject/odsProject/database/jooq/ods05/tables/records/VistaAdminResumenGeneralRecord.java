@@ -69,59 +69,73 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
     }
 
     /**
-     * Setter for <code>ods05.vista_admin_resumen_general.nombre_usuario</code>.
+     * Setter for <code>ods05.vista_admin_resumen_general.sede_nombre</code>.
      */
-    public void setNombreUsuario(String value) {
+    public void setSedeNombre(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>ods05.vista_admin_resumen_general.nombre_usuario</code>.
+     * Getter for <code>ods05.vista_admin_resumen_general.sede_nombre</code>.
      */
-    public String getNombreUsuario() {
+    public String getSedeNombre() {
         return (String) get(3);
+    }
+
+    /**
+     * Setter for <code>ods05.vista_admin_resumen_general.ods_nombre</code>.
+     */
+    public void setOdsNombre(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>ods05.vista_admin_resumen_general.ods_nombre</code>.
+     */
+    public String getOdsNombre() {
+        return (String) get(4);
     }
 
     /**
      * Setter for <code>ods05.vista_admin_resumen_general.fecha_inicio</code>.
      */
     public void setFechaInicio(LocalDate value) {
-        set(4, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>ods05.vista_admin_resumen_general.fecha_inicio</code>.
      */
     public LocalDate getFechaInicio() {
-        return (LocalDate) get(4);
+        return (LocalDate) get(5);
     }
 
     /**
      * Setter for <code>ods05.vista_admin_resumen_general.fecha_fin</code>.
      */
     public void setFechaFin(LocalDate value) {
-        set(5, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>ods05.vista_admin_resumen_general.fecha_fin</code>.
      */
     public LocalDate getFechaFin() {
-        return (LocalDate) get(5);
+        return (LocalDate) get(6);
     }
 
     /**
      * Setter for <code>ods05.vista_admin_resumen_general.estado</code>.
      */
     public void setEstado(VistaAdminResumenGeneralEstado value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>ods05.vista_admin_resumen_general.estado</code>.
      */
     public VistaAdminResumenGeneralEstado getEstado() {
-        return (VistaAdminResumenGeneralEstado) get(6);
+        return (VistaAdminResumenGeneralEstado) get(7);
     }
 
     /**
@@ -129,7 +143,7 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
      * <code>ods05.vista_admin_resumen_general.total_indicadores</code>.
      */
     public void setTotalIndicadores(Long value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
@@ -137,7 +151,7 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
      * <code>ods05.vista_admin_resumen_general.total_indicadores</code>.
      */
     public Long getTotalIndicadores() {
-        return (Long) get(7);
+        return (Long) get(8);
     }
 
     /**
@@ -145,7 +159,7 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
      * <code>ods05.vista_admin_resumen_general.indicadores_logrados</code>.
      */
     public void setIndicadoresLogrados(Long value) {
-        set(8, value);
+        set(9, value);
     }
 
     /**
@@ -153,7 +167,7 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
      * <code>ods05.vista_admin_resumen_general.indicadores_logrados</code>.
      */
     public Long getIndicadoresLogrados() {
-        return (Long) get(8);
+        return (Long) get(9);
     }
 
     /**
@@ -161,7 +175,7 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
      * <code>ods05.vista_admin_resumen_general.progreso_porcentaje</code>.
      */
     public void setProgresoPorcentaje(BigDecimal value) {
-        set(9, value);
+        set(10, value);
     }
 
     /**
@@ -169,69 +183,21 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
      * <code>ods05.vista_admin_resumen_general.progreso_porcentaje</code>.
      */
     public BigDecimal getProgresoPorcentaje() {
-        return (BigDecimal) get(9);
-    }
-
-    /**
-     * Setter for
-     * <code>ods05.vista_admin_resumen_general.valor_minimo_actual</code>.
-     */
-    public void setValorMinimoActual(BigDecimal value) {
-        set(10, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods05.vista_admin_resumen_general.valor_minimo_actual</code>.
-     */
-    public BigDecimal getValorMinimoActual() {
         return (BigDecimal) get(10);
-    }
-
-    /**
-     * Setter for
-     * <code>ods05.vista_admin_resumen_general.valor_maximo_actual</code>.
-     */
-    public void setValorMaximoActual(BigDecimal value) {
-        set(11, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods05.vista_admin_resumen_general.valor_maximo_actual</code>.
-     */
-    public BigDecimal getValorMaximoActual() {
-        return (BigDecimal) get(11);
-    }
-
-    /**
-     * Setter for
-     * <code>ods05.vista_admin_resumen_general.valor_promedio_actual</code>.
-     */
-    public void setValorPromedioActual(BigDecimal value) {
-        set(12, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods05.vista_admin_resumen_general.valor_promedio_actual</code>.
-     */
-    public BigDecimal getValorPromedioActual() {
-        return (BigDecimal) get(12);
     }
 
     /**
      * Setter for <code>ods05.vista_admin_resumen_general.fecha_creacion</code>.
      */
     public void setFechaCreacion(LocalDateTime value) {
-        set(13, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>ods05.vista_admin_resumen_general.fecha_creacion</code>.
      */
     public LocalDateTime getFechaCreacion() {
-        return (LocalDateTime) get(13);
+        return (LocalDateTime) get(11);
     }
 
     // -------------------------------------------------------------------------
@@ -248,22 +214,20 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
     /**
      * Create a detached, initialised VistaAdminResumenGeneralRecord
      */
-    public VistaAdminResumenGeneralRecord(Integer proyectoId, String nombreProyecto, String usuarioCreador, String nombreUsuario, LocalDate fechaInicio, LocalDate fechaFin, VistaAdminResumenGeneralEstado estado, Long totalIndicadores, Long indicadoresLogrados, BigDecimal progresoPorcentaje, BigDecimal valorMinimoActual, BigDecimal valorMaximoActual, BigDecimal valorPromedioActual, LocalDateTime fechaCreacion) {
+    public VistaAdminResumenGeneralRecord(Integer proyectoId, String nombreProyecto, String usuarioCreador, String sedeNombre, String odsNombre, LocalDate fechaInicio, LocalDate fechaFin, VistaAdminResumenGeneralEstado estado, Long totalIndicadores, Long indicadoresLogrados, BigDecimal progresoPorcentaje, LocalDateTime fechaCreacion) {
         super(VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL);
 
         setProyectoId(proyectoId);
         setNombreProyecto(nombreProyecto);
         setUsuarioCreador(usuarioCreador);
-        setNombreUsuario(nombreUsuario);
+        setSedeNombre(sedeNombre);
+        setOdsNombre(odsNombre);
         setFechaInicio(fechaInicio);
         setFechaFin(fechaFin);
         setEstado(estado);
         setTotalIndicadores(totalIndicadores);
         setIndicadoresLogrados(indicadoresLogrados);
         setProgresoPorcentaje(progresoPorcentaje);
-        setValorMinimoActual(valorMinimoActual);
-        setValorMaximoActual(valorMaximoActual);
-        setValorPromedioActual(valorPromedioActual);
         setFechaCreacion(fechaCreacion);
         resetChangedOnNotNull();
     }
@@ -278,16 +242,14 @@ public class VistaAdminResumenGeneralRecord extends TableRecordImpl<VistaAdminRe
             setProyectoId(value.getProyectoId());
             setNombreProyecto(value.getNombreProyecto());
             setUsuarioCreador(value.getUsuarioCreador());
-            setNombreUsuario(value.getNombreUsuario());
+            setSedeNombre(value.getSedeNombre());
+            setOdsNombre(value.getOdsNombre());
             setFechaInicio(value.getFechaInicio());
             setFechaFin(value.getFechaFin());
             setEstado(value.getEstado());
             setTotalIndicadores(value.getTotalIndicadores());
             setIndicadoresLogrados(value.getIndicadoresLogrados());
             setProgresoPorcentaje(value.getProgresoPorcentaje());
-            setValorMinimoActual(value.getValorMinimoActual());
-            setValorMaximoActual(value.getValorMaximoActual());
-            setValorPromedioActual(value.getValorPromedioActual());
             setFechaCreacion(value.getFechaCreacion());
             resetChangedOnNotNull();
         }

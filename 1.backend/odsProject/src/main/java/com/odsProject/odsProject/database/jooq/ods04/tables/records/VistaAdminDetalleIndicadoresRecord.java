@@ -7,7 +7,6 @@ package com.odsProject.odsProject.database.jooq.ods04.tables.records;
 import com.odsProject.odsProject.database.jooq.ods04.tables.VistaAdminDetalleIndicadores;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.jooq.impl.TableRecordImpl;
@@ -55,26 +54,10 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
 
     /**
      * Setter for
-     * <code>ods04.vista_admin_detalle_indicadores.usuario_creador</code>.
-     */
-    public void setUsuarioCreador(String value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods04.vista_admin_detalle_indicadores.usuario_creador</code>.
-     */
-    public String getUsuarioCreador() {
-        return (String) get(2);
-    }
-
-    /**
-     * Setter for
      * <code>ods04.vista_admin_detalle_indicadores.indicador_codigo</code>.
      */
     public void setIndicadorCodigo(String value) {
-        set(3, value);
+        set(2, value);
     }
 
     /**
@@ -82,22 +65,38 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods04.vista_admin_detalle_indicadores.indicador_codigo</code>.
      */
     public String getIndicadorCodigo() {
+        return (String) get(2);
+    }
+
+    /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.indicador_nombre</code>.
+     */
+    public void setIndicadorNombre(String value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for
+     * <code>ods04.vista_admin_detalle_indicadores.indicador_nombre</code>.
+     */
+    public String getIndicadorNombre() {
         return (String) get(3);
     }
 
     /**
      * Setter for
-     * <code>ods04.vista_admin_detalle_indicadores.indicador_descripcion</code>.
+     * <code>ods04.vista_admin_detalle_indicadores.formula_custom</code>.
      */
-    public void setIndicadorDescripcion(String value) {
+    public void setFormulaCustom(String value) {
         set(4, value);
     }
 
     /**
      * Getter for
-     * <code>ods04.vista_admin_detalle_indicadores.indicador_descripcion</code>.
+     * <code>ods04.vista_admin_detalle_indicadores.formula_custom</code>.
      */
-    public String getIndicadorDescripcion() {
+    public String getFormulaCustom() {
         return (String) get(4);
     }
 
@@ -118,32 +117,32 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
     }
 
     /**
-     * Setter for <code>ods04.vista_admin_detalle_indicadores.valor_meta</code>.
+     * Setter for <code>ods04.vista_admin_detalle_indicadores.meta_valor</code>.
      */
-    public void setValorMeta(BigDecimal value) {
+    public void setMetaValor(BigDecimal value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>ods04.vista_admin_detalle_indicadores.valor_meta</code>.
+     * Getter for <code>ods04.vista_admin_detalle_indicadores.meta_valor</code>.
      */
-    public BigDecimal getValorMeta() {
+    public BigDecimal getMetaValor() {
         return (BigDecimal) get(6);
     }
 
     /**
      * Setter for
-     * <code>ods04.vista_admin_detalle_indicadores.unidad_medida</code>.
+     * <code>ods04.vista_admin_detalle_indicadores.meta_unidad</code>.
      */
-    public void setUnidadMedida(String value) {
+    public void setMetaUnidad(String value) {
         set(7, value);
     }
 
     /**
      * Getter for
-     * <code>ods04.vista_admin_detalle_indicadores.unidad_medida</code>.
+     * <code>ods04.vista_admin_detalle_indicadores.meta_unidad</code>.
      */
-    public String getUnidadMedida() {
+    public String getMetaUnidad() {
         return (String) get(7);
     }
 
@@ -181,42 +180,10 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
 
     /**
      * Setter for
-     * <code>ods04.vista_admin_detalle_indicadores.fecha_medicion</code>.
-     */
-    public void setFechaMedicion(LocalDate value) {
-        set(10, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods04.vista_admin_detalle_indicadores.fecha_medicion</code>.
-     */
-    public LocalDate getFechaMedicion() {
-        return (LocalDate) get(10);
-    }
-
-    /**
-     * Setter for
-     * <code>ods04.vista_admin_detalle_indicadores.fuente_datos</code>.
-     */
-    public void setFuenteDatos(String value) {
-        set(11, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods04.vista_admin_detalle_indicadores.fuente_datos</code>.
-     */
-    public String getFuenteDatos() {
-        return (String) get(11);
-    }
-
-    /**
-     * Setter for
      * <code>ods04.vista_admin_detalle_indicadores.ultima_actualizacion</code>.
      */
     public void setUltimaActualizacion(LocalDateTime value) {
-        set(12, value);
+        set(10, value);
     }
 
     /**
@@ -224,7 +191,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods04.vista_admin_detalle_indicadores.ultima_actualizacion</code>.
      */
     public LocalDateTime getUltimaActualizacion() {
-        return (LocalDateTime) get(12);
+        return (LocalDateTime) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -241,21 +208,19 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
     /**
      * Create a detached, initialised VistaAdminDetalleIndicadoresRecord
      */
-    public VistaAdminDetalleIndicadoresRecord(Integer proyectoId, String nombreProyecto, String usuarioCreador, String indicadorCodigo, String indicadorDescripcion, BigDecimal valorActual, BigDecimal valorMeta, String unidadMedida, String estadoIndicador, BigDecimal porcentajeLogro, LocalDate fechaMedicion, String fuenteDatos, LocalDateTime ultimaActualizacion) {
+    public VistaAdminDetalleIndicadoresRecord(Integer proyectoId, String nombreProyecto, String indicadorCodigo, String indicadorNombre, String formulaCustom, BigDecimal valorActual, BigDecimal metaValor, String metaUnidad, String estadoIndicador, BigDecimal porcentajeLogro, LocalDateTime ultimaActualizacion) {
         super(VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES);
 
         setProyectoId(proyectoId);
         setNombreProyecto(nombreProyecto);
-        setUsuarioCreador(usuarioCreador);
         setIndicadorCodigo(indicadorCodigo);
-        setIndicadorDescripcion(indicadorDescripcion);
+        setIndicadorNombre(indicadorNombre);
+        setFormulaCustom(formulaCustom);
         setValorActual(valorActual);
-        setValorMeta(valorMeta);
-        setUnidadMedida(unidadMedida);
+        setMetaValor(metaValor);
+        setMetaUnidad(metaUnidad);
         setEstadoIndicador(estadoIndicador);
         setPorcentajeLogro(porcentajeLogro);
-        setFechaMedicion(fechaMedicion);
-        setFuenteDatos(fuenteDatos);
         setUltimaActualizacion(ultimaActualizacion);
         resetChangedOnNotNull();
     }
@@ -269,16 +234,14 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
         if (value != null) {
             setProyectoId(value.getProyectoId());
             setNombreProyecto(value.getNombreProyecto());
-            setUsuarioCreador(value.getUsuarioCreador());
             setIndicadorCodigo(value.getIndicadorCodigo());
-            setIndicadorDescripcion(value.getIndicadorDescripcion());
+            setIndicadorNombre(value.getIndicadorNombre());
+            setFormulaCustom(value.getFormulaCustom());
             setValorActual(value.getValorActual());
-            setValorMeta(value.getValorMeta());
-            setUnidadMedida(value.getUnidadMedida());
+            setMetaValor(value.getMetaValor());
+            setMetaUnidad(value.getMetaUnidad());
             setEstadoIndicador(value.getEstadoIndicador());
             setPorcentajeLogro(value.getPorcentajeLogro());
-            setFechaMedicion(value.getFechaMedicion());
-            setFuenteDatos(value.getFuenteDatos());
             setUltimaActualizacion(value.getUltimaActualizacion());
             resetChangedOnNotNull();
         }

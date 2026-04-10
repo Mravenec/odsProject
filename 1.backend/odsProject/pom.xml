@@ -140,6 +140,8 @@
 								<generate>
 									<pojos>true</pojos>
 									<immutablePojos>true</immutablePojos>
+									<implicitJoinPathsToOne>false</implicitJoinPathsToOne>
+									<implicitJoinPathsToMany>false</implicitJoinPathsToMany>
 								</generate>
 							</generator>
 						</configuration>

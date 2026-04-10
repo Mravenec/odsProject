@@ -94,12 +94,15 @@ POST {{baseUrl}}/api/ods/06/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Agua y Saneamiento Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Agua Test",
+  "objetivoId": 6,
   "descripcion": "Proyecto de prueba para ODS6",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 250000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Garantizar disponibilidad de agua potable",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -107,12 +110,12 @@ POST {{baseUrl}}/api/ods/06/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Agua",
-  "descripcion": "Proyecto para validar ODS6",
+  "nombreProyecto": "Proyecto Validación Agua",
+  "usuarioId": 2,
+  "objetivoId": 6,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 125000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -121,29 +124,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Agua Actualizado",
+  "nombreProyecto": "Proyecto Agua Actualizado",
   "descripcion": "Proyecto actualizado para ODS6",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 275000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Agua",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/06/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 76 = 6.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/06/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "6.1.1",
-  "nombre": "Indicador Agua Test",
-  "descripcion": "Indicador de prueba para ODS6",
-  "valorActual": 70.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 76,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -151,13 +152,10 @@ POST {{baseUrl}}/api/ods/06/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "6.2.1",
-  "nombre": "Indicador Validación Agua",
-  "descripcion": "Indicador para validar ODS6",
-  "valorActual": 55.0,
-  "valorMeta": 80.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 76,
+  "metaValor": 90.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -166,41 +164,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "6.1.1",
-  "nombre": "Indicador Agua Actualizado",
-  "descripcion": "Indicador actualizado para ODS6",
-  "valorActual": 75.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 76,
+  "valorActual": 85.0,
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/06/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/06/metas
 Content-Type: application/json
 
 {
-  "codigo": "6.1",
-  "descripcion": "Meta de prueba ODS6",
-  "valorMeta": 100.0,
-  "valorActual": 70.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "m3_agua_potabilizada",
+  "tipoDato": "Double"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/06/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "6.1",
-  "descripcion": "Meta actualizada ODS6",
-  "valorMeta": 100.0,
-  "valorActual": 72.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "m3_agua_distribuida",
+  "tipoDato": "Double"
 }
 
 ### Eliminar meta
@@ -211,9 +203,10 @@ POST {{baseUrl}}/api/ods/06/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 68.5,
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 75.5,
+  "fechaMedicion": "2024-05-20",
+  "responsable": "Admin Agua",
   "observaciones": "Medición de prueba ODS6"
 }
 
@@ -223,14 +216,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 70.0,
-  "observaciones": "Medición actualizada ODS6"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 78.0,
+  "fechaMedicion": "2024-05-20",
+  "responsable": "Admin Agua Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/06/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

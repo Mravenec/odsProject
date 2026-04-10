@@ -4,7 +4,6 @@
 package com.odsProject.odsProject.database.jooq.ods06;
 
 
-import com.odsProject.odsProject.database.jooq.ods06.routines.SpAdminDashboard;
 import com.odsProject.odsProject.database.jooq.ods06.routines.SpAdminReporteProyecto;
 
 import org.jooq.Configuration;
@@ -15,17 +14,6 @@ import org.jooq.Configuration;
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Routines {
-
-    /**
-     * Call <code>ods06.sp_admin_dashboard</code>
-     */
-    public static void spAdminDashboard(
-          Configuration configuration
-    ) {
-        SpAdminDashboard p = new SpAdminDashboard();
-
-        p.execute(configuration);
-    }
 
     /**
      * Call <code>ods06.sp_admin_reporte_proyecto</code>

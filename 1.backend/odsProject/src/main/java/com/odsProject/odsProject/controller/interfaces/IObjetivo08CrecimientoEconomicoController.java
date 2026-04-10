@@ -2,9 +2,9 @@ package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +16,11 @@ import java.util.Optional;
  */
 @RequestMapping("/api/ods/08")
 public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseController<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -29,7 +29,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores
      */
-    ResponseEntity<List<Indicadores>> getAllIndicators(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.1.1
@@ -38,7 +38,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.1.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_1_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.2.1
@@ -47,7 +47,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.2.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_2_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.3.1
@@ -56,7 +56,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.3.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_3_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.4.1
@@ -65,7 +65,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.4.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_4_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.4.2
@@ -74,7 +74,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.4.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_4_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.5.1
@@ -83,7 +83,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.5.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_5_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.5.2
@@ -92,7 +92,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.5.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_5_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.6.1
@@ -101,7 +101,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.6.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_6_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.7.1
@@ -110,7 +110,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.7.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_7_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.8.1
@@ -119,7 +119,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.8.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_8_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_8_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.8.2
@@ -128,7 +128,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.8.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_8_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_8_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.9.1
@@ -137,7 +137,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.9.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_9_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_9_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.9.2
@@ -146,7 +146,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.9.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_9_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_9_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.10.1
@@ -155,7 +155,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.10.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_10_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_10_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.10.2
@@ -164,7 +164,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.10.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_10_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_10_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.a.1
@@ -173,7 +173,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.a.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_a_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 8.b.1
@@ -182,7 +182,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 8.b.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_8_b_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_b_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS08
@@ -190,7 +190,7 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores del proyecto
      */
-    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds08(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds08(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS08
@@ -199,5 +199,5 @@ public interface IObjetivo08CrecimientoEconomicoController extends IOdsBaseContr
      * @param metaPrefix Prefijo de la meta (ej: "8.1", "8.2")
      * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
      */
-    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS06
  */
 public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -27,7 +27,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.1.1
      */
-    Optional<Indicadores> getIndicador_6_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.2.1
@@ -45,7 +45,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.2.1
      */
-    Optional<Indicadores> getIndicador_6_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.3.1
@@ -54,7 +54,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.3.1
      */
-    Optional<Indicadores> getIndicador_6_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.3.2
@@ -63,7 +63,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.3.2
      */
-    Optional<Indicadores> getIndicador_6_3_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.4.1
@@ -72,7 +72,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.4.1
      */
-    Optional<Indicadores> getIndicador_6_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.4.2
@@ -81,7 +81,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.4.2
      */
-    Optional<Indicadores> getIndicador_6_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.5.1
@@ -90,7 +90,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.5.1
      */
-    Optional<Indicadores> getIndicador_6_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.5.2
@@ -99,7 +99,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.5.2
      */
-    Optional<Indicadores> getIndicador_6_5_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.6.1
@@ -108,7 +108,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.6.1
      */
-    Optional<Indicadores> getIndicador_6_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.a.1
@@ -117,7 +117,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.a.1
      */
-    Optional<Indicadores> getIndicador_6_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.b.1
@@ -126,7 +126,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 6.b.1
      */
-    Optional<Indicadores> getIndicador_6_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_6_b_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS06
@@ -134,7 +134,7 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds06(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds06(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS06
@@ -143,5 +143,5 @@ public interface IObjetivo06AguaSaneamientoService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "6.1", "6.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

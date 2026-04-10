@@ -5,13 +5,13 @@ package com.odsProject.odsProject.database.jooq.ods16;
 
 
 import com.odsProject.odsProject.database.jooq.ods16.tables.AuditoriaOds16;
-import com.odsProject.odsProject.database.jooq.ods16.tables.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods16.tables.MedicionParametroValores;
 import com.odsProject.odsProject.database.jooq.ods16.tables.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods16.tables.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods16.tables.ProyectoIndicadorParametros;
+import com.odsProject.odsProject.database.jooq.ods16.tables.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods16.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods16.tables.VistaAdminAuditoriaReciente;
 import com.odsProject.odsProject.database.jooq.ods16.tables.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods16.tables.VistaAdminEstadisticasGenerales;
 import com.odsProject.odsProject.database.jooq.ods16.tables.VistaAdminResumenGeneral;
 
 
@@ -22,27 +22,32 @@ import com.odsProject.odsProject.database.jooq.ods16.tables.VistaAdminResumenGen
 public class Tables {
 
     /**
-     * Auditoría de cambios en el sistema ODS16
+     * The table <code>ods16.auditoria_ods16</code>.
      */
     public static final AuditoriaOds16 AUDITORIA_ODS16 = AuditoriaOds16.AUDITORIA_ODS16;
 
     /**
-     * Indicadores medidos por cada proyecto ODS16
+     * The table <code>ods16.medicion_parametro_valores</code>.
      */
-    public static final Indicadores INDICADORES = Indicadores.INDICADORES;
+    public static final MedicionParametroValores MEDICION_PARAMETRO_VALORES = MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
 
     /**
-     * Historial de mediciones de indicadores ODS16
+     * The table <code>ods16.mediciones_historicas</code>.
      */
     public static final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
 
     /**
-     * Metas específicas establecidas por cada proyecto ODS16
+     * The table <code>ods16.proyecto_indicador_parametros</code>.
      */
-    public static final MetasProyecto METAS_PROYECTO = MetasProyecto.METAS_PROYECTO;
+    public static final ProyectoIndicadorParametros PROYECTO_INDICADOR_PARAMETROS = ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
 
     /**
-     * Proyectos ODS16 creados por usuarios
+     * The table <code>ods16.proyecto_indicadores</code>.
+     */
+    public static final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
+
+    /**
+     * The table <code>ods16.proyectos</code>.
      */
     public static final Proyectos PROYECTOS = Proyectos.PROYECTOS;
 
@@ -55,11 +60,6 @@ public class Tables {
      * The table <code>ods16.vista_admin_detalle_indicadores</code>.
      */
     public static final VistaAdminDetalleIndicadores VISTA_ADMIN_DETALLE_INDICADORES = VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
-
-    /**
-     * The table <code>ods16.vista_admin_estadisticas_generales</code>.
-     */
-    public static final VistaAdminEstadisticasGenerales VISTA_ADMIN_ESTADISTICAS_GENERALES = VistaAdminEstadisticasGenerales.VISTA_ADMIN_ESTADISTICAS_GENERALES;
 
     /**
      * The table <code>ods16.vista_admin_resumen_general</code>.

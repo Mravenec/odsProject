@@ -453,16 +453,12 @@ public class LoginController implements ILoginController {
             map.put("proyectoId", item.getProyectoId());
             map.put("nombreProyecto", item.getNombreProyecto());
             map.put("usuarioCreador", item.getUsuarioCreador());
-            map.put("nombreUsuario", item.getNombreUsuario());
             map.put("fechaInicio", item.getFechaInicio());
             map.put("fechaFin", item.getFechaFin());
             map.put("estado", item.getEstado());
             map.put("totalIndicadores", item.getTotalIndicadores());
             map.put("indicadoresLogrados", item.getIndicadoresLogrados());
             map.put("progresoPorcentaje", item.getProgresoPorcentaje());
-            map.put("valorMinimoActual", item.getValorMinimoActual());
-            map.put("valorMaximoActual", item.getValorMaximoActual());
-            map.put("valorPromedioActual", item.getValorPromedioActual());
             map.put("fechaCreacion", item.getFechaCreacion());
             return map;
         }).collect(java.util.stream.Collectors.toList()));

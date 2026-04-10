@@ -21,12 +21,8 @@ public class VistaAdminAuditoriaReciente implements Serializable {
     private final Integer registroId;
     private final String accion;
     private final String usuario;
-    private final String nombreUsuario;
-    private final String valoresAnteriores;
-    private final String valoresNuevos;
     private final LocalDateTime fechaCambio;
     private final String ipAddress;
-    private final String descripcionCambio;
 
     public VistaAdminAuditoriaReciente(VistaAdminAuditoriaReciente value) {
         this.id = value.id;
@@ -34,12 +30,8 @@ public class VistaAdminAuditoriaReciente implements Serializable {
         this.registroId = value.registroId;
         this.accion = value.accion;
         this.usuario = value.usuario;
-        this.nombreUsuario = value.nombreUsuario;
-        this.valoresAnteriores = value.valoresAnteriores;
-        this.valoresNuevos = value.valoresNuevos;
         this.fechaCambio = value.fechaCambio;
         this.ipAddress = value.ipAddress;
-        this.descripcionCambio = value.descripcionCambio;
     }
 
     public VistaAdminAuditoriaReciente(
@@ -48,24 +40,16 @@ public class VistaAdminAuditoriaReciente implements Serializable {
         Integer registroId,
         String accion,
         String usuario,
-        String nombreUsuario,
-        String valoresAnteriores,
-        String valoresNuevos,
         LocalDateTime fechaCambio,
-        String ipAddress,
-        String descripcionCambio
+        String ipAddress
     ) {
         this.id = id;
         this.tablaAfectada = tablaAfectada;
         this.registroId = registroId;
         this.accion = accion;
         this.usuario = usuario;
-        this.nombreUsuario = nombreUsuario;
-        this.valoresAnteriores = valoresAnteriores;
-        this.valoresNuevos = valoresNuevos;
         this.fechaCambio = fechaCambio;
         this.ipAddress = ipAddress;
-        this.descripcionCambio = descripcionCambio;
     }
 
     /**
@@ -106,30 +90,6 @@ public class VistaAdminAuditoriaReciente implements Serializable {
 
     /**
      * Getter for
-     * <code>ods09.vista_admin_auditoria_reciente.nombre_usuario</code>.
-     */
-    public String getNombreUsuario() {
-        return this.nombreUsuario;
-    }
-
-    /**
-     * Getter for
-     * <code>ods09.vista_admin_auditoria_reciente.valores_anteriores</code>.
-     */
-    public String getValoresAnteriores() {
-        return this.valoresAnteriores;
-    }
-
-    /**
-     * Getter for
-     * <code>ods09.vista_admin_auditoria_reciente.valores_nuevos</code>.
-     */
-    public String getValoresNuevos() {
-        return this.valoresNuevos;
-    }
-
-    /**
-     * Getter for
      * <code>ods09.vista_admin_auditoria_reciente.fecha_cambio</code>.
      */
     public LocalDateTime getFechaCambio() {
@@ -141,14 +101,6 @@ public class VistaAdminAuditoriaReciente implements Serializable {
      */
     public String getIpAddress() {
         return this.ipAddress;
-    }
-
-    /**
-     * Getter for
-     * <code>ods09.vista_admin_auditoria_reciente.descripcion_cambio</code>.
-     */
-    public String getDescripcionCambio() {
-        return this.descripcionCambio;
     }
 
     @Override
@@ -190,24 +142,6 @@ public class VistaAdminAuditoriaReciente implements Serializable {
         }
         else if (!this.usuario.equals(other.usuario))
             return false;
-        if (this.nombreUsuario == null) {
-            if (other.nombreUsuario != null)
-                return false;
-        }
-        else if (!this.nombreUsuario.equals(other.nombreUsuario))
-            return false;
-        if (this.valoresAnteriores == null) {
-            if (other.valoresAnteriores != null)
-                return false;
-        }
-        else if (!this.valoresAnteriores.equals(other.valoresAnteriores))
-            return false;
-        if (this.valoresNuevos == null) {
-            if (other.valoresNuevos != null)
-                return false;
-        }
-        else if (!this.valoresNuevos.equals(other.valoresNuevos))
-            return false;
         if (this.fechaCambio == null) {
             if (other.fechaCambio != null)
                 return false;
@@ -219,12 +153,6 @@ public class VistaAdminAuditoriaReciente implements Serializable {
                 return false;
         }
         else if (!this.ipAddress.equals(other.ipAddress))
-            return false;
-        if (this.descripcionCambio == null) {
-            if (other.descripcionCambio != null)
-                return false;
-        }
-        else if (!this.descripcionCambio.equals(other.descripcionCambio))
             return false;
         return true;
     }
@@ -238,12 +166,8 @@ public class VistaAdminAuditoriaReciente implements Serializable {
         result = prime * result + ((this.registroId == null) ? 0 : this.registroId.hashCode());
         result = prime * result + ((this.accion == null) ? 0 : this.accion.hashCode());
         result = prime * result + ((this.usuario == null) ? 0 : this.usuario.hashCode());
-        result = prime * result + ((this.nombreUsuario == null) ? 0 : this.nombreUsuario.hashCode());
-        result = prime * result + ((this.valoresAnteriores == null) ? 0 : this.valoresAnteriores.hashCode());
-        result = prime * result + ((this.valoresNuevos == null) ? 0 : this.valoresNuevos.hashCode());
         result = prime * result + ((this.fechaCambio == null) ? 0 : this.fechaCambio.hashCode());
         result = prime * result + ((this.ipAddress == null) ? 0 : this.ipAddress.hashCode());
-        result = prime * result + ((this.descripcionCambio == null) ? 0 : this.descripcionCambio.hashCode());
         return result;
     }
 
@@ -256,12 +180,8 @@ public class VistaAdminAuditoriaReciente implements Serializable {
         sb.append(", ").append(registroId);
         sb.append(", ").append(accion);
         sb.append(", ").append(usuario);
-        sb.append(", ").append(nombreUsuario);
-        sb.append(", ").append(valoresAnteriores);
-        sb.append(", ").append(valoresNuevos);
         sb.append(", ").append(fechaCambio);
         sb.append(", ").append(ipAddress);
-        sb.append(", ").append(descripcionCambio);
 
         sb.append(")");
         return sb.toString();

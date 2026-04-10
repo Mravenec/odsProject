@@ -97,12 +97,15 @@ POST {{baseUrl}}/api/ods/12/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Consumo Producción Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Consumo Responsable Test",
+  "objetivoId": 12,
   "descripcion": "Proyecto de prueba para ODS12",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 210000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Garantizar modalidades de consumo y producción sostenibles",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -110,12 +113,12 @@ POST {{baseUrl}}/api/ods/12/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Consumo",
-  "descripcion": "Proyecto para validar ODS12",
+  "nombreProyecto": "Proyecto Validación Consumo",
+  "usuarioId": 2,
+  "objetivoId": 12,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 105000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -124,29 +127,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Consumo Actualizado",
+  "nombreProyecto": "Proyecto Consumo Actualizado",
   "descripcion": "Proyecto actualizado para ODS12",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 235000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Consumo",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/12/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 151 = 12.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/12/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "12.1.1",
-  "nombre": "Indicador Consumo Test",
-  "descripcion": "Indicador de prueba para ODS12",
-  "valorActual": 56.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 151,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -154,13 +155,10 @@ POST {{baseUrl}}/api/ods/12/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "12.2.1",
-  "nombre": "Indicador Validación Consumo",
-  "descripcion": "Indicador para validar ODS12",
-  "valorActual": 42.0,
-  "valorMeta": 65.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 151,
+  "metaValor": 90.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -169,41 +167,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "12.1.1",
-  "nombre": "Indicador Consumo Actualizado",
-  "descripcion": "Indicador actualizado para ODS12",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 151,
   "valorActual": 60.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/12/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/12/metas
 Content-Type: application/json
 
 {
-  "codigo": "12.1",
-  "descripcion": "Meta de prueba ODS12",
-  "valorMeta": 100.0,
-  "valorActual": 56.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "toneladas_residuos_reciclados",
+  "tipoDato": "Double"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/12/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "12.1",
-  "descripcion": "Meta actualizada ODS12",
-  "valorMeta": 100.0,
-  "valorActual": 58.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "toneladas_residuos_generados",
+  "tipoDato": "Double"
 }
 
 ### Eliminar meta
@@ -214,10 +206,11 @@ POST {{baseUrl}}/api/ods/12/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 54.5,
-  "observaciones": "Medición de prueba ODS12"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 52.5,
+  "fechaMedicion": "2024-10-15",
+  "responsable": "Admin Consumo",
+  "observaciones": "Control de residuos"
 }
 
 ### Actualizar medición histórica
@@ -226,14 +219,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 56.0,
-  "observaciones": "Medición actualizada ODS12"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 55.0,
+  "fechaMedicion": "2024-10-15",
+  "responsable": "Admin Consumo Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/12/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

@@ -5,13 +5,13 @@ package com.odsProject.odsProject.database.jooq.ods15;
 
 
 import com.odsProject.odsProject.database.jooq.ods15.tables.AuditoriaOds15;
-import com.odsProject.odsProject.database.jooq.ods15.tables.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods15.tables.MedicionParametroValores;
 import com.odsProject.odsProject.database.jooq.ods15.tables.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods15.tables.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods15.tables.ProyectoIndicadorParametros;
+import com.odsProject.odsProject.database.jooq.ods15.tables.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods15.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods15.tables.VistaAdminAuditoriaReciente;
 import com.odsProject.odsProject.database.jooq.ods15.tables.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods15.tables.VistaAdminEstadisticasGenerales;
 import com.odsProject.odsProject.database.jooq.ods15.tables.VistaAdminResumenGeneral;
 
 
@@ -22,27 +22,32 @@ import com.odsProject.odsProject.database.jooq.ods15.tables.VistaAdminResumenGen
 public class Tables {
 
     /**
-     * Auditoría de cambios en el sistema ODS15
+     * The table <code>ods15.auditoria_ods15</code>.
      */
     public static final AuditoriaOds15 AUDITORIA_ODS15 = AuditoriaOds15.AUDITORIA_ODS15;
 
     /**
-     * Indicadores medidos por cada proyecto ODS15
+     * The table <code>ods15.medicion_parametro_valores</code>.
      */
-    public static final Indicadores INDICADORES = Indicadores.INDICADORES;
+    public static final MedicionParametroValores MEDICION_PARAMETRO_VALORES = MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
 
     /**
-     * Historial de mediciones de indicadores ODS15
+     * The table <code>ods15.mediciones_historicas</code>.
      */
     public static final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
 
     /**
-     * Metas específicas establecidas por cada proyecto ODS15
+     * The table <code>ods15.proyecto_indicador_parametros</code>.
      */
-    public static final MetasProyecto METAS_PROYECTO = MetasProyecto.METAS_PROYECTO;
+    public static final ProyectoIndicadorParametros PROYECTO_INDICADOR_PARAMETROS = ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
 
     /**
-     * Proyectos ODS15 creados por usuarios
+     * The table <code>ods15.proyecto_indicadores</code>.
+     */
+    public static final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
+
+    /**
+     * The table <code>ods15.proyectos</code>.
      */
     public static final Proyectos PROYECTOS = Proyectos.PROYECTOS;
 
@@ -55,11 +60,6 @@ public class Tables {
      * The table <code>ods15.vista_admin_detalle_indicadores</code>.
      */
     public static final VistaAdminDetalleIndicadores VISTA_ADMIN_DETALLE_INDICADORES = VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
-
-    /**
-     * The table <code>ods15.vista_admin_estadisticas_generales</code>.
-     */
-    public static final VistaAdminEstadisticasGenerales VISTA_ADMIN_ESTADISTICAS_GENERALES = VistaAdminEstadisticasGenerales.VISTA_ADMIN_ESTADISTICAS_GENERALES;
 
     /**
      * The table <code>ods15.vista_admin_resumen_general</code>.

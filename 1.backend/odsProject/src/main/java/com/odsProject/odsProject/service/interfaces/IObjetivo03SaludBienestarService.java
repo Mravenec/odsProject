@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -15,11 +15,11 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS03
  */
 public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -28,7 +28,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.1.1
@@ -37,7 +37,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.1.1
      */
-    Optional<Indicadores> getIndicador_3_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.1.2
@@ -46,7 +46,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.1.2
      */
-    Optional<Indicadores> getIndicador_3_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_1_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.2.1
@@ -55,7 +55,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.2.1
      */
-    Optional<Indicadores> getIndicador_3_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.2.2
@@ -64,7 +64,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.2.2
      */
-    Optional<Indicadores> getIndicador_3_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.3.1
@@ -73,7 +73,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.3.1
      */
-    Optional<Indicadores> getIndicador_3_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.3.2
@@ -82,7 +82,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.3.2
      */
-    Optional<Indicadores> getIndicador_3_3_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.3.3
@@ -91,7 +91,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.3.3
      */
-    Optional<Indicadores> getIndicador_3_3_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_3_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.3.4
@@ -100,7 +100,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.3.4
      */
-    Optional<Indicadores> getIndicador_3_3_4(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_3_4(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.3.5
@@ -109,7 +109,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.3.5
      */
-    Optional<Indicadores> getIndicador_3_3_5(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_3_5(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.4.1
@@ -118,7 +118,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.4.1
      */
-    Optional<Indicadores> getIndicador_3_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.4.2
@@ -127,7 +127,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.4.2
      */
-    Optional<Indicadores> getIndicador_3_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.5.1
@@ -136,7 +136,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.5.1
      */
-    Optional<Indicadores> getIndicador_3_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.5.2
@@ -145,7 +145,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.5.2
      */
-    Optional<Indicadores> getIndicador_3_5_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.6.1
@@ -154,7 +154,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.6.1
      */
-    Optional<Indicadores> getIndicador_3_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.6.2
@@ -163,7 +163,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.6.2
      */
-    Optional<Indicadores> getIndicador_3_6_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_6_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.7.1
@@ -172,7 +172,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.7.1
      */
-    Optional<Indicadores> getIndicador_3_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.7.2
@@ -181,7 +181,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.7.2
      */
-    Optional<Indicadores> getIndicador_3_7_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_7_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.8.1
@@ -190,7 +190,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.8.1
      */
-    Optional<Indicadores> getIndicador_3_8_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_8_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.8.2
@@ -199,7 +199,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.8.2
      */
-    Optional<Indicadores> getIndicador_3_8_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_8_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.9.1
@@ -208,7 +208,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.9.1
      */
-    Optional<Indicadores> getIndicador_3_9_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_9_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.9.2
@@ -217,7 +217,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.9.2
      */
-    Optional<Indicadores> getIndicador_3_9_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_9_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.9.3
@@ -226,7 +226,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.9.3
      */
-    Optional<Indicadores> getIndicador_3_9_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_9_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.a.1
@@ -235,7 +235,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.a.1
      */
-    Optional<Indicadores> getIndicador_3_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.b.1
@@ -244,7 +244,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.b.1
      */
-    Optional<Indicadores> getIndicador_3_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.b.2
@@ -253,7 +253,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.b.2
      */
-    Optional<Indicadores> getIndicador_3_b_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_b_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.b.3
@@ -262,7 +262,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.b.3
      */
-    Optional<Indicadores> getIndicador_3_b_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_b_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.c.1
@@ -271,7 +271,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.c.1
      */
-    Optional<Indicadores> getIndicador_3_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_c_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.d.1
@@ -280,7 +280,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.d.1
      */
-    Optional<Indicadores> getIndicador_3_d_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_d_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 3.d.2
@@ -289,7 +289,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 3.d.2
      */
-    Optional<Indicadores> getIndicador_3_d_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_3_d_2(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS03
@@ -297,7 +297,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds03(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds03(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS03
@@ -306,7 +306,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "3.1", "3.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos CRUD y Utilidades (para alinear con Repository) ──
     
@@ -331,7 +331,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todas las metas del proyecto
      */
-    List<MetasProyecto> getAllMetasProyectoOds03(Integer proyectoId);
+    List<ProyectoIndicadorParametros> getAllMetasProyectoOds03(Integer proyectoId);
     
     /**
      * Obtiene una meta de proyecto del ODS03 por su ID
@@ -339,7 +339,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> getMetaProyectoOds03ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> getMetaProyectoOds03ById(Integer metaId);
     
     /**
      * Obtiene todas las mediciones históricas del ODS03
@@ -363,7 +363,7 @@ public interface IObjetivo03SaludBienestarService extends IOdsBaseService<
      * @param indicador Datos del indicador a validar
      * @return true si los datos son válidos, false otherwise
      */
-    Boolean validateIndicatorData(Indicadores indicador);
+    Boolean validateIndicatorData(ProyectoIndicadores indicador);
     
     /**
      * Calcula el progreso de un proyecto

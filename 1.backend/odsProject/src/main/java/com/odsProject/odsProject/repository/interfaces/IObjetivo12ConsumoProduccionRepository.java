@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.repository.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.AuditoriaOds12;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 12
  * Usa jOOQ con datasource ods12
  */
-public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds12> {
+public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds12> {
     
     /**
      * 12.1.1 Número de países que elaboran, adoptan o aplican instrumentos de política destinados 
@@ -22,7 +22,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.1.1
      */
-    Optional<Indicadores> findIndicador_12_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_1_1(Integer proyectoId);
     
     /**
      * 12.2.1 Huella material en términos absolutos, huella material per cápita y huella material por PIB [95]
@@ -30,7 +30,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.2.1
      */
-    Optional<Indicadores> findIndicador_12_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_2_1(Integer proyectoId);
     
     /**
      * 12.2.2 Consumo material interno en términos absolutos, consumo material interno per cápita 
@@ -39,7 +39,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.2.2
      */
-    Optional<Indicadores> findIndicador_12_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_2_2(Integer proyectoId);
     
     /**
      * 12.3.1 a) Índice de pérdidas de alimentos y b) índice de desperdicio de alimentos [96]
@@ -47,7 +47,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.3.1
      */
-    Optional<Indicadores> findIndicador_12_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_3_1(Integer proyectoId);
     
     /**
      * 12.4.1 Número de partes en los acuerdos ambientales multilaterales internacionales sobre 
@@ -56,7 +56,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.4.1
      */
-    Optional<Indicadores> findIndicador_12_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_4_1(Integer proyectoId);
     
     /**
      * 12.4.2 a) Desechos peligrosos generados per cápita y b) proporción de desechos peligrosos tratados, 
@@ -65,7 +65,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.4.2
      */
-    Optional<Indicadores> findIndicador_12_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_4_2(Integer proyectoId);
     
     /**
      * 12.5.1 Tasa nacional de reciclado, en toneladas de material reciclado [97]
@@ -73,7 +73,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.5.1
      */
-    Optional<Indicadores> findIndicador_12_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_5_1(Integer proyectoId);
     
     /**
      * 12.6.1 Número de empresas que publican informes sobre sostenibilidad [98]
@@ -81,7 +81,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.6.1
      */
-    Optional<Indicadores> findIndicador_12_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_6_1(Integer proyectoId);
     
     /**
      * 12.7.1 Número de países que aplican políticas y planes de acción sostenibles en materia de adquisiciones públicas [98]
@@ -89,7 +89,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.7.1
      */
-    Optional<Indicadores> findIndicador_12_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_7_1(Integer proyectoId);
     
     /**
      * 12.8.1 Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo sostenible 
@@ -99,7 +99,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.8.1
      */
-    Optional<Indicadores> findIndicador_12_8_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_8_1(Integer proyectoId);
     
     /**
      * 12.a.1 Capacidad instalada de generación de energía renovable en los países en desarrollo 
@@ -108,7 +108,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.a.1
      */
-    Optional<Indicadores> findIndicador_12_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_a_1(Integer proyectoId);
     
     /**
      * 12.b.1 Aplicación de instrumentos normalizados de contabilidad para hacer un seguimiento 
@@ -117,7 +117,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.b.1
      */
-    Optional<Indicadores> findIndicador_12_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_b_1(Integer proyectoId);
     
     /**
      * 12.c.1 Cuantía de los subsidios a los combustibles fósiles (producción y consumo) por unidad del PIB [101, 102]
@@ -125,7 +125,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 12.c.1
      */
-    Optional<Indicadores> findIndicador_12_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_12_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS12
@@ -133,7 +133,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS12
@@ -142,7 +142,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param metaPrefix Prefijo de la meta (ej: "12.1", "12.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos específicos del ODS12 ──
     
@@ -167,7 +167,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param proyectoId ID del proyecto
      * @return Lista de metas del proyecto
      */
-    List<MetasProyecto> findAllMetasProyectoOds12(Integer proyectoId);
+    List<ProyectoIndicadorParametros> findAllMetasProyectoOds12(Integer proyectoId);
     
     /**
      * Encuentra una meta de proyecto del ODS12 por su ID
@@ -175,7 +175,7 @@ public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseReposito
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> findMetaProyectoOds12ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> findMetaProyectoOds12ById(Integer metaId);
     
     /**
      * Encuentra todas las mediciones históricas del ODS12

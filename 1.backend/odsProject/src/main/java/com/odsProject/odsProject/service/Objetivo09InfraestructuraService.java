@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo09InfraestructuraRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo09InfraestructuraService;
@@ -30,7 +30,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_1_1(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_1_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_1_2(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_1_2(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_2_1(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_2_1(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_2_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_2_2(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_2_2(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_3_1(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_3_1(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_3_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_3_2(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_3_2(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_4_1(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_4_1(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_5_1(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_5_1(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_5_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_5_2(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_5_2(proyectoId);
     }
 
@@ -110,7 +110,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_a_1(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_a_1(proyectoId);
     }
 
@@ -118,7 +118,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_b_1(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_b_1(proyectoId);
     }
 
@@ -126,7 +126,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_9_c_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_9_c_1(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicador_9_c_1(proyectoId);
     }
 
@@ -134,7 +134,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds09(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds09(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findAllIndicadoresByProyectoOds09(proyectoId);
     }
 
@@ -142,7 +142,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo09InfraestructuraRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
     // ── IOdsBaseService implementations ──
@@ -196,7 +196,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -204,7 +204,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
@@ -212,7 +212,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo09InfraestructuraRepository.saveIndicador(indicador);
     }
 
@@ -220,7 +220,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo09InfraestructuraRepository.updateIndicador(indicador);
     }
 
@@ -236,7 +236,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo09InfraestructuraRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -244,7 +244,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo09InfraestructuraRepository.findMetaProyectoOds09ById(metaId);
     }
 
@@ -252,7 +252,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo09InfraestructuraRepository.saveMetaProyecto(meta);
     }
 
@@ -260,7 +260,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 
@@ -316,10 +316,10 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 
@@ -348,7 +348,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      */
     private Map<String, Object> getOds09Statistics() {
         List<Proyectos> proyectos = objetivo09InfraestructuraRepository.findAllProyectos();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo09InfraestructuraRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(
@@ -395,7 +395,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
      */
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = findAllIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = findAllIndicadoresByProyecto(proyectoId);
         long totalIndicadores = indicadores.size();
         long indicadoresConDatos = indicadores.stream().filter(i -> i.getValorActual() != null).count();
         if (totalIndicadores == 0) return 0.0;

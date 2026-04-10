@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo03SaludBienestarRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo03SaludBienestarService;
@@ -30,7 +30,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_1_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_1_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_1_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_1_2(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_2_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_2_1(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_2_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_2_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_2_2(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_3_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_3_1(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_3_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_3_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_3_2(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_3_3(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_3_3(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_3_3(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_3_4(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_3_4(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_3_4(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_3_5(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_3_5(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_3_5(proyectoId);
     }
 
@@ -110,7 +110,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_4_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_4_1(proyectoId);
     }
 
@@ -118,7 +118,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_4_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_4_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_4_2(proyectoId);
     }
 
@@ -126,7 +126,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_5_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_5_1(proyectoId);
     }
 
@@ -134,7 +134,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_5_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_5_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_5_2(proyectoId);
     }
 
@@ -142,7 +142,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_6_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_6_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_6_1(proyectoId);
     }
 
@@ -150,7 +150,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_6_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_6_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_6_2(proyectoId);
     }
 
@@ -158,7 +158,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_7_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_7_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_7_1(proyectoId);
     }
 
@@ -166,7 +166,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_7_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_7_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_7_2(proyectoId);
     }
 
@@ -174,7 +174,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_8_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_8_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_8_1(proyectoId);
     }
 
@@ -182,7 +182,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_8_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_8_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_8_2(proyectoId);
     }
 
@@ -190,7 +190,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_9_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_9_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_9_1(proyectoId);
     }
 
@@ -198,7 +198,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_9_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_9_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_9_2(proyectoId);
     }
 
@@ -206,7 +206,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_9_3(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_9_3(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_9_3(proyectoId);
     }
 
@@ -214,7 +214,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_a_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_a_1(proyectoId);
     }
 
@@ -222,7 +222,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_b_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_b_1(proyectoId);
     }
 
@@ -230,7 +230,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_b_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_b_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_b_2(proyectoId);
     }
 
@@ -238,7 +238,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_b_3(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_b_3(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_b_3(proyectoId);
     }
 
@@ -246,7 +246,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_c_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_c_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_c_1(proyectoId);
     }
 
@@ -254,7 +254,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_d_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_d_1(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_d_1(proyectoId);
     }
 
@@ -262,7 +262,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_3_d_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_3_d_2(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicador_3_d_2(proyectoId);
     }
 
@@ -270,7 +270,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds03(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds03(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findAllIndicadoresByProyectoOds03(proyectoId);
     }
 
@@ -278,7 +278,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo03SaludBienestarRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -304,7 +304,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> getAllMetasProyectoOds03(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> getAllMetasProyectoOds03(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findAllMetasProyectoOds03(proyectoId);
     }
 
@@ -312,7 +312,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> getMetaProyectoOds03ById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> getMetaProyectoOds03ById(Integer metaId) {
         return objetivo03SaludBienestarRepository.findMetaProyectoOds03ById(metaId);
     }
 
@@ -336,10 +336,10 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 
@@ -348,7 +348,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      */
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = objetivo03SaludBienestarRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo03SaludBienestarRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream()
             .filter(ind -> ind.getValorActual() != null)
@@ -362,7 +362,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
     @Override
     public Map<String, Object> getOds03Statistics() {
         List<Proyectos> proyectos = objetivo03SaludBienestarRepository.findAllProyectosOds03();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo03SaludBienestarRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(
@@ -439,7 +439,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -447,7 +447,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
@@ -455,7 +455,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo03SaludBienestarRepository.saveIndicador(indicador);
     }
 
@@ -463,7 +463,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo03SaludBienestarRepository.updateIndicador(indicador);
     }
 
@@ -479,7 +479,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo03SaludBienestarRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -487,7 +487,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo03SaludBienestarRepository.findMetaProyectoOds03ById(metaId);
     }
 
@@ -495,7 +495,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo03SaludBienestarRepository.saveMetaProyecto(meta);
     }
 
@@ -503,7 +503,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 

@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.repository.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.AuditoriaOds10;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 10
  * Usa jOOQ con datasource ods10
  */
-public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds10> {
+public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds10> {
     
     /**
      * 10.1.1 Tasas de crecimiento per cápita de los gastos o ingresos de los hogares del 40% más pobre 
@@ -22,7 +22,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.1.1
      */
-    Optional<Indicadores> findIndicador_10_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_1_1(Integer proyectoId);
     
     /**
      * 10.2.1 Proporción de personas que viven por debajo del 50% de la mediana de los ingresos, 
@@ -31,7 +31,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.2.1
      */
-    Optional<Indicadores> findIndicador_10_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_2_1(Integer proyectoId);
     
     /**
      * 10.3.1 Proporción de la población que declara haberse sentido personalmente discriminada 
@@ -40,7 +40,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.3.1
      */
-    Optional<Indicadores> findIndicador_10_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_3_1(Integer proyectoId);
     
     /**
      * 10.4.1 Proporción del PIB generada por el trabajo [77]
@@ -48,7 +48,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.4.1
      */
-    Optional<Indicadores> findIndicador_10_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_4_1(Integer proyectoId);
     
     /**
      * 10.4.2 Impacto redistributivo de la política fiscal en el índice de Gini [77]
@@ -56,7 +56,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.4.2
      */
-    Optional<Indicadores> findIndicador_10_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_4_2(Integer proyectoId);
     
     /**
      * 10.5.1 Indicadores de solidez financiera [78]
@@ -64,7 +64,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.5.1
      */
-    Optional<Indicadores> findIndicador_10_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_5_1(Integer proyectoId);
     
     /**
      * 10.6.1 Proporción de miembros y derechos de voto de los países en desarrollo 
@@ -73,7 +73,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.6.1
      */
-    Optional<Indicadores> findIndicador_10_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_6_1(Integer proyectoId);
     
     /**
      * 10.7.1 Costo de la contratación sufragado por el empleado en proporción a los ingresos 
@@ -82,7 +82,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.7.1
      */
-    Optional<Indicadores> findIndicador_10_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_7_1(Integer proyectoId);
     
     /**
      * 10.7.2 Proporción de países que han aplicado políticas migratorias bien gestionadas 
@@ -91,7 +91,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.7.2
      */
-    Optional<Indicadores> findIndicador_10_7_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_7_2(Integer proyectoId);
     
     /**
      * 10.7.3 Número de personas que murieron o desaparecieron en el proceso de migración 
@@ -100,7 +100,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.7.3
      */
-    Optional<Indicadores> findIndicador_10_7_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_7_3(Integer proyectoId);
     
     /**
      * 10.7.4 Proporción de la población integrada por refugiados, desglosada por país de origen [80]
@@ -108,7 +108,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.7.4
      */
-    Optional<Indicadores> findIndicador_10_7_4(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_7_4(Integer proyectoId);
     
     /**
      * 10.a.1 Proporción de líneas arancelarias que se aplican a las importaciones de los países 
@@ -117,7 +117,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.a.1
      */
-    Optional<Indicadores> findIndicador_10_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_a_1(Integer proyectoId);
     
     /**
      * 10.b.1 Corrientes totales de recursos para el desarrollo (por ejemplo, asistencia oficial 
@@ -126,7 +126,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.b.1
      */
-    Optional<Indicadores> findIndicador_10_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_b_1(Integer proyectoId);
     
     /**
      * 10.c.1 Costo de las remesas en proporción a las sumas remitidas [82]
@@ -134,7 +134,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.c.1
      */
-    Optional<Indicadores> findIndicador_10_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_10_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS10
@@ -142,7 +142,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds10(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds10(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS10
@@ -151,7 +151,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param metaPrefix Prefijo de la meta (ej: "10.1", "10.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos específicos del ODS10 ──
     
@@ -176,7 +176,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Lista de metas del proyecto
      */
-    List<MetasProyecto> findAllMetasProyectoOds10(Integer proyectoId);
+    List<ProyectoIndicadorParametros> findAllMetasProyectoOds10(Integer proyectoId);
     
     /**
      * Encuentra una meta de proyecto del ODS10 por su ID
@@ -184,7 +184,7 @@ public interface IObjetivo10ReduccionDesigualdadRepository extends IOdsBaseRepos
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> findMetaProyectoOds10ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> findMetaProyectoOds10ById(Integer metaId);
     
     /**
      * Encuentra todas las mediciones históricas del ODS10

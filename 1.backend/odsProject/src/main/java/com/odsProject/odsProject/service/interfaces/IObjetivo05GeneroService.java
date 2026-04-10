@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS05
  */
 public interface IObjetivo05GeneroService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -27,7 +27,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.1.1
      */
-    Optional<Indicadores> getIndicador_5_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.2.1
@@ -45,7 +45,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.2.1
      */
-    Optional<Indicadores> getIndicador_5_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.2.2
@@ -54,7 +54,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.2.2
      */
-    Optional<Indicadores> getIndicador_5_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.3.1
@@ -63,7 +63,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.3.1
      */
-    Optional<Indicadores> getIndicador_5_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.3.2
@@ -72,7 +72,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.3.2
      */
-    Optional<Indicadores> getIndicador_5_3_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.4.1
@@ -81,7 +81,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.4.1
      */
-    Optional<Indicadores> getIndicador_5_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.5.1
@@ -90,7 +90,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.5.1
      */
-    Optional<Indicadores> getIndicador_5_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.5.2
@@ -99,7 +99,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.5.2
      */
-    Optional<Indicadores> getIndicador_5_5_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.6.1
@@ -108,7 +108,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.6.1
      */
-    Optional<Indicadores> getIndicador_5_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.6.2
@@ -117,7 +117,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.6.2
      */
-    Optional<Indicadores> getIndicador_5_6_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_6_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.a.1
@@ -126,7 +126,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.a.1
      */
-    Optional<Indicadores> getIndicador_5_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.a.2
@@ -135,7 +135,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.a.2
      */
-    Optional<Indicadores> getIndicador_5_a_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_a_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.b.1
@@ -144,7 +144,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.b.1
      */
-    Optional<Indicadores> getIndicador_5_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 5.c.1
@@ -153,7 +153,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 5.c.1
      */
-    Optional<Indicadores> getIndicador_5_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_5_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS05
@@ -161,7 +161,7 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds05(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds05(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS05
@@ -170,5 +170,5 @@ public interface IObjetivo05GeneroService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "5.1", "5.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

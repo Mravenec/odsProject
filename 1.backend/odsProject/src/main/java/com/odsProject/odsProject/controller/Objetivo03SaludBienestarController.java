@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo03SaludBienestarService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo03SaludBienestarController;
@@ -32,8 +32,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo03SaludBienestarService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo03SaludBienestarService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.1.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_1_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_1_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_1_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_1_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.2.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_2_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_2_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_2_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_2_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.3.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_3_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_3_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.3.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_3_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_3_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.3.4")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_3_4(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_4(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_3_4(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_4(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.3.5")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_3_5(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_5(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_3_5(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_3_5(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.4.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_4_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_4_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_4_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_4_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -162,8 +162,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.5.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_5_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_5_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_5_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_5_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -172,8 +172,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -182,8 +182,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.7.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_7_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_7_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_7_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_7_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -192,8 +192,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.7.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_7_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_7_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_7_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_7_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -202,8 +202,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.8.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_8_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_8_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_8_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_8_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -212,8 +212,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.8.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_8_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_8_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_8_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_8_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -222,8 +222,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.9.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_9_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_9_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_9_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_9_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -232,8 +232,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.9.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_9_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_9_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_9_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_9_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -242,8 +242,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.9.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_9_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_9_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_9_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_9_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -252,8 +252,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -262,8 +262,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -272,8 +272,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.b.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_b_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_b_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_b_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_b_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -282,8 +282,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.b.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_b_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_b_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_b_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_b_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -292,8 +292,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.c.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_c_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_c_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_c_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_c_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -302,8 +302,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.d.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_d_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_d_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_d_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_d_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -312,8 +312,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/3.d.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_3_d_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.getIndicador_3_d_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_3_d_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.getIndicador_3_d_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -322,8 +322,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds03(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo03SaludBienestarService.findAllIndicadoresByProyectoOds03(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds03(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo03SaludBienestarService.findAllIndicadoresByProyectoOds03(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -332,8 +332,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo03SaludBienestarService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo03SaludBienestarService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -369,8 +369,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS03
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds03(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo03SaludBienestarService.getAllMetasProyectoOds03(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds03(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo03SaludBienestarService.getAllMetasProyectoOds03(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -502,8 +502,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo03SaludBienestarService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo03SaludBienestarService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -512,8 +512,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo03SaludBienestarService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo03SaludBienestarService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -522,8 +522,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo03SaludBienestarService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo03SaludBienestarService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -532,7 +532,7 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo03SaludBienestarService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -542,8 +542,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo03SaludBienestarService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo03SaludBienestarService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -562,8 +562,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo03SaludBienestarService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo03SaludBienestarService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -572,8 +572,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo03SaludBienestarService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo03SaludBienestarService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -582,8 +582,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo03SaludBienestarService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo03SaludBienestarService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -592,8 +592,8 @@ public class Objetivo03SaludBienestarController implements IObjetivo03SaludBiene
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo03SaludBienestarService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo03SaludBienestarService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

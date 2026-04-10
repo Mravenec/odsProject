@@ -97,12 +97,15 @@ POST {{baseUrl}}/api/ods/07/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Energía Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Energía Test",
+  "objetivoId": 7,
   "descripcion": "Proyecto de prueba para ODS7",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 300000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Asegurar el acceso a energías asequibles",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -110,12 +113,12 @@ POST {{baseUrl}}/api/ods/07/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Energía",
-  "descripcion": "Proyecto para validar ODS7",
+  "nombreProyecto": "Proyecto Validación Energía",
+  "usuarioId": 2,
+  "objetivoId": 7,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 150000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -124,29 +127,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Energía Actualizado",
+  "nombreProyecto": "Proyecto Energía Actualizado",
   "descripcion": "Proyecto actualizado para ODS7",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 325000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Energía",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 84 = 7.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/07/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "7.1.1",
-  "nombre": "Indicador Energía Test",
-  "descripcion": "Indicador de prueba para ODS7",
-  "valorActual": 55.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 84,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -154,13 +155,10 @@ POST {{baseUrl}}/api/ods/07/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "7.2.1",
-  "nombre": "Indicador Validación Energía",
-  "descripcion": "Indicador para validar ODS7",
-  "valorActual": 40.0,
-  "valorMeta": 70.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 84,
+  "metaValor": 90.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -169,41 +167,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "7.1.1",
-  "nombre": "Indicador Energía Actualizado",
-  "descripcion": "Indicador actualizado para ODS7",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 84,
   "valorActual": 60.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/07/metas
 Content-Type: application/json
 
 {
-  "codigo": "7.1",
-  "descripcion": "Meta de prueba ODS7",
-  "valorMeta": 100.0,
-  "valorActual": 55.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "viviendas_con_electricidad",
+  "tipoDato": "Integer"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/07/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "7.1",
-  "descripcion": "Meta actualizada ODS7",
-  "valorMeta": 100.0,
-  "valorActual": 57.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "viviendas_con_energia_renovable",
+  "tipoDato": "Integer"
 }
 
 ### Eliminar meta
@@ -214,9 +206,10 @@ POST {{baseUrl}}/api/ods/07/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 53.5,
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 55.5,
+  "fechaMedicion": "2024-04-10",
+  "responsable": "Admin Energía",
   "observaciones": "Medición de prueba ODS7"
 }
 
@@ -226,14 +219,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 55.0,
-  "observaciones": "Medición actualizada ODS7"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 58.0,
+  "fechaMedicion": "2024-04-10",
+  "responsable": "Admin Energía Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

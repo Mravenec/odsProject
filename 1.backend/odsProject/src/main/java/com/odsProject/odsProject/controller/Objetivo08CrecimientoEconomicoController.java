@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo08CrecimientoEconomicoService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo08CrecimientoEconomicoController;
@@ -32,8 +32,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo08CrecimientoEconomicoService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.4.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_4_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_4_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_4_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_4_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.5.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_5_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_5_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_5_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_5_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.7.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_7_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_7_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_7_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_7_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.8.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_8_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_8_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_8_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_8_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.8.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_8_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_8_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_8_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_8_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.9.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_9_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_9_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_9_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_9_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -162,8 +162,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.9.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_9_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_9_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_9_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_9_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -172,8 +172,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.10.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_10_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_10_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_10_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_10_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -182,8 +182,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.10.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_10_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_10_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_10_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_10_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -192,8 +192,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -202,8 +202,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/8.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_8_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_8_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.getIndicador_8_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -212,8 +212,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds08(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo08CrecimientoEconomicoService.findAllIndicadoresByProyectoOds08(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds08(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.findAllIndicadoresByProyectoOds08(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -222,8 +222,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo08CrecimientoEconomicoService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -259,8 +259,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS08
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds08(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo08CrecimientoEconomicoService.getAllMetasProyectoOds08(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds08(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo08CrecimientoEconomicoService.getAllMetasProyectoOds08(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -392,8 +392,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo08CrecimientoEconomicoService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -402,8 +402,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo08CrecimientoEconomicoService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo08CrecimientoEconomicoService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -412,8 +412,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo08CrecimientoEconomicoService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo08CrecimientoEconomicoService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -422,7 +422,7 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo08CrecimientoEconomicoService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -432,8 +432,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo08CrecimientoEconomicoService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo08CrecimientoEconomicoService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -452,8 +452,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo08CrecimientoEconomicoService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo08CrecimientoEconomicoService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -462,8 +462,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo08CrecimientoEconomicoService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo08CrecimientoEconomicoService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -472,8 +472,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo08CrecimientoEconomicoService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo08CrecimientoEconomicoService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -482,8 +482,8 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo08CrecimientoEconomicoService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo08CrecimientoEconomicoService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

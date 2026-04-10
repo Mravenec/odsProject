@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo13AccionClimaService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo13AccionClimaController;
@@ -32,8 +32,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo13AccionClimaService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo13AccionClimaService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/13.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_13_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo13AccionClimaService.getIndicador_13_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/13.1.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_13_1_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo13AccionClimaService.getIndicador_13_1_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_1_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_1_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/13.1.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_13_1_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo13AccionClimaService.getIndicador_13_1_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_1_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_1_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/13.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_13_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo13AccionClimaService.getIndicador_13_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/13.2.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_13_2_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo13AccionClimaService.getIndicador_13_2_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_2_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_2_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/13.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_13_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo13AccionClimaService.getIndicador_13_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/13.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_13_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo13AccionClimaService.getIndicador_13_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/13.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_13_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo13AccionClimaService.getIndicador_13_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds13(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo13AccionClimaService.findAllIndicadoresByProyectoOds13(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds13(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo13AccionClimaService.findAllIndicadoresByProyectoOds13(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo13AccionClimaService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo13AccionClimaService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -169,8 +169,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS13
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds13(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo13AccionClimaService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds13(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo13AccionClimaService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -302,8 +302,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo13AccionClimaService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo13AccionClimaService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -312,8 +312,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo13AccionClimaService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -322,8 +322,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo13AccionClimaService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo13AccionClimaService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -332,7 +332,7 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo13AccionClimaService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -342,8 +342,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo13AccionClimaService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo13AccionClimaService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -362,8 +362,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo13AccionClimaService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo13AccionClimaService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -372,8 +372,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo13AccionClimaService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo13AccionClimaService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -382,8 +382,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo13AccionClimaService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo13AccionClimaService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -392,8 +392,8 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo13AccionClimaService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo13AccionClimaService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

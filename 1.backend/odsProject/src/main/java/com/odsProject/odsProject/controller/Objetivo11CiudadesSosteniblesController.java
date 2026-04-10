@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo11CiudadesSosteniblesService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo11CiudadesSosteniblesController;
@@ -32,8 +32,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo11CiudadesSosteniblesService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.3.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_3_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_3_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_3_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_3_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.5.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_5_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_5_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_5_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_5_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.5.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_5_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_5_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_5_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_5_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.6.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_6_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_6_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_6_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_6_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.7.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_7_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_7_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_7_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_7_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.7.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_7_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_7_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_7_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_7_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -162,8 +162,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -172,8 +172,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -182,8 +182,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.b.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_b_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_b_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_b_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_b_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -192,8 +192,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/11.c.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_11_c_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_c_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_11_c_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.getIndicador_11_c_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -202,8 +202,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds11(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo11CiudadesSosteniblesService.findAllIndicadoresByProyectoOds11(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds11(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.findAllIndicadoresByProyectoOds11(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -212,8 +212,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo11CiudadesSosteniblesService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -249,8 +249,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS11
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds11(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo11CiudadesSosteniblesService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds11(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo11CiudadesSosteniblesService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -382,8 +382,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo11CiudadesSosteniblesService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -392,8 +392,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo11CiudadesSosteniblesService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo11CiudadesSosteniblesService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -402,8 +402,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo11CiudadesSosteniblesService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo11CiudadesSosteniblesService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -412,7 +412,7 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo11CiudadesSosteniblesService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -422,8 +422,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo11CiudadesSosteniblesService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo11CiudadesSosteniblesService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -442,8 +442,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo11CiudadesSosteniblesService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo11CiudadesSosteniblesService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -452,8 +452,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo11CiudadesSosteniblesService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo11CiudadesSosteniblesService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -462,8 +462,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo11CiudadesSosteniblesService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo11CiudadesSosteniblesService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -472,8 +472,8 @@ public class Objetivo11CiudadesSosteniblesController implements IObjetivo11Ciuda
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo11CiudadesSosteniblesService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo11CiudadesSosteniblesService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo05GeneroRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo05GeneroService;
@@ -30,7 +30,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_1_1(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_2_1(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_2_1(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_2_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_2_2(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_2_2(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_3_1(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_3_1(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_3_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_3_2(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_3_2(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_4_1(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_4_1(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_5_1(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_5_1(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_5_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_5_2(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_5_2(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_6_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_6_1(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_6_1(proyectoId);
     }
 
@@ -110,7 +110,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_6_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_6_2(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_6_2(proyectoId);
     }
 
@@ -118,7 +118,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_a_1(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_a_1(proyectoId);
     }
 
@@ -126,7 +126,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_a_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_a_2(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_a_2(proyectoId);
     }
 
@@ -134,7 +134,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_b_1(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_b_1(proyectoId);
     }
 
@@ -142,7 +142,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_5_c_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_5_c_1(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicador_5_c_1(proyectoId);
     }
 
@@ -150,7 +150,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds05(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds05(Integer proyectoId) {
         return objetivo05GeneroRepository.findAllIndicadoresByProyectoOds05(proyectoId);
     }
 
@@ -158,7 +158,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo05GeneroRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -213,7 +213,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo05GeneroRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -221,7 +221,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
@@ -229,7 +229,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo05GeneroRepository.saveIndicador(indicador);
     }
 
@@ -237,7 +237,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo05GeneroRepository.updateIndicador(indicador);
     }
 
@@ -253,7 +253,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo05GeneroRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -261,7 +261,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo05GeneroRepository.findMetaProyectoOds05ById(metaId);
     }
 
@@ -269,7 +269,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo05GeneroRepository.saveMetaProyecto(meta);
     }
 
@@ -277,7 +277,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 
@@ -343,10 +343,10 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 
@@ -355,7 +355,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
      */
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = objetivo05GeneroRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo05GeneroRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream()
             .filter(ind -> ind.getValorActual() != null)
@@ -369,7 +369,7 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
     @Override
     public Map<String, Object> getOdsStatistics() {
         List<Proyectos> proyectos = objetivo05GeneroRepository.findAllProyectos();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo05GeneroRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(

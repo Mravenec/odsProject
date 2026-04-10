@@ -109,12 +109,15 @@ POST {{baseUrl}}/api/ods/04/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Educación Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Educación Test",
+  "objetivoId": 4,
   "descripcion": "Proyecto de prueba para ODS4",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 180000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Lograr alfabetización universal en la región",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -122,12 +125,12 @@ POST {{baseUrl}}/api/ods/04/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Educación",
-  "descripcion": "Proyecto para validar ODS4",
+  "nombreProyecto": "Proyecto Validación Educación",
+  "usuarioId": 2,
+  "objetivoId": 4,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 90000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -136,29 +139,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Educación Actualizado",
+  "nombreProyecto": "Proyecto Educación Actualizado",
   "descripcion": "Proyecto actualizado para ODS4",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 195000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Educación",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/04/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 47 = 4.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/04/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "4.1.1",
-  "nombre": "Indicador Educación Test",
-  "descripcion": "Indicador de prueba para ODS4",
-  "valorActual": 75.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 47,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -166,13 +167,10 @@ POST {{baseUrl}}/api/ods/04/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "4.2.1",
-  "nombre": "Indicador Validación Educación",
-  "descripcion": "Indicador para validar ODS4",
-  "valorActual": 60.0,
-  "valorMeta": 80.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 47,
+  "metaValor": 90.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -181,41 +179,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "4.1.1",
-  "nombre": "Indicador Educación Actualizado",
-  "descripcion": "Indicador actualizado para ODS4",
-  "valorActual": 80.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 47,
+  "valorActual": 85.0,
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/04/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/04/metas
 Content-Type: application/json
 
 {
-  "codigo": "4.1",
-  "descripcion": "Meta de prueba ODS4",
-  "valorMeta": 100.0,
-  "valorActual": 75.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "alumnos_aprobados",
+  "tipoDato": "Integer"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/04/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "4.1",
-  "descripcion": "Meta actualizada ODS4",
-  "valorMeta": 100.0,
-  "valorActual": 77.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "alumnos",
+  "tipoDato": "Integer"
 }
 
 ### Eliminar meta
@@ -226,9 +218,10 @@ POST {{baseUrl}}/api/ods/04/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 73.5,
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 82.5,
+  "fechaMedicion": "2024-06-15",
+  "responsable": "Admin Educación",
   "observaciones": "Medición de prueba ODS4"
 }
 
@@ -238,16 +231,16 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 75.0,
-  "observaciones": "Medición actualizada ODS4"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 85.0,
+  "fechaMedicion": "2024-06-15",
+  "responsable": "Admin Ed Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/04/mediciones/{{medicionId}}
 
-# ── IOdsBaseController Methods ──
+# ── IOdsBaseController Methods (General) ──
 
 ### Obtener todos los proyectos (base)
 GET {{baseUrl}}/api/ods/04/all-proyectos
@@ -290,3 +283,4 @@ GET {{baseUrl}}/api/ods/04/meta/{{metaId}}/existe
 
 ### Verificar existencia de medición histórica (base)
 GET {{baseUrl}}/api/ods/04/medicion/{{medicionId}}/existe
+

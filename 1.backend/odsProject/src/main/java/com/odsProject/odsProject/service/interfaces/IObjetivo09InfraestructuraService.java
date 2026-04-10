@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS09
  */
 public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -27,7 +27,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.1.1
      */
-    Optional<Indicadores> getIndicador_9_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.1.2
@@ -45,7 +45,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.1.2
      */
-    Optional<Indicadores> getIndicador_9_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_1_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.2.1
@@ -54,7 +54,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.2.1
      */
-    Optional<Indicadores> getIndicador_9_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.2.2
@@ -63,7 +63,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.2.2
      */
-    Optional<Indicadores> getIndicador_9_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.3.1
@@ -72,7 +72,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.3.1
      */
-    Optional<Indicadores> getIndicador_9_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.3.2
@@ -81,7 +81,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.3.2
      */
-    Optional<Indicadores> getIndicador_9_3_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.4.1
@@ -90,7 +90,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.4.1
      */
-    Optional<Indicadores> getIndicador_9_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.5.1
@@ -99,7 +99,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.5.1
      */
-    Optional<Indicadores> getIndicador_9_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.5.2
@@ -108,7 +108,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.5.2
      */
-    Optional<Indicadores> getIndicador_9_5_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.a.1
@@ -117,7 +117,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.a.1
      */
-    Optional<Indicadores> getIndicador_9_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.b.1
@@ -126,7 +126,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.b.1
      */
-    Optional<Indicadores> getIndicador_9_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 9.c.1
@@ -135,7 +135,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 9.c.1
      */
-    Optional<Indicadores> getIndicador_9_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_9_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS09
@@ -143,7 +143,7 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds09(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds09(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS09
@@ -152,5 +152,5 @@ public interface IObjetivo09InfraestructuraService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "9.1", "9.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * Auditoría de cambios en el sistema ODS14
+ * Auditoría interna de cambios en la base de datos ODS14
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class AuditoriaOds14 implements Serializable {

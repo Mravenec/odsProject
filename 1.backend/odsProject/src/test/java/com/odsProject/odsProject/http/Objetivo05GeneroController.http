@@ -97,12 +97,15 @@ POST {{baseUrl}}/api/ods/05/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Igualdad de Género Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Género Test",
+  "objetivoId": 5,
   "descripcion": "Proyecto de prueba para ODS5",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 120000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Lograr paridad de género en puestos de liderazgo",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -110,12 +113,12 @@ POST {{baseUrl}}/api/ods/05/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Género",
-  "descripcion": "Proyecto para validar ODS5",
+  "nombreProyecto": "Proyecto Validación Género",
+  "usuarioId": 2,
+  "objetivoId": 5,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 60000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -124,29 +127,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Género Actualizado",
+  "nombreProyecto": "Proyecto Género Actualizado",
   "descripcion": "Proyecto actualizado para ODS5",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 135000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Género",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/05/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 62 = 5.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/05/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "5.1.1",
-  "nombre": "Indicador Género Test",
-  "descripcion": "Indicador de prueba para ODS5",
-  "valorActual": 65.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 62,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -154,13 +155,10 @@ POST {{baseUrl}}/api/ods/05/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "5.2.1",
-  "nombre": "Indicador Validación Género",
-  "descripcion": "Indicador para validar ODS5",
-  "valorActual": 50.0,
-  "valorMeta": 75.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 62,
+  "metaValor": 95.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -169,41 +167,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "5.1.1",
-  "nombre": "Indicador Género Actualizado",
-  "descripcion": "Indicador actualizado para ODS5",
-  "valorActual": 70.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 62,
+  "valorActual": 88.0,
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/05/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/05/metas
 Content-Type: application/json
 
 {
-  "codigo": "5.1",
-  "descripcion": "Meta de prueba ODS5",
-  "valorMeta": 100.0,
-  "valorActual": 65.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "mujeres_directivas",
+  "tipoDato": "Integer"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/05/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "5.1",
-  "descripcion": "Meta actualizada ODS5",
-  "valorMeta": 100.0,
-  "valorActual": 67.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "mujeres_lideres",
+  "tipoDato": "Integer"
 }
 
 ### Eliminar meta
@@ -217,7 +209,7 @@ Content-Type: application/json
   "indicadorId": {{indicadorId}},
   "fechaMedicion": "2024-01-15",
   "valor": 63.5,
-  "observaciones": "Medición de prueba ODS5"
+  "observaciones": "Medición día de la mujer"
 }
 
 ### Actualizar medición histórica
@@ -226,16 +218,16 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 65.0,
-  "observaciones": "Medición actualizada ODS5"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 47.0,
+  "fechaMedicion": "2024-03-08",
+  "responsable": "Admin Gen Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/05/mediciones/{{medicionId}}
 
-# ── IOdsBaseController Methods ──
+# ── IOdsBaseController Methods (General) ──
 
 ### Obtener todos los proyectos (base)
 GET {{baseUrl}}/api/ods/05/all-proyectos
@@ -278,3 +270,4 @@ GET {{baseUrl}}/api/ods/05/meta/{{metaId}}/existe
 
 ### Verificar existencia de medición histórica (base)
 GET {{baseUrl}}/api/ods/05/medicion/{{medicionId}}/existe
+

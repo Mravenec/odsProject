@@ -8,7 +8,6 @@ import com.odsProject.odsProject.database.jooq.ods14.Indexes;
 import com.odsProject.odsProject.database.jooq.ods14.Keys;
 import com.odsProject.odsProject.database.jooq.ods14.Ods14;
 import com.odsProject.odsProject.database.jooq.ods14.tables.records.AuditoriaOds14Record;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios.UsuariosPath;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -21,12 +20,9 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Index;
-import org.jooq.InverseForeignKey;
 import org.jooq.Name;
-import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
-import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -42,7 +38,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Auditoría de cambios en el sistema ODS14
+ * Auditoría interna de cambios en la base de datos ODS14
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class AuditoriaOds14 extends TableImpl<AuditoriaOds14Record> {
@@ -112,7 +108,7 @@ public class AuditoriaOds14 extends TableImpl<AuditoriaOds14Record> {
     }
 
     private AuditoriaOds14(Name alias, Table<AuditoriaOds14Record> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("Auditoría de cambios en el sistema ODS14"), TableOptions.table(), where);
+        super(alias, null, aliased, parameters, DSL.comment("Auditoría interna de cambios en la base de datos ODS14"), TableOptions.table(), where);
     }
 
     /**
@@ -134,39 +130,6 @@ public class AuditoriaOds14 extends TableImpl<AuditoriaOds14Record> {
      */
     public AuditoriaOds14() {
         this(DSL.name("auditoria_ods14"), null);
-    }
-
-    public <O extends Record> AuditoriaOds14(Table<O> path, ForeignKey<O, AuditoriaOds14Record> childPath, InverseForeignKey<O, AuditoriaOds14Record> parentPath) {
-        super(path, childPath, parentPath, AUDITORIA_ODS14);
-    }
-
-    /**
-     * A subtype implementing {@link Path} for simplified path-based joins.
-     */
-    public static class AuditoriaOds14Path extends AuditoriaOds14 implements Path<AuditoriaOds14Record> {
-
-        private static final long serialVersionUID = 1L;
-        public <O extends Record> AuditoriaOds14Path(Table<O> path, ForeignKey<O, AuditoriaOds14Record> childPath, InverseForeignKey<O, AuditoriaOds14Record> parentPath) {
-            super(path, childPath, parentPath);
-        }
-        private AuditoriaOds14Path(Name alias, Table<AuditoriaOds14Record> aliased) {
-            super(alias, aliased);
-        }
-
-        @Override
-        public AuditoriaOds14Path as(String alias) {
-            return new AuditoriaOds14Path(DSL.name(alias), this);
-        }
-
-        @Override
-        public AuditoriaOds14Path as(Name alias) {
-            return new AuditoriaOds14Path(alias, this);
-        }
-
-        @Override
-        public AuditoriaOds14Path as(Table<?> alias) {
-            return new AuditoriaOds14Path(alias.getQualifiedName(), this);
-        }
     }
 
     @Override
@@ -192,18 +155,6 @@ public class AuditoriaOds14 extends TableImpl<AuditoriaOds14Record> {
     @Override
     public List<ForeignKey<AuditoriaOds14Record, ?>> getReferences() {
         return Arrays.asList(Keys.AUDITORIA_ODS14_IBFK_1);
-    }
-
-    private transient UsuariosPath _usuarios;
-
-    /**
-     * Get the implicit join path to the <code>ods_login.usuarios</code> table.
-     */
-    public UsuariosPath usuarios() {
-        if (_usuarios == null)
-            _usuarios = new UsuariosPath(this, Keys.AUDITORIA_ODS14_IBFK_1, null);
-
-        return _usuarios;
     }
 
     @Override

@@ -6,10 +6,14 @@ package com.odsProject.odsProject.database.jooq.ods_login;
 
 import com.odsProject.odsProject.database.jooq.DefaultCatalog;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorMaster;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorParametrosMaster;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.MedicionParametroValores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.OdsCatalog;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.ProyectoIndicadorParametros;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes;
@@ -47,9 +51,19 @@ public class OdsLogin extends SchemaImpl {
     public final AuditoriaLogin AUDITORIA_LOGIN = AuditoriaLogin.AUDITORIA_LOGIN;
 
     /**
-     * The table <code>ods_login.indicadores</code>.
+     * Catálogo maestro de todos los indicadores oficiales con sus fórmulas
      */
-    public final Indicadores INDICADORES = Indicadores.INDICADORES;
+    public final IndicadorMaster INDICADOR_MASTER = IndicadorMaster.INDICADOR_MASTER;
+
+    /**
+     * Parámetros necesarios para las fórmulas maestras
+     */
+    public final IndicadorParametrosMaster INDICADOR_PARAMETROS_MASTER = IndicadorParametrosMaster.INDICADOR_PARAMETROS_MASTER;
+
+    /**
+     * The table <code>ods_login.medicion_parametro_valores</code>.
+     */
+    public final MedicionParametroValores MEDICION_PARAMETRO_VALORES = MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
 
     /**
      * The table <code>ods_login.mediciones_historicas</code>.
@@ -57,14 +71,24 @@ public class OdsLogin extends SchemaImpl {
     public final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
 
     /**
-     * The table <code>ods_login.metas_proyecto</code>.
+     * Catálogo central de los 17 ODS
      */
-    public final MetasProyecto METAS_PROYECTO = MetasProyecto.METAS_PROYECTO;
+    public final OdsCatalog ODS_CATALOG = OdsCatalog.ODS_CATALOG;
 
     /**
      * Qué ODS puede gestionar cada usuario
      */
     public final PermisosOds PERMISOS_ODS = PermisosOds.PERMISOS_ODS;
+
+    /**
+     * The table <code>ods_login.proyecto_indicador_parametros</code>.
+     */
+    public final ProyectoIndicadorParametros PROYECTO_INDICADOR_PARAMETROS = ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
+
+    /**
+     * The table <code>ods_login.proyecto_indicadores</code>.
+     */
+    public final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
 
     /**
      * The table <code>ods_login.proyectos</code>.
@@ -128,10 +152,14 @@ public class OdsLogin extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             AuditoriaLogin.AUDITORIA_LOGIN,
-            Indicadores.INDICADORES,
+            IndicadorMaster.INDICADOR_MASTER,
+            IndicadorParametrosMaster.INDICADOR_PARAMETROS_MASTER,
+            MedicionParametroValores.MEDICION_PARAMETRO_VALORES,
             MedicionesHistoricas.MEDICIONES_HISTORICAS,
-            MetasProyecto.METAS_PROYECTO,
+            OdsCatalog.ODS_CATALOG,
             PermisosOds.PERMISOS_ODS,
+            ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS,
+            ProyectoIndicadores.PROYECTO_INDICADORES,
             Proyectos.PROYECTOS,
             Roles.ROLES,
             Sedes.SEDES,

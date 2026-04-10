@@ -93,58 +93,10 @@ public class VistaAdminAuditoriaRecienteRecord extends TableRecordImpl<VistaAdmi
 
     /**
      * Setter for
-     * <code>ods13.vista_admin_auditoria_reciente.nombre_usuario</code>.
-     */
-    public void setNombreUsuario(String value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods13.vista_admin_auditoria_reciente.nombre_usuario</code>.
-     */
-    public String getNombreUsuario() {
-        return (String) get(5);
-    }
-
-    /**
-     * Setter for
-     * <code>ods13.vista_admin_auditoria_reciente.valores_anteriores</code>.
-     */
-    public void setValoresAnteriores(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods13.vista_admin_auditoria_reciente.valores_anteriores</code>.
-     */
-    public String getValoresAnteriores() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for
-     * <code>ods13.vista_admin_auditoria_reciente.valores_nuevos</code>.
-     */
-    public void setValoresNuevos(String value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods13.vista_admin_auditoria_reciente.valores_nuevos</code>.
-     */
-    public String getValoresNuevos() {
-        return (String) get(7);
-    }
-
-    /**
-     * Setter for
      * <code>ods13.vista_admin_auditoria_reciente.fecha_cambio</code>.
      */
     public void setFechaCambio(LocalDateTime value) {
-        set(8, value);
+        set(5, value);
     }
 
     /**
@@ -152,37 +104,21 @@ public class VistaAdminAuditoriaRecienteRecord extends TableRecordImpl<VistaAdmi
      * <code>ods13.vista_admin_auditoria_reciente.fecha_cambio</code>.
      */
     public LocalDateTime getFechaCambio() {
-        return (LocalDateTime) get(8);
+        return (LocalDateTime) get(5);
     }
 
     /**
      * Setter for <code>ods13.vista_admin_auditoria_reciente.ip_address</code>.
      */
     public void setIpAddress(String value) {
-        set(9, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>ods13.vista_admin_auditoria_reciente.ip_address</code>.
      */
     public String getIpAddress() {
-        return (String) get(9);
-    }
-
-    /**
-     * Setter for
-     * <code>ods13.vista_admin_auditoria_reciente.descripcion_cambio</code>.
-     */
-    public void setDescripcionCambio(String value) {
-        set(10, value);
-    }
-
-    /**
-     * Getter for
-     * <code>ods13.vista_admin_auditoria_reciente.descripcion_cambio</code>.
-     */
-    public String getDescripcionCambio() {
-        return (String) get(10);
+        return (String) get(6);
     }
 
     // -------------------------------------------------------------------------
@@ -199,7 +135,7 @@ public class VistaAdminAuditoriaRecienteRecord extends TableRecordImpl<VistaAdmi
     /**
      * Create a detached, initialised VistaAdminAuditoriaRecienteRecord
      */
-    public VistaAdminAuditoriaRecienteRecord(Integer id, String tablaAfectada, Integer registroId, String accion, String usuario, String nombreUsuario, String valoresAnteriores, String valoresNuevos, LocalDateTime fechaCambio, String ipAddress, String descripcionCambio) {
+    public VistaAdminAuditoriaRecienteRecord(Integer id, String tablaAfectada, Integer registroId, String accion, String usuario, LocalDateTime fechaCambio, String ipAddress) {
         super(VistaAdminAuditoriaReciente.VISTA_ADMIN_AUDITORIA_RECIENTE);
 
         setId(id);
@@ -207,12 +143,8 @@ public class VistaAdminAuditoriaRecienteRecord extends TableRecordImpl<VistaAdmi
         setRegistroId(registroId);
         setAccion(accion);
         setUsuario(usuario);
-        setNombreUsuario(nombreUsuario);
-        setValoresAnteriores(valoresAnteriores);
-        setValoresNuevos(valoresNuevos);
         setFechaCambio(fechaCambio);
         setIpAddress(ipAddress);
-        setDescripcionCambio(descripcionCambio);
         resetChangedOnNotNull();
     }
 
@@ -228,12 +160,8 @@ public class VistaAdminAuditoriaRecienteRecord extends TableRecordImpl<VistaAdmi
             setRegistroId(value.getRegistroId());
             setAccion(value.getAccion());
             setUsuario(value.getUsuario());
-            setNombreUsuario(value.getNombreUsuario());
-            setValoresAnteriores(value.getValoresAnteriores());
-            setValoresNuevos(value.getValoresNuevos());
             setFechaCambio(value.getFechaCambio());
             setIpAddress(value.getIpAddress());
-            setDescripcionCambio(value.getDescripcionCambio());
             resetChangedOnNotNull();
         }
     }

@@ -88,12 +88,15 @@ POST {{baseUrl}}/api/ods/14/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Vida Submarina Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Vida Submarina Test",
+  "objetivoId": 14,
   "descripcion": "Proyecto de prueba para ODS14",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 290000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Conservar y utilizar sosteniblemente los océanos, los mares y los recursos marinos",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -101,12 +104,12 @@ POST {{baseUrl}}/api/ods/14/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Submarina",
-  "descripcion": "Proyecto para validar ODS14",
+  "nombreProyecto": "Proyecto Validación Submarina",
+  "usuarioId": 2,
+  "objetivoId": 14,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 145000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -115,29 +118,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Submarina Actualizado",
+  "nombreProyecto": "Proyecto Submarina Actualizado",
   "descripcion": "Proyecto actualizado para ODS14",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 315000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Submarina",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/14/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 174 = 14.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/14/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "14.1.1",
-  "nombre": "Indicador Submarina Test",
-  "descripcion": "Indicador de prueba para ODS14",
-  "valorActual": 54.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 174,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -145,13 +146,10 @@ POST {{baseUrl}}/api/ods/14/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "14.2.1",
-  "nombre": "Indicador Validación Submarina",
-  "descripcion": "Indicador para validar ODS14",
-  "valorActual": 40.0,
-  "valorMeta": 65.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 174,
+  "metaValor": 75.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -160,41 +158,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "14.1.1",
-  "nombre": "Indicador Submarina Actualizado",
-  "descripcion": "Indicador actualizado para ODS14",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 174,
   "valorActual": 58.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/14/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/14/metas
 Content-Type: application/json
 
 {
-  "codigo": "14.1",
-  "descripcion": "Meta de prueba ODS14",
-  "valorMeta": 100.0,
-  "valorActual": 54.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "superficie_ecosistemas_marinos_protegidos",
+  "tipoDato": "Double"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/14/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "14.1",
-  "descripcion": "Meta actualizada ODS14",
-  "valorMeta": 100.0,
-  "valorActual": 56.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "superficie_humedales_protegidos",
+  "tipoDato": "Double"
 }
 
 ### Eliminar meta
@@ -205,10 +197,11 @@ POST {{baseUrl}}/api/ods/14/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 52.5,
-  "observaciones": "Medición de prueba ODS14"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 32.5,
+  "fechaMedicion": "2024-07-15",
+  "responsable": "Admin Submarina",
+  "observaciones": "Monitoreo costero"
 }
 
 ### Actualizar medición histórica
@@ -217,14 +210,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 54.0,
-  "observaciones": "Medición actualizada ODS14"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 35.0,
+  "fechaMedicion": "2024-07-15",
+  "responsable": "Admin Submarina Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/14/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

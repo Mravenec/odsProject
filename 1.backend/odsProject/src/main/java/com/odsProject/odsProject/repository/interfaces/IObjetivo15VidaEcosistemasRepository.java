@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.repository.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.AuditoriaOds15;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 15
  * Usa jOOQ con datasource ods15
  */
-public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds15> {
+public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds15> {
     
     /**
      * 15.1.1 Superficie forestal en proporción a la superficie total [117]
@@ -21,7 +21,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.1.1
      */
-    Optional<Indicadores> findIndicador_15_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_1_1(Integer proyectoId);
     
     /**
      * 15.1.2 Proporción de lugares importantes para la biodiversidad terrestre y del agua dulce 
@@ -30,7 +30,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.1.2
      */
-    Optional<Indicadores> findIndicador_15_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_1_2(Integer proyectoId);
     
     /**
      * 15.2.1 Avances hacia la gestión forestal sostenible [118]
@@ -38,7 +38,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.2.1
      */
-    Optional<Indicadores> findIndicador_15_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_2_1(Integer proyectoId);
     
     /**
      * 15.3.1 Proporción de tierras degradadas en comparación con la superficie total [119]
@@ -46,7 +46,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.3.1
      */
-    Optional<Indicadores> findIndicador_15_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_3_1(Integer proyectoId);
     
     /**
      * 15.4.1 Lugares importantes para la biodiversidad de las montañas incluidos en zonas protegidas [120]
@@ -54,7 +54,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.4.1
      */
-    Optional<Indicadores> findIndicador_15_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_4_1(Integer proyectoId);
     
     /**
      * 15.4.2 a) Índice de cobertura verde de las montañas y b) proporción de terreno montañoso degradado [120]
@@ -62,7 +62,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.4.2
      */
-    Optional<Indicadores> findIndicador_15_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_4_2(Integer proyectoId);
     
     /**
      * 15.5.1 Índice de la Lista Roja [121]
@@ -70,7 +70,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.5.1
      */
-    Optional<Indicadores> findIndicador_15_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_5_1(Integer proyectoId);
     
     /**
      * 15.6.1 Número de países que han adoptado marcos legislativos, administrativos y normativos 
@@ -79,7 +79,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.6.1
      */
-    Optional<Indicadores> findIndicador_15_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_6_1(Integer proyectoId);
     
     /**
      * 15.7.1 Proporción de especímenes de flora y fauna silvestre comercializados procedentes 
@@ -88,7 +88,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.7.1
      */
-    Optional<Indicadores> findIndicador_15_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_7_1(Integer proyectoId);
     
     /**
      * 15.8.1 Proporción de países que han aprobado la legislación nacional pertinente 
@@ -97,7 +97,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.8.1
      */
-    Optional<Indicadores> findIndicador_15_8_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_8_1(Integer proyectoId);
     
     /**
      * 15.9.1 a) Número de países que han establecido metas nacionales acordes o similares a la Meta 14 
@@ -109,7 +109,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.9.1
      */
-    Optional<Indicadores> findIndicador_15_9_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_9_1(Integer proyectoId);
     
     /**
      * 15.a.1 a) Asistencia oficial para el desarrollo destinada concretamente a la conservación 
@@ -119,7 +119,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.a.1
      */
-    Optional<Indicadores> findIndicador_15_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_a_1(Integer proyectoId);
     
     /**
      * 15.b.1 a) Asistencia oficial para el desarrollo destinada concretamente a la conservación 
@@ -129,7 +129,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.b.1
      */
-    Optional<Indicadores> findIndicador_15_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_b_1(Integer proyectoId);
     
     /**
      * 15.c.1 Proporción de especímenes de flora y fauna silvestre comercializados procedentes 
@@ -138,7 +138,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.c.1
      */
-    Optional<Indicadores> findIndicador_15_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_15_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS15
@@ -146,7 +146,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds15(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds15(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS15
@@ -155,7 +155,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param metaPrefix Prefijo de la meta (ej: "15.1", "15.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos específicos del ODS15 ──
     
@@ -180,7 +180,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param proyectoId ID del proyecto
      * @return Lista de metas del proyecto
      */
-    List<MetasProyecto> findAllMetasProyectoOds15(Integer proyectoId);
+    List<ProyectoIndicadorParametros> findAllMetasProyectoOds15(Integer proyectoId);
     
     /**
      * Encuentra una meta de proyecto del ODS15 por su ID
@@ -188,7 +188,7 @@ public interface IObjetivo15VidaEcosistemasRepository extends IOdsBaseRepository
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> findMetaProyectoOds15ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> findMetaProyectoOds15ById(Integer metaId);
     
     /**
      * Encuentra todas las mediciones históricas del ODS15

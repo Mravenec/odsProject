@@ -97,12 +97,15 @@ POST {{baseUrl}}/api/ods/09/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Infraestructura Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Infraestructura Test",
+  "objetivoId": 9,
   "descripcion": "Proyecto de prueba para ODS9",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 350000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Desarrollar infraestructuras resilientes",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -110,12 +113,12 @@ POST {{baseUrl}}/api/ods/09/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Infraestructura",
-  "descripcion": "Proyecto para validar ODS9",
+  "nombreProyecto": "Proyecto Validación Infraestructura",
+  "usuarioId": 2,
+  "objetivoId": 9,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 175000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -124,29 +127,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Infraestructura Actualizado",
+  "nombreProyecto": "Proyecto Infraestructura Actualizado",
   "descripcion": "Proyecto actualizado para ODS9",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 375000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Infraestructura",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/09/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 105 = 9.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/09/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "9.1.1",
-  "nombre": "Indicador Infraestructura Test",
-  "descripcion": "Indicador de prueba para ODS9",
-  "valorActual": 62.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 105,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -154,13 +155,10 @@ POST {{baseUrl}}/api/ods/09/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "9.2.1",
-  "nombre": "Indicador Validación Infraestructura",
-  "descripcion": "Indicador para validar ODS9",
-  "valorActual": 48.0,
-  "valorMeta": 70.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 105,
+  "metaValor": 80.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -169,41 +167,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "9.1.1",
-  "nombre": "Indicador Infraestructura Actualizado",
-  "descripcion": "Indicador actualizado para ODS9",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 105,
   "valorActual": 66.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/09/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/09/metas
 Content-Type: application/json
 
 {
-  "codigo": "9.1",
-  "descripcion": "Meta de prueba ODS9",
-  "valorMeta": 100.0,
-  "valorActual": 62.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "km_vias_rurales_mejoradas",
+  "tipoDato": "Double"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/09/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "9.1",
-  "descripcion": "Meta actualizada ODS9",
-  "valorMeta": 100.0,
-  "valorActual": 64.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "km_vias_urbanas_mejoradas",
+  "tipoDato": "Double"
 }
 
 ### Eliminar meta
@@ -214,10 +206,11 @@ POST {{baseUrl}}/api/ods/09/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 60.5,
-  "observaciones": "Medición de prueba ODS9"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 82.5,
+  "fechaMedicion": "2024-06-15",
+  "responsable": "Admin Infraestructura",
+  "observaciones": "Avance de obra"
 }
 
 ### Actualizar medición histórica
@@ -226,14 +219,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 62.0,
-  "observaciones": "Medición actualizada ODS9"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 85.0,
+  "fechaMedicion": "2024-06-15",
+  "responsable": "Admin Infra Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/09/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

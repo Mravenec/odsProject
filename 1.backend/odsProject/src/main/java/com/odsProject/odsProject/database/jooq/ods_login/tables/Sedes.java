@@ -6,7 +6,6 @@ package com.odsProject.odsProject.database.jooq.ods_login.tables;
 
 import com.odsProject.odsProject.database.jooq.ods_login.Keys;
 import com.odsProject.odsProject.database.jooq.ods_login.OdsLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios.UsuariosPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SedesRecord;
 
 import java.time.LocalDateTime;
@@ -16,14 +15,10 @@ import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
 import org.jooq.Identity;
-import org.jooq.InverseForeignKey;
 import org.jooq.Name;
-import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
-import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -107,39 +102,6 @@ public class Sedes extends TableImpl<SedesRecord> {
         this(DSL.name("sedes"), null);
     }
 
-    public <O extends Record> Sedes(Table<O> path, ForeignKey<O, SedesRecord> childPath, InverseForeignKey<O, SedesRecord> parentPath) {
-        super(path, childPath, parentPath, SEDES);
-    }
-
-    /**
-     * A subtype implementing {@link Path} for simplified path-based joins.
-     */
-    public static class SedesPath extends Sedes implements Path<SedesRecord> {
-
-        private static final long serialVersionUID = 1L;
-        public <O extends Record> SedesPath(Table<O> path, ForeignKey<O, SedesRecord> childPath, InverseForeignKey<O, SedesRecord> parentPath) {
-            super(path, childPath, parentPath);
-        }
-        private SedesPath(Name alias, Table<SedesRecord> aliased) {
-            super(alias, aliased);
-        }
-
-        @Override
-        public SedesPath as(String alias) {
-            return new SedesPath(DSL.name(alias), this);
-        }
-
-        @Override
-        public SedesPath as(Name alias) {
-            return new SedesPath(alias, this);
-        }
-
-        @Override
-        public SedesPath as(Table<?> alias) {
-            return new SedesPath(alias.getQualifiedName(), this);
-        }
-    }
-
     @Override
     public Schema getSchema() {
         return aliased() ? null : OdsLogin.ODS_LOGIN;
@@ -158,19 +120,6 @@ public class Sedes extends TableImpl<SedesRecord> {
     @Override
     public List<UniqueKey<SedesRecord>> getUniqueKeys() {
         return Arrays.asList(Keys.KEY_SEDES_NOMBRE);
-    }
-
-    private transient UsuariosPath _usuarios;
-
-    /**
-     * Get the implicit to-many join path to the <code>ods_login.usuarios</code>
-     * table
-     */
-    public UsuariosPath usuarios() {
-        if (_usuarios == null)
-            _usuarios = new UsuariosPath(this, null, Keys.USUARIOS_IBFK_2.getInverseKey());
-
-        return _usuarios;
     }
 
     @Override

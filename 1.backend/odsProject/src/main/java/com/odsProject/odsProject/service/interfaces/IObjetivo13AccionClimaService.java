@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS13
  */
 public interface IObjetivo13AccionClimaService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros,   // M - ProyectoIndicadorParametros
     MedicionesHistoricas, // MH - MedicionesHistoricas
     Object           // A - Auditoria (placeholder)
 > {
@@ -27,7 +27,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.1.1
      */
-    Optional<Indicadores> getIndicador_13_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.1.2
@@ -45,7 +45,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.1.2
      */
-    Optional<Indicadores> getIndicador_13_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_1_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.1.3
@@ -54,7 +54,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.1.3
      */
-    Optional<Indicadores> getIndicador_13_1_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_1_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.2.1
@@ -63,7 +63,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.2.1
      */
-    Optional<Indicadores> getIndicador_13_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.2.2
@@ -72,7 +72,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.2.2
      */
-    Optional<Indicadores> getIndicador_13_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.2.3
@@ -81,7 +81,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.2.3
      */
-    Optional<Indicadores> getIndicador_13_2_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_2_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.3.1
@@ -90,7 +90,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.3.1
      */
-    Optional<Indicadores> getIndicador_13_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.3.2
@@ -99,7 +99,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.3.2
      */
-    Optional<Indicadores> getIndicador_13_3_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.a.1
@@ -108,7 +108,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.a.1
      */
-    Optional<Indicadores> getIndicador_13_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.b.1
@@ -117,7 +117,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.b.1
      */
-    Optional<Indicadores> getIndicador_13_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 13.b.2
@@ -126,7 +126,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.b.2
      */
-    Optional<Indicadores> getIndicador_13_b_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_13_b_2(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS13
@@ -134,7 +134,7 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds13(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds13(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS13
@@ -143,5 +143,5 @@ public interface IObjetivo13AccionClimaService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "13.1", "13.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

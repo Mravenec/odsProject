@@ -2,9 +2,9 @@ package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +15,9 @@ import java.util.Optional;
  */
 @RequestMapping("/api/ods/12")
 public interface IObjetivo12ConsumoProduccionController extends IOdsBaseController<
-    Indicadores,
+    ProyectoIndicadores,
     Proyectos,
-    MetasProyecto,
+    ProyectoIndicadorParametros,
     MedicionesHistoricas,
     Object
 > {
@@ -28,7 +28,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores
      */
-    ResponseEntity<List<Indicadores>> getAllIndicators(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.1.1
@@ -37,7 +37,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.1.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_1_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.2.1
@@ -46,7 +46,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.2.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_2_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.2.2
@@ -55,7 +55,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.2.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_2_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.3.1
@@ -64,7 +64,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.3.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_3_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.4.1
@@ -73,7 +73,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.4.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_4_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.4.2
@@ -82,7 +82,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.4.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_4_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.5.1
@@ -91,7 +91,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.5.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_5_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.6.1
@@ -100,7 +100,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.6.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_6_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.7.1
@@ -109,7 +109,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.7.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_7_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.8.1
@@ -118,7 +118,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.8.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_8_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_8_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.a.1
@@ -127,7 +127,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.a.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_a_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.b.1
@@ -136,7 +136,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.b.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_b_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 12.c.1
@@ -145,7 +145,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 12.c.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_12_c_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_12_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS12
@@ -153,7 +153,7 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores del proyecto
      */
-    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds12(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds12(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS12
@@ -162,5 +162,5 @@ public interface IObjetivo12ConsumoProduccionController extends IOdsBaseControll
      * @param metaPrefix Prefijo de la meta (ej: "12.1", "12.2")
      * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
      */
-    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

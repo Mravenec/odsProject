@@ -130,12 +130,15 @@ POST {{baseUrl}}/api/ods/03/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Salud y Bienestar Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Salud Test",
+  "objetivoId": 3,
   "descripcion": "Proyecto de prueba para ODS3",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 200000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Lograr cobertura universal de salud en el cantón",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -143,12 +146,12 @@ POST {{baseUrl}}/api/ods/03/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Salud",
-  "descripcion": "Proyecto para validar ODS3",
+  "nombreProyecto": "Proyecto Validación Salud",
+  "usuarioId": 2,
+  "objetivoId": 3,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 100000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -157,29 +160,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Salud Actualizado",
+  "nombreProyecto": "Proyecto Salud Actualizado",
   "descripcion": "Proyecto actualizado para ODS3",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 225000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Salud",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/03/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 32 = 3.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/03/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "3.1.1",
-  "nombre": "Indicador Salud Test",
-  "descripcion": "Indicador de prueba para ODS3",
-  "valorActual": 80.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 32,
+  "formulaCustom": "valor",
+  "metaValor": 50.0,
+  "metaUnidad": "Tasa/100k nacidos"
 }
 
 ### Validar indicador
@@ -187,13 +188,10 @@ POST {{baseUrl}}/api/ods/03/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "3.2.1",
-  "nombre": "Indicador Validación Salud",
-  "descripcion": "Indicador para validar ODS3",
-  "valorActual": 65.0,
-  "valorMeta": 85.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 32,
+  "metaValor": 40.0,
+  "metaUnidad": "Tasa/100k nacidos"
 }
 
 ### Actualizar indicador
@@ -202,41 +200,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "3.1.1",
-  "nombre": "Indicador Salud Actualizado",
-  "descripcion": "Indicador actualizado para ODS3",
-  "valorActual": 85.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 32,
+  "valorActual": 45.0,
+  "metaValor": 50.0,
+  "metaUnidad": "Tasa/100k nacidos"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/03/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/03/metas
 Content-Type: application/json
 
 {
-  "codigo": "3.1",
-  "descripcion": "Meta de prueba ODS3",
-  "valorMeta": 100.0,
-  "valorActual": 80.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "casos_observados",
+  "tipoDato": "Integer"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/03/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "3.1",
-  "descripcion": "Meta actualizada ODS3",
-  "valorMeta": 100.0,
-  "valorActual": 82.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "casos",
+  "tipoDato": "Integer"
 }
 
 ### Eliminar meta
@@ -247,9 +239,10 @@ POST {{baseUrl}}/api/ods/03/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 48.2,
   "fechaMedicion": "2024-01-15",
-  "valor": 78.5,
+  "responsable": "Admin Salud",
   "observaciones": "Medición de prueba ODS3"
 }
 
@@ -259,16 +252,16 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 49.0,
   "fechaMedicion": "2024-01-15",
-  "valor": 80.0,
-  "observaciones": "Medición actualizada ODS3"
+  "responsable": "Admin Salud Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/03/mediciones/{{medicionId}}
 
-# ── IOdsBaseController Methods ──
+# ── IOdsBaseController Methods (General) ──
 
 ### Obtener todos los proyectos (base)
 GET {{baseUrl}}/api/ods/03/all-proyectos
@@ -311,3 +304,4 @@ GET {{baseUrl}}/api/ods/03/meta/{{metaId}}/existe
 
 ### Verificar existencia de medición histórica (base)
 GET {{baseUrl}}/api/ods/03/medicion/{{medicionId}}/existe
+

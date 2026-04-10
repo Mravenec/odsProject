@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo15VidaEcosistemasRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo15VidaEcosistemasService;
@@ -30,7 +30,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_1_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_1_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_1_2(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_1_2(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_2_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_2_1(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_3_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_3_1(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_4_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_4_1(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_4_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_4_2(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_4_2(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_5_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_5_1(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_6_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_6_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_6_1(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_7_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_7_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_7_1(proyectoId);
     }
 
@@ -110,7 +110,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_8_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_8_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_8_1(proyectoId);
     }
 
@@ -118,7 +118,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_9_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_9_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_9_1(proyectoId);
     }
 
@@ -126,7 +126,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_a_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_a_1(proyectoId);
     }
 
@@ -134,7 +134,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_b_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_b_1(proyectoId);
     }
 
@@ -142,7 +142,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_15_c_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_15_c_1(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicador_15_c_1(proyectoId);
     }
 
@@ -150,7 +150,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds15(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds15(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findAllIndicadoresByProyectoOds15(proyectoId);
     }
 
@@ -158,7 +158,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo15VidaEcosistemasRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -189,7 +189,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * @param proyectoId ID del proyecto
      * @return Lista de todas las metas del proyecto ODS15
      */
-    public List<MetasProyecto> getAllMetasProyectoOds15(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> getAllMetasProyectoOds15(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findAllMetasProyectoOds15(proyectoId);
     }
 
@@ -199,7 +199,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    public Optional<MetasProyecto> getMetaProyectoOds15ById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> getMetaProyectoOds15ById(Integer metaId) {
         return objetivo15VidaEcosistemasRepository.findMetaProyectoOds15ById(metaId);
     }
 
@@ -227,10 +227,10 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 
@@ -241,7 +241,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      */
     public Map<String, Object> getOds15Statistics() {
         List<Proyectos> proyectos = objetivo15VidaEcosistemasRepository.findAllProyectosOds15();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo15VidaEcosistemasRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(
@@ -322,7 +322,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -330,7 +330,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
@@ -338,7 +338,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo15VidaEcosistemasRepository.saveIndicador(indicador);
     }
 
@@ -346,7 +346,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo15VidaEcosistemasRepository.updateIndicador(indicador);
     }
 
@@ -362,7 +362,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo15VidaEcosistemasRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -370,7 +370,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo15VidaEcosistemasRepository.findMetaProyectoOds15ById(metaId);
     }
 
@@ -378,7 +378,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo15VidaEcosistemasRepository.saveMetaProyecto(meta);
     }
 
@@ -386,7 +386,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 
@@ -453,7 +453,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
      */
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = objetivo15VidaEcosistemasRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo15VidaEcosistemasRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream()
             .filter(ind -> ind.getValorActual() != null)

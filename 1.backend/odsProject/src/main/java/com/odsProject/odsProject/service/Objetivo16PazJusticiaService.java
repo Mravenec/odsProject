@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo16PazJusticiaRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo16PazJusticiaService;
@@ -30,7 +30,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_1_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_1_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_1_2(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_1_2(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_1_3(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_1_3(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_1_3(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_1_4(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_1_4(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_1_4(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_2_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_2_1(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_2_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_2_2(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_2_2(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_2_3(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_2_3(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_2_3(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_3_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_3_1(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_3_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_3_2(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_3_2(proyectoId);
     }
 
@@ -110,7 +110,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_3_3(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_3_3(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_3_3(proyectoId);
     }
 
@@ -118,7 +118,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_4_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_4_1(proyectoId);
     }
 
@@ -126,7 +126,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_4_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_4_2(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_4_2(proyectoId);
     }
 
@@ -134,7 +134,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_5_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_5_1(proyectoId);
     }
 
@@ -142,7 +142,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_5_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_5_2(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_5_2(proyectoId);
     }
 
@@ -150,7 +150,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_6_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_6_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_6_1(proyectoId);
     }
 
@@ -158,7 +158,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_6_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_6_2(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_6_2(proyectoId);
     }
 
@@ -166,7 +166,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_7_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_7_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_7_1(proyectoId);
     }
 
@@ -174,7 +174,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_7_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_7_2(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_7_2(proyectoId);
     }
 
@@ -182,7 +182,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_8_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_8_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_8_1(proyectoId);
     }
 
@@ -190,7 +190,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_9_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_9_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_9_1(proyectoId);
     }
 
@@ -198,7 +198,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_10_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_10_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_10_1(proyectoId);
     }
 
@@ -206,7 +206,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_10_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_10_2(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_10_2(proyectoId);
     }
 
@@ -214,7 +214,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_a_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_a_1(proyectoId);
     }
 
@@ -222,7 +222,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_16_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_16_b_1(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicador_16_b_1(proyectoId);
     }
 
@@ -230,7 +230,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds16(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds16(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findAllIndicadoresByProyectoOds16(proyectoId);
     }
 
@@ -238,7 +238,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo16PazJusticiaRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -269,7 +269,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * @param proyectoId ID del proyecto
      * @return Lista de todas las metas del proyecto ODS16
      */
-    public List<MetasProyecto> getAllMetasProyectoOds16(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> getAllMetasProyectoOds16(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findAllMetasProyectoOds16(proyectoId);
     }
 
@@ -279,7 +279,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    public Optional<MetasProyecto> getMetaProyectoOds16ById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> getMetaProyectoOds16ById(Integer metaId) {
         return objetivo16PazJusticiaRepository.findMetaProyectoOds16ById(metaId);
     }
 
@@ -307,10 +307,10 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 
@@ -321,7 +321,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      */
     public Map<String, Object> getOds16Statistics() {
         List<Proyectos> proyectos = objetivo16PazJusticiaRepository.findAllProyectosOds16();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo16PazJusticiaRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(
@@ -402,7 +402,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -410,7 +410,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
@@ -418,7 +418,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo16PazJusticiaRepository.saveIndicador(indicador);
     }
 
@@ -426,7 +426,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo16PazJusticiaRepository.updateIndicador(indicador);
     }
 
@@ -442,7 +442,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo16PazJusticiaRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -450,7 +450,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo16PazJusticiaRepository.findMetaProyectoOds16ById(metaId);
     }
 
@@ -458,7 +458,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo16PazJusticiaRepository.saveMetaProyecto(meta);
     }
 
@@ -466,7 +466,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 
@@ -533,7 +533,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
      */
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = objetivo16PazJusticiaRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo16PazJusticiaRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream()
             .filter(ind -> ind.getValorActual() != null)

@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo04EducacionRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo04EducacionService;
@@ -27,77 +27,77 @@ public class Objetivo04EducacionService implements IObjetivo04EducacionService {
     // ── Indicadores Específicos del ODS04 ──
 
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicadoresByProyecto(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_1_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_1_1(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_1_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_1_2(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_1_2(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_2_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_2_1(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_2_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_2_2(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_2_2(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_3_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_3_1(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_4_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_4_1(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_5_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_5_1(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_6_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_6_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_6_1(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_7_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_7_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_7_1(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_a_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_a_1(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_b_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_b_1(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> getIndicador_4_c_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_4_c_1(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicador_4_c_1(proyectoId);
     }
 
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds04(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds04(Integer proyectoId) {
         return objetivo04EducacionRepository.findAllIndicadoresByProyectoOds04(proyectoId);
     }
 
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo04EducacionRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -114,12 +114,12 @@ public class Objetivo04EducacionService implements IObjetivo04EducacionService {
     }
 
     @Override
-    public List<MetasProyecto> getAllMetasProyectoOds04(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> getAllMetasProyectoOds04(Integer proyectoId) {
         return objetivo04EducacionRepository.findAllMetasProyectoOds04(proyectoId);
     }
 
     @Override
-    public Optional<MetasProyecto> getMetaProyectoOds04ById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> getMetaProyectoOds04ById(Integer metaId) {
         return objetivo04EducacionRepository.findMetaProyectoOds04ById(metaId);
     }
 
@@ -134,16 +134,16 @@ public class Objetivo04EducacionService implements IObjetivo04EducacionService {
     }
 
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = objetivo04EducacionRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo04EducacionRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream()
             .filter(ind -> ind.getValorActual() != null)
@@ -154,7 +154,7 @@ public class Objetivo04EducacionService implements IObjetivo04EducacionService {
     @Override
     public Map<String, Object> getOds04Statistics() {
         List<Proyectos> proyectos = objetivo04EducacionRepository.findAllProyectosOds04();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo04EducacionRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(
@@ -207,22 +207,22 @@ public class Objetivo04EducacionService implements IObjetivo04EducacionService {
     }
 
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo04EducacionRepository.findIndicadoresByProyecto(proyectoId);
     }
 
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo04EducacionRepository.saveIndicador(indicador);
     }
 
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo04EducacionRepository.updateIndicador(indicador);
     }
 
@@ -232,22 +232,22 @@ public class Objetivo04EducacionService implements IObjetivo04EducacionService {
     }
 
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo04EducacionRepository.findMetasByProyecto(proyectoId);
     }
 
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo04EducacionRepository.findMetaProyectoOds04ById(metaId);
     }
 
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo04EducacionRepository.saveMetaProyecto(meta);
     }
 
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 

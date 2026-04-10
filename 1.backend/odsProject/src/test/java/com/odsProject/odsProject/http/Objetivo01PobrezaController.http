@@ -97,12 +97,15 @@ POST {{baseUrl}}/api/ods/01/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Pobreza Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Pobreza Test",
+  "objetivoId": 1,
   "descripcion": "Proyecto de prueba para ODS1",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 100000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Reducir la pobreza extrema en un 5%",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -110,12 +113,12 @@ POST {{baseUrl}}/api/ods/01/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación",
-  "descripcion": "Proyecto para validar",
+  "nombreProyecto": "Proyecto Validación",
+  "usuarioId": 2,
+  "objetivoId": 1,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 50000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -124,29 +127,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Pobreza Actualizado",
+  "nombreProyecto": "Proyecto Pobreza Actualizado",
   "descripcion": "Proyecto actualizado para ODS1",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 120000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/01/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 1 = 1.1.1)
 POST {{baseUrl}}/api/ods/01/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "1.1.1",
-  "nombre": "Indicador de Pobreza Test",
-  "descripcion": "Indicador de prueba",
-  "valorActual": 75.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 1,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -154,13 +155,10 @@ POST {{baseUrl}}/api/ods/01/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "1.2.1",
-  "nombre": "Indicador Validación",
-  "descripcion": "Indicador para validar",
-  "valorActual": 50.0,
-  "valorMeta": 80.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 1,
+  "metaValor": 80.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -169,41 +167,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "1.1.1",
-  "nombre": "Indicador Actualizado",
-  "descripcion": "Indicador actualizado",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 1,
   "valorActual": 85.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/01/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/01/metas
 Content-Type: application/json
 
 {
-  "codigo": "1.1",
-  "descripcion": "Meta de prueba ODS1",
-  "valorMeta": 100.0,
-  "valorActual": 75.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "p1",
+  "tipoDato": "Decimal"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/01/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "1.1",
-  "descripcion": "Meta actualizada",
-  "valorMeta": 100.0,
-  "valorActual": 80.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "p1_editado",
+  "tipoDato": "Decimal"
 }
 
 ### Eliminar meta
@@ -214,9 +206,10 @@ POST {{baseUrl}}/api/ods/01/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 70.5,
   "fechaMedicion": "2024-01-15",
-  "valor": 70.5,
+  "responsable": "Admin Test",
   "observaciones": "Medición de prueba"
 }
 
@@ -226,10 +219,10 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 75.0,
   "fechaMedicion": "2024-01-15",
-  "valor": 75.0,
-  "observaciones": "Medición actualizada"
+  "responsable": "Admin Test Actualizado"
 }
 
 ### Eliminar medición histórica
@@ -278,3 +271,4 @@ GET {{baseUrl}}/api/ods/01/meta/{{metaId}}/existe
 
 ### Verificar existencia de medición histórica (base)
 GET {{baseUrl}}/api/ods/01/medicion/{{medicionId}}/existe
+

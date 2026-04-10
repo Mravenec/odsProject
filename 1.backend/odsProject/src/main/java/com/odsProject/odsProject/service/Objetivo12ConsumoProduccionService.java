@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo12ConsumoProduccionRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo12ConsumoProduccionService;
@@ -30,7 +30,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_1_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_2_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_2_1(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_2_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_2_2(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_2_2(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_3_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_3_1(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_4_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_4_1(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_4_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_4_2(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_4_2(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_5_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_5_1(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_6_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_6_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_6_1(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_7_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_7_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_7_1(proyectoId);
     }
 
@@ -110,7 +110,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_8_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_8_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_8_1(proyectoId);
     }
 
@@ -118,7 +118,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_a_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_a_1(proyectoId);
     }
 
@@ -126,7 +126,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_b_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_b_1(proyectoId);
     }
 
@@ -134,7 +134,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_12_c_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_12_c_1(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicador_12_c_1(proyectoId);
     }
 
@@ -142,7 +142,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findAllIndicadoresByProyectoOds12(proyectoId);
     }
 
@@ -150,7 +150,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo12ConsumoProduccionRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -181,7 +181,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * @param proyectoId ID del proyecto
      * @return Lista de todas las metas del proyecto ODS12
      */
-    public List<MetasProyecto> getAllMetasProyectoOds12(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> getAllMetasProyectoOds12(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findAllMetasProyectoOds12(proyectoId);
     }
 
@@ -191,7 +191,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    public Optional<MetasProyecto> getMetaProyectoOds12ById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> getMetaProyectoOds12ById(Integer metaId) {
         return objetivo12ConsumoProduccionRepository.findMetaProyectoOds12ById(metaId);
     }
 
@@ -219,10 +219,10 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 
@@ -233,7 +233,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      */
     public Map<String, Object> getOds12Statistics() {
         List<Proyectos> proyectos = objetivo12ConsumoProduccionRepository.findAllProyectosOds12();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo12ConsumoProduccionRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(
@@ -314,7 +314,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -322,7 +322,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
@@ -330,7 +330,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo12ConsumoProduccionRepository.saveIndicador(indicador);
     }
 
@@ -338,7 +338,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo12ConsumoProduccionRepository.updateIndicador(indicador);
     }
 
@@ -354,7 +354,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo12ConsumoProduccionRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -362,7 +362,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo12ConsumoProduccionRepository.findMetaProyectoOds12ById(metaId);
     }
 
@@ -370,7 +370,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo12ConsumoProduccionRepository.saveMetaProyecto(meta);
     }
 
@@ -378,7 +378,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 
@@ -445,7 +445,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
      */
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = objetivo12ConsumoProduccionRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo12ConsumoProduccionRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream()
             .filter(ind -> ind.getValorActual() != null)

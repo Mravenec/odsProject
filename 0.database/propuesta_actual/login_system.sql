@@ -25,7 +25,7 @@ CREATE TABLE roles (
 );
 
 -- Roles base del sistema
-INSERT INTO roles (nombre, descripcion) VALUES
+INSERT IGNORE INTO roles (nombre, descripcion) VALUES
     ('admin',       'Administrador con acceso total al sistema'),
     ('gestor',      'Gestor de proyectos ODS: crea y edita sus propios proyectos'),
     ('consultor',   'Acceso de solo lectura a reportes y dashboards'),
@@ -142,6 +142,52 @@ CREATE TABLE auditoria_login (
     INDEX idx_usuario_evento (usuario_id, evento),
     INDEX idx_fecha          (fecha_evento),
     INDEX idx_ip             (ip_address)
+);
+
+-- ────────────────────────────────────────────────────────────
+-- TABLA: ods_catalog
+-- Catálogo oficial de los 17 Objetivos de Desarrollo Sostenible
+-- ────────────────────────────────────────────────────────────
+
+CREATE TABLE ods_catalog (
+    id          TINYINT UNSIGNED PRIMARY KEY,            -- 1 al 17
+    nombre      VARCHAR(150) NOT NULL UNIQUE,
+    descripcion TEXT,
+    color_hex   VARCHAR(7) DEFAULT '#2563EB',            -- Para UI dinámica
+    icono_url   VARCHAR(255),
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ────────────────────────────────────────────────────────────
+-- TABLA: indicador_master
+-- Catálogo central de todos los indicadores oficiales ODS
+-- ────────────────────────────────────────────────────────────
+
+CREATE TABLE indicador_master (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    ods_id              TINYINT UNSIGNED NOT NULL,
+    codigo              VARCHAR(15)      NOT NULL UNIQUE, -- ej: '1.1.1'
+    nombre              TEXT             NOT NULL,
+    descripcion         TEXT,
+    formula_default     TEXT,                             -- ej: '(p1/p2)*100'
+    unidad_medida_default VARCHAR(50),
+    created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ods_id) REFERENCES ods_catalog(id) ON UPDATE CASCADE
+);
+
+-- ────────────────────────────────────────────────────────────
+-- TABLA: indicador_parametros_master
+-- Define los parámetros requeridos para las fórmulas por defecto
+-- ────────────────────────────────────────────────────────────
+
+CREATE TABLE indicador_parametros_master (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    indicador_id        INT          NOT NULL,
+    nombre_parametro    VARCHAR(50)  NOT NULL,           -- ej: 'p1'
+    descripcion_param   VARCHAR(100) NOT NULL,           -- ej: 'Población total'
+    tipo_dato           ENUM('Integer', 'Decimal') NOT NULL DEFAULT 'Decimal',
+    FOREIGN KEY (indicador_id) REFERENCES indicador_master(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_indicador_param (indicador_id, nombre_parametro)
 );
 
 -- ────────────────────────────────────────────────────────────
@@ -406,7 +452,7 @@ CREATE INDEX idx_sesiones_expira_revocada      ON sesiones(expira_en, revocada);
 -- LOGIN: admin@ods.local / Admin1234!
 -- ────────────────────────────────────────────────────────────
 
-INSERT INTO usuarios (username, email, password_hash, full_name, rol_id, is_active, email_verificado)
+INSERT IGNORE INTO usuarios (username, email, password_hash, full_name, rol_id, is_active, email_verificado)
 VALUES ('admin', 'admin@ods.local',
         '$2b$12$Mz3n8g34Ig8QllOrTDPKP.CiqYrhzBYy4l3JsJLmp1paGYZkPlBSy',
         'Administrador del Sistema', 1, TRUE, TRUE);
@@ -421,5 +467,8 @@ ALTER TABLE usuarios       COMMENT 'Usuarios centrales; referenciados por todas 
 ALTER TABLE sesiones       COMMENT 'Control de sesiones activas por token';
 ALTER TABLE permisos_ods   COMMENT 'Qué ODS puede gestionar cada usuario';
 ALTER TABLE auditoria_login COMMENT 'Registro de todos los eventos de autenticación';
+ALTER TABLE ods_catalog     COMMENT 'Catálogo central de los 17 ODS';
+ALTER TABLE indicador_master COMMENT 'Catálogo maestro de todos los indicadores oficiales con sus fórmulas';
+ALTER TABLE indicador_parametros_master COMMENT 'Parámetros necesarios para las fórmulas maestras';
 
 SELECT 'Base de datos ods_login creada exitosamente' AS mensaje, NOW() AS fecha_creacion;

@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS15
  */
 public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
+    ProyectoIndicadores,     // T - Indicadores
     Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
+    ProyectoIndicadorParametros,   // M - MetasProyecto
     MedicionesHistoricas, // MH - MedicionesHistoricas
     Object           // A - Auditoria (placeholder)
 > {
@@ -27,7 +27,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.1.1
      */
-    Optional<Indicadores> getIndicador_15_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.1.2
@@ -45,7 +45,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.1.2
      */
-    Optional<Indicadores> getIndicador_15_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_1_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.2.1
@@ -54,7 +54,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.2.1
      */
-    Optional<Indicadores> getIndicador_15_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.3.1
@@ -63,7 +63,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.3.1
      */
-    Optional<Indicadores> getIndicador_15_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.4.1
@@ -72,7 +72,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.4.1
      */
-    Optional<Indicadores> getIndicador_15_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.4.2
@@ -81,7 +81,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.4.2
      */
-    Optional<Indicadores> getIndicador_15_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.5.1
@@ -90,7 +90,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.5.1
      */
-    Optional<Indicadores> getIndicador_15_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.6.1
@@ -99,7 +99,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.6.1
      */
-    Optional<Indicadores> getIndicador_15_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.7.1
@@ -108,7 +108,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.7.1
      */
-    Optional<Indicadores> getIndicador_15_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.8.1
@@ -117,7 +117,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.8.1
      */
-    Optional<Indicadores> getIndicador_15_8_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_8_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.9.1
@@ -126,7 +126,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.9.1
      */
-    Optional<Indicadores> getIndicador_15_9_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_9_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.a.1
@@ -135,7 +135,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.a.1
      */
-    Optional<Indicadores> getIndicador_15_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.b.1
@@ -144,7 +144,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.b.1
      */
-    Optional<Indicadores> getIndicador_15_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 15.c.1
@@ -153,7 +153,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 15.c.1
      */
-    Optional<Indicadores> getIndicador_15_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_15_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS15
@@ -161,7 +161,7 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds15(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds15(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS15
@@ -170,5 +170,5 @@ public interface IObjetivo15VidaEcosistemasService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "15.1", "15.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

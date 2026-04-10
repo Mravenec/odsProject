@@ -37,30 +37,32 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     }
 
     /**
-     * Setter for <code>ods_login.mediciones_historicas.indicador_id</code>.
+     * Setter for
+     * <code>ods_login.mediciones_historicas.proyecto_indicador_id</code>.
      */
-    public void setIndicadorId(Integer value) {
+    public void setProyectoIndicadorId(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>ods_login.mediciones_historicas.indicador_id</code>.
+     * Getter for
+     * <code>ods_login.mediciones_historicas.proyecto_indicador_id</code>.
      */
-    public Integer getIndicadorId() {
+    public Integer getProyectoIndicadorId() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>ods_login.mediciones_historicas.valor_medido</code>.
+     * Setter for <code>ods_login.mediciones_historicas.valor_calculado</code>.
      */
-    public void setValorMedido(BigDecimal value) {
+    public void setValorCalculado(BigDecimal value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>ods_login.mediciones_historicas.valor_medido</code>.
+     * Getter for <code>ods_login.mediciones_historicas.valor_calculado</code>.
      */
-    public BigDecimal getValorMedido() {
+    public BigDecimal getValorCalculado() {
         return (BigDecimal) get(2);
     }
 
@@ -107,17 +109,31 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     }
 
     /**
+     * Setter for <code>ods_login.mediciones_historicas.observaciones</code>.
+     */
+    public void setObservaciones(String value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>ods_login.mediciones_historicas.observaciones</code>.
+     */
+    public String getObservaciones() {
+        return (String) get(6);
+    }
+
+    /**
      * Setter for <code>ods_login.mediciones_historicas.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>ods_login.mediciones_historicas.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(6);
+        return (LocalDateTime) get(7);
     }
 
     // -------------------------------------------------------------------------
@@ -143,15 +159,16 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     /**
      * Create a detached, initialised MedicionesHistoricasRecord
      */
-    public MedicionesHistoricasRecord(Integer id, Integer indicadorId, BigDecimal valorMedido, LocalDate fechaMedicion, String responsable, String metodoMedicion, LocalDateTime createdAt) {
+    public MedicionesHistoricasRecord(Integer id, Integer proyectoIndicadorId, BigDecimal valorCalculado, LocalDate fechaMedicion, String responsable, String metodoMedicion, String observaciones, LocalDateTime createdAt) {
         super(MedicionesHistoricas.MEDICIONES_HISTORICAS);
 
         setId(id);
-        setIndicadorId(indicadorId);
-        setValorMedido(valorMedido);
+        setProyectoIndicadorId(proyectoIndicadorId);
+        setValorCalculado(valorCalculado);
         setFechaMedicion(fechaMedicion);
         setResponsable(responsable);
         setMetodoMedicion(metodoMedicion);
+        setObservaciones(observaciones);
         setCreatedAt(createdAt);
         resetChangedOnNotNull();
     }
@@ -164,11 +181,12 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
 
         if (value != null) {
             setId(value.getId());
-            setIndicadorId(value.getIndicadorId());
-            setValorMedido(value.getValorMedido());
+            setProyectoIndicadorId(value.getProyectoIndicadorId());
+            setValorCalculado(value.getValorCalculado());
             setFechaMedicion(value.getFechaMedicion());
             setResponsable(value.getResponsable());
             setMetodoMedicion(value.getMetodoMedicion());
+            setObservaciones(value.getObservaciones());
             setCreatedAt(value.getCreatedAt());
             resetChangedOnNotNull();
         }

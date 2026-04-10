@@ -100,12 +100,15 @@ POST {{baseUrl}}/api/ods/15/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Vida Ecosistemas Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Vida Ecosistemas Test",
+  "objetivoId": 15,
   "descripcion": "Proyecto de prueba para ODS15",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 270000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Gestionar sosteniblemente los bosques, luchar contra la desertificación, detener e invertir la degradación de las tierras y detener la pérdida de biodiversidad",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -113,12 +116,12 @@ POST {{baseUrl}}/api/ods/15/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Ecosistemas",
-  "descripcion": "Proyecto para validar ODS15",
+  "nombreProyecto": "Proyecto Validación Ecosistemas",
+  "usuarioId": 2,
+  "objetivoId": 15,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 135000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -127,29 +130,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Ecosistemas Actualizado",
+  "nombreProyecto": "Proyecto Ecosistemas Actualizado",
   "descripcion": "Proyecto actualizado para ODS15",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 295000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Ecosistemas",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 185 = 15.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/15/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "15.1.1",
-  "nombre": "Indicador Ecosistemas Test",
-  "descripcion": "Indicador de prueba para ODS15",
-  "valorActual": 59.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 185,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -157,13 +158,10 @@ POST {{baseUrl}}/api/ods/15/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "15.2.1",
-  "nombre": "Indicador Validación Ecosistemas",
-  "descripcion": "Indicador para validar ODS15",
-  "valorActual": 45.0,
-  "valorMeta": 70.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 185,
+  "metaValor": 85.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -172,41 +170,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "15.1.1",
-  "nombre": "Indicador Ecosistemas Actualizado",
-  "descripcion": "Indicador actualizado para ODS15",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 185,
   "valorActual": 63.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/15/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/15/metas
 Content-Type: application/json
 
 {
-  "codigo": "15.1",
-  "descripcion": "Meta de prueba ODS15",
-  "valorMeta": 100.0,
-  "valorActual": 59.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "superficie_bosque_terrestre",
+  "tipoDato": "Double"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/15/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "15.1",
-  "descripcion": "Meta actualizada ODS15",
-  "valorMeta": 100.0,
-  "valorActual": 61.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "superficie_areas_protegidas",
+  "tipoDato": "Double"
 }
 
 ### Eliminar meta
@@ -217,10 +209,11 @@ POST {{baseUrl}}/api/ods/15/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 57.5,
-  "observaciones": "Medición de prueba ODS15"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 48.5,
+  "fechaMedicion": "2024-08-15",
+  "responsable": "Admin Ecosistemas",
+  "observaciones": "Monitoreo biológico"
 }
 
 ### Actualizar medición histórica
@@ -229,14 +222,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 59.0,
-  "observaciones": "Medición actualizada ODS15"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 51.0,
+  "fechaMedicion": "2024-08-15",
+  "responsable": "Admin Ecosistemas Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/15/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

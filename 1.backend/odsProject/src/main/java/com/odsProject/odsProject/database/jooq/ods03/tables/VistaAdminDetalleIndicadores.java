@@ -8,7 +8,6 @@ import com.odsProject.odsProject.database.jooq.ods03.Ods03;
 import com.odsProject.odsProject.database.jooq.ods03.tables.records.VistaAdminDetalleIndicadoresRecord;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
@@ -65,21 +64,21 @@ public class VistaAdminDetalleIndicadores extends TableImpl<VistaAdminDetalleInd
 
     /**
      * The column
-     * <code>ods03.vista_admin_detalle_indicadores.usuario_creador</code>.
-     */
-    public final TableField<VistaAdminDetalleIndicadoresRecord, String> USUARIO_CREADOR = createField(DSL.name("usuario_creador"), SQLDataType.VARCHAR(50), this, "");
-
-    /**
-     * The column
      * <code>ods03.vista_admin_detalle_indicadores.indicador_codigo</code>.
      */
-    public final TableField<VistaAdminDetalleIndicadoresRecord, String> INDICADOR_CODIGO = createField(DSL.name("indicador_codigo"), SQLDataType.VARCHAR(10), this, "");
+    public final TableField<VistaAdminDetalleIndicadoresRecord, String> INDICADOR_CODIGO = createField(DSL.name("indicador_codigo"), SQLDataType.VARCHAR(15).nullable(false), this, "");
 
     /**
      * The column
-     * <code>ods03.vista_admin_detalle_indicadores.indicador_descripcion</code>.
+     * <code>ods03.vista_admin_detalle_indicadores.indicador_nombre</code>.
      */
-    public final TableField<VistaAdminDetalleIndicadoresRecord, String> INDICADOR_DESCRIPCION = createField(DSL.name("indicador_descripcion"), SQLDataType.CLOB(65535), this, "");
+    public final TableField<VistaAdminDetalleIndicadoresRecord, String> INDICADOR_NOMBRE = createField(DSL.name("indicador_nombre"), SQLDataType.CLOB(65535).nullable(false), this, "");
+
+    /**
+     * The column
+     * <code>ods03.vista_admin_detalle_indicadores.formula_custom</code>.
+     */
+    public final TableField<VistaAdminDetalleIndicadoresRecord, String> FORMULA_CUSTOM = createField(DSL.name("formula_custom"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
      * The column
@@ -88,15 +87,15 @@ public class VistaAdminDetalleIndicadores extends TableImpl<VistaAdminDetalleInd
     public final TableField<VistaAdminDetalleIndicadoresRecord, BigDecimal> VALOR_ACTUAL = createField(DSL.name("valor_actual"), SQLDataType.DECIMAL(15, 4).defaultValue(DSL.field(DSL.raw("0.0000"), SQLDataType.DECIMAL)), this, "");
 
     /**
-     * The column <code>ods03.vista_admin_detalle_indicadores.valor_meta</code>.
+     * The column <code>ods03.vista_admin_detalle_indicadores.meta_valor</code>.
      */
-    public final TableField<VistaAdminDetalleIndicadoresRecord, BigDecimal> VALOR_META = createField(DSL.name("valor_meta"), SQLDataType.DECIMAL(15, 4), this, "");
+    public final TableField<VistaAdminDetalleIndicadoresRecord, BigDecimal> META_VALOR = createField(DSL.name("meta_valor"), SQLDataType.DECIMAL(15, 4).nullable(false), this, "");
 
     /**
      * The column
-     * <code>ods03.vista_admin_detalle_indicadores.unidad_medida</code>.
+     * <code>ods03.vista_admin_detalle_indicadores.meta_unidad</code>.
      */
-    public final TableField<VistaAdminDetalleIndicadoresRecord, String> UNIDAD_MEDIDA = createField(DSL.name("unidad_medida"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<VistaAdminDetalleIndicadoresRecord, String> META_UNIDAD = createField(DSL.name("meta_unidad"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column
@@ -112,18 +111,6 @@ public class VistaAdminDetalleIndicadores extends TableImpl<VistaAdminDetalleInd
 
     /**
      * The column
-     * <code>ods03.vista_admin_detalle_indicadores.fecha_medicion</code>.
-     */
-    public final TableField<VistaAdminDetalleIndicadoresRecord, LocalDate> FECHA_MEDICION = createField(DSL.name("fecha_medicion"), SQLDataType.LOCALDATE, this, "");
-
-    /**
-     * The column
-     * <code>ods03.vista_admin_detalle_indicadores.fuente_datos</code>.
-     */
-    public final TableField<VistaAdminDetalleIndicadoresRecord, String> FUENTE_DATOS = createField(DSL.name("fuente_datos"), SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column
      * <code>ods03.vista_admin_detalle_indicadores.ultima_actualizacion</code>.
      */
     public final TableField<VistaAdminDetalleIndicadoresRecord, LocalDateTime> ULTIMA_ACTUALIZACION = createField(DSL.name("ultima_actualizacion"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -133,7 +120,7 @@ public class VistaAdminDetalleIndicadores extends TableImpl<VistaAdminDetalleInd
     }
 
     private VistaAdminDetalleIndicadores(Name alias, Table<VistaAdminDetalleIndicadoresRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_detalle_indicadores` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`username` AS `usuario_creador`,`i`.`indicador_codigo` AS `indicador_codigo`,`i`.`indicador_descripcion` AS `indicador_descripcion`,`i`.`valor_actual` AS `valor_actual`,`i`.`valor_meta` AS `valor_meta`,`i`.`unidad_medida` AS `unidad_medida`,case when `i`.`valor_actual` >= `i`.`valor_meta` then 'LOGRADO' when `i`.`valor_actual` >= `i`.`valor_meta` * 0.8 then 'CERCA META' when `i`.`valor_actual` >= `i`.`valor_meta` * 0.5 then 'PROGRESO' else 'BAJO' end AS `estado_indicador`,round(`i`.`valor_actual` / `i`.`valor_meta` * 100,2) AS `porcentaje_logro`,`i`.`fecha_medicion` AS `fecha_medicion`,`i`.`fuente_datos` AS `fuente_datos`,`i`.`updated_at` AS `ultima_actualizacion` from ((`ods03`.`proyectos` `p` left join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods03`.`indicadores` `i` on(`p`.`id` = `i`.`proyecto_id`)) order by `p`.`id`,`i`.`indicador_codigo`"), where);
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_detalle_indicadores` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`m`.`codigo` AS `indicador_codigo`,`m`.`nombre` AS `indicador_nombre`,`pi`.`formula_custom` AS `formula_custom`,`pi`.`valor_actual` AS `valor_actual`,`pi`.`meta_valor` AS `meta_valor`,`pi`.`meta_unidad` AS `meta_unidad`,case when `pi`.`valor_actual` >= `pi`.`meta_valor` then 'LOGRADO' when `pi`.`valor_actual` >= `pi`.`meta_valor` * 0.8 then 'CERCA META' when `pi`.`valor_actual` >= `pi`.`meta_valor` * 0.5 then 'PROGRESO' else 'BAJO' end AS `estado_indicador`,round(`pi`.`valor_actual` / `pi`.`meta_valor` * 100,2) AS `porcentaje_logro`,`pi`.`updated_at` AS `ultima_actualizacion` from ((`ods03`.`proyectos` `p` join `ods03`.`proyecto_indicadores` `pi` on(`p`.`id` = `pi`.`proyecto_id`)) join `ods_login`.`indicador_master` `m` on(`pi`.`indicador_master_id` = `m`.`id`))"), where);
     }
 
     /**

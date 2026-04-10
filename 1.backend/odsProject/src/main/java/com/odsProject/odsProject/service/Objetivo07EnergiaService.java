@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo07EnergiaRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo07EnergiaService;
@@ -30,7 +30,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo07EnergiaRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_7_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_7_1_1(Integer proyectoId) {
         return objetivo07EnergiaRepository.findIndicador_7_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_7_1_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_7_1_2(Integer proyectoId) {
         return objetivo07EnergiaRepository.findIndicador_7_1_2(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_7_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_7_2_1(Integer proyectoId) {
         return objetivo07EnergiaRepository.findIndicador_7_2_1(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_7_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_7_3_1(Integer proyectoId) {
         return objetivo07EnergiaRepository.findIndicador_7_3_1(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_7_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_7_a_1(Integer proyectoId) {
         return objetivo07EnergiaRepository.findIndicador_7_a_1(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_7_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_7_b_1(Integer proyectoId) {
         return objetivo07EnergiaRepository.findIndicador_7_b_1(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_7_c_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_7_c_1(Integer proyectoId) {
         return objetivo07EnergiaRepository.findIndicador_7_c_1(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds07(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds07(Integer proyectoId) {
         return objetivo07EnergiaRepository.findAllIndicadoresByProyectoOds07(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo07EnergiaRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -128,7 +128,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> getAllMetasProyectoOds07(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> getAllMetasProyectoOds07(Integer proyectoId) {
         return objetivo07EnergiaRepository.findAllMetasProyectoOds07(proyectoId);
     }
 
@@ -136,7 +136,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> getMetaProyectoOds07ById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> getMetaProyectoOds07ById(Integer metaId) {
         return objetivo07EnergiaRepository.findMetaProyectoOds07ById(metaId);
     }
 
@@ -160,10 +160,10 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 
@@ -172,7 +172,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      */
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = objetivo07EnergiaRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo07EnergiaRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream()
             .filter(ind -> ind.getValorActual() != null)
@@ -185,7 +185,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      */
     public Map<String, Object> getOds07Statistics() {
         List<Proyectos> proyectos = objetivo07EnergiaRepository.findAllProyectosOds07();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo07EnergiaRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(
@@ -245,7 +245,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo07EnergiaRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -253,7 +253,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
@@ -261,7 +261,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo07EnergiaRepository.saveIndicador(indicador);
     }
 
@@ -269,7 +269,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo07EnergiaRepository.updateIndicador(indicador);
     }
 
@@ -285,7 +285,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo07EnergiaRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -293,7 +293,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo07EnergiaRepository.findMetaProyectoOds07ById(metaId);
     }
 
@@ -301,7 +301,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo07EnergiaRepository.saveMetaProyecto(meta);
     }
 
@@ -309,7 +309,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 

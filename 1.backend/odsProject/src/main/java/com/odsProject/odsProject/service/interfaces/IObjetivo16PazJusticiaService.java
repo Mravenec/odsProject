@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS16
  */
 public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -27,7 +27,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.1.1
      */
-    Optional<Indicadores> getIndicador_16_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.1.2
@@ -45,7 +45,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.1.2
      */
-    Optional<Indicadores> getIndicador_16_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_1_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.1.3
@@ -54,7 +54,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.1.3
      */
-    Optional<Indicadores> getIndicador_16_1_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_1_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.1.4
@@ -63,7 +63,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.1.4
      */
-    Optional<Indicadores> getIndicador_16_1_4(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_1_4(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.2.1
@@ -72,7 +72,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.2.1
      */
-    Optional<Indicadores> getIndicador_16_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.2.2
@@ -81,7 +81,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.2.2
      */
-    Optional<Indicadores> getIndicador_16_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.2.3
@@ -90,7 +90,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.2.3
      */
-    Optional<Indicadores> getIndicador_16_2_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_2_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.3.1
@@ -99,7 +99,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.3.1
      */
-    Optional<Indicadores> getIndicador_16_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.3.2
@@ -108,7 +108,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.3.2
      */
-    Optional<Indicadores> getIndicador_16_3_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.3.3
@@ -117,7 +117,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.3.3
      */
-    Optional<Indicadores> getIndicador_16_3_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_3_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.4.1
@@ -126,7 +126,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.4.1
      */
-    Optional<Indicadores> getIndicador_16_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.4.2
@@ -135,7 +135,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.4.2
      */
-    Optional<Indicadores> getIndicador_16_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.5.1
@@ -144,7 +144,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.5.1
      */
-    Optional<Indicadores> getIndicador_16_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.5.2
@@ -153,7 +153,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.5.2
      */
-    Optional<Indicadores> getIndicador_16_5_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.6.1
@@ -162,7 +162,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.6.1
      */
-    Optional<Indicadores> getIndicador_16_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.6.2
@@ -171,7 +171,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.6.2
      */
-    Optional<Indicadores> getIndicador_16_6_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_6_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.7.1
@@ -180,7 +180,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.7.1
      */
-    Optional<Indicadores> getIndicador_16_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.7.2
@@ -189,7 +189,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.7.2
      */
-    Optional<Indicadores> getIndicador_16_7_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_7_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.8.1
@@ -198,7 +198,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.8.1
      */
-    Optional<Indicadores> getIndicador_16_8_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_8_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.9.1
@@ -207,7 +207,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.9.1
      */
-    Optional<Indicadores> getIndicador_16_9_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_9_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.10.1
@@ -216,7 +216,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.10.1
      */
-    Optional<Indicadores> getIndicador_16_10_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_10_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.10.2
@@ -225,7 +225,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.10.2
      */
-    Optional<Indicadores> getIndicador_16_10_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_10_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.a.1
@@ -234,7 +234,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.a.1
      */
-    Optional<Indicadores> getIndicador_16_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.b.1
@@ -243,7 +243,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 16.b.1
      */
-    Optional<Indicadores> getIndicador_16_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_16_b_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS16
@@ -251,7 +251,7 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds16(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds16(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS16
@@ -260,5 +260,5 @@ public interface IObjetivo16PazJusticiaService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "16.1", "16.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

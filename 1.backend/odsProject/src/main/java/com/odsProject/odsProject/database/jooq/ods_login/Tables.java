@@ -5,10 +5,14 @@ package com.odsProject.odsProject.database.jooq.ods_login;
 
 
 import com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorMaster;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorParametrosMaster;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.MedicionParametroValores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.OdsCatalog;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.ProyectoIndicadorParametros;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes;
@@ -32,9 +36,19 @@ public class Tables {
     public static final AuditoriaLogin AUDITORIA_LOGIN = AuditoriaLogin.AUDITORIA_LOGIN;
 
     /**
-     * The table <code>ods_login.indicadores</code>.
+     * Catálogo maestro de todos los indicadores oficiales con sus fórmulas
      */
-    public static final Indicadores INDICADORES = Indicadores.INDICADORES;
+    public static final IndicadorMaster INDICADOR_MASTER = IndicadorMaster.INDICADOR_MASTER;
+
+    /**
+     * Parámetros necesarios para las fórmulas maestras
+     */
+    public static final IndicadorParametrosMaster INDICADOR_PARAMETROS_MASTER = IndicadorParametrosMaster.INDICADOR_PARAMETROS_MASTER;
+
+    /**
+     * The table <code>ods_login.medicion_parametro_valores</code>.
+     */
+    public static final MedicionParametroValores MEDICION_PARAMETRO_VALORES = MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
 
     /**
      * The table <code>ods_login.mediciones_historicas</code>.
@@ -42,14 +56,24 @@ public class Tables {
     public static final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
 
     /**
-     * The table <code>ods_login.metas_proyecto</code>.
+     * Catálogo central de los 17 ODS
      */
-    public static final MetasProyecto METAS_PROYECTO = MetasProyecto.METAS_PROYECTO;
+    public static final OdsCatalog ODS_CATALOG = OdsCatalog.ODS_CATALOG;
 
     /**
      * Qué ODS puede gestionar cada usuario
      */
     public static final PermisosOds PERMISOS_ODS = PermisosOds.PERMISOS_ODS;
+
+    /**
+     * The table <code>ods_login.proyecto_indicador_parametros</code>.
+     */
+    public static final ProyectoIndicadorParametros PROYECTO_INDICADOR_PARAMETROS = ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
+
+    /**
+     * The table <code>ods_login.proyecto_indicadores</code>.
+     */
+    public static final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
 
     /**
      * The table <code>ods_login.proyectos</code>.

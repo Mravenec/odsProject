@@ -2,9 +2,9 @@ package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods06.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +16,11 @@ import java.util.Optional;
  */
 @RequestMapping("/api/ods/06")
 public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -29,7 +29,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores
      */
-    ResponseEntity<List<Indicadores>> getAllIndicators(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.1.1
@@ -38,7 +38,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.1.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_1_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.2.1
@@ -47,7 +47,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.2.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_2_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.3.1
@@ -56,7 +56,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.3.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_3_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.3.2
@@ -65,7 +65,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.3.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_3_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.4.1
@@ -74,7 +74,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.4.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_4_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.4.2
@@ -83,7 +83,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.4.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_4_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.5.1
@@ -92,7 +92,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.5.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_5_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.5.2
@@ -101,7 +101,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.5.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_5_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.6.1
@@ -110,7 +110,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.6.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_6_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.a.1
@@ -119,7 +119,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.a.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_a_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 6.b.1
@@ -128,7 +128,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 6.b.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_6_b_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_6_b_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS06
@@ -136,7 +136,7 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores del proyecto
      */
-    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds06(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds06(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS06
@@ -145,5 +145,5 @@ public interface IObjetivo06AguaSaneamientoController extends IOdsBaseController
      * @param metaPrefix Prefijo de la meta (ej: "6.1", "6.2")
      * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
      */
-    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

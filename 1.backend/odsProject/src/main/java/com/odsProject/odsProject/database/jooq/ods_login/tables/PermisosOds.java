@@ -7,7 +7,6 @@ package com.odsProject.odsProject.database.jooq.ods_login.tables;
 import com.odsProject.odsProject.database.jooq.ods_login.Indexes;
 import com.odsProject.odsProject.database.jooq.ods_login.Keys;
 import com.odsProject.odsProject.database.jooq.ods_login.OdsLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios.UsuariosPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.PermisosOdsRecord;
 
 import java.time.LocalDateTime;
@@ -21,12 +20,9 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Index;
-import org.jooq.InverseForeignKey;
 import org.jooq.Name;
-import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
-import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -127,39 +123,6 @@ public class PermisosOds extends TableImpl<PermisosOdsRecord> {
         this(DSL.name("permisos_ods"), null);
     }
 
-    public <O extends Record> PermisosOds(Table<O> path, ForeignKey<O, PermisosOdsRecord> childPath, InverseForeignKey<O, PermisosOdsRecord> parentPath) {
-        super(path, childPath, parentPath, PERMISOS_ODS);
-    }
-
-    /**
-     * A subtype implementing {@link Path} for simplified path-based joins.
-     */
-    public static class PermisosOdsPath extends PermisosOds implements Path<PermisosOdsRecord> {
-
-        private static final long serialVersionUID = 1L;
-        public <O extends Record> PermisosOdsPath(Table<O> path, ForeignKey<O, PermisosOdsRecord> childPath, InverseForeignKey<O, PermisosOdsRecord> parentPath) {
-            super(path, childPath, parentPath);
-        }
-        private PermisosOdsPath(Name alias, Table<PermisosOdsRecord> aliased) {
-            super(alias, aliased);
-        }
-
-        @Override
-        public PermisosOdsPath as(String alias) {
-            return new PermisosOdsPath(DSL.name(alias), this);
-        }
-
-        @Override
-        public PermisosOdsPath as(Name alias) {
-            return new PermisosOdsPath(alias, this);
-        }
-
-        @Override
-        public PermisosOdsPath as(Table<?> alias) {
-            return new PermisosOdsPath(alias.getQualifiedName(), this);
-        }
-    }
-
     @Override
     public Schema getSchema() {
         return aliased() ? null : OdsLogin.ODS_LOGIN;
@@ -188,18 +151,6 @@ public class PermisosOds extends TableImpl<PermisosOdsRecord> {
     @Override
     public List<ForeignKey<PermisosOdsRecord, ?>> getReferences() {
         return Arrays.asList(Keys.PERMISOS_ODS_IBFK_1);
-    }
-
-    private transient UsuariosPath _usuarios;
-
-    /**
-     * Get the implicit join path to the <code>ods_login.usuarios</code> table.
-     */
-    public UsuariosPath usuarios() {
-        if (_usuarios == null)
-            _usuarios = new UsuariosPath(this, Keys.PERMISOS_ODS_IBFK_1, null);
-
-        return _usuarios;
     }
 
     @Override

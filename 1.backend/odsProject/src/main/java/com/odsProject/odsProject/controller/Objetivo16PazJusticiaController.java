@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo16PazJusticiaService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo16PazJusticiaController;
@@ -32,8 +32,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo16PazJusticiaService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo16PazJusticiaService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.1.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_1_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_1_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_1_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_1_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.1.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_1_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_1_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_1_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_1_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.1.4")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_1_4(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_1_4(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_1_4(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_1_4(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.2.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_2_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_2_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_2_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_2_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.2.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_2_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_2_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_2_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_2_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.3.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_3_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_3_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_3_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_3_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.3.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_3_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_3_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_3_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_3_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.4.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_4_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_4_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_4_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_4_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -162,8 +162,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -172,8 +172,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.5.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_5_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_5_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_5_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_5_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -182,8 +182,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -192,8 +192,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.6.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_6_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_6_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_6_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_6_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -202,8 +202,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.7.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_7_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_7_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_7_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_7_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -212,8 +212,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.7.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_7_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_7_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_7_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_7_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -222,8 +222,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.8.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_8_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_8_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_8_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_8_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -232,8 +232,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.9.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_9_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_9_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_9_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_9_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -242,8 +242,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.10.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_10_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_10_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_10_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_10_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -252,8 +252,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.10.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_10_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_10_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_10_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_10_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -262,8 +262,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -272,8 +272,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/16.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_16_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.getIndicador_16_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.getIndicador_16_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -282,8 +282,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds16(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo16PazJusticiaService.findAllIndicadoresByProyectoOds16(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds16(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo16PazJusticiaService.findAllIndicadoresByProyectoOds16(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -292,8 +292,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo16PazJusticiaService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo16PazJusticiaService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -329,8 +329,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS16
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds16(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo16PazJusticiaService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds16(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo16PazJusticiaService.getAllMetasProyectoOds16(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -462,8 +462,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo16PazJusticiaService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo16PazJusticiaService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -472,8 +472,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo16PazJusticiaService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo16PazJusticiaService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -482,8 +482,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo16PazJusticiaService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo16PazJusticiaService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -492,7 +492,7 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo16PazJusticiaService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -502,8 +502,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo16PazJusticiaService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo16PazJusticiaService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -522,8 +522,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo16PazJusticiaService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo16PazJusticiaService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -532,8 +532,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo16PazJusticiaService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo16PazJusticiaService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -542,8 +542,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo16PazJusticiaService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo16PazJusticiaService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -552,8 +552,8 @@ public class Objetivo16PazJusticiaController implements IObjetivo16PazJusticiaCo
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo16PazJusticiaService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo16PazJusticiaService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

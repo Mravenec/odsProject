@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS10
  */
 public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -27,7 +27,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.1.1
      */
-    Optional<Indicadores> getIndicador_10_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.2.1
@@ -45,7 +45,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.2.1
      */
-    Optional<Indicadores> getIndicador_10_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.3.1
@@ -54,7 +54,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.3.1
      */
-    Optional<Indicadores> getIndicador_10_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.4.1
@@ -63,7 +63,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.4.1
      */
-    Optional<Indicadores> getIndicador_10_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.4.2
@@ -72,7 +72,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.4.2
      */
-    Optional<Indicadores> getIndicador_10_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.5.1
@@ -81,7 +81,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.5.1
      */
-    Optional<Indicadores> getIndicador_10_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.6.1
@@ -90,7 +90,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.6.1
      */
-    Optional<Indicadores> getIndicador_10_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.7.1
@@ -99,7 +99,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.7.1
      */
-    Optional<Indicadores> getIndicador_10_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.7.2
@@ -108,7 +108,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.7.2
      */
-    Optional<Indicadores> getIndicador_10_7_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_7_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.7.3
@@ -117,7 +117,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.7.3
      */
-    Optional<Indicadores> getIndicador_10_7_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_7_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.7.4
@@ -126,7 +126,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.7.4
      */
-    Optional<Indicadores> getIndicador_10_7_4(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_7_4(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.a.1
@@ -135,7 +135,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.a.1
      */
-    Optional<Indicadores> getIndicador_10_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.b.1
@@ -144,7 +144,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.b.1
      */
-    Optional<Indicadores> getIndicador_10_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 10.c.1
@@ -153,7 +153,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 10.c.1
      */
-    Optional<Indicadores> getIndicador_10_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_10_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS10
@@ -161,7 +161,7 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds10(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds10(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS10
@@ -170,5 +170,5 @@ public interface IObjetivo10ReduccionDesigualdadService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "10.1", "10.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

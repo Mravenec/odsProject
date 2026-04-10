@@ -1,12 +1,12 @@
 package com.odsProject.odsProject.repository;
 
-import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.AuditoriaOds02;
 import com.odsProject.odsProject.database.jooq.ods02.routines.SpAdminReporteProyecto;
-import com.odsProject.odsProject.database.jooq.ods02.routines.SpAdminDashboard;
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.repository.interfaces.IObjetivo02HambreCeroRepository;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +17,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.odsProject.odsProject.database.jooq.ods02.tables.Indicadores.INDICADORES;
+import static com.odsProject.odsProject.database.jooq.ods02.tables.ProyectoIndicadores.PROYECTO_INDICADORES;
 import static com.odsProject.odsProject.database.jooq.ods02.tables.Proyectos.PROYECTOS;
-import static com.odsProject.odsProject.database.jooq.ods02.tables.MetasProyecto.METAS_PROYECTO;
+import static com.odsProject.odsProject.database.jooq.ods02.tables.ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
 import static com.odsProject.odsProject.database.jooq.ods02.tables.MedicionesHistoricas.MEDICIONES_HISTORICAS;
 import static com.odsProject.odsProject.database.jooq.ods02.tables.AuditoriaOds02.AUDITORIA_ODS02;
+import static com.odsProject.odsProject.database.jooq.ods02.tables.VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
+import static com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorMaster.INDICADOR_MASTER;
 
 /**
  * Implementación del Repositorio para el Objetivo 2: Hambre Cero
@@ -41,165 +43,153 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicador_2_1_1(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.1.1"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_1_1(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.1.1"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_1_2(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.1.2"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_1_2(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.1.2"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_2_1(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.2.1"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_2_1(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.2.1"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_2_2(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.2.2"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_2_2(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.2.2"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_2_3(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.2.3"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_2_3(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.2.3"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_2_4(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.2.4"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_2_4(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.2.4"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_3_1(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.3.1"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_3_1(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.3.1"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_3_2(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.3.2"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_3_2(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.3.2"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_4_1(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.4.1"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_4_1(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.4.1"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_5_1(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.5.1"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_5_1(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.5.1"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_5_2(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.5.2"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_5_2(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.5.2"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_a_1(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.a.1"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_a_1(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.a.1"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_a_2(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.a.2"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_a_2(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.a.2"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_b_1(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.b.1"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_b_1(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.b.1"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Optional<Indicadores> findIndicador_2_c_1(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq("2.c.1"))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicador_2_c_1(Integer proyectoId) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq("2.c.1"))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
     // ── Métodos Agregados (usando stored procedures del ODS02) ──
@@ -208,33 +198,35 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds02(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds02(Integer proyectoId) {
         // Usar el stored procedure sp_admin_reporte_proyecto del ODS02
         SpAdminReporteProyecto sp = new SpAdminReporteProyecto();
         sp.setProyectoIdParam(proyectoId);
         sp.execute(dsl.configuration());
         
         // También hacer query directa como fallback
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .fetchInto(Indicadores.class);
+        return dsl.selectFrom(PROYECTO_INDICADORES)
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .fetchInto(ProyectoIndicadores.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         // Usar el stored procedure sp_admin_reporte_proyecto y filtrar por meta
         SpAdminReporteProyecto sp = new SpAdminReporteProyecto();
         sp.setProyectoIdParam(proyectoId);
         sp.execute(dsl.configuration());
         
-        // Filtrar por metaPrefix
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.like(metaPrefix + ".%"))
-                .fetchInto(Indicadores.class);
+        // Filtrar por metaPrefix usando JOIN con INDICADOR_MASTER
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.like(metaPrefix + ".%"))
+                .fetchInto(ProyectoIndicadores.class);
     }
 
     // ── Implementación de IOdsBaseRepository ──
@@ -317,54 +309,58 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByProyecto(Integer proyectoId) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .fetchInto(Indicadores.class);
+    public List<ProyectoIndicadores> findIndicadoresByProyecto(Integer proyectoId) {
+        return dsl.selectFrom(PROYECTO_INDICADORES)
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .fetchInto(ProyectoIndicadores.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
-        return dsl.insertInto(INDICADORES)
-                .set(dsl.newRecord(INDICADORES, indicador))
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
+        return dsl.insertInto(PROYECTO_INDICADORES)
+                .set(dsl.newRecord(PROYECTO_INDICADORES, indicador))
                 .returning()
-                .fetchOneInto(Indicadores.class);
+                .fetchOneInto(ProyectoIndicadores.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
-        return dsl.update(INDICADORES)
-                .set(dsl.newRecord(INDICADORES, indicador))
-                .where(INDICADORES.ID.eq(indicador.getId()))
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
+        return dsl.update(PROYECTO_INDICADORES)
+                .set(dsl.newRecord(PROYECTO_INDICADORES, indicador))
+                .where(PROYECTO_INDICADORES.ID.eq(indicador.getId()))
                 .returning()
-                .fetchOneInto(Indicadores.class);
+                .fetchOneInto(ProyectoIndicadores.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorByCodigo(Integer proyectoId, String codigo) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.PROYECTO_ID.eq(proyectoId))
-                .and(INDICADORES.INDICADOR_CODIGO.eq(codigo))
-                .fetchOptionalInto(Indicadores.class);
+    public Optional<ProyectoIndicadores> findIndicadorByCodigo(Integer proyectoId, String codigo) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                .and(INDICADOR_MASTER.CODIGO.eq(codigo))
+                .fetchOptionalInto(ProyectoIndicadores.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByCodigoPrefix(String prefix) {
-        return dsl.selectFrom(INDICADORES)
-                .where(INDICADORES.INDICADOR_CODIGO.like(prefix + "%"))
-                .fetchInto(Indicadores.class);
+    public List<ProyectoIndicadores> findIndicadoresByCodigoPrefix(String prefix) {
+        return dsl.select(PROYECTO_INDICADORES.fields())
+                .from(PROYECTO_INDICADORES)
+                .join(INDICADOR_MASTER).on(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(INDICADOR_MASTER.ID))
+                .where(INDICADOR_MASTER.CODIGO.like(prefix + "%"))
+                .fetchInto(ProyectoIndicadores.class);
     }
 
     // Metas
@@ -372,21 +368,25 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findMetasByProyecto(Integer proyectoId) {
-        return dsl.selectFrom(METAS_PROYECTO)
-                .where(METAS_PROYECTO.PROYECTO_ID.eq(proyectoId))
-                .fetchInto(MetasProyecto.class);
+    public List<ProyectoIndicadorParametros> findMetasByProyecto(Integer proyectoId) {
+        return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS)
+                .where(PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID.in(
+                    dsl.select(PROYECTO_INDICADORES.ID)
+                       .from(PROYECTO_INDICADORES)
+                       .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                ))
+                .fetchInto(ProyectoIndicadorParametros.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
-        return dsl.insertInto(METAS_PROYECTO)
-                .set(dsl.newRecord(METAS_PROYECTO, meta))
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
+        return dsl.insertInto(PROYECTO_INDICADOR_PARAMETROS)
+                .set(dsl.newRecord(PROYECTO_INDICADOR_PARAMETROS, meta))
                 .returning()
-                .fetchOneInto(MetasProyecto.class);
+                .fetchOneInto(ProyectoIndicadorParametros.class);
     }
 
     // Mediciones
@@ -396,7 +396,7 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
     @Override
     public List<MedicionesHistoricas> findMedicionesByIndicador(Integer indicadorId) {
         return dsl.selectFrom(MEDICIONES_HISTORICAS)
-                .where(MEDICIONES_HISTORICAS.INDICADOR_ID.eq(indicadorId))
+                .where(MEDICIONES_HISTORICAS.PROYECTO_INDICADOR_ID.eq(indicadorId))
                 .fetchInto(MedicionesHistoricas.class);
     }
 
@@ -439,12 +439,14 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
      */
     @Override
     public Map<String, Object> spAdminDashboard() {
-        SpAdminDashboard sp = new SpAdminDashboard();
-        sp.execute(dsl.configuration());
+        // En la nueva arquitectura usamos la vista de resumen general
+        List<VistaAdminResumenGeneral> resumen = dsl.selectFrom(VISTA_ADMIN_RESUMEN_GENERAL)
+                .fetchInto(VistaAdminResumenGeneral.class);
         
         return Map.of(
             "status", "executed",
-            "message", "Dashboard procedure executed for ODS02"
+            "message", "Dashboard data retrieved from view for ODS02",
+            "data", resumen
         );
     }
 
@@ -489,20 +491,24 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyectoOds02(Integer proyectoId) {
-        return dsl.selectFrom(METAS_PROYECTO)
-                .where(METAS_PROYECTO.PROYECTO_ID.eq(proyectoId))
-                .fetchInto(MetasProyecto.class);
+    public List<ProyectoIndicadorParametros> findAllMetasProyectoOds02(Integer proyectoId) {
+        return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS)
+                .where(PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID.in(
+                    dsl.select(PROYECTO_INDICADORES.ID)
+                       .from(PROYECTO_INDICADORES)
+                       .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId))
+                ))
+                .fetchInto(ProyectoIndicadorParametros.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoOds02ById(Integer metaId) {
-        return dsl.selectFrom(METAS_PROYECTO)
-                .where(METAS_PROYECTO.ID.eq(metaId))
-                .fetchOptionalInto(MetasProyecto.class);
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoOds02ById(Integer metaId) {
+        return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS)
+                .where(PROYECTO_INDICADOR_PARAMETROS.ID.eq(metaId))
+                .fetchOptionalInto(ProyectoIndicadorParametros.class);
     }
 
     /**
@@ -511,7 +517,7 @@ public class Objetivo02HambreCeroRepository implements IObjetivo02HambreCeroRepo
     @Override
     public List<MedicionesHistoricas> findAllMedicionesHistoricasOds02(Integer indicadorId) {
         return dsl.selectFrom(MEDICIONES_HISTORICAS)
-                .where(MEDICIONES_HISTORICAS.INDICADOR_ID.eq(indicadorId))
+                .where(MEDICIONES_HISTORICAS.PROYECTO_INDICADOR_ID.eq(indicadorId))
                 .fetchInto(MedicionesHistoricas.class);
     }
 

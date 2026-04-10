@@ -2,9 +2,9 @@ package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas;
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +15,9 @@ import java.util.Optional;
  */
 @RequestMapping("/api/ods/17")
 public interface IObjetivo17AlianzasController extends IOdsBaseController<
-    Indicadores,
+    ProyectoIndicadores,
     Proyectos,
-    MetasProyecto,
+    ProyectoIndicadorParametros,
     MedicionesHistoricas,
     Object
 > {
@@ -28,7 +28,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores
      */
-    ResponseEntity<List<Indicadores>> getAllIndicators(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.1.1
@@ -36,8 +36,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * 
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.1.1
-     */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_1_1(Integer proyectoId);
+     */    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.1.2
@@ -46,7 +45,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.1.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_1_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_1_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.2.1
@@ -55,7 +54,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.2.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_2_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.3.1
@@ -64,7 +63,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.3.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_3_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.3.2
@@ -73,7 +72,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.3.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_3_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.4.1
@@ -82,7 +81,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.4.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_4_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.5.1
@@ -91,7 +90,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.5.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_5_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.6.1
@@ -100,7 +99,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.6.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_6_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.7.1
@@ -109,7 +108,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.7.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_7_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.8.1
@@ -118,7 +117,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.8.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_8_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_8_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.9.1
@@ -127,7 +126,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.9.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_9_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_9_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.10.1
@@ -136,7 +135,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.10.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_10_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_10_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.11.1
@@ -145,7 +144,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.11.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_11_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_11_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.12.1
@@ -154,7 +153,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.12.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_12_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_12_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.13.1
@@ -163,7 +162,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.13.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_13_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_13_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.14.1
@@ -172,7 +171,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.14.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_14_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_14_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.15.1
@@ -181,7 +180,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.15.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_15_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_15_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.16.1
@@ -190,7 +189,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.16.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_16_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_16_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.17.1
@@ -199,7 +198,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.17.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_17_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_17_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.18.1
@@ -208,7 +207,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.18.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_18_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_18_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.18.2
@@ -217,7 +216,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.18.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_18_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_18_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.18.3
@@ -226,7 +225,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.18.3
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_18_3(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_18_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.19.1
@@ -235,7 +234,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.19.1
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_19_1(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_19_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.19.2
@@ -244,7 +243,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.19.2
      */
-    ResponseEntity<Optional<Indicadores>> getIndicador_17_19_2(Integer proyectoId);
+    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_19_2(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS17
@@ -252,7 +251,7 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores del proyecto
      */
-    ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds17(Integer proyectoId);
+    ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds17(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS17
@@ -261,5 +260,5 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * @param metaPrefix Prefijo de la meta (ej: "17.1", "17.2")
      * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
      */
-    ResponseEntity<List<Indicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

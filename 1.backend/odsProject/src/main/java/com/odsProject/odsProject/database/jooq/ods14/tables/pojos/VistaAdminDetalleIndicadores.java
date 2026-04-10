@@ -6,7 +6,6 @@ package com.odsProject.odsProject.database.jooq.ods14.tables.pojos;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -20,61 +19,53 @@ public class VistaAdminDetalleIndicadores implements Serializable {
 
     private final Integer proyectoId;
     private final String nombreProyecto;
-    private final String usuarioCreador;
     private final String indicadorCodigo;
-    private final String indicadorDescripcion;
+    private final String indicadorNombre;
+    private final String formulaCustom;
     private final BigDecimal valorActual;
-    private final BigDecimal valorMeta;
-    private final String unidadMedida;
+    private final BigDecimal metaValor;
+    private final String metaUnidad;
     private final String estadoIndicador;
     private final BigDecimal porcentajeLogro;
-    private final LocalDate fechaMedicion;
-    private final String fuenteDatos;
     private final LocalDateTime ultimaActualizacion;
 
     public VistaAdminDetalleIndicadores(VistaAdminDetalleIndicadores value) {
         this.proyectoId = value.proyectoId;
         this.nombreProyecto = value.nombreProyecto;
-        this.usuarioCreador = value.usuarioCreador;
         this.indicadorCodigo = value.indicadorCodigo;
-        this.indicadorDescripcion = value.indicadorDescripcion;
+        this.indicadorNombre = value.indicadorNombre;
+        this.formulaCustom = value.formulaCustom;
         this.valorActual = value.valorActual;
-        this.valorMeta = value.valorMeta;
-        this.unidadMedida = value.unidadMedida;
+        this.metaValor = value.metaValor;
+        this.metaUnidad = value.metaUnidad;
         this.estadoIndicador = value.estadoIndicador;
         this.porcentajeLogro = value.porcentajeLogro;
-        this.fechaMedicion = value.fechaMedicion;
-        this.fuenteDatos = value.fuenteDatos;
         this.ultimaActualizacion = value.ultimaActualizacion;
     }
 
     public VistaAdminDetalleIndicadores(
         Integer proyectoId,
         String nombreProyecto,
-        String usuarioCreador,
         String indicadorCodigo,
-        String indicadorDescripcion,
+        String indicadorNombre,
+        String formulaCustom,
         BigDecimal valorActual,
-        BigDecimal valorMeta,
-        String unidadMedida,
+        BigDecimal metaValor,
+        String metaUnidad,
         String estadoIndicador,
         BigDecimal porcentajeLogro,
-        LocalDate fechaMedicion,
-        String fuenteDatos,
         LocalDateTime ultimaActualizacion
     ) {
         this.proyectoId = proyectoId;
         this.nombreProyecto = nombreProyecto;
-        this.usuarioCreador = usuarioCreador;
         this.indicadorCodigo = indicadorCodigo;
-        this.indicadorDescripcion = indicadorDescripcion;
+        this.indicadorNombre = indicadorNombre;
+        this.formulaCustom = formulaCustom;
         this.valorActual = valorActual;
-        this.valorMeta = valorMeta;
-        this.unidadMedida = unidadMedida;
+        this.metaValor = metaValor;
+        this.metaUnidad = metaUnidad;
         this.estadoIndicador = estadoIndicador;
         this.porcentajeLogro = porcentajeLogro;
-        this.fechaMedicion = fechaMedicion;
-        this.fuenteDatos = fuenteDatos;
         this.ultimaActualizacion = ultimaActualizacion;
     }
 
@@ -96,14 +87,6 @@ public class VistaAdminDetalleIndicadores implements Serializable {
 
     /**
      * Getter for
-     * <code>ods14.vista_admin_detalle_indicadores.usuario_creador</code>.
-     */
-    public String getUsuarioCreador() {
-        return this.usuarioCreador;
-    }
-
-    /**
-     * Getter for
      * <code>ods14.vista_admin_detalle_indicadores.indicador_codigo</code>.
      */
     public String getIndicadorCodigo() {
@@ -112,10 +95,18 @@ public class VistaAdminDetalleIndicadores implements Serializable {
 
     /**
      * Getter for
-     * <code>ods14.vista_admin_detalle_indicadores.indicador_descripcion</code>.
+     * <code>ods14.vista_admin_detalle_indicadores.indicador_nombre</code>.
      */
-    public String getIndicadorDescripcion() {
-        return this.indicadorDescripcion;
+    public String getIndicadorNombre() {
+        return this.indicadorNombre;
+    }
+
+    /**
+     * Getter for
+     * <code>ods14.vista_admin_detalle_indicadores.formula_custom</code>.
+     */
+    public String getFormulaCustom() {
+        return this.formulaCustom;
     }
 
     /**
@@ -127,18 +118,18 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     }
 
     /**
-     * Getter for <code>ods14.vista_admin_detalle_indicadores.valor_meta</code>.
+     * Getter for <code>ods14.vista_admin_detalle_indicadores.meta_valor</code>.
      */
-    public BigDecimal getValorMeta() {
-        return this.valorMeta;
+    public BigDecimal getMetaValor() {
+        return this.metaValor;
     }
 
     /**
      * Getter for
-     * <code>ods14.vista_admin_detalle_indicadores.unidad_medida</code>.
+     * <code>ods14.vista_admin_detalle_indicadores.meta_unidad</code>.
      */
-    public String getUnidadMedida() {
-        return this.unidadMedida;
+    public String getMetaUnidad() {
+        return this.metaUnidad;
     }
 
     /**
@@ -155,22 +146,6 @@ public class VistaAdminDetalleIndicadores implements Serializable {
      */
     public BigDecimal getPorcentajeLogro() {
         return this.porcentajeLogro;
-    }
-
-    /**
-     * Getter for
-     * <code>ods14.vista_admin_detalle_indicadores.fecha_medicion</code>.
-     */
-    public LocalDate getFechaMedicion() {
-        return this.fechaMedicion;
-    }
-
-    /**
-     * Getter for
-     * <code>ods14.vista_admin_detalle_indicadores.fuente_datos</code>.
-     */
-    public String getFuenteDatos() {
-        return this.fuenteDatos;
     }
 
     /**
@@ -202,23 +177,23 @@ public class VistaAdminDetalleIndicadores implements Serializable {
         }
         else if (!this.nombreProyecto.equals(other.nombreProyecto))
             return false;
-        if (this.usuarioCreador == null) {
-            if (other.usuarioCreador != null)
-                return false;
-        }
-        else if (!this.usuarioCreador.equals(other.usuarioCreador))
-            return false;
         if (this.indicadorCodigo == null) {
             if (other.indicadorCodigo != null)
                 return false;
         }
         else if (!this.indicadorCodigo.equals(other.indicadorCodigo))
             return false;
-        if (this.indicadorDescripcion == null) {
-            if (other.indicadorDescripcion != null)
+        if (this.indicadorNombre == null) {
+            if (other.indicadorNombre != null)
                 return false;
         }
-        else if (!this.indicadorDescripcion.equals(other.indicadorDescripcion))
+        else if (!this.indicadorNombre.equals(other.indicadorNombre))
+            return false;
+        if (this.formulaCustom == null) {
+            if (other.formulaCustom != null)
+                return false;
+        }
+        else if (!this.formulaCustom.equals(other.formulaCustom))
             return false;
         if (this.valorActual == null) {
             if (other.valorActual != null)
@@ -226,17 +201,17 @@ public class VistaAdminDetalleIndicadores implements Serializable {
         }
         else if (!this.valorActual.equals(other.valorActual))
             return false;
-        if (this.valorMeta == null) {
-            if (other.valorMeta != null)
+        if (this.metaValor == null) {
+            if (other.metaValor != null)
                 return false;
         }
-        else if (!this.valorMeta.equals(other.valorMeta))
+        else if (!this.metaValor.equals(other.metaValor))
             return false;
-        if (this.unidadMedida == null) {
-            if (other.unidadMedida != null)
+        if (this.metaUnidad == null) {
+            if (other.metaUnidad != null)
                 return false;
         }
-        else if (!this.unidadMedida.equals(other.unidadMedida))
+        else if (!this.metaUnidad.equals(other.metaUnidad))
             return false;
         if (this.estadoIndicador == null) {
             if (other.estadoIndicador != null)
@@ -249,18 +224,6 @@ public class VistaAdminDetalleIndicadores implements Serializable {
                 return false;
         }
         else if (!this.porcentajeLogro.equals(other.porcentajeLogro))
-            return false;
-        if (this.fechaMedicion == null) {
-            if (other.fechaMedicion != null)
-                return false;
-        }
-        else if (!this.fechaMedicion.equals(other.fechaMedicion))
-            return false;
-        if (this.fuenteDatos == null) {
-            if (other.fuenteDatos != null)
-                return false;
-        }
-        else if (!this.fuenteDatos.equals(other.fuenteDatos))
             return false;
         if (this.ultimaActualizacion == null) {
             if (other.ultimaActualizacion != null)
@@ -277,16 +240,14 @@ public class VistaAdminDetalleIndicadores implements Serializable {
         int result = 1;
         result = prime * result + ((this.proyectoId == null) ? 0 : this.proyectoId.hashCode());
         result = prime * result + ((this.nombreProyecto == null) ? 0 : this.nombreProyecto.hashCode());
-        result = prime * result + ((this.usuarioCreador == null) ? 0 : this.usuarioCreador.hashCode());
         result = prime * result + ((this.indicadorCodigo == null) ? 0 : this.indicadorCodigo.hashCode());
-        result = prime * result + ((this.indicadorDescripcion == null) ? 0 : this.indicadorDescripcion.hashCode());
+        result = prime * result + ((this.indicadorNombre == null) ? 0 : this.indicadorNombre.hashCode());
+        result = prime * result + ((this.formulaCustom == null) ? 0 : this.formulaCustom.hashCode());
         result = prime * result + ((this.valorActual == null) ? 0 : this.valorActual.hashCode());
-        result = prime * result + ((this.valorMeta == null) ? 0 : this.valorMeta.hashCode());
-        result = prime * result + ((this.unidadMedida == null) ? 0 : this.unidadMedida.hashCode());
+        result = prime * result + ((this.metaValor == null) ? 0 : this.metaValor.hashCode());
+        result = prime * result + ((this.metaUnidad == null) ? 0 : this.metaUnidad.hashCode());
         result = prime * result + ((this.estadoIndicador == null) ? 0 : this.estadoIndicador.hashCode());
         result = prime * result + ((this.porcentajeLogro == null) ? 0 : this.porcentajeLogro.hashCode());
-        result = prime * result + ((this.fechaMedicion == null) ? 0 : this.fechaMedicion.hashCode());
-        result = prime * result + ((this.fuenteDatos == null) ? 0 : this.fuenteDatos.hashCode());
         result = prime * result + ((this.ultimaActualizacion == null) ? 0 : this.ultimaActualizacion.hashCode());
         return result;
     }
@@ -297,16 +258,14 @@ public class VistaAdminDetalleIndicadores implements Serializable {
 
         sb.append(proyectoId);
         sb.append(", ").append(nombreProyecto);
-        sb.append(", ").append(usuarioCreador);
         sb.append(", ").append(indicadorCodigo);
-        sb.append(", ").append(indicadorDescripcion);
+        sb.append(", ").append(indicadorNombre);
+        sb.append(", ").append(formulaCustom);
         sb.append(", ").append(valorActual);
-        sb.append(", ").append(valorMeta);
-        sb.append(", ").append(unidadMedida);
+        sb.append(", ").append(metaValor);
+        sb.append(", ").append(metaUnidad);
         sb.append(", ").append(estadoIndicador);
         sb.append(", ").append(porcentajeLogro);
-        sb.append(", ").append(fechaMedicion);
-        sb.append(", ").append(fuenteDatos);
         sb.append(", ").append(ultimaActualizacion);
 
         sb.append(")");

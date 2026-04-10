@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS01
  */
 public interface IObjetivo01PobrezaService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -27,7 +27,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.1.1
      */
-    Optional<Indicadores> getIndicador_1_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.2.1
@@ -45,7 +45,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.2.1
      */
-    Optional<Indicadores> getIndicador_1_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.2.2
@@ -54,7 +54,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.2.2
      */
-    Optional<Indicadores> getIndicador_1_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.3.1
@@ -63,7 +63,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.3.1
      */
-    Optional<Indicadores> getIndicador_1_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.4.1
@@ -72,7 +72,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.4.1
      */
-    Optional<Indicadores> getIndicador_1_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.4.2
@@ -81,7 +81,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.4.2
      */
-    Optional<Indicadores> getIndicador_1_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.5.1
@@ -90,7 +90,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.5.1
      */
-    Optional<Indicadores> getIndicador_1_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.5.2
@@ -99,7 +99,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.5.2
      */
-    Optional<Indicadores> getIndicador_1_5_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.5.3
@@ -108,7 +108,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.5.3
      */
-    Optional<Indicadores> getIndicador_1_5_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_5_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.5.4
@@ -117,7 +117,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.5.4
      */
-    Optional<Indicadores> getIndicador_1_5_4(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_5_4(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.a.1
@@ -126,7 +126,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.a.1
      */
-    Optional<Indicadores> getIndicador_1_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.a.2
@@ -135,7 +135,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.a.2
      */
-    Optional<Indicadores> getIndicador_1_a_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_a_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 1.b.1
@@ -144,7 +144,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 1.b.1
      */
-    Optional<Indicadores> getIndicador_1_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_1_b_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS01
@@ -152,7 +152,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds01(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds01(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS01
@@ -161,7 +161,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "1.1", "1.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos CRUD y Utilidades (para alinear con Repository) ──
     
@@ -186,7 +186,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de metas del proyecto
      */
-    List<MetasProyecto> getAllMetasProyectoOds01(Integer proyectoId);
+    List<ProyectoIndicadorParametros> getAllMetasProyectoOds01(Integer proyectoId);
     
     /**
      * Obtiene una meta de proyecto del ODS 1 por su ID
@@ -194,7 +194,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> getMetaProyectoOds01ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> getMetaProyectoOds01ById(Integer metaId);
     
     /**
      * Obtiene las mediciones históricas de un indicador del ODS 1
@@ -218,7 +218,7 @@ public interface IObjetivo01PobrezaService extends IOdsBaseService<
      * @param indicador Datos del indicador a validar
      * @return true si los datos son válidos, false otherwise
      */
-    Boolean validateIndicatorData(Indicadores indicador);
+    Boolean validateIndicatorData(ProyectoIndicadores indicador);
     
     /**
      * Calcula el progreso de un proyecto del ODS 1

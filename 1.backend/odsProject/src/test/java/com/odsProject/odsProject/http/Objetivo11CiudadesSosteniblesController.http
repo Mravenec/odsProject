@@ -130,12 +130,15 @@ POST {{baseUrl}}/api/ods/11/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Ciudades Sostenibles Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Ciudades Sostenibles Test",
+  "objetivoId": 11,
   "descripcion": "Proyecto de prueba para ODS11",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 320000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Lograr que las ciudades sean inclusivas y sostenibles",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -143,12 +146,12 @@ POST {{baseUrl}}/api/ods/11/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Ciudades",
-  "descripcion": "Proyecto para validar ODS11",
+  "nombreProyecto": "Proyecto Validación Ciudades",
+  "usuarioId": 2,
+  "objetivoId": 11,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 160000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -157,29 +160,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Ciudades Actualizado",
+  "nombreProyecto": "Proyecto Ciudades Actualizado",
   "descripcion": "Proyecto actualizado para ODS11",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 345000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Ciudades",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 134 = 11.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/11/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "11.1.1",
-  "nombre": "Indicador Ciudades Test",
-  "descripcion": "Indicador de prueba para ODS11",
-  "valorActual": 64.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 134,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -187,13 +188,10 @@ POST {{baseUrl}}/api/ods/11/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "11.2.1",
-  "nombre": "Indicador Validación Ciudades",
-  "descripcion": "Indicador para validar ODS11",
-  "valorActual": 50.0,
-  "valorMeta": 75.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 134,
+  "metaValor": 80.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -202,41 +200,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "11.1.1",
-  "nombre": "Indicador Ciudades Actualizado",
-  "descripcion": "Indicador actualizado para ODS11",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 134,
   "valorActual": 68.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/11/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/11/metas
 Content-Type: application/json
 
 {
-  "codigo": "11.1",
-  "descripcion": "Meta de prueba ODS11",
-  "valorMeta": 100.0,
-  "valorActual": 64.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "area_parques_recreativos",
+  "tipoDato": "Double"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/11/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "11.1",
-  "descripcion": "Meta actualizada ODS11",
-  "valorMeta": 100.0,
-  "valorActual": 66.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "area_zonas_verdes",
+  "tipoDato": "Double"
 }
 
 ### Eliminar meta
@@ -247,10 +239,11 @@ POST {{baseUrl}}/api/ods/11/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 62.5,
-  "observaciones": "Medición de prueba ODS11"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 65.5,
+  "fechaMedicion": "2024-09-20",
+  "responsable": "Admin Ciudades",
+  "observaciones": "Revisión de espacios públicos"
 }
 
 ### Actualizar medición histórica
@@ -259,14 +252,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 64.0,
-  "observaciones": "Medición actualizada ODS11"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 68.0,
+  "fechaMedicion": "2024-09-20",
+  "responsable": "Admin Ciudades Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/11/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

@@ -7,7 +7,6 @@ package com.odsProject.odsProject.database.jooq.ods_login.tables;
 import com.odsProject.odsProject.database.jooq.ods_login.Indexes;
 import com.odsProject.odsProject.database.jooq.ods_login.Keys;
 import com.odsProject.odsProject.database.jooq.ods_login.OdsLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios.UsuariosPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SesionesRecord;
 
 import java.time.LocalDateTime;
@@ -20,12 +19,9 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Index;
-import org.jooq.InverseForeignKey;
 import org.jooq.Name;
-import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
-import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -129,39 +125,6 @@ public class Sesiones extends TableImpl<SesionesRecord> {
         this(DSL.name("sesiones"), null);
     }
 
-    public <O extends Record> Sesiones(Table<O> path, ForeignKey<O, SesionesRecord> childPath, InverseForeignKey<O, SesionesRecord> parentPath) {
-        super(path, childPath, parentPath, SESIONES);
-    }
-
-    /**
-     * A subtype implementing {@link Path} for simplified path-based joins.
-     */
-    public static class SesionesPath extends Sesiones implements Path<SesionesRecord> {
-
-        private static final long serialVersionUID = 1L;
-        public <O extends Record> SesionesPath(Table<O> path, ForeignKey<O, SesionesRecord> childPath, InverseForeignKey<O, SesionesRecord> parentPath) {
-            super(path, childPath, parentPath);
-        }
-        private SesionesPath(Name alias, Table<SesionesRecord> aliased) {
-            super(alias, aliased);
-        }
-
-        @Override
-        public SesionesPath as(String alias) {
-            return new SesionesPath(DSL.name(alias), this);
-        }
-
-        @Override
-        public SesionesPath as(Name alias) {
-            return new SesionesPath(alias, this);
-        }
-
-        @Override
-        public SesionesPath as(Table<?> alias) {
-            return new SesionesPath(alias.getQualifiedName(), this);
-        }
-    }
-
     @Override
     public Schema getSchema() {
         return aliased() ? null : OdsLogin.ODS_LOGIN;
@@ -190,18 +153,6 @@ public class Sesiones extends TableImpl<SesionesRecord> {
     @Override
     public List<ForeignKey<SesionesRecord, ?>> getReferences() {
         return Arrays.asList(Keys.SESIONES_IBFK_1);
-    }
-
-    private transient UsuariosPath _usuarios;
-
-    /**
-     * Get the implicit join path to the <code>ods_login.usuarios</code> table.
-     */
-    public UsuariosPath usuarios() {
-        if (_usuarios == null)
-            _usuarios = new UsuariosPath(this, Keys.SESIONES_IBFK_1, null);
-
-        return _usuarios;
     }
 
     @Override

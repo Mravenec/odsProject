@@ -13,7 +13,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 
 /**
- * Auditoría de cambios en el sistema ODS01
+ * Auditoría interna de cambios en la base de datos ODS01
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class AuditoriaOds01Record extends UpdatableRecordImpl<AuditoriaOds01Record> {

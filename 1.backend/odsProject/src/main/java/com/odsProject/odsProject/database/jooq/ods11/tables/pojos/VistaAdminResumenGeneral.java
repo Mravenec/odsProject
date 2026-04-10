@@ -23,32 +23,28 @@ public class VistaAdminResumenGeneral implements Serializable {
     private final Integer proyectoId;
     private final String nombreProyecto;
     private final String usuarioCreador;
-    private final String nombreUsuario;
+    private final String sedeNombre;
+    private final String odsNombre;
     private final LocalDate fechaInicio;
     private final LocalDate fechaFin;
     private final VistaAdminResumenGeneralEstado estado;
     private final Long totalIndicadores;
     private final Long indicadoresLogrados;
     private final BigDecimal progresoPorcentaje;
-    private final BigDecimal valorMinimoActual;
-    private final BigDecimal valorMaximoActual;
-    private final BigDecimal valorPromedioActual;
     private final LocalDateTime fechaCreacion;
 
     public VistaAdminResumenGeneral(VistaAdminResumenGeneral value) {
         this.proyectoId = value.proyectoId;
         this.nombreProyecto = value.nombreProyecto;
         this.usuarioCreador = value.usuarioCreador;
-        this.nombreUsuario = value.nombreUsuario;
+        this.sedeNombre = value.sedeNombre;
+        this.odsNombre = value.odsNombre;
         this.fechaInicio = value.fechaInicio;
         this.fechaFin = value.fechaFin;
         this.estado = value.estado;
         this.totalIndicadores = value.totalIndicadores;
         this.indicadoresLogrados = value.indicadoresLogrados;
         this.progresoPorcentaje = value.progresoPorcentaje;
-        this.valorMinimoActual = value.valorMinimoActual;
-        this.valorMaximoActual = value.valorMaximoActual;
-        this.valorPromedioActual = value.valorPromedioActual;
         this.fechaCreacion = value.fechaCreacion;
     }
 
@@ -56,31 +52,27 @@ public class VistaAdminResumenGeneral implements Serializable {
         Integer proyectoId,
         String nombreProyecto,
         String usuarioCreador,
-        String nombreUsuario,
+        String sedeNombre,
+        String odsNombre,
         LocalDate fechaInicio,
         LocalDate fechaFin,
         VistaAdminResumenGeneralEstado estado,
         Long totalIndicadores,
         Long indicadoresLogrados,
         BigDecimal progresoPorcentaje,
-        BigDecimal valorMinimoActual,
-        BigDecimal valorMaximoActual,
-        BigDecimal valorPromedioActual,
         LocalDateTime fechaCreacion
     ) {
         this.proyectoId = proyectoId;
         this.nombreProyecto = nombreProyecto;
         this.usuarioCreador = usuarioCreador;
-        this.nombreUsuario = nombreUsuario;
+        this.sedeNombre = sedeNombre;
+        this.odsNombre = odsNombre;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.estado = estado;
         this.totalIndicadores = totalIndicadores;
         this.indicadoresLogrados = indicadoresLogrados;
         this.progresoPorcentaje = progresoPorcentaje;
-        this.valorMinimoActual = valorMinimoActual;
-        this.valorMaximoActual = valorMaximoActual;
-        this.valorPromedioActual = valorPromedioActual;
         this.fechaCreacion = fechaCreacion;
     }
 
@@ -108,10 +100,17 @@ public class VistaAdminResumenGeneral implements Serializable {
     }
 
     /**
-     * Getter for <code>ods11.vista_admin_resumen_general.nombre_usuario</code>.
+     * Getter for <code>ods11.vista_admin_resumen_general.sede_nombre</code>.
      */
-    public String getNombreUsuario() {
-        return this.nombreUsuario;
+    public String getSedeNombre() {
+        return this.sedeNombre;
+    }
+
+    /**
+     * Getter for <code>ods11.vista_admin_resumen_general.ods_nombre</code>.
+     */
+    public String getOdsNombre() {
+        return this.odsNombre;
     }
 
     /**
@@ -160,30 +159,6 @@ public class VistaAdminResumenGeneral implements Serializable {
     }
 
     /**
-     * Getter for
-     * <code>ods11.vista_admin_resumen_general.valor_minimo_actual</code>.
-     */
-    public BigDecimal getValorMinimoActual() {
-        return this.valorMinimoActual;
-    }
-
-    /**
-     * Getter for
-     * <code>ods11.vista_admin_resumen_general.valor_maximo_actual</code>.
-     */
-    public BigDecimal getValorMaximoActual() {
-        return this.valorMaximoActual;
-    }
-
-    /**
-     * Getter for
-     * <code>ods11.vista_admin_resumen_general.valor_promedio_actual</code>.
-     */
-    public BigDecimal getValorPromedioActual() {
-        return this.valorPromedioActual;
-    }
-
-    /**
      * Getter for <code>ods11.vista_admin_resumen_general.fecha_creacion</code>.
      */
     public LocalDateTime getFechaCreacion() {
@@ -217,11 +192,17 @@ public class VistaAdminResumenGeneral implements Serializable {
         }
         else if (!this.usuarioCreador.equals(other.usuarioCreador))
             return false;
-        if (this.nombreUsuario == null) {
-            if (other.nombreUsuario != null)
+        if (this.sedeNombre == null) {
+            if (other.sedeNombre != null)
                 return false;
         }
-        else if (!this.nombreUsuario.equals(other.nombreUsuario))
+        else if (!this.sedeNombre.equals(other.sedeNombre))
+            return false;
+        if (this.odsNombre == null) {
+            if (other.odsNombre != null)
+                return false;
+        }
+        else if (!this.odsNombre.equals(other.odsNombre))
             return false;
         if (this.fechaInicio == null) {
             if (other.fechaInicio != null)
@@ -259,24 +240,6 @@ public class VistaAdminResumenGeneral implements Serializable {
         }
         else if (!this.progresoPorcentaje.equals(other.progresoPorcentaje))
             return false;
-        if (this.valorMinimoActual == null) {
-            if (other.valorMinimoActual != null)
-                return false;
-        }
-        else if (!this.valorMinimoActual.equals(other.valorMinimoActual))
-            return false;
-        if (this.valorMaximoActual == null) {
-            if (other.valorMaximoActual != null)
-                return false;
-        }
-        else if (!this.valorMaximoActual.equals(other.valorMaximoActual))
-            return false;
-        if (this.valorPromedioActual == null) {
-            if (other.valorPromedioActual != null)
-                return false;
-        }
-        else if (!this.valorPromedioActual.equals(other.valorPromedioActual))
-            return false;
         if (this.fechaCreacion == null) {
             if (other.fechaCreacion != null)
                 return false;
@@ -293,16 +256,14 @@ public class VistaAdminResumenGeneral implements Serializable {
         result = prime * result + ((this.proyectoId == null) ? 0 : this.proyectoId.hashCode());
         result = prime * result + ((this.nombreProyecto == null) ? 0 : this.nombreProyecto.hashCode());
         result = prime * result + ((this.usuarioCreador == null) ? 0 : this.usuarioCreador.hashCode());
-        result = prime * result + ((this.nombreUsuario == null) ? 0 : this.nombreUsuario.hashCode());
+        result = prime * result + ((this.sedeNombre == null) ? 0 : this.sedeNombre.hashCode());
+        result = prime * result + ((this.odsNombre == null) ? 0 : this.odsNombre.hashCode());
         result = prime * result + ((this.fechaInicio == null) ? 0 : this.fechaInicio.hashCode());
         result = prime * result + ((this.fechaFin == null) ? 0 : this.fechaFin.hashCode());
         result = prime * result + ((this.estado == null) ? 0 : this.estado.hashCode());
         result = prime * result + ((this.totalIndicadores == null) ? 0 : this.totalIndicadores.hashCode());
         result = prime * result + ((this.indicadoresLogrados == null) ? 0 : this.indicadoresLogrados.hashCode());
         result = prime * result + ((this.progresoPorcentaje == null) ? 0 : this.progresoPorcentaje.hashCode());
-        result = prime * result + ((this.valorMinimoActual == null) ? 0 : this.valorMinimoActual.hashCode());
-        result = prime * result + ((this.valorMaximoActual == null) ? 0 : this.valorMaximoActual.hashCode());
-        result = prime * result + ((this.valorPromedioActual == null) ? 0 : this.valorPromedioActual.hashCode());
         result = prime * result + ((this.fechaCreacion == null) ? 0 : this.fechaCreacion.hashCode());
         return result;
     }
@@ -314,16 +275,14 @@ public class VistaAdminResumenGeneral implements Serializable {
         sb.append(proyectoId);
         sb.append(", ").append(nombreProyecto);
         sb.append(", ").append(usuarioCreador);
-        sb.append(", ").append(nombreUsuario);
+        sb.append(", ").append(sedeNombre);
+        sb.append(", ").append(odsNombre);
         sb.append(", ").append(fechaInicio);
         sb.append(", ").append(fechaFin);
         sb.append(", ").append(estado);
         sb.append(", ").append(totalIndicadores);
         sb.append(", ").append(indicadoresLogrados);
         sb.append(", ").append(progresoPorcentaje);
-        sb.append(", ").append(valorMinimoActual);
-        sb.append(", ").append(valorMaximoActual);
-        sb.append(", ").append(valorPromedioActual);
         sb.append(", ").append(fechaCreacion);
 
         sb.append(")");

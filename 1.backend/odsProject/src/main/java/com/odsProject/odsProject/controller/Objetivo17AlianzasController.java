@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo17AlianzasService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo17AlianzasController;
@@ -32,8 +32,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo17AlianzasService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo17AlianzasService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.1.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_1_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_1_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_1_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_1_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.3.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_3_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_3_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_3_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_3_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.7.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_7_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_7_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_7_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_7_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.8.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_8_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_8_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_8_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_8_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.9.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_9_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_9_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_9_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_9_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.10.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_10_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_10_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_10_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_10_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -162,8 +162,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.11.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_11_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_11_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_11_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_11_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -172,8 +172,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.12.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_12_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_12_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_12_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_12_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -182,8 +182,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.13.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_13_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_13_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_13_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_13_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -192,8 +192,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.14.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_14_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_14_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_14_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_14_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -202,8 +202,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.15.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_15_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_15_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_15_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_15_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -212,8 +212,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.16.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_16_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_16_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_16_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_16_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -222,8 +222,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.17.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_17_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_17_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_17_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_17_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -232,8 +232,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.18.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_18_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_18_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_18_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_18_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -242,8 +242,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.18.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_18_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_18_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_18_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_18_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -252,8 +252,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.18.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_18_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_18_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_18_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_18_3(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -262,8 +262,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.19.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_19_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_19_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_19_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_19_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -272,8 +272,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/17.19.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_17_19_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.getIndicador_17_19_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_17_19_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.getIndicador_17_19_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -282,8 +282,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds17(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo17AlianzasService.findAllIndicadoresByProyectoOds17(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds17(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo17AlianzasService.findAllIndicadoresByProyectoOds17(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -292,8 +292,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo17AlianzasService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo17AlianzasService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -329,8 +329,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS17
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds17(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo17AlianzasService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds17(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo17AlianzasService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -462,8 +462,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo17AlianzasService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo17AlianzasService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -472,8 +472,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo17AlianzasService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo17AlianzasService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -482,8 +482,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo17AlianzasService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo17AlianzasService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -492,7 +492,7 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo17AlianzasService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -502,8 +502,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo17AlianzasService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo17AlianzasService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -522,8 +522,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo17AlianzasService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo17AlianzasService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -532,8 +532,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo17AlianzasService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo17AlianzasService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -542,8 +542,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo17AlianzasService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo17AlianzasService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -552,8 +552,8 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo17AlianzasService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo17AlianzasService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

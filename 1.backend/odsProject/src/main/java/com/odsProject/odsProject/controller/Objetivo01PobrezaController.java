@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo01PobrezaService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo01PobrezaController;
@@ -32,8 +32,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo01PobrezaService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo01PobrezaService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_1_1(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -56,8 +56,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds01(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo01PobrezaService.findAllIndicadoresByProyectoOds01(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds01(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo01PobrezaService.findAllIndicadoresByProyectoOds01(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -66,8 +66,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo01PobrezaService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo01PobrezaService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -76,8 +76,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_2_1(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -90,8 +90,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.2.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_2_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_2_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_2_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_2_2(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -104,8 +104,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_3_1(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -118,8 +118,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_4_1(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -132,8 +132,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.4.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_4_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_4_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_4_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_4_2(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -146,8 +146,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_5_1(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -160,8 +160,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.5.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_5_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_5_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_5_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_5_2(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -174,8 +174,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.5.3")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_5_3(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_5_3(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_5_3(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_5_3(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -188,8 +188,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.5.4")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_5_4(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_5_4(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_5_4(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_5_4(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -202,8 +202,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_a_1(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -216,8 +216,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.a.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_a_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_a_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_a_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_a_2(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -230,8 +230,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/1.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_1_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.getIndicador_1_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_1_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.getIndicador_1_b_1(proyectoId);
         if (result.isPresent()) {
             return ResponseEntity.ok(result);
         } else {
@@ -269,8 +269,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS01
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds01(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo01PobrezaService.getAllMetasProyectoOds01(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds01(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo01PobrezaService.getAllMetasProyectoOds01(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -402,8 +402,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo01PobrezaService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo01PobrezaService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -412,8 +412,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo01PobrezaService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo01PobrezaService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -422,8 +422,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo01PobrezaService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo01PobrezaService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -432,7 +432,7 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo01PobrezaService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -442,8 +442,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo01PobrezaService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo01PobrezaService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -462,8 +462,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo01PobrezaService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo01PobrezaService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -472,8 +472,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo01PobrezaService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo01PobrezaService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -482,8 +482,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo01PobrezaService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo01PobrezaService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -492,8 +492,8 @@ public class Objetivo01PobrezaController implements IObjetivo01PobrezaController
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo01PobrezaService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo01PobrezaService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

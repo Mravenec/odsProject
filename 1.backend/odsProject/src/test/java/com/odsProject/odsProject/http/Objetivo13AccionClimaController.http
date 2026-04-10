@@ -82,12 +82,15 @@ POST {{baseUrl}}/api/ods/13/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Acción Clima Test",
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Proyecto Acción Clima Test",
+  "objetivoId": 13,
   "descripcion": "Proyecto de prueba para ODS13",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 380000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Adoptar medidas urgentes para combatir el cambio climático",
+  "estado": "planificacion"
 }
 
 ### Validar proyecto
@@ -95,12 +98,12 @@ POST {{baseUrl}}/api/ods/13/validar/proyecto
 Content-Type: application/json
 
 {
-  "nombre": "Proyecto Validación Clima",
-  "descripcion": "Proyecto para validar ODS13",
+  "nombreProyecto": "Proyecto Validación Clima",
+  "usuarioId": 2,
+  "objetivoId": 13,
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 190000.0,
-  "estado": "ACTIVO"
+  "estado": "planificacion"
 }
 
 ### Actualizar proyecto
@@ -109,29 +112,27 @@ Content-Type: application/json
 
 {
   "id": {{proyectoId}},
-  "nombre": "Proyecto Clima Actualizado",
+  "nombreProyecto": "Proyecto Clima Actualizado",
   "descripcion": "Proyecto actualizado para ODS13",
   "fechaInicio": "2024-01-01",
   "fechaFin": "2024-12-31",
-  "presupuesto": 405000.0,
-  "estado": "ACTIVO"
+  "metaGeneral": "Meta actualizada Clima",
+  "estado": "activo"
 }
 
 ### Eliminar proyecto
 DELETE {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}
 
-### Crear nuevo indicador
+### Crear nuevo indicador (Master ID 165 = 13.1.1 aprox, verificar en SQL)
 POST {{baseUrl}}/api/ods/13/indicadores
 Content-Type: application/json
 
 {
-  "codigo": "13.1.1",
-  "nombre": "Indicador Clima Test",
-  "descripcion": "Indicador de prueba para ODS13",
-  "valorActual": 52.5,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 165,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Validar indicador
@@ -139,13 +140,10 @@ POST {{baseUrl}}/api/ods/13/validar/indicador
 Content-Type: application/json
 
 {
-  "codigo": "13.2.1",
-  "nombre": "Indicador Validación Clima",
-  "descripcion": "Indicador para validar ODS13",
-  "valorActual": 38.0,
-  "valorMeta": 60.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 165,
+  "metaValor": 80.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Actualizar indicador
@@ -154,41 +152,35 @@ Content-Type: application/json
 
 {
   "id": {{indicadorId}},
-  "codigo": "13.1.1",
-  "nombre": "Indicador Clima Actualizado",
-  "descripcion": "Indicador actualizado para ODS13",
+  "proyectoId": {{proyectoId}},
+  "indicadorMasterId": 165,
   "valorActual": 56.0,
-  "valorMeta": 100.0,
-  "unidadMedida": "porcentaje",
-  "proyectoId": {{proyectoId}}
+  "metaValor": 100.0,
+  "metaUnidad": "Porcentaje"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/13/indicadores/{{indicadorId}}
 
-### Crear nueva meta
+### Crear nueva meta (Parámetro)
 POST {{baseUrl}}/api/ods/13/metas
 Content-Type: application/json
 
 {
-  "codigo": "13.1",
-  "descripcion": "Meta de prueba ODS13",
-  "valorMeta": 100.0,
-  "valorActual": 52.5,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "toneladas_co2_evitadas",
+  "tipoDato": "Double"
 }
 
-### Actualizar meta
+### Actualizar meta (Parámetro)
 PUT {{baseUrl}}/api/ods/13/metas/{{metaId}}
 Content-Type: application/json
 
 {
   "id": {{metaId}},
-  "codigo": "13.1",
-  "descripcion": "Meta actualizada ODS13",
-  "valorMeta": 100.0,
-  "valorActual": 54.0,
-  "proyectoId": {{proyectoId}}
+  "proyectoIndicadorId": {{indicadorId}},
+  "nombreParametro": "toneladas_co2_capturadas",
+  "tipoDato": "Double"
 }
 
 ### Eliminar meta
@@ -199,10 +191,11 @@ POST {{baseUrl}}/api/ods/13/mediciones
 Content-Type: application/json
 
 {
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 50.5,
-  "observaciones": "Medición de prueba ODS13"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 45.5,
+  "fechaMedicion": "2024-11-15",
+  "responsable": "Admin Clima",
+  "observaciones": "Monitoreo ambiental"
 }
 
 ### Actualizar medición histórica
@@ -211,14 +204,15 @@ Content-Type: application/json
 
 {
   "id": {{medicionId}},
-  "indicadorId": {{indicadorId}},
-  "fechaMedicion": "2024-01-15",
-  "valor": 52.0,
-  "observaciones": "Medición actualizada ODS13"
+  "proyectoIndicadorId": {{indicadorId}},
+  "valorCalculado": 48.0,
+  "fechaMedicion": "2024-11-15",
+  "responsable": "Admin Clima Actualizado"
 }
 
 ### Eliminar medición histórica
 DELETE {{baseUrl}}/api/ods/13/mediciones/{{medicionId}}
+
 
 # ── IOdsBaseController Methods ──
 

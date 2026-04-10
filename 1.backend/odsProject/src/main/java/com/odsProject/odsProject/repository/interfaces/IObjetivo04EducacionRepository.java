@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.repository.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods04.tables.pojos.AuditoriaOds04;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 4
  * Usa jOOQ con datasource ods04
  */
-public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds04> {
+public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds04> {
     
     /**
      * 4.1.1 Proporción de niños y adolescentes que, a) en los grados 2 o 3, 
@@ -24,7 +24,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.1.1
      */
-    Optional<Indicadores> findIndicador_4_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_1_1(Integer proyectoId);
     
     /**
      * 4.1.2 Tasa de finalización (educación primaria, educación secundaria inferior y educación secundaria superior) [32]
@@ -32,7 +32,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.1.2
      */
-    Optional<Indicadores> findIndicador_4_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_1_2(Integer proyectoId);
     
     /**
      * 4.2.1 Proporción de niños de 24 a 59 meses cuyo desarrollo es adecuado en cuanto a la salud, 
@@ -41,7 +41,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.2.1
      */
-    Optional<Indicadores> findIndicador_4_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_2_1(Integer proyectoId);
     
     /**
      * 4.2.2 Tasa de participación en el aprendizaje organizado (un año antes de la edad oficial 
@@ -50,7 +50,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.2.2
      */
-    Optional<Indicadores> findIndicador_4_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_2_2(Integer proyectoId);
     
     /**
      * 4.3.1 Tasa de participación de jóvenes y adultos en la educación y formación académica 
@@ -59,7 +59,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.3.1
      */
-    Optional<Indicadores> findIndicador_4_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_3_1(Integer proyectoId);
     
     /**
      * 4.4.1 Proporción de jóvenes y adultos con competencias en tecnología de la información 
@@ -68,7 +68,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.4.1
      */
-    Optional<Indicadores> findIndicador_4_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_4_1(Integer proyectoId);
     
     /**
      * 4.5.1 Índices de paridad (entre mujeres y hombres, zonas rurales y urbanas, 
@@ -78,7 +78,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.5.1
      */
-    Optional<Indicadores> findIndicador_4_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_5_1(Integer proyectoId);
     
     /**
      * 4.6.1 Tasa de alfabetización de adultos/jóvenes [36]
@@ -86,7 +86,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.6.1
      */
-    Optional<Indicadores> findIndicador_4_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_6_1(Integer proyectoId);
     
     /**
      * 4.7.1 Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo 
@@ -96,7 +96,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.7.1
      */
-    Optional<Indicadores> findIndicador_4_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_7_1(Integer proyectoId);
     
     /**
      * 4.a.1 Proporción de escuelas que ofrecen servicios básicos, desglosada por tipo de servicio [38]
@@ -104,7 +104,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.a.1
      */
-    Optional<Indicadores> findIndicador_4_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_a_1(Integer proyectoId);
     
     /**
      * 4.b.1 Volumen de la asistencia oficial para el desarrollo destinada a becas [39]
@@ -112,16 +112,16 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.b.1
      */
-    Optional<Indicadores> findIndicador_4_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_b_1(Integer proyectoId);
     
     /**
      * 4.c.1 Proporción de docentes con las calificaciones mínimas requeridas, 
-     * desglosada por tipo de institución educativa [39]
+     * desglosada por tipo de institution educativa [39]
      * 
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 4.c.1
      */
-    Optional<Indicadores> findIndicador_4_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_4_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS04
@@ -129,7 +129,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds04(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds04(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS04
@@ -138,7 +138,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param metaPrefix Prefijo de la meta (ej: "4.1", "4.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos específicos del ODS04 ──
     
@@ -163,7 +163,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param proyectoId ID del proyecto
      * @return Lista de metas del proyecto
      */
-    List<MetasProyecto> findAllMetasProyectoOds04(Integer proyectoId);
+    List<ProyectoIndicadorParametros> findAllMetasProyectoOds04(Integer proyectoId);
     
     /**
      * Encuentra una meta de proyecto del ODS04 por su ID
@@ -171,7 +171,7 @@ public interface IObjetivo04EducacionRepository extends IOdsBaseRepository<Indic
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> findMetaProyectoOds04ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> findMetaProyectoOds04ById(Integer metaId);
     
     /**
      * Encuentra todas las mediciones históricas del ODS04

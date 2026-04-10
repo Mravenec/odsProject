@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS07
  */
 public interface IObjetivo07EnergiaService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
-    MedicionesHistoricas, // MH - MedicionesHistoricas
-    Object           // A - Auditoria (placeholder)
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
+    MedicionesHistoricas,     // MH - MedicionesHistoricas
+    Object                   // A - Auditoria (placeholder)
 > {
     
     /**
@@ -27,7 +27,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 7.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 7.1.1
      */
-    Optional<Indicadores> getIndicador_7_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_7_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 7.1.2
@@ -45,7 +45,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 7.1.2
      */
-    Optional<Indicadores> getIndicador_7_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_7_1_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 7.2.1
@@ -54,7 +54,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 7.2.1
      */
-    Optional<Indicadores> getIndicador_7_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_7_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 7.3.1
@@ -63,7 +63,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 7.3.1
      */
-    Optional<Indicadores> getIndicador_7_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_7_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 7.a.1
@@ -72,7 +72,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 7.a.1
      */
-    Optional<Indicadores> getIndicador_7_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_7_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 7.b.1
@@ -81,7 +81,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 7.b.1
      */
-    Optional<Indicadores> getIndicador_7_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_7_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 7.c.1
@@ -90,7 +90,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 7.c.1
      */
-    Optional<Indicadores> getIndicador_7_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_7_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS07
@@ -98,7 +98,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds07(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds07(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS07
@@ -107,7 +107,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "7.1", "7.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos específicos del ODS07 ──
     
@@ -132,7 +132,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de metas del proyecto
      */
-    List<MetasProyecto> getAllMetasProyectoOds07(Integer proyectoId);
+    List<ProyectoIndicadorParametros> getAllMetasProyectoOds07(Integer proyectoId);
     
     /**
      * Obtiene una meta de proyecto del ODS07 por su ID
@@ -140,7 +140,7 @@ public interface IObjetivo07EnergiaService extends IOdsBaseService<
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> getMetaProyectoOds07ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> getMetaProyectoOds07ById(Integer metaId);
     
     /**
      * Obtiene todas las mediciones históricas del ODS07

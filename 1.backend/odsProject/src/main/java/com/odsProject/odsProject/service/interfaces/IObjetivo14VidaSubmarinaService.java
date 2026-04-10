@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS14
  */
 public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros,   // M - ProyectoIndicadorParametros
     MedicionesHistoricas, // MH - MedicionesHistoricas
     Object           // A - Auditoria (placeholder)
 > {
@@ -27,7 +27,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.1.1
      */
-    Optional<Indicadores> getIndicador_14_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.2.1
@@ -45,7 +45,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.2.1
      */
-    Optional<Indicadores> getIndicador_14_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.3.1
@@ -54,7 +54,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.3.1
      */
-    Optional<Indicadores> getIndicador_14_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.4.1
@@ -63,7 +63,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.4.1
      */
-    Optional<Indicadores> getIndicador_14_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.5.1
@@ -72,7 +72,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.5.1
      */
-    Optional<Indicadores> getIndicador_14_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.6.1
@@ -81,7 +81,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.6.1
      */
-    Optional<Indicadores> getIndicador_14_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.7.1
@@ -90,7 +90,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.7.1
      */
-    Optional<Indicadores> getIndicador_14_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.a.1
@@ -99,7 +99,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.a.1
      */
-    Optional<Indicadores> getIndicador_14_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.b.1
@@ -108,7 +108,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.b.1
      */
-    Optional<Indicadores> getIndicador_14_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_b_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 14.c.1
@@ -117,7 +117,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 14.c.1
      */
-    Optional<Indicadores> getIndicador_14_c_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_14_c_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS14
@@ -125,7 +125,7 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds14(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds14(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS14
@@ -134,5 +134,5 @@ public interface IObjetivo14VidaSubmarinaService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "14.1", "14.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

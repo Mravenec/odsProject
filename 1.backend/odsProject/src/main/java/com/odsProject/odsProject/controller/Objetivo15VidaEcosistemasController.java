@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo15VidaEcosistemasService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo15VidaEcosistemasController;
@@ -32,8 +32,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo15VidaEcosistemasService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.1.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_1_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_1_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_1_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_1_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.4.2")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_4_2(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_4_2(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_4_2(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_4_2(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.7.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_7_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_7_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_7_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_7_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.8.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_8_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_8_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_8_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_8_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.9.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_9_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_9_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_9_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_9_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -162,8 +162,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -172,8 +172,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/15.c.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_15_c_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_c_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_15_c_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.getIndicador_15_c_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -182,8 +182,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds15(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo15VidaEcosistemasService.findAllIndicadoresByProyectoOds15(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds15(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.findAllIndicadoresByProyectoOds15(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -192,8 +192,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo15VidaEcosistemasService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -229,8 +229,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS15
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds15(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo15VidaEcosistemasService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds15(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo15VidaEcosistemasService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -362,8 +362,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo15VidaEcosistemasService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -372,8 +372,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo15VidaEcosistemasService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo15VidaEcosistemasService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -382,8 +382,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo15VidaEcosistemasService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo15VidaEcosistemasService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -392,7 +392,7 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo15VidaEcosistemasService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -402,8 +402,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo15VidaEcosistemasService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo15VidaEcosistemasService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -422,8 +422,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo15VidaEcosistemasService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo15VidaEcosistemasService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -432,8 +432,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo15VidaEcosistemasService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo15VidaEcosistemasService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -442,8 +442,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo15VidaEcosistemasService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo15VidaEcosistemasService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -452,8 +452,8 @@ public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosi
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo15VidaEcosistemasService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo15VidaEcosistemasService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

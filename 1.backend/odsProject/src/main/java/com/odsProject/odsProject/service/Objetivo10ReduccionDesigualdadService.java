@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo10ReduccionDesigualdadRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo10ReduccionDesigualdadService;
@@ -30,7 +30,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_1_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_2_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_2_1(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_3_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_3_1(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_4_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_4_1(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_4_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_4_2(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_4_2(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_5_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_5_1(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_6_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_6_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_6_1(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_7_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_7_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_1(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_7_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_7_2(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_2(proyectoId);
     }
 
@@ -110,7 +110,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_7_3(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_7_3(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_3(proyectoId);
     }
 
@@ -118,7 +118,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_7_4(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_7_4(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_4(proyectoId);
     }
 
@@ -126,7 +126,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_a_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_a_1(proyectoId);
     }
 
@@ -134,7 +134,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_b_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_b_1(proyectoId);
     }
 
@@ -142,7 +142,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_10_c_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_10_c_1(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicador_10_c_1(proyectoId);
     }
 
@@ -150,7 +150,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds10(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds10(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findAllIndicadoresByProyectoOds10(proyectoId);
     }
 
@@ -158,7 +158,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo10ReduccionDesigualdadRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -169,10 +169,10 @@ public List<Proyectos> getAllProjectsOds10() {
 public Optional<Proyectos> getProjectOds10ById(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findProyectoOds10ById(proyectoId);
     }
-public List<MetasProyecto> getAllMetasProyectoOds10(Integer proyectoId) {
+public List<ProyectoIndicadorParametros> getAllMetasProyectoOds10(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findAllMetasProyectoOds10(proyectoId);
     }
-public Optional<MetasProyecto> getMetaProyectoOds10ById(Integer metaId) {
+public Optional<ProyectoIndicadorParametros> getMetaProyectoOds10ById(Integer metaId) {
         return objetivo10ReduccionDesigualdadRepository.findMetaProyectoOds10ById(metaId);
     }
 public List<MedicionesHistoricas> getAllMedicionesHistoricasOds10(Integer indicadorId) {
@@ -186,15 +186,15 @@ public Optional<MedicionesHistoricas> getMedicionHistoricaOds10ById(Integer medi
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         return true;
     }
 public Map<String, Object> getOds10Statistics() {
         List<Proyectos> proyectos = objetivo10ReduccionDesigualdadRepository.findAllProyectosOds10();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
         return Map.of(
@@ -261,7 +261,7 @@ public Boolean indicatorExists(Integer indicadorId) {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -269,7 +269,7 @@ public Boolean indicatorExists(Integer indicadorId) {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         return Optional.empty();
     }
 
@@ -277,7 +277,7 @@ public Boolean indicatorExists(Integer indicadorId) {
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo10ReduccionDesigualdadRepository.saveIndicador(indicador);
     }
 
@@ -285,7 +285,7 @@ public Boolean indicatorExists(Integer indicadorId) {
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo10ReduccionDesigualdadRepository.updateIndicador(indicador);
     }
 
@@ -301,7 +301,7 @@ public Boolean indicatorExists(Integer indicadorId) {
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo10ReduccionDesigualdadRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -309,7 +309,7 @@ public Boolean indicatorExists(Integer indicadorId) {
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo10ReduccionDesigualdadRepository.findMetaProyectoOds10ById(metaId);
     }
 
@@ -317,7 +317,7 @@ public Boolean indicatorExists(Integer indicadorId) {
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo10ReduccionDesigualdadRepository.saveMetaProyecto(meta);
     }
 
@@ -325,7 +325,7 @@ public Boolean indicatorExists(Integer indicadorId) {
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         return meta;
     }
 
@@ -392,7 +392,7 @@ public Boolean indicatorExists(Integer indicadorId) {
      */
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
-        List<Indicadores> indicadores = objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream()
             .filter(ind -> ind.getValorActual() != null)

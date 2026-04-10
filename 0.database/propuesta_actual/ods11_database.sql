@@ -5,11 +5,32 @@
 CREATE DATABASE IF NOT EXISTS ods11 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE ods11;
 
--- NOTA: El sistema de login está separado en login_system.sql.
--- Esta base de datos se enfoca exclusivamente en la gestión de proyectos ODS11.
--- Ejecuta ods_common.sql después de este archivo para crear tablas y vistas comunes.
-
 SET @ODS_NUM = 11;
+
+-- ────────────────────────────────────────────────────────────
+-- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
+-- ────────────────────────────────────────────────────────────
+
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
+VALUES (@ODS_NUM, 'Ciudades y Comunidades Sostenibles', '#F99D26', 'Lograr que las ciudades y los asentamientos humanos sean inclusivos, seguros, resilientes y sostenibles');
+
+INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
+VALUES 
+(@ODS_NUM, '11.1.1', 'Proporción de la población urbana que vive en barrios marginales, asentamientos improvisados o viviendas inadecuadas', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '11.2.1', 'Proporción de la población que tiene acceso conveniente al transporte público, desglosada por sexo, edad y personas con discapacidad', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '11.3.1', 'Relación entre la tasa de consumo de tierras y la tasa de crecimiento de la población', 'valor', 'Indice'),
+(@ODS_NUM, '11.3.2', 'Proporción de ciudades que cuentan con una estructura de participación directa de la sociedad civil en la planificación y gestión urbanas y operan regularmente y democráticamente', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '11.4.1', 'Gasto total (público y privado) per cápita destinado a la preservación, protección y conservación de todo el patrimonio cultural y natural', 'valor', 'Monto/Capita'),
+(@ODS_NUM, '11.5.1', 'Número de personas muertas, desaparecidas y afectadas directamente atribuido a desastres por cada 100.000 habitantes', 'valor', 'Personas/100k'),
+(@ODS_NUM, '11.5.2', 'Pérdidas económicas directas en relación con el PIB mundial, daños en la infraestructura crítica y número de interrupciones de los servicios básicos atribuidos a desastres', 'valor', 'Porcentaje'),
+(@ODS_NUM, '11.6.1', 'Proporción de residuos sólidos urbanos recogidos y gestionados en instalaciones controladas respecto del total de residuos urbanos generados, desglosada por ciudad', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '11.6.2', 'Niveles medios anuales de partículas finas (por ejemplo, PM2,5 y PM10) en las ciudades (ponderados según la población)', 'valor', 'ug/m3'),
+(@ODS_NUM, '11.7.1', 'Proporción media del entorno edificado de las ciudades que es espacio abierto de uso público para todos, desglosada por sexo, edad y personas con discapacidad', 'valor', 'Porcentaje'),
+(@ODS_NUM, '11.7.2', 'Proporción de personas que han sido víctimas de acoso físico o sexual en los últimos 12 meses, desglosada por sexo, edad, situación de discapacidad y lugar del hecho', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '11.a.1', 'Número de países que cuentan con políticas urbanas nacionales o planes de desarrollo regional que a) responden a la dinámica de la población; b) garantizan un desarrollo territorial equilibrado; y c) aumentan el espacio fiscal local', 'count', 'Paises'),
+(@ODS_NUM, '11.b.1', 'Número de países que adoptan y aplican estrategias nacionales de reducción del riesgo de desastres en consonancia con el Marco de Sendái para la Reducción del Riesgo de Desastres 2015-2030', 'count', 'Paises'),
+(@ODS_NUM, '11.b.2', 'Proporción de gobiernos locales que adoptan y aplican estrategias locales de reducción del riesgo de desastres en consonancia con las estrategias nacionales de reducción del riesgo de desastres', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '11.c.1', 'Proporción del apoyo financiero a los países menos adelantados que se destina a la construcción y el reacondicionamiento de edificios resilientes y sostenibles utilizando materiales locales', 'valor', 'Porcentaje');
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA DE AUDITORÍA (nombre único por ODS)
@@ -31,27 +52,14 @@ CREATE TABLE auditoria_ods11 (
 );
 
 -- ────────────────────────────────────────────────────────────
--- TABLAS, ÍNDICES Y VISTAS GENÉRICAS (ods_common.sql incrustado)
+-- ESTRUCTURA COMÚN (STANDALONE - COMPATIBLE CON HEIDISQL)
 -- ────────────────────────────────────────────────────────────
--- ============================================================
--- ODS COMMON: Tablas, Triggers, Vistas y Procedimientos comunes
--- Uso: hacer SOURCE de este archivo DENTRO de cada base ods_XX,
---      DESPUÉS de haber ejecutado el archivo ods_XX_database.sql.
---
--- Requiere que la variable @ODS_NUM esté definida antes de llamar,
--- por ejemplo:  SET @ODS_NUM = 1;
--- El archivo ods_XX_database.sql lo define automáticamente.
--- ============================================================
-
--- ────────────────────────────────────────────────────────────
--- TABLAS
--- ────────────────────────────────────────────────────────────
-
-CREATE TABLE proyectos (
+CREATE TABLE IF NOT EXISTS proyectos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
+    sede_id    INT NULL,
     nombre_proyecto VARCHAR(200) NOT NULL,
-    objetivo_id INT NOT NULL,
+    objetivo_id TINYINT UNSIGNED NOT NULL,
     descripcion TEXT,
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
@@ -60,466 +68,179 @@ CREATE TABLE proyectos (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (sede_id)    REFERENCES ods_login.sedes(id) ON DELETE SET NULL,
+    FOREIGN KEY (objetivo_id) REFERENCES ods_login.ods_catalog(id),
     INDEX idx_usuario (usuario_id),
+    INDEX idx_sede    (sede_id),
     INDEX idx_objetivo (objetivo_id),
     INDEX idx_estado (estado)
 );
 
-CREATE TABLE metas_proyecto (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    proyecto_id INT NOT NULL,
-    meta_codigo VARCHAR(10) NOT NULL,
-    meta_descripcion TEXT NOT NULL,
-    valor_meta DECIMAL(15,4) NOT NULL,
-    unidad_medida VARCHAR(50) NOT NULL,
-    fecha_limite DATE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE IF NOT EXISTS proyecto_indicadores (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    proyecto_id         INT NOT NULL,
+    indicador_master_id INT NOT NULL,
+    formula_custom      TEXT,
+    valor_actual        DECIMAL(15,4) DEFAULT 0,
+    meta_valor          DECIMAL(15,4) NOT NULL,
+    meta_unidad         VARCHAR(50) NOT NULL,
+    fecha_proxima_medicion DATE,
+    created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
-    INDEX idx_proyecto_meta (proyecto_id, meta_codigo)
+    FOREIGN KEY (indicador_master_id) REFERENCES ods_login.indicador_master(id),
+    INDEX idx_proyecto_master (proyecto_id, indicador_master_id)
 );
 
-CREATE TABLE indicadores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    proyecto_id INT NOT NULL,
-    indicador_codigo VARCHAR(10) NOT NULL,
-    indicador_descripcion TEXT NOT NULL,
-    valor_actual DECIMAL(15,4) DEFAULT 0,
-    valor_meta DECIMAL(15,4) NOT NULL,
-    unidad_medida VARCHAR(50) NOT NULL,
-    fecha_medicion DATE NOT NULL,
-    fuente_datos VARCHAR(100),
-    observaciones TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
-    INDEX idx_proyecto_indicador (proyecto_id, indicador_codigo),
-    INDEX idx_codigo (indicador_codigo)
+CREATE TABLE IF NOT EXISTS proyecto_indicador_parametros (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    proyecto_indicador_id INT NOT NULL,
+    nombre_parametro    VARCHAR(50) NOT NULL,
+    tipo_dato           ENUM('Integer', 'Decimal') NOT NULL DEFAULT 'Decimal',
+    created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (proyecto_indicador_id) REFERENCES proyecto_indicadores(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_proyecto_param (proyecto_indicador_id, nombre_parametro)
 );
 
-CREATE TABLE mediciones_historicas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    indicador_id INT NOT NULL,
-    valor_medido DECIMAL(15,4) NOT NULL,
-    fecha_medicion DATE NOT NULL,
-    responsable VARCHAR(100),
-    metodo_medicion VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (indicador_id) REFERENCES indicadores(id) ON DELETE CASCADE,
-    INDEX idx_indicador_fecha (indicador_id, fecha_medicion)
+CREATE TABLE IF NOT EXISTS mediciones_historicas (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    proyecto_indicador_id INT NOT NULL,
+    valor_calculado     DECIMAL(15,4) NOT NULL,
+    fecha_medicion      DATE NOT NULL,
+    responsable         VARCHAR(100),
+    metodo_medicion     VARCHAR(100),
+    observaciones       TEXT,
+    created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (proyecto_indicador_id) REFERENCES proyecto_indicadores(id) ON DELETE CASCADE,
+    INDEX idx_proyecto_indicador_fecha (proyecto_indicador_id, fecha_medicion)
 );
 
--- La tabla de auditoría se llama auditoria_odsXX; se crea en cada archivo individual.
+CREATE TABLE IF NOT EXISTS medicion_parametro_valores (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    medicion_id         INT NOT NULL,
+    parametro_id        INT NOT NULL,
+    valor_ingresado     DECIMAL(15,4) NOT NULL,
+    FOREIGN KEY (medicion_id) REFERENCES mediciones_historicas(id) ON DELETE CASCADE,
+    FOREIGN KEY (parametro_id) REFERENCES proyecto_indicador_parametros(id) ON DELETE CASCADE
+);
 
--- ────────────────────────────────────────────────────────────
--- TRIGGERS  (usan @ODS_NUM para nombrar la tabla de auditoría)
--- MySQL no permite nombres de tabla dinámicos en triggers, así
--- que los triggers se crean en cada archivo ODS con el nombre
--- correcto. Ver sección TRIGGERS en ods_XX_database.sql.
--- ────────────────────────────────────────────────────────────
-
--- ────────────────────────────────────────────────────────────
--- ÍNDICES ADICIONALES
--- ────────────────────────────────────────────────────────────
-
-CREATE INDEX idx_indicadores_proyecto_valor ON indicadores(proyecto_id, valor_actual);
-CREATE INDEX idx_mediciones_indicador_fecha  ON mediciones_historicas(indicador_id, fecha_medicion DESC);
-
--- ────────────────────────────────────────────────────────────
--- VISTA: Resumen General de Proyectos
--- ────────────────────────────────────────────────────────────
-
-CREATE VIEW vista_admin_resumen_general AS
+CREATE OR REPLACE VIEW vista_admin_resumen_general AS
 SELECT
     p.id                 AS proyecto_id,
     p.nombre_proyecto,
     u.username           AS usuario_creador,
-    u.full_name          AS nombre_usuario,
+    s.nombre             AS sede_nombre,
+    cat.nombre           AS ods_nombre,
     p.fecha_inicio,
     p.fecha_fin,
     p.estado,
-    COUNT(DISTINCT i.id) AS total_indicadores,
-    COUNT(DISTINCT CASE WHEN i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_logrados,
+    COUNT(DISTINCT pi.id) AS total_indicadores,
+    COUNT(DISTINCT CASE WHEN pi.valor_actual >= pi.meta_valor THEN pi.id END) AS indicadores_logrados,
     ROUND(
         CASE
-            WHEN COUNT(DISTINCT i.id) > 0
-            THEN (COUNT(DISTINCT CASE WHEN i.valor_actual >= i.valor_meta THEN i.id END) * 100.0)
-                 / COUNT(DISTINCT i.id)
+            WHEN COUNT(DISTINCT pi.id) > 0
+            THEN (COUNT(DISTINCT CASE WHEN pi.valor_actual >= pi.meta_valor THEN pi.id END) * 100.0)
+                 / COUNT(DISTINCT pi.id)
             ELSE 0
         END, 2
     ) AS progreso_porcentaje,
-    MIN(i.valor_actual)  AS valor_minimo_actual,
-    MAX(i.valor_actual)  AS valor_maximo_actual,
-    AVG(i.valor_actual)  AS valor_promedio_actual,
     p.created_at         AS fecha_creacion
 FROM proyectos p
-LEFT JOIN ods_login.usuarios u ON p.usuario_id = u.id
-LEFT JOIN indicadores i        ON p.id = i.proyecto_id
-GROUP BY p.id, p.nombre_proyecto, u.username, u.full_name,
-         p.fecha_inicio, p.fecha_fin, p.estado, p.created_at
-ORDER BY p.created_at DESC;
+LEFT JOIN ods_login.usuarios u    ON p.usuario_id = u.id
+LEFT JOIN ods_login.sedes s       ON p.sede_id = s.id
+LEFT JOIN ods_login.ods_catalog cat ON p.objetivo_id = cat.id
+LEFT JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
+GROUP BY p.id, p.nombre_proyecto, u.username, s.nombre, cat.nombre,
+         p.fecha_inicio, p.fecha_fin, p.estado, p.created_at;
 
--- ────────────────────────────────────────────────────────────
--- VISTA: Detalle de Indicadores por Proyecto
--- ────────────────────────────────────────────────────────────
-
-CREATE VIEW vista_admin_detalle_indicadores AS
+CREATE OR REPLACE VIEW vista_admin_detalle_indicadores AS
 SELECT
     p.id AS proyecto_id,
     p.nombre_proyecto,
-    u.username AS usuario_creador,
-    i.indicador_codigo,
-    i.indicador_descripcion,
-    i.valor_actual,
-    i.valor_meta,
-    i.unidad_medida,
+    m.codigo AS indicador_codigo,
+    m.nombre AS indicador_nombre,
+    pi.formula_custom,
+    pi.valor_actual,
+    pi.meta_valor,
+    pi.meta_unidad,
     CASE
-        WHEN i.valor_actual >= i.valor_meta             THEN 'LOGRADO'
-        WHEN i.valor_actual >= (i.valor_meta * 0.8)     THEN 'CERCA META'
-        WHEN i.valor_actual >= (i.valor_meta * 0.5)     THEN 'PROGRESO'
+        WHEN pi.valor_actual >= pi.meta_valor             THEN 'LOGRADO'
+        WHEN pi.valor_actual >= (pi.meta_valor * 0.8)     THEN 'CERCA META'
+        WHEN pi.valor_actual >= (pi.meta_valor * 0.5)     THEN 'PROGRESO'
         ELSE 'BAJO'
     END AS estado_indicador,
-    ROUND((i.valor_actual / i.valor_meta) * 100, 2) AS porcentaje_logro,
-    i.fecha_medicion,
-    i.fuente_datos,
-    i.updated_at AS ultima_actualizacion
+    ROUND((pi.valor_actual / pi.meta_valor) * 100, 2) AS porcentaje_logro,
+    pi.updated_at AS ultima_actualizacion
 FROM proyectos p
-LEFT JOIN ods_login.usuarios u ON p.usuario_id = u.id
-LEFT JOIN indicadores i        ON p.id = i.proyecto_id
-ORDER BY p.id, i.indicador_codigo;
+INNER JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
+INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 
 -- ────────────────────────────────────────────────────────────
--- VISTA: Auditoría de Cambios Recientes
--- (referencia a auditoria_odsXX → creada en cada archivo ODS)
--- ────────────────────────────────────────────────────────────
--- Esta vista se crea en cada archivo ODS porque necesita el
--- nombre concreto de la tabla de auditoría (auditoria_ods01, etc.)
-
--- ────────────────────────────────────────────────────────────
--- PROCEDIMIENTO: sp_admin_reporte_proyecto
--- (también necesita el nombre de la tabla de auditoría, por lo
---  que se crea en cada archivo ODS)
--- ────────────────────────────────────────────────────────────
-
-
--- ────────────────────────────────────────────────────────────
--- TRIGGERS (necesitan el nombre concreto de la tabla de auditoría)
+-- TRIGGERS ESPECÍFICOS
 -- ────────────────────────────────────────────────────────────
 
 DELIMITER //
-CREATE TRIGGER auditoria_indicadores_insert
-AFTER INSERT ON indicadores
+CREATE TRIGGER auditoria_proyectos_insert
+AFTER INSERT ON proyectos
 FOR EACH ROW
 BEGIN
     INSERT INTO auditoria_ods11 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
-    VALUES ('indicadores', NEW.id, 'INSERT', NULL,
+    VALUES ('proyectos', NEW.id, 'INSERT', NEW.usuario_id, 
+            JSON_OBJECT('nombre', NEW.nombre_proyecto, 'estado', NEW.estado));
+END//
+
+CREATE TRIGGER auditoria_indicadores_insert
+AFTER INSERT ON proyecto_indicadores
+FOR EACH ROW
+BEGIN
+    INSERT INTO auditoria_ods11 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    VALUES ('proyecto_indicadores', NEW.id, 'INSERT', NULL,
             JSON_OBJECT(
-                'proyecto_id',      NEW.proyecto_id,
-                'indicador_codigo', NEW.indicador_codigo,
-                'valor_actual',     NEW.valor_actual,
-                'valor_meta',       NEW.valor_meta,
-                'unidad_medida',    NEW.unidad_medida
+                'proyecto_id', NEW.proyecto_id,
+                'indicador_master_id', NEW.indicador_master_id,
+                'valor_meta', NEW.meta_valor
             ));
 END//
-DELIMITER ;
 
-DELIMITER //
-CREATE TRIGGER auditoria_indicadores_update
-AFTER UPDATE ON indicadores
+CREATE TRIGGER registrar_medicion_y_actualizar_valor
+AFTER INSERT ON mediciones_historicas
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria_ods11 (tabla_afectada, registro_id, accion, usuario_id, valores_anteriores, valores_nuevos)
-    VALUES ('indicadores', NEW.id, 'UPDATE', NULL,
-            JSON_OBJECT('valor_actual', OLD.valor_actual, 'valor_meta', OLD.valor_meta),
-            JSON_OBJECT('valor_actual', NEW.valor_actual, 'valor_meta', NEW.valor_meta));
-END//
-DELIMITER ;
-
-DELIMITER //
-CREATE TRIGGER calcular_proyecto_progreso
-AFTER UPDATE ON indicadores
-FOR EACH ROW
-BEGIN
-    DECLARE total_indicadores    INT DEFAULT 0;
-    DECLARE indicadores_completados INT DEFAULT 0;
-    DECLARE progreso             DECIMAL(5,2) DEFAULT 0;
-
-    SELECT COUNT(*) INTO total_indicadores
-    FROM indicadores WHERE proyecto_id = NEW.proyecto_id;
-
-    SELECT COUNT(*) INTO indicadores_completados
-    FROM indicadores
-    WHERE proyecto_id = NEW.proyecto_id AND valor_actual >= valor_meta;
-
-    IF total_indicadores > 0 THEN
-        SET progreso = (indicadores_completados * 100.0) / total_indicadores;
-    END IF;
-
-    UPDATE proyectos
-    SET estado = CASE
-        WHEN progreso >= 100 THEN 'completado'
-        WHEN progreso > 0    THEN 'activo'
-        ELSE 'planificacion'
-    END
-    WHERE id = NEW.proyecto_id;
-END//
-DELIMITER ;
-
-DELIMITER //
-CREATE TRIGGER registrar_medicion_historica
-AFTER UPDATE ON indicadores
-FOR EACH ROW
-BEGIN
-    IF OLD.valor_actual != NEW.valor_actual THEN
-        INSERT INTO mediciones_historicas (indicador_id, valor_medido, fecha_medicion, responsable)
-        VALUES (NEW.id, NEW.valor_actual, NEW.fecha_medicion, 'Sistema Automático');
-    END IF;
+    UPDATE proyecto_indicadores 
+    SET valor_actual = NEW.valor_calculado,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = NEW.proyecto_indicador_id;
+    
+    INSERT INTO auditoria_ods11 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    VALUES ('mediciones_historicas', NEW.id, 'INSERT', NULL,
+            JSON_OBJECT('indicador_id', NEW.proyecto_indicador_id, 'valor', NEW.valor_calculado));
 END//
 DELIMITER ;
 
 -- ────────────────────────────────────────────────────────────
--- VISTA: Estadísticas Generales ODS11 (metas específicas)
--- ────────────────────────────────────────────────────────────
-
-CREATE VIEW vista_admin_estadisticas_generales AS
-SELECT
-    '11.1' AS meta_codigo,
-    'Asegurar acceso vivienda adecuada servicios básicos' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.1.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.1.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_1,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.1.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_1_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11
-
-UNION ALL
-SELECT
-    '11.2' AS meta_codigo,
-    'Proporcionar acceso transporte público sostenible' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.2.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.2.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_2,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.2.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_2_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11
-
-UNION ALL
-SELECT
-    '11.3' AS meta_codigo,
-    'Aumentar urbanización inclusiva sostenible' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.3.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.3.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_3,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.3.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_3_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11
-
-UNION ALL
-SELECT
-    '11.4' AS meta_codigo,
-    'Proteger patrimonio cultural natural' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.4.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.4.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_4,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.4.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_4_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11
-
-UNION ALL
-SELECT
-    '11.5' AS meta_codigo,
-    'Reducir desastres económicos humanos ambientales' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.5.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.5.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_5,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.5.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_5_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11
-
-UNION ALL
-SELECT
-    '11.6' AS meta_codigo,
-    'Reducir impacto ambiental ciudades per cápita' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.6.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.6.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_6,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.6.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_6_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11
-
-UNION ALL
-SELECT
-    '11.7' AS meta_codigo,
-    'Proporcionar acceso espacios públicos seguros inclusivos' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.7.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.7.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_7,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.7.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_7_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11
-
-UNION ALL
-SELECT
-    '11.a' AS meta_codigo,
-    'Fortalecer planeamiento urbano desarrollo sostenible' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.a.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.a.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_a,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.a.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_a_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11
-
-UNION ALL
-SELECT
-    '11.b' AS meta_codigo,
-    'Aplicar estrategias reducción riesgo desastres ciudades' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.b.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.b.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_b,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.b.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_b_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11
-
-UNION ALL
-SELECT
-    '11.c' AS meta_codigo,
-    'Apoyar países menos desarrollados construcción sostenible' AS meta_descripcion,
-    COUNT(DISTINCT p.id) AS total_proyectos,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.c.%' THEN p.id END) AS proyectos_con_indicadores,
-    AVG(CASE WHEN i.indicador_codigo LIKE '11.c.%' THEN (i.valor_actual / i.valor_meta) * 100 END) AS promedio_logro_meta_11_c,
-    COUNT(DISTINCT CASE WHEN i.indicador_codigo LIKE '11.c.%' AND i.valor_actual >= i.valor_meta THEN i.id END) AS indicadores_meta_11_c_logrados
-FROM proyectos p
-LEFT JOIN indicadores i ON p.id = i.proyecto_id
-WHERE p.objetivo_id = 11;
-
--- ────────────────────────────────────────────────────────────
--- VISTA: Auditoría de Cambios Recientes
+-- VISTAS Y PROCEDIMIENTOS
 -- ────────────────────────────────────────────────────────────
 
 CREATE VIEW vista_admin_auditoria_reciente AS
-SELECT
-    a.id,
-    a.tabla_afectada,
-    a.registro_id,
-    a.accion,
-    u.username          AS usuario,
-    u.full_name         AS nombre_usuario,
-    a.valores_anteriores,
-    a.valores_nuevos,
-    a.fecha_cambio,
-    a.ip_address,
-    CASE
-        WHEN a.tabla_afectada = 'indicadores' THEN
-            (SELECT CONCAT(p.nombre_proyecto, ' - ', i.indicador_codigo)
-             FROM indicadores i
-             JOIN proyectos p ON i.proyecto_id = p.id
-             WHERE i.id = a.registro_id)
-        ELSE CONCAT('Registro ', a.registro_id)
-    END AS descripcion_cambio
+SELECT 
+    a.id, a.tabla_afectada, a.registro_id, a.accion,
+    u.username AS usuario, a.fecha_cambio, a.ip_address
 FROM auditoria_ods11 a
 LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
-WHERE a.fecha_cambio >= DATE_SUB(NOW(), INTERVAL 30 DAY)
 ORDER BY a.fecha_cambio DESC;
-
--- ────────────────────────────────────────────────────────────
--- PROCEDIMIENTO: sp_admin_dashboard
--- ────────────────────────────────────────────────────────────
-
-DELIMITER //
-CREATE PROCEDURE sp_admin_dashboard()
-BEGIN
-    SELECT 'TOTAL_PROYECTOS'     AS metrica, COUNT(*) AS valor FROM proyectos WHERE objetivo_id = 11
-    UNION ALL
-    SELECT 'PROYECTOS_ACTIVOS'   AS metrica, COUNT(*) AS valor FROM proyectos WHERE objetivo_id = 11 AND estado = 'activo'
-    UNION ALL
-    SELECT 'PROYECTOS_COMPLETADOS' AS metrica, COUNT(*) AS valor FROM proyectos WHERE objetivo_id = 11 AND estado = 'completado'
-    UNION ALL
-    SELECT 'TOTAL_USUARIOS'      AS metrica, COUNT(*) AS valor FROM ods_login.usuarios WHERE is_active = TRUE;
-
-    SELECT p.id, p.nombre_proyecto, u.username, p.estado, p.created_at
-    FROM proyectos p
-    JOIN ods_login.usuarios u ON p.usuario_id = u.id
-    WHERE p.objetivo_id = 11
-    ORDER BY p.created_at DESC
-    LIMIT 5;
-
-    SELECT i.indicador_codigo, p.nombre_proyecto,
-           ROUND((i.valor_actual / i.valor_meta) * 100, 2) AS porcentaje_logro,
-           i.valor_actual, i.valor_meta
-    FROM indicadores i
-    JOIN proyectos p ON i.proyecto_id = p.id
-    WHERE p.objetivo_id = 11 AND (i.valor_actual / i.valor_meta) < 0.5
-    ORDER BY (i.valor_actual / i.valor_meta) ASC
-    LIMIT 10;
-END//
-DELIMITER ;
-
--- ────────────────────────────────────────────────────────────
--- PROCEDIMIENTO: sp_admin_reporte_proyecto
--- ────────────────────────────────────────────────────────────
 
 DELIMITER //
 CREATE PROCEDURE sp_admin_reporte_proyecto(IN proyecto_id_param INT)
 BEGIN
-    SELECT p.id, p.nombre_proyecto, u.username AS usuario_creador, u.full_name,
-           p.descripcion, p.fecha_inicio, p.fecha_fin, p.estado, p.created_at
-    FROM proyectos p
-    JOIN ods_login.usuarios u ON p.usuario_id = u.id
-    WHERE p.id = proyecto_id_param AND p.objetivo_id = 11;
-
-    SELECT i.indicador_codigo, i.indicador_descripcion,
-           i.valor_actual, i.valor_meta, i.unidad_medida,
-           CASE
-               WHEN i.valor_actual >= i.valor_meta             THEN 'LOGRADO'
-               WHEN i.valor_actual >= (i.valor_meta * 0.8)     THEN 'CERCA META'
-               WHEN i.valor_actual >= (i.valor_meta * 0.5)     THEN 'PROGRESO'
-               ELSE 'BAJO'
-           END AS estado_indicador,
-           ROUND((i.valor_actual / i.valor_meta) * 100, 2) AS porcentaje_logro,
-           i.fecha_medicion, i.fuente_datos, i.observaciones, i.updated_at
-    FROM indicadores i
-    WHERE i.proyecto_id = proyecto_id_param
-    ORDER BY i.indicador_codigo;
-
-    SELECT i.indicador_codigo, mh.valor_medido, mh.fecha_medicion,
-           mh.responsable, mh.metodo_medicion, mh.created_at
-    FROM mediciones_historicas mh
-    JOIN indicadores i ON mh.indicador_id = i.id
-    WHERE i.proyecto_id = proyecto_id_param
-    ORDER BY mh.fecha_medicion DESC;
-
-    SELECT a.tabla_afectada, a.accion, u.username AS usuario,
-           a.valores_anteriores, a.valores_nuevos, a.fecha_cambio
-    FROM auditoria_ods11 a
-    LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
-    WHERE a.tabla_afectada IN ('proyectos', 'indicadores', 'metas_proyecto')
-      AND (a.registro_id = proyecto_id_param OR a.registro_id IN (
-            SELECT id FROM indicadores    WHERE proyecto_id = proyecto_id_param
-            UNION
-            SELECT id FROM metas_proyecto WHERE proyecto_id = proyecto_id_param
-          ))
-    ORDER BY a.fecha_cambio DESC;
+    SELECT * FROM proyectos WHERE id = proyecto_id_param;
+    SELECT pi.*, m.codigo, m.nombre 
+    FROM proyecto_indicadores pi
+    JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id
+    WHERE pi.proyecto_id = proyecto_id_param;
+    SELECT * FROM auditoria_ods11 
+    WHERE (tabla_afectada = 'proyectos' AND registro_id = proyecto_id_param)
+       OR (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
 END//
 DELIMITER ;
 
--- ────────────────────────────────────────────────────────────
--- ÍNDICE auditoría + comentarios
--- ────────────────────────────────────────────────────────────
-
-CREATE INDEX idx_auditoria_fecha_tabla ON auditoria_ods11(fecha_cambio, tabla_afectada);
-
-ALTER TABLE proyectos             COMMENT 'Proyectos ODS11 creados por usuarios';
-ALTER TABLE metas_proyecto        COMMENT 'Metas específicas establecidas por cada proyecto ODS11';
-ALTER TABLE indicadores           COMMENT 'Indicadores medidos por cada proyecto ODS11';
-ALTER TABLE mediciones_historicas COMMENT 'Historial de mediciones de indicadores ODS11';
-ALTER TABLE auditoria_ods11         COMMENT 'Auditoría de cambios en el sistema ODS11';
-
-SELECT 'Base de datos ODS11 creada exitosamente' AS mensaje, NOW() AS fecha_creacion;
+SELECT 'Base de datos ODS11 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;

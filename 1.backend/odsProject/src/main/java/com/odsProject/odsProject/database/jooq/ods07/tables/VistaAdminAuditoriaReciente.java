@@ -77,24 +77,6 @@ public class VistaAdminAuditoriaReciente extends TableImpl<VistaAdminAuditoriaRe
 
     /**
      * The column
-     * <code>ods07.vista_admin_auditoria_reciente.nombre_usuario</code>.
-     */
-    public final TableField<VistaAdminAuditoriaRecienteRecord, String> NOMBRE_USUARIO = createField(DSL.name("nombre_usuario"), SQLDataType.VARCHAR(150), this, "");
-
-    /**
-     * The column
-     * <code>ods07.vista_admin_auditoria_reciente.valores_anteriores</code>.
-     */
-    public final TableField<VistaAdminAuditoriaRecienteRecord, String> VALORES_ANTERIORES = createField(DSL.name("valores_anteriores"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
-
-    /**
-     * The column
-     * <code>ods07.vista_admin_auditoria_reciente.valores_nuevos</code>.
-     */
-    public final TableField<VistaAdminAuditoriaRecienteRecord, String> VALORES_NUEVOS = createField(DSL.name("valores_nuevos"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
-
-    /**
-     * The column
      * <code>ods07.vista_admin_auditoria_reciente.fecha_cambio</code>.
      */
     public final TableField<VistaAdminAuditoriaRecienteRecord, LocalDateTime> FECHA_CAMBIO = createField(DSL.name("fecha_cambio"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -104,18 +86,12 @@ public class VistaAdminAuditoriaReciente extends TableImpl<VistaAdminAuditoriaRe
      */
     public final TableField<VistaAdminAuditoriaRecienteRecord, String> IP_ADDRESS = createField(DSL.name("ip_address"), SQLDataType.VARCHAR(45).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
-    /**
-     * The column
-     * <code>ods07.vista_admin_auditoria_reciente.descripcion_cambio</code>.
-     */
-    public final TableField<VistaAdminAuditoriaRecienteRecord, String> DESCRIPCION_CAMBIO = createField(DSL.name("descripcion_cambio"), SQLDataType.VARCHAR(213).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
-
     private VistaAdminAuditoriaReciente(Name alias, Table<VistaAdminAuditoriaRecienteRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
 
     private VistaAdminAuditoriaReciente(Name alias, Table<VistaAdminAuditoriaRecienteRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_auditoria_reciente` as select `a`.`id` AS `id`,`a`.`tabla_afectada` AS `tabla_afectada`,`a`.`registro_id` AS `registro_id`,`a`.`accion` AS `accion`,`u`.`username` AS `usuario`,`u`.`full_name` AS `nombre_usuario`,`a`.`valores_anteriores` AS `valores_anteriores`,`a`.`valores_nuevos` AS `valores_nuevos`,`a`.`fecha_cambio` AS `fecha_cambio`,`a`.`ip_address` AS `ip_address`,case when `a`.`tabla_afectada` = 'indicadores' then (select concat(`p`.`nombre_proyecto`,' - ',`i`.`indicador_codigo`) from (`ods07`.`indicadores` `i` join `ods07`.`proyectos` `p` on(`i`.`proyecto_id` = `p`.`id`)) where `i`.`id` = `a`.`registro_id`) else concat('Registro ',`a`.`registro_id`) end AS `descripcion_cambio` from (`ods07`.`auditoria_ods07` `a` left join `ods_login`.`usuarios` `u` on(`a`.`usuario_id` = `u`.`id`)) where `a`.`fecha_cambio` >= current_timestamp() - interval 30 day order by `a`.`fecha_cambio` desc"), where);
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_auditoria_reciente` as select `a`.`id` AS `id`,`a`.`tabla_afectada` AS `tabla_afectada`,`a`.`registro_id` AS `registro_id`,`a`.`accion` AS `accion`,`u`.`username` AS `usuario`,`a`.`fecha_cambio` AS `fecha_cambio`,`a`.`ip_address` AS `ip_address` from (`ods07`.`auditoria_ods07` `a` left join `ods_login`.`usuarios` `u` on(`a`.`usuario_id` = `u`.`id`)) order by `a`.`fecha_cambio` desc"), where);
     }
 
     /**

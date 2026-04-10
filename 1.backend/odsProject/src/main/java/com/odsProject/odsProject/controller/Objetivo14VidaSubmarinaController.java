@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.controller;
 
-import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo14VidaSubmarinaService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo14VidaSubmarinaController;
@@ -32,8 +32,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores")
-    public ResponseEntity<List<Indicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo14VidaSubmarinaService.getAllIndicators(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getAllIndicators(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -42,8 +42,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.1.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_1_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_1_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_1_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_1_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -52,8 +52,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.2.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_2_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_2_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_2_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_2_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -62,8 +62,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.3.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_3_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_3_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_3_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_3_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -72,8 +72,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.4.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_4_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_4_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_4_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_4_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -82,8 +82,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.5.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_5_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_5_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_5_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_5_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -92,8 +92,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.6.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_6_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_6_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_6_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_6_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -102,8 +102,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.7.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_7_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_7_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_7_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_7_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -112,8 +112,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.a.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_a_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_a_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_a_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_a_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -122,8 +122,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.b.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_b_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_b_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_b_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_b_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -132,8 +132,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/14.c.1")
-    public ResponseEntity<Optional<Indicadores>> getIndicador_14_c_1(@RequestParam Integer proyectoId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_c_1(proyectoId);
+    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_c_1(@RequestParam Integer proyectoId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_c_1(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -142,8 +142,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<Indicadores>> findAllIndicadoresByProyectoOds14(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo14VidaSubmarinaService.findAllIndicadoresByProyectoOds14(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds14(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.findAllIndicadoresByProyectoOds14(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -152,8 +152,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<Indicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<Indicadores> result = objetivo14VidaSubmarinaService.findIndicadoresByMeta(proyectoId, metaPrefix);
+    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
+        List<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.findIndicadoresByMeta(proyectoId, metaPrefix);
         return ResponseEntity.ok(result);
     }
 
@@ -189,8 +189,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      * @return ResponseEntity con la lista de todas las metas del proyecto ODS14
      */
     @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<MetasProyecto>> getAllMetasProyectoOds14(@PathVariable Integer proyectoId) {
-        List<MetasProyecto> result = objetivo14VidaSubmarinaService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds14(@PathVariable Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo14VidaSubmarinaService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -322,8 +322,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/base-indicadores")
-    public ResponseEntity<List<Indicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<Indicadores> result = objetivo14VidaSubmarinaService.findAllIndicadoresByProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.findAllIndicadoresByProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -332,8 +332,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<Indicadores> result = objetivo14VidaSubmarinaService.findIndicadorById(indicadorId);
+    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
+        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.findIndicadorById(indicadorId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -342,8 +342,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @PostMapping("/indicadores")
-    public ResponseEntity<Indicadores> createIndicador(@RequestBody Indicadores indicador) {
-        Indicadores result = objetivo14VidaSubmarinaService.saveIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo14VidaSubmarinaService.saveIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -352,7 +352,7 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody Indicadores indicador) {
+    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
         Boolean result = objetivo14VidaSubmarinaService.validateIndicatorData(indicador);
         return ResponseEntity.ok(result);
     }
@@ -362,8 +362,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Indicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody Indicadores indicador) {
-        Indicadores result = objetivo14VidaSubmarinaService.updateIndicador(indicador);
+    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
+        ProyectoIndicadores result = objetivo14VidaSubmarinaService.updateIndicador(indicador);
         return ResponseEntity.ok(result);
     }
 
@@ -382,8 +382,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/metas")
-    public ResponseEntity<List<MetasProyecto>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<MetasProyecto> result = objetivo14VidaSubmarinaService.findAllMetasProyecto(proyectoId);
+    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
+        List<ProyectoIndicadorParametros> result = objetivo14VidaSubmarinaService.findAllMetasProyecto(proyectoId);
         return ResponseEntity.ok(result);
     }
 
@@ -392,8 +392,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @GetMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<MetasProyecto> result = objetivo14VidaSubmarinaService.findMetaProyectoById(metaId);
+    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
+        Optional<ProyectoIndicadorParametros> result = objetivo14VidaSubmarinaService.findMetaProyectoById(metaId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -402,8 +402,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @PostMapping("/metas")
-    public ResponseEntity<MetasProyecto> createMetaProyecto(@RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo14VidaSubmarinaService.saveMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo14VidaSubmarinaService.saveMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 
@@ -412,8 +412,8 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
      */
     @Override
     @PutMapping("/metas/{metaId}")
-    public ResponseEntity<MetasProyecto> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody MetasProyecto meta) {
-        MetasProyecto result = objetivo14VidaSubmarinaService.updateMetaProyecto(meta);
+    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
+        ProyectoIndicadorParametros result = objetivo14VidaSubmarinaService.updateMetaProyecto(meta);
         return ResponseEntity.ok(result);
     }
 

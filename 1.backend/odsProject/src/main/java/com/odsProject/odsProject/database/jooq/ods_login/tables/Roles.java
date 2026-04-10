@@ -6,7 +6,6 @@ package com.odsProject.odsProject.database.jooq.ods_login.tables;
 
 import com.odsProject.odsProject.database.jooq.ods_login.Keys;
 import com.odsProject.odsProject.database.jooq.ods_login.OdsLogin;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios.UsuariosPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.RolesRecord;
 
 import java.time.LocalDateTime;
@@ -16,14 +15,10 @@ import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
 import org.jooq.Identity;
-import org.jooq.InverseForeignKey;
 import org.jooq.Name;
-import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
-import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -107,39 +102,6 @@ public class Roles extends TableImpl<RolesRecord> {
         this(DSL.name("roles"), null);
     }
 
-    public <O extends Record> Roles(Table<O> path, ForeignKey<O, RolesRecord> childPath, InverseForeignKey<O, RolesRecord> parentPath) {
-        super(path, childPath, parentPath, ROLES);
-    }
-
-    /**
-     * A subtype implementing {@link Path} for simplified path-based joins.
-     */
-    public static class RolesPath extends Roles implements Path<RolesRecord> {
-
-        private static final long serialVersionUID = 1L;
-        public <O extends Record> RolesPath(Table<O> path, ForeignKey<O, RolesRecord> childPath, InverseForeignKey<O, RolesRecord> parentPath) {
-            super(path, childPath, parentPath);
-        }
-        private RolesPath(Name alias, Table<RolesRecord> aliased) {
-            super(alias, aliased);
-        }
-
-        @Override
-        public RolesPath as(String alias) {
-            return new RolesPath(DSL.name(alias), this);
-        }
-
-        @Override
-        public RolesPath as(Name alias) {
-            return new RolesPath(alias, this);
-        }
-
-        @Override
-        public RolesPath as(Table<?> alias) {
-            return new RolesPath(alias.getQualifiedName(), this);
-        }
-    }
-
     @Override
     public Schema getSchema() {
         return aliased() ? null : OdsLogin.ODS_LOGIN;
@@ -158,19 +120,6 @@ public class Roles extends TableImpl<RolesRecord> {
     @Override
     public List<UniqueKey<RolesRecord>> getUniqueKeys() {
         return Arrays.asList(Keys.KEY_ROLES_NOMBRE);
-    }
-
-    private transient UsuariosPath _usuarios;
-
-    /**
-     * Get the implicit to-many join path to the <code>ods_login.usuarios</code>
-     * table
-     */
-    public UsuariosPath usuarios() {
-        if (_usuarios == null)
-            _usuarios = new UsuariosPath(this, null, Keys.USUARIOS_IBFK_1.getInverseKey());
-
-        return _usuarios;
     }
 
     @Override

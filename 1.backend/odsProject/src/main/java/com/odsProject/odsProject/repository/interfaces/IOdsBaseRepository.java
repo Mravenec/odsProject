@@ -7,9 +7,9 @@ import java.util.Optional;
 /**
  * Interfaz base para repositorios ODS usando jOOQ
  * Define los métodos comunes CRUD y consultas específicas ODS
- * @param <T> Tipo de entidad principal (Indicadores)
+ * @param <T> Tipo de entidad principal (ProyectoIndicadores)
  * @param <P> Tipo de entidad Proyectos
- * @param <M> Tipo de entidad MetasProyecto
+ * @param <M> Tipo de entidad ProyectoIndicadorParametros
  * @param <MH> Tipo de entidad MedicionesHistoricas
  * @param <A> Tipo de entidad Auditoria
  */

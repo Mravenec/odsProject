@@ -8,7 +8,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.Indexes;
 import com.odsProject.odsProject.database.jooq.ods_login.Keys;
 import com.odsProject.odsProject.database.jooq.ods_login.OdsLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEvento;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios.UsuariosPath;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.AuditoriaLoginRecord;
 
 import java.time.LocalDateTime;
@@ -21,12 +20,9 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Index;
-import org.jooq.InverseForeignKey;
 import org.jooq.Name;
-import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
-import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -130,39 +126,6 @@ public class AuditoriaLogin extends TableImpl<AuditoriaLoginRecord> {
         this(DSL.name("auditoria_login"), null);
     }
 
-    public <O extends Record> AuditoriaLogin(Table<O> path, ForeignKey<O, AuditoriaLoginRecord> childPath, InverseForeignKey<O, AuditoriaLoginRecord> parentPath) {
-        super(path, childPath, parentPath, AUDITORIA_LOGIN);
-    }
-
-    /**
-     * A subtype implementing {@link Path} for simplified path-based joins.
-     */
-    public static class AuditoriaLoginPath extends AuditoriaLogin implements Path<AuditoriaLoginRecord> {
-
-        private static final long serialVersionUID = 1L;
-        public <O extends Record> AuditoriaLoginPath(Table<O> path, ForeignKey<O, AuditoriaLoginRecord> childPath, InverseForeignKey<O, AuditoriaLoginRecord> parentPath) {
-            super(path, childPath, parentPath);
-        }
-        private AuditoriaLoginPath(Name alias, Table<AuditoriaLoginRecord> aliased) {
-            super(alias, aliased);
-        }
-
-        @Override
-        public AuditoriaLoginPath as(String alias) {
-            return new AuditoriaLoginPath(DSL.name(alias), this);
-        }
-
-        @Override
-        public AuditoriaLoginPath as(Name alias) {
-            return new AuditoriaLoginPath(alias, this);
-        }
-
-        @Override
-        public AuditoriaLoginPath as(Table<?> alias) {
-            return new AuditoriaLoginPath(alias.getQualifiedName(), this);
-        }
-    }
-
     @Override
     public Schema getSchema() {
         return aliased() ? null : OdsLogin.ODS_LOGIN;
@@ -186,18 +149,6 @@ public class AuditoriaLogin extends TableImpl<AuditoriaLoginRecord> {
     @Override
     public List<ForeignKey<AuditoriaLoginRecord, ?>> getReferences() {
         return Arrays.asList(Keys.AUDITORIA_LOGIN_IBFK_1);
-    }
-
-    private transient UsuariosPath _usuarios;
-
-    /**
-     * Get the implicit join path to the <code>ods_login.usuarios</code> table.
-     */
-    public UsuariosPath usuarios() {
-        if (_usuarios == null)
-            _usuarios = new UsuariosPath(this, Keys.AUDITORIA_LOGIN_IBFK_1, null);
-
-        return _usuarios;
     }
 
     @Override

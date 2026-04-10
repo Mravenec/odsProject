@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service;
 
-import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.repository.Objetivo01PobrezaRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo01PobrezaService;
@@ -30,7 +30,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> getAllIndicators(Integer proyectoId) {
+    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -38,7 +38,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_1_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_1_1(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_1_1(proyectoId);
     }
 
@@ -46,7 +46,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_2_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_2_1(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_2_1(proyectoId);
     }
 
@@ -54,7 +54,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_2_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_2_2(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_2_2(proyectoId);
     }
 
@@ -62,7 +62,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_3_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_3_1(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_3_1(proyectoId);
     }
 
@@ -70,7 +70,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_4_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_4_1(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_4_1(proyectoId);
     }
 
@@ -78,7 +78,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_4_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_4_2(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_4_2(proyectoId);
     }
 
@@ -86,7 +86,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_5_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_5_1(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_5_1(proyectoId);
     }
 
@@ -94,7 +94,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_5_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_5_2(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_5_2(proyectoId);
     }
 
@@ -102,7 +102,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_5_3(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_5_3(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_5_3(proyectoId);
     }
 
@@ -110,7 +110,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_5_4(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_5_4(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_5_4(proyectoId);
     }
 
@@ -118,7 +118,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_a_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_a_1(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_a_1(proyectoId);
     }
 
@@ -126,7 +126,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_a_2(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_a_2(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_a_2(proyectoId);
     }
 
@@ -134,7 +134,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> getIndicador_1_b_1(Integer proyectoId) {
+    public Optional<ProyectoIndicadores> getIndicador_1_b_1(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicador_1_b_1(proyectoId);
     }
 
@@ -142,7 +142,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyectoOds01(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds01(Integer proyectoId) {
         return objetivo01PobrezaRepository.findAllIndicadoresByProyectoOds01(proyectoId);
     }
 
@@ -150,7 +150,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
+    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
         return objetivo01PobrezaRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
     }
 
@@ -176,7 +176,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> getAllMetasProyectoOds01(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> getAllMetasProyectoOds01(Integer proyectoId) {
         return objetivo01PobrezaRepository.findAllMetasProyectoOds01(proyectoId);
     }
 
@@ -184,7 +184,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> getMetaProyectoOds01ById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> getMetaProyectoOds01ById(Integer metaId) {
         return objetivo01PobrezaRepository.findMetaProyectoOds01ById(metaId);
     }
 
@@ -208,11 +208,11 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Boolean validateIndicatorData(Indicadores indicador) {
+    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
         // Validación básica: verificar que los campos obligatorios no sean null
         if (indicador == null) return false;
         if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorCodigo() == null || indicador.getIndicadorCodigo().trim().isEmpty()) return false;
+        if (indicador.getIndicadorMasterId() == null) return false;
         // Agregar más validaciones según sea necesario
         return true;
     }
@@ -223,7 +223,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
     @Override
     public Double calculateProjectProgress(Integer proyectoId) {
         // Lógica simplificada: contar indicadores con datos vs total
-        List<Indicadores> indicadores = objetivo01PobrezaRepository.findIndicadoresByProyecto(proyectoId);
+        List<ProyectoIndicadores> indicadores = objetivo01PobrezaRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
 
         long withData = indicadores.stream()
@@ -239,7 +239,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
     @Override
     public Map<String, Object> getOds01Statistics() {
         List<Proyectos> proyectos = objetivo01PobrezaRepository.findAllProyectosOds01();
-        List<Indicadores> indicadores = proyectos.stream()
+        List<ProyectoIndicadores> indicadores = proyectos.stream()
             .flatMap(p -> objetivo01PobrezaRepository.findIndicadoresByProyecto(p.getId()).stream())
             .toList();
 
@@ -307,7 +307,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public List<Indicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
         return objetivo01PobrezaRepository.findIndicadoresByProyecto(proyectoId);
     }
 
@@ -315,7 +315,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Indicadores> findIndicadorById(Integer indicadorId) {
+    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
         // Necesitaría método en repositorio, por ahora devolver empty
         return Optional.empty(); // Placeholder
     }
@@ -324,7 +324,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Indicadores saveIndicador(Indicadores indicador) {
+    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
         return objetivo01PobrezaRepository.saveIndicador(indicador);
     }
 
@@ -332,7 +332,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Indicadores updateIndicador(Indicadores indicador) {
+    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         return objetivo01PobrezaRepository.updateIndicador(indicador);
     }
 
@@ -349,7 +349,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public List<MetasProyecto> findAllMetasProyecto(Integer proyectoId) {
+    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
         return objetivo01PobrezaRepository.findMetasByProyecto(proyectoId);
     }
 
@@ -357,7 +357,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public Optional<MetasProyecto> findMetaProyectoById(Integer metaId) {
+    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
         return objetivo01PobrezaRepository.findMetaProyectoOds01ById(metaId);
     }
 
@@ -365,7 +365,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto saveMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
         return objetivo01PobrezaRepository.saveMetaProyecto(meta);
     }
 
@@ -373,7 +373,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
      * {@inheritDoc}
      */
     @Override
-    public MetasProyecto updateMetaProyecto(MetasProyecto meta) {
+    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         // Necesitaría método en repositorio, por ahora devolver la misma meta
         return meta; // Placeholder
     }

@@ -6,13 +6,13 @@ package com.odsProject.odsProject.database.jooq.ods11;
 
 import com.odsProject.odsProject.database.jooq.DefaultCatalog;
 import com.odsProject.odsProject.database.jooq.ods11.tables.AuditoriaOds11;
-import com.odsProject.odsProject.database.jooq.ods11.tables.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods11.tables.MedicionParametroValores;
 import com.odsProject.odsProject.database.jooq.ods11.tables.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods11.tables.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods11.tables.ProyectoIndicadorParametros;
+import com.odsProject.odsProject.database.jooq.ods11.tables.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods11.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods11.tables.VistaAdminAuditoriaReciente;
 import com.odsProject.odsProject.database.jooq.ods11.tables.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods11.tables.VistaAdminEstadisticasGenerales;
 import com.odsProject.odsProject.database.jooq.ods11.tables.VistaAdminResumenGeneral;
 
 import java.util.Arrays;
@@ -37,27 +37,32 @@ public class Ods11 extends SchemaImpl {
     public static final Ods11 ODS11 = new Ods11();
 
     /**
-     * Auditoría de cambios en el sistema ODS11
+     * The table <code>ods11.auditoria_ods11</code>.
      */
     public final AuditoriaOds11 AUDITORIA_ODS11 = AuditoriaOds11.AUDITORIA_ODS11;
 
     /**
-     * Indicadores medidos por cada proyecto ODS11
+     * The table <code>ods11.medicion_parametro_valores</code>.
      */
-    public final Indicadores INDICADORES = Indicadores.INDICADORES;
+    public final MedicionParametroValores MEDICION_PARAMETRO_VALORES = MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
 
     /**
-     * Historial de mediciones de indicadores ODS11
+     * The table <code>ods11.mediciones_historicas</code>.
      */
     public final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
 
     /**
-     * Metas específicas establecidas por cada proyecto ODS11
+     * The table <code>ods11.proyecto_indicador_parametros</code>.
      */
-    public final MetasProyecto METAS_PROYECTO = MetasProyecto.METAS_PROYECTO;
+    public final ProyectoIndicadorParametros PROYECTO_INDICADOR_PARAMETROS = ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
 
     /**
-     * Proyectos ODS11 creados por usuarios
+     * The table <code>ods11.proyecto_indicadores</code>.
+     */
+    public final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
+
+    /**
+     * The table <code>ods11.proyectos</code>.
      */
     public final Proyectos PROYECTOS = Proyectos.PROYECTOS;
 
@@ -70,11 +75,6 @@ public class Ods11 extends SchemaImpl {
      * The table <code>ods11.vista_admin_detalle_indicadores</code>.
      */
     public final VistaAdminDetalleIndicadores VISTA_ADMIN_DETALLE_INDICADORES = VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
-
-    /**
-     * The table <code>ods11.vista_admin_estadisticas_generales</code>.
-     */
-    public final VistaAdminEstadisticasGenerales VISTA_ADMIN_ESTADISTICAS_GENERALES = VistaAdminEstadisticasGenerales.VISTA_ADMIN_ESTADISTICAS_GENERALES;
 
     /**
      * The table <code>ods11.vista_admin_resumen_general</code>.
@@ -98,13 +98,13 @@ public class Ods11 extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             AuditoriaOds11.AUDITORIA_ODS11,
-            Indicadores.INDICADORES,
+            MedicionParametroValores.MEDICION_PARAMETRO_VALORES,
             MedicionesHistoricas.MEDICIONES_HISTORICAS,
-            MetasProyecto.METAS_PROYECTO,
+            ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS,
+            ProyectoIndicadores.PROYECTO_INDICADORES,
             Proyectos.PROYECTOS,
             VistaAdminAuditoriaReciente.VISTA_ADMIN_AUDITORIA_RECIENTE,
             VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES,
-            VistaAdminEstadisticasGenerales.VISTA_ADMIN_ESTADISTICAS_GENERALES,
             VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL
         );
     }

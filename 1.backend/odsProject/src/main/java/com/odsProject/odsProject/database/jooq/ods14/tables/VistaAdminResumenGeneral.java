@@ -69,9 +69,14 @@ public class VistaAdminResumenGeneral extends TableImpl<VistaAdminResumenGeneral
     public final TableField<VistaAdminResumenGeneralRecord, String> USUARIO_CREADOR = createField(DSL.name("usuario_creador"), SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>ods14.vista_admin_resumen_general.nombre_usuario</code>.
+     * The column <code>ods14.vista_admin_resumen_general.sede_nombre</code>.
      */
-    public final TableField<VistaAdminResumenGeneralRecord, String> NOMBRE_USUARIO = createField(DSL.name("nombre_usuario"), SQLDataType.VARCHAR(150), this, "");
+    public final TableField<VistaAdminResumenGeneralRecord, String> SEDE_NOMBRE = createField(DSL.name("sede_nombre"), SQLDataType.VARCHAR(100), this, "");
+
+    /**
+     * The column <code>ods14.vista_admin_resumen_general.ods_nombre</code>.
+     */
+    public final TableField<VistaAdminResumenGeneralRecord, String> ODS_NOMBRE = createField(DSL.name("ods_nombre"), SQLDataType.VARCHAR(150), this, "");
 
     /**
      * The column <code>ods14.vista_admin_resumen_general.fecha_inicio</code>.
@@ -107,24 +112,6 @@ public class VistaAdminResumenGeneral extends TableImpl<VistaAdminResumenGeneral
     public final TableField<VistaAdminResumenGeneralRecord, BigDecimal> PROGRESO_PORCENTAJE = createField(DSL.name("progreso_porcentaje"), SQLDataType.DECIMAL(26, 2).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
 
     /**
-     * The column
-     * <code>ods14.vista_admin_resumen_general.valor_minimo_actual</code>.
-     */
-    public final TableField<VistaAdminResumenGeneralRecord, BigDecimal> VALOR_MINIMO_ACTUAL = createField(DSL.name("valor_minimo_actual"), SQLDataType.DECIMAL(15, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
-
-    /**
-     * The column
-     * <code>ods14.vista_admin_resumen_general.valor_maximo_actual</code>.
-     */
-    public final TableField<VistaAdminResumenGeneralRecord, BigDecimal> VALOR_MAXIMO_ACTUAL = createField(DSL.name("valor_maximo_actual"), SQLDataType.DECIMAL(15, 4).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
-
-    /**
-     * The column
-     * <code>ods14.vista_admin_resumen_general.valor_promedio_actual</code>.
-     */
-    public final TableField<VistaAdminResumenGeneralRecord, BigDecimal> VALOR_PROMEDIO_ACTUAL = createField(DSL.name("valor_promedio_actual"), SQLDataType.DECIMAL(19, 8).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.DECIMAL)), this, "");
-
-    /**
      * The column <code>ods14.vista_admin_resumen_general.fecha_creacion</code>.
      */
     public final TableField<VistaAdminResumenGeneralRecord, LocalDateTime> FECHA_CREACION = createField(DSL.name("fecha_creacion"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -134,7 +121,7 @@ public class VistaAdminResumenGeneral extends TableImpl<VistaAdminResumenGeneral
     }
 
     private VistaAdminResumenGeneral(Name alias, Table<VistaAdminResumenGeneralRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_resumen_general` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`username` AS `usuario_creador`,`u`.`full_name` AS `nombre_usuario`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin`,`p`.`estado` AS `estado`,count(distinct `i`.`id`) AS `total_indicadores`,count(distinct case when `i`.`valor_actual` >= `i`.`valor_meta` then `i`.`id` end) AS `indicadores_logrados`,round(case when count(distinct `i`.`id`) > 0 then count(distinct case when `i`.`valor_actual` >= `i`.`valor_meta` then `i`.`id` end) * 100.0 / count(distinct `i`.`id`) else 0 end,2) AS `progreso_porcentaje`,min(`i`.`valor_actual`) AS `valor_minimo_actual`,max(`i`.`valor_actual`) AS `valor_maximo_actual`,avg(`i`.`valor_actual`) AS `valor_promedio_actual`,`p`.`created_at` AS `fecha_creacion` from ((`ods14`.`proyectos` `p` left join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods14`.`indicadores` `i` on(`p`.`id` = `i`.`proyecto_id`)) group by `p`.`id`,`p`.`nombre_proyecto`,`u`.`username`,`u`.`full_name`,`p`.`fecha_inicio`,`p`.`fecha_fin`,`p`.`estado`,`p`.`created_at` order by `p`.`created_at` desc"), where);
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `vista_admin_resumen_general` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`username` AS `usuario_creador`,`s`.`nombre` AS `sede_nombre`,`cat`.`nombre` AS `ods_nombre`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin`,`p`.`estado` AS `estado`,count(distinct `pi`.`id`) AS `total_indicadores`,count(distinct case when `pi`.`valor_actual` >= `pi`.`meta_valor` then `pi`.`id` end) AS `indicadores_logrados`,round(case when count(distinct `pi`.`id`) > 0 then count(distinct case when `pi`.`valor_actual` >= `pi`.`meta_valor` then `pi`.`id` end) * 100.0 / count(distinct `pi`.`id`) else 0 end,2) AS `progreso_porcentaje`,`p`.`created_at` AS `fecha_creacion` from ((((`ods14`.`proyectos` `p` left join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods_login`.`sedes` `s` on(`p`.`sede_id` = `s`.`id`)) left join `ods_login`.`ods_catalog` `cat` on(`p`.`objetivo_id` = `cat`.`id`)) left join `ods14`.`proyecto_indicadores` `pi` on(`p`.`id` = `pi`.`proyecto_id`)) group by `p`.`id`,`p`.`nombre_proyecto`,`u`.`username`,`s`.`nombre`,`cat`.`nombre`,`p`.`fecha_inicio`,`p`.`fecha_fin`,`p`.`estado`,`p`.`created_at`"), where);
     }
 
     /**

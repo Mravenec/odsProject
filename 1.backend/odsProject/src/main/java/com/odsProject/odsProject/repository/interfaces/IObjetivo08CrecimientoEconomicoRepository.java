@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.repository.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.AuditoriaOds08;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 8
  * Usa jOOQ con datasource ods08
  */
-public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds08> {
+public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds08> {
     
     /**
      * 8.1.1 Tasa de crecimiento anual del PIB real per cápita [59]
@@ -21,7 +21,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.1.1
      */
-    Optional<Indicadores> findIndicador_8_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_1_1(Integer proyectoId);
     
     /**
      * 8.2.1 Tasa de crecimiento anual del PIB real por persona empleada [59]
@@ -29,7 +29,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.2.1
      */
-    Optional<Indicadores> findIndicador_8_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_2_1(Integer proyectoId);
     
     /**
      * 8.3.1 Proporción de empleo informal con respecto al empleo total, desglosada por sector y sexo [60]
@@ -37,7 +37,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.3.1
      */
-    Optional<Indicadores> findIndicador_8_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_3_1(Integer proyectoId);
     
     /**
      * 8.4.1 Huella material en términos absolutos, huella material per cápita y huella material por PIB [60]
@@ -45,7 +45,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.4.1
      */
-    Optional<Indicadores> findIndicador_8_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_4_1(Integer proyectoId);
     
     /**
      * 8.4.2 Consumo material interno en términos absolutos, consumo material interno per cápita 
@@ -54,7 +54,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.4.2
      */
-    Optional<Indicadores> findIndicador_8_4_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_4_2(Integer proyectoId);
     
     /**
      * 8.5.1 Ingreso medio por hora de las personas empleadas, desglosado por sexo, edad, 
@@ -63,7 +63,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.5.1
      */
-    Optional<Indicadores> findIndicador_8_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_5_1(Integer proyectoId);
     
     /**
      * 8.5.2 Tasa de desempleo, desglosada por sexo, edad y personas con discapacidad [61, 62]
@@ -71,7 +71,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.5.2
      */
-    Optional<Indicadores> findIndicador_8_5_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_5_2(Integer proyectoId);
     
     /**
      * 8.6.1 Proporción de jóvenes (entre 15 y 24 años) que no cursan estudios, 
@@ -80,7 +80,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.6.1
      */
-    Optional<Indicadores> findIndicador_8_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_6_1(Integer proyectoId);
     
     /**
      * 8.7.1 Proporción y número de niños de entre 5 y 17 años que realizan trabajo infantil, 
@@ -89,7 +89,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.7.1
      */
-    Optional<Indicadores> findIndicador_8_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_7_1(Integer proyectoId);
     
     /**
      * 8.8.1 Lesiones ocupacionales mortales y no mortales por cada 100.000 trabajadores, 
@@ -98,7 +98,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.8.1
      */
-    Optional<Indicadores> findIndicador_8_8_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_8_1(Integer proyectoId);
     
     /**
      * 8.8.2 Nivel de cumplimiento nacional de los derechos laborales (libertad de asociación 
@@ -108,7 +108,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.8.2
      */
-    Optional<Indicadores> findIndicador_8_8_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_8_2(Integer proyectoId);
     
     /**
      * 8.9.1 PIB generado directamente por el turismo en proporción al PIB total y a la tasa de crecimiento [65]
@@ -116,7 +116,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.9.1
      */
-    Optional<Indicadores> findIndicador_8_9_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_9_1(Integer proyectoId);
     
     /**
      * 8.9.2 Personas empleadas en el sector del turismo [65]
@@ -124,7 +124,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.9.2
      */
-    Optional<Indicadores> findIndicador_8_9_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_9_2(Integer proyectoId);
     
     /**
      * 8.10.1 a) Número de sucursales de bancos comerciales por cada 100.000 adultos 
@@ -133,7 +133,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.10.1
      */
-    Optional<Indicadores> findIndicador_8_10_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_10_1(Integer proyectoId);
     
     /**
      * 8.10.2 Proporción de adultos (a partir de 15 años de edad) que tienen una cuenta en un banco 
@@ -142,7 +142,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.10.2
      */
-    Optional<Indicadores> findIndicador_8_10_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_10_2(Integer proyectoId);
     
     /**
      * 8.a.1 Compromisos y desembolsos en relación con la iniciativa Ayuda para el Comercio [67]
@@ -150,7 +150,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.a.1
      */
-    Optional<Indicadores> findIndicador_8_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_a_1(Integer proyectoId);
     
     /**
      * 8.b.1 Existencia de una estrategia nacional organizada y en marcha para el empleo de los jóvenes, 
@@ -159,7 +159,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 8.b.1
      */
-    Optional<Indicadores> findIndicador_8_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_8_b_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS08
@@ -167,7 +167,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds08(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds08(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS08
@@ -176,7 +176,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param metaPrefix Prefijo de la meta (ej: "8.1", "8.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos específicos del ODS08 ──
     
@@ -201,7 +201,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param proyectoId ID del proyecto
      * @return Lista de metas del proyecto
      */
-    List<MetasProyecto> findAllMetasProyectoOds08(Integer proyectoId);
+    List<ProyectoIndicadorParametros> findAllMetasProyectoOds08(Integer proyectoId);
     
     /**
      * Encuentra una meta de proyecto del ODS08 por su ID
@@ -209,7 +209,7 @@ public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepos
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> findMetaProyectoOds08ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> findMetaProyectoOds08ById(Integer metaId);
     
     /**
      * Encuentra todas las mediciones históricas del ODS08

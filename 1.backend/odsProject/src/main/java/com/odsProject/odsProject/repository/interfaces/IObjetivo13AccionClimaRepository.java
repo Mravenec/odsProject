@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.repository.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.AuditoriaOds13;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 13
  * Usa jOOQ con datasource ods13
  */
-public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Indicadores, Proyectos, MetasProyecto, MedicionesHistoricas, AuditoriaOds13> {
+public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds13> {
     
     /**
      * 13.1.1 Número de personas muertas, desaparecidas y afectadas directamente atribuido 
@@ -22,7 +22,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.1.1
      */
-    Optional<Indicadores> findIndicador_13_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_1_1(Integer proyectoId);
     
     /**
      * 13.1.2 Número de países que adoptan y aplican estrategias nacionales de reducción del riesgo de desastres 
@@ -31,7 +31,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.1.2
      */
-    Optional<Indicadores> findIndicador_13_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_1_2(Integer proyectoId);
     
     /**
      * 13.1.3 Proporción de gobiernos locales que adoptan y aplican estrategias locales de reducción del riesgo 
@@ -40,7 +40,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.1.3
      */
-    Optional<Indicadores> findIndicador_13_1_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_1_3(Integer proyectoId);
     
     /**
      * 13.2.1 Número de países con contribuciones determinadas a nivel nacional, estrategias a largo plazo, 
@@ -50,7 +50,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.2.1
      */
-    Optional<Indicadores> findIndicador_13_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_2_1(Integer proyectoId);
     
     /**
      * 13.2.2 Emisiones totales de gases de efecto invernadero por año [104]
@@ -58,7 +58,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.2.2
      */
-    Optional<Indicadores> findIndicador_13_2_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_2_2(Integer proyectoId);
     
     /**
      * 13.2.3 Indicador adicional para meta 13.2
@@ -66,7 +66,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.2.3
      */
-    Optional<Indicadores> findIndicador_13_2_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_2_3(Integer proyectoId);
     
     /**
      * 13.3.1 Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo sostenible 
@@ -76,7 +76,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.3.1
      */
-    Optional<Indicadores> findIndicador_13_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_3_1(Integer proyectoId);
     
     /**
      * 13.3.2 Indicador adicional para meta 13.3
@@ -84,7 +84,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.3.2
      */
-    Optional<Indicadores> findIndicador_13_3_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_3_2(Integer proyectoId);
     
     /**
      * 13.a.1 Cantidades proporcionadas y movilizadas en dólares de los Estados Unidos al año 
@@ -93,7 +93,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.a.1
      */
-    Optional<Indicadores> findIndicador_13_a_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_a_1(Integer proyectoId);
     
     /**
      * 13.b.1 Número de países menos adelantados y pequeños Estados insulares en desarrollo 
@@ -102,7 +102,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.b.1
      */
-    Optional<Indicadores> findIndicador_13_b_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_b_1(Integer proyectoId);
     
     /**
      * 13.b.2 Indicador adicional para meta 13.b
@@ -110,7 +110,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 13.b.2
      */
-    Optional<Indicadores> findIndicador_13_b_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> findIndicador_13_b_2(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS13
@@ -118,7 +118,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds13(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds13(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS13
@@ -127,7 +127,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param metaPrefix Prefijo de la meta (ej: "13.1", "13.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
     // ── Métodos específicos del ODS13 ──
     
@@ -152,7 +152,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param proyectoId ID del proyecto
      * @return Lista de metas del proyecto
      */
-    List<MetasProyecto> findAllMetasProyectoOds13(Integer proyectoId);
+    List<ProyectoIndicadorParametros> findAllMetasProyectoOds13(Integer proyectoId);
     
     /**
      * Encuentra una meta de proyecto del ODS13 por su ID
@@ -160,7 +160,7 @@ public interface IObjetivo13AccionClimaRepository extends IOdsBaseRepository<Ind
      * @param metaId ID de la meta
      * @return Optional con la meta encontrada
      */
-    Optional<MetasProyecto> findMetaProyectoOds13ById(Integer metaId);
+    Optional<ProyectoIndicadorParametros> findMetaProyectoOds13ById(Integer metaId);
     
     /**
      * Encuentra todas las mediciones históricas del ODS13

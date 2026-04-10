@@ -5,13 +5,13 @@ package com.odsProject.odsProject.database.jooq.ods08;
 
 
 import com.odsProject.odsProject.database.jooq.ods08.tables.AuditoriaOds08;
-import com.odsProject.odsProject.database.jooq.ods08.tables.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods08.tables.MedicionParametroValores;
 import com.odsProject.odsProject.database.jooq.ods08.tables.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods08.tables.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods08.tables.ProyectoIndicadorParametros;
+import com.odsProject.odsProject.database.jooq.ods08.tables.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods08.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods08.tables.VistaAdminAuditoriaReciente;
 import com.odsProject.odsProject.database.jooq.ods08.tables.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods08.tables.VistaAdminEstadisticasGenerales;
 import com.odsProject.odsProject.database.jooq.ods08.tables.VistaAdminResumenGeneral;
 
 
@@ -22,27 +22,32 @@ import com.odsProject.odsProject.database.jooq.ods08.tables.VistaAdminResumenGen
 public class Tables {
 
     /**
-     * Auditoría de cambios en el sistema ODS08
+     * The table <code>ods08.auditoria_ods08</code>.
      */
     public static final AuditoriaOds08 AUDITORIA_ODS08 = AuditoriaOds08.AUDITORIA_ODS08;
 
     /**
-     * Indicadores medidos por cada proyecto ODS08
+     * The table <code>ods08.medicion_parametro_valores</code>.
      */
-    public static final Indicadores INDICADORES = Indicadores.INDICADORES;
+    public static final MedicionParametroValores MEDICION_PARAMETRO_VALORES = MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
 
     /**
-     * Historial de mediciones de indicadores ODS08
+     * The table <code>ods08.mediciones_historicas</code>.
      */
     public static final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
 
     /**
-     * Metas específicas establecidas por cada proyecto ODS08
+     * The table <code>ods08.proyecto_indicador_parametros</code>.
      */
-    public static final MetasProyecto METAS_PROYECTO = MetasProyecto.METAS_PROYECTO;
+    public static final ProyectoIndicadorParametros PROYECTO_INDICADOR_PARAMETROS = ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
 
     /**
-     * Proyectos ODS08 creados por usuarios
+     * The table <code>ods08.proyecto_indicadores</code>.
+     */
+    public static final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
+
+    /**
+     * The table <code>ods08.proyectos</code>.
      */
     public static final Proyectos PROYECTOS = Proyectos.PROYECTOS;
 
@@ -55,11 +60,6 @@ public class Tables {
      * The table <code>ods08.vista_admin_detalle_indicadores</code>.
      */
     public static final VistaAdminDetalleIndicadores VISTA_ADMIN_DETALLE_INDICADORES = VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
-
-    /**
-     * The table <code>ods08.vista_admin_estadisticas_generales</code>.
-     */
-    public static final VistaAdminEstadisticasGenerales VISTA_ADMIN_ESTADISTICAS_GENERALES = VistaAdminEstadisticasGenerales.VISTA_ADMIN_ESTADISTICAS_GENERALES;
 
     /**
      * The table <code>ods08.vista_admin_resumen_general</code>.

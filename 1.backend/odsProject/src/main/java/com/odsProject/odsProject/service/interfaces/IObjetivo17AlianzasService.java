@@ -1,8 +1,8 @@
 package com.odsProject.odsProject.service.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Indicadores;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MetasProyecto;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.Optional;
  * Extiende IOdsBaseService con tipos específicos de ODS17
  */
 public interface IObjetivo17AlianzasService extends IOdsBaseService<
-    Indicadores,     // T - Indicadores
-    Proyectos,       // P - Proyectos  
-    MetasProyecto,   // M - MetasProyecto
+    ProyectoIndicadores,     // T - ProyectoIndicadores
+    Proyectos,               // P - Proyectos  
+    ProyectoIndicadorParametros,   // M - ProyectoIndicadorParametros
     MedicionesHistoricas, // MH - MedicionesHistoricas
     Object           // A - Auditoria (placeholder)
 > {
@@ -27,7 +27,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista con todos los indicadores del objetivo
      */
-    List<Indicadores> getAllIndicators(Integer proyectoId);
+    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.1.1
@@ -36,7 +36,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.1.1
      */
-    Optional<Indicadores> getIndicador_17_1_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.1.2
@@ -45,7 +45,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.1.2
      */
-    Optional<Indicadores> getIndicador_17_1_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_1_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.2.1
@@ -54,7 +54,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.2.1
      */
-    Optional<Indicadores> getIndicador_17_2_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.3.1
@@ -63,7 +63,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.3.1
      */
-    Optional<Indicadores> getIndicador_17_3_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.3.2
@@ -72,7 +72,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.3.2
      */
-    Optional<Indicadores> getIndicador_17_3_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.4.1
@@ -81,7 +81,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.4.1
      */
-    Optional<Indicadores> getIndicador_17_4_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.5.1
@@ -90,7 +90,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.5.1
      */
-    Optional<Indicadores> getIndicador_17_5_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.6.1
@@ -99,7 +99,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.6.1
      */
-    Optional<Indicadores> getIndicador_17_6_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.7.1
@@ -108,7 +108,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.7.1
      */
-    Optional<Indicadores> getIndicador_17_7_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.8.1
@@ -117,7 +117,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.8.1
      */
-    Optional<Indicadores> getIndicador_17_8_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_8_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.9.1
@@ -126,7 +126,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.9.1
      */
-    Optional<Indicadores> getIndicador_17_9_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_9_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.10.1
@@ -135,7 +135,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.10.1
      */
-    Optional<Indicadores> getIndicador_17_10_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_10_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.11.1
@@ -144,7 +144,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.11.1
      */
-    Optional<Indicadores> getIndicador_17_11_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_11_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.12.1
@@ -153,7 +153,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.12.1
      */
-    Optional<Indicadores> getIndicador_17_12_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_12_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.13.1
@@ -162,7 +162,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.13.1
      */
-    Optional<Indicadores> getIndicador_17_13_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_13_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.14.1
@@ -171,7 +171,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.14.1
      */
-    Optional<Indicadores> getIndicador_17_14_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_14_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.15.1
@@ -180,7 +180,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.15.1
      */
-    Optional<Indicadores> getIndicador_17_15_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_15_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.16.1
@@ -189,7 +189,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.16.1
      */
-    Optional<Indicadores> getIndicador_17_16_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_16_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.17.1
@@ -198,7 +198,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.17.1
      */
-    Optional<Indicadores> getIndicador_17_17_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_17_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.18.1
@@ -207,7 +207,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.18.1
      */
-    Optional<Indicadores> getIndicador_17_18_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_18_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.18.2
@@ -216,7 +216,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.18.2
      */
-    Optional<Indicadores> getIndicador_17_18_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_18_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.18.3
@@ -225,7 +225,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.18.3
      */
-    Optional<Indicadores> getIndicador_17_18_3(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_18_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.19.1
@@ -234,7 +234,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.19.1
      */
-    Optional<Indicadores> getIndicador_17_19_1(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_19_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.19.2
@@ -243,7 +243,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Datos del indicador 17.19.2
      */
-    Optional<Indicadores> getIndicador_17_19_2(Integer proyectoId);
+    Optional<ProyectoIndicadores> getIndicador_17_19_2(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS17
@@ -251,7 +251,7 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
      */
-    List<Indicadores> findAllIndicadoresByProyectoOds17(Integer proyectoId);
+    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds17(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS17
@@ -260,5 +260,5 @@ public interface IObjetivo17AlianzasService extends IOdsBaseService<
      * @param metaPrefix Prefijo de la meta (ej: "17.1", "17.2")
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
-    List<Indicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }
