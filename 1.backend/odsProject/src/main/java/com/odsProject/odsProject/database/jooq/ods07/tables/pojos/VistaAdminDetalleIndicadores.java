@@ -19,6 +19,7 @@ public class VistaAdminDetalleIndicadores implements Serializable {
 
     private final Integer proyectoId;
     private final String nombreProyecto;
+    private final Integer indicadorMasterId;
     private final String indicadorCodigo;
     private final String indicadorNombre;
     private final String formulaCustom;
@@ -32,6 +33,7 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     public VistaAdminDetalleIndicadores(VistaAdminDetalleIndicadores value) {
         this.proyectoId = value.proyectoId;
         this.nombreProyecto = value.nombreProyecto;
+        this.indicadorMasterId = value.indicadorMasterId;
         this.indicadorCodigo = value.indicadorCodigo;
         this.indicadorNombre = value.indicadorNombre;
         this.formulaCustom = value.formulaCustom;
@@ -46,6 +48,7 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     public VistaAdminDetalleIndicadores(
         Integer proyectoId,
         String nombreProyecto,
+        Integer indicadorMasterId,
         String indicadorCodigo,
         String indicadorNombre,
         String formulaCustom,
@@ -58,6 +61,7 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     ) {
         this.proyectoId = proyectoId;
         this.nombreProyecto = nombreProyecto;
+        this.indicadorMasterId = indicadorMasterId;
         this.indicadorCodigo = indicadorCodigo;
         this.indicadorNombre = indicadorNombre;
         this.formulaCustom = formulaCustom;
@@ -83,6 +87,14 @@ public class VistaAdminDetalleIndicadores implements Serializable {
      */
     public String getNombreProyecto() {
         return this.nombreProyecto;
+    }
+
+    /**
+     * Getter for
+     * <code>ods07.vista_admin_detalle_indicadores.indicador_master_id</code>.
+     */
+    public Integer getIndicadorMasterId() {
+        return this.indicadorMasterId;
     }
 
     /**
@@ -177,6 +189,12 @@ public class VistaAdminDetalleIndicadores implements Serializable {
         }
         else if (!this.nombreProyecto.equals(other.nombreProyecto))
             return false;
+        if (this.indicadorMasterId == null) {
+            if (other.indicadorMasterId != null)
+                return false;
+        }
+        else if (!this.indicadorMasterId.equals(other.indicadorMasterId))
+            return false;
         if (this.indicadorCodigo == null) {
             if (other.indicadorCodigo != null)
                 return false;
@@ -240,6 +258,7 @@ public class VistaAdminDetalleIndicadores implements Serializable {
         int result = 1;
         result = prime * result + ((this.proyectoId == null) ? 0 : this.proyectoId.hashCode());
         result = prime * result + ((this.nombreProyecto == null) ? 0 : this.nombreProyecto.hashCode());
+        result = prime * result + ((this.indicadorMasterId == null) ? 0 : this.indicadorMasterId.hashCode());
         result = prime * result + ((this.indicadorCodigo == null) ? 0 : this.indicadorCodigo.hashCode());
         result = prime * result + ((this.indicadorNombre == null) ? 0 : this.indicadorNombre.hashCode());
         result = prime * result + ((this.formulaCustom == null) ? 0 : this.formulaCustom.hashCode());
@@ -258,6 +277,7 @@ public class VistaAdminDetalleIndicadores implements Serializable {
 
         sb.append(proyectoId);
         sb.append(", ").append(nombreProyecto);
+        sb.append(", ").append(indicadorMasterId);
         sb.append(", ").append(indicadorCodigo);
         sb.append(", ").append(indicadorNombre);
         sb.append(", ").append(formulaCustom);

@@ -33,7 +33,12 @@ Content-Type: application/json
 GET {{baseUrl}}/api/ods/01/proyectos
 
 ### Obtener indicadores del Proyecto 1 (Extrema Pobreza)
+# Debería devolver 2 indicadores (1.1.1 y 1.2.1)
 GET {{baseUrl}}/api/ods/01/indicadores?proyectoId=1
+
+### Verificar Caso Borde: Meta 0 (Debe retornar "estado_indicador": "SIN DATOS")
+# Indicador 1.2.1 tiene meta_valor = 0 en ods_mocks.sql
+GET {{baseUrl}}/api/ods/01/indicadores/1.2.1?proyectoId=1
 
 ### Obtener mediciones del Indicador 1 (1.1.1)
 GET {{baseUrl}}/api/ods/01/mediciones?indicadorId=1
@@ -47,7 +52,12 @@ GET {{baseUrl}}/api/ods/01/progreso/1
 GET {{baseUrl}}/api/ods/02/proyectos
 
 ### Obtener indicadores del Proyecto 1 (Seguridad Alimentaria)
+# Debería devolver 2 indicadores (2.1.1 y 2.1.2)
 GET {{baseUrl}}/api/ods/02/indicadores?proyectoId=1
+
+### Verificar Caso Borde en ODS 02: Meta 0 (Debe retornar "estado_indicador": "SIN DATOS")
+# Indicador 2.1.2 tiene meta_valor = 0 en ods_mocks.sql
+GET {{baseUrl}}/api/ods/02/indicadores/2.1.2?proyectoId=1
 
 ### Obtener mediciones del Indicador 1 (2.1.1)
 GET {{baseUrl}}/api/ods/02/mediciones?indicadorId=1
@@ -78,6 +88,9 @@ GET {{baseUrl}}/api/ods/13/indicadores?proyectoId=1
 
 ### Verificar Formula Custom (13.1.1)
 GET {{baseUrl}}/api/ods/13/indicadores/13.1.1?proyectoId=1
+
+### Calcular progreso del Proyecto 1 (ODS 13)
+GET {{baseUrl}}/api/ods/13/progreso/1
 
 # ── 7. Estadísticas de Red General ──
 

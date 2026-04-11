@@ -54,10 +54,26 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
 
     /**
      * Setter for
+     * <code>ods08.vista_admin_detalle_indicadores.indicador_master_id</code>.
+     */
+    public void setIndicadorMasterId(Integer value) {
+        set(2, value);
+    }
+
+    /**
+     * Getter for
+     * <code>ods08.vista_admin_detalle_indicadores.indicador_master_id</code>.
+     */
+    public Integer getIndicadorMasterId() {
+        return (Integer) get(2);
+    }
+
+    /**
+     * Setter for
      * <code>ods08.vista_admin_detalle_indicadores.indicador_codigo</code>.
      */
     public void setIndicadorCodigo(String value) {
-        set(2, value);
+        set(3, value);
     }
 
     /**
@@ -65,7 +81,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.indicador_codigo</code>.
      */
     public String getIndicadorCodigo() {
-        return (String) get(2);
+        return (String) get(3);
     }
 
     /**
@@ -73,7 +89,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.indicador_nombre</code>.
      */
     public void setIndicadorNombre(String value) {
-        set(3, value);
+        set(4, value);
     }
 
     /**
@@ -81,7 +97,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.indicador_nombre</code>.
      */
     public String getIndicadorNombre() {
-        return (String) get(3);
+        return (String) get(4);
     }
 
     /**
@@ -89,7 +105,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.formula_custom</code>.
      */
     public void setFormulaCustom(String value) {
-        set(4, value);
+        set(5, value);
     }
 
     /**
@@ -97,7 +113,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.formula_custom</code>.
      */
     public String getFormulaCustom() {
-        return (String) get(4);
+        return (String) get(5);
     }
 
     /**
@@ -105,7 +121,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.valor_actual</code>.
      */
     public void setValorActual(BigDecimal value) {
-        set(5, value);
+        set(6, value);
     }
 
     /**
@@ -113,21 +129,21 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.valor_actual</code>.
      */
     public BigDecimal getValorActual() {
-        return (BigDecimal) get(5);
+        return (BigDecimal) get(6);
     }
 
     /**
      * Setter for <code>ods08.vista_admin_detalle_indicadores.meta_valor</code>.
      */
     public void setMetaValor(BigDecimal value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>ods08.vista_admin_detalle_indicadores.meta_valor</code>.
      */
     public BigDecimal getMetaValor() {
-        return (BigDecimal) get(6);
+        return (BigDecimal) get(7);
     }
 
     /**
@@ -135,7 +151,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.meta_unidad</code>.
      */
     public void setMetaUnidad(String value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
@@ -143,7 +159,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.meta_unidad</code>.
      */
     public String getMetaUnidad() {
-        return (String) get(7);
+        return (String) get(8);
     }
 
     /**
@@ -151,7 +167,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.estado_indicador</code>.
      */
     public void setEstadoIndicador(String value) {
-        set(8, value);
+        set(9, value);
     }
 
     /**
@@ -159,7 +175,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.estado_indicador</code>.
      */
     public String getEstadoIndicador() {
-        return (String) get(8);
+        return (String) get(9);
     }
 
     /**
@@ -167,7 +183,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.porcentaje_logro</code>.
      */
     public void setPorcentajeLogro(BigDecimal value) {
-        set(9, value);
+        set(10, value);
     }
 
     /**
@@ -175,7 +191,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.porcentaje_logro</code>.
      */
     public BigDecimal getPorcentajeLogro() {
-        return (BigDecimal) get(9);
+        return (BigDecimal) get(10);
     }
 
     /**
@@ -183,7 +199,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.ultima_actualizacion</code>.
      */
     public void setUltimaActualizacion(LocalDateTime value) {
-        set(10, value);
+        set(11, value);
     }
 
     /**
@@ -191,7 +207,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
      * <code>ods08.vista_admin_detalle_indicadores.ultima_actualizacion</code>.
      */
     public LocalDateTime getUltimaActualizacion() {
-        return (LocalDateTime) get(10);
+        return (LocalDateTime) get(11);
     }
 
     // -------------------------------------------------------------------------
@@ -208,11 +224,12 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
     /**
      * Create a detached, initialised VistaAdminDetalleIndicadoresRecord
      */
-    public VistaAdminDetalleIndicadoresRecord(Integer proyectoId, String nombreProyecto, String indicadorCodigo, String indicadorNombre, String formulaCustom, BigDecimal valorActual, BigDecimal metaValor, String metaUnidad, String estadoIndicador, BigDecimal porcentajeLogro, LocalDateTime ultimaActualizacion) {
+    public VistaAdminDetalleIndicadoresRecord(Integer proyectoId, String nombreProyecto, Integer indicadorMasterId, String indicadorCodigo, String indicadorNombre, String formulaCustom, BigDecimal valorActual, BigDecimal metaValor, String metaUnidad, String estadoIndicador, BigDecimal porcentajeLogro, LocalDateTime ultimaActualizacion) {
         super(VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES);
 
         setProyectoId(proyectoId);
         setNombreProyecto(nombreProyecto);
+        setIndicadorMasterId(indicadorMasterId);
         setIndicadorCodigo(indicadorCodigo);
         setIndicadorNombre(indicadorNombre);
         setFormulaCustom(formulaCustom);
@@ -234,6 +251,7 @@ public class VistaAdminDetalleIndicadoresRecord extends TableRecordImpl<VistaAdm
         if (value != null) {
             setProyectoId(value.getProyectoId());
             setNombreProyecto(value.getNombreProyecto());
+            setIndicadorMasterId(value.getIndicadorMasterId());
             setIndicadorCodigo(value.getIndicadorCodigo());
             setIndicadorNombre(value.getIndicadorNombre());
             setFormulaCustom(value.getFormulaCustom());

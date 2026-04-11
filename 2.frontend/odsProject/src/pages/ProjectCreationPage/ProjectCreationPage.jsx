@@ -221,6 +221,7 @@ const ProjectCreationPage = () => {
         const fallbackDescription = SDG_INDICATORS_CATALOG[code];
         
         newMetadata[code] = {
+          masterId: ind.masterId,
           description: (ind.name && ind.name.length > 5 && !ind.name.includes('Indicador')) 
             ? ind.name 
             : (fallbackDescription || `Seguimiento de metas técnicas para indicador ${code}`),
@@ -341,12 +342,19 @@ const ProjectCreationPage = () => {
         ...formData,
         objective: formData.primaryOds,
         indicatorConfigs,
+        indicatorMetadata, // Pasamos los metadatos que contienen los masterId
         userId: user.id
       };
-      const result = await createProject(finalData);
-      if (result.success) navigate('/dashboard');
+      
+      // Usar el nuevo orquestador que guarda todo el proyecto + indicadores + parámetros
+      const result = await projectService.createFullProject(finalData, SERVICES_MAP);
+      
+      if (result.success) {
+        navigate('/dashboard');
+      }
     } catch (err) {
-      console.error('Submit Error:', err);
+      console.error('[ProjectCreation] Error persistiendo proyecto:', err);
+      alert(err.message || 'Error al guardar el proyecto completo. Verifique la consola.');
     }
   };
 

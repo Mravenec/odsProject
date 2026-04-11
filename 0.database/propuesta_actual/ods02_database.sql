@@ -159,6 +159,7 @@ CREATE OR REPLACE VIEW vista_admin_detalle_indicadores AS
 SELECT
     p.id AS proyecto_id,
     p.nombre_proyecto,
+    m.id AS indicador_master_id,
     m.codigo AS indicador_codigo,
     m.nombre AS indicador_nombre,
     pi.formula_custom,
@@ -166,12 +167,18 @@ SELECT
     pi.meta_valor,
     pi.meta_unidad,
     CASE
+        WHEN pi.meta_valor IS NULL OR pi.meta_valor = 0 OR pi.valor_actual IS NULL THEN 'SIN DATOS'
         WHEN pi.valor_actual >= pi.meta_valor             THEN 'LOGRADO'
         WHEN pi.valor_actual >= (pi.meta_valor * 0.8)     THEN 'CERCA META'
         WHEN pi.valor_actual >= (pi.meta_valor * 0.5)     THEN 'PROGRESO'
         ELSE 'BAJO'
     END AS estado_indicador,
-    ROUND((pi.valor_actual / pi.meta_valor) * 100, 2) AS porcentaje_logro,
+    ROUND(
+        CASE 
+            WHEN pi.meta_valor IS NULL OR pi.meta_valor = 0 THEN 0 
+            ELSE (COALESCE(pi.valor_actual, 0) / pi.meta_valor) * 100 
+        END, 2
+    ) AS porcentaje_logro,
     pi.updated_at AS ultima_actualizacion
 FROM proyectos p
 INNER JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id

@@ -35,19 +35,20 @@ export const projectService = {
 
   async createProject(projectData) {
     const odsId = String(projectData.objective || '01').padStart(2, '0');
+    
+    // Buscar sede id por nombre si no viene
+    const sedeId = projectData.sedeId || 1; // Default
+    
     const backendData = {
-      nombre: projectData.name,
+      usuarioId: projectData.userId,
+      sedeId: sedeId,
+      nombreProyecto: projectData.name,
+      objetivoId: parseInt(odsId),
       descripcion: projectData.description,
       fechaInicio: projectData.startDate,
       fechaFin: projectData.endDate,
-      presupuesto: 0, 
-      estado: 'ACTIVO',
-      provincia: projectData.provinciaNombre,
-      canton: projectData.cantonNombre,
-      distrito: projectData.distritoNombre,
-      provinciaId: projectData.provinciaId,
-      cantonId: projectData.cantonId,
-      distritoId: projectData.distritoId
+      metaGeneral: projectData.description?.substring(0, 100), // Fallback
+      estado: 'planificacion'
     };
 
     try {
@@ -58,6 +59,61 @@ export const projectService = {
       };
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Error al crear el proyecto');
+    }
+  },
+
+  /**
+   * Orquestador para creación completa de proyecto (Encabezado + Indicadores + Parámetros)
+   */
+  async createFullProject(projectData, servicesMap) {
+    try {
+      // 1. Crear encabezado del proyecto
+      const headerRes = await this.createProject(projectData);
+      if (!headerRes.success) throw new Error('No se pudo crear el encabezado del proyecto');
+      
+      const projectId = headerRes.data.id;
+      const primaryOds = projectData.objective;
+      const service = servicesMap[primaryOds];
+
+      if (!service) throw new Error(`Servicio para ODS ${primaryOds} no disponible`);
+
+      // 2. Vincular indicadores seleccionados
+      if (projectData.indicators && projectData.indicators.length > 0) {
+        for (const code of projectData.indicators) {
+          const config = projectData.indicatorConfigs[code] || {};
+          const meta = projectData.indicatorMetadata[code] || {};
+
+          if (!meta.masterId) {
+            console.warn(`Indicador ${code} no tiene masterId. Saltando vinculación.`);
+            continue;
+          }
+
+          const indRes = await service.saveIndicator({
+            proyectoId: projectId,
+            indicadorMasterId: meta.masterId,
+            metaValor: config.targetValue || config.goalValue || 0,
+            metaUnidad: meta.unit || 'unidad',
+            formulaCustom: config.formula || null
+          });
+
+          // 3. Guardar parámetros/variables si existen
+          if (indRes.success && config.parameters && config.parameters.length > 0) {
+            const proyectoIndicadorId = indRes.data.id;
+            for (const param of config.parameters) {
+              await service.saveParameter({
+                proyectoIndicadorId,
+                nombreParametro: param.name || param,
+                tipoDato: 'Decimal'
+              });
+            }
+          }
+        }
+      }
+
+      return headerRes;
+    } catch (error) {
+      console.error('[projectService] Error in createFullProject:', error);
+      throw error;
     }
   },
 

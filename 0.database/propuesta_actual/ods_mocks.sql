@@ -50,7 +50,8 @@ INSERT INTO proyectos (id, usuario_id, sede_id, nombre_proyecto, objetivo_id, de
 
 SET @ind111 = (SELECT id FROM ods_login.indicador_master WHERE codigo = '1.1.1' AND ods_id = 1);
 INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, meta_valor, meta_unidad) VALUES
-  (1, 1, @ind111, 2.5, 'Porcentaje');
+  (1, 1, @ind111, 2.5, 'Porcentaje'),
+  (2, 1, (SELECT id FROM ods_login.indicador_master WHERE codigo = '1.2.1' AND ods_id = 1), 0, 'Porcentaje'); -- Caso Borde: Meta 0 (SIN DATOS)
 
 INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_parametro, tipo_dato) VALUES
   (1, 1, 'p1', 'Decimal'),
@@ -81,7 +82,8 @@ INSERT INTO proyectos (id, usuario_id, sede_id, nombre_proyecto, objetivo_id, fe
 
 SET @ind211 = (SELECT id FROM ods_login.indicador_master WHERE codigo = '2.1.1' AND ods_id = 2);
 INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, meta_valor, meta_unidad) VALUES
-  (1, 1, @ind211, 1.5, 'Porcentaje');
+  (1, 1, @ind211, 1.5, 'Porcentaje'),
+  (2, 1, (SELECT id FROM ods_login.indicador_master WHERE codigo = '2.1.2' AND ods_id = 2), 0, 'Porcentaje'); -- Caso Borde: Meta 0 (SIN DATOS)
 
 INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_parametro, tipo_dato) VALUES
   (1, 1, 'subalimentados', 'Decimal'),

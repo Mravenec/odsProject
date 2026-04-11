@@ -40,6 +40,7 @@ public class Objetivo05GeneroRepository implements IObjetivo05GeneroRepository {
         return dsl.select(
                 PROYECTO_INDICADORES.PROYECTO_ID,
                 PROYECTOS.NOMBRE_PROYECTO,
+                INDICADOR_MASTER.ID.as("indicador_master_id"),
                 INDICADOR_MASTER.CODIGO.as("indicador_codigo"),
                 INDICADOR_MASTER.NOMBRE.as("indicador_nombre"),
                 PROYECTO_INDICADORES.FORMULA_CUSTOM,
@@ -47,11 +48,19 @@ public class Objetivo05GeneroRepository implements IObjetivo05GeneroRepository {
                 PROYECTO_INDICADORES.META_VALOR,
                 PROYECTO_INDICADORES.META_UNIDAD,
                 DSL.case_()
+                    .when(PROYECTO_INDICADORES.META_VALOR.isNull()
+                          .or(PROYECTO_INDICADORES.META_VALOR.eq(java.math.BigDecimal.ZERO))
+                          .or(PROYECTO_INDICADORES.VALOR_ACTUAL.isNull()), "SIN DATOS")
                     .when(PROYECTO_INDICADORES.VALOR_ACTUAL.ge(PROYECTO_INDICADORES.META_VALOR), "LOGRADO")
                     .when(PROYECTO_INDICADORES.VALOR_ACTUAL.ge(PROYECTO_INDICADORES.META_VALOR.mul(0.8)), "CERCA META")
                     .when(PROYECTO_INDICADORES.VALOR_ACTUAL.ge(PROYECTO_INDICADORES.META_VALOR.mul(0.5)), "PROGRESO")
                     .otherwise("BAJO").as("estado_indicador"),
-                DSL.round(DSL.field("({0} / {1}) * 100", Double.class, PROYECTO_INDICADORES.VALOR_ACTUAL, PROYECTO_INDICADORES.META_VALOR), 2).as("porcentaje_logro"),
+                DSL.round(
+                    DSL.case_()
+                        .when(PROYECTO_INDICADORES.META_VALOR.isNull().or(PROYECTO_INDICADORES.META_VALOR.eq(java.math.BigDecimal.ZERO)), 0.0)
+                        .otherwise(DSL.field("({0} / {1}) * 100", Double.class, 
+                            DSL.coalesce(PROYECTO_INDICADORES.VALOR_ACTUAL, 0.0), 
+                            PROYECTO_INDICADORES.META_VALOR)), 2).as("porcentaje_logro"),
                 PROYECTO_INDICADORES.UPDATED_AT.as("ultima_actualizacion")
         )
         .from(INDICADOR_MASTER)
@@ -82,6 +91,7 @@ public class Objetivo05GeneroRepository implements IObjetivo05GeneroRepository {
         return dsl.select(
             PROYECTO_INDICADORES.PROYECTO_ID, 
             PROYECTOS.NOMBRE_PROYECTO, 
+            INDICADOR_MASTER.ID.as("indicador_master_id"),
             INDICADOR_MASTER.CODIGO.as("indicador_codigo"), 
             INDICADOR_MASTER.NOMBRE.as("indicador_nombre"), 
             PROYECTO_INDICADORES.FORMULA_CUSTOM, 
@@ -89,11 +99,19 @@ public class Objetivo05GeneroRepository implements IObjetivo05GeneroRepository {
             PROYECTO_INDICADORES.META_VALOR, 
             PROYECTO_INDICADORES.META_UNIDAD,
             DSL.case_()
+                .when(PROYECTO_INDICADORES.META_VALOR.isNull()
+                      .or(PROYECTO_INDICADORES.META_VALOR.eq(java.math.BigDecimal.ZERO))
+                      .or(PROYECTO_INDICADORES.VALOR_ACTUAL.isNull()), "SIN DATOS")
                 .when(PROYECTO_INDICADORES.VALOR_ACTUAL.ge(PROYECTO_INDICADORES.META_VALOR), "LOGRADO")
                 .when(PROYECTO_INDICADORES.VALOR_ACTUAL.ge(PROYECTO_INDICADORES.META_VALOR.mul(0.8)), "CERCA META")
                 .when(PROYECTO_INDICADORES.VALOR_ACTUAL.ge(PROYECTO_INDICADORES.META_VALOR.mul(0.5)), "PROGRESO")
                 .otherwise("BAJO").as("estado_indicador"),
-            DSL.round(DSL.field("({0} / {1}) * 100", Double.class, PROYECTO_INDICADORES.VALOR_ACTUAL, PROYECTO_INDICADORES.META_VALOR), 2).as("porcentaje_logro"),
+            DSL.round(
+                DSL.case_()
+                    .when(PROYECTO_INDICADORES.META_VALOR.isNull().or(PROYECTO_INDICADORES.META_VALOR.eq(java.math.BigDecimal.ZERO)), 0.0)
+                    .otherwise(DSL.field("({0} / {1}) * 100", Double.class, 
+                        DSL.coalesce(PROYECTO_INDICADORES.VALOR_ACTUAL, 0.0), 
+                        PROYECTO_INDICADORES.META_VALOR)), 2).as("porcentaje_logro"),
             PROYECTO_INDICADORES.UPDATED_AT.as("ultima_actualizacion")
         )
         .from(INDICADOR_MASTER)
@@ -108,6 +126,7 @@ public class Objetivo05GeneroRepository implements IObjetivo05GeneroRepository {
         return dsl.select(
             PROYECTO_INDICADORES.PROYECTO_ID, 
             PROYECTOS.NOMBRE_PROYECTO, 
+            INDICADOR_MASTER.ID.as("indicador_master_id"),
             INDICADOR_MASTER.CODIGO.as("indicador_codigo"), 
             INDICADOR_MASTER.NOMBRE.as("indicador_nombre"), 
             PROYECTO_INDICADORES.FORMULA_CUSTOM, 
@@ -115,11 +134,19 @@ public class Objetivo05GeneroRepository implements IObjetivo05GeneroRepository {
             PROYECTO_INDICADORES.META_VALOR, 
             PROYECTO_INDICADORES.META_UNIDAD,
             DSL.case_()
+                .when(PROYECTO_INDICADORES.META_VALOR.isNull()
+                      .or(PROYECTO_INDICADORES.META_VALOR.eq(java.math.BigDecimal.ZERO))
+                      .or(PROYECTO_INDICADORES.VALOR_ACTUAL.isNull()), "SIN DATOS")
                 .when(PROYECTO_INDICADORES.VALOR_ACTUAL.ge(PROYECTO_INDICADORES.META_VALOR), "LOGRADO")
                 .when(PROYECTO_INDICADORES.VALOR_ACTUAL.ge(PROYECTO_INDICADORES.META_VALOR.mul(0.8)), "CERCA META")
                 .when(PROYECTO_INDICADORES.VALOR_ACTUAL.ge(PROYECTO_INDICADORES.META_VALOR.mul(0.5)), "PROGRESO")
                 .otherwise("BAJO").as("estado_indicador"),
-            DSL.round(DSL.field("({0} / {1}) * 100", Double.class, PROYECTO_INDICADORES.VALOR_ACTUAL, PROYECTO_INDICADORES.META_VALOR), 2).as("porcentaje_logro"),
+            DSL.round(
+                DSL.case_()
+                    .when(PROYECTO_INDICADORES.META_VALOR.isNull().or(PROYECTO_INDICADORES.META_VALOR.eq(java.math.BigDecimal.ZERO)), 0.0)
+                    .otherwise(DSL.field("({0} / {1}) * 100", Double.class, 
+                        DSL.coalesce(PROYECTO_INDICADORES.VALOR_ACTUAL, 0.0), 
+                        PROYECTO_INDICADORES.META_VALOR)), 2).as("porcentaje_logro"),
             PROYECTO_INDICADORES.UPDATED_AT.as("ultima_actualizacion")
         )
         .from(INDICADOR_MASTER)

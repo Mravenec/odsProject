@@ -18,6 +18,7 @@ export const objetivo11Service = {
 
         acc[code] = {
           code: code,
+          masterId: ind.indicadorMasterId,
           name: ind.indicadorNombre,
           currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
           targetValue: ind.metaValor || 0,
@@ -60,6 +61,40 @@ export const objetivo11Service = {
     } catch (error) {
       console.error(`Error fetching indicator ${code}:`, error);
       return { currentValue: 0, targetValue: 0, unit: 'unidad' };
+    }
+  },
+
+  // Guardar vinculación de indicador a proyecto
+  saveIndicator: async (indicatorData) => {
+    try {
+      const backendData = {
+        proyectoId: indicatorData.proyectoId,
+        indicadorMasterId: indicatorData.indicadorMasterId,
+        metaValor: indicatorData.metaValor,
+        metaUnidad: indicatorData.metaUnidad || 'unidad',
+        formulaCustom: indicatorData.formulaCustom || null
+      };
+      const response = await api.post(`/ods/11/indicadores`, backendData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error saving ODS 11 indicator:', error);
+      throw new Error(error.response?.data?.message || 'Error al vincular indicador');
+    }
+  },
+
+  // Guardar parámetros/metas del proyecto
+  saveParameter: async (parameterData) => {
+    try {
+      const backendData = {
+        proyectoIndicadorId: parameterData.proyectoIndicadorId,
+        nombreParametro: parameterData.nombreParametro,
+        tipoDato: parameterData.tipoDato || 'Decimal'
+      };
+      const response = await api.post(`/ods/11/metas`, backendData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error saving ODS 11 parameter:', error);
+      throw new Error(error.response?.data?.message || 'Error al guardar parámetro');
     }
   }
 };
