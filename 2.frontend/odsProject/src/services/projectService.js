@@ -52,7 +52,7 @@ export const projectService = {
     };
 
     try {
-      const response = await api.post(`/ods/${odsId}/proyecto`, backendData);
+      const response = await api.post(`/ods/${odsId}/proyectos`, backendData);
       return {
         success: true,
         data: this._mapBackendToFrontend(response.data, odsId)
@@ -120,7 +120,7 @@ export const projectService = {
   async updateProject(projectData, odsId) {
     const formattedOdsId = String(odsId).padStart(2, '0');
     try {
-      const response = await api.put(`/ods/${formattedOdsId}/proyecto/${projectData.id}`, projectData);
+      const response = await api.put(`/ods/${formattedOdsId}/proyectos/${projectData.id}`, projectData);
       return {
         success: true,
         data: this._mapBackendToFrontend(response.data, formattedOdsId)
@@ -133,7 +133,7 @@ export const projectService = {
   async updateProjectResults(resultsData, odsId = '01') {
     const formattedOdsId = String(odsId).padStart(2, '0');
     try {
-      const response = await api.put(`/ods/${formattedOdsId}/proyecto/${resultsData.projectId}`, {
+      const response = await api.put(`/ods/${formattedOdsId}/proyectos/${resultsData.projectId}`, {
         id: resultsData.projectId,
         estado: 'COMPLETADO'
       });
@@ -174,7 +174,7 @@ export const projectService = {
   async deleteProject(projectId, odsId = '01') {
     const formattedOdsId = String(odsId).padStart(2, '0');
     try {
-      await api.delete(`/ods/${formattedOdsId}/proyecto/${projectId}`);
+      await api.delete(`/ods/${formattedOdsId}/proyectos/${projectId}`);
       return { success: true };
     } catch (error) {
       throw new Error(error.message);

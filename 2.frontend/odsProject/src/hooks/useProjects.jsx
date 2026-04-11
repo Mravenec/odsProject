@@ -39,6 +39,23 @@ export const useProjects = () => {
     }
   };
 
+  const createFullProject = async (projectData, servicesMap) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await projectService.createFullProject(projectData, servicesMap);
+      if (result.success) {
+        setProjects(prev => [result.data, ...prev]);
+      }
+      return result;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getProjectResults = async (projectId, odsId) => {
     setLoading(true);
     try {
@@ -128,6 +145,7 @@ export const useProjects = () => {
     fetchAdminProjects,
     fetchStatistics,
     createProject,
+    createFullProject,
     getProjectResults,
     updateProjectResults,
     deleteProject,

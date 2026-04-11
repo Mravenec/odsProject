@@ -103,6 +103,7 @@ const ProjectCreationPage = () => {
   
   const { 
     createProject, 
+    createFullProject,
     loading: projectsLoading, 
     error: projectsError
   } = useProjects();
@@ -347,7 +348,7 @@ const ProjectCreationPage = () => {
       };
       
       // Usar el nuevo orquestador que guarda todo el proyecto + indicadores + parámetros
-      const result = await projectService.createFullProject(finalData, SERVICES_MAP);
+      const result = await createFullProject(finalData, SERVICES_MAP);
       
       if (result.success) {
         navigate('/dashboard');
