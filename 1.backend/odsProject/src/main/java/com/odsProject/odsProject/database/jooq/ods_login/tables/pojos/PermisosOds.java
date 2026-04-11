@@ -18,13 +18,15 @@ public class PermisosOds implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final Integer usuarioId;
-    private final UByte odsNum;
-    private final Byte puedeCrear;
-    private final Byte puedeEditar;
-    private final Byte puedeVer;
-    private final LocalDateTime createdAt;
+    private Integer id;
+    private Integer usuarioId;
+    private UByte odsNum;
+    private Byte puedeCrear;
+    private Byte puedeEditar;
+    private Byte puedeVer;
+    private LocalDateTime createdAt;
+
+    public PermisosOds() {}
 
     public PermisosOds(PermisosOds value) {
         this.id = value.id;
@@ -62,10 +64,24 @@ public class PermisosOds implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.permisos_ods.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods_login.permisos_ods.usuario_id</code>.
      */
     public Integer getUsuarioId() {
         return this.usuarioId;
+    }
+
+    /**
+     * Setter for <code>ods_login.permisos_ods.usuario_id</code>.
+     */
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     /**
@@ -76,10 +92,24 @@ public class PermisosOds implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.permisos_ods.ods_num</code>.
+     */
+    public void setOdsNum(UByte odsNum) {
+        this.odsNum = odsNum;
+    }
+
+    /**
      * Getter for <code>ods_login.permisos_ods.puede_crear</code>.
      */
     public Byte getPuedeCrear() {
         return this.puedeCrear;
+    }
+
+    /**
+     * Setter for <code>ods_login.permisos_ods.puede_crear</code>.
+     */
+    public void setPuedeCrear(Byte puedeCrear) {
+        this.puedeCrear = puedeCrear;
     }
 
     /**
@@ -90,6 +120,13 @@ public class PermisosOds implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.permisos_ods.puede_editar</code>.
+     */
+    public void setPuedeEditar(Byte puedeEditar) {
+        this.puedeEditar = puedeEditar;
+    }
+
+    /**
      * Getter for <code>ods_login.permisos_ods.puede_ver</code>.
      */
     public Byte getPuedeVer() {
@@ -97,10 +134,24 @@ public class PermisosOds implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.permisos_ods.puede_ver</code>.
+     */
+    public void setPuedeVer(Byte puedeVer) {
+        this.puedeVer = puedeVer;
+    }
+
+    /**
      * Getter for <code>ods_login.permisos_ods.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
+    }
+
+    /**
+     * Setter for <code>ods_login.permisos_ods.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

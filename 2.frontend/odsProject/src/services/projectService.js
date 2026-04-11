@@ -201,12 +201,12 @@ export const projectService = {
   _mapBackendToFrontend(p, odsId) {
     return {
       id: p.id,
-      userId: p.usuarioId || 1, // Fallback si no viene
-      name: p.nombre,
+      userId: p.usuarioId,
+      name: p.nombreProyecto || p.nombre || 'Proyecto sin nombre',
       description: p.descripcion,
       objective: odsId,
       objectiveName: `ODS ${odsId}`,
-      status: (p.estado || 'active').toLowerCase(),
+      status: (p.estado || 'planificacion').toLowerCase(),
       startDate: p.fechaInicio,
       endDate: p.fechaFin,
       indicators: p.indicadores || [],

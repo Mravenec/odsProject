@@ -21,18 +21,20 @@ public class Proyectos implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final Integer usuarioId;
-    private final Integer sedeId;
-    private final String nombreProyecto;
-    private final UByte objetivoId;
-    private final String descripcion;
-    private final LocalDate fechaInicio;
-    private final LocalDate fechaFin;
-    private final String metaGeneral;
-    private final ProyectosEstado estado;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private Integer id;
+    private Integer usuarioId;
+    private Integer sedeId;
+    private String nombreProyecto;
+    private UByte objetivoId;
+    private String descripcion;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private String metaGeneral;
+    private ProyectosEstado estado;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public Proyectos() {}
 
     public Proyectos(Proyectos value) {
         this.id = value.id;
@@ -85,10 +87,24 @@ public class Proyectos implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyectos.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods_login.proyectos.usuario_id</code>.
      */
     public Integer getUsuarioId() {
         return this.usuarioId;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyectos.usuario_id</code>.
+     */
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     /**
@@ -99,10 +115,24 @@ public class Proyectos implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyectos.sede_id</code>.
+     */
+    public void setSedeId(Integer sedeId) {
+        this.sedeId = sedeId;
+    }
+
+    /**
      * Getter for <code>ods_login.proyectos.nombre_proyecto</code>.
      */
     public String getNombreProyecto() {
         return this.nombreProyecto;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyectos.nombre_proyecto</code>.
+     */
+    public void setNombreProyecto(String nombreProyecto) {
+        this.nombreProyecto = nombreProyecto;
     }
 
     /**
@@ -113,10 +143,24 @@ public class Proyectos implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyectos.objetivo_id</code>.
+     */
+    public void setObjetivoId(UByte objetivoId) {
+        this.objetivoId = objetivoId;
+    }
+
+    /**
      * Getter for <code>ods_login.proyectos.descripcion</code>.
      */
     public String getDescripcion() {
         return this.descripcion;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyectos.descripcion</code>.
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     /**
@@ -127,10 +171,24 @@ public class Proyectos implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyectos.fecha_inicio</code>.
+     */
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    /**
      * Getter for <code>ods_login.proyectos.fecha_fin</code>.
      */
     public LocalDate getFechaFin() {
         return this.fechaFin;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyectos.fecha_fin</code>.
+     */
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
     /**
@@ -141,10 +199,24 @@ public class Proyectos implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyectos.meta_general</code>.
+     */
+    public void setMetaGeneral(String metaGeneral) {
+        this.metaGeneral = metaGeneral;
+    }
+
+    /**
      * Getter for <code>ods_login.proyectos.estado</code>.
      */
     public ProyectosEstado getEstado() {
         return this.estado;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyectos.estado</code>.
+     */
+    public void setEstado(ProyectosEstado estado) {
+        this.estado = estado;
     }
 
     /**
@@ -155,10 +227,24 @@ public class Proyectos implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyectos.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
      * Getter for <code>ods_login.proyectos.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyectos.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

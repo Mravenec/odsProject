@@ -16,15 +16,17 @@ public class VistaAdminUsuariosActivos implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final String username;
-    private final String fullName;
-    private final String email;
-    private final String rol;
-    private final String sede;
-    private final LocalDateTime ultimoLogin;
-    private final LocalDateTime createdAt;
-    private final String odsPermitidos;
+    private Integer id;
+    private String username;
+    private String fullName;
+    private String email;
+    private String rol;
+    private String sede;
+    private LocalDateTime ultimoLogin;
+    private LocalDateTime createdAt;
+    private String odsPermitidos;
+
+    public VistaAdminUsuariosActivos() {}
 
     public VistaAdminUsuariosActivos(VistaAdminUsuariosActivos value) {
         this.id = value.id;
@@ -68,10 +70,24 @@ public class VistaAdminUsuariosActivos implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.vista_admin_usuarios_activos.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods_login.vista_admin_usuarios_activos.username</code>.
      */
     public String getUsername() {
         return this.username;
+    }
+
+    /**
+     * Setter for <code>ods_login.vista_admin_usuarios_activos.username</code>.
+     */
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
@@ -82,10 +98,24 @@ public class VistaAdminUsuariosActivos implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.vista_admin_usuarios_activos.full_name</code>.
+     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    /**
      * Getter for <code>ods_login.vista_admin_usuarios_activos.email</code>.
      */
     public String getEmail() {
         return this.email;
+    }
+
+    /**
+     * Setter for <code>ods_login.vista_admin_usuarios_activos.email</code>.
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
@@ -96,10 +126,24 @@ public class VistaAdminUsuariosActivos implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.vista_admin_usuarios_activos.rol</code>.
+     */
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    /**
      * Getter for <code>ods_login.vista_admin_usuarios_activos.sede</code>.
      */
     public String getSede() {
         return this.sede;
+    }
+
+    /**
+     * Setter for <code>ods_login.vista_admin_usuarios_activos.sede</code>.
+     */
+    public void setSede(String sede) {
+        this.sede = sede;
     }
 
     /**
@@ -111,6 +155,14 @@ public class VistaAdminUsuariosActivos implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.vista_admin_usuarios_activos.ultimo_login</code>.
+     */
+    public void setUltimoLogin(LocalDateTime ultimoLogin) {
+        this.ultimoLogin = ultimoLogin;
+    }
+
+    /**
      * Getter for
      * <code>ods_login.vista_admin_usuarios_activos.created_at</code>.
      */
@@ -119,11 +171,27 @@ public class VistaAdminUsuariosActivos implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.vista_admin_usuarios_activos.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
      * Getter for
      * <code>ods_login.vista_admin_usuarios_activos.ods_permitidos</code>.
      */
     public String getOdsPermitidos() {
         return this.odsPermitidos;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_login.vista_admin_usuarios_activos.ods_permitidos</code>.
+     */
+    public void setOdsPermitidos(String odsPermitidos) {
+        this.odsPermitidos = odsPermitidos;
     }
 
     @Override

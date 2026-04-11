@@ -36,7 +36,7 @@ const DashboardPage = () => {
         if (statsRes.success) {
           setAdminStats({
             totalProjects: allProjects.length,
-            activeProjects: allProjects.filter(p => p.status === 'active' || p.status === 'activo').length,
+            activeProjects: allProjects.filter(p => p.status === 'active' || p.status === 'activo' || p.status === 'planificacion').length,
             completedProjects: allProjects.filter(p => p.status === 'completed' || p.status === 'completado').length,
             totalUsers: statsRes.data.totalUsers || 0
           });
@@ -188,7 +188,7 @@ const DashboardPage = () => {
                           <div className="title-row">
                             <h4>{project.name}</h4>
                             <span className={`status-pill ${project.status}`}>
-                              {project.status === 'active' || project.status === 'activo' ? 'En Curso' : 'Completado'}
+                              {project.status === 'active' || project.status === 'activo' || project.status === 'planificacion' ? 'En Curso' : 'Completado'}
                             </span>
                           </div>
                           
@@ -214,12 +214,12 @@ const DashboardPage = () => {
                         </div>
 
                         <div className="project-button">
-                          <button 
-                            className="btn-action-primary"
-                            onClick={() => navigate(`/projects/${project.id}/results`)}
-                          >
-                            {project.status === 'active' || project.status === 'activo' ? 'Medir Impacto' : 'Ver Reporte'}
-                          </button>
+                            <button 
+                             className="btn-action-primary"
+                             onClick={() => navigate(`/projects/${project.id}/results`)}
+                           >
+                             {project.status === 'active' || project.status === 'activo' || project.status === 'planificacion' ? 'Medir Impacto' : 'Ver Reporte'}
+                           </button>
                         </div>
                       </div>
                     ))}

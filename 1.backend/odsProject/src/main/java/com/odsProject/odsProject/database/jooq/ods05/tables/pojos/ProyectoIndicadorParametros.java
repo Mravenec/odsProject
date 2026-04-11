@@ -18,11 +18,13 @@ public class ProyectoIndicadorParametros implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final Integer proyectoIndicadorId;
-    private final String nombreParametro;
-    private final ProyectoIndicadorParametrosTipoDato tipoDato;
-    private final LocalDateTime createdAt;
+    private Integer id;
+    private Integer proyectoIndicadorId;
+    private String nombreParametro;
+    private ProyectoIndicadorParametrosTipoDato tipoDato;
+    private LocalDateTime createdAt;
+
+    public ProyectoIndicadorParametros() {}
 
     public ProyectoIndicadorParametros(ProyectoIndicadorParametros value) {
         this.id = value.id;
@@ -54,11 +56,26 @@ public class ProyectoIndicadorParametros implements Serializable {
     }
 
     /**
+     * Setter for <code>ods05.proyecto_indicador_parametros.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for
      * <code>ods05.proyecto_indicador_parametros.proyecto_indicador_id</code>.
      */
     public Integer getProyectoIndicadorId() {
         return this.proyectoIndicadorId;
+    }
+
+    /**
+     * Setter for
+     * <code>ods05.proyecto_indicador_parametros.proyecto_indicador_id</code>.
+     */
+    public void setProyectoIndicadorId(Integer proyectoIndicadorId) {
+        this.proyectoIndicadorId = proyectoIndicadorId;
     }
 
     /**
@@ -70,6 +87,14 @@ public class ProyectoIndicadorParametros implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods05.proyecto_indicador_parametros.nombre_parametro</code>.
+     */
+    public void setNombreParametro(String nombreParametro) {
+        this.nombreParametro = nombreParametro;
+    }
+
+    /**
      * Getter for <code>ods05.proyecto_indicador_parametros.tipo_dato</code>.
      */
     public ProyectoIndicadorParametrosTipoDato getTipoDato() {
@@ -77,10 +102,24 @@ public class ProyectoIndicadorParametros implements Serializable {
     }
 
     /**
+     * Setter for <code>ods05.proyecto_indicador_parametros.tipo_dato</code>.
+     */
+    public void setTipoDato(ProyectoIndicadorParametrosTipoDato tipoDato) {
+        this.tipoDato = tipoDato;
+    }
+
+    /**
      * Getter for <code>ods05.proyecto_indicador_parametros.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
+    }
+
+    /**
+     * Setter for <code>ods05.proyecto_indicador_parametros.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

@@ -18,15 +18,17 @@ public class VistaAdminAuditoriaLoginReciente implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final LocalDateTime fechaEvento;
-    private final VistaAdminAuditoriaLoginRecienteEvento evento;
-    private final String username;
-    private final String fullName;
-    private final String emailIntento;
-    private final String ipAddress;
-    private final String userAgent;
-    private final String detalle;
+    private Integer id;
+    private LocalDateTime fechaEvento;
+    private VistaAdminAuditoriaLoginRecienteEvento evento;
+    private String username;
+    private String fullName;
+    private String emailIntento;
+    private String ipAddress;
+    private String userAgent;
+    private String detalle;
+
+    public VistaAdminAuditoriaLoginReciente() {}
 
     public VistaAdminAuditoriaLoginReciente(VistaAdminAuditoriaLoginReciente value) {
         this.id = value.id;
@@ -71,11 +73,27 @@ public class VistaAdminAuditoriaLoginReciente implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.vista_admin_auditoria_login_reciente.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for
      * <code>ods_login.vista_admin_auditoria_login_reciente.fecha_evento</code>.
      */
     public LocalDateTime getFechaEvento() {
         return this.fechaEvento;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_login.vista_admin_auditoria_login_reciente.fecha_evento</code>.
+     */
+    public void setFechaEvento(LocalDateTime fechaEvento) {
+        this.fechaEvento = fechaEvento;
     }
 
     /**
@@ -87,11 +105,27 @@ public class VistaAdminAuditoriaLoginReciente implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.vista_admin_auditoria_login_reciente.evento</code>.
+     */
+    public void setEvento(VistaAdminAuditoriaLoginRecienteEvento evento) {
+        this.evento = evento;
+    }
+
+    /**
      * Getter for
      * <code>ods_login.vista_admin_auditoria_login_reciente.username</code>.
      */
     public String getUsername() {
         return this.username;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_login.vista_admin_auditoria_login_reciente.username</code>.
+     */
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
@@ -103,11 +137,27 @@ public class VistaAdminAuditoriaLoginReciente implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.vista_admin_auditoria_login_reciente.full_name</code>.
+     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    /**
      * Getter for
      * <code>ods_login.vista_admin_auditoria_login_reciente.email_intento</code>.
      */
     public String getEmailIntento() {
         return this.emailIntento;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_login.vista_admin_auditoria_login_reciente.email_intento</code>.
+     */
+    public void setEmailIntento(String emailIntento) {
+        this.emailIntento = emailIntento;
     }
 
     /**
@@ -119,6 +169,14 @@ public class VistaAdminAuditoriaLoginReciente implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.vista_admin_auditoria_login_reciente.ip_address</code>.
+     */
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    /**
      * Getter for
      * <code>ods_login.vista_admin_auditoria_login_reciente.user_agent</code>.
      */
@@ -127,11 +185,27 @@ public class VistaAdminAuditoriaLoginReciente implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.vista_admin_auditoria_login_reciente.user_agent</code>.
+     */
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    /**
      * Getter for
      * <code>ods_login.vista_admin_auditoria_login_reciente.detalle</code>.
      */
     public String getDetalle() {
         return this.detalle;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_login.vista_admin_auditoria_login_reciente.detalle</code>.
+     */
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
     }
 
     @Override

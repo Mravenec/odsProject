@@ -18,12 +18,14 @@ public class OdsCatalog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final UByte id;
-    private final String nombre;
-    private final String descripcion;
-    private final String colorHex;
-    private final String iconoUrl;
-    private final LocalDateTime createdAt;
+    private UByte id;
+    private String nombre;
+    private String descripcion;
+    private String colorHex;
+    private String iconoUrl;
+    private LocalDateTime createdAt;
+
+    public OdsCatalog() {}
 
     public OdsCatalog(OdsCatalog value) {
         this.id = value.id;
@@ -58,10 +60,24 @@ public class OdsCatalog implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.ods_catalog.id</code>.
+     */
+    public void setId(UByte id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods_login.ods_catalog.nombre</code>.
      */
     public String getNombre() {
         return this.nombre;
+    }
+
+    /**
+     * Setter for <code>ods_login.ods_catalog.nombre</code>.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     /**
@@ -72,10 +88,24 @@ public class OdsCatalog implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.ods_catalog.descripcion</code>.
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    /**
      * Getter for <code>ods_login.ods_catalog.color_hex</code>.
      */
     public String getColorHex() {
         return this.colorHex;
+    }
+
+    /**
+     * Setter for <code>ods_login.ods_catalog.color_hex</code>.
+     */
+    public void setColorHex(String colorHex) {
+        this.colorHex = colorHex;
     }
 
     /**
@@ -86,10 +116,24 @@ public class OdsCatalog implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.ods_catalog.icono_url</code>.
+     */
+    public void setIconoUrl(String iconoUrl) {
+        this.iconoUrl = iconoUrl;
+    }
+
+    /**
      * Getter for <code>ods_login.ods_catalog.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
+    }
+
+    /**
+     * Setter for <code>ods_login.ods_catalog.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

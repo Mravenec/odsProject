@@ -16,15 +16,17 @@ public class AuditoriaOds03 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final String tablaAfectada;
-    private final Integer registroId;
-    private final String accion;
-    private final Integer usuarioId;
-    private final String valoresAnteriores;
-    private final String valoresNuevos;
-    private final LocalDateTime fechaCambio;
-    private final String ipAddress;
+    private Integer id;
+    private String tablaAfectada;
+    private Integer registroId;
+    private String accion;
+    private Integer usuarioId;
+    private String valoresAnteriores;
+    private String valoresNuevos;
+    private LocalDateTime fechaCambio;
+    private String ipAddress;
+
+    public AuditoriaOds03() {}
 
     public AuditoriaOds03(AuditoriaOds03 value) {
         this.id = value.id;
@@ -68,10 +70,24 @@ public class AuditoriaOds03 implements Serializable {
     }
 
     /**
+     * Setter for <code>ods03.auditoria_ods03.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods03.auditoria_ods03.tabla_afectada</code>.
      */
     public String getTablaAfectada() {
         return this.tablaAfectada;
+    }
+
+    /**
+     * Setter for <code>ods03.auditoria_ods03.tabla_afectada</code>.
+     */
+    public void setTablaAfectada(String tablaAfectada) {
+        this.tablaAfectada = tablaAfectada;
     }
 
     /**
@@ -82,10 +98,24 @@ public class AuditoriaOds03 implements Serializable {
     }
 
     /**
+     * Setter for <code>ods03.auditoria_ods03.registro_id</code>.
+     */
+    public void setRegistroId(Integer registroId) {
+        this.registroId = registroId;
+    }
+
+    /**
      * Getter for <code>ods03.auditoria_ods03.accion</code>.
      */
     public String getAccion() {
         return this.accion;
+    }
+
+    /**
+     * Setter for <code>ods03.auditoria_ods03.accion</code>.
+     */
+    public void setAccion(String accion) {
+        this.accion = accion;
     }
 
     /**
@@ -96,10 +126,24 @@ public class AuditoriaOds03 implements Serializable {
     }
 
     /**
+     * Setter for <code>ods03.auditoria_ods03.usuario_id</code>.
+     */
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    /**
      * Getter for <code>ods03.auditoria_ods03.valores_anteriores</code>.
      */
     public String getValoresAnteriores() {
         return this.valoresAnteriores;
+    }
+
+    /**
+     * Setter for <code>ods03.auditoria_ods03.valores_anteriores</code>.
+     */
+    public void setValoresAnteriores(String valoresAnteriores) {
+        this.valoresAnteriores = valoresAnteriores;
     }
 
     /**
@@ -110,6 +154,13 @@ public class AuditoriaOds03 implements Serializable {
     }
 
     /**
+     * Setter for <code>ods03.auditoria_ods03.valores_nuevos</code>.
+     */
+    public void setValoresNuevos(String valoresNuevos) {
+        this.valoresNuevos = valoresNuevos;
+    }
+
+    /**
      * Getter for <code>ods03.auditoria_ods03.fecha_cambio</code>.
      */
     public LocalDateTime getFechaCambio() {
@@ -117,10 +168,24 @@ public class AuditoriaOds03 implements Serializable {
     }
 
     /**
+     * Setter for <code>ods03.auditoria_ods03.fecha_cambio</code>.
+     */
+    public void setFechaCambio(LocalDateTime fechaCambio) {
+        this.fechaCambio = fechaCambio;
+    }
+
+    /**
      * Getter for <code>ods03.auditoria_ods03.ip_address</code>.
      */
     public String getIpAddress() {
         return this.ipAddress;
+    }
+
+    /**
+     * Setter for <code>ods03.auditoria_ods03.ip_address</code>.
+     */
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     @Override

@@ -20,18 +20,20 @@ public class VistaAdminResumenGeneral implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer proyectoId;
-    private final String nombreProyecto;
-    private final String usuarioCreador;
-    private final String sedeNombre;
-    private final String odsNombre;
-    private final LocalDate fechaInicio;
-    private final LocalDate fechaFin;
-    private final VistaAdminResumenGeneralEstado estado;
-    private final Long totalIndicadores;
-    private final Long indicadoresLogrados;
-    private final BigDecimal progresoPorcentaje;
-    private final LocalDateTime fechaCreacion;
+    private Integer proyectoId;
+    private String nombreProyecto;
+    private String usuarioCreador;
+    private String sedeNombre;
+    private String odsNombre;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private VistaAdminResumenGeneralEstado estado;
+    private Long totalIndicadores;
+    private Long indicadoresLogrados;
+    private BigDecimal progresoPorcentaje;
+    private LocalDateTime fechaCreacion;
+
+    public VistaAdminResumenGeneral() {}
 
     public VistaAdminResumenGeneral(VistaAdminResumenGeneral value) {
         this.proyectoId = value.proyectoId;
@@ -84,11 +86,26 @@ public class VistaAdminResumenGeneral implements Serializable {
     }
 
     /**
+     * Setter for <code>ods09.vista_admin_resumen_general.proyecto_id</code>.
+     */
+    public void setProyectoId(Integer proyectoId) {
+        this.proyectoId = proyectoId;
+    }
+
+    /**
      * Getter for
      * <code>ods09.vista_admin_resumen_general.nombre_proyecto</code>.
      */
     public String getNombreProyecto() {
         return this.nombreProyecto;
+    }
+
+    /**
+     * Setter for
+     * <code>ods09.vista_admin_resumen_general.nombre_proyecto</code>.
+     */
+    public void setNombreProyecto(String nombreProyecto) {
+        this.nombreProyecto = nombreProyecto;
     }
 
     /**
@@ -100,10 +117,25 @@ public class VistaAdminResumenGeneral implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods09.vista_admin_resumen_general.usuario_creador</code>.
+     */
+    public void setUsuarioCreador(String usuarioCreador) {
+        this.usuarioCreador = usuarioCreador;
+    }
+
+    /**
      * Getter for <code>ods09.vista_admin_resumen_general.sede_nombre</code>.
      */
     public String getSedeNombre() {
         return this.sedeNombre;
+    }
+
+    /**
+     * Setter for <code>ods09.vista_admin_resumen_general.sede_nombre</code>.
+     */
+    public void setSedeNombre(String sedeNombre) {
+        this.sedeNombre = sedeNombre;
     }
 
     /**
@@ -114,10 +146,24 @@ public class VistaAdminResumenGeneral implements Serializable {
     }
 
     /**
+     * Setter for <code>ods09.vista_admin_resumen_general.ods_nombre</code>.
+     */
+    public void setOdsNombre(String odsNombre) {
+        this.odsNombre = odsNombre;
+    }
+
+    /**
      * Getter for <code>ods09.vista_admin_resumen_general.fecha_inicio</code>.
      */
     public LocalDate getFechaInicio() {
         return this.fechaInicio;
+    }
+
+    /**
+     * Setter for <code>ods09.vista_admin_resumen_general.fecha_inicio</code>.
+     */
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 
     /**
@@ -128,10 +174,24 @@ public class VistaAdminResumenGeneral implements Serializable {
     }
 
     /**
+     * Setter for <code>ods09.vista_admin_resumen_general.fecha_fin</code>.
+     */
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    /**
      * Getter for <code>ods09.vista_admin_resumen_general.estado</code>.
      */
     public VistaAdminResumenGeneralEstado getEstado() {
         return this.estado;
+    }
+
+    /**
+     * Setter for <code>ods09.vista_admin_resumen_general.estado</code>.
+     */
+    public void setEstado(VistaAdminResumenGeneralEstado estado) {
+        this.estado = estado;
     }
 
     /**
@@ -143,11 +203,27 @@ public class VistaAdminResumenGeneral implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods09.vista_admin_resumen_general.total_indicadores</code>.
+     */
+    public void setTotalIndicadores(Long totalIndicadores) {
+        this.totalIndicadores = totalIndicadores;
+    }
+
+    /**
      * Getter for
      * <code>ods09.vista_admin_resumen_general.indicadores_logrados</code>.
      */
     public Long getIndicadoresLogrados() {
         return this.indicadoresLogrados;
+    }
+
+    /**
+     * Setter for
+     * <code>ods09.vista_admin_resumen_general.indicadores_logrados</code>.
+     */
+    public void setIndicadoresLogrados(Long indicadoresLogrados) {
+        this.indicadoresLogrados = indicadoresLogrados;
     }
 
     /**
@@ -159,10 +235,25 @@ public class VistaAdminResumenGeneral implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods09.vista_admin_resumen_general.progreso_porcentaje</code>.
+     */
+    public void setProgresoPorcentaje(BigDecimal progresoPorcentaje) {
+        this.progresoPorcentaje = progresoPorcentaje;
+    }
+
+    /**
      * Getter for <code>ods09.vista_admin_resumen_general.fecha_creacion</code>.
      */
     public LocalDateTime getFechaCreacion() {
         return this.fechaCreacion;
+    }
+
+    /**
+     * Setter for <code>ods09.vista_admin_resumen_general.fecha_creacion</code>.
+     */
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     @Override

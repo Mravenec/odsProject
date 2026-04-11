@@ -18,22 +18,24 @@ public class Usuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final String username;
-    private final String email;
-    private final String passwordHash;
-    private final String fullName;
-    private final Integer rolId;
-    private final Integer sedeId;
-    private final Byte isActive;
-    private final Byte emailVerificado;
-    private final LocalDateTime ultimoLogin;
-    private final UByte intentosFallidos;
-    private final LocalDateTime bloqueadoHasta;
-    private final String tokenRecuperacion;
-    private final LocalDateTime tokenExpira;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private Integer id;
+    private String username;
+    private String email;
+    private String passwordHash;
+    private String fullName;
+    private Integer rolId;
+    private Integer sedeId;
+    private Byte isActive;
+    private Byte emailVerificado;
+    private LocalDateTime ultimoLogin;
+    private UByte intentosFallidos;
+    private LocalDateTime bloqueadoHasta;
+    private String tokenRecuperacion;
+    private LocalDateTime tokenExpira;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public Usuarios() {}
 
     public Usuarios(Usuarios value) {
         this.id = value.id;
@@ -98,10 +100,24 @@ public class Usuarios implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods_login.usuarios.username</code>.
      */
     public String getUsername() {
         return this.username;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.username</code>.
+     */
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
@@ -112,10 +128,24 @@ public class Usuarios implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.email</code>.
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
      * Getter for <code>ods_login.usuarios.password_hash</code>.
      */
     public String getPasswordHash() {
         return this.passwordHash;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.password_hash</code>.
+     */
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     /**
@@ -126,10 +156,24 @@ public class Usuarios implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.full_name</code>.
+     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    /**
      * Getter for <code>ods_login.usuarios.rol_id</code>.
      */
     public Integer getRolId() {
         return this.rolId;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.rol_id</code>.
+     */
+    public void setRolId(Integer rolId) {
+        this.rolId = rolId;
     }
 
     /**
@@ -140,10 +184,24 @@ public class Usuarios implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.sede_id</code>.
+     */
+    public void setSedeId(Integer sedeId) {
+        this.sedeId = sedeId;
+    }
+
+    /**
      * Getter for <code>ods_login.usuarios.is_active</code>.
      */
     public Byte getIsActive() {
         return this.isActive;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.is_active</code>.
+     */
+    public void setIsActive(Byte isActive) {
+        this.isActive = isActive;
     }
 
     /**
@@ -154,10 +212,24 @@ public class Usuarios implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.email_verificado</code>.
+     */
+    public void setEmailVerificado(Byte emailVerificado) {
+        this.emailVerificado = emailVerificado;
+    }
+
+    /**
      * Getter for <code>ods_login.usuarios.ultimo_login</code>.
      */
     public LocalDateTime getUltimoLogin() {
         return this.ultimoLogin;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.ultimo_login</code>.
+     */
+    public void setUltimoLogin(LocalDateTime ultimoLogin) {
+        this.ultimoLogin = ultimoLogin;
     }
 
     /**
@@ -168,10 +240,24 @@ public class Usuarios implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.intentos_fallidos</code>.
+     */
+    public void setIntentosFallidos(UByte intentosFallidos) {
+        this.intentosFallidos = intentosFallidos;
+    }
+
+    /**
      * Getter for <code>ods_login.usuarios.bloqueado_hasta</code>.
      */
     public LocalDateTime getBloqueadoHasta() {
         return this.bloqueadoHasta;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.bloqueado_hasta</code>.
+     */
+    public void setBloqueadoHasta(LocalDateTime bloqueadoHasta) {
+        this.bloqueadoHasta = bloqueadoHasta;
     }
 
     /**
@@ -182,10 +268,24 @@ public class Usuarios implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.token_recuperacion</code>.
+     */
+    public void setTokenRecuperacion(String tokenRecuperacion) {
+        this.tokenRecuperacion = tokenRecuperacion;
+    }
+
+    /**
      * Getter for <code>ods_login.usuarios.token_expira</code>.
      */
     public LocalDateTime getTokenExpira() {
         return this.tokenExpira;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.token_expira</code>.
+     */
+    public void setTokenExpira(LocalDateTime tokenExpira) {
+        this.tokenExpira = tokenExpira;
     }
 
     /**
@@ -196,10 +296,24 @@ public class Usuarios implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
      * Getter for <code>ods_login.usuarios.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

@@ -16,10 +16,12 @@ public class Sedes implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final String nombre;
-    private final String descripcion;
-    private final LocalDateTime createdAt;
+    private Integer id;
+    private String nombre;
+    private String descripcion;
+    private LocalDateTime createdAt;
+
+    public Sedes() {}
 
     public Sedes(Sedes value) {
         this.id = value.id;
@@ -48,10 +50,24 @@ public class Sedes implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.sedes.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods_login.sedes.nombre</code>.
      */
     public String getNombre() {
         return this.nombre;
+    }
+
+    /**
+     * Setter for <code>ods_login.sedes.nombre</code>.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     /**
@@ -62,10 +78,24 @@ public class Sedes implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.sedes.descripcion</code>.
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    /**
      * Getter for <code>ods_login.sedes.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
+    }
+
+    /**
+     * Setter for <code>ods_login.sedes.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

@@ -16,13 +16,15 @@ public class VistaAdminAuditoriaReciente implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final String tablaAfectada;
-    private final Integer registroId;
-    private final String accion;
-    private final String usuario;
-    private final LocalDateTime fechaCambio;
-    private final String ipAddress;
+    private Integer id;
+    private String tablaAfectada;
+    private Integer registroId;
+    private String accion;
+    private String usuario;
+    private LocalDateTime fechaCambio;
+    private String ipAddress;
+
+    public VistaAdminAuditoriaReciente() {}
 
     public VistaAdminAuditoriaReciente(VistaAdminAuditoriaReciente value) {
         this.id = value.id;
@@ -60,11 +62,26 @@ public class VistaAdminAuditoriaReciente implements Serializable {
     }
 
     /**
+     * Setter for <code>ods06.vista_admin_auditoria_reciente.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for
      * <code>ods06.vista_admin_auditoria_reciente.tabla_afectada</code>.
      */
     public String getTablaAfectada() {
         return this.tablaAfectada;
+    }
+
+    /**
+     * Setter for
+     * <code>ods06.vista_admin_auditoria_reciente.tabla_afectada</code>.
+     */
+    public void setTablaAfectada(String tablaAfectada) {
+        this.tablaAfectada = tablaAfectada;
     }
 
     /**
@@ -75,6 +92,13 @@ public class VistaAdminAuditoriaReciente implements Serializable {
     }
 
     /**
+     * Setter for <code>ods06.vista_admin_auditoria_reciente.registro_id</code>.
+     */
+    public void setRegistroId(Integer registroId) {
+        this.registroId = registroId;
+    }
+
+    /**
      * Getter for <code>ods06.vista_admin_auditoria_reciente.accion</code>.
      */
     public String getAccion() {
@@ -82,10 +106,24 @@ public class VistaAdminAuditoriaReciente implements Serializable {
     }
 
     /**
+     * Setter for <code>ods06.vista_admin_auditoria_reciente.accion</code>.
+     */
+    public void setAccion(String accion) {
+        this.accion = accion;
+    }
+
+    /**
      * Getter for <code>ods06.vista_admin_auditoria_reciente.usuario</code>.
      */
     public String getUsuario() {
         return this.usuario;
+    }
+
+    /**
+     * Setter for <code>ods06.vista_admin_auditoria_reciente.usuario</code>.
+     */
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     /**
@@ -97,10 +135,25 @@ public class VistaAdminAuditoriaReciente implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods06.vista_admin_auditoria_reciente.fecha_cambio</code>.
+     */
+    public void setFechaCambio(LocalDateTime fechaCambio) {
+        this.fechaCambio = fechaCambio;
+    }
+
+    /**
      * Getter for <code>ods06.vista_admin_auditoria_reciente.ip_address</code>.
      */
     public String getIpAddress() {
         return this.ipAddress;
+    }
+
+    /**
+     * Setter for <code>ods06.vista_admin_auditoria_reciente.ip_address</code>.
+     */
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     @Override

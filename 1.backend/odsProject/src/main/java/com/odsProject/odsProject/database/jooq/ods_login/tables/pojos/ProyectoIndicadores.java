@@ -18,16 +18,18 @@ public class ProyectoIndicadores implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final Integer proyectoId;
-    private final Integer indicadorMasterId;
-    private final String formulaCustom;
-    private final BigDecimal valorActual;
-    private final BigDecimal metaValor;
-    private final String metaUnidad;
-    private final LocalDate fechaProximaMedicion;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private Integer id;
+    private Integer proyectoId;
+    private Integer indicadorMasterId;
+    private String formulaCustom;
+    private BigDecimal valorActual;
+    private BigDecimal metaValor;
+    private String metaUnidad;
+    private LocalDate fechaProximaMedicion;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public ProyectoIndicadores() {}
 
     public ProyectoIndicadores(ProyectoIndicadores value) {
         this.id = value.id;
@@ -74,10 +76,24 @@ public class ProyectoIndicadores implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyecto_indicadores.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods_login.proyecto_indicadores.proyecto_id</code>.
      */
     public Integer getProyectoId() {
         return this.proyectoId;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyecto_indicadores.proyecto_id</code>.
+     */
+    public void setProyectoId(Integer proyectoId) {
+        this.proyectoId = proyectoId;
     }
 
     /**
@@ -89,10 +105,25 @@ public class ProyectoIndicadores implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.proyecto_indicadores.indicador_master_id</code>.
+     */
+    public void setIndicadorMasterId(Integer indicadorMasterId) {
+        this.indicadorMasterId = indicadorMasterId;
+    }
+
+    /**
      * Getter for <code>ods_login.proyecto_indicadores.formula_custom</code>.
      */
     public String getFormulaCustom() {
         return this.formulaCustom;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyecto_indicadores.formula_custom</code>.
+     */
+    public void setFormulaCustom(String formulaCustom) {
+        this.formulaCustom = formulaCustom;
     }
 
     /**
@@ -103,6 +134,13 @@ public class ProyectoIndicadores implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyecto_indicadores.valor_actual</code>.
+     */
+    public void setValorActual(BigDecimal valorActual) {
+        this.valorActual = valorActual;
+    }
+
+    /**
      * Getter for <code>ods_login.proyecto_indicadores.meta_valor</code>.
      */
     public BigDecimal getMetaValor() {
@@ -110,10 +148,24 @@ public class ProyectoIndicadores implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyecto_indicadores.meta_valor</code>.
+     */
+    public void setMetaValor(BigDecimal metaValor) {
+        this.metaValor = metaValor;
+    }
+
+    /**
      * Getter for <code>ods_login.proyecto_indicadores.meta_unidad</code>.
      */
     public String getMetaUnidad() {
         return this.metaUnidad;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyecto_indicadores.meta_unidad</code>.
+     */
+    public void setMetaUnidad(String metaUnidad) {
+        this.metaUnidad = metaUnidad;
     }
 
     /**
@@ -125,6 +177,14 @@ public class ProyectoIndicadores implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.proyecto_indicadores.fecha_proxima_medicion</code>.
+     */
+    public void setFechaProximaMedicion(LocalDate fechaProximaMedicion) {
+        this.fechaProximaMedicion = fechaProximaMedicion;
+    }
+
+    /**
      * Getter for <code>ods_login.proyecto_indicadores.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
@@ -132,10 +192,24 @@ public class ProyectoIndicadores implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.proyecto_indicadores.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
      * Getter for <code>ods_login.proyecto_indicadores.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    /**
+     * Setter for <code>ods_login.proyecto_indicadores.updated_at</code>.
+     */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

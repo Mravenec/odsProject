@@ -16,10 +16,12 @@ public class Roles implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final String nombre;
-    private final String descripcion;
-    private final LocalDateTime createdAt;
+    private Integer id;
+    private String nombre;
+    private String descripcion;
+    private LocalDateTime createdAt;
+
+    public Roles() {}
 
     public Roles(Roles value) {
         this.id = value.id;
@@ -48,10 +50,24 @@ public class Roles implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.roles.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods_login.roles.nombre</code>.
      */
     public String getNombre() {
         return this.nombre;
+    }
+
+    /**
+     * Setter for <code>ods_login.roles.nombre</code>.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     /**
@@ -62,10 +78,24 @@ public class Roles implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.roles.descripcion</code>.
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    /**
      * Getter for <code>ods_login.roles.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
+    }
+
+    /**
+     * Setter for <code>ods_login.roles.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

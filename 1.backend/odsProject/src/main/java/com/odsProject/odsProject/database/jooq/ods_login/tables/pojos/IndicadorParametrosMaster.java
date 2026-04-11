@@ -17,11 +17,13 @@ public class IndicadorParametrosMaster implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final Integer indicadorId;
-    private final String nombreParametro;
-    private final String descripcionParam;
-    private final IndicadorParametrosMasterTipoDato tipoDato;
+    private Integer id;
+    private Integer indicadorId;
+    private String nombreParametro;
+    private String descripcionParam;
+    private IndicadorParametrosMasterTipoDato tipoDato;
+
+    public IndicadorParametrosMaster() {}
 
     public IndicadorParametrosMaster(IndicadorParametrosMaster value) {
         this.id = value.id;
@@ -53,11 +55,26 @@ public class IndicadorParametrosMaster implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.indicador_parametros_master.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for
      * <code>ods_login.indicador_parametros_master.indicador_id</code>.
      */
     public Integer getIndicadorId() {
         return this.indicadorId;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_login.indicador_parametros_master.indicador_id</code>.
+     */
+    public void setIndicadorId(Integer indicadorId) {
+        this.indicadorId = indicadorId;
     }
 
     /**
@@ -69,6 +86,14 @@ public class IndicadorParametrosMaster implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.indicador_parametros_master.nombre_parametro</code>.
+     */
+    public void setNombreParametro(String nombreParametro) {
+        this.nombreParametro = nombreParametro;
+    }
+
+    /**
      * Getter for
      * <code>ods_login.indicador_parametros_master.descripcion_param</code>.
      */
@@ -77,10 +102,25 @@ public class IndicadorParametrosMaster implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods_login.indicador_parametros_master.descripcion_param</code>.
+     */
+    public void setDescripcionParam(String descripcionParam) {
+        this.descripcionParam = descripcionParam;
+    }
+
+    /**
      * Getter for <code>ods_login.indicador_parametros_master.tipo_dato</code>.
      */
     public IndicadorParametrosMasterTipoDato getTipoDato() {
         return this.tipoDato;
+    }
+
+    /**
+     * Setter for <code>ods_login.indicador_parametros_master.tipo_dato</code>.
+     */
+    public void setTipoDato(IndicadorParametrosMasterTipoDato tipoDato) {
+        this.tipoDato = tipoDato;
     }
 
     @Override

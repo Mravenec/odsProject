@@ -18,14 +18,16 @@ public class IndicadorMaster implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer id;
-    private final UByte odsId;
-    private final String codigo;
-    private final String nombre;
-    private final String descripcion;
-    private final String formulaDefault;
-    private final String unidadMedidaDefault;
-    private final LocalDateTime createdAt;
+    private Integer id;
+    private UByte odsId;
+    private String codigo;
+    private String nombre;
+    private String descripcion;
+    private String formulaDefault;
+    private String unidadMedidaDefault;
+    private LocalDateTime createdAt;
+
+    public IndicadorMaster() {}
 
     public IndicadorMaster(IndicadorMaster value) {
         this.id = value.id;
@@ -66,10 +68,24 @@ public class IndicadorMaster implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.indicador_master.id</code>.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for <code>ods_login.indicador_master.ods_id</code>.
      */
     public UByte getOdsId() {
         return this.odsId;
+    }
+
+    /**
+     * Setter for <code>ods_login.indicador_master.ods_id</code>.
+     */
+    public void setOdsId(UByte odsId) {
+        this.odsId = odsId;
     }
 
     /**
@@ -80,10 +96,24 @@ public class IndicadorMaster implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.indicador_master.codigo</code>.
+     */
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    /**
      * Getter for <code>ods_login.indicador_master.nombre</code>.
      */
     public String getNombre() {
         return this.nombre;
+    }
+
+    /**
+     * Setter for <code>ods_login.indicador_master.nombre</code>.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     /**
@@ -94,10 +124,24 @@ public class IndicadorMaster implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.indicador_master.descripcion</code>.
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    /**
      * Getter for <code>ods_login.indicador_master.formula_default</code>.
      */
     public String getFormulaDefault() {
         return this.formulaDefault;
+    }
+
+    /**
+     * Setter for <code>ods_login.indicador_master.formula_default</code>.
+     */
+    public void setFormulaDefault(String formulaDefault) {
+        this.formulaDefault = formulaDefault;
     }
 
     /**
@@ -108,10 +152,24 @@ public class IndicadorMaster implements Serializable {
     }
 
     /**
+     * Setter for <code>ods_login.indicador_master.unidad_medida_default</code>.
+     */
+    public void setUnidadMedidaDefault(String unidadMedidaDefault) {
+        this.unidadMedidaDefault = unidadMedidaDefault;
+    }
+
+    /**
      * Getter for <code>ods_login.indicador_master.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
+    }
+
+    /**
+     * Setter for <code>ods_login.indicador_master.created_at</code>.
+     */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

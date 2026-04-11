@@ -17,18 +17,20 @@ public class VistaAdminDetalleIndicadores implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer proyectoId;
-    private final String nombreProyecto;
-    private final Integer indicadorMasterId;
-    private final String indicadorCodigo;
-    private final String indicadorNombre;
-    private final String formulaCustom;
-    private final BigDecimal valorActual;
-    private final BigDecimal metaValor;
-    private final String metaUnidad;
-    private final String estadoIndicador;
-    private final BigDecimal porcentajeLogro;
-    private final LocalDateTime ultimaActualizacion;
+    private Integer proyectoId;
+    private String nombreProyecto;
+    private Integer indicadorMasterId;
+    private String indicadorCodigo;
+    private String indicadorNombre;
+    private String formulaCustom;
+    private BigDecimal valorActual;
+    private BigDecimal metaValor;
+    private String metaUnidad;
+    private String estadoIndicador;
+    private BigDecimal porcentajeLogro;
+    private LocalDateTime ultimaActualizacion;
+
+    public VistaAdminDetalleIndicadores() {}
 
     public VistaAdminDetalleIndicadores(VistaAdminDetalleIndicadores value) {
         this.proyectoId = value.proyectoId;
@@ -82,11 +84,27 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.proyecto_id</code>.
+     */
+    public void setProyectoId(Integer proyectoId) {
+        this.proyectoId = proyectoId;
+    }
+
+    /**
      * Getter for
      * <code>ods04.vista_admin_detalle_indicadores.nombre_proyecto</code>.
      */
     public String getNombreProyecto() {
         return this.nombreProyecto;
+    }
+
+    /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.nombre_proyecto</code>.
+     */
+    public void setNombreProyecto(String nombreProyecto) {
+        this.nombreProyecto = nombreProyecto;
     }
 
     /**
@@ -98,11 +116,27 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.indicador_master_id</code>.
+     */
+    public void setIndicadorMasterId(Integer indicadorMasterId) {
+        this.indicadorMasterId = indicadorMasterId;
+    }
+
+    /**
      * Getter for
      * <code>ods04.vista_admin_detalle_indicadores.indicador_codigo</code>.
      */
     public String getIndicadorCodigo() {
         return this.indicadorCodigo;
+    }
+
+    /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.indicador_codigo</code>.
+     */
+    public void setIndicadorCodigo(String indicadorCodigo) {
+        this.indicadorCodigo = indicadorCodigo;
     }
 
     /**
@@ -114,11 +148,27 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.indicador_nombre</code>.
+     */
+    public void setIndicadorNombre(String indicadorNombre) {
+        this.indicadorNombre = indicadorNombre;
+    }
+
+    /**
      * Getter for
      * <code>ods04.vista_admin_detalle_indicadores.formula_custom</code>.
      */
     public String getFormulaCustom() {
         return this.formulaCustom;
+    }
+
+    /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.formula_custom</code>.
+     */
+    public void setFormulaCustom(String formulaCustom) {
+        this.formulaCustom = formulaCustom;
     }
 
     /**
@@ -130,10 +180,25 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.valor_actual</code>.
+     */
+    public void setValorActual(BigDecimal valorActual) {
+        this.valorActual = valorActual;
+    }
+
+    /**
      * Getter for <code>ods04.vista_admin_detalle_indicadores.meta_valor</code>.
      */
     public BigDecimal getMetaValor() {
         return this.metaValor;
+    }
+
+    /**
+     * Setter for <code>ods04.vista_admin_detalle_indicadores.meta_valor</code>.
+     */
+    public void setMetaValor(BigDecimal metaValor) {
+        this.metaValor = metaValor;
     }
 
     /**
@@ -145,11 +210,27 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.meta_unidad</code>.
+     */
+    public void setMetaUnidad(String metaUnidad) {
+        this.metaUnidad = metaUnidad;
+    }
+
+    /**
      * Getter for
      * <code>ods04.vista_admin_detalle_indicadores.estado_indicador</code>.
      */
     public String getEstadoIndicador() {
         return this.estadoIndicador;
+    }
+
+    /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.estado_indicador</code>.
+     */
+    public void setEstadoIndicador(String estadoIndicador) {
+        this.estadoIndicador = estadoIndicador;
     }
 
     /**
@@ -161,11 +242,27 @@ public class VistaAdminDetalleIndicadores implements Serializable {
     }
 
     /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.porcentaje_logro</code>.
+     */
+    public void setPorcentajeLogro(BigDecimal porcentajeLogro) {
+        this.porcentajeLogro = porcentajeLogro;
+    }
+
+    /**
      * Getter for
      * <code>ods04.vista_admin_detalle_indicadores.ultima_actualizacion</code>.
      */
     public LocalDateTime getUltimaActualizacion() {
         return this.ultimaActualizacion;
+    }
+
+    /**
+     * Setter for
+     * <code>ods04.vista_admin_detalle_indicadores.ultima_actualizacion</code>.
+     */
+    public void setUltimaActualizacion(LocalDateTime ultimaActualizacion) {
+        this.ultimaActualizacion = ultimaActualizacion;
     }
 
     @Override
