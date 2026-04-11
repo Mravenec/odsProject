@@ -5,15 +5,11 @@ import api from './api';
  * Implementa la carga dinámica de indicadores desde la base de datos.
  */
 export const objetivo11Service = {
-  /**
-   * Obtener todos los indicadores enriquecidos para un proyecto en el ODS 11
-   * @param {number} proyectoId ID del proyecto
-   * @returns {Object} Mapa de indicadores indexados por código
-   */
+  // Obtener todos los indicadores de un proyecto (VistaAdminDetalleIndicadores)
   getIndicators: async (proyectoId) => {
     try {
-      if (!proyectoId) throw new Error('proyectoId is required');
-      const response = await api.get(`/ods/11/base-indicadores`, { params: { proyectoId } });
+      if (proyectoId === undefined) throw new Error('proyectoId is required');
+      const response = await api.get(`/ods/11/indicadores`, { params: { proyectoId } });
       const indicators = response.data || [];
       
       return indicators.reduce((acc, ind) => {
@@ -21,8 +17,6 @@ export const objetivo11Service = {
         if (!code) return acc;
 
         acc[code] = {
-          id: ind.id,
-          masterId: ind.indicadorMasterId,
           code: code,
           name: ind.indicadorNombre,
           currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
@@ -40,12 +34,10 @@ export const objetivo11Service = {
     }
   },
 
-  /**
-   * Obtiene estadísticas generales del ODS 11
-   */
+  // Estadísticas del ODS 11
   getStatistics: async () => {
     try {
-      const response = await api.get(`/ods/11/base-estadisticas`);
+      const response = await api.get(`/ods/11/estadisticas`);
       return response.data || {};
     } catch (error) {
       console.error('Error fetching ODS 11 statistics:', error);

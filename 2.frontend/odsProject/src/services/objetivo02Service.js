@@ -2,11 +2,11 @@ import api from './api';
 // Mock service for ODS Objective 2 - Hambre Cero
 // Based on official SDG indicators from Global Indicator Framework
 export const objetivo02Service = {
-  // Obtener todos los indicadores de un proyecto (Base-Indicadores)
+  // Obtener todos los indicadores de un proyecto (VistaAdminDetalleIndicadores)
   getIndicators: async (proyectoId) => {
     try {
-      if (!proyectoId) throw new Error('proyectoId is required');
-      const response = await api.get(`/ods/02/base-indicadores`, { params: { proyectoId } });
+      if (proyectoId === undefined) throw new Error('proyectoId is required');
+      const response = await api.get(`/ods/02/indicadores`, { params: { proyectoId } });
       const indicators = response.data || [];
       
       return indicators.reduce((acc, ind) => {
@@ -14,8 +14,6 @@ export const objetivo02Service = {
         if (!code) return acc;
 
         acc[code] = {
-          id: ind.id,
-          masterId: ind.indicadorMasterId,
           code: code,
           name: ind.indicadorNombre,
           currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
@@ -36,7 +34,7 @@ export const objetivo02Service = {
   // Estadísticas del ODS 02
   getStatistics: async () => {
     try {
-      const response = await api.get(`/ods/02/base-estadisticas`);
+      const response = await api.get(`/ods/02/estadisticas`);
       return response.data || {};
     } catch (error) {
       console.error('Error fetching ODS 02 statistics:', error);

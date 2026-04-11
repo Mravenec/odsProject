@@ -10,8 +10,8 @@ export const useObjetivo05 = (proyectoId) => {
   const [indicators, setIndicators] = useState({});
   const [stats, setStats] = useState({
     totalProyectos: 0,
-    totalUsuarios: 0,
-    progresoGlobal: 0
+    totalIndicadores: 0,
+    indicadoresConDatos: 0
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

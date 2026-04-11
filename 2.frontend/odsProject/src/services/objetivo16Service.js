@@ -5,15 +5,11 @@ import api from './api';
  * Implementa la carga dinámica de indicadores desde la base de datos.
  */
 export const objetivo16Service = {
-  /**
-   * Obtener todos los indicadores enriquecidos para un proyecto en el ODS 16
-   * @param {number} proyectoId ID del proyecto
-   * @returns {Object} Mapa de indicadores indexados por código
-   */
+  // Obtener todos los indicadores de un proyecto (VistaAdminDetalleIndicadores)
   getIndicators: async (proyectoId) => {
     try {
-      if (!proyectoId) throw new Error('proyectoId is required');
-      const response = await api.get(`/ods/16/base-indicadores`, { params: { proyectoId } });
+      if (proyectoId === undefined) throw new Error('proyectoId is required');
+      const response = await api.get(`/ods/16/indicadores`, { params: { proyectoId } });
       const indicators = response.data || [];
       
       return indicators.reduce((acc, ind) => {
@@ -21,8 +17,6 @@ export const objetivo16Service = {
         if (!code) return acc;
 
         acc[code] = {
-          id: ind.id,
-          masterId: ind.indicadorMasterId,
           code: code,
           name: ind.indicadorNombre,
           currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
@@ -40,12 +34,10 @@ export const objetivo16Service = {
     }
   },
 
-  /**
-   * Obtiene estadísticas generales del ODS 16
-   */
+  // Estadísticas del ODS 16
   getStatistics: async () => {
     try {
-      const response = await api.get(`/ods/16/base-estadisticas`);
+      const response = await api.get(`/ods/16/estadisticas`);
       return response.data || {};
     } catch (error) {
       console.error('Error fetching ODS 16 statistics:', error);

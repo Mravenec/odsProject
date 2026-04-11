@@ -2,11 +2,11 @@ import api from './api';
 // Mock service for ODS Objective 1 - Fin de la Pobreza
 // Based on official SDG indicators from Global Indicator Framework
 export const objetivo01Service = {
-  // Obtener todos los indicadores de un proyecto (Base-Indicadores)
+  // Obtener todos los indicadores de un proyecto (VistaAdminDetalleIndicadores)
   getIndicators: async (proyectoId) => {
     try {
-      if (!proyectoId) throw new Error('proyectoId is required');
-      const response = await api.get(`/ods/01/base-indicadores`, { params: { proyectoId } });
+      if (proyectoId === undefined) throw new Error('proyectoId is required');
+      const response = await api.get(`/ods/01/indicadores`, { params: { proyectoId } });
       const indicators = response.data || [];
       
       // Mapeo a objeto indexado por código de indicador para consistencia en la UI
@@ -15,8 +15,6 @@ export const objetivo01Service = {
         if (!code) return acc;
 
         acc[code] = {
-          id: ind.id, // ID en proyecto_indicadores (puede ser null si no está registrado)
-          masterId: ind.indicadorMasterId,
           code: code,
           name: ind.indicadorNombre,
           currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
@@ -37,7 +35,7 @@ export const objetivo01Service = {
   // Estadísticas del ODS 01
   getStatistics: async () => {
     try {
-      const response = await api.get(`/ods/01/base-estadisticas`);
+      const response = await api.get(`/ods/01/estadisticas`);
       return response.data || {};
     } catch (error) {
       console.error('Error fetching ODS 01 statistics:', error);

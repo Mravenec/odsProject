@@ -2,23 +2,26 @@ import api from './api';
 // Mock service for ODS Objective 9 - Industria, Innovación e Infraestructura
 // Based on official SDG indicators from Global Indicator Framework
 export const objetivo09Service = {
-  // Obtener todos los indicadores de un proyecto (Base-Indicadores)
+  // Obtener todos los indicadores de un proyecto (VistaAdminDetalleIndicadores)
   getIndicators: async (proyectoId) => {
     try {
-      if (!proyectoId) throw new Error('proyectoId is required');
-      const response = await api.get(`/ods/09/base-indicadores`, { params: { proyectoId } });
+      if (proyectoId === undefined) throw new Error('proyectoId is required');
+      const response = await api.get(`/ods/09/indicadores`, { params: { proyectoId } });
       const indicators = response.data || [];
       
       return indicators.reduce((acc, ind) => {
-        const id = ind.indicadorMasterId || ind.id;
-        acc[id] = {
-          id: ind.id,
-          masterId: ind.indicadorMasterId,
-          code: ind.codigo || `9.${id}`,
-          currentValue: ind.valorActual !== undefined ? ind.valorActual : 0,
+        const code = ind.indicadorCodigo;
+        if (!code) return acc;
+
+        acc[code] = {
+          code: code,
+          name: ind.indicadorNombre,
+          currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
           targetValue: ind.metaValor || 0,
           unit: ind.metaUnidad || 'unidad',
-          updatedAt: ind.updatedAt
+          formula: ind.formulaCustom || '',
+          updatedAt: ind.ultimaActualizacion,
+          hasData: ind.valorActual !== null
         };
         return acc;
       }, {});
@@ -31,7 +34,7 @@ export const objetivo09Service = {
   // Estadísticas del ODS 09
   getStatistics: async () => {
     try {
-      const response = await api.get(`/ods/09/base-estadisticas`);
+      const response = await api.get(`/ods/09/estadisticas`);
       return response.data || {};
     } catch (error) {
       console.error('Error fetching ODS 09 statistics:', error);
