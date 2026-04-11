@@ -2,10 +2,12 @@ package com.odsProject.odsProject.controller.interfaces;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.AuditoriaOds16;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,11 +17,12 @@ import java.util.Optional;
  */
 @RequestMapping("/api/ods/16")
 public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
-    ProyectoIndicadores,
-    Proyectos,
-    ProyectoIndicadorParametros,
-    MedicionesHistoricas,
-    Object
+    VistaAdminDetalleIndicadores, // T - Lectura (Enriquecida)
+    ProyectoIndicadores,          // E - Escritura (Tabla)
+    Proyectos,                    // P - Proyectos
+    ProyectoIndicadorParametros,  // M - Metas
+    MedicionesHistoricas,         // MH - Mediciones
+    AuditoriaOds16                // A - Auditoria
 > {
     
     /**
@@ -28,7 +31,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores
      */
-    ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(Integer proyectoId);
+    ResponseEntity<List<VistaAdminDetalleIndicadores>> getAllIndicators(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.1.1
@@ -37,7 +40,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.1.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_1_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.1.2
@@ -46,7 +49,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.1.2
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_1_2(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_1_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.1.3
@@ -55,7 +58,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.1.3
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_1_3(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_1_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.1.4
@@ -64,7 +67,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.1.4
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_1_4(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_1_4(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.2.1
@@ -73,7 +76,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.2.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_2_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_2_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.2.2
@@ -82,7 +85,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.2.2
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_2_2(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_2_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.2.3
@@ -91,7 +94,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.2.3
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_2_3(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_2_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.3.1
@@ -100,7 +103,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.3.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_3_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_3_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.3.2
@@ -109,7 +112,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.3.2
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_3_2(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_3_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.3.3
@@ -118,7 +121,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.3.3
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_3_3(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_3_3(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.4.1
@@ -127,7 +130,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.4.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_4_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_4_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.4.2
@@ -136,7 +139,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.4.2
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_4_2(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_4_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.5.1
@@ -145,7 +148,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.5.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_5_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_5_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.5.2
@@ -154,7 +157,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.5.2
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_5_2(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_5_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.6.1
@@ -163,7 +166,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.6.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_6_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_6_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.6.2
@@ -172,7 +175,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.6.2
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_6_2(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_6_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.7.1
@@ -181,7 +184,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.7.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_7_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_7_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.7.2
@@ -190,7 +193,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.7.2
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_7_2(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_7_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.8.1
@@ -199,7 +202,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.8.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_8_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_8_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.9.1
@@ -208,7 +211,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.9.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_9_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_9_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.10.1
@@ -217,7 +220,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.10.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_10_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_10_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.10.2
@@ -226,7 +229,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.10.2
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_10_2(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_10_2(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.a.1
@@ -235,7 +238,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.a.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_a_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_a_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 16.b.1
@@ -244,7 +247,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 16.b.1
      */
-    ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_16_b_1(Integer proyectoId);
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_16_b_1(Integer proyectoId);
     
     /**
      * Encuentra todos los indicadores asociados a un proyecto específico del ODS16
@@ -252,7 +255,7 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con la lista de todos los indicadores del proyecto
      */
-    ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds16(Integer proyectoId);
+    ResponseEntity<List<VistaAdminDetalleIndicadores>> findAllIndicadoresByProyectoOds16(Integer proyectoId);
     
     /**
      * Encuentra indicadores filtrando por meta específica del ODS16
@@ -261,5 +264,5 @@ public interface IObjetivo16PazJusticiaController extends IOdsBaseController<
      * @param metaPrefix Prefijo de la meta (ej: "16.1", "16.2")
      * @return ResponseEntity con la lista de indicadores que pertenecen a la meta especificada
      */
-    ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    ResponseEntity<List<VistaAdminDetalleIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
 }

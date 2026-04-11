@@ -7,13 +7,14 @@ import java.util.Optional;
 /**
  * Interfaz base para repositorios ODS usando jOOQ
  * Define los métodos comunes CRUD y consultas específicas ODS
- * @param <T> Tipo de entidad principal (ProyectoIndicadores)
+ * @param <T> Tipo de entidad de LECTURA (Enriquecida, ej: VistaAdminDetalleIndicadores)
+ * @param <E> Tipo de entidad de ESCRITURA (Tabla física, ej: ProyectoIndicadores)
  * @param <P> Tipo de entidad Proyectos
  * @param <M> Tipo de entidad ProyectoIndicadorParametros
  * @param <MH> Tipo de entidad MedicionesHistoricas
  * @param <A> Tipo de entidad Auditoria
  */
-public interface IOdsBaseRepository<T, P, M, MH, A> {
+public interface IOdsBaseRepository<T, E, P, M, MH, A> {
     
     // ── Proyectos ──
     
@@ -77,9 +78,19 @@ public interface IOdsBaseRepository<T, P, M, MH, A> {
      * Encuentra todos los indicadores asociados a un proyecto específico
      * 
      * @param proyectoId ID del proyecto
-     * @return Lista de indicadores del proyecto
+     * @return Lista de indicadores del proyecto (Enriquecidos)
      */
     List<T> findIndicadoresByProyecto(Integer proyectoId);
+    
+    /**
+     * Busca un indicador por su ID único
+     * 
+     * @param id ID del indicador a buscar
+     * @return Optional con el indicador encontrado o vacío si no existe
+     */
+    default Optional<T> findIndicadorById(Integer id) {
+        return Optional.empty();
+    }
     
     /**
      * Busca un indicador específico por proyecto y código
@@ -101,18 +112,18 @@ public interface IOdsBaseRepository<T, P, M, MH, A> {
     /**
      * Guarda un nuevo indicador en el sistema
      * 
-     * @param indicador Indicador a guardar
+     * @param indicador Indicador a guardar (Entidad de tabla)
      * @return Indicador guardado con ID asignado
      */
-    T saveIndicador(T indicador);
+    E saveIndicador(E indicador);
     
     /**
      * Actualiza un indicador existente
      * 
-     * @param indicador Indicador con datos actualizados
+     * @param indicador Indicador con datos actualizados (Entidad de tabla)
      * @return Indicador actualizado
      */
-    T updateIndicador(T indicador);
+    E updateIndicador(E indicador);
     
     // ── Metas ──
     
@@ -185,4 +196,75 @@ public interface IOdsBaseRepository<T, P, M, MH, A> {
      * @return Map con los datos del reporte del proyecto
      */
     Map<String, Object> spAdminReporteProyecto(Integer proyectoId);
+    
+    /**
+     * Elimina un indicador por su ID
+     * 
+     * @param id ID del indicador a eliminar
+     */
+    void deleteIndicador(Integer id);
+    
+    /**
+     * Actualiza una meta de proyecto
+     * 
+     * @param meta Meta con datos actualizados
+     * @return Meta actualizada
+     */
+    M updateMetaProyecto(M meta);
+    
+    /**
+     * Elimina una meta de proyecto por su ID
+     * 
+     * @param id ID de la meta a eliminar
+     */
+    void deleteMetaProyecto(Integer id);
+    
+    /**
+     * Actualiza una medición histórica
+     * 
+     * @param medicion Medición con datos actualizados
+     * @return Medición actualizada
+     */
+    MH updateMedicionHistorica(MH medicion);
+    
+    /**
+     * Elimina una medición histórica por su ID
+     * 
+     * @param id ID de la medición a eliminar
+     */
+    void deleteMedicionHistorica(Integer id);
+
+    // ── Verificación de Existencia ──
+
+    /**
+     * Verifica si un proyecto existe por su ID
+     * 
+     * @param id ID del proyecto
+     * @return true si existe, false otherwise
+     */
+    Boolean existsProyecto(Integer id);
+
+    /**
+     * Verifica si un indicador existe por su ID
+     * 
+     * @param id ID del indicador
+     * @return true si existe, false otherwise
+     */
+    Boolean existsIndicador(Integer id);
+
+    /**
+     * Verifica si una meta de proyecto existe por su ID
+     * 
+     * @param id ID de la meta
+     * @return true si existe, false otherwise
+     */
+    Boolean existsMetaProyecto(Integer id);
+
+    /**
+     * Verifica si una medición histórica existe por su ID
+     * 
+     * @param id ID de la medición
+     * @return true si existe, false otherwise
+     */
+    Boolean existsMedicionHistorica(Integer id);
 }

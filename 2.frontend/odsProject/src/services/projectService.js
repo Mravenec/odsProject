@@ -51,7 +51,7 @@ export const projectService = {
     };
 
     try {
-      const response = await api.post(`/ods/${odsId}/proyectos`, backendData);
+      const response = await api.post(`/ods/${odsId}/proyecto`, backendData);
       return {
         success: true,
         data: this._mapBackendToFrontend(response.data, odsId)
@@ -61,21 +61,29 @@ export const projectService = {
     }
   },
 
-  async updateProjectResults(resultsData) {
-    // El frontend envía { projectId, finalValues }
-    // Asumimos ODS 1 para la búsqueda del proyecto inicial
-    const odsId = '01'; 
+  async updateProject(projectData, odsId) {
+    const formattedOdsId = String(odsId).padStart(2, '0');
     try {
-      // En un sistema real, primero buscaríamos el proyecto para saber su ODS
-      // Aquí simplificamos a ODS 1
-      const response = await api.put(`/ods/${odsId}/proyectos/${resultsData.projectId}`, {
+      const response = await api.put(`/ods/${formattedOdsId}/proyecto/${projectData.id}`, projectData);
+      return {
+        success: true,
+        data: this._mapBackendToFrontend(response.data, formattedOdsId)
+      };
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al actualizar el proyecto');
+    }
+  },
+
+  async updateProjectResults(resultsData, odsId = '01') {
+    const formattedOdsId = String(odsId).padStart(2, '0');
+    try {
+      const response = await api.put(`/ods/${formattedOdsId}/proyecto/${resultsData.projectId}`, {
         id: resultsData.projectId,
-        // Aquí el backend espera el objeto Proyecto completo
         estado: 'COMPLETADO'
       });
       return {
         success: true,
-        data: this._mapBackendToFrontend(response.data, odsId)
+        data: this._mapBackendToFrontend(response.data, formattedOdsId)
       };
     } catch (error) {
       throw new Error(error.message);
@@ -110,7 +118,7 @@ export const projectService = {
   async deleteProject(projectId, odsId = '01') {
     const formattedOdsId = String(odsId).padStart(2, '0');
     try {
-      await api.delete(`/ods/${formattedOdsId}/proyectos/${projectId}`);
+      await api.delete(`/ods/${formattedOdsId}/proyecto/${projectId}`);
       return { success: true };
     } catch (error) {
       throw new Error(error.message);

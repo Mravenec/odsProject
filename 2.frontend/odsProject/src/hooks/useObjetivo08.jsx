@@ -1,41 +1,55 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { objetivo08Service } from '../services/objetivo08Service';
 
-export const useObjetivo08 = () => {
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState({});
-  const [error, setError] = useState({});
+/**
+ * Smart Hook para ODS 08: Trabajo Decente y Crecimiento Económico
+ * @param {string|number} proyectoId - ID del proyecto a cargar
+ * @returns {Object} Variables reactivas con indicadores, estadísticas y estado de carga
+ */
+export const useObjetivo08 = (proyectoId) => {
+  const [indicators, setIndicators] = useState({});
+  const [stats, setStats] = useState({
+    totalProyectos: 0,
+    totalUsuarios: 0,
+    progresoGlobal: 0
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const fetchData = async (indicator) => {
-    setLoading(prev => ({ ...prev, [indicator]: true }));
-    setError(prev => ({ ...prev, [indicator]: null }));
+  const fetchData = useCallback(async () => {
+    if (!proyectoId) return;
+    
+    setLoading(true);
+    setError(null);
     
     try {
-      const methodName = `getIndicador_${indicator}`;
-      const result = await objetivo08Service[methodName]();
-      setData(prev => ({ ...prev, [indicator]: result }));
+      const [indicatorsData, statsData] = await Promise.all([
+        objetivo08Service.getIndicators(proyectoId),
+        objetivo08Service.getStatistics()
+      ]);
+      
+      setIndicators(indicatorsData);
+      setStats(prev => ({
+        ...prev,
+        ...statsData
+      }));
     } catch (err) {
-      setError(prev => ({ ...prev, [indicator]: err.message }));
+      console.error('[useObjetivo08] Error loading data:', err);
+      setError(err.message || 'Error al cargar datos del ODS 08');
     } finally {
-      setLoading(prev => ({ ...prev, [indicator]: false }));
+      setLoading(false);
     }
-  };
+  }, [proyectoId]);
 
-  const fetchAllData = async () => {
-    const indicators = [
-      '8_1_1', '8_2_1', '8_3_1', '8_4_1', '8_4_2', '8_5_1',
-      '8_5_2', '8_6_1', '8_7_1', '8_8_1', '8_8_2', '8_9_1',
-      '8_9_2', '8_10_1', '8_10_2', '8_a_1', '8_b_1'
-    ];
-
-    await Promise.all(indicators.map(indicator => fetchData(indicator)));
-  };
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return {
-    data,
+    indicators,
+    stats,
     loading,
     error,
-    fetchData,
-    fetchAllData
+    refetch: fetchData
   };
 };

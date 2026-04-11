@@ -1,85 +1,70 @@
 import api from './api';
 
 export const authService = {
-  // Función interna para unificar el mapeo del usuario (Híbrida y Ultra-Robusta)
-  _mapUser(data, defaultUsername = 'usuario') {
+  // Mapeo estricto basado en LoginController y login_system.sql
+  _mapUser(data) {
     if (!data) return null;
 
-    // 1. Identificar la fuente de datos (raíz o anidada)
-    // El backend puede enviar datos al root o dentro de .usuario / .user
-    const source = data.usuario || data.user || data;
+    // El backend retorna los datos directamente en el login o anidados en 'user' en validación
+    const source = data.user || data;
     
-    console.log('[AuthService] Mapeando usuario desde la fuente:', Object.keys(source));
-
-    // 2. Extraer el ID (campo crítico)
-    const id = source.userId || source.id || source.idUsuario || source.sub;
-
-    if (!id) {
-      console.error('[AuthService] Error Crítico: No se encontró ID en ninguna estructura conocida.', {
-        rootKeys: Object.keys(data),
-        sourceKeys: Object.keys(source)
-      });
-      return null; // Forzar fallo de guardia
-    }
-
-    // 3. Extraer el Rol
-    const role = source.role || source.rol || source.perfil || 
-                 (source.rolId === 1 ? 'admin' : source.rolId === 2 ? 'gestor' : 'user');
+    // Mapeo exacto de campos del backend
+    const id = source.userId || source.id;
+    if (!id) return null;
 
     return {
       id: id,
-      username: source.email || source.username || source.login || defaultUsername,
-      name: source.nombre || source.name || source.fullName || source.email || defaultUsername,
-      email: source.email || 'usuario@ods.cr',
-      role: role
+      username: source.username || source.email,
+      name: source.fullName || source.nombre || source.username,
+      email: source.email,
+      role: source.role || source.rol || (source.rolId === 1 ? 'admin' : 'gestor')
     };
   },
 
-  // Login real
+  // Login sincronizado con LoginController.java
   async login(credentials) {
     try {
       const response = await api.post('/login/auth/login', {
-        email: credentials.username,
+        email: credentials.username, // El backend espera 'email'
         password: credentials.password,
         ip: "127.0.0.1",
         userAgent: "React Frontend"
       });
       
-      console.log('[AuthService] Respuesta de login recibida:', Object.keys(response.data));
-
-      // Pasamos todo el response.data, _mapUser se encarga de buscar dentro
-      const user = this._mapUser(response.data, credentials.username);
-      const token = response.data.token || response.data.usuario?.token || response.data.user?.token;
+      const { data } = response;
+      const user = this._mapUser(data);
       
-      if (!user || !user.id) {
-        return { success: false, error: 'La respuesta del servidor no contiene datos de usuario válidos' };
+      if (!user) {
+        return { success: false, error: 'Respuesta de usuario inválida' };
       }
 
       return {
         success: true,
-        data: { user, token }
+        data: { 
+          user, 
+          token: data.token 
+        }
       };
     } catch (error) {
-      console.error('[AuthService] Error en login API:', error);
       return {
         success: false,
-        error: error.response?.data?.message || 'Error de comunicación con el servidor'
+        error: error.response?.data?.message || 'Credenciales incorrectas'
       };
     }
   },
 
-  // Verificación de token real
+  // Verificación de token real (Alineado con Backend: GET /login/auth/validate)
   async verifyToken(token) {
     try {
+      // El backend espera un GET con el token en la cabecera Authorization
       const response = await api.get('/login/auth/validate', {
         headers: {
-          'Authorization': token
+          'Authorization': token.startsWith('Bearer ') ? token : `Bearer ${token}`
         }
       });
 
-      console.log('[AuthService] Respuesta de validación recibida:', Object.keys(response.data));
+      console.log('[AuthService] Respuesta de validación recibida:', !!response.data);
 
-      // El endpoint de validación también puede retornar datos híbridos
       const user = this._mapUser(response.data);
       
       if (!user || !user.id) {
@@ -91,7 +76,7 @@ export const authService = {
         data: { user }
       };
     } catch (error) {
-      console.error('[AuthService] Error en validación de token:', error);
+      console.error('[AuthService] Error en validación de token:', error.response?.status, error.message);
       return { success: false, error: 'Token inválido' };
     }
   },

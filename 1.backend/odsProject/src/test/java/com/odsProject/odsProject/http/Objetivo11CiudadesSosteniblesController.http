@@ -3,15 +3,12 @@
 
 ### Variables
 @baseUrl = http://localhost:8080
-@proyectoId = 11
-@indicadorId = 11
-@metaId = 11
-@medicionId = 11
+@proyectoId = 1
+@indicadorId = 1
+@metaId = 1
+@medicionId = 1
 
-# ── Indicadores Específicos del ODS11 ──
-
-### Obtener todos los indicadores del ODS11
-GET {{baseUrl}}/api/ods/11/indicadores?proyectoId={{proyectoId}}
+# ── 1. Indicadores Específicos del ODS11 ──
 
 ### Obtener indicador 11.1.1
 GET {{baseUrl}}/api/ods/11/indicadores/11.1.1?proyectoId={{proyectoId}}
@@ -61,136 +58,23 @@ GET {{baseUrl}}/api/ods/11/indicadores/11.b.2?proyectoId={{proyectoId}}
 ### Obtener indicador 11.c.1
 GET {{baseUrl}}/api/ods/11/indicadores/11.c.1?proyectoId={{proyectoId}}
 
-### Obtener indicador 11.6.1
-GET {{baseUrl}}/api/ods/11/indicadores/11.6.1?proyectoId={{proyectoId}}
+# ── 2. Endpoints Estandarizados (IOdsBaseController) ──
 
-### Obtener indicador 11.6.2
-GET {{baseUrl}}/api/ods/11/indicadores/11.6.2?proyectoId={{proyectoId}}
+### Obtener todos los indicadores de un proyecto
+GET {{baseUrl}}/api/ods/11/indicadores?proyectoId={{proyectoId}}
 
-### Obtener indicador 11.7.1
-GET {{baseUrl}}/api/ods/11/indicadores/11.7.1?proyectoId={{proyectoId}}
+### Obtener un indicador específico por su ID interno
+GET {{baseUrl}}/api/ods/11/indicadores/{{indicadorId}}
 
-### Obtener indicador 11.7.2
-GET {{baseUrl}}/api/ods/11/indicadores/11.7.2?proyectoId={{proyectoId}}
-
-### Obtener indicador 11.a.1
-GET {{baseUrl}}/api/ods/11/indicadores/11.a.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 11.b.1
-GET {{baseUrl}}/api/ods/11/indicadores/11.b.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 11.b.2
-GET {{baseUrl}}/api/ods/11/indicadores/11.b.2?proyectoId={{proyectoId}}
-
-### Obtener indicador 11.c.1
-GET {{baseUrl}}/api/ods/11/indicadores/11.c.1?proyectoId={{proyectoId}}
-
-### Encontrar todos los indicadores por proyecto
-GET {{baseUrl}}/api/ods/11/indicadores/proyecto?proyectoId={{proyectoId}}
-
-### Encontrar indicadores por meta
-GET {{baseUrl}}/api/ods/11/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=11.1
-
-# ── Proyectos ──
-
-### Obtener todos los proyectos del ODS11
-GET {{baseUrl}}/api/ods/11/proyectos
-
-### Obtener proyecto por ID
-GET {{baseUrl}}/api/ods/11/proyectos/{{proyectoId}}
-
-### Obtener todas las metas de proyecto
-GET {{baseUrl}}/api/ods/11/proyectos/{{proyectoId}}/metas
-
-### Obtener meta por ID
-GET {{baseUrl}}/api/ods/11/metas/{{metaId}}
-
-### Obtener todas las mediciones históricas
-GET {{baseUrl}}/api/ods/11/indicadores/historicas/{{indicadorId}}
-
-### Obtener medición histórica por ID
-GET {{baseUrl}}/api/ods/11/mediciones/{{medicionId}}
-
-### Calcular progreso del proyecto
-GET {{baseUrl}}/api/ods/11/progreso/{{proyectoId}}
-
-### Obtener estadísticas del ODS11
-GET {{baseUrl}}/api/ods/11/estadisticas
-
-### Verificar si proyecto existe
-GET {{baseUrl}}/api/ods/11/proyectos/{{proyectoId}}/existe
-
-### Verificar si indicador existe
-GET {{baseUrl}}/api/ods/11/indicadores/{{indicadorId}}/existe
-
-# ── CRUD Operaciones ──
-
-### Crear nuevo proyecto
-POST {{baseUrl}}/api/ods/11/proyecto
-Content-Type: application/json
-
-{
-  "usuarioId": 2,
-  "sedeId": 2,
-  "nombreProyecto": "Proyecto Ciudades Sostenibles Test",
-  "objetivoId": 11,
-  "descripcion": "Proyecto de prueba para ODS11",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Lograr que las ciudades sean inclusivas y sostenibles",
-  "estado": "planificacion"
-}
-
-### Validar proyecto
-POST {{baseUrl}}/api/ods/11/validar/proyecto
-Content-Type: application/json
-
-{
-  "nombreProyecto": "Proyecto Validación Ciudades",
-  "usuarioId": 2,
-  "objetivoId": 11,
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "estado": "planificacion"
-}
-
-### Actualizar proyecto
-PUT {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}
-Content-Type: application/json
-
-{
-  "id": {{proyectoId}},
-  "nombreProyecto": "Proyecto Ciudades Actualizado",
-  "descripcion": "Proyecto actualizado para ODS11",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Meta actualizada Ciudades",
-  "estado": "activo"
-}
-
-### Eliminar proyecto
-DELETE {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}
-
-### Crear nuevo indicador (Master ID 134 = 11.1.1 aprox, verificar en SQL)
+### Crear nuevo indicador
 POST {{baseUrl}}/api/ods/11/indicadores
 Content-Type: application/json
 
 {
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 134,
-  "formulaCustom": "(p1 / p2) * 100",
+  "indicadorMasterId": 125,
+  "formulaCustom": null,
   "metaValor": 100.0,
-  "metaUnidad": "Porcentaje"
-}
-
-### Validar indicador
-POST {{baseUrl}}/api/ods/11/validar/indicador
-Content-Type: application/json
-
-{
-  "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 134,
-  "metaValor": 80.0,
   "metaUnidad": "Porcentaje"
 }
 
@@ -201,8 +85,8 @@ Content-Type: application/json
 {
   "id": {{indicadorId}},
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 134,
-  "valorActual": 68.0,
+  "indicadorMasterId": 125,
+  "valorActual": 90.0,
   "metaValor": 100.0,
   "metaUnidad": "Porcentaje"
 }
@@ -210,31 +94,69 @@ Content-Type: application/json
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/11/indicadores/{{indicadorId}}
 
-### Crear nueva meta (Parámetro)
+# ── 3. Gestión de Proyectos ──
+
+### Obtener todos los proyectos del ODS11
+GET {{baseUrl}}/api/ods/11/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/11/proyectos/{{proyectoId}}
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/11/proyectos
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Movilidad Eléctrica Urbana",
+  "objetivoId": 11,
+  "descripcion": "Despliegue de estaciones de carga y buses eléctricos",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "estado": "activo"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/11/proyectos/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombreProyecto": "Movilidad Eléctrica Urbana Actualizado",
+  "estado": "activo"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/11/proyectos/{{proyectoId}}
+
+# ── 4. Gestión de Metas (Parámetros) ──
+
+### Obtener metas de un proyecto
+GET {{baseUrl}}/api/ods/11/metas?proyectoId={{proyectoId}}
+
+### Obtener meta específica
+GET {{baseUrl}}/api/ods/11/metas/{{metaId}}
+
+### Crear nueva meta
 POST {{baseUrl}}/api/ods/11/metas
 Content-Type: application/json
 
 {
   "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "area_parques_recreativos",
-  "tipoDato": "Double"
+  "nombreParametro": "param_test",
+  "tipoDato": "Decimal"
 }
 
-### Actualizar meta (Parámetro)
-PUT {{baseUrl}}/api/ods/11/metas/{{metaId}}
-Content-Type: application/json
+# ── 5. Mediciones Históricas ──
 
-{
-  "id": {{metaId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "area_zonas_verdes",
-  "tipoDato": "Double"
-}
+### Obtener mediciones de un indicador
+GET {{baseUrl}}/api/ods/11/mediciones?indicadorId={{indicadorId}}
 
-### Eliminar meta
-DELETE {{baseUrl}}/api/ods/11/metas/{{metaId}}
+### Obtener medición específica
+GET {{baseUrl}}/api/ods/11/mediciones/{{medicionId}}
 
-### Crear nueva medición histórica
+### Registrar medición
 POST {{baseUrl}}/api/ods/11/mediciones
 Content-Type: application/json
 
@@ -242,66 +164,28 @@ Content-Type: application/json
   "proyectoIndicadorId": {{indicadorId}},
   "valorCalculado": 65.5,
   "fechaMedicion": "2024-09-20",
-  "responsable": "Admin Ciudades",
-  "observaciones": "Revisión de espacios públicos"
+  "responsable": "Admin Ciudades"
 }
 
-### Actualizar medición histórica
-PUT {{baseUrl}}/api/ods/11/mediciones/{{medicionId}}
+# ── 6. Utilidades y Estadísticas ──
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/11/estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/11/progreso/{{proyectoId}}
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/11/indicador/{{indicadorId}}/existe
+
+### Validar datos de proyecto
+POST {{baseUrl}}/api/ods/11/validar/proyecto
 Content-Type: application/json
 
 {
-  "id": {{medicionId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "valorCalculado": 68.0,
-  "fechaMedicion": "2024-09-20",
-  "responsable": "Admin Ciudades Actualizado"
+  "nombreProyecto": "Proyecto Test Ciudades",
+  "usuarioId": 2
 }
-
-### Eliminar medición histórica
-DELETE {{baseUrl}}/api/ods/11/mediciones/{{medicionId}}
-
-
-# ── IOdsBaseController Methods ──
-
-### Obtener todos los proyectos (base)
-GET {{baseUrl}}/api/ods/11/all-proyectos
-
-### Obtener proyecto por ID (base)
-GET {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}
-
-### Obtener todos los indicadores (base)
-GET {{baseUrl}}/api/ods/11/base-indicadores?proyectoId={{proyectoId}}
-
-### Obtener indicador por ID (base)
-GET {{baseUrl}}/api/ods/11/indicadores/{{indicadorId}}
-
-### Obtener metas de proyecto
-GET {{baseUrl}}/api/ods/11/metas?proyectoId={{proyectoId}}
-
-### Obtener meta por ID (base)
-GET {{baseUrl}}/api/ods/11/metas/{{metaId}}
-
-### Obtener mediciones históricas
-GET {{baseUrl}}/api/ods/11/mediciones?indicadorId={{indicadorId}}
-
-### Obtener medición histórica por ID (base)
-GET {{baseUrl}}/api/ods/11/mediciones/{{medicionId}}
-
-### Obtener estadísticas (base)
-GET {{baseUrl}}/api/ods/11/base-estadisticas
-
-### Obtener progreso del proyecto (base)
-GET {{baseUrl}}/api/ods/11/base-progreso/{{proyectoId}}
-
-### Verificar existencia de proyecto (base)
-GET {{baseUrl}}/api/ods/11/proyecto/{{proyectoId}}/existe
-
-### Verificar existencia de indicador (base)
-GET {{baseUrl}}/api/ods/11/indicador/{{indicadorId}}/existe
-
-### Verificar existencia de meta (base)
-GET {{baseUrl}}/api/ods/11/meta/{{metaId}}/existe
-
-### Verificar existencia de medición histórica (base)
-GET {{baseUrl}}/api/ods/11/medicion/{{medicionId}}/existe

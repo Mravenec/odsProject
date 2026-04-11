@@ -8,19 +8,20 @@ import java.util.List;
 /**
  * Interfaz Controller Base para todos los ODS
  * Define los contratos REST comunes para todos los Objetivos de Desarrollo Sostenible
- * @param <T> Tipo de entidad principal (Indicadores)
+ * @param <T> Tipo de entidad de LECTURA (Enriquecida, ej: VistaAdminDetalleIndicadores)
+ * @param <E> Tipo de entidad de ESCRITURA (Tabla física, ej: ProyectoIndicadores)
  * @param <P> Tipo de entidad Proyectos
- * @param <M> Tipo de entidad MetasProyecto
+ * @param <M> Tipo de entidad ProyectoIndicadorParametros
  * @param <MH> Tipo de entidad MedicionesHistoricas
  * @param <A> Tipo de entidad Auditoria
  */
-public interface IOdsBaseController<T, P, M, MH, A> {
+public interface IOdsBaseController<T, E, P, M, MH, A> {
 
     // ── Endpoints de Indicadores ──
 
     /**
      * GET /api/ods/{odsId}/indicadores?proyectoId={id}
-     * Obtiene todos los indicadores de un proyecto
+     * Obtiene todos los indicadores de un proyecto (Enriquecidos)
      */
     @GetMapping("/indicadores")
     ResponseEntity<List<T>> getIndicadores(
@@ -29,7 +30,7 @@ public interface IOdsBaseController<T, P, M, MH, A> {
 
     /**
      * GET /api/ods/{odsId}/indicadores/{indicadorId}
-     * Obtiene un indicador específico
+     * Obtiene un indicador específico (Enriquecido)
      */
     @GetMapping("/indicadores/{indicadorId}")
     ResponseEntity<T> getIndicador(
@@ -41,8 +42,8 @@ public interface IOdsBaseController<T, P, M, MH, A> {
      * Crea un nuevo indicador
      */
     @PostMapping("/indicadores")
-    ResponseEntity<T> createIndicador(
-        @RequestBody T indicador
+    ResponseEntity<E> createIndicador(
+        @RequestBody E indicador
     );
 
     /**
@@ -50,9 +51,9 @@ public interface IOdsBaseController<T, P, M, MH, A> {
      * Actualiza un indicador existente
      */
     @PutMapping("/indicadores/{indicadorId}")
-    ResponseEntity<T> updateIndicador(
+    ResponseEntity<E> updateIndicador(
         @PathVariable Integer indicadorId,
-        @RequestBody T indicador
+        @RequestBody E indicador
     );
 
     /**

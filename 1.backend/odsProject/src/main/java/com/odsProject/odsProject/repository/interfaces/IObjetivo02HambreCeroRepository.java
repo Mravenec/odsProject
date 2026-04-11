@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndicadorParametros;
@@ -10,221 +11,52 @@ import java.util.Optional;
 
 /**
  * Interfaz del Repositorio para el Objetivo 2: Hambre Cero
- * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 2
- * Usa jOOQ con datasource ods02
  */
-public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds02> {
+public interface IObjetivo02HambreCeroRepository extends IOdsBaseRepository<
+    VistaAdminDetalleIndicadores, // T (Lectura)
+    ProyectoIndicadores,         // E (Escritura)
+    Proyectos,                   // P
+    ProyectoIndicadorParametros, // M
+    MedicionesHistoricas,        // MH
+    AuditoriaOds02              // A
+> {
     
-    // ── Indicadores Específicos del ODS02 ──
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_1_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_2_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_2_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_2_3(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_2_4(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_3_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_3_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_4_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_5_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_5_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_a_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_a_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_b_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_2_c_1(Integer proyectoId);
     
-    /**
-     * 2.1.1 Prevalencia de la subalimentación [10]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.1.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_1_1(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds02(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
-    /**
-     * 2.1.2 Prevalencia de la inseguridad alimentaria moderada o grave entre la población, 
-     * según la escala de experiencia de inseguridad alimentaria [10]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.1.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_1_2(Integer proyectoId);
-    
-    /**
-     * 2.2.1 Prevalencia del retraso del crecimiento (estatura para la edad, desviación típica < -2 
-     * entre los niños menores de 5 años) [11]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.2.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_2_1(Integer proyectoId);
-    
-    /**
-     * 2.2.2 Prevalencia de la malnutrición (peso para la estatura, desviación típica > +2 o < -2 
-     * de la mediana de los patrones de crecimiento infantil de la OMS) entre los niños menores de 5 años, 
-     * desglosada por tipo (emaciación y sobrepeso) [11, 12]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.2.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_2_2(Integer proyectoId);
-    
-    /**
-     * 2.2.3 Prevalencia de la anemia en las mujeres de entre 15 y 49 años, 
-     * según el embarazo (porcentaje) [12]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.2.3
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_2_3(Integer proyectoId);
-    
-    /**
-     * 2.2.4 Prevalencia del umbral mínimo de diversidad alimentaria, por grupo de población 
-     * (porcentaje) [12]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.2.4
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_2_4(Integer proyectoId);
-    
-    /**
-     * 2.3.1 Volumen de producción por unidad de trabajo desglosado por tamaño y tipo de explotación 
-     * agrícola y ganadera [13]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.3.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_3_1(Integer proyectoId);
-    
-    /**
-     * 2.3.2 Media de ingresos de los productores de alimentos en pequeña escala, 
-     * desglosada por tamaño y tipo de explotación [13]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.3.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_3_2(Integer proyectoId);
-    
-    /**
-     * 2.4.1 Proporción de la superficie agrícola en que se practica una agricultura productiva y sostenible [14]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.4.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_4_1(Integer proyectoId);
-    
-    /**
-     * 2.5.1 Número de: a) recursos genéticos vegetales y b) animales para la alimentación y la agricultura 
-     * conservados en instalaciones de conservación a mediano y largo plazo [15]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.5.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_5_1(Integer proyectoId);
-    
-    /**
-     * 2.5.2 Proporción de razas y variedades locales y transfronterizas consideradas en riesgo de extinción [16]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.5.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_5_2(Integer proyectoId);
-    
-    /**
-     * 2.a.1 Índice de orientación agrícola para el gasto público [17]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.a.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_a_1(Integer proyectoId);
-    
-    /**
-     * 2.a.2 Total de corrientes oficiales de recursos (asistencia oficial para el desarrollo más otras corrientes oficiales) 
-     * destinadas al sector agrícola [17]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.a.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_a_2(Integer proyectoId);
-    
-    /**
-     * 2.b.1 Subsidios a la exportación de productos agropecuarios [18]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.b.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_b_1(Integer proyectoId);
-    
-    /**
-     * 2.c.1 Indicador de anomalías en los precios de los alimentos [18]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 2.c.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_2_c_1(Integer proyectoId);
-    
-    /**
-     * Encuentra todos los indicadores asociados a un proyecto específico del ODS02
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todos los indicadores del proyecto
-     */
-    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds02(Integer proyectoId);
-    
-    /**
-     * Encuentra indicadores filtrando por meta específica del ODS02
-     * 
-     * @param proyectoId ID del proyecto
-     * @param metaPrefix Prefijo de la meta (ej: "2.1", "2.2")
-     * @return Lista de indicadores que pertenecen a la meta especificada
-     */
-    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
-    
-    // ── Métodos específicos del ODS02 ──
-    
-    /**
-     * Encuentra todos los proyectos del ODS02
-     * 
-     * @return Lista de todos los proyectos del ODS02
-     */
     List<Proyectos> findAllProyectosOds02();
-    
-    /**
-     * Encuentra un proyecto del ODS02 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Optional con el proyecto encontrado
-     */
     Optional<Proyectos> findProyectoOds02ById(Integer proyectoId);
-    
-    /**
-     * Encuentra todas las metas de proyecto del ODS02
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de metas del proyecto
-     */
     List<ProyectoIndicadorParametros> findAllMetasProyectoOds02(Integer proyectoId);
-    
-    /**
-     * Encuentra una meta de proyecto del ODS02 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return Optional con la meta encontrada
-     */
     Optional<ProyectoIndicadorParametros> findMetaProyectoOds02ById(Integer metaId);
-    
-    /**
-     * Encuentra todas las mediciones históricas del ODS02
-     * 
-     * @param indicadorId ID del indicador
-     * @return Lista de mediciones históricas
-     */
     List<MedicionesHistoricas> findAllMedicionesHistoricasOds02(Integer indicadorId);
-    
-    /**
-     * Encuentra una medición histórica del ODS02 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return Optional con la medición encontrada
-     */
     Optional<MedicionesHistoricas> findMedicionHistoricaOds02ById(Integer medicionId);
-    
-    /**
-     * Encuentra todas las auditorías del ODS02
-     * 
-     * @return Lista de todas las auditorías
-     */
     List<AuditoriaOds02> findAllAuditoriasOds02();
-    
-    /**
-     * Encuentra una auditoría del ODS02 por su ID
-     * 
-     * @param auditoriaId ID de la auditoría
-     * @return Optional con la auditoría encontrada
-     */
     Optional<AuditoriaOds02> findAuditoriaOds02ById(Integer auditoriaId);
+
+    void deleteIndicador(Integer indicadorId);
+    ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta);
+    void deleteMetaProyecto(Integer metaId);
+    MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion);
+    void deleteMedicionHistorica(Integer medicionId);
+    
+    Boolean existsIndicador(Integer indicadorId);
+    Boolean existsProyecto(Integer proyectoId);
+    Boolean existsMetaProyecto(Integer metaId);
+    Boolean existsMedicionHistorica(Integer medicionId);
 }

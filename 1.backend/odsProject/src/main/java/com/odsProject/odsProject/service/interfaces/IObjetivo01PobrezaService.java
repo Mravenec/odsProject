@@ -1,253 +1,53 @@
 package com.odsProject.odsProject.service.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.AuditoriaOds01;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 1: Fin de la Pobreza
- * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 1
- * Extiende IOdsBaseService con tipos específicos de ODS01
  */
 public interface IObjetivo01PobrezaService extends IOdsBaseService<
-    ProyectoIndicadores,     // T - ProyectoIndicadores
-    Proyectos,               // P - Proyectos
-    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
-    MedicionesHistoricas,     // MH - MedicionesHistoricas
-    Object                   // A - Auditoria (placeholder)
+    VistaAdminDetalleIndicadores, // T (Lectura)
+    ProyectoIndicadores,         // E (Escritura)
+    Proyectos,                   // P
+    ProyectoIndicadorParametros, // M
+    MedicionesHistoricas,        // MH
+    AuditoriaOds01              // A
 > {
     
-    /**
-     * Obtiene todos los indicadores del Objetivo 1: Fin de la Pobreza
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista con todos los indicadores del objetivo
-     */
-    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId);
     
-    /**
-     * Obtiene el indicador 1.1.1
-     * Proporción de la población que vive por debajo del umbral internacional de pobreza
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.1.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_2_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_2_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_3_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_4_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_4_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_5_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_5_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_5_3(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_5_4(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_a_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_a_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_1_b_1(Integer proyectoId);
     
-    /**
-     * Obtiene el indicador 1.2.1
-     * Proporción de la población que vive por debajo del umbral nacional de pobreza
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.2.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_2_1(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds01(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
-    /**
-     * Obtiene el indicador 1.2.2
-     * Proporción de personas que viven en la pobreza multidimensional
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.2.2
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_2_2(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.3.1
-     * Proporción de la población cubierta por sistemas de protección social
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.3.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_3_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.4.1
-     * Proporción de la población con acceso a servicios básicos
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.4.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_4_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.4.2
-     * Proporción de población con derechos seguros de tenencia de tierra
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.4.2
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_4_2(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.5.1
-     * Personas afectadas por desastres por cada 100.000 habitantes
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.5.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_5_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.5.2
-     * Pérdidas económicas por desastres en relación con el PIB mundial
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.5.2
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_5_2(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.5.3
-     * Países con estrategias nacionales de reducción del riesgo de desastres
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.5.3
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_5_3(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.5.4
-     * Gobiernos locales con estrategias locales de reducción del riesgo de desastres
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.5.4
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_5_4(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.a.1
-     * AOD destinada a reducción de la pobreza en porcentaje de la RNB
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.a.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_a_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.a.2
-     * Proporción del gasto público en servicios esenciales
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.a.2
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_a_2(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 1.b.1
-     * Gasto público social en favor de los pobres
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.b.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_1_b_1(Integer proyectoId);
-    
-    /**
-     * Encuentra todos los indicadores asociados a un proyecto específico del ODS01
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todos los indicadores del proyecto
-     */
-    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds01(Integer proyectoId);
-    
-    /**
-     * Encuentra indicadores filtrando por meta específica del ODS01
-     * 
-     * @param proyectoId ID del proyecto
-     * @param metaPrefix Prefijo de la meta (ej: "1.1", "1.2")
-     * @return Lista de indicadores que pertenecen a la meta especificada
-     */
-    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
-    
-    // ── Métodos CRUD y Utilidades (para alinear con Repository) ──
-    
-    /**
-     * Obtiene todos los proyectos del ODS 1
-     * 
-     * @return Lista de todos los proyectos del objetivo 1
-     */
     List<Proyectos> getAllProjectsOds01();
-    
-    /**
-     * Obtiene un proyecto del ODS 1 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Optional con el proyecto encontrado
-     */
     Optional<Proyectos> getProjectOds01ById(Integer proyectoId);
-    
-    /**
-     * Obtiene las metas de un proyecto del ODS 1
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de metas del proyecto
-     */
     List<ProyectoIndicadorParametros> getAllMetasProyectoOds01(Integer proyectoId);
-    
-    /**
-     * Obtiene una meta de proyecto del ODS 1 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return Optional con la meta encontrada
-     */
     Optional<ProyectoIndicadorParametros> getMetaProyectoOds01ById(Integer metaId);
-    
-    /**
-     * Obtiene las mediciones históricas de un indicador del ODS 1
-     * 
-     * @param indicadorId ID del indicador
-     * @return Lista de mediciones históricas
-     */
     List<MedicionesHistoricas> getAllMedicionesHistoricasOds01(Integer indicadorId);
-    
-    /**
-     * Obtiene una medición histórica del ODS 1 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return Optional con la medición encontrada
-     */
     Optional<MedicionesHistoricas> getMedicionHistoricaOds01ById(Integer medicionId);
     
-    /**
-     * Valida los datos de un indicador del ODS 1
-     * 
-     * @param indicador Datos del indicador a validar
-     * @return true si los datos son válidos, false otherwise
-     */
-    Boolean validateIndicatorData(ProyectoIndicadores indicador);
-    
-    /**
-     * Calcula el progreso de un proyecto del ODS 1
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Porcentaje de progreso (0-100)
-     */
     Double calculateProjectProgress(Integer proyectoId);
-    
-    /**
-     * Obtiene estadísticas generales del ODS 1
-     * 
-     * @return Map con estadísticas del objetivo
-     */
     java.util.Map<String, Object> getOds01Statistics();
-    
-    /**
-     * Verifica si un proyecto del ODS 1 existe
-     * 
-     * @param proyectoId ID del proyecto
-     * @return true si existe, false otherwise
-     */
-    Boolean projectExists(Integer proyectoId);
-    
-    /**
-     * Verifica si un indicador del ODS 1 existe
-     * 
-     * @param indicadorId ID del indicador
-     * @return true si existe, false otherwise
-     */
-    Boolean indicatorExists(Integer indicadorId);
 }

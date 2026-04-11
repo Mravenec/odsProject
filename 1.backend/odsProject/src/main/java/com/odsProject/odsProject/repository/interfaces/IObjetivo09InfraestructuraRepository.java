@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndicadorParametros;
@@ -10,187 +11,49 @@ import java.util.Optional;
 
 /**
  * Interfaz del Repositorio para el Objetivo 9: Industria, Innovación e Infraestructura
- * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 9
- * Usa jOOQ con datasource ods09
  */
-public interface IObjetivo09InfraestructuraRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds09> {
+public interface IObjetivo09InfraestructuraRepository extends IOdsBaseRepository<
+    VistaAdminDetalleIndicadores, // T (Lectura)
+    ProyectoIndicadores,         // E (Escritura)
+    Proyectos,                   // P
+    ProyectoIndicadorParametros, // M
+    MedicionesHistoricas,        // MH
+    AuditoriaOds09              // A
+> {
     
-    /**
-     * 9.1.1 Proporción de la población rural que vive a menos de 2 km de una carretera transitable todo el año [68]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.1.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_1_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_2_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_2_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_3_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_3_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_4_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_5_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_5_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_a_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_b_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_9_c_1(Integer proyectoId);
     
-    /**
-     * 9.1.2 Volumen de transporte de pasajeros y carga, desglosado por medio de transporte [68]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.1.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_1_2(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds09(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
-    /**
-     * 9.2.1 Valor añadido del sector manufacturo en proporción al PIB y per cápita [69]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.2.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_2_1(Integer proyectoId);
-    
-    /**
-     * 9.2.2 Empleo del sector manufacturero en proporción al empleo total [69]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.2.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_2_2(Integer proyectoId);
-    
-    /**
-     * 9.3.1 Proporción del valor añadido total del sector industrial correspondiente a las pequeñas industrias, 
-     * desglosada por sexo [70]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.3.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_3_1(Integer proyectoId);
-    
-    /**
-     * 9.3.2 Proporción de las pequeñas industrias que han obtenido un préstamo o una línea de crédito [70]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.3.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_3_2(Integer proyectoId);
-    
-    /**
-     * 9.4.1 Emisiones de CO2 por unidad de valor añadido [71]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.4.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_4_1(Integer proyectoId);
-    
-    /**
-     * 9.5.1 Gastos en investigación y desarrollo en proporción al PIB [72]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.5.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_5_1(Integer proyectoId);
-    
-    /**
-     * 9.5.2 Número de investigadores (en equivalente a tiempo completo) por cada millón de habitantes [72]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.5.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_5_2(Integer proyectoId);
-    
-    /**
-     * 9.a.1 Total de apoyo internacional oficial (asistencia oficial para el desarrollo más otras corrientes 
-     * oficiales de recursos) destinado a la infraestructura [73]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.a.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_a_1(Integer proyectoId);
-    
-    /**
-     * 9.b.1 Proporción del valor añadido por la industria de tecnología mediana y alta en el valor añadido total [74]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.b.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_b_1(Integer proyectoId);
-    
-    /**
-     * 9.c.1 Proporción de la población con cobertura de red móvil, desglosada por tecnología [74, 75]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 9.c.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_9_c_1(Integer proyectoId);
-    
-    /**
-     * Encuentra todos los indicadores asociados a un proyecto específico del ODS09
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todos los indicadores del proyecto
-     */
-    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds09(Integer proyectoId);
-    
-    /**
-     * Encuentra indicadores filtrando por meta específica del ODS09
-     * 
-     * @param proyectoId ID del proyecto
-     * @param metaPrefix Prefijo de la meta (ej: "9.1", "9.2")
-     * @return Lista de indicadores que pertenecen a la meta especificada
-     */
-    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
-    
-    // ── Métodos específicos del ODS09 ──
-    
-    /**
-     * Encuentra todos los proyectos del ODS09
-     * 
-     * @return Lista de todos los proyectos del ODS09
-     */
     List<Proyectos> findAllProyectosOds09();
-    
-    /**
-     * Encuentra un proyecto del ODS09 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Optional con el proyecto encontrado
-     */
     Optional<Proyectos> findProyectoOds09ById(Integer proyectoId);
-    
-    /**
-     * Encuentra todas las metas de proyecto del ODS09
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de metas del proyecto
-     */
     List<ProyectoIndicadorParametros> findAllMetasProyectoOds09(Integer proyectoId);
-    
-    /**
-     * Encuentra una meta de proyecto del ODS09 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return Optional con la meta encontrada
-     */
     Optional<ProyectoIndicadorParametros> findMetaProyectoOds09ById(Integer metaId);
-    
-    /**
-     * Encuentra todas las mediciones históricas del ODS09
-     * 
-     * @param indicadorId ID del indicador
-     * @return Lista de mediciones históricas
-     */
     List<MedicionesHistoricas> findAllMedicionesHistoricasOds09(Integer indicadorId);
-    
-    /**
-     * Encuentra una medición histórica del ODS09 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return Optional con la medición encontrada
-     */
     Optional<MedicionesHistoricas> findMedicionHistoricaOds09ById(Integer medicionId);
-    
-    /**
-     * Encuentra todas las auditorías del ODS09
-     * 
-     * @return Lista de todas las auditorías
-     */
     List<AuditoriaOds09> findAllAuditoriasOds09();
-    
-    /**
-     * Encuentra una auditoría del ODS09 por su ID
-     * 
-     * @param auditoriaId ID de la auditoría
-     * @return Optional con la auditoría encontrada
-     */
     Optional<AuditoriaOds09> findAuditoriaOds09ById(Integer auditoriaId);
+
+    void deleteIndicador(Integer indicadorId);
+    ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta);
+    void deleteMetaProyecto(Integer metaId);
+    MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion);
+    void deleteMedicionHistorica(Integer medicionId);
+    
+    Boolean existsIndicador(Integer indicadorId);
+    Boolean existsProyecto(Integer proyectoId);
+    Boolean existsMetaProyecto(Integer metaId);
+    Boolean existsMedicionHistorica(Integer medicionId);
 }

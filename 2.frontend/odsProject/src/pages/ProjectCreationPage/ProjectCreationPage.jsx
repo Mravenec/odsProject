@@ -141,6 +141,7 @@ const ProjectCreationPage = () => {
   
   // Nuevo estado para metadatos reales de la BD
   const [indicatorMetadata, setIndicatorMetadata] = useState({});
+  const [availableIndicators, setAvailableIndicators] = useState({}); // Mapeo odsId -> [codes]
   const [loadingMetadata, setLoadingMetadata] = useState({});
 
   // Catálogos reales
@@ -197,10 +198,7 @@ const ProjectCreationPage = () => {
   }, [expandedOds]);
 
   const hasMetadataForOds = (odsId) => {
-    const service = SERVICES_MAP[odsId];
-    if (!service) return true;
-    const codes = Object.keys(service).filter(k => k.startsWith('getIndicador_'));
-    return codes.every(k => indicatorMetadata[k.replace('getIndicador_', '').replace(/_/g, '.')]);
+    return availableIndicators[odsId] && availableIndicators[odsId].length > 0;
   };
 
   const loadOdsMetadata = async (odsId) => {
@@ -209,39 +207,31 @@ const ProjectCreationPage = () => {
 
     setLoadingMetadata(prev => ({ ...prev, [odsId]: true }));
     
-    const methods = Object.keys(service).filter(key => key.startsWith('getIndicador_'));
-    
     try {
-      const results = await Promise.allSettled(
-        methods.map(async (method) => {
-          const code = method.replace('getIndicador_', '').replace(/_/g, '.');
-          try {
-            const data = await service[method]();
-            return { code, data };
-          } catch (e) {
-            console.error(`Error loading indicator ${code}:`, e);
-            return { code, error: true };
-          }
-        })
-      );
-
+      // Usamos el nuevo método estandarizado para obtener todos los indicadores del ODS
+      // Pasamos 0 o null como proyectoId para obtener la lista del Master (vía LEFT JOIN)
+      const indicatorsData = await service.getIndicators(0);
+      
       const newMetadata = {};
-      results.forEach(res => {
-        if (res.status === 'fulfilled' && !res.value.error) {
-          const dbDescription = res.value.data.description;
-          // Fallback al catálogo oficial si la BD devuelve algo vacío o genérico "Indicador X"
-          const fallbackDescription = SDG_INDICATORS_CATALOG[res.value.code];
-          
-          newMetadata[res.value.code] = {
-            description: (dbDescription && dbDescription.length > 5 && !dbDescription.includes('Indicador')) 
-              ? dbDescription 
-              : (fallbackDescription || `Seguimiento de metas técnicas para indicador ${res.value.code}`),
-            unit: res.value.data.unit
-          };
-        }
+      const codes = Object.keys(indicatorsData);
+      
+      codes.forEach(code => {
+        const ind = indicatorsData[code];
+        // Merge con catálogo estático para tener descripciones de respaldo si la BD es escueta
+        const fallbackDescription = SDG_INDICATORS_CATALOG[code];
+        
+        newMetadata[code] = {
+          description: (ind.name && ind.name.length > 5 && !ind.name.includes('Indicador')) 
+            ? ind.name 
+            : (fallbackDescription || `Seguimiento de metas técnicas para indicador ${code}`),
+          unit: ind.unit || 'unidad'
+        };
       });
 
+      setAvailableIndicators(prev => ({ ...prev, [odsId]: codes }));
       setIndicatorMetadata(prev => ({ ...prev, ...newMetadata }));
+    } catch (error) {
+      console.error(`[ProjectCreation] Error loading indicators for ODS ${odsId}:`, error);
     } finally {
       setLoadingMetadata(prev => ({ ...prev, [odsId]: false }));
     }
@@ -254,12 +244,7 @@ const ProjectCreationPage = () => {
   }, [academicPersonnel, formData.area]);
 
   const getIndicatorsForOds = (odsId) => {
-    const service = SERVICES_MAP[odsId];
-    if (!service) return [];
-    
-    return Object.keys(service)
-      .filter(key => key.startsWith('getIndicador_'))
-      .map(key => key.replace('getIndicador_', '').replace(/_/g, '.'));
+    return availableIndicators[odsId] || [];
   };
 
   const handleInputChange = (e) => {

@@ -1,174 +1,73 @@
 import api from './api';
-// Mock service for ODS Objective 14 - Vida Submarina
-// Based on official SDG indicators from Global Indicator Framework
+
+/**
+ * Servicio para el ODS 14 - Vida Submarina
+ * Implementa la carga dinámica de indicadores desde la base de datos.
+ */
 export const objetivo14Service = {
-  // 14.1.1 Índice de eutrofización costera y densidad de detritos plásticos
-  getIndicador_14_1_1: async () => {
+  /**
+   * Obtener todos los indicadores enriquecidos para un proyecto en el ODS 14
+   * @param {number} proyectoId ID del proyecto
+   * @returns {Object} Mapa de indicadores indexados por código
+   */
+  getIndicators: async (proyectoId) => {
     try {
-      const response = await api.get(`/ods/14/indicadores/14.1.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
+      if (!proyectoId) throw new Error('proyectoId is required');
+      const response = await api.get(`/ods/14/base-indicadores`, { params: { proyectoId } });
+      const indicators = response.data || [];
+      
+      return indicators.reduce((acc, ind) => {
+        const code = ind.indicadorCodigo;
+        if (!code) return acc;
+
+        acc[code] = {
+          id: ind.id,
+          masterId: ind.indicadorMasterId,
+          code: code,
+          name: ind.indicadorNombre,
+          currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
+          targetValue: ind.metaValor || 0,
+          unit: ind.metaUnidad || 'unidad',
+          formula: ind.formulaCustom || '',
+          updatedAt: ind.ultimaActualizacion,
+          hasData: ind.valorActual !== null
+        };
+        return acc;
+      }, {});
     } catch (error) {
-      console.error('Error fetching 14.1.1:', error);
-      throw error;
+      console.error('Error fetching ODS 14 indicators:', error);
+      return {};
     }
   },
-  
-  // 14.2.1 Número de países que aplican enfoques basados en los ecosistemas
-  getIndicador_14_2_1: async () => {
+
+  /**
+   * Obtiene estadísticas generales del ODS 14
+   */
+  getStatistics: async () => {
     try {
-      const response = await api.get(`/ods/14/indicadores/14.2.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
+      const response = await api.get(`/ods/14/base-estadisticas`);
+      return response.data || {};
     } catch (error) {
-      console.error('Error fetching 14.2.1:', error);
-      throw error;
+      console.error('Error fetching ODS 14 statistics:', error);
+      return {};
     }
   },
-  
-  // 14.3.1 Acidez media del mar (pH) medida en estaciones de muestreo
-  getIndicador_14_3_1: async () => {
+
+  /**
+   * Mantiene compatibilidad con llamadas individuales si existieran.
+   */
+  getIndicadorGeneral: async (code, proyectoId = 1) => {
     try {
-      const response = await api.get(`/ods/14/indicadores/14.3.1?proyectoId=1`);
+      const response = await api.get(`/ods/14/indicadores/${code}`, { params: { proyectoId } });
       const data = response.data || {};
       return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
+        currentValue: data.valorActual ?? 0,
+        targetValue: data.metaValor ?? 0,
+        unit: data.metaUnidad || 'unidad'
       };
     } catch (error) {
-      console.error('Error fetching 14.3.1:', error);
-      throw error;
-    }
-  },
-  
-  // 14.4.1 Proporción de poblaciones de peces con niveles biológicamente sostenibles
-  getIndicador_14_4_1: async () => {
-    try {
-      const response = await api.get(`/ods/14/indicadores/14.4.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 14.4.1:', error);
-      throw error;
-    }
-  },
-  
-  // 14.5.1 Cobertura de las zonas protegidas en relación con las zonas marinas
-  getIndicador_14_5_1: async () => {
-    try {
-      const response = await api.get(`/ods/14/indicadores/14.5.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 14.5.1:', error);
-      throw error;
-    }
-  },
-  
-  // 14.6.1 Grado de aplicación de instrumentos internacionales contra pesca ilegal
-  getIndicador_14_6_1: async () => {
-    try {
-      const response = await api.get(`/ods/14/indicadores/14.6.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 14.6.1:', error);
-      throw error;
-    }
-  },
-  
-  // 14.7.1 Proporción del PIB correspondiente a la pesca sostenible
-  getIndicador_14_7_1: async () => {
-    try {
-      const response = await api.get(`/ods/14/indicadores/14.7.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 14.7.1:', error);
-      throw error;
-    }
-  },
-  
-  // 14.a.1 Proporción del presupuesto total de investigación asignada a tecnología marina
-  getIndicador_14_a_1: async () => {
-    try {
-      const response = await api.get(`/ods/14/indicadores/14.a.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 14.a.1:', error);
-      throw error;
-    }
-  },
-  
-  // 14.b.1 Grado de aplicación de un marco jurídico que reconozca derechos de acceso para pesca
-  getIndicador_14_b_1: async () => {
-    try {
-      const response = await api.get(`/ods/14/indicadores/14.b.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 14.b.1:', error);
-      throw error;
-    }
-  },
-  
-  // 14.c.1 Número de países que avanzan en la ratificación de instrumentos relacionados con los océanos
-  getIndicador_14_c_1: async () => {
-    try {
-      const response = await api.get(`/ods/14/indicadores/14.c.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 14.c.1:', error);
-      throw error;
+      console.error(`Error fetching indicator ${code}:`, error);
+      return { currentValue: 0, targetValue: 0, unit: 'unidad' };
     }
   }
 };

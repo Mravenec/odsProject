@@ -1,6 +1,8 @@
 package com.odsProject.odsProject.controller;
 
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadores;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.VistaAdminDetalleIndicadores;
+import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.AuditoriaOds13;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MedicionesHistoricas;
@@ -27,493 +29,53 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
 
     // ── Indicadores Específicos del ODS13 ──
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores")
-    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadores> result = objetivo13AccionClimaService.getAllIndicators(proyectoId);
-        return ResponseEntity.ok(result);
-    }
+    // ── Indicadores Específicos del ODS13 ──
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getAllIndicators(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getAllIndicators(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_13_1_1(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getIndicador_13_1_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_13_1_2(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getIndicador_13_1_2(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_13_1_3(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getIndicador_13_1_3(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_13_2_1(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getIndicador_13_2_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_13_2_2(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getIndicador_13_2_2(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_13_3_1(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getIndicador_13_3_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_13_a_1(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getIndicador_13_a_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_13_b_1(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getIndicador_13_b_1(proyectoId)); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/13.1.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_1_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_1_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/13.1.2")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_1_2(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_1_2(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/13.1.3")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_1_3(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_1_3(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/13.2.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_2_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_2_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/13.2.2")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_2_2(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_2_2(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/13.3.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_3_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_3_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/13.a.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_a_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_a_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/13.b.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_13_b_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.getIndicador_13_b_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds13(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadores> result = objetivo13AccionClimaService.findAllIndicadoresByProyectoOds13(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<ProyectoIndicadores> result = objetivo13AccionClimaService.findIndicadoresByMeta(proyectoId, metaPrefix);
-        return ResponseEntity.ok(result);
-    }
-
-    // ── Proyectos ──
-
-    /**
-     * Obtiene todos los proyectos del ODS13
-     * 
-     * @return ResponseEntity con la lista de todos los proyectos del ODS13
-     */
-    @GetMapping("/proyectos")
-    public ResponseEntity<List<Proyectos>> getAllProjectsOds13() {
-        List<Proyectos> result = objetivo13AccionClimaService.findAllProyectos();
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Obtiene un proyecto del ODS13 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con el proyecto encontrado
-     */
-    @GetMapping("/proyectos/{proyectoId}")
-    public ResponseEntity<Proyectos> getProjectOds13ById(@PathVariable Integer proyectoId) {
-        Optional<Proyectos> result = objetivo13AccionClimaService.findProyectoById(proyectoId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * Obtiene todas las metas de proyecto del ODS13
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con la lista de todas las metas del proyecto ODS13
-     */
-    @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds13(@PathVariable Integer proyectoId) {
-        List<ProyectoIndicadorParametros> result = objetivo13AccionClimaService.findAllMetasProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    
-    /**
-     * Obtiene todas las mediciones históricas del ODS13
-     * 
-     * @param indicadorId ID del indicador
-     * @return ResponseEntity con la lista de todas las mediciones históricas del ODS13
-     */
-    @GetMapping("/indicadores/historicas/{indicadorId}")
-    public ResponseEntity<List<MedicionesHistoricas>> getAllMedicionesHistoricasOds13(@PathVariable Integer indicadorId) {
-        List<MedicionesHistoricas> result = objetivo13AccionClimaService.findAllMedicionesHistoricas(indicadorId);
-        return ResponseEntity.ok(result);
-    }
-
-    
-    /**
-     * Calcula el progreso de un proyecto del ODS13
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con el porcentaje de progreso
-     */
-    @GetMapping("/progreso/{proyectoId}")
-    public ResponseEntity<Double> calculateProjectProgress(@PathVariable Integer proyectoId) {
-        Double result = objetivo13AccionClimaService.calculateProjectProgress(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Obtiene estadísticas específicas del ODS13
-     * 
-     * @return ResponseEntity con estadísticas del ODS13
-     */
-    @GetMapping("/estadisticas")
-    public ResponseEntity<java.util.Map<String, Object>> getOds13Statistics() {
-        java.util.Map<String, Object> result = objetivo13AccionClimaService.getOdsStatistics();
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Verifica si un proyecto del ODS13 existe
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con true si existe, false otherwise
-     */
-    @GetMapping("/proyectos/{proyectoId}/existe")
-    public ResponseEntity<Boolean> projectExists(@PathVariable Integer proyectoId) {
-        Boolean result = objetivo13AccionClimaService.existsProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Verifica si un indicador del ODS13 existe
-     * 
-     * @param indicadorId ID del indicador
-     * @return ResponseEntity con true si existe, false otherwise
-     */
-    @GetMapping("/indicadores/{indicadorId}/existe")
-    public ResponseEntity<Boolean> indicatorExists(@PathVariable Integer indicadorId) {
-        Boolean result = objetivo13AccionClimaService.existsIndicador(indicadorId);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> findAllIndicadoresByProyectoOds13(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.findAllIndicadoresByProyectoOds13(proyectoId)); }
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) { return ResponseEntity.ok(objetivo13AccionClimaService.findIndicadoresByMeta(proyectoId, metaPrefix)); }
 
     // ── IOdsBaseController implementations ──
+    @Override public ResponseEntity<List<Proyectos>> getProyectos() { return ResponseEntity.ok(objetivo13AccionClimaService.findAllProyectos()); }
+    @Override public ResponseEntity<Proyectos> getProyecto(Integer proyectoId) { return objetivo13AccionClimaService.findProyectoById(proyectoId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<Proyectos> createProyecto(Proyectos proyecto) { return ResponseEntity.ok(objetivo13AccionClimaService.saveProyecto(proyecto)); }
+    @Override public ResponseEntity<Proyectos> updateProyecto(Integer proyectoId, Proyectos proyecto) { return ResponseEntity.ok(objetivo13AccionClimaService.updateProyecto(proyecto)); }
+    @Override public ResponseEntity<Void> deleteProyecto(Integer proyectoId) { objetivo13AccionClimaService.deleteProyecto(proyectoId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/all-proyectos")
-    public ResponseEntity<List<Proyectos>> getProyectos() {
-        List<Proyectos> result = objetivo13AccionClimaService.findAllProyectos();
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getIndicadores(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getAllIndicators(proyectoId)); }
+    @Override public ResponseEntity<VistaAdminDetalleIndicadores> getIndicador(Integer indicadorId) { return objetivo13AccionClimaService.findIndicadorById(indicadorId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo13AccionClimaService.saveIndicador(indicador)); }
+    @Override public ResponseEntity<ProyectoIndicadores> updateIndicador(Integer indicadorId, ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo13AccionClimaService.updateIndicador(indicador)); }
+    @Override public ResponseEntity<Void> deleteIndicador(Integer indicadorId) { objetivo13AccionClimaService.deleteIndicador(indicadorId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/proyecto/{proyectoId}")
-    public ResponseEntity<Proyectos> getProyecto(@PathVariable Integer proyectoId) {
-        Optional<Proyectos> result = objetivo13AccionClimaService.findProyectoById(proyectoId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
+    @Override public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.findAllMetasProyecto(proyectoId)); }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(Integer metaId) { return objetivo13AccionClimaService.findMetaProyectoById(metaId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo13AccionClimaService.saveMetaProyecto(meta)); }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(Integer metaId, ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo13AccionClimaService.updateMetaProyecto(meta)); }
+    @Override public ResponseEntity<Void> deleteMetaProyecto(Integer metaId) { objetivo13AccionClimaService.deleteMetaProyecto(metaId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/proyecto")
-    public ResponseEntity<Proyectos> createProyecto(@RequestBody Proyectos proyecto) {
-        Proyectos result = objetivo13AccionClimaService.saveProyecto(proyecto);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<List<MedicionesHistoricas>> getMedicionesHistoricas(Integer indicadorId) { return ResponseEntity.ok(objetivo13AccionClimaService.findAllMedicionesHistoricas(indicadorId)); }
+    @Override public ResponseEntity<MedicionesHistoricas> getMedicionHistorica(Integer medicionId) { return objetivo13AccionClimaService.findMedicionHistoricaById(medicionId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<MedicionesHistoricas> createMedicionHistorica(MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo13AccionClimaService.saveMedicionHistorica(medicion)); }
+    @Override public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(Integer medicionId, MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo13AccionClimaService.updateMedicionHistorica(medicion)); }
+    @Override public ResponseEntity<Void> deleteMedicionHistorica(Integer medicionId) { objetivo13AccionClimaService.deleteMedicionHistorica(medicionId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/validar/proyecto")
-    public ResponseEntity<Boolean> validateProyecto(@RequestBody Proyectos proyecto) {
-        Boolean result = objetivo13AccionClimaService.validateProjectData(proyecto);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() { return ResponseEntity.ok(objetivo13AccionClimaService.getOdsStatistics()); }
+    @Override public ResponseEntity<Double> getProjectProgress(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.calculateProjectProgress(proyectoId)); }
+    @Override public ResponseEntity<Boolean> validateIndicador(VistaAdminDetalleIndicadores indicador) { return ResponseEntity.ok(objetivo13AccionClimaService.validateIndicatorData(indicador)); }
+    @Override public ResponseEntity<Boolean> validateProyecto(Proyectos proyecto) { return ResponseEntity.ok(objetivo13AccionClimaService.validateProjectData(proyecto)); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/proyecto/{proyectoId}")
-    public ResponseEntity<Proyectos> updateProyecto(@PathVariable Integer proyectoId, @RequestBody Proyectos proyecto) {
-        Proyectos result = objetivo13AccionClimaService.updateProyecto(proyecto);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/proyecto/{proyectoId}")
-    public ResponseEntity<Void> deleteProyecto(@PathVariable Integer proyectoId) {
-        objetivo13AccionClimaService.deleteProyecto(proyectoId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/base-indicadores")
-    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadores> result = objetivo13AccionClimaService.findAllIndicadoresByProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<ProyectoIndicadores> result = objetivo13AccionClimaService.findIndicadorById(indicadorId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/indicadores")
-    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
-        ProyectoIndicadores result = objetivo13AccionClimaService.saveIndicador(indicador);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
-        Boolean result = objetivo13AccionClimaService.validateIndicatorData(indicador);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
-        ProyectoIndicadores result = objetivo13AccionClimaService.updateIndicador(indicador);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Void> deleteIndicador(@PathVariable Integer indicadorId) {
-        objetivo13AccionClimaService.deleteIndicador(indicadorId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/metas")
-    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadorParametros> result = objetivo13AccionClimaService.findAllMetasProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/metas/{metaId}")
-    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<ProyectoIndicadorParametros> result = objetivo13AccionClimaService.findMetaProyectoById(metaId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/metas")
-    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
-        ProyectoIndicadorParametros result = objetivo13AccionClimaService.saveMetaProyecto(meta);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/metas/{metaId}")
-    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
-        ProyectoIndicadorParametros result = objetivo13AccionClimaService.updateMetaProyecto(meta);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/metas/{metaId}")
-    public ResponseEntity<Void> deleteMetaProyecto(@PathVariable Integer metaId) {
-        objetivo13AccionClimaService.deleteMetaProyecto(metaId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/mediciones")
-    public ResponseEntity<List<MedicionesHistoricas>> getMedicionesHistoricas(@RequestParam Integer indicadorId) {
-        List<MedicionesHistoricas> result = objetivo13AccionClimaService.findAllMedicionesHistoricas(indicadorId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> getMedicionHistorica(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo13AccionClimaService.findMedicionHistoricaById(medicionId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/mediciones")
-    public ResponseEntity<MedicionesHistoricas> createMedicionHistorica(@RequestBody MedicionesHistoricas medicion) {
-        MedicionesHistoricas result = objetivo13AccionClimaService.saveMedicionHistorica(medicion);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(@PathVariable Integer medicionId, @RequestBody MedicionesHistoricas medicion) {
-        MedicionesHistoricas result = objetivo13AccionClimaService.updateMedicionHistorica(medicion);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/mediciones/{medicionId}")
-    public ResponseEntity<Void> deleteMedicionHistorica(@PathVariable Integer medicionId) {
-        objetivo13AccionClimaService.deleteMedicionHistorica(medicionId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/base-estadisticas")
-    public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() {
-        java.util.Map<String, Object> result = objetivo13AccionClimaService.getOdsStatistics();
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/base-progreso/{proyectoId}")
-    public ResponseEntity<Double> getProjectProgress(@PathVariable Integer proyectoId) {
-        Double result = objetivo13AccionClimaService.calculateProjectProgress(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/proyecto/{proyectoId}/existe")
-    public ResponseEntity<Boolean> existsProyecto(@PathVariable Integer proyectoId) {
-        Boolean result = objetivo13AccionClimaService.existsProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicador/{indicadorId}/existe")
-    public ResponseEntity<Boolean> existsIndicador(@PathVariable Integer indicadorId) {
-        Boolean result = objetivo13AccionClimaService.existsIndicador(indicadorId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/meta/{metaId}/existe")
-    public ResponseEntity<Boolean> existsMetaProyecto(@PathVariable Integer metaId) {
-        Boolean result = objetivo13AccionClimaService.existsMetaProyecto(metaId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/medicion/{medicionId}/existe")
-    public ResponseEntity<Boolean> existsMedicionHistorica(@PathVariable Integer medicionId) {
-        Boolean result = objetivo13AccionClimaService.existsMedicionHistorica(medicionId);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<Boolean> existsProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.existsProyecto(proyectoId)); }
+    @Override public ResponseEntity<Boolean> existsIndicador(Integer indicadorId) { return ResponseEntity.ok(objetivo13AccionClimaService.existsIndicador(indicadorId)); }
+    @Override public ResponseEntity<Boolean> existsMetaProyecto(Integer metaId) { return ResponseEntity.ok(objetivo13AccionClimaService.existsMetaProyecto(metaId)); }
+    @Override public ResponseEntity<Boolean> existsMedicionHistorica(Integer medicionId) { return ResponseEntity.ok(objetivo13AccionClimaService.existsMedicionHistorica(medicionId)); }
 }

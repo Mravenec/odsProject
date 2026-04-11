@@ -3,15 +3,12 @@
 
 ### Variables
 @baseUrl = http://localhost:8080
-@proyectoId = 7
-@indicadorId = 7
-@metaId = 7
-@medicionId = 7
+@proyectoId = 1
+@indicadorId = 1
+@metaId = 1
+@medicionId = 1
 
-# ── Indicadores Específicos del ODS07 ──
-
-### Obtener todos los indicadores del ODS07
-GET {{baseUrl}}/api/ods/07/indicadores?proyectoId={{proyectoId}}
+# ── 1. Indicadores Específicos del ODS07 ──
 
 ### Obtener indicador 7.1.1
 GET {{baseUrl}}/api/ods/07/indicadores/7.1.1?proyectoId={{proyectoId}}
@@ -52,112 +49,23 @@ GET {{baseUrl}}/api/ods/07/indicadores/7.b.4?proyectoId={{proyectoId}}
 ### Obtener indicador 7.c.1
 GET {{baseUrl}}/api/ods/07/indicadores/7.c.1?proyectoId={{proyectoId}}
 
-### Encontrar todos los indicadores por proyecto
-GET {{baseUrl}}/api/ods/07/indicadores/proyecto?proyectoId={{proyectoId}}
+# ── 2. Endpoints Estandarizados (IOdsBaseController) ──
 
-### Encontrar indicadores por meta
-GET {{baseUrl}}/api/ods/07/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=7.1
+### Obtener todos los indicadores de un proyecto
+GET {{baseUrl}}/api/ods/07/indicadores?proyectoId={{proyectoId}}
 
-# ── Proyectos ──
+### Obtener un indicador específico por su ID interno
+GET {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}
 
-### Obtener todos los proyectos del ODS07
-GET {{baseUrl}}/api/ods/07/proyectos
-
-### Obtener proyecto por ID
-GET {{baseUrl}}/api/ods/07/proyectos/{{proyectoId}}
-
-### Obtener todas las metas de proyecto
-GET {{baseUrl}}/api/ods/07/proyectos/{{proyectoId}}/metas
-
-### Obtener meta por ID
-GET {{baseUrl}}/api/ods/07/metas/{{metaId}}
-
-### Obtener todas las mediciones históricas
-GET {{baseUrl}}/api/ods/07/indicadores/historicas/{{indicadorId}}
-
-### Obtener medición histórica por ID
-GET {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
-
-### Calcular progreso del proyecto
-GET {{baseUrl}}/api/ods/07/progreso/{{proyectoId}}
-
-### Obtener estadísticas del ODS07
-GET {{baseUrl}}/api/ods/07/estadisticas
-
-### Verificar si proyecto existe
-GET {{baseUrl}}/api/ods/07/proyectos/{{proyectoId}}/existe
-
-### Verificar si indicador existe
-GET {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}/existe
-
-# ── CRUD Operaciones ──
-
-### Crear nuevo proyecto
-POST {{baseUrl}}/api/ods/07/proyecto
-Content-Type: application/json
-
-{
-  "usuarioId": 2,
-  "sedeId": 2,
-  "nombreProyecto": "Proyecto Energía Test",
-  "objetivoId": 7,
-  "descripcion": "Proyecto de prueba para ODS7",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Asegurar el acceso a energías asequibles",
-  "estado": "planificacion"
-}
-
-### Validar proyecto
-POST {{baseUrl}}/api/ods/07/validar/proyecto
-Content-Type: application/json
-
-{
-  "nombreProyecto": "Proyecto Validación Energía",
-  "usuarioId": 2,
-  "objetivoId": 7,
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "estado": "planificacion"
-}
-
-### Actualizar proyecto
-PUT {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
-Content-Type: application/json
-
-{
-  "id": {{proyectoId}},
-  "nombreProyecto": "Proyecto Energía Actualizado",
-  "descripcion": "Proyecto actualizado para ODS7",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Meta actualizada Energía",
-  "estado": "activo"
-}
-
-### Eliminar proyecto
-DELETE {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
-
-### Crear nuevo indicador (Master ID 84 = 7.1.1 aprox, verificar en SQL)
+### Crear nuevo indicador
 POST {{baseUrl}}/api/ods/07/indicadores
 Content-Type: application/json
 
 {
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 84,
-  "formulaCustom": "(p1 / p2) * 100",
+  "indicadorMasterId": 74,
+  "formulaCustom": null,
   "metaValor": 100.0,
-  "metaUnidad": "Porcentaje"
-}
-
-### Validar indicador
-POST {{baseUrl}}/api/ods/07/validar/indicador
-Content-Type: application/json
-
-{
-  "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 84,
-  "metaValor": 90.0,
   "metaUnidad": "Porcentaje"
 }
 
@@ -168,8 +76,8 @@ Content-Type: application/json
 {
   "id": {{indicadorId}},
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 84,
-  "valorActual": 60.0,
+  "indicadorMasterId": 74,
+  "valorActual": 95.0,
   "metaValor": 100.0,
   "metaUnidad": "Porcentaje"
 }
@@ -177,31 +85,69 @@ Content-Type: application/json
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}
 
-### Crear nueva meta (Parámetro)
+# ── 3. Gestión de Proyectos ──
+
+### Obtener todos los proyectos del ODS07
+GET {{baseUrl}}/api/ods/07/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/07/proyectos/{{proyectoId}}
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/07/proyectos
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Parque Eólico Guanacaste",
+  "objetivoId": 7,
+  "descripcion": "Instalación de aerogeneradores en Guanacaste",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "estado": "activo"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/07/proyectos/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombreProyecto": "Parque Eólico Guanacaste Actualizado",
+  "estado": "activo"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/07/proyectos/{{proyectoId}}
+
+# ── 4. Gestión de Metas (Parámetros) ──
+
+### Obtener metas de un proyecto
+GET {{baseUrl}}/api/ods/07/metas?proyectoId={{proyectoId}}
+
+### Obtener meta específica
+GET {{baseUrl}}/api/ods/07/metas/{{metaId}}
+
+### Crear nueva meta
 POST {{baseUrl}}/api/ods/07/metas
 Content-Type: application/json
 
 {
   "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "viviendas_con_electricidad",
-  "tipoDato": "Integer"
+  "nombreParametro": "param_test",
+  "tipoDato": "Decimal"
 }
 
-### Actualizar meta (Parámetro)
-PUT {{baseUrl}}/api/ods/07/metas/{{metaId}}
-Content-Type: application/json
+# ── 5. Mediciones Históricas ──
 
-{
-  "id": {{metaId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "viviendas_con_energia_renovable",
-  "tipoDato": "Integer"
-}
+### Obtener mediciones de un indicador
+GET {{baseUrl}}/api/ods/07/mediciones?indicadorId={{indicadorId}}
 
-### Eliminar meta
-DELETE {{baseUrl}}/api/ods/07/metas/{{metaId}}
+### Obtener medición específica
+GET {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
 
-### Crear nueva medición histórica
+### Registrar medición
 POST {{baseUrl}}/api/ods/07/mediciones
 Content-Type: application/json
 
@@ -209,66 +155,28 @@ Content-Type: application/json
   "proyectoIndicadorId": {{indicadorId}},
   "valorCalculado": 55.5,
   "fechaMedicion": "2024-04-10",
-  "responsable": "Admin Energía",
-  "observaciones": "Medición de prueba ODS7"
+  "responsable": "Admin Energía"
 }
 
-### Actualizar medición histórica
-PUT {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
+# ── 6. Utilidades y Estadísticas ──
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/07/estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/07/progreso/{{proyectoId}}
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/07/indicador/{{indicadorId}}/existe
+
+### Validar datos de proyecto
+POST {{baseUrl}}/api/ods/07/validar/proyecto
 Content-Type: application/json
 
 {
-  "id": {{medicionId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "valorCalculado": 58.0,
-  "fechaMedicion": "2024-04-10",
-  "responsable": "Admin Energía Actualizado"
+  "nombreProyecto": "Proyecto Test Energía",
+  "usuarioId": 2
 }
-
-### Eliminar medición histórica
-DELETE {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
-
-
-# ── IOdsBaseController Methods ──
-
-### Obtener todos los proyectos (base)
-GET {{baseUrl}}/api/ods/07/all-proyectos
-
-### Obtener proyecto por ID (base)
-GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}
-
-### Obtener todos los indicadores (base)
-GET {{baseUrl}}/api/ods/07/base-indicadores?proyectoId={{proyectoId}}
-
-### Obtener indicador por ID (base)
-GET {{baseUrl}}/api/ods/07/indicadores/{{indicadorId}}
-
-### Obtener metas de proyecto
-GET {{baseUrl}}/api/ods/07/metas?proyectoId={{proyectoId}}
-
-### Obtener meta por ID (base)
-GET {{baseUrl}}/api/ods/07/metas/{{metaId}}
-
-### Obtener mediciones históricas
-GET {{baseUrl}}/api/ods/07/mediciones?indicadorId={{indicadorId}}
-
-### Obtener medición histórica por ID (base)
-GET {{baseUrl}}/api/ods/07/mediciones/{{medicionId}}
-
-### Obtener estadísticas (base)
-GET {{baseUrl}}/api/ods/07/base-estadisticas
-
-### Obtener progreso del proyecto (base)
-GET {{baseUrl}}/api/ods/07/base-progreso/{{proyectoId}}
-
-### Verificar existencia de proyecto (base)
-GET {{baseUrl}}/api/ods/07/proyecto/{{proyectoId}}/existe
-
-### Verificar existencia de indicador (base)
-GET {{baseUrl}}/api/ods/07/indicador/{{indicadorId}}/existe
-
-### Verificar existencia de meta (base)
-GET {{baseUrl}}/api/ods/07/meta/{{metaId}}/existe
-
-### Verificar existencia de medición histórica (base)
-GET {{baseUrl}}/api/ods/07/medicion/{{medicionId}}/existe

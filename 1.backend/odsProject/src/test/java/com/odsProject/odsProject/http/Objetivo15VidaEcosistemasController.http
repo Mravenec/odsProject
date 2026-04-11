@@ -3,15 +3,12 @@
 
 ### Variables
 @baseUrl = http://localhost:8080
-@proyectoId = 15
-@indicadorId = 15
-@metaId = 15
-@medicionId = 15
+@proyectoId = 1
+@indicadorId = 1
+@metaId = 1
+@medicionId = 1
 
-# ── Indicadores Específicos del ODS15 ──
-
-### Obtener todos los indicadores del ODS15
-GET {{baseUrl}}/api/ods/15/indicadores?proyectoId={{proyectoId}}
+# ── 1. Indicadores Específicos del ODS15 ──
 
 ### Obtener indicador 15.1.1
 GET {{baseUrl}}/api/ods/15/indicadores/15.1.1?proyectoId={{proyectoId}}
@@ -55,113 +52,24 @@ GET {{baseUrl}}/api/ods/15/indicadores/15.b.1?proyectoId={{proyectoId}}
 ### Obtener indicador 15.c.1
 GET {{baseUrl}}/api/ods/15/indicadores/15.c.1?proyectoId={{proyectoId}}
 
-### Encontrar todos los indicadores por proyecto
-GET {{baseUrl}}/api/ods/15/indicadores/proyecto?proyectoId={{proyectoId}}
+# ── 2. Endpoints Estandarizados (IOdsBaseController) ──
 
-### Encontrar indicadores por meta
-GET {{baseUrl}}/api/ods/15/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=15.1
+### Obtener todos los indicadores de un proyecto
+GET {{baseUrl}}/api/ods/15/indicadores?proyectoId={{proyectoId}}
 
-# ── Proyectos ──
+### Obtener un indicador específico por su ID interno
+GET {{baseUrl}}/api/ods/15/indicadores/{{indicadorId}}
 
-### Obtener todos los proyectos del ODS15
-GET {{baseUrl}}/api/ods/15/proyectos
-
-### Obtener proyecto por ID
-GET {{baseUrl}}/api/ods/15/proyectos/{{proyectoId}}
-
-### Obtener todas las metas de proyecto
-GET {{baseUrl}}/api/ods/15/proyectos/{{proyectoId}}/metas
-
-### Obtener meta por ID
-GET {{baseUrl}}/api/ods/15/metas/{{metaId}}
-
-### Obtener todas las mediciones históricas
-GET {{baseUrl}}/api/ods/15/indicadores/historicas/{{indicadorId}}
-
-### Obtener medición histórica por ID
-GET {{baseUrl}}/api/ods/15/mediciones/{{medicionId}}
-
-### Calcular progreso del proyecto
-GET {{baseUrl}}/api/ods/15/progreso/{{proyectoId}}
-
-### Obtener estadísticas del ODS15
-GET {{baseUrl}}/api/ods/15/estadisticas
-
-### Verificar si proyecto existe
-GET {{baseUrl}}/api/ods/15/proyectos/{{proyectoId}}/existe
-
-### Verificar si indicador existe
-GET {{baseUrl}}/api/ods/15/indicadores/{{indicadorId}}/existe
-
-# ── CRUD Operaciones ──
-
-### Crear nuevo proyecto
-POST {{baseUrl}}/api/ods/15/proyecto
-Content-Type: application/json
-
-{
-  "usuarioId": 2,
-  "sedeId": 2,
-  "nombreProyecto": "Proyecto Vida Ecosistemas Test",
-  "objetivoId": 15,
-  "descripcion": "Proyecto de prueba para ODS15",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Gestionar sosteniblemente los bosques, luchar contra la desertificación, detener e invertir la degradación de las tierras y detener la pérdida de biodiversidad",
-  "estado": "planificacion"
-}
-
-### Validar proyecto
-POST {{baseUrl}}/api/ods/15/validar/proyecto
-Content-Type: application/json
-
-{
-  "nombreProyecto": "Proyecto Validación Ecosistemas",
-  "usuarioId": 2,
-  "objetivoId": 15,
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "estado": "planificacion"
-}
-
-### Actualizar proyecto
-PUT {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}
-Content-Type: application/json
-
-{
-  "id": {{proyectoId}},
-  "nombreProyecto": "Proyecto Ecosistemas Actualizado",
-  "descripcion": "Proyecto actualizado para ODS15",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Meta actualizada Ecosistemas",
-  "estado": "activo"
-}
-
-### Eliminar proyecto
-DELETE {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}
-
-### Crear nuevo indicador (Master ID 185 = 15.1.1 aprox, verificar en SQL)
+### Crear nuevo indicador
 POST {{baseUrl}}/api/ods/15/indicadores
 Content-Type: application/json
 
 {
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 185,
-  "formulaCustom": "(p1 / p2) * 100",
+  "indicadorMasterId": 171,
+  "formulaCustom": null,
   "metaValor": 100.0,
-  "metaUnidad": "Porcentaje"
-}
-
-### Validar indicador
-POST {{baseUrl}}/api/ods/15/validar/indicador
-Content-Type: application/json
-
-{
-  "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 185,
-  "metaValor": 85.0,
-  "metaUnidad": "Porcentaje"
+  "metaUnidad": "Porcentaje Cobertura Forestal"
 }
 
 ### Actualizar indicador
@@ -171,40 +79,78 @@ Content-Type: application/json
 {
   "id": {{indicadorId}},
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 185,
-  "valorActual": 63.0,
+  "indicadorMasterId": 171,
+  "valorActual": 92.0,
   "metaValor": 100.0,
-  "metaUnidad": "Porcentaje"
+  "metaUnidad": "Porcentaje Cobertura Forestal"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/15/indicadores/{{indicadorId}}
 
-### Crear nueva meta (Parámetro)
+# ── 3. Gestión de Proyectos ──
+
+### Obtener todos los proyectos del ODS15
+GET {{baseUrl}}/api/ods/15/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/15/proyectos/{{proyectoId}}
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/15/proyectos
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Corredor Biológico Amistosa",
+  "objetivoId": 15,
+  "descripcion": "Restauración de conectividad biológica en el sur",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "estado": "activo"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/15/proyectos/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombreProyecto": "Corredor Biológico Amistosa Actualizado",
+  "estado": "activo"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/15/proyectos/{{proyectoId}}
+
+# ── 4. Gestión de Metas (Parámetros) ──
+
+### Obtener metas de un proyecto
+GET {{baseUrl}}/api/ods/15/metas?proyectoId={{proyectoId}}
+
+### Obtener meta específica
+GET {{baseUrl}}/api/ods/15/metas/{{metaId}}
+
+### Crear nueva meta
 POST {{baseUrl}}/api/ods/15/metas
 Content-Type: application/json
 
 {
   "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "superficie_bosque_terrestre",
-  "tipoDato": "Double"
+  "nombreParametro": "param_test",
+  "tipoDato": "Decimal"
 }
 
-### Actualizar meta (Parámetro)
-PUT {{baseUrl}}/api/ods/15/metas/{{metaId}}
-Content-Type: application/json
+# ── 5. Mediciones Históricas ──
 
-{
-  "id": {{metaId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "superficie_areas_protegidas",
-  "tipoDato": "Double"
-}
+### Obtener mediciones de un indicador
+GET {{baseUrl}}/api/ods/15/mediciones?indicadorId={{indicadorId}}
 
-### Eliminar meta
-DELETE {{baseUrl}}/api/ods/15/metas/{{metaId}}
+### Obtener medición específica
+GET {{baseUrl}}/api/ods/15/mediciones/{{medicionId}}
 
-### Crear nueva medición histórica
+### Registrar medición
 POST {{baseUrl}}/api/ods/15/mediciones
 Content-Type: application/json
 
@@ -212,66 +158,28 @@ Content-Type: application/json
   "proyectoIndicadorId": {{indicadorId}},
   "valorCalculado": 48.5,
   "fechaMedicion": "2024-08-15",
-  "responsable": "Admin Ecosistemas",
-  "observaciones": "Monitoreo biológico"
+  "responsable": "Admin Ecosistemas"
 }
 
-### Actualizar medición histórica
-PUT {{baseUrl}}/api/ods/15/mediciones/{{medicionId}}
+# ── 6. Utilidades y Estadísticas ──
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/15/estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/15/progreso/{{proyectoId}}
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/15/indicador/{{indicadorId}}/existe
+
+### Validar datos de proyecto
+POST {{baseUrl}}/api/ods/15/validar/proyecto
 Content-Type: application/json
 
 {
-  "id": {{medicionId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "valorCalculado": 51.0,
-  "fechaMedicion": "2024-08-15",
-  "responsable": "Admin Ecosistemas Actualizado"
+  "nombreProyecto": "Proyecto Test Ecosistemas",
+  "usuarioId": 2
 }
-
-### Eliminar medición histórica
-DELETE {{baseUrl}}/api/ods/15/mediciones/{{medicionId}}
-
-
-# ── IOdsBaseController Methods ──
-
-### Obtener todos los proyectos (base)
-GET {{baseUrl}}/api/ods/15/all-proyectos
-
-### Obtener proyecto por ID (base)
-GET {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}
-
-### Obtener todos los indicadores (base)
-GET {{baseUrl}}/api/ods/15/base-indicadores?proyectoId={{proyectoId}}
-
-### Obtener indicador por ID (base)
-GET {{baseUrl}}/api/ods/15/indicadores/{{indicadorId}}
-
-### Obtener metas de proyecto
-GET {{baseUrl}}/api/ods/15/metas?proyectoId={{proyectoId}}
-
-### Obtener meta por ID (base)
-GET {{baseUrl}}/api/ods/15/metas/{{metaId}}
-
-### Obtener mediciones históricas
-GET {{baseUrl}}/api/ods/15/mediciones?indicadorId={{indicadorId}}
-
-### Obtener medición histórica por ID (base)
-GET {{baseUrl}}/api/ods/15/mediciones/{{medicionId}}
-
-### Obtener estadísticas (base)
-GET {{baseUrl}}/api/ods/15/base-estadisticas
-
-### Obtener progreso del proyecto (base)
-GET {{baseUrl}}/api/ods/15/base-progreso/{{proyectoId}}
-
-### Verificar existencia de proyecto (base)
-GET {{baseUrl}}/api/ods/15/proyecto/{{proyectoId}}/existe
-
-### Verificar existencia de indicador (base)
-GET {{baseUrl}}/api/ods/15/indicador/{{indicadorId}}/existe
-
-### Verificar existencia de meta (base)
-GET {{baseUrl}}/api/ods/15/meta/{{metaId}}/existe
-
-### Verificar existencia de medición histórica (base)
-GET {{baseUrl}}/api/ods/15/medicion/{{medicionId}}/existe

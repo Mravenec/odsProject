@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadorParametros;
@@ -10,214 +11,54 @@ import java.util.Optional;
 
 /**
  * Interfaz del Repositorio para el Objetivo 5: Igualdad de Género
- * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 5
- * Usa jOOQ con datasource ods05
  */
-public interface IObjetivo05GeneroRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds05> {
+public interface IObjetivo05GeneroRepository extends IOdsBaseRepository<
+    VistaAdminDetalleIndicadores, // T (Lectura)
+    ProyectoIndicadores,         // E (Escritura)
+    Proyectos,                   // P
+    ProyectoIndicadorParametros, // M
+    MedicionesHistoricas,        // MH
+    AuditoriaOds05              // A
+> {
     
-    /**
-     * 5.1.1 Determinar si existen o no marcos jurídicos para promover, hacer cumplir y supervisar 
-     * la igualdad y la no discriminación por razón de sexo [41]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.1.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_2_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_2_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_3_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_3_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_4_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_5_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_5_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_6_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_6_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_a_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_a_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_b_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_5_c_1(Integer proyectoId);
     
-    /**
-     * 5.2.1 Proporción de mujeres y niñas a partir de 15 años de edad que han sufrido violencia física, 
-     * sexual o psicológica a manos de su actual o anterior pareja en los últimos 12 meses, 
-     * desglosada por forma de violencia y edad [41, 42]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.2.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_2_1(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds05(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
-    /**
-     * 5.2.2 Proporción de mujeres y niñas a partir de 15 años de edad que han sufrido violencia sexual 
-     * a manos de personas que no eran su pareja en los últimos 12 meses, desglosada por edad y lugar del hecho [42]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.2.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_2_2(Integer proyectoId);
-    
-    /**
-     * 5.3.1 Proporción de mujeres de entre 20 y 24 años que estaban casadas o mantenían una unión estable 
-     * antes de cumplir los 15 años y antes de cumplir los 18 años [42, 43]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.3.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_3_1(Integer proyectoId);
-    
-    /**
-     * 5.3.2 Proporción de niñas y mujeres de entre 15 y 49 años que han sufrido mutilación genital femenina, 
-     * desglosada por edad [43]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.3.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_3_2(Integer proyectoId);
-    
-    /**
-     * 5.4.1 Proporción de tiempo dedicado al trabajo doméstico y asistencial no remunerado, 
-     * desglosada por sexo, edad y ubicación [44]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.4.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_4_1(Integer proyectoId);
-    
-    /**
-     * 5.5.1 Proporción de escaños ocupados por mujeres en a) los parlamentos nacionales y b) los gobiernos locales [44]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.5.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_5_1(Integer proyectoId);
-    
-    /**
-     * 5.5.2 Proporción de mujeres en cargos directivos [44]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.5.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_5_2(Integer proyectoId);
-    
-    /**
-     * 5.6.1 Proporción de mujeres de entre 15 y 49 años que toman sus propias decisiones informadas 
-     * en relación con la salud sexual, el uso de anticonceptivos y su salud reproductiva [45]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.6.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_6_1(Integer proyectoId);
-    
-    /**
-     * 5.6.2 Número de países con leyes y reglamentos que garantizan a los hombres y las mujeres 
-     * igual acceso a los servicios de salud sexual y reproductiva [45]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.6.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_6_2(Integer proyectoId);
-    
-    /**
-     * 5.a.1 a) Proporción del total de la población agrícola con derechos de propiedad o derechos seguros 
-     * sobre tierras agrícolas, desglosada por sexo; y b) proporción de mujeres entre los propietarios 
-     * o los titulares de derechos sobre tierras agrícolas, desglosada por tipo de tenencia [46]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.a.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_a_1(Integer proyectoId);
-    
-    /**
-     * 5.a.2 Proporción de países cuyo ordenamiento jurídico (incluido el derecho consuetudinario) 
-     * garantiza la igualdad de derechos de la mujer a la propiedad o el control de las tierras [47]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.a.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_a_2(Integer proyectoId);
-    
-    /**
-     * 5.b.1 Proporción de personas que poseen un teléfono móvil, desglosada por sexo [48]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.b.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_b_1(Integer proyectoId);
-    
-    /**
-     * 5.c.1 Proporción de países con sistemas para el seguimiento de la igualdad de género 
-     * y el empoderamiento de las mujeres y la asignación de fondos públicos para ese fin [48]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 5.c.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_5_c_1(Integer proyectoId);
-    
-    /**
-     * Encuentra todos los indicadores asociados a un proyecto específico del ODS05
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todos los indicadores del proyecto
-     */
-    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds05(Integer proyectoId);
-    
-    /**
-     * Encuentra indicadores filtrando por meta específica del ODS05
-     * 
-     * @param proyectoId ID del proyecto
-     * @param metaPrefix Prefijo de la meta (ej: "5.1", "5.2")
-     * @return Lista de indicadores que pertenecen a la meta especificada
-     */
-    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
-    
-    // ── Métodos específicos del ODS05 ──
-    
-    /**
-     * Encuentra todos los proyectos del ODS05
-     * 
-     * @return Lista de todos los proyectos del ODS05
-     */
     List<Proyectos> findAllProyectosOds05();
-    
-    /**
-     * Encuentra un proyecto del ODS05 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Optional con el proyecto encontrado
-     */
     Optional<Proyectos> findProyectoOds05ById(Integer proyectoId);
-    
-    /**
-     * Encuentra todas las metas de proyecto del ODS05
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de metas del proyecto
-     */
     List<ProyectoIndicadorParametros> findAllMetasProyectoOds05(Integer proyectoId);
-    
-    /**
-     * Encuentra una meta de proyecto del ODS05 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return Optional con la meta encontrada
-     */
     Optional<ProyectoIndicadorParametros> findMetaProyectoOds05ById(Integer metaId);
-    
-    /**
-     * Encuentra todas las mediciones históricas del ODS05
-     * 
-     * @param indicadorId ID del indicador
-     * @return Lista de mediciones históricas
-     */
-    List<MedicionesHistoricas> findAllMedicionesHistoricasOds05(Integer indicadorId);
-    
-    /**
-     * Encuentra una medición histórica del ODS05 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return Optional con la medición encontrada
-     */
+    List<MedicionesHistoricas> findAllMetasMedicionesHistoricasOds05(Integer indicadorId);
     Optional<MedicionesHistoricas> findMedicionHistoricaOds05ById(Integer medicionId);
-    
-    /**
-     * Encuentra todas las auditorías del ODS05
-     * 
-     * @return Lista de todas las auditorías
-     */
     List<AuditoriaOds05> findAllAuditoriasOds05();
-    
-    /**
-     * Encuentra una auditoría del ODS05 por su ID
-     * 
-     * @param auditoriaId ID de la auditoría
-     * @return Optional con la auditoría encontrada
-     */
     Optional<AuditoriaOds05> findAuditoriaOds05ById(Integer auditoriaId);
+
+    void deleteIndicador(Integer indicadorId);
+    ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta);
+    void deleteMetaProyecto(Integer metaId);
+    MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion);
+    void deleteMedicionHistorica(Integer medicionId);
+    
+    Boolean existsIndicador(Integer indicadorId);
+    Boolean existsProyecto(Integer proyectoId);
+    Boolean existsMetaProyecto(Integer metaId);
+    Boolean existsMedicionHistorica(Integer medicionId);
+
+    // Compatibilidad
+    List<MedicionesHistoricas> findAllMedicionesHistoricasOds05(Integer indicadorId);
 }

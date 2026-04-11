@@ -1,106 +1,73 @@
 import api from './api';
-// Mock service for ODS Objective 7 - Energía Asequible y No Contaminante
-// Based on official SDG indicators from Global Indicator Framework
+
+/**
+ * Servicio para el ODS 07 - Energía Asequible y No Contaminante
+ * Implementa la carga dinámica de indicadores desde la base de datos.
+ */
 export const objetivo07Service = {
-  // 7.1.1 Proporción de la población que tiene acceso a la electricidad
-  getIndicador_7_1_1: async () => {
+  /**
+   * Obtener todos los indicadores enriquecidos para un proyecto en el ODS 07
+   * @param {number} proyectoId ID del proyecto
+   * @returns {Object} Mapa de indicadores indexados por código
+   */
+  getIndicators: async (proyectoId) => {
     try {
-      const response = await api.get(`/ods/07/indicadores/7.1.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
+      if (!proyectoId) throw new Error('proyectoId is required');
+      const response = await api.get(`/ods/07/base-indicadores`, { params: { proyectoId } });
+      const indicators = response.data || [];
+      
+      return indicators.reduce((acc, ind) => {
+        const code = ind.indicadorCodigo;
+        if (!code) return acc;
+
+        acc[code] = {
+          id: ind.id,
+          masterId: ind.indicadorMasterId,
+          code: code,
+          name: ind.indicadorNombre,
+          currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
+          targetValue: ind.metaValor || 0,
+          unit: ind.metaUnidad || 'unidad',
+          formula: ind.formulaCustom || '',
+          updatedAt: ind.ultimaActualizacion,
+          hasData: ind.valorActual !== null
+        };
+        return acc;
+      }, {});
     } catch (error) {
-      console.error('Error fetching 7.1.1:', error);
-      throw error;
+      console.error('Error fetching ODS 07 indicators:', error);
+      return {};
     }
   },
-  
-  // 7.1.2 Proporción de la población con combustibles y tecnologías limpios
-  getIndicador_7_1_2: async () => {
+
+  /**
+   * Obtiene estadísticas generales del ODS 07
+   */
+  getStatistics: async () => {
     try {
-      const response = await api.get(`/ods/07/indicadores/7.1.2?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
+      const response = await api.get(`/ods/07/base-estadisticas`);
+      return response.data || {};
     } catch (error) {
-      console.error('Error fetching 7.1.2:', error);
-      throw error;
+      console.error('Error fetching ODS 07 statistics:', error);
+      return {};
     }
   },
-  
-  // 7.2.1 Proporción de energía renovable en el consumo final total de energía
-  getIndicador_7_2_1: async () => {
+
+  /**
+   * Mantiene compatibilidad con llamadas individuales si existieran.
+   */
+  getIndicadorGeneral: async (code, proyectoId = 1) => {
     try {
-      const response = await api.get(`/ods/07/indicadores/7.2.1?proyectoId=1`);
+      const response = await api.get(`/ods/07/indicadores/${code}`, { params: { proyectoId } });
       const data = response.data || {};
       return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
+        currentValue: data.valorActual ?? 0,
+        targetValue: data.metaValor ?? 0,
+        unit: data.metaUnidad || 'unidad'
       };
     } catch (error) {
-      console.error('Error fetching 7.2.1:', error);
-      throw error;
-    }
-  },
-  
-  // 7.3.1 Intensidad energética medida en función de la energía primaria y el PIB
-  getIndicador_7_3_1: async () => {
-    try {
-      const response = await api.get(`/ods/07/indicadores/7.3.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 7.3.1:', error);
-      throw error;
-    }
-  },
-  
-  // 7.a.1 Corrientes financieras hacia países en desarrollo para energías limpias
-  getIndicador_7_a_1: async () => {
-    try {
-      const response = await api.get(`/ods/07/indicadores/7.a.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 7.a.1:', error);
-      throw error;
-    }
-  },
-  
-  // 7.b.1 Capacidad instalada de generación de energía renovable
-  getIndicador_7_b_1: async () => {
-    try {
-      const response = await api.get(`/ods/07/indicadores/7.b.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 7.b.1:', error);
-      throw error;
+      console.error(`Error fetching indicator ${code}:`, error);
+      return { currentValue: 0, targetValue: 0, unit: 'unidad' };
     }
   }
 };

@@ -16,20 +16,20 @@ export const AuthProvider = ({ children }) => {
       
       if (token) {
         try {
-          console.log('[Auth] Verificando token persistido...');
           const response = await authService.verifyToken(token);
           if (response.success && response.data?.user) {
-            console.log('[Auth] Usuario verificado correctamente:', response.data.user);
             setUser(response.data.user);
             setIsAuthenticated(true);
           } else {
-            console.warn('[Auth] Token inválido o sin datos de usuario');
             localStorage.removeItem('token');
+            setIsAuthenticated(false);
           }
         } catch (error) {
-          console.error('[Auth] Error en verificación de sesión:', error);
           localStorage.removeItem('token');
+          setIsAuthenticated(false);
         }
+      } else {
+        setIsAuthenticated(false);
       }
       
       setLoading(false);

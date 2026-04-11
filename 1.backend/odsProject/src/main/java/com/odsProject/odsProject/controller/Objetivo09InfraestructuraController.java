@@ -1,6 +1,8 @@
 package com.odsProject.odsProject.controller;
 
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndicadores;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.VistaAdminDetalleIndicadores;
+import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.AuditoriaOds09;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MedicionesHistoricas;
@@ -25,535 +27,57 @@ public class Objetivo09InfraestructuraController implements IObjetivo09Infraestr
     @Autowired
     private Objetivo09InfraestructuraService objetivo09InfraestructuraService;
 
-    // ── Indicadores Específicos del ODS09 ──
+    // ── Indicadores Específicos del ODS    // ── Indicadores Específicos del ODS09 ──
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getAllIndicators(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getAllIndicators(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_1_1(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_1_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_1_2(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_1_2(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_2_1(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_2_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_2_2(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_2_2(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_3_1(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_3_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_3_2(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_3_2(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_4_1(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_4_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_5_1(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_5_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_5_2(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_5_2(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_a_1(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_a_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_b_1(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_b_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_9_c_1(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getIndicador_9_c_1(proyectoId)); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores")
-    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadores> result = objetivo09InfraestructuraService.getAllIndicators(proyectoId);
-        return ResponseEntity.ok(result);
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.1.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_1_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_1_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.1.2")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_1_2(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_1_2(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.2.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_2_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_2_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.2.2")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_2_2(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_2_2(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.3.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_3_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_3_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.3.2")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_3_2(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_3_2(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.4.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_4_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_4_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.5.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_5_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_5_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.5.2")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_5_2(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_5_2(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.a.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_a_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_a_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.b.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_b_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_b_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/9.c.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_9_c_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.getIndicador_9_c_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds09(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadores> result = objetivo09InfraestructuraService.findAllIndicadoresByProyectoOds09(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<ProyectoIndicadores> result = objetivo09InfraestructuraService.findIndicadoresByMeta(proyectoId, metaPrefix);
-        return ResponseEntity.ok(result);
-    }
-
-    // ── Proyectos ──
-
-    /**
-     * Obtiene todos los proyectos del ODS09
-     * 
-     * @return ResponseEntity con la lista de todos los proyectos del ODS09
-     */
-    @GetMapping("/proyectos")
-    public ResponseEntity<List<Proyectos>> getAllProjectsOds09() {
-        List<Proyectos> result = objetivo09InfraestructuraService.findAllProyectos();
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Obtiene un proyecto del ODS09 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con el proyecto encontrado
-     */
-    @GetMapping("/proyectos/{proyectoId}")
-    public ResponseEntity<Proyectos> getProjectOds09ById(@PathVariable Integer proyectoId) {
-        Optional<Proyectos> result = objetivo09InfraestructuraService.findProyectoById(proyectoId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * Obtiene todas las metas de proyecto del ODS09
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con la lista de todas las metas del proyecto ODS09
-     */
-    @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds09(@PathVariable Integer proyectoId) {
-        List<ProyectoIndicadorParametros> result = objetivo09InfraestructuraService.findAllMetasProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    
-    /**
-     * Obtiene todas las mediciones históricas del ODS09
-     * 
-     * @param indicadorId ID del indicador
-     * @return ResponseEntity con la lista de todas las mediciones históricas del ODS09
-     */
-    @GetMapping("/indicadores/historicas/{indicadorId}")
-    public ResponseEntity<List<MedicionesHistoricas>> getAllMedicionesHistoricasOds09(@PathVariable Integer indicadorId) {
-        List<MedicionesHistoricas> result = objetivo09InfraestructuraService.findAllMedicionesHistoricas(indicadorId);
-        return ResponseEntity.ok(result);
-    }
-
-    
-    /**
-     * Calcula el progreso de un proyecto del ODS09
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con el porcentaje de progreso
-     */
-    @GetMapping("/progreso/{proyectoId}")
-    public ResponseEntity<Double> calculateProjectProgress(@PathVariable Integer proyectoId) {
-        Double result = objetivo09InfraestructuraService.calculateProjectProgress(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Obtiene estadísticas específicas del ODS09
-     * 
-     * @return ResponseEntity con estadísticas del ODS09
-     */
-    @GetMapping("/estadisticas")
-    public ResponseEntity<java.util.Map<String, Object>> getOds09Statistics() {
-        java.util.Map<String, Object> result = objetivo09InfraestructuraService.getOdsStatistics();
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Verifica si un proyecto del ODS09 existe
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con true si existe, false otherwise
-     */
-    @GetMapping("/proyectos/{proyectoId}/existe")
-    public ResponseEntity<Boolean> projectExists(@PathVariable Integer proyectoId) {
-        Boolean result = objetivo09InfraestructuraService.existsProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Verifica si un indicador del ODS09 existe
-     * 
-     * @param indicadorId ID del indicador
-     * @return ResponseEntity con true si existe, false otherwise
-     */
-    @GetMapping("/indicadores/{indicadorId}/existe")
-    public ResponseEntity<Boolean> indicatorExists(@PathVariable Integer indicadorId) {
-        Boolean result = objetivo09InfraestructuraService.existsIndicador(indicadorId);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> findAllIndicadoresByProyectoOds09(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.findAllIndicadoresByProyectoOds09(proyectoId)); }
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) { return ResponseEntity.ok(objetivo09InfraestructuraService.findIndicadoresByMeta(proyectoId, metaPrefix)); }
 
     // ── IOdsBaseController implementations ──
+    @Override public ResponseEntity<List<Proyectos>> getProyectos() { return ResponseEntity.ok(objetivo09InfraestructuraService.findAllProyectos()); }
+    @Override public ResponseEntity<Proyectos> getProyecto(Integer proyectoId) { return objetivo09InfraestructuraService.findProyectoById(proyectoId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<Proyectos> createProyecto(Proyectos proyecto) { return ResponseEntity.ok(objetivo09InfraestructuraService.saveProyecto(proyecto)); }
+    @Override public ResponseEntity<Proyectos> updateProyecto(Integer proyectoId, Proyectos proyecto) { return ResponseEntity.ok(objetivo09InfraestructuraService.updateProyecto(proyecto)); }
+    @Override public ResponseEntity<Void> deleteProyecto(Integer proyectoId) { objetivo09InfraestructuraService.deleteProyecto(proyectoId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/all-proyectos")
-    public ResponseEntity<List<Proyectos>> getProyectos() {
-        List<Proyectos> result = objetivo09InfraestructuraService.findAllProyectos();
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getIndicadores(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.getAllIndicators(proyectoId)); }
+    @Override public ResponseEntity<VistaAdminDetalleIndicadores> getIndicador(Integer indicadorId) { return objetivo09InfraestructuraService.findIndicadorById(indicadorId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo09InfraestructuraService.saveIndicador(indicador)); }
+    @Override public ResponseEntity<ProyectoIndicadores> updateIndicador(Integer indicadorId, ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo09InfraestructuraService.updateIndicador(indicador)); }
+    @Override public ResponseEntity<Void> deleteIndicador(Integer indicadorId) { objetivo09InfraestructuraService.deleteIndicador(indicadorId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/proyecto/{proyectoId}")
-    public ResponseEntity<Proyectos> getProyecto(@PathVariable Integer proyectoId) {
-        Optional<Proyectos> result = objetivo09InfraestructuraService.findProyectoById(proyectoId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
+    @Override public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.findAllMetasProyecto(proyectoId)); }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(Integer metaId) { return objetivo09InfraestructuraService.findMetaProyectoById(metaId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo09InfraestructuraService.saveMetaProyecto(meta)); }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(Integer metaId, ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo09InfraestructuraService.updateMetaProyecto(meta)); }
+    @Override public ResponseEntity<Void> deleteMetaProyecto(Integer metaId) { objetivo09InfraestructuraService.deleteMetaProyecto(metaId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/proyecto")
-    public ResponseEntity<Proyectos> createProyecto(@RequestBody Proyectos proyecto) {
-        Proyectos result = objetivo09InfraestructuraService.saveProyecto(proyecto);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<List<MedicionesHistoricas>> getMedicionesHistoricas(Integer indicadorId) { return ResponseEntity.ok(objetivo09InfraestructuraService.findAllMedicionesHistoricas(indicadorId)); }
+    @Override public ResponseEntity<MedicionesHistoricas> getMedicionHistorica(Integer medicionId) { return objetivo09InfraestructuraService.findMedicionHistoricaById(medicionId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<MedicionesHistoricas> createMedicionHistorica(MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo09InfraestructuraService.saveMedicionHistorica(medicion)); }
+    @Override public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(Integer medicionId, MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo09InfraestructuraService.updateMedicionHistorica(medicion)); }
+    @Override public ResponseEntity<Void> deleteMedicionHistorica(Integer medicionId) { objetivo09InfraestructuraService.deleteMedicionHistorica(medicionId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/validar/proyecto")
-    public ResponseEntity<Boolean> validateProyecto(@RequestBody Proyectos proyecto) {
-        Boolean result = objetivo09InfraestructuraService.validateProjectData(proyecto);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() { return ResponseEntity.ok(objetivo09InfraestructuraService.getOdsStatistics()); }
+    @Override public ResponseEntity<Double> getProjectProgress(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.calculateProjectProgress(proyectoId)); }
+    @Override public ResponseEntity<Boolean> validateIndicador(VistaAdminDetalleIndicadores indicador) { return ResponseEntity.ok(objetivo09InfraestructuraService.validateIndicatorData(indicador)); }
+    @Override public ResponseEntity<Boolean> validateProyecto(Proyectos proyecto) { return ResponseEntity.ok(objetivo09InfraestructuraService.validateProjectData(proyecto)); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/proyecto/{proyectoId}")
-    public ResponseEntity<Proyectos> updateProyecto(@PathVariable Integer proyectoId, @RequestBody Proyectos proyecto) {
-        Proyectos result = objetivo09InfraestructuraService.updateProyecto(proyecto);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/proyecto/{proyectoId}")
-    public ResponseEntity<Void> deleteProyecto(@PathVariable Integer proyectoId) {
-        objetivo09InfraestructuraService.deleteProyecto(proyectoId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/base-indicadores")
-    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadores> result = objetivo09InfraestructuraService.findAllIndicadoresByProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<ProyectoIndicadores> result = objetivo09InfraestructuraService.findIndicadorById(indicadorId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/indicadores")
-    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
-        ProyectoIndicadores result = objetivo09InfraestructuraService.saveIndicador(indicador);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
-        Boolean result = objetivo09InfraestructuraService.validateIndicatorData(indicador);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
-        ProyectoIndicadores result = objetivo09InfraestructuraService.updateIndicador(indicador);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Void> deleteIndicador(@PathVariable Integer indicadorId) {
-        objetivo09InfraestructuraService.deleteIndicador(indicadorId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/metas")
-    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadorParametros> result = objetivo09InfraestructuraService.findAllMetasProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/metas/{metaId}")
-    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<ProyectoIndicadorParametros> result = objetivo09InfraestructuraService.findMetaProyectoById(metaId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/metas")
-    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
-        ProyectoIndicadorParametros result = objetivo09InfraestructuraService.saveMetaProyecto(meta);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/metas/{metaId}")
-    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
-        ProyectoIndicadorParametros result = objetivo09InfraestructuraService.updateMetaProyecto(meta);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/metas/{metaId}")
-    public ResponseEntity<Void> deleteMetaProyecto(@PathVariable Integer metaId) {
-        objetivo09InfraestructuraService.deleteMetaProyecto(metaId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/mediciones")
-    public ResponseEntity<List<MedicionesHistoricas>> getMedicionesHistoricas(@RequestParam Integer indicadorId) {
-        List<MedicionesHistoricas> result = objetivo09InfraestructuraService.findAllMedicionesHistoricas(indicadorId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> getMedicionHistorica(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo09InfraestructuraService.findMedicionHistoricaById(medicionId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/mediciones")
-    public ResponseEntity<MedicionesHistoricas> createMedicionHistorica(@RequestBody MedicionesHistoricas medicion) {
-        MedicionesHistoricas result = objetivo09InfraestructuraService.saveMedicionHistorica(medicion);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(@PathVariable Integer medicionId, @RequestBody MedicionesHistoricas medicion) {
-        MedicionesHistoricas result = objetivo09InfraestructuraService.updateMedicionHistorica(medicion);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/mediciones/{medicionId}")
-    public ResponseEntity<Void> deleteMedicionHistorica(@PathVariable Integer medicionId) {
-        objetivo09InfraestructuraService.deleteMedicionHistorica(medicionId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/base-estadisticas")
-    public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() {
-        java.util.Map<String, Object> result = objetivo09InfraestructuraService.getOdsStatistics();
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/base-progreso/{proyectoId}")
-    public ResponseEntity<Double> getProjectProgress(@PathVariable Integer proyectoId) {
-        Double result = objetivo09InfraestructuraService.calculateProjectProgress(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/proyecto/{proyectoId}/existe")
-    public ResponseEntity<Boolean> existsProyecto(@PathVariable Integer proyectoId) {
-        Boolean result = objetivo09InfraestructuraService.existsProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicador/{indicadorId}/existe")
-    public ResponseEntity<Boolean> existsIndicador(@PathVariable Integer indicadorId) {
-        Boolean result = objetivo09InfraestructuraService.existsIndicador(indicadorId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/meta/{metaId}/existe")
-    public ResponseEntity<Boolean> existsMetaProyecto(@PathVariable Integer metaId) {
-        Boolean result = objetivo09InfraestructuraService.existsMetaProyecto(metaId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/medicion/{medicionId}/existe")
-    public ResponseEntity<Boolean> existsMedicionHistorica(@PathVariable Integer medicionId) {
-        Boolean result = objetivo09InfraestructuraService.existsMedicionHistorica(medicionId);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<Boolean> existsProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo09InfraestructuraService.existsProyecto(proyectoId)); }
+    @Override public ResponseEntity<Boolean> existsIndicador(Integer indicadorId) { return ResponseEntity.ok(objetivo09InfraestructuraService.existsIndicador(indicadorId)); }
+    @Override public ResponseEntity<Boolean> existsMetaProyecto(Integer metaId) { return ResponseEntity.ok(objetivo09InfraestructuraService.existsMetaProyecto(metaId)); }
+    @Override public ResponseEntity<Boolean> existsMedicionHistorica(Integer medicionId) { return ResponseEntity.ok(objetivo09InfraestructuraService.existsMedicionHistorica(medicionId)); }
 }

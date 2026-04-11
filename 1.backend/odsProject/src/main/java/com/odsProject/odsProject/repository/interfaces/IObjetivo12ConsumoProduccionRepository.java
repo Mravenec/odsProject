@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadorParametros;
@@ -10,201 +11,50 @@ import java.util.Optional;
 
 /**
  * Interfaz del Repositorio para el Objetivo 12: Producción y Consumo Responsables
- * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 12
- * Usa jOOQ con datasource ods12
  */
-public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds12> {
+public interface IObjetivo12ConsumoProduccionRepository extends IOdsBaseRepository<
+    VistaAdminDetalleIndicadores, // T (Lectura)
+    ProyectoIndicadores,         // E (Escritura)
+    Proyectos,                   // P
+    ProyectoIndicadorParametros, // M
+    MedicionesHistoricas,        // MH
+    AuditoriaOds12              // A
+> {
     
-    /**
-     * 12.1.1 Número de países que elaboran, adoptan o aplican instrumentos de política destinados 
-     * a apoyar la transición hacia modalidades de consumo y producción sostenibles [93, 94]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.1.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_2_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_2_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_3_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_4_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_4_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_5_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_6_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_7_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_8_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_a_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_b_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_12_c_1(Integer proyectoId);
     
-    /**
-     * 12.2.1 Huella material en términos absolutos, huella material per cápita y huella material por PIB [95]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.2.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_2_1(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
-    /**
-     * 12.2.2 Consumo material interno en términos absolutos, consumo material interno per cápita 
-     * y consumo material interno por PIB [95]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.2.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_2_2(Integer proyectoId);
-    
-    /**
-     * 12.3.1 a) Índice de pérdidas de alimentos y b) índice de desperdicio de alimentos [96]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.3.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_3_1(Integer proyectoId);
-    
-    /**
-     * 12.4.1 Número de partes en los acuerdos ambientales multilaterales internacionales sobre 
-     * residuos peligrosos y otros productos químicos [97]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.4.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_4_1(Integer proyectoId);
-    
-    /**
-     * 12.4.2 a) Desechos peligrosos generados per cápita y b) proporción de desechos peligrosos tratados, 
-     * desglosados por tipo de tratamiento [97]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.4.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_4_2(Integer proyectoId);
-    
-    /**
-     * 12.5.1 Tasa nacional de reciclado, en toneladas de material reciclado [97]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.5.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_5_1(Integer proyectoId);
-    
-    /**
-     * 12.6.1 Número de empresas que publican informes sobre sostenibilidad [98]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.6.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_6_1(Integer proyectoId);
-    
-    /**
-     * 12.7.1 Número de países que aplican políticas y planes de acción sostenibles en materia de adquisiciones públicas [98]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.7.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_7_1(Integer proyectoId);
-    
-    /**
-     * 12.8.1 Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo sostenible 
-     * se incorporan en a) las políticas nacionales de educación, b) los planes de estudio, c) la formación de docentes 
-     * y d) la evaluación de los estudiantes [99]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.8.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_8_1(Integer proyectoId);
-    
-    /**
-     * 12.a.1 Capacidad instalada de generación de energía renovable en los países en desarrollo 
-     * y en los países desarrollados (en vatios per cápita) [100]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.a.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_a_1(Integer proyectoId);
-    
-    /**
-     * 12.b.1 Aplicación de instrumentos normalizados de contabilidad para hacer un seguimiento 
-     * de los aspectos económicos y ambientales de la sostenibilidad del turismo [100, 101]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.b.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_b_1(Integer proyectoId);
-    
-    /**
-     * 12.c.1 Cuantía de los subsidios a los combustibles fósiles (producción y consumo) por unidad del PIB [101, 102]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.c.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_12_c_1(Integer proyectoId);
-    
-    /**
-     * Encuentra todos los indicadores asociados a un proyecto específico del ODS12
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todos los indicadores del proyecto
-     */
-    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId);
-    
-    /**
-     * Encuentra indicadores filtrando por meta específica del ODS12
-     * 
-     * @param proyectoId ID del proyecto
-     * @param metaPrefix Prefijo de la meta (ej: "12.1", "12.2")
-     * @return Lista de indicadores que pertenecen a la meta especificada
-     */
-    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
-    
-    // ── Métodos específicos del ODS12 ──
-    
-    /**
-     * Encuentra todos los proyectos del ODS12
-     * 
-     * @return Lista de todos los proyectos del ODS12
-     */
     List<Proyectos> findAllProyectosOds12();
-    
-    /**
-     * Encuentra un proyecto del ODS12 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Optional con el proyecto encontrado
-     */
     Optional<Proyectos> findProyectoOds12ById(Integer proyectoId);
-    
-    /**
-     * Encuentra todas las metas de proyecto del ODS12
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de metas del proyecto
-     */
     List<ProyectoIndicadorParametros> findAllMetasProyectoOds12(Integer proyectoId);
-    
-    /**
-     * Encuentra una meta de proyecto del ODS12 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return Optional con la meta encontrada
-     */
     Optional<ProyectoIndicadorParametros> findMetaProyectoOds12ById(Integer metaId);
-    
-    /**
-     * Encuentra todas las mediciones históricas del ODS12
-     * 
-     * @param indicadorId ID del indicador
-     * @return Lista de mediciones históricas
-     */
     List<MedicionesHistoricas> findAllMedicionesHistoricasOds12(Integer indicadorId);
-    
-    /**
-     * Encuentra una medición histórica del ODS12 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return Optional con la medición encontrada
-     */
     Optional<MedicionesHistoricas> findMedicionHistoricaOds12ById(Integer medicionId);
-    
-    /**
-     * Encuentra todas las auditorías del ODS12
-     * 
-     * @return Lista de todas las auditorías
-     */
     List<AuditoriaOds12> findAllAuditoriasOds12();
-    
-    /**
-     * Encuentra una auditoría del ODS12 por su ID
-     * 
-     * @param auditoriaId ID de la auditoría
-     * @return Optional con la auditoría encontrada
-     */
     Optional<AuditoriaOds12> findAuditoriaOds12ById(Integer auditoriaId);
+
+    void deleteIndicador(Integer indicadorId);
+    ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta);
+    void deleteMetaProyecto(Integer metaId);
+    MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion);
+    void deleteMedicionHistorica(Integer medicionId);
+    
+    Boolean existsIndicador(Integer indicadorId);
+    Boolean existsProyecto(Integer proyectoId);
+    Boolean existsMetaProyecto(Integer metaId);
+    Boolean existsMedicionHistorica(Integer medicionId);
 }

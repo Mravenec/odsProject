@@ -1,9 +1,11 @@
 package com.odsProject.odsProject.service;
 
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.AuditoriaOds10;
 import com.odsProject.odsProject.repository.Objetivo10ReduccionDesigualdadRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo10ReduccionDesigualdadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,6 @@ import java.util.Optional;
 
 /**
  * Implementación del Servicio para el Objetivo 10: Reducción de las Desigualdades
- * Implementa la lógica de negocio para los indicadores del ODS10
- * Usa Objetivo10ReduccionDesigualdadRepository para el acceso a datos
  */
 @Service
 public class Objetivo10ReduccionDesigualdadService implements IObjetivo10ReduccionDesigualdadService {
@@ -24,419 +24,76 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
     @Autowired
     private Objetivo10ReduccionDesigualdadRepository objetivo10ReduccionDesigualdadRepository;
 
-    // ── Indicadores Específicos del ODS10 ──
+    @Override public List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findAllIndicadoresByProyectoOds10(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_1_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_1_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_2_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_2_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_3_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_3_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_4_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_4_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_4_2(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_4_2(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_5_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_5_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_6_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_6_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_7_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_7_2(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_2(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_7_3(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_3(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_7_4(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_4(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_a_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_a_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_b_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_b_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_c_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_c_1(proyectoId); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ProyectoIndicadores> getAllIndicators(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(proyectoId);
-    }
+    @Override public List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds10(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findAllIndicadoresByProyectoOds10(proyectoId); }
+    @Override public List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) { return objetivo10ReduccionDesigualdadRepository.findIndicadoresByMeta(proyectoId, metaPrefix); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_1_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_1_1(proyectoId);
-    }
+    @Override public List<Proyectos> getAllProjectsOds10() { return objetivo10ReduccionDesigualdadRepository.findAllProyectosOds10(); }
+    @Override public Optional<Proyectos> getProjectOds10ById(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findProyectoOds10ById(proyectoId); }
+    @Override public List<ProyectoIndicadorParametros> getAllMetasProyectoOds10(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findAllMetasProyectoOds10(proyectoId); }
+    @Override public Optional<ProyectoIndicadorParametros> getMetaProyectoOds10ById(Integer metaId) { return objetivo10ReduccionDesigualdadRepository.findMetaProyectoOds10ById(metaId); }
+    @Override public List<MedicionesHistoricas> getAllMedicionesHistoricasOds10(Integer indicadorId) { return objetivo10ReduccionDesigualdadRepository.findAllMedicionesHistoricasOds10(indicadorId); }
+    @Override public Optional<MedicionesHistoricas> getMedicionHistoricaOds10ById(Integer medicionId) { return objetivo10ReduccionDesigualdadRepository.findMedicionHistoricaOds10ById(medicionId); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_2_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_2_1(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_3_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_3_1(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_4_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_4_1(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_4_2(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_4_2(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_5_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_5_1(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_6_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_6_1(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_7_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_1(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_7_2(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_2(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_7_3(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_3(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_7_4(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_7_4(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_a_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_a_1(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_b_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_b_1(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> getIndicador_10_c_1(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicador_10_c_1(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ProyectoIndicadores> findAllIndicadoresByProyectoOds10(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findAllIndicadoresByProyectoOds10(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicadoresByMeta(proyectoId, metaPrefix);
-    }
-
-    // ── Métodos CRUD y Utilidades (para alinear con Repository) ──
-public List<Proyectos> getAllProjectsOds10() {
-        return objetivo10ReduccionDesigualdadRepository.findAllProyectosOds10();
-    }
-public Optional<Proyectos> getProjectOds10ById(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findProyectoOds10ById(proyectoId);
-    }
-public List<ProyectoIndicadorParametros> getAllMetasProyectoOds10(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findAllMetasProyectoOds10(proyectoId);
-    }
-public Optional<ProyectoIndicadorParametros> getMetaProyectoOds10ById(Integer metaId) {
-        return objetivo10ReduccionDesigualdadRepository.findMetaProyectoOds10ById(metaId);
-    }
-public List<MedicionesHistoricas> getAllMedicionesHistoricasOds10(Integer indicadorId) {
-        return objetivo10ReduccionDesigualdadRepository.findAllMedicionesHistoricasOds10(indicadorId);
-    }
-public Optional<MedicionesHistoricas> getMedicionHistoricaOds10ById(Integer medicionId) {
-        return objetivo10ReduccionDesigualdadRepository.findMedicionHistoricaOds10ById(medicionId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean validateIndicatorData(ProyectoIndicadores indicador) {
-        if (indicador == null) return false;
-        if (indicador.getProyectoId() == null) return false;
-        if (indicador.getIndicadorMasterId() == null) return false;
-        return true;
-    }
-public Map<String, Object> getOds10Statistics() {
-        List<Proyectos> proyectos = objetivo10ReduccionDesigualdadRepository.findAllProyectosOds10();
-        List<ProyectoIndicadores> indicadores = proyectos.stream()
-            .flatMap(p -> objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(p.getId()).stream())
-            .toList();
-        return Map.of(
-            "totalProyectos", proyectos.size(),
-            "totalIndicadores", indicadores.size(),
-            "indicadoresConDatos", indicadores.stream().filter(i -> i.getValorActual() != null).count()
-        );
-    }
-public Boolean projectExists(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findProyectoOds10ById(proyectoId).isPresent();
-    }
-public Boolean indicatorExists(Integer indicadorId) {
-        return true;
-    }
-
-    // ── IOdsBaseService implementations ──
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Proyectos> findAllProyectos() {
-        return objetivo10ReduccionDesigualdadRepository.findAllProyectos();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<Proyectos> findProyectoById(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findProyectoById(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Proyectos saveProyecto(Proyectos proyecto) {
-        return objetivo10ReduccionDesigualdadRepository.saveProyecto(proyecto);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Proyectos updateProyecto(Proyectos proyecto) {
-        return objetivo10ReduccionDesigualdadRepository.updateProyecto(proyecto);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean deleteProyecto(Integer proyectoId) {
-        try {
-            objetivo10ReduccionDesigualdadRepository.deleteProyecto(proyectoId);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ProyectoIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadores> findIndicadorById(Integer indicadorId) {
-        return Optional.empty();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
-        return objetivo10ReduccionDesigualdadRepository.saveIndicador(indicador);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
-        return objetivo10ReduccionDesigualdadRepository.updateIndicador(indicador);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean deleteIndicador(Integer indicadorId) {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findMetasByProyecto(proyectoId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) {
-        return objetivo10ReduccionDesigualdadRepository.findMetaProyectoOds10ById(metaId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
-        return objetivo10ReduccionDesigualdadRepository.saveMetaProyecto(meta);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
-        return meta;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean deleteMetaProyecto(Integer metaId) {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<MedicionesHistoricas> findAllMedicionesHistoricas(Integer indicadorId) {
-        return objetivo10ReduccionDesigualdadRepository.findMedicionesByIndicador(indicadorId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<MedicionesHistoricas> findMedicionHistoricaById(Integer medicionId) {
-        return objetivo10ReduccionDesigualdadRepository.findMedicionHistoricaOds10ById(medicionId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MedicionesHistoricas saveMedicionHistorica(MedicionesHistoricas medicion) {
-        return objetivo10ReduccionDesigualdadRepository.saveMedicion(medicion);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion) {
-        return medicion;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean deleteMedicionHistorica(Integer medicionId) {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean validateProjectData(Proyectos proyecto) {
-        if (proyecto == null) return false;
-        if (proyecto.getUsuarioId() == null) return false;
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Double calculateProjectProgress(Integer proyectoId) {
-        List<ProyectoIndicadores> indicadores = objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(proyectoId);
+    @Override public Double calculateProjectProgress(Integer proyectoId) {
+        List<VistaAdminDetalleIndicadores> indicadores = objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
-        long withData = indicadores.stream()
-            .filter(ind -> ind.getValorActual() != null)
-            .count();
+        long withData = indicadores.stream().filter(ind -> ind.getValorActual() != null).count();
         return (double) withData / indicadores.size() * 100.0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, Object> getOdsStatistics() {
-        return getOds10Statistics();
+    @Override public Map<String, Object> getOds10Statistics() {
+        List<Proyectos> proyectos = objetivo10ReduccionDesigualdadRepository.findAllProyectosOds10();
+        List<VistaAdminDetalleIndicadores> indicadores = proyectos.stream().flatMap(p -> objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(p.getId()).stream()).toList();
+        return Map.of("totalProyectos", proyectos.size(), "totalIndicadores", indicadores.size(), "indicadoresConDatos", indicadores.stream().filter(i -> i.getValorActual() != null).count());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean existsProyecto(Integer proyectoId) {
-        return objetivo10ReduccionDesigualdadRepository.findProyectoById(proyectoId).isPresent();
-    }
+    // IOdsBaseService implementations
+    @Override public List<Proyectos> findAllProyectos() { return objetivo10ReduccionDesigualdadRepository.findAllProyectos(); }
+    @Override public Optional<Proyectos> findProyectoById(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findProyectoById(proyectoId); }
+    @Override public Proyectos saveProyecto(Proyectos proyecto) { return objetivo10ReduccionDesigualdadRepository.saveProyecto(proyecto); }
+    @Override public Proyectos updateProyecto(Proyectos proyecto) { return objetivo10ReduccionDesigualdadRepository.updateProyecto(proyecto); }
+    @Override public Boolean deleteProyecto(Integer proyectoId) { try { objetivo10ReduccionDesigualdadRepository.deleteProyecto(proyectoId); return true; } catch (Exception e) { return false; } }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean existsIndicador(Integer indicadorId) {
-        return true;
-    }
+    @Override public List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicadoresByProyecto(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> findIndicadorById(Integer indicadorId) { return objetivo10ReduccionDesigualdadRepository.findIndicadorById(indicadorId); }
+    
+    @Override public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) { return objetivo10ReduccionDesigualdadRepository.saveIndicador(indicador); }
+    @Override public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) { return objetivo10ReduccionDesigualdadRepository.updateIndicador(indicador); }
+    @Override public Boolean deleteIndicador(Integer indicadorId) { try { objetivo10ReduccionDesigualdadRepository.deleteIndicador(indicadorId); return true; } catch (Exception e) { return false; } }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean existsMetaProyecto(Integer metaId) {
-        return objetivo10ReduccionDesigualdadRepository.findMetaProyectoOds10ById(metaId).isPresent();
-    }
+    @Override public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findMetasByProyecto(proyectoId); }
+    @Override public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) { return objetivo10ReduccionDesigualdadRepository.findMetaProyectoOds10ById(metaId); }
+    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo10ReduccionDesigualdadRepository.saveMetaProyecto(meta); }
+    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo10ReduccionDesigualdadRepository.updateMetaProyecto(meta); }
+    @Override public Boolean deleteMetaProyecto(Integer metaId) { try { objetivo10ReduccionDesigualdadRepository.deleteMetaProyecto(metaId); return true; } catch (Exception e) { return false; } }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean existsMedicionHistorica(Integer medicionId) {
-        return objetivo10ReduccionDesigualdadRepository.findMedicionHistoricaOds10ById(medicionId).isPresent();
-    }
+    @Override public List<MedicionesHistoricas> findAllMedicionesHistoricas(Integer indicadorId) { return objetivo10ReduccionDesigualdadRepository.findMedicionesByIndicador(indicadorId); }
+    @Override public Optional<MedicionesHistoricas> findMedicionHistoricaById(Integer medicionId) { return objetivo10ReduccionDesigualdadRepository.findMedicionHistoricaOds10ById(medicionId); }
+    @Override public MedicionesHistoricas saveMedicionHistorica(MedicionesHistoricas medicion) { return objetivo10ReduccionDesigualdadRepository.saveMedicion(medicion); }
+    @Override public MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion) { return objetivo10ReduccionDesigualdadRepository.updateMedicionHistorica(medicion); }
+    @Override public Boolean deleteMedicionHistorica(Integer medicionId) { try { objetivo10ReduccionDesigualdadRepository.deleteMedicionHistorica(medicionId); return true; } catch (Exception e) { return false; } }
+
+    @Override public Boolean validateIndicatorData(VistaAdminDetalleIndicadores indicador) { return indicador.getProyectoId() != null && indicador.getIndicadorCodigo() != null; }
+    @Override public Boolean validateProjectData(Proyectos proyecto) { return proyecto != null && proyecto.getNombreProyecto() != null && !proyecto.getNombreProyecto().trim().isEmpty(); }
+    @Override public Map<String, Object> getOdsStatistics() { return getOds10Statistics(); }
+    @Override public Boolean existsProyecto(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.existsProyecto(proyectoId); }
+    @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo10ReduccionDesigualdadRepository.existsIndicador(indicadorId); }
+    @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo10ReduccionDesigualdadRepository.existsMetaProyecto(metaId); }
+    @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo10ReduccionDesigualdadRepository.existsMedicionHistorica(medicionId); }
 }

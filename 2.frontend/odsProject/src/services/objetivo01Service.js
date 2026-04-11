@@ -2,224 +2,79 @@ import api from './api';
 // Mock service for ODS Objective 1 - Fin de la Pobreza
 // Based on official SDG indicators from Global Indicator Framework
 export const objetivo01Service = {
-  // 1.1.1 Proporción de la población que vive por debajo del umbral internacional de pobreza
-  getIndicador_1_1_1: async () => {
+  // Obtener todos los indicadores de un proyecto (Base-Indicadores)
+  getIndicators: async (proyectoId) => {
     try {
-      const response = await api.get(`/ods/01/indicadores/1.1.1?proyectoId=1`);
+      if (!proyectoId) throw new Error('proyectoId is required');
+      const response = await api.get(`/ods/01/base-indicadores`, { params: { proyectoId } });
+      const indicators = response.data || [];
+      
+      // Mapeo a objeto indexado por código de indicador para consistencia en la UI
+      return indicators.reduce((acc, ind) => {
+        const code = ind.indicadorCodigo;
+        if (!code) return acc;
+
+        acc[code] = {
+          id: ind.id, // ID en proyecto_indicadores (puede ser null si no está registrado)
+          masterId: ind.indicadorMasterId,
+          code: code,
+          name: ind.indicadorNombre,
+          currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
+          targetValue: ind.metaValor || 0,
+          unit: ind.metaUnidad || 'unidad',
+          formula: ind.formulaCustom || '',
+          updatedAt: ind.ultimaActualizacion,
+          hasData: ind.valorActual !== null
+        };
+        return acc;
+      }, {});
+    } catch (error) {
+      console.error('Error fetching ODS 01 indicators:', error);
+      return {};
+    }
+  },
+
+  // Estadísticas del ODS 01
+  getStatistics: async () => {
+    try {
+      const response = await api.get(`/ods/01/base-estadisticas`);
+      return response.data || {};
+    } catch (error) {
+      console.error('Error fetching ODS 01 statistics:', error);
+      return {};
+    }
+  },
+
+  // Mantener métodos individuales para compatibilidad, pero parametrizados
+  getIndicador_1_1_1: async (proyectoId = 1) => {
+    try {
+      const response = await api.get(`/ods/01/indicadores/1.1.1`, { params: { proyectoId } });
       const data = response.data || {};
       return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
+        currentValue: data.valorActual ?? 0,
+        targetValue: data.metaValor ?? 0,
+        unit: data.metaUnidad || 'unidad',
         description: data.descripcion || ''
       };
     } catch (error) {
       console.error('Error fetching 1.1.1:', error);
-      throw error;
+      return { currentValue: 0, targetValue: 0, unit: 'unidad' };
     }
   },
   
-  // 1.2.1 Proporción de la población que vive por debajo del umbral nacional de pobreza
-  getIndicador_1_2_1: async () => {
+  // Refactorizar el resto de indicadores individuales para que sean consistentes
+  getIndicadorGeneral: async (code, proyectoId = 1) => {
     try {
-      const response = await api.get(`/ods/01/indicadores/1.2.1?proyectoId=1`);
+      const response = await api.get(`/ods/01/indicadores/${code}`, { params: { proyectoId } });
       const data = response.data || {};
       return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
+        currentValue: data.valorActual ?? 0,
+        targetValue: data.metaValor ?? 0,
+        unit: data.metaUnidad || 'unidad'
       };
     } catch (error) {
-      console.error('Error fetching 1.2.1:', error);
-      throw error;
-    }
-  },
-  
-  // 1.2.2 Proporción de personas que viven en la pobreza multidimensional
-  getIndicador_1_2_2: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.2.2?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.2.2:', error);
-      throw error;
-    }
-  },
-  
-  // 1.3.1 Proporción de la población cubierta por sistemas de protección social
-  getIndicador_1_3_1: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.3.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.3.1:', error);
-      throw error;
-    }
-  },
-  
-  // 1.4.1 Proporción de la población que vive en hogares con acceso a servicios básicos
-  getIndicador_1_4_1: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.4.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.4.1:', error);
-      throw error;
-    }
-  },
-  
-  // 1.4.2 Proporción del total de la población adulta con derechos seguros de tenencia de la tierra
-  getIndicador_1_4_2: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.4.2?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.4.2:', error);
-      throw error;
-    }
-  },
-  
-  // 1.5.1 Número de personas muertas, desaparecidas y afectadas directamente por desastres
-  getIndicador_1_5_1: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.5.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.5.1:', error);
-      throw error;
-    }
-  },
-  
-  // 1.5.2 Pérdidas económicas directas atribuidas a los desastres
-  getIndicador_1_5_2: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.5.2?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.5.2:', error);
-      throw error;
-    }
-  },
-  
-  // 1.5.3 Número de países que adoptan estrategias nacionales de reducción del riesgo de desastres
-  getIndicador_1_5_3: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.5.3?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.5.3:', error);
-      throw error;
-    }
-  },
-  
-  // 1.5.4 Proporción de gobiernos locales que adoptan estrategias locales de reducción del riesgo
-  getIndicador_1_5_4: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.5.4?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.5.4:', error);
-      throw error;
-    }
-  },
-  
-  // 1.a.1 Total de subvenciones de asistencia oficial para el desarrollo destinadas a la reducción de la pobreza
-  getIndicador_1_a_1: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.a.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.a.1:', error);
-      throw error;
-    }
-  },
-  
-  // 1.a.2 Proporción del gasto público total dedicado a servicios esenciales
-  getIndicador_1_a_2: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.a.2?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.a.2:', error);
-      throw error;
-    }
-  },
-  
-  // 1.b.1 Gasto público social en favor de los pobres
-  getIndicador_1_b_1: async () => {
-    try {
-      const response = await api.get(`/ods/01/indicadores/1.b.1?proyectoId=1`);
-      const data = response.data || {};
-      return {
-        currentValue: data.valorActual !== undefined ? data.valorActual : (data.valor_actual !== undefined ? data.valor_actual : 0),
-        targetValue: data.valorMeta !== undefined ? data.valorMeta : (data.valor_meta !== undefined ? data.valor_meta : 0),
-        unit: data.unidadMedida || data.unidad_medida || 'unidad',
-        description: data.descripcion || ''
-      };
-    } catch (error) {
-      console.error('Error fetching 1.b.1:', error);
-      throw error;
+      console.error(`Error fetching indicator ${code}:`, error);
+      return { currentValue: 0, targetValue: 0, unit: 'unidad' };
     }
   }
 };

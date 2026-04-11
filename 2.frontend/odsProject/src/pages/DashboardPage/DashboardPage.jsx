@@ -41,8 +41,10 @@ const DashboardPage = () => {
             totalUsers: statsRes.data.totalUsers || 0
           });
         }
-      } else if (isUser()) {
+      } else if (isUser() && user?.id) {
         await fetchUserProjects(user.id);
+      } else {
+        console.warn('[Dashboard] User data incomplete for fetching projects');
       }
     } catch (error) {
       console.error('Error loading dashboard data:', error);
@@ -108,7 +110,7 @@ const DashboardPage = () => {
 
         <section className="welcome-section">
           <div className="welcome-text">
-            <h2>¡Qué bueno verte de nuevo, {user?.name.split(' ')[0]}!</h2>
+            <h2>¡Qué bueno verte de nuevo, {user?.name?.split(' ')[0] || 'Usuario'}!</h2>
             <p>Aquí tienes un resumen del impacto generado hoy.</p>
           </div>
           {isUser() && (

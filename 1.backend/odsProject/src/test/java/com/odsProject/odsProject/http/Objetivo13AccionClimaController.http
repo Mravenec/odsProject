@@ -3,15 +3,12 @@
 
 ### Variables
 @baseUrl = http://localhost:8080
-@proyectoId = 13
-@indicadorId = 13
-@metaId = 13
-@medicionId = 13
+@proyectoId = 1
+@indicadorId = 1
+@metaId = 1
+@medicionId = 1
 
-# ── Indicadores Específicos del ODS13 ──
-
-### Obtener todos los indicadores del ODS13
-GET {{baseUrl}}/api/ods/13/indicadores?proyectoId={{proyectoId}}
+# ── 1. Indicadores Específicos del ODS13 ──
 
 ### Obtener indicador 13.1.1
 GET {{baseUrl}}/api/ods/13/indicadores/13.1.1?proyectoId={{proyectoId}}
@@ -37,113 +34,24 @@ GET {{baseUrl}}/api/ods/13/indicadores/13.a.1?proyectoId={{proyectoId}}
 ### Obtener indicador 13.b.1
 GET {{baseUrl}}/api/ods/13/indicadores/13.b.1?proyectoId={{proyectoId}}
 
-### Encontrar todos los indicadores por proyecto
-GET {{baseUrl}}/api/ods/13/indicadores/proyecto?proyectoId={{proyectoId}}
+# ── 2. Endpoints Estandarizados (IOdsBaseController) ──
 
-### Encontrar indicadores por meta
-GET {{baseUrl}}/api/ods/13/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=13.1
+### Obtener todos los indicadores de un proyecto
+GET {{baseUrl}}/api/ods/13/indicadores?proyectoId={{proyectoId}}
 
-# ── Proyectos ──
+### Obtener un indicador específico por su ID interno
+GET {{baseUrl}}/api/ods/13/indicadores/{{indicadorId}}
 
-### Obtener todos los proyectos del ODS13
-GET {{baseUrl}}/api/ods/13/proyectos
-
-### Obtener proyecto por ID
-GET {{baseUrl}}/api/ods/13/proyectos/{{proyectoId}}
-
-### Obtener todas las metas de proyecto
-GET {{baseUrl}}/api/ods/13/proyectos/{{proyectoId}}/metas
-
-### Obtener meta por ID
-GET {{baseUrl}}/api/ods/13/metas/{{metaId}}
-
-### Obtener todas las mediciones históricas
-GET {{baseUrl}}/api/ods/13/indicadores/historicas/{{indicadorId}}
-
-### Obtener medición histórica por ID
-GET {{baseUrl}}/api/ods/13/mediciones/{{medicionId}}
-
-### Calcular progreso del proyecto
-GET {{baseUrl}}/api/ods/13/progreso/{{proyectoId}}
-
-### Obtener estadísticas del ODS13
-GET {{baseUrl}}/api/ods/13/estadisticas
-
-### Verificar si proyecto existe
-GET {{baseUrl}}/api/ods/13/proyectos/{{proyectoId}}/existe
-
-### Verificar si indicador existe
-GET {{baseUrl}}/api/ods/13/indicadores/{{indicadorId}}/existe
-
-# ── CRUD Operaciones ──
-
-### Crear nuevo proyecto
-POST {{baseUrl}}/api/ods/13/proyecto
-Content-Type: application/json
-
-{
-  "usuarioId": 2,
-  "sedeId": 2,
-  "nombreProyecto": "Proyecto Acción Clima Test",
-  "objetivoId": 13,
-  "descripcion": "Proyecto de prueba para ODS13",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Adoptar medidas urgentes para combatir el cambio climático",
-  "estado": "planificacion"
-}
-
-### Validar proyecto
-POST {{baseUrl}}/api/ods/13/validar/proyecto
-Content-Type: application/json
-
-{
-  "nombreProyecto": "Proyecto Validación Clima",
-  "usuarioId": 2,
-  "objetivoId": 13,
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "estado": "planificacion"
-}
-
-### Actualizar proyecto
-PUT {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}
-Content-Type: application/json
-
-{
-  "id": {{proyectoId}},
-  "nombreProyecto": "Proyecto Clima Actualizado",
-  "descripcion": "Proyecto actualizado para ODS13",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Meta actualizada Clima",
-  "estado": "activo"
-}
-
-### Eliminar proyecto
-DELETE {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}
-
-### Crear nuevo indicador (Master ID 165 = 13.1.1 aprox, verificar en SQL)
+### Crear nuevo indicador
 POST {{baseUrl}}/api/ods/13/indicadores
 Content-Type: application/json
 
 {
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 165,
-  "formulaCustom": "(p1 / p2) * 100",
+  "indicadorMasterId": 154,
+  "formulaCustom": null,
   "metaValor": 100.0,
-  "metaUnidad": "Porcentaje"
-}
-
-### Validar indicador
-POST {{baseUrl}}/api/ods/13/validar/indicador
-Content-Type: application/json
-
-{
-  "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 165,
-  "metaValor": 80.0,
-  "metaUnidad": "Porcentaje"
+  "metaUnidad": "Porcentaje Mitigación"
 }
 
 ### Actualizar indicador
@@ -153,40 +61,78 @@ Content-Type: application/json
 {
   "id": {{indicadorId}},
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 165,
-  "valorActual": 56.0,
+  "indicadorMasterId": 154,
+  "valorActual": 85.0,
   "metaValor": 100.0,
-  "metaUnidad": "Porcentaje"
+  "metaUnidad": "Porcentaje Mitigación"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/13/indicadores/{{indicadorId}}
 
-### Crear nueva meta (Parámetro)
+# ── 3. Gestión de Proyectos ──
+
+### Obtener todos los proyectos del ODS13
+GET {{baseUrl}}/api/ods/13/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/13/proyectos/{{proyectoId}}
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/13/proyectos
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Plan Nacional Descarbonización",
+  "objetivoId": 13,
+  "descripcion": "Estrategia de reducción de emisiones de CO2",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "estado": "activo"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/13/proyectos/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombreProyecto": "Plan Nacional Descarbonización Actualizado",
+  "estado": "activo"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/13/proyectos/{{proyectoId}}
+
+# ── 4. Gestión de Metas (Parámetros) ──
+
+### Obtener metas de un proyecto
+GET {{baseUrl}}/api/ods/13/metas?proyectoId={{proyectoId}}
+
+### Obtener meta específica
+GET {{baseUrl}}/api/ods/13/metas/{{metaId}}
+
+### Crear nueva meta
 POST {{baseUrl}}/api/ods/13/metas
 Content-Type: application/json
 
 {
   "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "toneladas_co2_evitadas",
-  "tipoDato": "Double"
+  "nombreParametro": "param_test",
+  "tipoDato": "Decimal"
 }
 
-### Actualizar meta (Parámetro)
-PUT {{baseUrl}}/api/ods/13/metas/{{metaId}}
-Content-Type: application/json
+# ── 5. Mediciones Históricas ──
 
-{
-  "id": {{metaId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "toneladas_co2_capturadas",
-  "tipoDato": "Double"
-}
+### Obtener mediciones de un indicador
+GET {{baseUrl}}/api/ods/13/mediciones?indicadorId={{indicadorId}}
 
-### Eliminar meta
-DELETE {{baseUrl}}/api/ods/13/metas/{{metaId}}
+### Obtener medición específica
+GET {{baseUrl}}/api/ods/13/mediciones/{{medicionId}}
 
-### Crear nueva medición histórica
+### Registrar medición
 POST {{baseUrl}}/api/ods/13/mediciones
 Content-Type: application/json
 
@@ -194,66 +140,28 @@ Content-Type: application/json
   "proyectoIndicadorId": {{indicadorId}},
   "valorCalculado": 45.5,
   "fechaMedicion": "2024-11-15",
-  "responsable": "Admin Clima",
-  "observaciones": "Monitoreo ambiental"
+  "responsable": "Admin Clima"
 }
 
-### Actualizar medición histórica
-PUT {{baseUrl}}/api/ods/13/mediciones/{{medicionId}}
+# ── 6. Utilidades y Estadísticas ──
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/13/estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/13/progreso/{{proyectoId}}
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/13/indicador/{{indicadorId}}/existe
+
+### Validar datos de proyecto
+POST {{baseUrl}}/api/ods/13/validar/proyecto
 Content-Type: application/json
 
 {
-  "id": {{medicionId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "valorCalculado": 48.0,
-  "fechaMedicion": "2024-11-15",
-  "responsable": "Admin Clima Actualizado"
+  "nombreProyecto": "Proyecto Test Clima",
+  "usuarioId": 2
 }
-
-### Eliminar medición histórica
-DELETE {{baseUrl}}/api/ods/13/mediciones/{{medicionId}}
-
-
-# ── IOdsBaseController Methods ──
-
-### Obtener todos los proyectos (base)
-GET {{baseUrl}}/api/ods/13/all-proyectos
-
-### Obtener proyecto por ID (base)
-GET {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}
-
-### Obtener todos los indicadores (base)
-GET {{baseUrl}}/api/ods/13/base-indicadores?proyectoId={{proyectoId}}
-
-### Obtener indicador por ID (base)
-GET {{baseUrl}}/api/ods/13/indicadores/{{indicadorId}}
-
-### Obtener metas de proyecto
-GET {{baseUrl}}/api/ods/13/metas?proyectoId={{proyectoId}}
-
-### Obtener meta por ID (base)
-GET {{baseUrl}}/api/ods/13/metas/{{metaId}}
-
-### Obtener mediciones históricas
-GET {{baseUrl}}/api/ods/13/mediciones?indicadorId={{indicadorId}}
-
-### Obtener medición histórica por ID (base)
-GET {{baseUrl}}/api/ods/13/mediciones/{{medicionId}}
-
-### Obtener estadísticas (base)
-GET {{baseUrl}}/api/ods/13/base-estadisticas
-
-### Obtener progreso del proyecto (base)
-GET {{baseUrl}}/api/ods/13/base-progreso/{{proyectoId}}
-
-### Verificar existencia de proyecto (base)
-GET {{baseUrl}}/api/ods/13/proyecto/{{proyectoId}}/existe
-
-### Verificar existencia de indicador (base)
-GET {{baseUrl}}/api/ods/13/indicador/{{indicadorId}}/existe
-
-### Verificar existencia de meta (base)
-GET {{baseUrl}}/api/ods/13/meta/{{metaId}}/existe
-
-### Verificar existencia de medición histórica (base)
-GET {{baseUrl}}/api/ods/13/medicion/{{medicionId}}/existe

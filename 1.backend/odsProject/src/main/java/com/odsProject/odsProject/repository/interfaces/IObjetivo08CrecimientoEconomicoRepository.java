@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadorParametros;
@@ -10,235 +11,54 @@ import java.util.Optional;
 
 /**
  * Interfaz del Repositorio para el Objetivo 8: Trabajo Decente y Crecimiento Económico
- * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 8
- * Usa jOOQ con datasource ods08
  */
-public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds08> {
+public interface IObjetivo08CrecimientoEconomicoRepository extends IOdsBaseRepository<
+    VistaAdminDetalleIndicadores, // T (Lectura)
+    ProyectoIndicadores,         // E (Escritura)
+    Proyectos,                   // P
+    ProyectoIndicadorParametros, // M
+    MedicionesHistoricas,        // MH
+    AuditoriaOds08              // A
+> {
     
-    /**
-     * 8.1.1 Tasa de crecimiento anual del PIB real per cápita [59]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.1.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_2_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_3_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_4_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_4_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_5_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_5_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_6_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_7_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_8_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_8_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_9_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_9_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_10_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_10_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_a_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_8_b_1(Integer proyectoId);
     
-    /**
-     * 8.2.1 Tasa de crecimiento anual del PIB real por persona empleada [59]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.2.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_2_1(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds08(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
-    /**
-     * 8.3.1 Proporción de empleo informal con respecto al empleo total, desglosada por sector y sexo [60]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.3.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_3_1(Integer proyectoId);
-    
-    /**
-     * 8.4.1 Huella material en términos absolutos, huella material per cápita y huella material por PIB [60]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.4.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_4_1(Integer proyectoId);
-    
-    /**
-     * 8.4.2 Consumo material interno en términos absolutos, consumo material interno per cápita 
-     * y consumo material interno por PIB [60]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.4.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_4_2(Integer proyectoId);
-    
-    /**
-     * 8.5.1 Ingreso medio por hora de las personas empleadas, desglosado por sexo, edad, 
-     * ocupación y ubicación geográfica (urbana/rural) [61]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.5.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_5_1(Integer proyectoId);
-    
-    /**
-     * 8.5.2 Tasa de desempleo, desglosada por sexo, edad y personas con discapacidad [61, 62]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.5.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_5_2(Integer proyectoId);
-    
-    /**
-     * 8.6.1 Proporción de jóvenes (entre 15 y 24 años) que no cursan estudios, 
-     * no trabajan ni reciben capacitación [62]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.6.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_6_1(Integer proyectoId);
-    
-    /**
-     * 8.7.1 Proporción y número de niños de entre 5 y 17 años que realizan trabajo infantil, 
-     * desglosados por sexo y edad [63]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.7.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_7_1(Integer proyectoId);
-    
-    /**
-     * 8.8.1 Lesiones ocupacionales mortales y no mortales por cada 100.000 trabajadores, 
-     * desglosadas por sexo y estatus migratorio [63, 64]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.8.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_8_1(Integer proyectoId);
-    
-    /**
-     * 8.8.2 Nivel de cumplimiento nacional de los derechos laborales (libertad de asociación 
-     * y negociación colectiva) con arreglo a las fuentes textuales de la Organización Internacional 
-     * del Trabajo (OIT) y la legislación interna, desglosado por sexo y estatus migratorio [64]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.8.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_8_2(Integer proyectoId);
-    
-    /**
-     * 8.9.1 PIB generado directamente por el turismo en proporción al PIB total y a la tasa de crecimiento [65]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.9.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_9_1(Integer proyectoId);
-    
-    /**
-     * 8.9.2 Personas empleadas en el sector del turismo [65]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.9.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_9_2(Integer proyectoId);
-    
-    /**
-     * 8.10.1 a) Número de sucursales de bancos comerciales por cada 100.000 adultos 
-     * y b) número de cajeros automáticos por cada 100.000 adultos [65]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.10.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_10_1(Integer proyectoId);
-    
-    /**
-     * 8.10.2 Proporción de adultos (a partir de 15 años de edad) que tienen una cuenta en un banco 
-     * u otra institución financiera o un proveedor de servicios de dinero móvil [66]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.10.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_10_2(Integer proyectoId);
-    
-    /**
-     * 8.a.1 Compromisos y desembolsos en relación con la iniciativa Ayuda para el Comercio [67]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.a.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_a_1(Integer proyectoId);
-    
-    /**
-     * 8.b.1 Existencia de una estrategia nacional organizada y en marcha para el empleo de los jóvenes, 
-     * como estrategia independiente o como parte de una estrategia nacional de empleo [67]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 8.b.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_8_b_1(Integer proyectoId);
-    
-    /**
-     * Encuentra todos los indicadores asociados a un proyecto específico del ODS08
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todos los indicadores del proyecto
-     */
-    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds08(Integer proyectoId);
-    
-    /**
-     * Encuentra indicadores filtrando por meta específica del ODS08
-     * 
-     * @param proyectoId ID del proyecto
-     * @param metaPrefix Prefijo de la meta (ej: "8.1", "8.2")
-     * @return Lista de indicadores que pertenecen a la meta especificada
-     */
-    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
-    
-    // ── Métodos específicos del ODS08 ──
-    
-    /**
-     * Encuentra todos los proyectos del ODS08
-     * 
-     * @return Lista de todos los proyectos del ODS08
-     */
     List<Proyectos> findAllProyectosOds08();
-    
-    /**
-     * Encuentra un proyecto del ODS08 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Optional con el proyecto encontrado
-     */
     Optional<Proyectos> findProyectoOds08ById(Integer proyectoId);
-    
-    /**
-     * Encuentra todas las metas de proyecto del ODS08
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de metas del proyecto
-     */
     List<ProyectoIndicadorParametros> findAllMetasProyectoOds08(Integer proyectoId);
-    
-    /**
-     * Encuentra una meta de proyecto del ODS08 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return Optional con la meta encontrada
-     */
     Optional<ProyectoIndicadorParametros> findMetaProyectoOds08ById(Integer metaId);
-    
-    /**
-     * Encuentra todas las mediciones históricas del ODS08
-     * 
-     * @param indicadorId ID del indicador
-     * @return Lista de mediciones históricas
-     */
     List<MedicionesHistoricas> findAllMedicionesHistoricasOds08(Integer indicadorId);
-    
-    /**
-     * Encuentra una medición histórica del ODS08 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return Optional con la medición encontrada
-     */
     Optional<MedicionesHistoricas> findMedicionHistoricaOds08ById(Integer medicionId);
-    
-    /**
-     * Encuentra todas las auditorías del ODS08
-     * 
-     * @return Lista de todas las auditorías
-     */
     List<AuditoriaOds08> findAllAuditoriasOds08();
-    
-    /**
-     * Encuentra una auditoría del ODS08 por su ID
-     * 
-     * @param auditoriaId ID de la auditoría
-     * @return Optional con la auditoría encontrada
-     */
     Optional<AuditoriaOds08> findAuditoriaOds08ById(Integer auditoriaId);
+
+    void deleteIndicador(Integer indicadorId);
+    ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta);
+    void deleteMetaProyecto(Integer metaId);
+    MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion);
+    void deleteMedicionHistorica(Integer medicionId);
+    
+    Boolean existsIndicador(Integer indicadorId);
+    Boolean existsProyecto(Integer proyectoId);
+    Boolean existsMetaProyecto(Integer metaId);
+    Boolean existsMedicionHistorica(Integer medicionId);
 }

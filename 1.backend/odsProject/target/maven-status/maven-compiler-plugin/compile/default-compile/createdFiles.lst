@@ -76,6 +76,7 @@ com\odsProject\odsProject\database\jooq\ods09\tables\MedicionParametroValores.cl
 com\odsProject\odsProject\database\jooq\ods04\Tables.class
 com\odsProject\odsProject\repository\Objetivo08CrecimientoEconomicoRepository.class
 com\odsProject\odsProject\database\jooq\ods03\tables\pojos\VistaAdminDetalleIndicadores.class
+com\odsProject\odsProject\service\Objetivo07EnergiaService.class
 com\odsProject\odsProject\database\jooq\ods02\Ods02.class
 com\odsProject\odsProject\database\jooq\ods17\tables\VistaAdminResumenGeneral.class
 com\odsProject\odsProject\database\jooq\ods04\Routines.class
@@ -285,6 +286,7 @@ com\odsProject\odsProject\database\jooq\ods01\tables\records\VistaAdminAuditoria
 com\odsProject\odsProject\database\jooq\ods08\Indexes.class
 com\odsProject\odsProject\database\jooq\ods06\tables\records\ProyectosRecord.class
 com\odsProject\odsProject\database\jooq\ods12\Ods12.class
+com\odsProject\odsProject\service\Objetivo01PobrezaService.class
 com\odsProject\odsProject\controller\Objetivo04EducacionController.class
 com\odsProject\odsProject\database\jooq\ods07\tables\VistaAdminDetalleIndicadores.class
 com\odsProject\odsProject\database\jooq\ods09\tables\VistaAdminDetalleIndicadores.class
@@ -331,10 +333,12 @@ com\odsProject\odsProject\repository\interfaces\IObjetivo17AlianzasRepository.cl
 com\odsProject\odsProject\database\jooq\ods13\tables\pojos\MedicionesHistoricas.class
 com\odsProject\odsProject\database\jooq\ods06\tables\pojos\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\database\jooq\ods06\tables\pojos\VistaAdminDetalleIndicadores.class
+com\odsProject\odsProject\controller\Objetivo01PobrezaController.class
 com\odsProject\odsProject\service\interfaces\IObjetivo12ConsumoProduccionService.class
 com\odsProject\odsProject\database\jooq\ods08\tables\Proyectos.class
 com\odsProject\odsProject\database\jooq\ods12\tables\records\ProyectosRecord.class
 com\odsProject\odsProject\database\jooq\ods16\Keys.class
+com\odsProject\odsProject\repository\Objetivo01PobrezaRepository.class
 com\odsProject\odsProject\database\jooq\ods15\tables\records\MedicionesHistoricasRecord.class
 com\odsProject\odsProject\database\jooq\ods03\tables\records\MedicionParametroValoresRecord.class
 com\odsProject\odsProject\database\jooq\ods07\tables\pojos\AuditoriaOds07.class
@@ -365,6 +369,7 @@ com\odsProject\odsProject\database\jooq\ods08\tables\pojos\ProyectoIndicadorPara
 com\odsProject\odsProject\database\jooq\ods17\tables\pojos\MedicionParametroValores.class
 com\odsProject\odsProject\database\jooq\ods04\tables\pojos\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\database\jooq\ods04\tables\records\VistaAdminResumenGeneralRecord.class
+com\odsProject\odsProject\service\Objetivo03SaludBienestarService.class
 com\odsProject\odsProject\database\jooq\ods06\tables\pojos\VistaAdminResumenGeneral.class
 com\odsProject\odsProject\service\Objetivo17AlianzasService.class
 com\odsProject\odsProject\database\jooq\ods_login\tables\Sedes.class
@@ -373,6 +378,7 @@ com\odsProject\odsProject\service\Objetivo06AguaSaneamientoService.class
 com\odsProject\odsProject\database\jooq\ods07\tables\ProyectoIndicadorParametros.class
 com\odsProject\odsProject\database\jooq\ods02\tables\pojos\Proyectos.class
 com\odsProject\odsProject\database\jooq\ods17\tables\records\VistaAdminAuditoriaRecienteRecord.class
+com\odsProject\odsProject\repository\Objetivo03SaludBienestarRepository.class
 com\odsProject\odsProject\database\jooq\ods02\Routines.class
 com\odsProject\odsProject\database\jooq\ods01\enums\ProyectoIndicadorParametrosTipoDato.class
 com\odsProject\odsProject\controller\interfaces\IObjetivo04EducacionController.class
@@ -456,6 +462,7 @@ com\odsProject\odsProject\database\jooq\ods16\routines\SpAdminReporteProyecto.cl
 com\odsProject\odsProject\service\Objetivo13AccionClimaService.class
 com\odsProject\odsProject\database\jooq\ods07\tables\records\ProyectoIndicadoresRecord.class
 com\odsProject\odsProject\database\jooq\ods07\enums\ProyectoIndicadorParametrosTipoDato.class
+com\odsProject\odsProject\controller\Objetivo03SaludBienestarController.class
 com\odsProject\odsProject\database\jooq\ods06\tables\pojos\MedicionesHistoricas.class
 com\odsProject\odsProject\database\jooq\ods02\tables\Proyectos.class
 com\odsProject\odsProject\database\jooq\ods09\tables\records\ProyectosRecord.class
@@ -493,6 +500,8 @@ com\odsProject\odsProject\database\jooq\ods14\tables\records\MedicionesHistorica
 com\odsProject\odsProject\database\jooq\ods03\tables\pojos\ProyectoIndicadorParametros.class
 com\odsProject\odsProject\database\jooq\ods01\tables\records\MedicionParametroValoresRecord.class
 com\odsProject\odsProject\database\jooq\ods12\tables\records\AuditoriaOds12Record.class
+com\odsProject\odsProject\service\Objetivo14VidaSubmarinaService.class
+com\odsProject\odsProject\controller\Objetivo14VidaSubmarinaController.class
 com\odsProject\odsProject\database\jooq\ods01\Indexes.class
 com\odsProject\odsProject\repository\Objetivo10ReduccionDesigualdadRepository.class
 com\odsProject\odsProject\database\jooq\ods09\tables\records\MedicionesHistoricasRecord.class
@@ -669,6 +678,7 @@ com\odsProject\odsProject\database\jooq\ods07\tables\pojos\VistaAdminResumenGene
 com\odsProject\odsProject\database\jooq\ods07\Indexes.class
 com\odsProject\odsProject\database\jooq\ods10\tables\MedicionParametroValores.class
 com\odsProject\odsProject\repository\interfaces\IObjetivo08CrecimientoEconomicoRepository.class
+com\odsProject\odsProject\controller\Objetivo07EnergiaController.class
 com\odsProject\odsProject\database\jooq\ods09\Ods09.class
 com\odsProject\odsProject\database\jooq\ods05\tables\pojos\Proyectos.class
 com\odsProject\odsProject\database\jooq\ods_login\tables\VistaAdminResumenGeneral.class

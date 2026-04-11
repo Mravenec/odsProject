@@ -1,6 +1,8 @@
 package com.odsProject.odsProject.controller;
 
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.ProyectoIndicadores;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.VistaAdminDetalleIndicadores;
+import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.AuditoriaOds14;
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MedicionesHistoricas;
@@ -25,515 +27,55 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
     @Autowired
     private Objetivo14VidaSubmarinaService objetivo14VidaSubmarinaService;
 
-    // ── Indicadores Específicos del ODS14 ──
+    // ── Indicadores Específicos del ODS1    // ── Indicadores Específicos del ODS14 ──
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getAllIndicators(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getAllIndicators(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_1_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_1_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_2_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_2_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_3_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_3_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_4_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_4_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_5_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_5_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_6_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_6_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_7_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_7_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_a_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_a_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_b_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_b_1(proyectoId)); }
+    @Override public ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_14_c_1(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getIndicador_14_c_1(proyectoId)); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores")
-    public ResponseEntity<List<ProyectoIndicadores>> getAllIndicators(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getAllIndicators(proyectoId);
-        return ResponseEntity.ok(result);
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.1.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_1_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_1_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.2.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_2_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_2_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.3.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_3_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_3_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.4.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_4_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_4_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.5.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_5_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_5_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.6.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_6_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_6_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.7.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_7_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_7_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.a.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_a_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_a_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.b.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_b_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_b_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/14.c.1")
-    public ResponseEntity<Optional<ProyectoIndicadores>> getIndicador_14_c_1(@RequestParam Integer proyectoId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.getIndicador_14_c_1(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/proyecto")
-    public ResponseEntity<List<ProyectoIndicadores>> findAllIndicadoresByProyectoOds14(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.findAllIndicadoresByProyectoOds14(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/meta")
-    public ResponseEntity<List<ProyectoIndicadores>> findIndicadoresByMeta(@RequestParam Integer proyectoId, @RequestParam String metaPrefix) {
-        List<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.findIndicadoresByMeta(proyectoId, metaPrefix);
-        return ResponseEntity.ok(result);
-    }
-
-    // ── Proyectos ──
-
-    /**
-     * Obtiene todos los proyectos del ODS14
-     * 
-     * @return ResponseEntity con la lista de todos los proyectos del ODS14
-     */
-    @GetMapping("/proyectos")
-    public ResponseEntity<List<Proyectos>> getAllProjectsOds14() {
-        List<Proyectos> result = objetivo14VidaSubmarinaService.findAllProyectos();
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Obtiene un proyecto del ODS14 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con el proyecto encontrado
-     */
-    @GetMapping("/proyectos/{proyectoId}")
-    public ResponseEntity<Proyectos> getProjectOds14ById(@PathVariable Integer proyectoId) {
-        Optional<Proyectos> result = objetivo14VidaSubmarinaService.findProyectoById(proyectoId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * Obtiene todas las metas de proyecto del ODS14
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con la lista de todas las metas del proyecto ODS14
-     */
-    @GetMapping("/proyectos/{proyectoId}/metas")
-    public ResponseEntity<List<ProyectoIndicadorParametros>> getAllMetasProyectoOds14(@PathVariable Integer proyectoId) {
-        List<ProyectoIndicadorParametros> result = objetivo14VidaSubmarinaService.findAllMetasProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    
-    /**
-     * Obtiene todas las mediciones históricas del ODS14
-     * 
-     * @param indicadorId ID del indicador
-     * @return ResponseEntity con la lista de todas las mediciones históricas del ODS14
-     */
-    @GetMapping("/indicadores/historicas/{indicadorId}")
-    public ResponseEntity<List<MedicionesHistoricas>> getAllMedicionesHistoricasOds14(@PathVariable Integer indicadorId) {
-        List<MedicionesHistoricas> result = objetivo14VidaSubmarinaService.findAllMedicionesHistoricas(indicadorId);
-        return ResponseEntity.ok(result);
-    }
-
-    
-    /**
-     * Calcula el progreso de un proyecto del ODS14
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con el porcentaje de progreso
-     */
-    @GetMapping("/progreso/{proyectoId}")
-    public ResponseEntity<Double> calculateProjectProgress(@PathVariable Integer proyectoId) {
-        Double result = objetivo14VidaSubmarinaService.calculateProjectProgress(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Obtiene estadísticas específicas del ODS14
-     * 
-     * @return ResponseEntity con estadísticas del ODS14
-     */
-    @GetMapping("/estadisticas")
-    public ResponseEntity<java.util.Map<String, Object>> getOds14Statistics() {
-        java.util.Map<String, Object> result = objetivo14VidaSubmarinaService.getOdsStatistics();
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Verifica si un proyecto del ODS14 existe
-     * 
-     * @param proyectoId ID del proyecto
-     * @return ResponseEntity con true si existe, false otherwise
-     */
-    @GetMapping("/proyectos/{proyectoId}/existe")
-    public ResponseEntity<Boolean> projectExists(@PathVariable Integer proyectoId) {
-        Boolean result = objetivo14VidaSubmarinaService.existsProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * Verifica si un indicador del ODS14 existe
-     * 
-     * @param indicadorId ID del indicador
-     * @return ResponseEntity con true si existe, false otherwise
-     */
-    @GetMapping("/indicadores/{indicadorId}/existe")
-    public ResponseEntity<Boolean> indicatorExists(@PathVariable Integer indicadorId) {
-        Boolean result = objetivo14VidaSubmarinaService.existsIndicador(indicadorId);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> findAllIndicadoresByProyectoOds14(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.findAllIndicadoresByProyectoOds14(proyectoId)); }
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.findIndicadoresByMeta(proyectoId, metaPrefix)); }
 
     // ── IOdsBaseController implementations ──
+    @Override public ResponseEntity<List<Proyectos>> getProyectos() { return ResponseEntity.ok(objetivo14VidaSubmarinaService.findAllProyectos()); }
+    @Override public ResponseEntity<Proyectos> getProyecto(Integer proyectoId) { return objetivo14VidaSubmarinaService.findProyectoById(proyectoId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<Proyectos> createProyecto(Proyectos proyecto) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.saveProyecto(proyecto)); }
+    @Override public ResponseEntity<Proyectos> updateProyecto(Integer proyectoId, Proyectos proyecto) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.updateProyecto(proyecto)); }
+    @Override public ResponseEntity<Void> deleteProyecto(Integer proyectoId) { objetivo14VidaSubmarinaService.deleteProyecto(proyectoId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/all-proyectos")
-    public ResponseEntity<List<Proyectos>> getProyectos() {
-        List<Proyectos> result = objetivo14VidaSubmarinaService.findAllProyectos();
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getIndicadores(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getAllIndicators(proyectoId)); }
+    @Override public ResponseEntity<VistaAdminDetalleIndicadores> getIndicador(Integer indicadorId) { return objetivo14VidaSubmarinaService.findIndicadorById(indicadorId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.saveIndicador(indicador)); }
+    @Override public ResponseEntity<ProyectoIndicadores> updateIndicador(Integer indicadorId, ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.updateIndicador(indicador)); }
+    @Override public ResponseEntity<Void> deleteIndicador(Integer indicadorId) { objetivo14VidaSubmarinaService.deleteIndicador(indicadorId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/proyecto/{proyectoId}")
-    public ResponseEntity<Proyectos> getProyecto(@PathVariable Integer proyectoId) {
-        Optional<Proyectos> result = objetivo14VidaSubmarinaService.findProyectoById(proyectoId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
+    @Override public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.findAllMetasProyecto(proyectoId)); }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(Integer metaId) { return objetivo14VidaSubmarinaService.findMetaProyectoById(metaId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.saveMetaProyecto(meta)); }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(Integer metaId, ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.updateMetaProyecto(meta)); }
+    @Override public ResponseEntity<Void> deleteMetaProyecto(Integer metaId) { objetivo14VidaSubmarinaService.deleteMetaProyecto(metaId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/proyecto")
-    public ResponseEntity<Proyectos> createProyecto(@RequestBody Proyectos proyecto) {
-        Proyectos result = objetivo14VidaSubmarinaService.saveProyecto(proyecto);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<List<MedicionesHistoricas>> getMedicionesHistoricas(Integer indicadorId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.findAllMedicionesHistoricas(indicadorId)); }
+    @Override public ResponseEntity<MedicionesHistoricas> getMedicionHistorica(Integer medicionId) { return objetivo14VidaSubmarinaService.findMedicionHistoricaById(medicionId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+    @Override public ResponseEntity<MedicionesHistoricas> createMedicionHistorica(MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.saveMedicionHistorica(medicion)); }
+    @Override public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(Integer medicionId, MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.updateMedicionHistorica(medicion)); }
+    @Override public ResponseEntity<Void> deleteMedicionHistorica(Integer medicionId) { objetivo14VidaSubmarinaService.deleteMedicionHistorica(medicionId); return ResponseEntity.noContent().build(); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/validar/proyecto")
-    public ResponseEntity<Boolean> validateProyecto(@RequestBody Proyectos proyecto) {
-        Boolean result = objetivo14VidaSubmarinaService.validateProjectData(proyecto);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getOdsStatistics()); }
+    @Override public ResponseEntity<Double> getProjectProgress(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.calculateProjectProgress(proyectoId)); }
+    @Override public ResponseEntity<Boolean> validateIndicador(VistaAdminDetalleIndicadores indicador) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.validateIndicatorData(indicador)); }
+    @Override public ResponseEntity<Boolean> validateProyecto(Proyectos proyecto) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.validateProjectData(proyecto)); }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/proyecto/{proyectoId}")
-    public ResponseEntity<Proyectos> updateProyecto(@PathVariable Integer proyectoId, @RequestBody Proyectos proyecto) {
-        Proyectos result = objetivo14VidaSubmarinaService.updateProyecto(proyecto);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/proyecto/{proyectoId}")
-    public ResponseEntity<Void> deleteProyecto(@PathVariable Integer proyectoId) {
-        objetivo14VidaSubmarinaService.deleteProyecto(proyectoId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/base-indicadores")
-    public ResponseEntity<List<ProyectoIndicadores>> getIndicadores(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.findAllIndicadoresByProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<ProyectoIndicadores> getIndicador(@PathVariable Integer indicadorId) {
-        Optional<ProyectoIndicadores> result = objetivo14VidaSubmarinaService.findIndicadorById(indicadorId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/indicadores")
-    public ResponseEntity<ProyectoIndicadores> createIndicador(@RequestBody ProyectoIndicadores indicador) {
-        ProyectoIndicadores result = objetivo14VidaSubmarinaService.saveIndicador(indicador);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/validar/indicador")
-    public ResponseEntity<Boolean> validateIndicador(@RequestBody ProyectoIndicadores indicador) {
-        Boolean result = objetivo14VidaSubmarinaService.validateIndicatorData(indicador);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<ProyectoIndicadores> updateIndicador(@PathVariable Integer indicadorId, @RequestBody ProyectoIndicadores indicador) {
-        ProyectoIndicadores result = objetivo14VidaSubmarinaService.updateIndicador(indicador);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/indicadores/{indicadorId}")
-    public ResponseEntity<Void> deleteIndicador(@PathVariable Integer indicadorId) {
-        objetivo14VidaSubmarinaService.deleteIndicador(indicadorId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/metas")
-    public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(@RequestParam Integer proyectoId) {
-        List<ProyectoIndicadorParametros> result = objetivo14VidaSubmarinaService.findAllMetasProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/metas/{metaId}")
-    public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(@PathVariable Integer metaId) {
-        Optional<ProyectoIndicadorParametros> result = objetivo14VidaSubmarinaService.findMetaProyectoById(metaId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/metas")
-    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(@RequestBody ProyectoIndicadorParametros meta) {
-        ProyectoIndicadorParametros result = objetivo14VidaSubmarinaService.saveMetaProyecto(meta);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/metas/{metaId}")
-    public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(@PathVariable Integer metaId, @RequestBody ProyectoIndicadorParametros meta) {
-        ProyectoIndicadorParametros result = objetivo14VidaSubmarinaService.updateMetaProyecto(meta);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/metas/{metaId}")
-    public ResponseEntity<Void> deleteMetaProyecto(@PathVariable Integer metaId) {
-        objetivo14VidaSubmarinaService.deleteMetaProyecto(metaId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/mediciones")
-    public ResponseEntity<List<MedicionesHistoricas>> getMedicionesHistoricas(@RequestParam Integer indicadorId) {
-        List<MedicionesHistoricas> result = objetivo14VidaSubmarinaService.findAllMedicionesHistoricas(indicadorId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> getMedicionHistorica(@PathVariable Integer medicionId) {
-        Optional<MedicionesHistoricas> result = objetivo14VidaSubmarinaService.findMedicionHistoricaById(medicionId);
-        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping("/mediciones")
-    public ResponseEntity<MedicionesHistoricas> createMedicionHistorica(@RequestBody MedicionesHistoricas medicion) {
-        MedicionesHistoricas result = objetivo14VidaSubmarinaService.saveMedicionHistorica(medicion);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PutMapping("/mediciones/{medicionId}")
-    public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(@PathVariable Integer medicionId, @RequestBody MedicionesHistoricas medicion) {
-        MedicionesHistoricas result = objetivo14VidaSubmarinaService.updateMedicionHistorica(medicion);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @DeleteMapping("/mediciones/{medicionId}")
-    public ResponseEntity<Void> deleteMedicionHistorica(@PathVariable Integer medicionId) {
-        objetivo14VidaSubmarinaService.deleteMedicionHistorica(medicionId);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/base-estadisticas")
-    public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() {
-        java.util.Map<String, Object> result = objetivo14VidaSubmarinaService.getOdsStatistics();
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/base-progreso/{proyectoId}")
-    public ResponseEntity<Double> getProjectProgress(@PathVariable Integer proyectoId) {
-        Double result = objetivo14VidaSubmarinaService.calculateProjectProgress(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/proyecto/{proyectoId}/existe")
-    public ResponseEntity<Boolean> existsProyecto(@PathVariable Integer proyectoId) {
-        Boolean result = objetivo14VidaSubmarinaService.existsProyecto(proyectoId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/indicador/{indicadorId}/existe")
-    public ResponseEntity<Boolean> existsIndicador(@PathVariable Integer indicadorId) {
-        Boolean result = objetivo14VidaSubmarinaService.existsIndicador(indicadorId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/meta/{metaId}/existe")
-    public ResponseEntity<Boolean> existsMetaProyecto(@PathVariable Integer metaId) {
-        Boolean result = objetivo14VidaSubmarinaService.existsMetaProyecto(metaId);
-        return ResponseEntity.ok(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @GetMapping("/medicion/{medicionId}/existe")
-    public ResponseEntity<Boolean> existsMedicionHistorica(@PathVariable Integer medicionId) {
-        Boolean result = objetivo14VidaSubmarinaService.existsMedicionHistorica(medicionId);
-        return ResponseEntity.ok(result);
-    }
+    @Override public ResponseEntity<Boolean> existsProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.existsProyecto(proyectoId)); }
+    @Override public ResponseEntity<Boolean> existsIndicador(Integer indicadorId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.existsIndicador(indicadorId)); }
+    @Override public ResponseEntity<Boolean> existsMetaProyecto(Integer metaId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.existsMetaProyecto(metaId)); }
+    @Override public ResponseEntity<Boolean> existsMedicionHistorica(Integer medicionId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.existsMedicionHistorica(medicionId)); }
 }

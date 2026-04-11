@@ -3,48 +3,15 @@
 
 ### Variables
 @baseUrl = http://localhost:8080
-@proyectoId = 10
-@indicadorId = 10
-@metaId = 10
-@medicionId = 10
+@proyectoId = 1
+@indicadorId = 1
+@metaId = 1
+@medicionId = 1
 
-# ── Indicadores Específicos del ODS10 ──
-
-### Obtener todos los indicadores del ODS10
-GET {{baseUrl}}/api/ods/10/indicadores?proyectoId={{proyectoId}}
+# ── 1. Indicadores Específicos del ODS10 ──
 
 ### Obtener indicador 10.1.1
 GET {{baseUrl}}/api/ods/10/indicadores/10.1.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.2.1
-GET {{baseUrl}}/api/ods/10/indicadores/10.2.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.3.1
-GET {{baseUrl}}/api/ods/10/indicadores/10.3.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.4.1
-GET {{baseUrl}}/api/ods/10/indicadores/10.4.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.4.2
-GET {{baseUrl}}/api/ods/10/indicadores/10.4.2?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.5.1
-GET {{baseUrl}}/api/ods/10/indicadores/10.5.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.6.1
-GET {{baseUrl}}/api/ods/10/indicadores/10.6.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.7.1
-GET {{baseUrl}}/api/ods/10/indicadores/10.7.1?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.7.2
-GET {{baseUrl}}/api/ods/10/indicadores/10.7.2?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.7.3
-GET {{baseUrl}}/api/ods/10/indicadores/10.7.3?proyectoId={{proyectoId}}
-
-### Obtener indicador 10.7.4
-GET {{baseUrl}}/api/ods/10/indicadores/10.7.4?proyectoId={{proyectoId}}
 
 ### Obtener indicador 10.2.1
 GET {{baseUrl}}/api/ods/10/indicadores/10.2.1?proyectoId={{proyectoId}}
@@ -85,113 +52,24 @@ GET {{baseUrl}}/api/ods/10/indicadores/10.b.1?proyectoId={{proyectoId}}
 ### Obtener indicador 10.c.1
 GET {{baseUrl}}/api/ods/10/indicadores/10.c.1?proyectoId={{proyectoId}}
 
-### Encontrar todos los indicadores por proyecto
-GET {{baseUrl}}/api/ods/10/indicadores/proyecto?proyectoId={{proyectoId}}
+# ── 2. Endpoints Estandarizados (IOdsBaseController) ──
 
-### Encontrar indicadores por meta
-GET {{baseUrl}}/api/ods/10/indicadores/meta?proyectoId={{proyectoId}}&metaPrefix=10.1
+### Obtener todos los indicadores de un proyecto
+GET {{baseUrl}}/api/ods/10/indicadores?proyectoId={{proyectoId}}
 
-# ── Proyectos ──
+### Obtener un indicador específico por su ID interno
+GET {{baseUrl}}/api/ods/10/indicadores/{{indicadorId}}
 
-### Obtener todos los proyectos del ODS10
-GET {{baseUrl}}/api/ods/10/proyectos
-
-### Obtener proyecto por ID
-GET {{baseUrl}}/api/ods/10/proyectos/{{proyectoId}}
-
-### Obtener todas las metas de proyecto
-GET {{baseUrl}}/api/ods/10/proyectos/{{proyectoId}}/metas
-
-### Obtener meta por ID
-GET {{baseUrl}}/api/ods/10/metas/{{metaId}}
-
-### Obtener todas las mediciones históricas
-GET {{baseUrl}}/api/ods/10/indicadores/historicas/{{indicadorId}}
-
-### Obtener medición histórica por ID
-GET {{baseUrl}}/api/ods/10/mediciones/{{medicionId}}
-
-### Calcular progreso del proyecto
-GET {{baseUrl}}/api/ods/10/progreso/{{proyectoId}}
-
-### Obtener estadísticas del ODS10
-GET {{baseUrl}}/api/ods/10/estadisticas
-
-### Verificar si proyecto existe
-GET {{baseUrl}}/api/ods/10/proyectos/{{proyectoId}}/existe
-
-### Verificar si indicador existe
-GET {{baseUrl}}/api/ods/10/indicadores/{{indicadorId}}/existe
-
-# ── CRUD Operaciones ──
-
-### Crear nuevo proyecto
-POST {{baseUrl}}/api/ods/10/proyecto
-Content-Type: application/json
-
-{
-  "usuarioId": 2,
-  "sedeId": 2,
-  "nombreProyecto": "Proyecto Reducción Desigualdad Test",
-  "objetivoId": 10,
-  "descripcion": "Proyecto de prueba para ODS10",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Reducir la desigualdad en y entre los países",
-  "estado": "planificacion"
-}
-
-### Validar proyecto
-POST {{baseUrl}}/api/ods/10/validar/proyecto
-Content-Type: application/json
-
-{
-  "nombreProyecto": "Proyecto Validación Desigualdad",
-  "usuarioId": 2,
-  "objetivoId": 10,
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "estado": "planificacion"
-}
-
-### Actualizar proyecto
-PUT {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}
-Content-Type: application/json
-
-{
-  "id": {{proyectoId}},
-  "nombreProyecto": "Proyecto Desigualdad Actualizado",
-  "descripcion": "Proyecto actualizado para ODS10",
-  "fechaInicio": "2024-01-01",
-  "fechaFin": "2024-12-31",
-  "metaGeneral": "Meta actualizada Desigualdad",
-  "estado": "activo"
-}
-
-### Eliminar proyecto
-DELETE {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}
-
-### Crear nuevo indicador (Master ID 120 = 10.1.1 aprox, verificar en SQL)
+### Crear nuevo indicador
 POST {{baseUrl}}/api/ods/10/indicadores
 Content-Type: application/json
 
 {
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 120,
-  "formulaCustom": "(p1 / p2) * 100",
-  "metaValor": 100.0,
-  "metaUnidad": "Porcentaje"
-}
-
-### Validar indicador
-POST {{baseUrl}}/api/ods/10/validar/indicador
-Content-Type: application/json
-
-{
-  "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 120,
-  "metaValor": 85.0,
-  "metaUnidad": "Porcentaje"
+  "indicadorMasterId": 112,
+  "formulaCustom": null,
+  "metaValor": 40.0,
+  "metaUnidad": "Porcentaje Ingreso"
 }
 
 ### Actualizar indicador
@@ -201,40 +79,78 @@ Content-Type: application/json
 {
   "id": {{indicadorId}},
   "proyectoId": {{proyectoId}},
-  "indicadorMasterId": 120,
-  "valorActual": 62.0,
-  "metaValor": 100.0,
-  "metaUnidad": "Porcentaje"
+  "indicadorMasterId": 112,
+  "valorActual": 35.0,
+  "metaValor": 40.0,
+  "metaUnidad": "Porcentaje Ingreso"
 }
 
 ### Eliminar indicador
 DELETE {{baseUrl}}/api/ods/10/indicadores/{{indicadorId}}
 
-### Crear nueva meta (Parámetro)
+# ── 3. Gestión de Proyectos ──
+
+### Obtener todos los proyectos del ODS10
+GET {{baseUrl}}/api/ods/10/proyectos
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/ods/10/proyectos/{{proyectoId}}
+
+### Crear nuevo proyecto
+POST {{baseUrl}}/api/ods/10/proyectos
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Inclusión Social Minorías",
+  "objetivoId": 10,
+  "descripcion": "Programa de inclusión social para grupos minoritarios",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "estado": "activo"
+}
+
+### Actualizar proyecto
+PUT {{baseUrl}}/api/ods/10/proyectos/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "nombreProyecto": "Inclusión Social Minorías Actualizado",
+  "estado": "activo"
+}
+
+### Eliminar proyecto
+DELETE {{baseUrl}}/api/ods/10/proyectos/{{proyectoId}}
+
+# ── 4. Gestión de Metas (Parámetros) ──
+
+### Obtener metas de un proyecto
+GET {{baseUrl}}/api/ods/10/metas?proyectoId={{proyectoId}}
+
+### Obtener meta específica
+GET {{baseUrl}}/api/ods/10/metas/{{metaId}}
+
+### Crear nueva meta
 POST {{baseUrl}}/api/ods/10/metas
 Content-Type: application/json
 
 {
   "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "ingreso_per_capita_mas_pobre",
-  "tipoDato": "Double"
+  "nombreParametro": "param_test",
+  "tipoDato": "Decimal"
 }
 
-### Actualizar meta (Parámetro)
-PUT {{baseUrl}}/api/ods/10/metas/{{metaId}}
-Content-Type: application/json
+# ── 5. Mediciones Históricas ──
 
-{
-  "id": {{metaId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "nombreParametro": "ingreso_per_capita_media",
-  "tipoDato": "Double"
-}
+### Obtener mediciones de un indicador
+GET {{baseUrl}}/api/ods/10/mediciones?indicadorId={{indicadorId}}
 
-### Eliminar meta
-DELETE {{baseUrl}}/api/ods/10/metas/{{metaId}}
+### Obtener medición específica
+GET {{baseUrl}}/api/ods/10/mediciones/{{medicionId}}
 
-### Crear nueva medición histórica
+### Registrar medición
 POST {{baseUrl}}/api/ods/10/mediciones
 Content-Type: application/json
 
@@ -242,66 +158,28 @@ Content-Type: application/json
   "proyectoIndicadorId": {{indicadorId}},
   "valorCalculado": 78.5,
   "fechaMedicion": "2024-08-15",
-  "responsable": "Admin Desigualdad",
-  "observaciones": "Monitoreo social"
+  "responsable": "Admin Desigualdad"
 }
 
-### Actualizar medición histórica
-PUT {{baseUrl}}/api/ods/10/mediciones/{{medicionId}}
+# ── 6. Utilidades y Estadísticas ──
+
+### Obtener estadísticas del ODS
+GET {{baseUrl}}/api/ods/10/estadisticas
+
+### Calcular progreso del proyecto
+GET {{baseUrl}}/api/ods/10/progreso/{{proyectoId}}
+
+### Verificar si proyecto existe
+GET {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}/existe
+
+### Verificar si indicador existe
+GET {{baseUrl}}/api/ods/10/indicador/{{indicadorId}}/existe
+
+### Validar datos de proyecto
+POST {{baseUrl}}/api/ods/10/validar/proyecto
 Content-Type: application/json
 
 {
-  "id": {{medicionId}},
-  "proyectoIndicadorId": {{indicadorId}},
-  "valorCalculado": 80.0,
-  "fechaMedicion": "2024-08-15",
-  "responsable": "Admin Desig Actualizado"
+  "nombreProyecto": "Proyecto Test Desigualdad",
+  "usuarioId": 2
 }
-
-### Eliminar medición histórica
-DELETE {{baseUrl}}/api/ods/10/mediciones/{{medicionId}}
-
-
-# ── IOdsBaseController Methods ──
-
-### Obtener todos los proyectos (base)
-GET {{baseUrl}}/api/ods/10/all-proyectos
-
-### Obtener proyecto por ID (base)
-GET {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}
-
-### Obtener todos los indicadores (base)
-GET {{baseUrl}}/api/ods/10/base-indicadores?proyectoId={{proyectoId}}
-
-### Obtener indicador por ID (base)
-GET {{baseUrl}}/api/ods/10/indicadores/{{indicadorId}}
-
-### Obtener metas de proyecto
-GET {{baseUrl}}/api/ods/10/metas?proyectoId={{proyectoId}}
-
-### Obtener meta por ID (base)
-GET {{baseUrl}}/api/ods/10/metas/{{metaId}}
-
-### Obtener mediciones históricas
-GET {{baseUrl}}/api/ods/10/mediciones?indicadorId={{indicadorId}}
-
-### Obtener medición histórica por ID (base)
-GET {{baseUrl}}/api/ods/10/mediciones/{{medicionId}}
-
-### Obtener estadísticas (base)
-GET {{baseUrl}}/api/ods/10/base-estadisticas
-
-### Obtener progreso del proyecto (base)
-GET {{baseUrl}}/api/ods/10/base-progreso/{{proyectoId}}
-
-### Verificar existencia de proyecto (base)
-GET {{baseUrl}}/api/ods/10/proyecto/{{proyectoId}}/existe
-
-### Verificar existencia de indicador (base)
-GET {{baseUrl}}/api/ods/10/indicador/{{indicadorId}}/existe
-
-### Verificar existencia de meta (base)
-GET {{baseUrl}}/api/ods/10/meta/{{metaId}}/existe
-
-### Verificar existencia de medición histórica (base)
-GET {{baseUrl}}/api/ods/10/medicion/{{medicionId}}/existe

@@ -1,165 +1,54 @@
 package com.odsProject.odsProject.service.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.AuditoriaOds12;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 12: Producción y Consumo Responsables
- * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 12
- * Extiende IOdsBaseService con tipos específicos de ODS12
  */
 public interface IObjetivo12ConsumoProduccionService extends IOdsBaseService<
-    ProyectoIndicadores,     // T - ProyectoIndicadores
-    Proyectos,               // P - Proyectos  
-    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
-    MedicionesHistoricas,     // MH - MedicionesHistoricas
-    Object                   // A - Auditoria (placeholder)
+    VistaAdminDetalleIndicadores, // T (Lectura)
+    ProyectoIndicadores,         // E (Escritura)
+    Proyectos,                   // P
+    ProyectoIndicadorParametros, // M
+    MedicionesHistoricas,        // MH
+    AuditoriaOds12              // A
 > {
     
-    /**
-     * Obtiene todos los indicadores del Objetivo 12: Producción y Consumo Responsables
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista con todos los indicadores del objetivo
-     */
-    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId);
     
-    /**
-     * Obtiene el indicador 12.1.1
-     * Número de países con políticas de consumo y producción sostenibles
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.1.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_2_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_2_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_3_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_4_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_4_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_5_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_6_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_7_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_8_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_a_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_b_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_12_c_1(Integer proyectoId);
     
-    /**
-     * Obtiene el indicador 12.2.1
-     * Huella material en términos absolutos, per cápita y por PIB
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.2.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_2_1(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
-    /**
-     * Obtiene el indicador 12.2.2
-     * Consumo material interno en términos absolutos, per cápita y por PIB
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.2.2
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_2_2(Integer proyectoId);
+    List<Proyectos> getAllProjectsOds12();
+    Optional<Proyectos> getProjectOds12ById(Integer proyectoId);
+    List<ProyectoIndicadorParametros> getAllMetasProyectoOds12(Integer proyectoId);
+    Optional<ProyectoIndicadorParametros> getMetaProyectoOds12ById(Integer metaId);
+    List<MedicionesHistoricas> getAllMedicionesHistoricasOds12(Integer indicadorId);
+    Optional<MedicionesHistoricas> getMedicionHistoricaOds12ById(Integer medicionId);
     
-    /**
-     * Obtiene el indicador 12.3.1
-     * Índice de pérdidas de alimentos y desperdicio de alimentos
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.3.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_3_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 12.4.1
-     * Número de partes en acuerdos sobre desechos peligrosos que cumplen sus compromisos
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.4.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_4_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 12.4.2
-     * Desechos peligrosos generados per cápita y proporción tratada
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.4.2
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_4_2(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 12.5.1
-     * Tasa nacional de reciclado, en toneladas de material reciclado
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.5.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_5_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 12.6.1
-     * Número de empresas que publican informes sobre sostenibilidad
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.6.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_6_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 12.7.1
-     * Número de países con políticas de adquisiciones públicas sostenibles
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.7.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_7_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 12.8.1
-     * Grado en que se incorpora educación para el desarrollo sostenible
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.8.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_8_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 12.a.1
-     * Capacidad instalada de generación de energía renovable
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.a.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_a_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 12.b.1
-     * Aplicación de instrumentos de contabilidad para turismo sostenible
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.b.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_b_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 12.c.1
-     * Cuantía de los subsidios a los combustibles fósiles por unidad del PIB
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 12.c.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_12_c_1(Integer proyectoId);
-    
-    /**
-     * Encuentra todos los indicadores asociados a un proyecto específico del ODS12
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todos los indicadores del proyecto
-     */
-    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds12(Integer proyectoId);
-    
-    /**
-     * Encuentra indicadores filtrando por meta específica del ODS12
-     * 
-     * @param proyectoId ID del proyecto
-     * @param metaPrefix Prefijo de la meta (ej: "12.1", "12.2")
-     * @return Lista de indicadores que pertenecen a la meta especificada
-     */
-    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+    Double calculateProjectProgress(Integer proyectoId);
+    Map<String, Object> getOds12Statistics();
 }

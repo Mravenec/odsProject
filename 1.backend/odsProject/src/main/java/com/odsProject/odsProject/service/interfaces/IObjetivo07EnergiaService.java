@@ -1,160 +1,48 @@
 package com.odsProject.odsProject.service.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.MedicionesHistoricas;
+import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.AuditoriaOds07;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * Interfaz de Servicio para el Objetivo 7: Energía Asequible y No Contaminante
- * Define los contratos de negocio para los indicadores del Objetivo de Desarrollo Sostenible 7
- * Extiende IOdsBaseService con tipos específicos de ODS07
  */
 public interface IObjetivo07EnergiaService extends IOdsBaseService<
-    ProyectoIndicadores,     // T - ProyectoIndicadores
-    Proyectos,               // P - Proyectos  
-    ProyectoIndicadorParametros, // M - ProyectoIndicadorParametros
-    MedicionesHistoricas,     // MH - MedicionesHistoricas
-    Object                   // A - Auditoria (placeholder)
+    VistaAdminDetalleIndicadores, // T (Lectura)
+    ProyectoIndicadores,         // E (Escritura)
+    Proyectos,                   // P
+    ProyectoIndicadorParametros, // M
+    MedicionesHistoricas,        // MH
+    AuditoriaOds07              // A
 > {
     
-    /**
-     * Obtiene todos los indicadores del Objetivo 7: Energía Asequible y No Contaminante
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista con todos los indicadores del objetivo
-     */
-    List<ProyectoIndicadores> getAllIndicators(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId);
     
-    /**
-     * Obtiene el indicador 7.1.1
-     * Proporción de la población que tiene acceso a la electricidad
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 7.1.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_7_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_7_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_7_1_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_7_2_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_7_3_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_7_a_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_7_b_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> getIndicador_7_c_1(Integer proyectoId);
     
-    /**
-     * Obtiene el indicador 7.1.2
-     * Proporción de la población con combustibles y tecnologías limpios
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 7.1.2
-     */
-    Optional<ProyectoIndicadores> getIndicador_7_1_2(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds07(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
-    /**
-     * Obtiene el indicador 7.2.1
-     * Proporción de energía renovable en el consumo final total
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 7.2.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_7_2_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 7.3.1
-     * Intensidad energética medida en función de la energía primaria y el PIB
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 7.3.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_7_3_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 7.a.1
-     * Corrientes financieras internacionales para energías limpias
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 7.a.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_7_a_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 7.b.1
-     * Capacidad instalada de generación de energía renovable
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 7.b.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_7_b_1(Integer proyectoId);
-    
-    /**
-     * Obtiene el indicador 7.c.1
-     * Flujos financieros internacionales a países en desarrollo en apoyo a la investigación y desarrollo de energías limpias y producción de energía renovable
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 7.c.1
-     */
-    Optional<ProyectoIndicadores> getIndicador_7_c_1(Integer proyectoId);
-    
-    /**
-     * Encuentra todos los indicadores asociados a un proyecto específico del ODS07
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todos los indicadores del proyecto
-     */
-    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds07(Integer proyectoId);
-    
-    /**
-     * Encuentra indicadores filtrando por meta específica del ODS07
-     * 
-     * @param proyectoId ID del proyecto
-     * @param metaPrefix Prefijo de la meta (ej: "7.1", "7.2")
-     * @return Lista de indicadores que pertenecen a la meta especificada
-     */
-    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
-    
-    // ── Métodos específicos del ODS07 ──
-    
-    /**
-     * Obtiene todos los proyectos del ODS07
-     * 
-     * @return Lista de todos los proyectos del ODS07
-     */
     List<Proyectos> getAllProjectsOds07();
-    
-    /**
-     * Obtiene un proyecto del ODS07 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Optional con el proyecto encontrado
-     */
     Optional<Proyectos> getProjectOds07ById(Integer proyectoId);
-    
-    /**
-     * Obtiene todas las metas de proyecto del ODS07
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de metas del proyecto
-     */
     List<ProyectoIndicadorParametros> getAllMetasProyectoOds07(Integer proyectoId);
-    
-    /**
-     * Obtiene una meta de proyecto del ODS07 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return Optional con la meta encontrada
-     */
     Optional<ProyectoIndicadorParametros> getMetaProyectoOds07ById(Integer metaId);
-    
-    /**
-     * Obtiene todas las mediciones históricas del ODS07
-     * 
-     * @param indicadorId ID del indicador
-     * @return Lista de mediciones históricas
-     */
     List<MedicionesHistoricas> getAllMedicionesHistoricasOds07(Integer indicadorId);
-    
-    /**
-     * Obtiene una medición histórica del ODS07 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return Optional con la medición encontrada
-     */
     Optional<MedicionesHistoricas> getMedicionHistoricaOds07ById(Integer medicionId);
+    
+    Double calculateProjectProgress(Integer proyectoId);
+    Map<String, Object> getOds07Statistics();
 }

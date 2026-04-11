@@ -7,13 +7,14 @@ import java.util.Optional;
 /**
  * Interfaz de Servicio Base para todos los ODS
  * Define los contratos de negocio comunes para todos los Objetivos de Desarrollo Sostenible
- * @param <T> Tipo de entidad principal (Indicadores)
+ * @param <T> Tipo de entidad de LECTURA (Enriquecida, ej: VistaAdminDetalleIndicadores)
+ * @param <E> Tipo de entidad de ESCRITURA (Tabla física, ej: ProyectoIndicadores)
  * @param <P> Tipo de entidad Proyectos
  * @param <M> Tipo de entidad MetasProyecto
  * @param <MH> Tipo de entidad MedicionesHistoricas
  * @param <A> Tipo de entidad Auditoria
  */
-public interface IOdsBaseService<T, P, M, MH, A> {
+public interface IOdsBaseService<T, E, P, M, MH, A> {
     
     // ── Métodos CRUD Base ──
     
@@ -57,7 +58,7 @@ public interface IOdsBaseService<T, P, M, MH, A> {
     Boolean deleteProyecto(Integer proyectoId);
     
     /**
-     * Obtiene todos los indicadores de un proyecto
+     * Obtiene todos los indicadores de un proyecto (Enriquecidos)
      * 
      * @param proyectoId ID del proyecto
      * @return Lista de todos los indicadores del proyecto
@@ -65,7 +66,7 @@ public interface IOdsBaseService<T, P, M, MH, A> {
     List<T> findAllIndicadoresByProyecto(Integer proyectoId);
     
     /**
-     * Obtiene un indicador por su ID
+     * Obtiene un indicador por su ID (Enriquecido)
      * 
      * @param indicadorId ID del indicador
      * @return Optional con el indicador encontrado
@@ -75,18 +76,18 @@ public interface IOdsBaseService<T, P, M, MH, A> {
     /**
      * Crea un nuevo indicador
      * 
-     * @param indicador Datos del nuevo indicador
+     * @param indicador Datos del nuevo indicador (Entidad de tabla)
      * @return Indicador creado con ID asignado
      */
-    T saveIndicador(T indicador);
+    E saveIndicador(E indicador);
     
     /**
      * Actualiza un indicador existente
      * 
-     * @param indicador Datos actualizados del indicador
+     * @param indicador Datos actualizados del indicador (Entidad de tabla)
      * @return Indicador actualizado
      */
-    T updateIndicador(T indicador);
+    E updateIndicador(E indicador);
     
     /**
      * Elimina un indicador
@@ -181,7 +182,7 @@ public interface IOdsBaseService<T, P, M, MH, A> {
     /**
      * Valida los datos de un indicador
      * 
-     * @param indicador Datos del indicador a validar
+     * @param indicador Datos del indicador a validar (Enriquecido)
      * @return true si los datos son válidos, false otherwise
      */
     Boolean validateIndicatorData(T indicador);

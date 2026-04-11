@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadorParametros;
@@ -10,207 +11,50 @@ import java.util.Optional;
 
 /**
  * Interfaz del Repositorio para el Objetivo 1: Fin de la Pobreza
- * Implementa los métodos para acceder a los indicadores del Objetivo de Desarrollo Sostenible 1
- * Usa jOOQ con datasource ods01
  */
-public interface IObjetivo01PobrezaRepository extends IOdsBaseRepository<ProyectoIndicadores, Proyectos, ProyectoIndicadorParametros, MedicionesHistoricas, AuditoriaOds01> {
+public interface IObjetivo01PobrezaRepository extends IOdsBaseRepository<
+    VistaAdminDetalleIndicadores, // T (Lectura)
+    ProyectoIndicadores,         // E (Escritura)
+    Proyectos,                   // P
+    ProyectoIndicadorParametros, // M
+    MedicionesHistoricas,        // MH
+    AuditoriaOds01              // A
+> {
     
-    /**
-     * 1.1.1 Proporción de la población que vive por debajo del umbral internacional de pobreza, 
-     * desglosada por sexo, edad, situación laboral y ubicación geográfica (urbana o rural) [1, 2]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.1.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_1_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_2_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_2_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_3_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_4_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_4_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_5_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_5_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_5_3(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_5_4(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_a_1(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_a_2(Integer proyectoId);
+    Optional<VistaAdminDetalleIndicadores> findIndicador_1_b_1(Integer proyectoId);
     
-    /**
-     * 1.2.1 Proporción de la población que vive por debajo del umbral nacional de pobreza, 
-     * desglosada por sexo y edad [2]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.2.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_2_1(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds01(Integer proyectoId);
+    List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
     
-    /**
-     * 1.2.2 Proporción de hombres, mujeres y niños de todas las edades que viven en la pobreza, 
-     * en todas sus dimensiones, con arreglo a las definiciones nacionales [2]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.2.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_2_2(Integer proyectoId);
-    
-    /**
-     * 1.3.1 Proporción de la población cubierta por sistemas o niveles mínimos de protección social, 
-     * desglosada por sexo, distinguiendo entre los niños, los desempleados, los ancianos, 
-     * las personas con discapacidad, las mujeres embarazadas, los recién nacidos, 
-     * las víctimas de accidentes de trabajo, los pobres y los vulnerables [3]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.3.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_3_1(Integer proyectoId);
-    
-    /**
-     * 1.4.1 Proporción de la población que vive en hogares con acceso a los servicios básicos [4]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.4.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_4_1(Integer proyectoId);
-    
-    /**
-     * 1.4.2 Proporción del total de la población adulta con derechos seguros de tenencia de la tierra: 
-     * a) que posee documentación reconocida legalmente al respecto y b) considera seguros sus derechos, 
-     * desglosada por sexo y tipo de tenencia [4, 5]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.4.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_4_2(Integer proyectoId);
-    
-    /**
-     * 1.5.1 Número de personas muertas, desaparecidas y afectadas directamente atribuido a desastres 
-     * por cada 100.000 habitantes [5, 6]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.5.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_5_1(Integer proyectoId);
-    
-    /**
-     * 1.5.2 Pérdidas económicas directas atribuidas a los desastres en relación con 
-     * el producto interno bruto (PIB) mundial [6]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.5.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_5_2(Integer proyectoId);
-    
-    /**
-     * 1.5.3 Número de países que adoptan y aplican estrategias nacionales de reducción del riesgo 
-     * de desastres en consonancia con el Marco de Sendái para la Reducción del Riesgo de Desastres 2015-2030 [6]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.5.3
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_5_3(Integer proyectoId);
-    
-    /**
-     * 1.5.4 Proporción de gobiernos locales que adoptan y aplican estrategias locales de reducción 
-     * del riesgo de desastres en consonancia con las estrategias nacionales de reducción del riesgo de desastres [7]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.5.4
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_5_4(Integer proyectoId);
-    
-    /**
-     * 1.a.1 Total de subvenciones de asistencia oficial para el desarrollo destinadas a la reducción 
-     * de la pobreza en porcentaje de la renta nacional bruta del país beneficiario [8]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.a.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_a_1(Integer proyectoId);
-    
-    /**
-     * 1.a.2 Proporción del gasto público total que se dedica a servicios esenciales 
-     * (educación, salud y protección social) [8]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.a.2
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_a_2(Integer proyectoId);
-    
-    /**
-     * 1.b.1 Gasto público social en favor de los pobres [9]
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Datos del indicador 1.b.1
-     */
-    Optional<ProyectoIndicadores> findIndicador_1_b_1(Integer proyectoId);
-    
-    /**
-     * Encuentra todos los indicadores asociados a un proyecto específico del ODS01
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de todos los indicadores del proyecto
-     */
-    List<ProyectoIndicadores> findAllIndicadoresByProyectoOds01(Integer proyectoId);
-    
-    /**
-     * Encuentra indicadores filtrando por meta específica del ODS01
-     * 
-     * @param proyectoId ID del proyecto
-     * @param metaPrefix Prefijo de la meta (ej: "1.1", "1.2")
-     * @return Lista de indicadores que pertenecen a la meta especificada
-     */
-    List<ProyectoIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
-    
-    // ── Métodos específicos del ODS01 ──
-    
-    /**
-     * Encuentra todos los proyectos del ODS01
-     * 
-     * @return Lista de todos los proyectos del ODS01
-     */
     List<Proyectos> findAllProyectosOds01();
-    
-    /**
-     * Encuentra un proyecto del ODS01 por su ID
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Optional con el proyecto encontrado
-     */
     Optional<Proyectos> findProyectoOds01ById(Integer proyectoId);
-    
-    /**
-     * Encuentra todas las metas de proyecto del ODS01
-     * 
-     * @param proyectoId ID del proyecto
-     * @return Lista de metas del proyecto
-     */
     List<ProyectoIndicadorParametros> findAllMetasProyectoOds01(Integer proyectoId);
-    
-    /**
-     * Encuentra una meta de proyecto del ODS01 por su ID
-     * 
-     * @param metaId ID de la meta
-     * @return Optional con la meta encontrada
-     */
     Optional<ProyectoIndicadorParametros> findMetaProyectoOds01ById(Integer metaId);
-    
-    /**
-     * Encuentra todas las mediciones históricas del ODS01
-     * 
-     * @param indicadorId ID del indicador
-     * @return Lista de mediciones históricas
-     */
     List<MedicionesHistoricas> findAllMedicionesHistoricasOds01(Integer indicadorId);
-    
-    /**
-     * Encuentra una medición histórica del ODS01 por su ID
-     * 
-     * @param medicionId ID de la medición
-     * @return Optional con la medición encontrada
-     */
     Optional<MedicionesHistoricas> findMedicionHistoricaOds01ById(Integer medicionId);
-    
-    /**
-     * Encuentra todas las auditorías del ODS01
-     * 
-     * @return Lista de todas las auditorías
-     */
     List<AuditoriaOds01> findAllAuditoriasOds01();
-    
-    /**
-     * Encuentra una auditoría del ODS01 por su ID
-     * 
-     * @param auditoriaId ID de la auditoría
-     * @return Optional con la auditoría encontrada
-     */
     Optional<AuditoriaOds01> findAuditoriaOds01ById(Integer auditoriaId);
+
+    void deleteIndicador(Integer indicadorId);
+    ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta);
+    void deleteMetaProyecto(Integer metaId);
+    MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion);
+    void deleteMedicionHistorica(Integer medicionId);
+    
+    Boolean existsIndicador(Integer indicadorId);
+    Boolean existsProyecto(Integer proyectoId);
+    Boolean existsMetaProyecto(Integer metaId);
+    Boolean existsMedicionHistorica(Integer medicionId);
 }
