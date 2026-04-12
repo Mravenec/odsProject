@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.odsProject.odsProject.database.jooq.ods_master.Tables.PROYECTOS;
+import static com.odsProject.odsProject.database.jooq.ods_login.Tables.USUARIOS;
+import org.jooq.impl.DSL;
 
 /**
  * Implementación del Repositorio Maestro de Proyectos
@@ -53,7 +55,7 @@ public class MasterProjectRepository implements IMasterProjectRepository {
     @Override
     public List<Proyectos> findByEstado(String estado) {
         return dsl.selectFrom(PROYECTOS)
-                .where(PROYECTOS.ESTADO.cast(String.class).eq(estado))
+                .where(PROYECTOS.ESTADO.cast(String.class).equalIgnoreCase(estado))
                 .fetchInto(Proyectos.class);
     }
 
@@ -85,22 +87,26 @@ public class MasterProjectRepository implements IMasterProjectRepository {
     public java.util.Map<String, Object> spAdminGlobalDashboard() {
         java.util.Map<String, Object> dashboard = new java.util.HashMap<>();
         
-        // Métricas básicas de proyectos
+        // Métricas básicas de proyectos (insensible a mayúsculas para robustez)
         Integer total = dsl.selectCount().from(PROYECTOS).fetchOne(0, Integer.class);
-        Integer activos = dsl.selectCount().from(PROYECTOS).where(PROYECTOS.ESTADO.cast(String.class).eq("activo")).fetchOne(0, Integer.class);
-        Integer completados = dsl.selectCount().from(PROYECTOS).where(PROYECTOS.ESTADO.cast(String.class).eq("completado")).fetchOne(0, Integer.class);
-        Integer planificacion = dsl.selectCount().from(PROYECTOS).where(PROYECTOS.ESTADO.cast(String.class).eq("planificacion")).fetchOne(0, Integer.class);
+        Integer activos = dsl.selectCount().from(PROYECTOS).where(DSL.lower(PROYECTOS.ESTADO.cast(String.class)).eq("activo")).fetchOne(0, Integer.class);
+        Integer completados = dsl.selectCount().from(PROYECTOS).where(DSL.lower(PROYECTOS.ESTADO.cast(String.class)).eq("completado")).fetchOne(0, Integer.class);
+        Integer planificacion = dsl.selectCount().from(PROYECTOS).where(DSL.lower(PROYECTOS.ESTADO.cast(String.class)).eq("planificacion")).fetchOne(0, Integer.class);
+        
+        // Conteo de usuarios (Métrica global centralizada)
+        Integer totalUsuarios = dsl.selectCount().from(USUARIOS).fetchOne(0, Integer.class);
 
         dashboard.put("total_proyectos", total != null ? total : 0);
         dashboard.put("proyectos_activos", activos != null ? activos : 0);
         dashboard.put("proyectos_completados", completados != null ? completados : 0);
         dashboard.put("proyectos_planificacion", planificacion != null ? planificacion : 0);
+        dashboard.put("total_usuarios", totalUsuarios != null ? totalUsuarios : 0);
         
         // Proyectos por estado (para gráficos)
         java.util.Map<String, Integer> estados = new java.util.HashMap<>();
-        estados.put("Activo", activos);
-        estados.put("Completado", completados);
-        estados.put("Planificación", planificacion);
+        estados.put("Activo", activos != null ? activos : 0);
+        estados.put("Completado", completados != null ? completados : 0);
+        estados.put("Planificación", planificacion != null ? planificacion : 0);
         dashboard.put("distribucion_estados", estados);
 
         return dashboard;

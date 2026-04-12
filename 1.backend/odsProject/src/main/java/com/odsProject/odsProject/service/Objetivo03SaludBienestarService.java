@@ -140,8 +140,9 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
         
         java.util.Map<String, java.math.BigDecimal> paramsMap = new java.util.HashMap<>();
         for (ProyectoIndicadorParametros p : parametros) {
-            if (p.getNombreVariable() != null) {
-                paramsMap.put(p.getNombreVariable(), p.getValorActual() != null ? p.getValorActual() : java.math.BigDecimal.ZERO);
+            String varName = p.getNombreVariable() != null ? p.getNombreVariable() : p.getNombreParametro();
+            if (varName != null) {
+                paramsMap.put(varName, p.getValorActual() != null ? p.getValorActual() : java.math.BigDecimal.ZERO);
             }
         }
 
