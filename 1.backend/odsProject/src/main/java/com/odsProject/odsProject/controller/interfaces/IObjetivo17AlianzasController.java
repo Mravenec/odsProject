@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.AuditoriaOds17;
@@ -39,7 +39,8 @@ public interface IObjetivo17AlianzasController extends IOdsBaseController<
      * 
      * @param proyectoId ID del proyecto
      * @return ResponseEntity con los datos del indicador 17.1.1
-     */    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_17_1_1(Integer proyectoId);
+     */
+    ResponseEntity<Optional<VistaAdminDetalleIndicadores>> getIndicador_17_1_1(Integer proyectoId);
     
     /**
      * Obtiene el indicador 17.1.2

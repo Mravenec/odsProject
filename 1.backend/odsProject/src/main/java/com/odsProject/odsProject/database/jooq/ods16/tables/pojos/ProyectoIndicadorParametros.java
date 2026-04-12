@@ -7,6 +7,7 @@ package com.odsProject.odsProject.database.jooq.ods16.tables.pojos;
 import com.odsProject.odsProject.database.jooq.ods16.enums.ProyectoIndicadorParametrosTipoDato;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -21,7 +22,9 @@ public class ProyectoIndicadorParametros implements Serializable {
     private Integer id;
     private Integer proyectoIndicadorId;
     private String nombreParametro;
+    private String nombreVariable;
     private ProyectoIndicadorParametrosTipoDato tipoDato;
+    private BigDecimal valorActual;
     private LocalDateTime createdAt;
 
     public ProyectoIndicadorParametros() {}
@@ -30,7 +33,9 @@ public class ProyectoIndicadorParametros implements Serializable {
         this.id = value.id;
         this.proyectoIndicadorId = value.proyectoIndicadorId;
         this.nombreParametro = value.nombreParametro;
+        this.nombreVariable = value.nombreVariable;
         this.tipoDato = value.tipoDato;
+        this.valorActual = value.valorActual;
         this.createdAt = value.createdAt;
     }
 
@@ -38,13 +43,17 @@ public class ProyectoIndicadorParametros implements Serializable {
         Integer id,
         Integer proyectoIndicadorId,
         String nombreParametro,
+        String nombreVariable,
         ProyectoIndicadorParametrosTipoDato tipoDato,
+        BigDecimal valorActual,
         LocalDateTime createdAt
     ) {
         this.id = id;
         this.proyectoIndicadorId = proyectoIndicadorId;
         this.nombreParametro = nombreParametro;
+        this.nombreVariable = nombreVariable;
         this.tipoDato = tipoDato;
+        this.valorActual = valorActual;
         this.createdAt = createdAt;
     }
 
@@ -95,6 +104,22 @@ public class ProyectoIndicadorParametros implements Serializable {
     }
 
     /**
+     * Getter for
+     * <code>ods16.proyecto_indicador_parametros.nombre_variable</code>.
+     */
+    public String getNombreVariable() {
+        return this.nombreVariable;
+    }
+
+    /**
+     * Setter for
+     * <code>ods16.proyecto_indicador_parametros.nombre_variable</code>.
+     */
+    public void setNombreVariable(String nombreVariable) {
+        this.nombreVariable = nombreVariable;
+    }
+
+    /**
      * Getter for <code>ods16.proyecto_indicador_parametros.tipo_dato</code>.
      */
     public ProyectoIndicadorParametrosTipoDato getTipoDato() {
@@ -106,6 +131,20 @@ public class ProyectoIndicadorParametros implements Serializable {
      */
     public void setTipoDato(ProyectoIndicadorParametrosTipoDato tipoDato) {
         this.tipoDato = tipoDato;
+    }
+
+    /**
+     * Getter for <code>ods16.proyecto_indicador_parametros.valor_actual</code>.
+     */
+    public BigDecimal getValorActual() {
+        return this.valorActual;
+    }
+
+    /**
+     * Setter for <code>ods16.proyecto_indicador_parametros.valor_actual</code>.
+     */
+    public void setValorActual(BigDecimal valorActual) {
+        this.valorActual = valorActual;
     }
 
     /**
@@ -149,11 +188,23 @@ public class ProyectoIndicadorParametros implements Serializable {
         }
         else if (!this.nombreParametro.equals(other.nombreParametro))
             return false;
+        if (this.nombreVariable == null) {
+            if (other.nombreVariable != null)
+                return false;
+        }
+        else if (!this.nombreVariable.equals(other.nombreVariable))
+            return false;
         if (this.tipoDato == null) {
             if (other.tipoDato != null)
                 return false;
         }
         else if (!this.tipoDato.equals(other.tipoDato))
+            return false;
+        if (this.valorActual == null) {
+            if (other.valorActual != null)
+                return false;
+        }
+        else if (!this.valorActual.equals(other.valorActual))
             return false;
         if (this.createdAt == null) {
             if (other.createdAt != null)
@@ -171,7 +222,9 @@ public class ProyectoIndicadorParametros implements Serializable {
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.proyectoIndicadorId == null) ? 0 : this.proyectoIndicadorId.hashCode());
         result = prime * result + ((this.nombreParametro == null) ? 0 : this.nombreParametro.hashCode());
+        result = prime * result + ((this.nombreVariable == null) ? 0 : this.nombreVariable.hashCode());
         result = prime * result + ((this.tipoDato == null) ? 0 : this.tipoDato.hashCode());
+        result = prime * result + ((this.valorActual == null) ? 0 : this.valorActual.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         return result;
     }
@@ -183,7 +236,9 @@ public class ProyectoIndicadorParametros implements Serializable {
         sb.append(id);
         sb.append(", ").append(proyectoIndicadorId);
         sb.append(", ").append(nombreParametro);
+        sb.append(", ").append(nombreVariable);
         sb.append(", ").append(tipoDato);
+        sb.append(", ").append(valorActual);
         sb.append(", ").append(createdAt);
 
         sb.append(")");

@@ -2,7 +2,7 @@ package com.odsProject.odsProject.service.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.AuditoriaOds10;

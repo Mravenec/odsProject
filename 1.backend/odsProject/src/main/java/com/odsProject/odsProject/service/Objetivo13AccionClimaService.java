@@ -2,7 +2,7 @@ package com.odsProject.odsProject.service;
 
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.AuditoriaOds13;
@@ -23,6 +23,9 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
 
     @Autowired
     private Objetivo13AccionClimaticaRepository objetivo13AccionClimaRepository;
+
+    @Autowired
+    private EvaluationService evaluationService;
 
     @Override public List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId) { return objetivo13AccionClimaRepository.findAllIndicadoresByProyectoOds13(proyectoId); }
     @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_1_1(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_1_1(proyectoId); }
@@ -76,8 +79,16 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
 
     @Override public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) { return objetivo13AccionClimaRepository.findMetasByProyecto(proyectoId); }
     @Override public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) { return objetivo13AccionClimaRepository.findMetaProyectoOds13ById(metaId); }
-    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo13AccionClimaRepository.saveMetaProyecto(meta); }
-    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo13AccionClimaRepository.updateMetaProyecto(meta); }
+    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros saved = objetivo13AccionClimaRepository.saveMetaProyecto(meta);
+        recalculateIndicator(saved.getProyectoIndicadorId());
+        return saved;
+    }
+    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros updated = objetivo13AccionClimaRepository.updateMetaProyecto(meta);
+        recalculateIndicator(updated.getProyectoIndicadorId());
+        return updated;
+    }
     @Override public Boolean deleteMetaProyecto(Integer metaId) { try { objetivo13AccionClimaRepository.deleteMetaProyecto(metaId); return true; } catch (Exception e) { return false; } }
 
     @Override public List<MedicionesHistoricas> findAllMedicionesHistoricas(Integer indicadorId) { return objetivo13AccionClimaRepository.findMedicionesByIndicador(indicadorId); }
@@ -93,4 +104,34 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo13AccionClimaRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo13AccionClimaRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo13AccionClimaRepository.existsMedicionHistorica(medicionId); }
+
+    /**
+     * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula
+     */
+    private void recalculateIndicator(Integer proyectoIndicadorId) {
+        if (proyectoIndicadorId == null) return;
+
+        Optional<ProyectoIndicadores> optIndicador = objetivo13AccionClimaRepository.findIndicadorByIdEntity(proyectoIndicadorId);
+        if (optIndicador.isEmpty()) return;
+
+        ProyectoIndicadores indicador = optIndicador.get();
+        if (indicador.getFormulaCustom() == null || indicador.getFormulaCustom().isEmpty()) return;
+
+        List<ProyectoIndicadorParametros> parametros = objetivo13AccionClimaRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
+        
+        java.util.Map<String, java.math.BigDecimal> paramsMap = new java.util.HashMap<>();
+        for (ProyectoIndicadorParametros p : parametros) {
+            if (p.getNombreVariable() != null) {
+                paramsMap.put(p.getNombreVariable(), p.getValorActual() != null ? p.getValorActual() : java.math.BigDecimal.ZERO);
+            }
+        }
+
+        try {
+            java.math.BigDecimal result = evaluationService.evaluateFormula(indicador.getFormulaCustom(), paramsMap);
+            indicador.setValorActual(result);
+            objetivo13AccionClimaRepository.updateIndicador(indicador);
+        } catch (Exception e) {
+            System.err.println("Error recalculando indicador ODS13 " + proyectoIndicadorId + ": " + e.getMessage());
+        }
+    }
 }

@@ -1,6 +1,6 @@
 package com.odsProject.odsProject.controller.interfaces;
 
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

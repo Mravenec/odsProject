@@ -9,6 +9,7 @@ import com.odsProject.odsProject.database.jooq.ods08.Ods08;
 import com.odsProject.odsProject.database.jooq.ods08.enums.ProyectoIndicadorParametrosTipoDato;
 import com.odsProject.odsProject.database.jooq.ods08.tables.records.ProyectoIndicadorParametrosRecord;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
@@ -74,9 +75,20 @@ public class ProyectoIndicadorParametros extends TableImpl<ProyectoIndicadorPara
     public final TableField<ProyectoIndicadorParametrosRecord, String> NOMBRE_PARAMETRO = createField(DSL.name("nombre_parametro"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
+     * The column
+     * <code>ods08.proyecto_indicador_parametros.nombre_variable</code>.
+     */
+    public final TableField<ProyectoIndicadorParametrosRecord, String> NOMBRE_VARIABLE = createField(DSL.name("nombre_variable"), SQLDataType.VARCHAR(20).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
      * The column <code>ods08.proyecto_indicador_parametros.tipo_dato</code>.
      */
     public final TableField<ProyectoIndicadorParametrosRecord, ProyectoIndicadorParametrosTipoDato> TIPO_DATO = createField(DSL.name("tipo_dato"), SQLDataType.VARCHAR(7).nullable(false).defaultValue(DSL.field(DSL.raw("'Decimal'"), SQLDataType.VARCHAR)).asEnumDataType(ProyectoIndicadorParametrosTipoDato.class), this, "");
+
+    /**
+     * The column <code>ods08.proyecto_indicador_parametros.valor_actual</code>.
+     */
+    public final TableField<ProyectoIndicadorParametrosRecord, BigDecimal> VALOR_ACTUAL = createField(DSL.name("valor_actual"), SQLDataType.DECIMAL(15, 4).defaultValue(DSL.field(DSL.raw("0.0000"), SQLDataType.DECIMAL)), this, "");
 
     /**
      * The column <code>ods08.proyecto_indicador_parametros.created_at</code>.

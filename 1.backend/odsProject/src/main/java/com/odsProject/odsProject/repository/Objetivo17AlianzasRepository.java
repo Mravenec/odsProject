@@ -2,7 +2,7 @@ package com.odsProject.odsProject.repository;
 
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.AuditoriaOds17;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.odsProject.odsProject.database.jooq.ods17.tables.ProyectoIndicadores.PROYECTO_INDICADORES;
-import static com.odsProject.odsProject.database.jooq.ods17.tables.Proyectos.PROYECTOS;
+import static com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos.PROYECTOS;
 import static com.odsProject.odsProject.database.jooq.ods17.tables.ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
 import static com.odsProject.odsProject.database.jooq.ods17.tables.MedicionesHistoricas.MEDICIONES_HISTORICAS;
 import static com.odsProject.odsProject.database.jooq.ods17.tables.AuditoriaOds17.AUDITORIA_ODS17;
@@ -237,4 +237,14 @@ public class Objetivo17AlianzasRepository implements IObjetivo17AlianzasReposito
     @Override public Boolean existsProyecto(Integer proyectoId) { return dsl.fetchExists(dsl.selectOne().from(PROYECTOS).where(PROYECTOS.ID.eq(proyectoId))); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return dsl.fetchExists(dsl.selectOne().from(PROYECTO_INDICADOR_PARAMETROS).where(PROYECTO_INDICADOR_PARAMETROS.ID.eq(metaId))); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return dsl.fetchExists(dsl.selectOne().from(MEDICIONES_HISTORICAS).where(MEDICIONES_HISTORICAS.ID.eq(medicionId))); }
+
+    @Override
+    public Optional<ProyectoIndicadores> findIndicadorByIdEntity(Integer id) {
+        return dsl.selectFrom(PROYECTO_INDICADORES).where(PROYECTO_INDICADORES.ID.eq(id)).fetchOptionalInto(ProyectoIndicadores.class);
+    }
+
+    @Override
+    public List<ProyectoIndicadorParametros> findMetasByProyectoIndicador(Integer proyectoIndicadorId) {
+        return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS).where(PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID.eq(proyectoIndicadorId)).fetchInto(ProyectoIndicadorParametros.class);
+    }
 }

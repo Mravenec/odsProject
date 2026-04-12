@@ -32,6 +32,19 @@ public class JooqConfig {
                 .build();
     }
 
+    // ── DataSource para ODS_MASTER ──
+
+    @Bean
+    @Qualifier("odsMasterDataSource")
+    public DataSource odsMasterDataSource() {
+        return DataSourceBuilder.create()
+                .url("jdbc:mariadb://localhost:3306/ods_master")
+                .username("root")
+                .password("123456")
+                .driverClassName("org.mariadb.jdbc.Driver")
+                .build();
+    }
+
     // ── DataSource para ODS01 ──
 
     @Bean
@@ -265,6 +278,12 @@ public class JooqConfig {
     @Qualifier("dslOdsLogin")
     public DSLContext dslOdsLogin(DataSource dataSource) {
         return DSL.using(new TransactionAwareDataSourceProxy(dataSource), SQLDialect.MARIADB);
+    }
+
+    @Bean
+    @Qualifier("dslOdsMaster")
+    public DSLContext dslOdsMaster(@Qualifier("odsMasterDataSource") DataSource odsMasterDataSource) {
+        return DSL.using(new TransactionAwareDataSourceProxy(odsMasterDataSource), SQLDialect.MARIADB);
     }
 
     @Bean

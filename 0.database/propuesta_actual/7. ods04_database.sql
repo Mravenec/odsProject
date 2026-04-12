@@ -73,7 +73,9 @@ CREATE TABLE IF NOT EXISTS proyecto_indicador_parametros (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     proyecto_indicador_id INT NOT NULL,
     nombre_parametro    VARCHAR(50) NOT NULL,
+    nombre_variable     VARCHAR(20),
     tipo_dato           ENUM('Integer', 'Decimal') NOT NULL DEFAULT 'Decimal',
+    valor_actual        DECIMAL(15,4) DEFAULT 0,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (proyecto_indicador_id) REFERENCES proyecto_indicadores(id) ON DELETE CASCADE,
     UNIQUE KEY uk_proyecto_param (proyecto_indicador_id, nombre_parametro)

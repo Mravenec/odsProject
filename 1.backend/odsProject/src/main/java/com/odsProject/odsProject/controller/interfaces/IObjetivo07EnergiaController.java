@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods07.tables.pojos.AuditoriaOds07;

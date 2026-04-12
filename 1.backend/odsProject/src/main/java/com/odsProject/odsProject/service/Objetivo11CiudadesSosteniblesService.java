@@ -2,7 +2,7 @@ package com.odsProject.odsProject.service;
 
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.AuditoriaOds11;
@@ -23,6 +23,9 @@ public class Objetivo11CiudadesSosteniblesService implements IObjetivo11Ciudades
 
     @Autowired
     private Objetivo11CiudadesSosteniblesRepository objetivo11CiudadesSosteniblesRepository;
+
+    @Autowired
+    private EvaluationService evaluationService;
 
     @Override public List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId) { return objetivo11CiudadesSosteniblesRepository.findAllIndicadoresByProyectoOds11(proyectoId); }
     @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_11_1_1(Integer proyectoId) { return objetivo11CiudadesSosteniblesRepository.findIndicador_11_1_1(proyectoId); }
@@ -81,8 +84,16 @@ public class Objetivo11CiudadesSosteniblesService implements IObjetivo11Ciudades
 
     @Override public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) { return objetivo11CiudadesSosteniblesRepository.findMetasByProyecto(proyectoId); }
     @Override public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) { return objetivo11CiudadesSosteniblesRepository.findMetaProyectoOds11ById(metaId); }
-    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo11CiudadesSosteniblesRepository.saveMetaProyecto(meta); }
-    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo11CiudadesSosteniblesRepository.updateMetaProyecto(meta); }
+    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros saved = objetivo11CiudadesSosteniblesRepository.saveMetaProyecto(meta);
+        recalculateIndicator(saved.getProyectoIndicadorId());
+        return saved;
+    }
+    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros updated = objetivo11CiudadesSosteniblesRepository.updateMetaProyecto(meta);
+        recalculateIndicator(updated.getProyectoIndicadorId());
+        return updated;
+    }
     @Override public Boolean deleteMetaProyecto(Integer metaId) { try { objetivo11CiudadesSosteniblesRepository.deleteMetaProyecto(metaId); return true; } catch (Exception e) { return false; } }
 
     @Override public List<MedicionesHistoricas> findAllMedicionesHistoricas(Integer indicadorId) { return objetivo11CiudadesSosteniblesRepository.findMedicionesByIndicador(indicadorId); }
@@ -98,4 +109,34 @@ public class Objetivo11CiudadesSosteniblesService implements IObjetivo11Ciudades
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo11CiudadesSosteniblesRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo11CiudadesSosteniblesRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo11CiudadesSosteniblesRepository.existsMedicionHistorica(medicionId); }
+
+    /**
+     * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula
+     */
+    private void recalculateIndicator(Integer proyectoIndicadorId) {
+        if (proyectoIndicadorId == null) return;
+
+        Optional<ProyectoIndicadores> optIndicador = objetivo11CiudadesSosteniblesRepository.findIndicadorByIdEntity(proyectoIndicadorId);
+        if (optIndicador.isEmpty()) return;
+
+        ProyectoIndicadores indicador = optIndicador.get();
+        if (indicador.getFormulaCustom() == null || indicador.getFormulaCustom().isEmpty()) return;
+
+        List<ProyectoIndicadorParametros> parametros = objetivo11CiudadesSosteniblesRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
+        
+        java.util.Map<String, java.math.BigDecimal> paramsMap = new java.util.HashMap<>();
+        for (ProyectoIndicadorParametros p : parametros) {
+            if (p.getNombreVariable() != null) {
+                paramsMap.put(p.getNombreVariable(), p.getValorActual() != null ? p.getValorActual() : java.math.BigDecimal.ZERO);
+            }
+        }
+
+        try {
+            java.math.BigDecimal result = evaluationService.evaluateFormula(indicador.getFormulaCustom(), paramsMap);
+            indicador.setValorActual(result);
+            objetivo11CiudadesSosteniblesRepository.updateIndicador(indicador);
+        } catch (Exception e) {
+            System.err.println("Error recalculando indicador ODS11 " + proyectoIndicadorId + ": " + e.getMessage());
+        }
+    }
 }

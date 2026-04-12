@@ -9,7 +9,6 @@ import com.odsProject.odsProject.database.jooq.ods02.tables.MedicionParametroVal
 import com.odsProject.odsProject.database.jooq.ods02.tables.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods02.tables.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods02.tables.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods02.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods02.tables.VistaAdminAuditoriaReciente;
 import com.odsProject.odsProject.database.jooq.ods02.tables.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods02.tables.VistaAdminResumenGeneral;
@@ -45,11 +44,6 @@ public class Tables {
      * The table <code>ods02.proyecto_indicadores</code>.
      */
     public static final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
-
-    /**
-     * The table <code>ods02.proyectos</code>.
-     */
-    public static final Proyectos PROYECTOS = Proyectos.PROYECTOS;
 
     /**
      * The table <code>ods02.vista_admin_auditoria_reciente</code>.

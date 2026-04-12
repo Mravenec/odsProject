@@ -6,8 +6,8 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminResumenGeneral;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.routines.SpAdminUsuarios;
@@ -30,9 +30,9 @@ import static com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones.
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin.AUDITORIA_LOGIN;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds.PERMISOS_ODS;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminAuditoriaLoginReciente.VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE;
-import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
+import static com.odsProject.odsProject.database.jooq.ods01.tables.VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS;
-import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
+import static com.odsProject.odsProject.database.jooq.ods01.tables.VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes.SEDES;
 
 /**

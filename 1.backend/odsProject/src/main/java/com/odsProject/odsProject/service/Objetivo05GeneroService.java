@@ -2,7 +2,7 @@ package com.odsProject.odsProject.service;
 
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods05.tables.pojos.AuditoriaOds05;
@@ -23,6 +23,9 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
 
     @Autowired
     private Objetivo05GeneroRepository objetivo05GeneroRepository;
+
+    @Autowired
+    private EvaluationService evaluationService;
 
     @Override public List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId) { return objetivo05GeneroRepository.findAllIndicadoresByProyectoOds05(proyectoId); }
     @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_5_1_1(Integer proyectoId) { return objetivo05GeneroRepository.findIndicador_5_1_1(proyectoId); }
@@ -79,8 +82,16 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
 
     @Override public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) { return objetivo05GeneroRepository.findMetasByProyecto(proyectoId); }
     @Override public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) { return objetivo05GeneroRepository.findMetaProyectoOds05ById(metaId); }
-    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo05GeneroRepository.saveMetaProyecto(meta); }
-    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo05GeneroRepository.updateMetaProyecto(meta); }
+    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros saved = objetivo05GeneroRepository.saveMetaProyecto(meta);
+        recalculateIndicator(saved.getProyectoIndicadorId());
+        return saved;
+    }
+    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros updated = objetivo05GeneroRepository.updateMetaProyecto(meta);
+        recalculateIndicator(updated.getProyectoIndicadorId());
+        return updated;
+    }
     @Override public Boolean deleteMetaProyecto(Integer metaId) { try { objetivo05GeneroRepository.deleteMetaProyecto(metaId); return true; } catch (Exception e) { return false; } }
 
     @Override public List<MedicionesHistoricas> findAllMedicionesHistoricas(Integer indicadorId) { return objetivo05GeneroRepository.findMedicionesByIndicador(indicadorId); }
@@ -96,4 +107,34 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo05GeneroRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo05GeneroRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo05GeneroRepository.existsMedicionHistorica(medicionId); }
+
+    /**
+     * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula
+     */
+    private void recalculateIndicator(Integer proyectoIndicadorId) {
+        if (proyectoIndicadorId == null) return;
+
+        Optional<ProyectoIndicadores> optIndicador = objetivo05GeneroRepository.findIndicadorByIdEntity(proyectoIndicadorId);
+        if (optIndicador.isEmpty()) return;
+
+        ProyectoIndicadores indicador = optIndicador.get();
+        if (indicador.getFormulaCustom() == null || indicador.getFormulaCustom().isEmpty()) return;
+
+        List<ProyectoIndicadorParametros> parametros = objetivo05GeneroRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
+        
+        java.util.Map<String, java.math.BigDecimal> paramsMap = new java.util.HashMap<>();
+        for (ProyectoIndicadorParametros p : parametros) {
+            if (p.getNombreVariable() != null) {
+                paramsMap.put(p.getNombreVariable(), p.getValorActual() != null ? p.getValorActual() : java.math.BigDecimal.ZERO);
+            }
+        }
+
+        try {
+            java.math.BigDecimal result = evaluationService.evaluateFormula(indicador.getFormulaCustom(), paramsMap);
+            indicador.setValorActual(result);
+            objetivo05GeneroRepository.updateIndicador(indicador);
+        } catch (Exception e) {
+            System.err.println("Error recalculando indicador ODS05 " + proyectoIndicadorId + ": " + e.getMessage());
+        }
+    }
 }

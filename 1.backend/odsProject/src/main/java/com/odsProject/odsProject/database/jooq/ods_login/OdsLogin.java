@@ -8,20 +8,13 @@ import com.odsProject.odsProject.database.jooq.DefaultCatalog;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorMaster;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorParametrosMaster;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.MedicionParametroValores;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.OdsCatalog;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.ProyectoIndicadorParametros;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminAuditoriaLoginReciente;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuariosActivos;
 
 import java.util.Arrays;
@@ -61,16 +54,6 @@ public class OdsLogin extends SchemaImpl {
     public final IndicadorParametrosMaster INDICADOR_PARAMETROS_MASTER = IndicadorParametrosMaster.INDICADOR_PARAMETROS_MASTER;
 
     /**
-     * The table <code>ods_login.medicion_parametro_valores</code>.
-     */
-    public final MedicionParametroValores MEDICION_PARAMETRO_VALORES = MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
-
-    /**
-     * The table <code>ods_login.mediciones_historicas</code>.
-     */
-    public final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
-
-    /**
      * Catálogo central de los 17 ODS
      */
     public final OdsCatalog ODS_CATALOG = OdsCatalog.ODS_CATALOG;
@@ -79,21 +62,6 @@ public class OdsLogin extends SchemaImpl {
      * Qué ODS puede gestionar cada usuario
      */
     public final PermisosOds PERMISOS_ODS = PermisosOds.PERMISOS_ODS;
-
-    /**
-     * The table <code>ods_login.proyecto_indicador_parametros</code>.
-     */
-    public final ProyectoIndicadorParametros PROYECTO_INDICADOR_PARAMETROS = ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
-
-    /**
-     * The table <code>ods_login.proyecto_indicadores</code>.
-     */
-    public final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
-
-    /**
-     * The table <code>ods_login.proyectos</code>.
-     */
-    public final Proyectos PROYECTOS = Proyectos.PROYECTOS;
 
     /**
      * Catálogo de roles del sistema ODS
@@ -121,16 +89,6 @@ public class OdsLogin extends SchemaImpl {
     public final VistaAdminAuditoriaLoginReciente VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE = VistaAdminAuditoriaLoginReciente.VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE;
 
     /**
-     * The table <code>ods_login.vista_admin_detalle_indicadores</code>.
-     */
-    public final VistaAdminDetalleIndicadores VISTA_ADMIN_DETALLE_INDICADORES = VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
-
-    /**
-     * The table <code>ods_login.vista_admin_resumen_general</code>.
-     */
-    public final VistaAdminResumenGeneral VISTA_ADMIN_RESUMEN_GENERAL = VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
-
-    /**
      * The table <code>ods_login.vista_admin_usuarios_activos</code>.
      */
     public final VistaAdminUsuariosActivos VISTA_ADMIN_USUARIOS_ACTIVOS = VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS;
@@ -154,20 +112,13 @@ public class OdsLogin extends SchemaImpl {
             AuditoriaLogin.AUDITORIA_LOGIN,
             IndicadorMaster.INDICADOR_MASTER,
             IndicadorParametrosMaster.INDICADOR_PARAMETROS_MASTER,
-            MedicionParametroValores.MEDICION_PARAMETRO_VALORES,
-            MedicionesHistoricas.MEDICIONES_HISTORICAS,
             OdsCatalog.ODS_CATALOG,
             PermisosOds.PERMISOS_ODS,
-            ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS,
-            ProyectoIndicadores.PROYECTO_INDICADORES,
-            Proyectos.PROYECTOS,
             Roles.ROLES,
             Sedes.SEDES,
             Sesiones.SESIONES,
             Usuarios.USUARIOS,
             VistaAdminAuditoriaLoginReciente.VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE,
-            VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES,
-            VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL,
             VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS
         );
     }

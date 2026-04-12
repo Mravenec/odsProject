@@ -8,7 +8,6 @@ import com.odsProject.odsProject.database.jooq.ods15.tables.AuditoriaOds15;
 import com.odsProject.odsProject.database.jooq.ods15.tables.MedicionParametroValores;
 import com.odsProject.odsProject.database.jooq.ods15.tables.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods15.tables.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods15.tables.Proyectos;
 
 import org.jooq.Index;
 import org.jooq.OrderField;
@@ -26,14 +25,10 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index PROYECTOS_IDX_ESTADO = Internal.createIndex(DSL.name("idx_estado"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.ESTADO }, false);
     public static final Index AUDITORIA_ODS15_IDX_FECHA = Internal.createIndex(DSL.name("idx_fecha"), AuditoriaOds15.AUDITORIA_ODS15, new OrderField[] { AuditoriaOds15.AUDITORIA_ODS15.FECHA_CAMBIO }, false);
-    public static final Index PROYECTOS_IDX_OBJETIVO = Internal.createIndex(DSL.name("idx_objetivo"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.OBJETIVO_ID }, false);
     public static final Index MEDICIONES_HISTORICAS_IDX_PROYECTO_INDICADOR_FECHA = Internal.createIndex(DSL.name("idx_proyecto_indicador_fecha"), MedicionesHistoricas.MEDICIONES_HISTORICAS, new OrderField[] { MedicionesHistoricas.MEDICIONES_HISTORICAS.PROYECTO_INDICADOR_ID, MedicionesHistoricas.MEDICIONES_HISTORICAS.FECHA_MEDICION }, false);
     public static final Index PROYECTO_INDICADORES_IDX_PROYECTO_MASTER = Internal.createIndex(DSL.name("idx_proyecto_master"), ProyectoIndicadores.PROYECTO_INDICADORES, new OrderField[] { ProyectoIndicadores.PROYECTO_INDICADORES.PROYECTO_ID, ProyectoIndicadores.PROYECTO_INDICADORES.INDICADOR_MASTER_ID }, false);
-    public static final Index PROYECTOS_IDX_SEDE = Internal.createIndex(DSL.name("idx_sede"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.SEDE_ID }, false);
     public static final Index AUDITORIA_ODS15_IDX_TABLA_REGISTRO = Internal.createIndex(DSL.name("idx_tabla_registro"), AuditoriaOds15.AUDITORIA_ODS15, new OrderField[] { AuditoriaOds15.AUDITORIA_ODS15.TABLA_AFECTADA, AuditoriaOds15.AUDITORIA_ODS15.REGISTRO_ID }, false);
-    public static final Index PROYECTOS_IDX_USUARIO = Internal.createIndex(DSL.name("idx_usuario"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.USUARIO_ID }, false);
     public static final Index PROYECTO_INDICADORES_INDICADOR_MASTER_ID = Internal.createIndex(DSL.name("indicador_master_id"), ProyectoIndicadores.PROYECTO_INDICADORES, new OrderField[] { ProyectoIndicadores.PROYECTO_INDICADORES.INDICADOR_MASTER_ID }, false);
     public static final Index MEDICION_PARAMETRO_VALORES_MEDICION_ID = Internal.createIndex(DSL.name("medicion_id"), MedicionParametroValores.MEDICION_PARAMETRO_VALORES, new OrderField[] { MedicionParametroValores.MEDICION_PARAMETRO_VALORES.MEDICION_ID }, false);
     public static final Index MEDICION_PARAMETRO_VALORES_PARAMETRO_ID = Internal.createIndex(DSL.name("parametro_id"), MedicionParametroValores.MEDICION_PARAMETRO_VALORES, new OrderField[] { MedicionParametroValores.MEDICION_PARAMETRO_VALORES.PARAMETRO_ID }, false);

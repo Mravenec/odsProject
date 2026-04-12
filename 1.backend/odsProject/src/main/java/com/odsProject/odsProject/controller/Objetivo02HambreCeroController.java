@@ -3,7 +3,7 @@ package com.odsProject.odsProject.controller;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.AuditoriaOds02;
-import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo02HambreCeroService;

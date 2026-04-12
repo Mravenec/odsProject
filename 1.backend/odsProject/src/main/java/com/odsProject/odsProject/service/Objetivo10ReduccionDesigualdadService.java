@@ -2,7 +2,7 @@ package com.odsProject.odsProject.service;
 
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.AuditoriaOds10;
@@ -23,6 +23,9 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
 
     @Autowired
     private Objetivo10ReduccionDesigualdadRepository objetivo10ReduccionDesigualdadRepository;
+
+    @Autowired
+    private EvaluationService evaluationService;
 
     @Override public List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findAllIndicadoresByProyectoOds10(proyectoId); }
     @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_1_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_1_1(proyectoId); }
@@ -79,8 +82,16 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
 
     @Override public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findMetasByProyecto(proyectoId); }
     @Override public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) { return objetivo10ReduccionDesigualdadRepository.findMetaProyectoOds10ById(metaId); }
-    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo10ReduccionDesigualdadRepository.saveMetaProyecto(meta); }
-    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo10ReduccionDesigualdadRepository.updateMetaProyecto(meta); }
+    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros saved = objetivo10ReduccionDesigualdadRepository.saveMetaProyecto(meta);
+        recalculateIndicator(saved.getProyectoIndicadorId());
+        return saved;
+    }
+    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros updated = objetivo10ReduccionDesigualdadRepository.updateMetaProyecto(meta);
+        recalculateIndicator(updated.getProyectoIndicadorId());
+        return updated;
+    }
     @Override public Boolean deleteMetaProyecto(Integer metaId) { try { objetivo10ReduccionDesigualdadRepository.deleteMetaProyecto(metaId); return true; } catch (Exception e) { return false; } }
 
     @Override public List<MedicionesHistoricas> findAllMedicionesHistoricas(Integer indicadorId) { return objetivo10ReduccionDesigualdadRepository.findMedicionesByIndicador(indicadorId); }
@@ -96,4 +107,34 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo10ReduccionDesigualdadRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo10ReduccionDesigualdadRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo10ReduccionDesigualdadRepository.existsMedicionHistorica(medicionId); }
+
+    /**
+     * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula
+     */
+    private void recalculateIndicator(Integer proyectoIndicadorId) {
+        if (proyectoIndicadorId == null) return;
+
+        Optional<ProyectoIndicadores> optIndicador = objetivo10ReduccionDesigualdadRepository.findIndicadorByIdEntity(proyectoIndicadorId);
+        if (optIndicador.isEmpty()) return;
+
+        ProyectoIndicadores indicador = optIndicador.get();
+        if (indicador.getFormulaCustom() == null || indicador.getFormulaCustom().isEmpty()) return;
+
+        List<ProyectoIndicadorParametros> parametros = objetivo10ReduccionDesigualdadRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
+        
+        java.util.Map<String, java.math.BigDecimal> paramsMap = new java.util.HashMap<>();
+        for (ProyectoIndicadorParametros p : parametros) {
+            if (p.getNombreVariable() != null) {
+                paramsMap.put(p.getNombreVariable(), p.getValorActual() != null ? p.getValorActual() : java.math.BigDecimal.ZERO);
+            }
+        }
+
+        try {
+            java.math.BigDecimal result = evaluationService.evaluateFormula(indicador.getFormulaCustom(), paramsMap);
+            indicador.setValorActual(result);
+            objetivo10ReduccionDesigualdadRepository.updateIndicador(indicador);
+        } catch (Exception e) {
+            System.err.println("Error recalculando indicador ODS10 " + proyectoIndicadorId + ": " + e.getMessage());
+        }
+    }
 }

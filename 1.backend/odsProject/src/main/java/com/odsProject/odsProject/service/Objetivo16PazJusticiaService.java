@@ -2,7 +2,7 @@ package com.odsProject.odsProject.service;
 
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods16.tables.pojos.AuditoriaOds16;
@@ -23,6 +23,9 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
 
     @Autowired
     private Objetivo16PazJusticiaRepository objetivo16PazJusticiaRepository;
+
+    @Autowired
+    private EvaluationService evaluationService;
 
     @Override public List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId) { return objetivo16PazJusticiaRepository.findAllIndicadoresByProyectoOds16(proyectoId); }
     @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_16_1_1(Integer proyectoId) { return objetivo16PazJusticiaRepository.findIndicador_16_1_1(proyectoId); }
@@ -89,8 +92,16 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
 
     @Override public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) { return objetivo16PazJusticiaRepository.findMetasByProyecto(proyectoId); }
     @Override public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) { return objetivo16PazJusticiaRepository.findMetaProyectoOds16ById(metaId); }
-    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo16PazJusticiaRepository.saveMetaProyecto(meta); }
-    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { return objetivo16PazJusticiaRepository.updateMetaProyecto(meta); }
+    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros saved = objetivo16PazJusticiaRepository.saveMetaProyecto(meta);
+        recalculateIndicator(saved.getProyectoIndicadorId());
+        return saved;
+    }
+    @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { 
+        ProyectoIndicadorParametros updated = objetivo16PazJusticiaRepository.updateMetaProyecto(meta);
+        recalculateIndicator(updated.getProyectoIndicadorId());
+        return updated;
+    }
     @Override public Boolean deleteMetaProyecto(Integer metaId) { try { objetivo16PazJusticiaRepository.deleteMetaProyecto(metaId); return true; } catch (Exception e) { return false; } }
 
     @Override public List<MedicionesHistoricas> findAllMedicionesHistoricas(Integer indicadorId) { return objetivo16PazJusticiaRepository.findMedicionesByIndicador(indicadorId); }
@@ -106,4 +117,34 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo16PazJusticiaRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo16PazJusticiaRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo16PazJusticiaRepository.existsMedicionHistorica(medicionId); }
+
+    /**
+     * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula
+     */
+    private void recalculateIndicator(Integer proyectoIndicadorId) {
+        if (proyectoIndicadorId == null) return;
+
+        Optional<ProyectoIndicadores> optIndicador = objetivo16PazJusticiaRepository.findIndicadorByIdEntity(proyectoIndicadorId);
+        if (optIndicador.isEmpty()) return;
+
+        ProyectoIndicadores indicador = optIndicador.get();
+        if (indicador.getFormulaCustom() == null || indicador.getFormulaCustom().isEmpty()) return;
+
+        List<ProyectoIndicadorParametros> parametros = objetivo16PazJusticiaRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
+        
+        java.util.Map<String, java.math.BigDecimal> paramsMap = new java.util.HashMap<>();
+        for (ProyectoIndicadorParametros p : parametros) {
+            if (p.getNombreVariable() != null) {
+                paramsMap.put(p.getNombreVariable(), p.getValorActual() != null ? p.getValorActual() : java.math.BigDecimal.ZERO);
+            }
+        }
+
+        try {
+            java.math.BigDecimal result = evaluationService.evaluateFormula(indicador.getFormulaCustom(), paramsMap);
+            indicador.setValorActual(result);
+            objetivo16PazJusticiaRepository.updateIndicador(indicador);
+        } catch (Exception e) {
+            System.err.println("Error recalculando indicador ODS16 " + proyectoIndicadorId + ": " + e.getMessage());
+        }
+    }
 }

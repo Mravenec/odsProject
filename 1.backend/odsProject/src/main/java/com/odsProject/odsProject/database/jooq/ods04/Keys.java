@@ -9,21 +9,17 @@ import com.odsProject.odsProject.database.jooq.ods04.tables.MedicionParametroVal
 import com.odsProject.odsProject.database.jooq.ods04.tables.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods04.tables.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods04.tables.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods04.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods04.tables.records.AuditoriaOds04Record;
 import com.odsProject.odsProject.database.jooq.ods04.tables.records.MedicionParametroValoresRecord;
 import com.odsProject.odsProject.database.jooq.ods04.tables.records.MedicionesHistoricasRecord;
 import com.odsProject.odsProject.database.jooq.ods04.tables.records.ProyectoIndicadorParametrosRecord;
 import com.odsProject.odsProject.database.jooq.ods04.tables.records.ProyectoIndicadoresRecord;
-import com.odsProject.odsProject.database.jooq.ods04.tables.records.ProyectosRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorMaster;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.OdsCatalog;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.IndicadorMasterRecord;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.records.OdsCatalogRecord;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SedesRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.UsuariosRecord;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.records.ProyectosRecord;
 
 import org.jooq.ForeignKey;
 import org.jooq.TableField;
@@ -49,7 +45,6 @@ public class Keys {
     public static final UniqueKey<ProyectoIndicadorParametrosRecord> KEY_PROYECTO_INDICADOR_PARAMETROS_PRIMARY = Internal.createUniqueKey(ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS, DSL.name("KEY_proyecto_indicador_parametros_PRIMARY"), new TableField[] { ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS.ID }, true);
     public static final UniqueKey<ProyectoIndicadorParametrosRecord> KEY_PROYECTO_INDICADOR_PARAMETROS_UK_PROYECTO_PARAM = Internal.createUniqueKey(ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS, DSL.name("KEY_proyecto_indicador_parametros_uk_proyecto_param"), new TableField[] { ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID, ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS.NOMBRE_PARAMETRO }, true);
     public static final UniqueKey<ProyectoIndicadoresRecord> KEY_PROYECTO_INDICADORES_PRIMARY = Internal.createUniqueKey(ProyectoIndicadores.PROYECTO_INDICADORES, DSL.name("KEY_proyecto_indicadores_PRIMARY"), new TableField[] { ProyectoIndicadores.PROYECTO_INDICADORES.ID }, true);
-    public static final UniqueKey<ProyectosRecord> KEY_PROYECTOS_PRIMARY = Internal.createUniqueKey(Proyectos.PROYECTOS, DSL.name("KEY_proyectos_PRIMARY"), new TableField[] { Proyectos.PROYECTOS.ID }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -60,9 +55,6 @@ public class Keys {
     public static final ForeignKey<MedicionParametroValoresRecord, ProyectoIndicadorParametrosRecord> MEDICION_PARAMETRO_VALORES_IBFK_2 = Internal.createForeignKey(MedicionParametroValores.MEDICION_PARAMETRO_VALORES, DSL.name("medicion_parametro_valores_ibfk_2"), new TableField[] { MedicionParametroValores.MEDICION_PARAMETRO_VALORES.PARAMETRO_ID }, Keys.KEY_PROYECTO_INDICADOR_PARAMETROS_PRIMARY, new TableField[] { ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS.ID }, true);
     public static final ForeignKey<MedicionesHistoricasRecord, ProyectoIndicadoresRecord> MEDICIONES_HISTORICAS_IBFK_1 = Internal.createForeignKey(MedicionesHistoricas.MEDICIONES_HISTORICAS, DSL.name("mediciones_historicas_ibfk_1"), new TableField[] { MedicionesHistoricas.MEDICIONES_HISTORICAS.PROYECTO_INDICADOR_ID }, Keys.KEY_PROYECTO_INDICADORES_PRIMARY, new TableField[] { ProyectoIndicadores.PROYECTO_INDICADORES.ID }, true);
     public static final ForeignKey<ProyectoIndicadorParametrosRecord, ProyectoIndicadoresRecord> PROYECTO_INDICADOR_PARAMETROS_IBFK_1 = Internal.createForeignKey(ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS, DSL.name("proyecto_indicador_parametros_ibfk_1"), new TableField[] { ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID }, Keys.KEY_PROYECTO_INDICADORES_PRIMARY, new TableField[] { ProyectoIndicadores.PROYECTO_INDICADORES.ID }, true);
-    public static final ForeignKey<ProyectoIndicadoresRecord, ProyectosRecord> PROYECTO_INDICADORES_IBFK_1 = Internal.createForeignKey(ProyectoIndicadores.PROYECTO_INDICADORES, DSL.name("proyecto_indicadores_ibfk_1"), new TableField[] { ProyectoIndicadores.PROYECTO_INDICADORES.PROYECTO_ID }, Keys.KEY_PROYECTOS_PRIMARY, new TableField[] { Proyectos.PROYECTOS.ID }, true);
+    public static final ForeignKey<ProyectoIndicadoresRecord, ProyectosRecord> PROYECTO_INDICADORES_IBFK_1 = Internal.createForeignKey(ProyectoIndicadores.PROYECTO_INDICADORES, DSL.name("proyecto_indicadores_ibfk_1"), new TableField[] { ProyectoIndicadores.PROYECTO_INDICADORES.PROYECTO_ID }, com.odsProject.odsProject.database.jooq.ods_master.Keys.KEY_PROYECTOS_PRIMARY, new TableField[] { Proyectos.PROYECTOS.ID }, true);
     public static final ForeignKey<ProyectoIndicadoresRecord, IndicadorMasterRecord> PROYECTO_INDICADORES_IBFK_2 = Internal.createForeignKey(ProyectoIndicadores.PROYECTO_INDICADORES, DSL.name("proyecto_indicadores_ibfk_2"), new TableField[] { ProyectoIndicadores.PROYECTO_INDICADORES.INDICADOR_MASTER_ID }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_INDICADOR_MASTER_PRIMARY, new TableField[] { IndicadorMaster.INDICADOR_MASTER.ID }, true);
-    public static final ForeignKey<ProyectosRecord, UsuariosRecord> PROYECTOS_IBFK_1 = Internal.createForeignKey(Proyectos.PROYECTOS, DSL.name("proyectos_ibfk_1"), new TableField[] { Proyectos.PROYECTOS.USUARIO_ID }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
-    public static final ForeignKey<ProyectosRecord, SedesRecord> PROYECTOS_IBFK_2 = Internal.createForeignKey(Proyectos.PROYECTOS, DSL.name("proyectos_ibfk_2"), new TableField[] { Proyectos.PROYECTOS.SEDE_ID }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_SEDES_PRIMARY, new TableField[] { Sedes.SEDES.ID }, true);
-    public static final ForeignKey<ProyectosRecord, OdsCatalogRecord> PROYECTOS_IBFK_3 = Internal.createForeignKey(Proyectos.PROYECTOS, DSL.name("proyectos_ibfk_3"), new TableField[] { Proyectos.PROYECTOS.OBJETIVO_ID }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_ODS_CATALOG_PRIMARY, new TableField[] { OdsCatalog.ODS_CATALOG.ID }, true);
 }

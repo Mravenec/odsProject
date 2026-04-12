@@ -3,7 +3,7 @@ package com.odsProject.odsProject.controller;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.AuditoriaOds11;
-import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.service.Objetivo11CiudadesSosteniblesService;

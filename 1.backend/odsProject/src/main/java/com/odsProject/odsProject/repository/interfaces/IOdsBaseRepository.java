@@ -267,4 +267,22 @@ public interface IOdsBaseRepository<T, E, P, M, MH, A> {
      * @return true si existe, false otherwise
      */
     Boolean existsMedicionHistorica(Integer id);
+
+    // ── Métodos para Motor de Cálculo ──
+
+    /**
+     * Busca la entidad física de un indicador por su ID (para actualizaciones)
+     * 
+     * @param id ID del proyecto_indicador
+     * @return Optional con el POJO de escritura
+     */
+    Optional<E> findIndicadorByIdEntity(Integer id);
+
+    /**
+     * Encuentra todos los parámetros (variables) de un indicador específico
+     * 
+     * @param proyectoIndicadorId ID del indicador
+     * @return Lista de parámetros
+     */
+    List<M> findMetasByProyectoIndicador(Integer proyectoIndicadorId);
 }

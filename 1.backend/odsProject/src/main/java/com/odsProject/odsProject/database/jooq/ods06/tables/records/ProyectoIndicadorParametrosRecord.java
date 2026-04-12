@@ -7,6 +7,7 @@ package com.odsProject.odsProject.database.jooq.ods06.tables.records;
 import com.odsProject.odsProject.database.jooq.ods06.enums.ProyectoIndicadorParametrosTipoDato;
 import com.odsProject.odsProject.database.jooq.ods06.tables.ProyectoIndicadorParametros;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.jooq.Record1;
@@ -68,31 +69,61 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
     }
 
     /**
+     * Setter for
+     * <code>ods06.proyecto_indicador_parametros.nombre_variable</code>.
+     */
+    public void setNombreVariable(String value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for
+     * <code>ods06.proyecto_indicador_parametros.nombre_variable</code>.
+     */
+    public String getNombreVariable() {
+        return (String) get(3);
+    }
+
+    /**
      * Setter for <code>ods06.proyecto_indicador_parametros.tipo_dato</code>.
      */
     public void setTipoDato(ProyectoIndicadorParametrosTipoDato value) {
-        set(3, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>ods06.proyecto_indicador_parametros.tipo_dato</code>.
      */
     public ProyectoIndicadorParametrosTipoDato getTipoDato() {
-        return (ProyectoIndicadorParametrosTipoDato) get(3);
+        return (ProyectoIndicadorParametrosTipoDato) get(4);
+    }
+
+    /**
+     * Setter for <code>ods06.proyecto_indicador_parametros.valor_actual</code>.
+     */
+    public void setValorActual(BigDecimal value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>ods06.proyecto_indicador_parametros.valor_actual</code>.
+     */
+    public BigDecimal getValorActual() {
+        return (BigDecimal) get(5);
     }
 
     /**
      * Setter for <code>ods06.proyecto_indicador_parametros.created_at</code>.
      */
     public void setCreatedAt(LocalDateTime value) {
-        set(4, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>ods06.proyecto_indicador_parametros.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(4);
+        return (LocalDateTime) get(6);
     }
 
     // -------------------------------------------------------------------------
@@ -118,13 +149,15 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
     /**
      * Create a detached, initialised ProyectoIndicadorParametrosRecord
      */
-    public ProyectoIndicadorParametrosRecord(Integer id, Integer proyectoIndicadorId, String nombreParametro, ProyectoIndicadorParametrosTipoDato tipoDato, LocalDateTime createdAt) {
+    public ProyectoIndicadorParametrosRecord(Integer id, Integer proyectoIndicadorId, String nombreParametro, String nombreVariable, ProyectoIndicadorParametrosTipoDato tipoDato, BigDecimal valorActual, LocalDateTime createdAt) {
         super(ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS);
 
         setId(id);
         setProyectoIndicadorId(proyectoIndicadorId);
         setNombreParametro(nombreParametro);
+        setNombreVariable(nombreVariable);
         setTipoDato(tipoDato);
+        setValorActual(valorActual);
         setCreatedAt(createdAt);
         resetChangedOnNotNull();
     }
@@ -139,7 +172,9 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
             setId(value.getId());
             setProyectoIndicadorId(value.getProyectoIndicadorId());
             setNombreParametro(value.getNombreParametro());
+            setNombreVariable(value.getNombreVariable());
             setTipoDato(value.getTipoDato());
+            setValorActual(value.getValorActual());
             setCreatedAt(value.getCreatedAt());
             resetChangedOnNotNull();
         }

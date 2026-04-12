@@ -10,7 +10,6 @@ import com.odsProject.odsProject.database.jooq.ods17.tables.MedicionParametroVal
 import com.odsProject.odsProject.database.jooq.ods17.tables.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods17.tables.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods17.tables.ProyectoIndicadores;
-import com.odsProject.odsProject.database.jooq.ods17.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods17.tables.VistaAdminAuditoriaReciente;
 import com.odsProject.odsProject.database.jooq.ods17.tables.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods17.tables.VistaAdminResumenGeneral;
@@ -62,11 +61,6 @@ public class Ods17 extends SchemaImpl {
     public final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
 
     /**
-     * The table <code>ods17.proyectos</code>.
-     */
-    public final Proyectos PROYECTOS = Proyectos.PROYECTOS;
-
-    /**
      * The table <code>ods17.vista_admin_auditoria_reciente</code>.
      */
     public final VistaAdminAuditoriaReciente VISTA_ADMIN_AUDITORIA_RECIENTE = VistaAdminAuditoriaReciente.VISTA_ADMIN_AUDITORIA_RECIENTE;
@@ -102,7 +96,6 @@ public class Ods17 extends SchemaImpl {
             MedicionesHistoricas.MEDICIONES_HISTORICAS,
             ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS,
             ProyectoIndicadores.PROYECTO_INDICADORES,
-            Proyectos.PROYECTOS,
             VistaAdminAuditoriaReciente.VISTA_ADMIN_AUDITORIA_RECIENTE,
             VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES,
             VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL

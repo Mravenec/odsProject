@@ -22,6 +22,7 @@ import com.odsProject.odsProject.database.jooq.ods15.Ods15;
 import com.odsProject.odsProject.database.jooq.ods16.Ods16;
 import com.odsProject.odsProject.database.jooq.ods17.Ods17;
 import com.odsProject.odsProject.database.jooq.ods_login.OdsLogin;
+import com.odsProject.odsProject.database.jooq.ods_master.OdsMaster;
 
 import java.util.Arrays;
 import java.util.List;
@@ -135,6 +136,11 @@ public class DefaultCatalog extends CatalogImpl {
     public final OdsLogin ODS_LOGIN = OdsLogin.ODS_LOGIN;
 
     /**
+     * The schema <code>ods_master</code>.
+     */
+    public final OdsMaster ODS_MASTER = OdsMaster.ODS_MASTER;
+
+    /**
      * No further instances allowed
      */
     private DefaultCatalog() {
@@ -161,7 +167,8 @@ public class DefaultCatalog extends CatalogImpl {
             Ods15.ODS15,
             Ods16.ODS16,
             Ods17.ODS17,
-            OdsLogin.ODS_LOGIN
+            OdsLogin.ODS_LOGIN,
+            OdsMaster.ODS_MASTER
         );
     }
 
