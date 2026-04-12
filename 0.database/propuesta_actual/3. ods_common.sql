@@ -1,8 +1,8 @@
 -- ============================================================
 -- [NOTIFICACIÓN] ESTE ARCHIVO ES AHORA SOLO UNA REFERENCIA.
--- Las estructuras comunes han sido incrustadas directamente
--- en cada archivo odsXX_database.sql para compatibilidad Standalone
--- con HeidiSQL (evitando el uso de SOURCE).
+-- Los proyectos ahora son centralizados en 'ods_master'.
+-- Las tablas de métricas (indicadores, parámetros, mediciones)
+-- permanecen en cada ODS pero vinculadas al Maestro.
 -- ============================================================
 
 -- ────────────────────────────────────────────────────────────
@@ -17,27 +17,7 @@ SELECT CASE
     ELSE CONCAT('Ejecutando componentes comunes en: ', DATABASE())
 END AS contexto_ejecucion;
 
-CREATE TABLE proyectos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    sede_id    INT NULL,                                 -- Sede a la que pertenece el proyecto
-    nombre_proyecto VARCHAR(200) NOT NULL,
-    objetivo_id TINYINT UNSIGNED NOT NULL,              -- Referencia al ODS (1-17) en ods_login.ods_catalog
-    descripcion TEXT,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    meta_general VARCHAR(500),
-    estado ENUM('planificacion', 'activo', 'completado', 'cancelado') DEFAULT 'planificacion',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (sede_id)    REFERENCES ods_login.sedes(id) ON DELETE SET NULL,
-    FOREIGN KEY (objetivo_id) REFERENCES ods_login.ods_catalog(id),
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_sede    (sede_id),
-    INDEX idx_objetivo (objetivo_id),
-    INDEX idx_estado (estado)
-);
+-- [ ELIMINADA: La tabla proyectos ahora vive en ods_master.proyectos ]
 
 -- Tabla que vincula un proyecto con indicadores específicos y sus fórmulas
 CREATE TABLE proyecto_indicadores (
@@ -51,7 +31,7 @@ CREATE TABLE proyecto_indicadores (
     fecha_proxima_medicion DATE,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (proyecto_id) REFERENCES ods_master.proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (indicador_master_id) REFERENCES ods_login.indicador_master(id),
     INDEX idx_proyecto_master (proyecto_id, indicador_master_id)
 );
@@ -116,10 +96,10 @@ SELECT
         END, 2
     ) AS progreso_porcentaje,
     p.created_at         AS fecha_creacion
-FROM proyectos p
+FROM ods_master.proyectos p
 LEFT JOIN ods_login.usuarios u    ON p.usuario_id = u.id
 LEFT JOIN ods_login.sedes s       ON p.sede_id = s.id
-LEFT JOIN ods_login.ods_catalog cat ON p.objetivo_id = cat.id
+LEFT JOIN ods_login.ods_catalog cat ON 0 = cat.id -- Usar literal 0 (template), los ODS reales usan su propio ID
 LEFT JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 GROUP BY p.id, p.nombre_proyecto, u.username, s.nombre, cat.nombre,
          p.fecha_inicio, p.fecha_fin, p.estado, p.created_at;
@@ -149,7 +129,7 @@ SELECT
         END, 2
     ) AS porcentaje_logro,
     pi.updated_at AS ultima_actualizacion
-FROM proyectos p
+FROM ods_master.proyectos p
 INNER JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 

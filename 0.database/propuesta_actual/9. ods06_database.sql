@@ -1,41 +1,38 @@
--- Base de Datos ODS10: Reducción de las Desigualdades
+-- Base de Datos ODS06: Agua Limpia y Saneamiento
 -- Sistema completo con triggers automáticos y vistas para administrador
 -- La lógica común (tablas compartidas, vistas genéricas) está en ods_common.sql
 
-CREATE DATABASE IF NOT EXISTS ods10 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE ods10;
+CREATE DATABASE IF NOT EXISTS ods06 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ods06;
 
-SET @ODS_NUM = 10;
+SET @ODS_NUM = 6;
 
 -- ────────────────────────────────────────────────────────────
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
 INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Reducción de las Desigualdades', '#E11484', 'Reducir la desigualdad en los países y entre ellos');
+VALUES (@ODS_NUM, 'Agua Limpia y Saneamiento', '#26BDE2', 'Garantizar la disponibilidad de agua y su gestión sostenible y el saneamiento para todos');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 
-(@ODS_NUM, '10.1.1', 'Tasas de crecimiento de los gastos o los ingresos de los hogares por habitante entre el 40% más pobre de la población y la población total', 'valor', 'Porcentaje'),
-(@ODS_NUM, '10.2.1', 'Proporción de personas que viven por debajo del 50% de la mediana del ingreso, desglosada por sexo, edad y personas con discapacidad', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '10.3.1', 'Proporción de la población que informa haberse sentido personalmente discriminada o acosada en los últimos 12 meses por motivos de discriminación prohibidos por el derecho internacional de los derechos humanos', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '10.4.1', 'Proporción del PIB que corresponde a los ingresos de los trabajadores, que incluye los salarios y las transferencias de protección social', 'valor', 'Porcentaje'),
-(@ODS_NUM, '10.4.2', 'Efecto de reditribución de la política fiscal', 'valor', 'Indice'),
-(@ODS_NUM, '10.5.1', 'Indicadores de solidez financiera', 'valor', 'Indice'),
-(@ODS_NUM, '10.6.1', 'Proporción de miembros y derechos de voto de los países en desarrollo en organizaciones internacionales', 'valor', 'Porcentaje'),
-(@ODS_NUM, '10.7.1', 'Costo de contratación a cargo del empleado en proporción a su ingreso anual en el país de destino', 'valor', 'Porcentaje'),
-(@ODS_NUM, '10.7.2', 'Número de países que cuentan con políticas migratorias que facilitan la migración y la movilidad de las personas de manera ordenada, segura, regular y responsable', 'count', 'Paises'),
-(@ODS_NUM, '10.7.3', 'Número de personas fallecidas o desaparecidas en el proceso de migración hacia un destino internacional', 'valor', 'Personas'),
-(@ODS_NUM, '10.7.4', 'Proporción de la población refugiada, por país de origen', 'valor', 'Porcentaje'),
-(@ODS_NUM, '10.a.1', 'Proporción de líneas arancelarias aplicadas a las importaciones procedentes de los países menos adelantados y países en desarrollo con arancel cero', 'valor', 'Porcentaje'),
-(@ODS_NUM, '10.b.1', 'Total de corrientes de recursos para el desarrollo, desglosado por país receptor y país donante y por tipo de corriente', 'valor', 'Monto'),
-(@ODS_NUM, '10.c.1', 'Costos de las remesas en proporción al monto remitido', 'valor', 'Porcentaje');
+(@ODS_NUM, '6.1.1', 'Proporción de la población que dispone de servicios de agua potable gestionados de forma segura', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '6.2.1', 'Proporción de la población que utiliza a) servicios de saneamiento gestionados de forma segura y b) instalaciones para lavarse las manos con agua y jabón', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '6.3.1', 'Proporción de aguas residuales domésticas e industriales tratadas de forma segura', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '6.3.2', 'Proporción de masas de agua con buena calidad del agua ambiental', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '6.4.1', 'Cambio en la eficiencia del uso del agua con el tiempo', 'valor', 'Valor/m3'),
+(@ODS_NUM, '6.4.2', 'Nivel de estrés hídrico: extracción de agua dulce en proporción a los recursos de agua dulce disponibles', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '6.5.1', 'Grado de aplicación de la gestión integrada de los recursos hídricos (0-100)', 'valor', 'Grado'),
+(@ODS_NUM, '6.5.2', 'Proporción de la superficie de cuencas transfronterizas con arreglos operacionales para la cooperación en materia de aguas', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '6.6.1', 'Cambio en la extensión de los ecosistemas relacionados con el agua con el paso del tiempo', 'valor', 'Hectareas'),
+(@ODS_NUM, '6.a.1', 'Volumen de la asistencia oficial para el desarrollo destinada al agua y el saneamiento que forma parte de un plan de gastos coordinado por el gobierno', 'valor', 'Monto'),
+(@ODS_NUM, '6.b.1', 'Proporción de unidades administrativas locales con políticas y procedimientos operacionales establecidos para la participación de las comunidades locales en la gestión del agua y el saneamiento', '(p1 / p2) * 100', 'Porcentaje');
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA DE AUDITORÍA (nombre único por ODS)
 -- ────────────────────────────────────────────────────────────
 
-CREATE TABLE auditoria_ods10 (
+CREATE TABLE auditoria_ods06 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tabla_afectada VARCHAR(50) NOT NULL,
     registro_id INT NOT NULL,
@@ -53,27 +50,7 @@ CREATE TABLE auditoria_ods10 (
 -- ────────────────────────────────────────────────────────────
 -- ESTRUCTURA COMÚN (STANDALONE - COMPATIBLE CON HEIDISQL)
 -- ────────────────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS proyectos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    sede_id    INT NULL,
-    nombre_proyecto VARCHAR(200) NOT NULL,
-    objetivo_id TINYINT UNSIGNED NOT NULL,
-    descripcion TEXT,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    meta_general VARCHAR(500),
-    estado ENUM('planificacion', 'activo', 'completado', 'cancelado') DEFAULT 'planificacion',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (sede_id)    REFERENCES ods_login.sedes(id) ON DELETE SET NULL,
-    FOREIGN KEY (objetivo_id) REFERENCES ods_login.ods_catalog(id),
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_sede    (sede_id),
-    INDEX idx_objetivo (objetivo_id),
-    INDEX idx_estado (estado)
-);
+-- [ ELIMINADA: La tabla proyectos ahora vive en ods_master.proyectos ]
 
 CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
@@ -86,7 +63,7 @@ CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     fecha_proxima_medicion DATE,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (proyecto_id) REFERENCES ods_master.proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (indicador_master_id) REFERENCES ods_login.indicador_master(id),
     INDEX idx_proyecto_master (proyecto_id, indicador_master_id)
 );
@@ -144,10 +121,10 @@ SELECT
         END, 2
     ) AS progreso_porcentaje,
     p.created_at         AS fecha_creacion
-FROM proyectos p
+FROM ods_master.proyectos p
 LEFT JOIN ods_login.usuarios u    ON p.usuario_id = u.id
 LEFT JOIN ods_login.sedes s       ON p.sede_id = s.id
-LEFT JOIN ods_login.ods_catalog cat ON p.objetivo_id = cat.id
+LEFT JOIN ods_login.ods_catalog cat ON 6 = cat.id
 LEFT JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 GROUP BY p.id, p.nombre_proyecto, u.username, s.nombre, cat.nombre,
          p.fecha_inicio, p.fecha_fin, p.estado, p.created_at;
@@ -177,7 +154,7 @@ SELECT
         END, 2
     ) AS porcentaje_logro,
     pi.updated_at AS ultima_actualizacion
-FROM proyectos p
+FROM ods_master.proyectos p
 INNER JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 
@@ -185,21 +162,15 @@ INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 -- TRIGGERS ESPECÍFICOS
 -- ────────────────────────────────────────────────────────────
 
+-- [ ELIMINADA: La auditoría de inserción de proyectos ahora ocurre en ods_master ]
+
 DELIMITER //
-CREATE TRIGGER auditoria_proyectos_insert
-AFTER INSERT ON proyectos
-FOR EACH ROW
-BEGIN
-    INSERT INTO auditoria_ods10 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
-    VALUES ('proyectos', NEW.id, 'INSERT', NEW.usuario_id, 
-            JSON_OBJECT('nombre', NEW.nombre_proyecto, 'estado', NEW.estado));
-END//
 
 CREATE TRIGGER auditoria_indicadores_insert
 AFTER INSERT ON proyecto_indicadores
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria_ods10 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods06 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('proyecto_indicadores', NEW.id, 'INSERT', NULL,
             JSON_OBJECT(
                 'proyecto_id', NEW.proyecto_id,
@@ -217,7 +188,7 @@ BEGIN
         updated_at = CURRENT_TIMESTAMP
     WHERE id = NEW.proyecto_indicador_id;
     
-    INSERT INTO auditoria_ods10 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods06 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('mediciones_historicas', NEW.id, 'INSERT', NULL,
             JSON_OBJECT('indicador_id', NEW.proyecto_indicador_id, 'valor', NEW.valor_calculado));
 END//
@@ -231,28 +202,27 @@ CREATE VIEW vista_admin_auditoria_reciente AS
 SELECT 
     a.id, a.tabla_afectada, a.registro_id, a.accion,
     u.username AS usuario, a.fecha_cambio, a.ip_address
-FROM auditoria_ods10 a
+FROM auditoria_ods06 a
 LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
 ORDER BY a.fecha_cambio DESC;
 
 DELIMITER //
 CREATE PROCEDURE sp_admin_reporte_proyecto(IN proyecto_id_param INT)
 BEGIN
-    SELECT * FROM proyectos WHERE id = proyecto_id_param;
+    SELECT * FROM ods_master.proyectos WHERE id = proyecto_id_param;
     SELECT pi.*, m.codigo, m.nombre 
     FROM proyecto_indicadores pi
     JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id
     WHERE pi.proyecto_id = proyecto_id_param;
-    SELECT * FROM auditoria_ods10 
-    WHERE (tabla_afectada = 'proyectos' AND registro_id = proyecto_id_param)
-       OR (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
+    SELECT * FROM auditoria_ods06 
+    WHERE (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
 END//
 DELIMITER ;
 
 -- ────────────────────────────────────────────────────────────
 -- COMENTARIOS Y FINALIZACIÓN
 -- ────────────────────────────────────────────────────────────
-ALTER TABLE auditoria_ods10 COMMENT 'Auditoría interna de cambios en la base de datos ODS10';
-CREATE INDEX idx_auditoria_fecha_tabla ON auditoria_ods10(fecha_cambio, tabla_afectada);
+ALTER TABLE auditoria_ods06 COMMENT 'Auditoría interna de cambios en la base de datos ODS06';
+CREATE INDEX idx_auditoria_fecha_tabla ON auditoria_ods06(fecha_cambio, tabla_afectada);
 
-SELECT 'Base de datos ODS10 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;
+SELECT 'Base de datos ODS06 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;

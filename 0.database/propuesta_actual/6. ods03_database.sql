@@ -1,40 +1,45 @@
--- Base de Datos ODS12: Producción y Consumo Responsables
+-- Base de Datos ODS03: Salud y Bienestar
 -- Sistema completo con triggers automáticos y vistas para administrador
 -- La lógica común (tablas compartidas, vistas genéricas) está en ods_common.sql
 
-CREATE DATABASE IF NOT EXISTS ods12 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE ods12;
+CREATE DATABASE IF NOT EXISTS ods03 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ods03;
 
-SET @ODS_NUM = 12;
+SET @ODS_NUM = 3;
 
 -- ────────────────────────────────────────────────────────────
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
 INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Producción y Consumo Responsables', '#BF8B2E', 'Garantizar modalidades de consumo y producción sostenibles');
+VALUES (@ODS_NUM, 'Salud y Bienestar', '#4C9F38', 'Garantizar una vida sana y promover el bienestar para todos en todas las edades');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 
-(@ODS_NUM, '12.1.1', 'Número de países con planes de acción nacionales de consumo y producción sostenibles o que incorporan el consumo y la producción sostenibles como prioridad o elemento en las políticas nacionales', 'count', 'Paises'),
-(@ODS_NUM, '12.2.1', 'Huella material, huella material per cápita y huella material por unidad de PIB', 'valor', 'Toneladas/USD'),
-(@ODS_NUM, '12.2.2', 'Consumo material doméstico, consumo material doméstico per cápita y consumo material doméstico por unidad de PIB', 'valor', 'Toneladas/USD'),
-(@ODS_NUM, '12.3.1', 'a) Índice de pérdida de alimentos; y b) índice de desperdicio de alimentos', 'valor', 'Indice'),
-(@ODS_NUM, '12.4.1', 'Número de partes en los acuerdos ambientales internacionales sobre desechos peligrosos y otros productos químicos que cumplen con sus compromisos y obligaciones de transmitir información, según lo exija cada acuerdo pertinente', 'count', 'Partes'),
-(@ODS_NUM, '12.4.2', 'a) Cantidad de desechos peligrosos generados per cápita; y b) proporción de desechos peligrosos tratados, por tipo de tratamiento', 'valor', 'kg/Capita'),
-(@ODS_NUM, '12.5.1', 'Tasa nacional de reciclado, toneladas de material reciclado', 'valor', 'Porcentaje'),
-(@ODS_NUM, '12.6.1', 'Número de empresas que publican informes sobre sostenibilidad', 'count', 'Empresas'),
-(@ODS_NUM, '12.7.1', 'Número de países que aplican políticas y planes de acción sobre adquisiciones públicas sostenibles', 'count', 'Paises'),
-(@ODS_NUM, '12.8.1', 'Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo sostenible (incluida la educación sobre el cambio climático) se incorporan en v) las políticas educativas nacionales', 'valor', 'Grado'),
-(@ODS_NUM, '12.a.1', 'Capacidad instalada de generación de energía renovable en los países en desarrollo (en vatios por habitante)', 'valor', 'Vatios/hab'),
-(@ODS_NUM, '12.b.1', 'Número de estrategias o planes de acción de turismo sostenible y de instrumentos de seguimiento conexos con modalidades de aplicación financiadas y sometidas a seguimiento y evaluación', 'count', 'Unidades'),
-(@ODS_NUM, '12.c.1', 'Cuantía de los subsidios a los combustibles fósiles por unidad de PIB (producción y consumo)', 'valor', 'Porcentaje');
+(@ODS_NUM, '3.1.1', 'Tasa de mortalidad materna', 'valor', 'Tasa/100k nacidos'),
+(@ODS_NUM, '3.1.2', 'Proporción de partos con asistencia de personal sanitario especializado', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '3.2.1', 'Tasa de mortalidad de niños menores de 5 años', 'valor', 'Tasa/1k nacidos'),
+(@ODS_NUM, '3.2.2', 'Tasa de mortalidad neonatal', 'valor', 'Tasa/1k nacidos'),
+(@ODS_NUM, '3.3.1', 'Número de nuevas infecciones por el VIH por cada 1.000 personas no infectadas, desglosado por sexo, edad y poblaciones clave', 'valor', 'Tasa/1k'),
+(@ODS_NUM, '3.3.2', 'Incidencia de la tuberculosis por cada 100.000 habitantes', 'valor', 'Incidencia'),
+(@ODS_NUM, '3.3.3', 'Incidencia de la malaria por cada 1.000 habitantes', 'valor', 'Incidencia'),
+(@ODS_NUM, '3.3.4', 'Incidencia de la hepatitis B por cada 100.000 habitantes', 'valor', 'Incidencia'),
+(@ODS_NUM, '3.3.5', 'Número de personas que requieren intervenciones contra enfermedades tropicales desatendidas', 'valor', 'Personas'),
+(@ODS_NUM, '3.4.1', 'Tasa de mortalidad atribuida a enfermedades cardiovasculares, cáncer, diabetes o enfermedades respiratorias crónicas', 'valor', 'Tasa'),
+(@ODS_NUM, '3.4.2', 'Tasa de mortalidad por suicidio', 'valor', 'Tasa/100k'),
+(@ODS_NUM, '3.5.1', 'Cobertura de las intervenciones de tratamiento (farmacológicas, psicosociales y servicios de rehabilitación y de postratamiento) de trastornos por abuso de sustancias', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '3.5.2', 'Consumo de alcohol per cápita (población de 15 años o más) en un año civil en litros de alcohol puro', 'valor', 'Litros'),
+(@ODS_NUM, '3.6.1', 'Tasa de mortalidad por lesiones debidas a accidentes de tráfico', 'valor', 'Tasa/100k'),
+(@ODS_NUM, '3.7.1', 'Proporción de mujeres en edad de procrear (de 15 a 49 años) que cubren sus necesidades de planificación familiar con métodos modernos', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '3.7.2', 'Tasa de fecundidad de las adolescentes (de 10 a 14 años y de 15 a 19 años) por cada 1.000 mujeres de ese grupo de edad', 'valor', 'Tasa/1k'),
+(@ODS_NUM, '3.8.1', 'Cobertura de los servicios de salud esenciales', 'valor', 'Indice'),
+(@ODS_NUM, '3.8.2', 'Proporción de la población con grandes gastos sanitarios por unidad de gasto de los hogares o de ingresos', '(p1 / p2) * 100', 'Porcentaje');
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA DE AUDITORÍA (nombre único por ODS)
 -- ────────────────────────────────────────────────────────────
 
-CREATE TABLE auditoria_ods12 (
+CREATE TABLE auditoria_ods03 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tabla_afectada VARCHAR(50) NOT NULL,
     registro_id INT NOT NULL,
@@ -52,27 +57,7 @@ CREATE TABLE auditoria_ods12 (
 -- ────────────────────────────────────────────────────────────
 -- ESTRUCTURA COMÚN (STANDALONE - COMPATIBLE CON HEIDISQL)
 -- ────────────────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS proyectos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    sede_id    INT NULL,
-    nombre_proyecto VARCHAR(200) NOT NULL,
-    objetivo_id TINYINT UNSIGNED NOT NULL,
-    descripcion TEXT,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    meta_general VARCHAR(500),
-    estado ENUM('planificacion', 'activo', 'completado', 'cancelado') DEFAULT 'planificacion',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (sede_id)    REFERENCES ods_login.sedes(id) ON DELETE SET NULL,
-    FOREIGN KEY (objetivo_id) REFERENCES ods_login.ods_catalog(id),
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_sede    (sede_id),
-    INDEX idx_objetivo (objetivo_id),
-    INDEX idx_estado (estado)
-);
+-- [ ELIMINADA: La tabla proyectos ahora vive en ods_master.proyectos ]
 
 CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
@@ -85,7 +70,7 @@ CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     fecha_proxima_medicion DATE,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (proyecto_id) REFERENCES ods_master.proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (indicador_master_id) REFERENCES ods_login.indicador_master(id),
     INDEX idx_proyecto_master (proyecto_id, indicador_master_id)
 );
@@ -143,10 +128,10 @@ SELECT
         END, 2
     ) AS progreso_porcentaje,
     p.created_at         AS fecha_creacion
-FROM proyectos p
+FROM ods_master.proyectos p
 LEFT JOIN ods_login.usuarios u    ON p.usuario_id = u.id
 LEFT JOIN ods_login.sedes s       ON p.sede_id = s.id
-LEFT JOIN ods_login.ods_catalog cat ON p.objetivo_id = cat.id
+LEFT JOIN ods_login.ods_catalog cat ON 3 = cat.id
 LEFT JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 GROUP BY p.id, p.nombre_proyecto, u.username, s.nombre, cat.nombre,
          p.fecha_inicio, p.fecha_fin, p.estado, p.created_at;
@@ -176,29 +161,23 @@ SELECT
         END, 2
     ) AS porcentaje_logro,
     pi.updated_at AS ultima_actualizacion
-FROM proyectos p
+FROM ods_master.proyectos p
 INNER JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 
 -- ────────────────────────────────────────────────────────────
--- TRIGGERS ESPECÍFICOS
+-- TRIGGERS ESPECÍFICOS (usan la tabla auditoria_ods03)
 -- ────────────────────────────────────────────────────────────
 
+-- [ ELIMINADA: La auditoría de inserción de proyectos ahora ocurre en ods_master ]
+
 DELIMITER //
-CREATE TRIGGER auditoria_proyectos_insert
-AFTER INSERT ON proyectos
-FOR EACH ROW
-BEGIN
-    INSERT INTO auditoria_ods12 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
-    VALUES ('proyectos', NEW.id, 'INSERT', NEW.usuario_id, 
-            JSON_OBJECT('nombre', NEW.nombre_proyecto, 'estado', NEW.estado));
-END//
 
 CREATE TRIGGER auditoria_indicadores_insert
 AFTER INSERT ON proyecto_indicadores
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria_ods12 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods03 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('proyecto_indicadores', NEW.id, 'INSERT', NULL,
             JSON_OBJECT(
                 'proyecto_id', NEW.proyecto_id,
@@ -216,36 +195,42 @@ BEGIN
         updated_at = CURRENT_TIMESTAMP
     WHERE id = NEW.proyecto_indicador_id;
     
-    INSERT INTO auditoria_ods12 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods03 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('mediciones_historicas', NEW.id, 'INSERT', NULL,
             JSON_OBJECT('indicador_id', NEW.proyecto_indicador_id, 'valor', NEW.valor_calculado));
 END//
 DELIMITER ;
 
 -- ────────────────────────────────────────────────────────────
--- VISTAS Y PROCEDIMIENTOS
+-- VISTAS Y PROCEDIMIENTOS QUE REQUIEREN NOMBRE DE AUDITORÍA ÚNICA
 -- ────────────────────────────────────────────────────────────
 
 CREATE VIEW vista_admin_auditoria_reciente AS
 SELECT 
     a.id, a.tabla_afectada, a.registro_id, a.accion,
     u.username AS usuario, a.fecha_cambio, a.ip_address
-FROM auditoria_ods12 a
+FROM auditoria_ods03 a
 LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
 ORDER BY a.fecha_cambio DESC;
 
 DELIMITER //
 CREATE PROCEDURE sp_admin_reporte_proyecto(IN proyecto_id_param INT)
 BEGIN
-    SELECT * FROM proyectos WHERE id = proyecto_id_param;
+    SELECT * FROM ods_master.proyectos WHERE id = proyecto_id_param;
     SELECT pi.*, m.codigo, m.nombre 
     FROM proyecto_indicadores pi
     JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id
     WHERE pi.proyecto_id = proyecto_id_param;
-    SELECT * FROM auditoria_ods12 
-    WHERE (tabla_afectada = 'proyectos' AND registro_id = proyecto_id_param)
-       OR (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
+    SELECT * FROM auditoria_ods03 
+    WHERE (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
 END//
 DELIMITER ;
 
-SELECT 'Base de datos ODS12 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;
+-- ────────────────────────────────────────────────────────────
+-- COMENTARIOS Y FINALIZACIÓN
+-- ────────────────────────────────────────────────────────────
+
+ALTER TABLE auditoria_ods03 COMMENT 'Auditoría interna de cambios en la base de datos ODS03';
+CREATE INDEX idx_auditoria_fecha_tabla ON auditoria_ods03(fecha_cambio, tabla_afectada);
+
+SELECT 'Base de datos ODS03 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;

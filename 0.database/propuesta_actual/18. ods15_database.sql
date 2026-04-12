@@ -1,39 +1,41 @@
--- Base de Datos ODS09: Industria, Innovación e Infraestructura
+-- Base de Datos ODS15: Vida de Ecosistemas Terrestres
 -- Sistema completo con triggers automáticos y vistas para administrador
 -- La lógica común (tablas compartidas, vistas genéricas) está en ods_common.sql
 
-CREATE DATABASE IF NOT EXISTS ods09 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE ods09;
+CREATE DATABASE IF NOT EXISTS ods15 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ods15;
 
-SET @ODS_NUM = 9;
+SET @ODS_NUM = 15;
 
 -- ────────────────────────────────────────────────────────────
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
 INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Industria, Innovación e Infraestructura', '#F36D25', 'Construir infraestructuras resilientes, promover la industrialización inclusiva y sostenible y fomentar la innovación');
+VALUES (@ODS_NUM, 'Vida de Ecosistemas Terrestres', '#56DB27', 'Gestionar sosteniblemente los bosques, luchar contra la desertificación, detener e invertir la degradación de las tierras y detener la pérdida de biodiversidad');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 
-(@ODS_NUM, '9.1.1', 'Proporción de la población rural que vive a menos de 2 km de una carretera transitable todo el año', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '9.1.2', 'Volumen de pasajeros y de carga, desglosado por medio de transporte', 'valor', 'Monto/Toneladas'),
-(@ODS_NUM, '9.2.1', 'Valor añadido de la industria manufacturera como proporción del PIB y per cápita', 'valor', 'Porcentaje'),
-(@ODS_NUM, '9.2.2', 'Empleo en la industria manufacturera como proporción del empleo total', 'valor', 'Porcentaje'),
-(@ODS_NUM, '9.3.1', 'Proporción de las pequeñas industrias que representan el valor añadido total de la industria', 'valor', 'Porcentaje'),
-(@ODS_NUM, '9.3.2', 'Proporción de las pequeñas industrias que tienen un préstamo o una línea de crédito', 'valor', 'Porcentaje'),
-(@ODS_NUM, '9.4.1', 'Emisiones de CO2 por unidad de valor añadido', 'valor', 'kg/USD'),
-(@ODS_NUM, '9.5.1', 'Gastos en investigación y desarrollo como proporción del PIB', 'valor', 'Porcentaje'),
-(@ODS_NUM, '9.5.2', 'Número de investigadores (en equivalente a tiempo completo) por cada millón de habitantes', 'valor', 'Investigadores/millon'),
-(@ODS_NUM, '9.a.1', 'Total de apoyo oficial oficial (asistencia oficial para el desarrollo más otras corrientes oficiales) a la infraestructura', 'valor', 'Monto'),
-(@ODS_NUM, '9.b.1', 'Proporción del valor añadido de la industria de tecnología mediana y alta en el valor añadido total', 'valor', 'Porcentaje'),
-(@ODS_NUM, '9.c.1', 'Proporción de la población cuberta por una red móvil, desglosada por tecnología', 'valor', 'Porcentaje');
+(@ODS_NUM, '15.1.1', 'Superficie forestal como proporción de la superficie total', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '15.1.2', 'Proporción de lugares importantes para la biodiversidad terrestre y del agua dulce que forman parte de zonas protegidas, desglosada por tipo de ecosistema', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '15.2.1', 'Progresos hacia la gestión forestal sostenible', 'valor', 'Indice'),
+(@ODS_NUM, '15.3.1', 'Proporción de tierras degradadas en comparación con la superficie total', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '15.4.1', 'Cobertura por zonas protegidas de los lugares importantes para la biodiversidad de las montañas', 'valor', 'Porcentaje'),
+(@ODS_NUM, '15.4.2', 'Índice de cobertura verde de las montañas', 'valor', 'Indice'),
+(@ODS_NUM, '15.5.1', 'Índice de la Lista Roja', 'valor', 'Indice'),
+(@ODS_NUM, '15.6.1', 'Número de países que han adoptado marcos legislativos, administrativos y de políticas para asegurar la distribución justa y equitativa de los beneficios', 'count', 'Paises'),
+(@ODS_NUM, '15.7.1', 'Proporción de la fauna y flora silvestres comercializadas que proceden de la caza furtiva o el tráfico ilícito', 'valor', 'Porcentaje'),
+(@ODS_NUM, '15.8.1', 'Proporción de países que han aprobado la legislación nacional pertinente y han destinado recursos suficientes para la prevención o el control de las especies exóticas invasoras', 'valor', 'Porcentaje'),
+(@ODS_NUM, '15.9.1', 'Número de países que han establecido metas nacionales de conformidad con el Objetivo 2 de Biodiversidad de Aichi del Plan Estratégico para la Diversidad Biológica 2011-2020 o que han alcanzado metas similares', 'count', 'Paises'),
+(@ODS_NUM, '15.a.1', 'Monto de la asistencia oficial para el desarrollo y el financiamiento público destinado a la conservación y el uso sostenible de la biodiversidad y los ecosistemas', 'valor', 'Monto'),
+(@ODS_NUM, '15.b.1', 'Monto de la asistencia oficial para el desarrollo y el financiamiento público destinado a la conservación y el uso sostenible de la biodiversidad y los ecosistemas', 'valor', 'Monto'),
+(@ODS_NUM, '15.c.1', 'Proporción de la fauna y flora silvestres comercializadas que proceden de la caza furtiva o el tráfico ilícito', 'valor', 'Porcentaje');
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA DE AUDITORÍA (nombre único por ODS)
 -- ────────────────────────────────────────────────────────────
 
-CREATE TABLE auditoria_ods09 (
+CREATE TABLE auditoria_ods15 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tabla_afectada VARCHAR(50) NOT NULL,
     registro_id INT NOT NULL,
@@ -51,27 +53,7 @@ CREATE TABLE auditoria_ods09 (
 -- ────────────────────────────────────────────────────────────
 -- ESTRUCTURA COMÚN (STANDALONE - COMPATIBLE CON HEIDISQL)
 -- ────────────────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS proyectos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    sede_id    INT NULL,
-    nombre_proyecto VARCHAR(200) NOT NULL,
-    objetivo_id TINYINT UNSIGNED NOT NULL,
-    descripcion TEXT,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    meta_general VARCHAR(500),
-    estado ENUM('planificacion', 'activo', 'completado', 'cancelado') DEFAULT 'planificacion',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (sede_id)    REFERENCES ods_login.sedes(id) ON DELETE SET NULL,
-    FOREIGN KEY (objetivo_id) REFERENCES ods_login.ods_catalog(id),
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_sede    (sede_id),
-    INDEX idx_objetivo (objetivo_id),
-    INDEX idx_estado (estado)
-);
+-- [ ELIMINADA: La tabla proyectos ahora vive en ods_master.proyectos ]
 
 CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
@@ -84,7 +66,7 @@ CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     fecha_proxima_medicion DATE,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (proyecto_id) REFERENCES ods_master.proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (indicador_master_id) REFERENCES ods_login.indicador_master(id),
     INDEX idx_proyecto_master (proyecto_id, indicador_master_id)
 );
@@ -142,10 +124,10 @@ SELECT
         END, 2
     ) AS progreso_porcentaje,
     p.created_at         AS fecha_creacion
-FROM proyectos p
+FROM ods_master.proyectos p
 LEFT JOIN ods_login.usuarios u    ON p.usuario_id = u.id
 LEFT JOIN ods_login.sedes s       ON p.sede_id = s.id
-LEFT JOIN ods_login.ods_catalog cat ON p.objetivo_id = cat.id
+LEFT JOIN ods_login.ods_catalog cat ON 15 = cat.id
 LEFT JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 GROUP BY p.id, p.nombre_proyecto, u.username, s.nombre, cat.nombre,
          p.fecha_inicio, p.fecha_fin, p.estado, p.created_at;
@@ -175,7 +157,7 @@ SELECT
         END, 2
     ) AS porcentaje_logro,
     pi.updated_at AS ultima_actualizacion
-FROM proyectos p
+FROM ods_master.proyectos p
 INNER JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 
@@ -183,21 +165,15 @@ INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 -- TRIGGERS ESPECÍFICOS
 -- ────────────────────────────────────────────────────────────
 
+-- [ ELIMINADA: La auditoría de inserción de proyectos ahora ocurre en ods_master ]
+
 DELIMITER //
-CREATE TRIGGER auditoria_proyectos_insert
-AFTER INSERT ON proyectos
-FOR EACH ROW
-BEGIN
-    INSERT INTO auditoria_ods09 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
-    VALUES ('proyectos', NEW.id, 'INSERT', NEW.usuario_id, 
-            JSON_OBJECT('nombre', NEW.nombre_proyecto, 'estado', NEW.estado));
-END//
 
 CREATE TRIGGER auditoria_indicadores_insert
 AFTER INSERT ON proyecto_indicadores
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria_ods09 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods15 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('proyecto_indicadores', NEW.id, 'INSERT', NULL,
             JSON_OBJECT(
                 'proyecto_id', NEW.proyecto_id,
@@ -215,7 +191,7 @@ BEGIN
         updated_at = CURRENT_TIMESTAMP
     WHERE id = NEW.proyecto_indicador_id;
     
-    INSERT INTO auditoria_ods09 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods15 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('mediciones_historicas', NEW.id, 'INSERT', NULL,
             JSON_OBJECT('indicador_id', NEW.proyecto_indicador_id, 'valor', NEW.valor_calculado));
 END//
@@ -229,22 +205,21 @@ CREATE VIEW vista_admin_auditoria_reciente AS
 SELECT 
     a.id, a.tabla_afectada, a.registro_id, a.accion,
     u.username AS usuario, a.fecha_cambio, a.ip_address
-FROM auditoria_ods09 a
+FROM auditoria_ods15 a
 LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
 ORDER BY a.fecha_cambio DESC;
 
 DELIMITER //
 CREATE PROCEDURE sp_admin_reporte_proyecto(IN proyecto_id_param INT)
 BEGIN
-    SELECT * FROM proyectos WHERE id = proyecto_id_param;
+    SELECT * FROM ods_master.proyectos WHERE id = proyecto_id_param;
     SELECT pi.*, m.codigo, m.nombre 
     FROM proyecto_indicadores pi
     JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id
     WHERE pi.proyecto_id = proyecto_id_param;
-    SELECT * FROM auditoria_ods09 
-    WHERE (tabla_afectada = 'proyectos' AND registro_id = proyecto_id_param)
-       OR (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
+    SELECT * FROM auditoria_ods15 
+    WHERE (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
 END//
 DELIMITER ;
 
-SELECT 'Base de datos ODS09 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;
+SELECT 'Base de datos ODS15 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;

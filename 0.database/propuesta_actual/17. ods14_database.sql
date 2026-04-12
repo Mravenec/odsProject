@@ -1,35 +1,37 @@
--- Base de Datos ODS13: Acción por el Clima
+-- Base de Datos ODS14: Vida Submarina
 -- Sistema completo con triggers automáticos y vistas para administrador
 -- La lógica común (tablas compartidas, vistas genéricas) está en ods_common.sql
 
-CREATE DATABASE IF NOT EXISTS ods13 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE ods13;
+CREATE DATABASE IF NOT EXISTS ods14 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ods14;
 
-SET @ODS_NUM = 13;
+SET @ODS_NUM = 14;
 
 -- ────────────────────────────────────────────────────────────
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
 INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Acción por el Clima', '#3F7E44', 'Adoptar medidas urgentes para combatir el cambio climático y sus efectos');
+VALUES (@ODS_NUM, 'Vida Submarina', '#0A97D9', 'Conservar y utilizar de forma sostenible los océanos, los mares y los recursos marinos para el desarrollo sostenible');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 
-(@ODS_NUM, '13.1.1', 'Número de personas muertas, desaparecidas y afectadas directamente atribuido a desastres por cada 100.000 habitantes', 'valor', 'Personas/100k'),
-(@ODS_NUM, '13.1.2', 'Número de países que adoptan y aplican estrategias nacionales de reducción del riesgo de desastres en consonancia con el Marco de Sendái para la Reducción del Riesgo de Desastres 2015-2030', 'count', 'Paises'),
-(@ODS_NUM, '13.1.3', 'Proporción de gobiernos locales que adoptan y aplican estrategias locales de reducción del riesgo de desastres en consonancia con las estrategias nacionales de reducción del riesgo de desastres', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '13.2.1', 'Número de países que han comunicado el establecimiento o la puesta en marcha de una política, estrategia o plan nacional integrado que aumenta su capacidad de adaptación a los efectos adversos del cambio climático, fomenta la resiliencia al clima y reduce las emisiones de gases de efecto invernadero de una manera que no amenace la producción de alimentos', 'count', 'Paises'),
-(@ODS_NUM, '13.2.2', 'Total de emisiones de gases de efecto invernadero al año', 'valor', 'Toneladas CO2e'),
-(@ODS_NUM, '13.3.1', 'Grado en que i) la educación para la ciudadanía mundial y ii) la educación para el desarrollo sostenible se incorporan en v) las políticas educativas nacionales', 'valor', 'Grado'),
-(@ODS_NUM, '13.a.1', 'Monto del financiamiento para el clima que se ha movilizado anualmente de fuentes públicas y privadas, por país receptor', 'valor', 'Monto'),
-(@ODS_NUM, '13.b.1', 'Número de países menos adelantados y pequeños Estados insulares en desarrollo que reciben apoyo especializado, incluido apoyo financiero y tecnológico, para actividades destinadas a aumentar la capacidad de planificación y gestión eficaces en relación con el cambio climático', 'count', 'Paises');
+(@ODS_NUM, '14.1.1', 'a) Índice de eutrofización costera; y b) densidad de detritos plásticos flotantes', 'valor', 'Indice'),
+(@ODS_NUM, '14.2.1', 'Número de países que utilizan enfoques basados en los ecosistemas para la gestión de las zonas marinas', 'count', 'Paises'),
+(@ODS_NUM, '14.3.1', 'Acidez media del mar (pH) medida en un conjunto acordado de estaciones de muestreo representativas', 'valor', 'pH'),
+(@ODS_NUM, '14.4.1', 'Proporción de poblaciones de peces que se encuentran dentro de niveles biológicamente sostenibles', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '14.5.1', 'Cobertura de las zonas protegidas en relación con las zonas marinas', 'valor', 'Porcentaje'),
+(@ODS_NUM, '14.6.1', 'Grado de aplicación de los instrumentos internacionales destinados a combatir la pesca ilegal, no declarada y no reglamentada', 'valor', 'Grado'),
+(@ODS_NUM, '14.7.1', 'Pesca sostenible como proporción del PIB en los pequeños Estados insulares en desarrollo, los países menos adelantados y todos los países', 'valor', 'Porcentaje'),
+(@ODS_NUM, '14.a.1', 'Proporción del presupuesto total destinado a la investigación en el campo de la tecnología marina', 'valor', 'Porcentaje'),
+(@ODS_NUM, '14.b.1', 'Grado de aplicación de un marco jurídico, reglamentario, normativo o institucional que reconozca y proteja los derechos de acceso de la pesca en pequeña escala', 'valor', 'Grado'),
+(@ODS_NUM, '14.c.1', 'Número de países que están avanzando en la aplicación de los marcos jurídicos, institucionales y normativos para la conservación y la utilización sostenible de los océanos y sus recursos', 'count', 'Paises');
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA DE AUDITORÍA (nombre único por ODS)
 -- ────────────────────────────────────────────────────────────
 
-CREATE TABLE auditoria_ods13 (
+CREATE TABLE auditoria_ods14 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tabla_afectada VARCHAR(50) NOT NULL,
     registro_id INT NOT NULL,
@@ -47,27 +49,7 @@ CREATE TABLE auditoria_ods13 (
 -- ────────────────────────────────────────────────────────────
 -- ESTRUCTURA COMÚN (STANDALONE - COMPATIBLE CON HEIDISQL)
 -- ────────────────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS proyectos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    sede_id    INT NULL,
-    nombre_proyecto VARCHAR(200) NOT NULL,
-    objetivo_id TINYINT UNSIGNED NOT NULL,
-    descripcion TEXT,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    meta_general VARCHAR(500),
-    estado ENUM('planificacion', 'activo', 'completado', 'cancelado') DEFAULT 'planificacion',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (sede_id)    REFERENCES ods_login.sedes(id) ON DELETE SET NULL,
-    FOREIGN KEY (objetivo_id) REFERENCES ods_login.ods_catalog(id),
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_sede    (sede_id),
-    INDEX idx_objetivo (objetivo_id),
-    INDEX idx_estado (estado)
-);
+-- [ ELIMINADA: La tabla proyectos ahora vive en ods_master.proyectos ]
 
 CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
@@ -80,7 +62,7 @@ CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     fecha_proxima_medicion DATE,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (proyecto_id) REFERENCES ods_master.proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (indicador_master_id) REFERENCES ods_login.indicador_master(id),
     INDEX idx_proyecto_master (proyecto_id, indicador_master_id)
 );
@@ -138,10 +120,10 @@ SELECT
         END, 2
     ) AS progreso_porcentaje,
     p.created_at         AS fecha_creacion
-FROM proyectos p
+FROM ods_master.proyectos p
 LEFT JOIN ods_login.usuarios u    ON p.usuario_id = u.id
 LEFT JOIN ods_login.sedes s       ON p.sede_id = s.id
-LEFT JOIN ods_login.ods_catalog cat ON p.objetivo_id = cat.id
+LEFT JOIN ods_login.ods_catalog cat ON 14 = cat.id
 LEFT JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 GROUP BY p.id, p.nombre_proyecto, u.username, s.nombre, cat.nombre,
          p.fecha_inicio, p.fecha_fin, p.estado, p.created_at;
@@ -171,7 +153,7 @@ SELECT
         END, 2
     ) AS porcentaje_logro,
     pi.updated_at AS ultima_actualizacion
-FROM proyectos p
+FROM ods_master.proyectos p
 INNER JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 
@@ -179,21 +161,15 @@ INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 -- TRIGGERS ESPECÍFICOS
 -- ────────────────────────────────────────────────────────────
 
+-- [ ELIMINADA: La auditoría de inserción de proyectos ahora ocurre en ods_master ]
+
 DELIMITER //
-CREATE TRIGGER auditoria_proyectos_insert
-AFTER INSERT ON proyectos
-FOR EACH ROW
-BEGIN
-    INSERT INTO auditoria_ods13 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
-    VALUES ('proyectos', NEW.id, 'INSERT', NEW.usuario_id, 
-            JSON_OBJECT('nombre', NEW.nombre_proyecto, 'estado', NEW.estado));
-END//
 
 CREATE TRIGGER auditoria_indicadores_insert
 AFTER INSERT ON proyecto_indicadores
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria_ods13 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods14 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('proyecto_indicadores', NEW.id, 'INSERT', NULL,
             JSON_OBJECT(
                 'proyecto_id', NEW.proyecto_id,
@@ -211,7 +187,7 @@ BEGIN
         updated_at = CURRENT_TIMESTAMP
     WHERE id = NEW.proyecto_indicador_id;
     
-    INSERT INTO auditoria_ods13 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods14 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('mediciones_historicas', NEW.id, 'INSERT', NULL,
             JSON_OBJECT('indicador_id', NEW.proyecto_indicador_id, 'valor', NEW.valor_calculado));
 END//
@@ -225,22 +201,27 @@ CREATE VIEW vista_admin_auditoria_reciente AS
 SELECT 
     a.id, a.tabla_afectada, a.registro_id, a.accion,
     u.username AS usuario, a.fecha_cambio, a.ip_address
-FROM auditoria_ods13 a
+FROM auditoria_ods14 a
 LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
 ORDER BY a.fecha_cambio DESC;
 
 DELIMITER //
 CREATE PROCEDURE sp_admin_reporte_proyecto(IN proyecto_id_param INT)
 BEGIN
-    SELECT * FROM proyectos WHERE id = proyecto_id_param;
+    SELECT * FROM ods_master.proyectos WHERE id = proyecto_id_param;
     SELECT pi.*, m.codigo, m.nombre 
     FROM proyecto_indicadores pi
     JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id
     WHERE pi.proyecto_id = proyecto_id_param;
-    SELECT * FROM auditoria_ods13 
-    WHERE (tabla_afectada = 'proyectos' AND registro_id = proyecto_id_param)
-       OR (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
+    SELECT * FROM auditoria_ods14 
+    WHERE (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
 END//
 DELIMITER ;
 
-SELECT 'Base de datos ODS13 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;
+-- ────────────────────────────────────────────────────────────
+-- COMENTARIOS Y FINALIZACIÓN
+-- ────────────────────────────────────────────────────────────
+ALTER TABLE auditoria_ods14 COMMENT 'Auditoría interna de cambios en la base de datos ODS14';
+CREATE INDEX idx_auditoria_fecha_tabla ON auditoria_ods14(fecha_cambio, tabla_afectada);
+
+SELECT 'Base de datos ODS14 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;

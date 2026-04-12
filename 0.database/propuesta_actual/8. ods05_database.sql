@@ -1,45 +1,41 @@
--- Base de Datos ODS01: Fin de la Pobreza
+-- Base de Datos ODS05: Igualdad de Género
 -- Sistema completo con triggers automáticos y vistas para administrador
 -- La lógica común (tablas compartidas, vistas genéricas) está en ods_common.sql
 
-CREATE DATABASE IF NOT EXISTS ods01 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE ods01;
+CREATE DATABASE IF NOT EXISTS ods05 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ods05;
 
--- NOTA: El sistema de login está separado en login_system.sql.
--- Esta base de datos se enfoca exclusivamente en la gestión de proyectos ODS01.
-SET @ODS_NUM = 1;
+SET @ODS_NUM = 5;
 
 -- ────────────────────────────────────────────────────────────
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
--- Estos datos alimentan el catálogo global en ods_login
 -- ────────────────────────────────────────────────────────────
 
--- 1. Asegurar que el ODS existe en el catálogo
 INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Fin de la Pobreza', '#E5243B', 'Poner fin a la pobreza en todas sus formas en todo el mundo');
+VALUES (@ODS_NUM, 'Igualdad de Género', '#FF3A21', 'Lograr la igualdad entre los géneros y empoderar a todas las mujeres y las niñas');
 
--- 2. Sembrar indicadores maestros para este ODS
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 
-(@ODS_NUM, '1.1.1', 'Proporción de la población que vive por debajo del umbral internacional de pobreza, desglosada por sexo, edad, situación laboral y ubicación geográfica (urbana o rural)', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.2.1', 'Proporción de la población que vive por debajo del umbral nacional de pobreza, desglosada por sexo y edad', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.2.2', 'Proporción de hombres, mujeres y niños de todas las edades que viven en la pobreza, en todas sus dimensiones, con arreglo a las definiciones nacionales', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.3.1', 'Proporción de la población cubierta por sistemas o niveles mínimos de protección social, desglosada por sexo, distinguiendo entre los niños, los desempleados, los ancianos, las personas con discapacidad, las mujeres embarazadas, los recién nacidos, las víctimas de accidentes de trabajo, los pobres y los vulnerables', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.4.1', 'Proporción de la población que vive en hogares con acceso a los servicios básicos', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.4.2', 'Proporción del total de la población adulta con derechos seguros de tenencia de la tierra: a) que posee documentación reconocida legalmente al respecto y b) considera seguros sus derechos, desglosada por sexo y tipo de tenencia', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.5.1', 'Número de personas muertas, desaparecidas y afectadas directamente atribuido a desastres por cada 100.000 habitantes', '(p1 / p2) * 100000', 'Tasa'),
-(@ODS_NUM, '1.5.2', 'Pérdidas económicas directas atribuidas a los desastres en relación con el producto interno bruto (PIB) mundial', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.5.3', 'Número de países que adoptan y aplican estrategias nacionales de reducción del riesgo de desastres en consonancia con el Marco de Sendái para la Reducción del Riesgo de Desastres 2015-2030', 'count', 'Paises'),
-(@ODS_NUM, '1.5.4', 'Proporción de gobiernos locales que adoptan y aplican estrategias locales de reducción del riesgo de desastres en consonancia con las estrategias nacionales de reducción del riesgo de desastres', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.a.1', 'Total de subvenciones de asistencia oficial para el desarrollo destinadas a la reducción de la pobreza en porcentaje de la renta nacional bruta del país beneficiario', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.a.2', 'Proporción del gasto público total que se dedica a servicios esenciales (educación, salud y protección social)', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '1.b.1', 'Gasto público social en favor de los pobres', 'valor', 'Monto');
+(@ODS_NUM, '5.1.1', 'Existencia de marcos jurídicos para promover, hacer cumplir y supervisar la igualdad y la no discriminación por razón de sexo', 'valor', 'Binario (1/0)'),
+(@ODS_NUM, '5.2.1', 'Proporción de mujeres y niñas (de 15 años o más) que han sufrido violencia física, sexual o psicológica por parte de su pareja', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '5.2.2', 'Proporción de mujeres y niñas (de 15 años o más) que han sufrido violencia sexual por parte de personas que no eran su pareja', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '5.3.1', 'Proporción de mujeres de entre 20 y 24 años que estaban casadas o mantenían una unión estable antes de los 15 años y antes de los 18 años', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '5.3.2', 'Proporción de niñas y mujeres de entre 15 y 49 años que han sufrido mutilación o ablación genital femenina', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '5.4.1', 'Proporción de tiempo dedicado al trabajo doméstico y de cuidados no remunerado, desglosada por sexo, edad y ubicación', 'valor', 'Horas/Dia'),
+(@ODS_NUM, '5.5.1', 'Proporción de escaños ocupados por mujeres en i) los parlamentos nacionales y ii) los gobiernos locales', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '5.5.2', 'Proporción de mujeres en cargos directivos', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '5.6.1', 'Proporción de mujeres (de 15 a 49 años) que toman sus propias decisiones informadas en relación con las relaciones sexuales, el uso de anticonceptivos y la atención de la salud reproductiva', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '5.6.2', 'Número de países con leyes y reglamentos que garantizan a las mujeres (de 15 a 49 años) un acceso pleno e igualitario a la atención de la salud reproductiva y a la información y educación al respecto', 'count', 'Paises'),
+(@ODS_NUM, '5.a.1', 'a) Proporción del total de la población agrícola con derechos de propiedad o derechos seguros de tenencia de tierras agrícolas, desglosada por sexo; y b) proporción de mujeres entre los propietarios o titulares de derechos de tenencia de tierras agrícolas, por tipo de tenencia', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '5.a.2', 'Proporción de países cuyo marco jurídico garantice a las mujeres la igualdad de derechos en lo que respecta a la propiedad o la tenencia de la tierra', 'valor', 'Porcentaje'),
+(@ODS_NUM, '5.b.1', 'Proporción de personas que poseen un teléfono móvil, desglosada por sexo', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '5.c.1', 'Proporción de países con sistemas para el seguimiento de la igualdad de género y el empoderamiento de las mujeres y la asignación de fondos públicos para ese fin', 'valor', 'Porcentaje');
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA DE AUDITORÍA (nombre único por ODS)
 -- ────────────────────────────────────────────────────────────
 
-CREATE TABLE auditoria_ods01 (
+CREATE TABLE auditoria_ods05 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tabla_afectada VARCHAR(50) NOT NULL,
     registro_id INT NOT NULL,
@@ -57,27 +53,7 @@ CREATE TABLE auditoria_ods01 (
 -- ────────────────────────────────────────────────────────────
 -- ESTRUCTURA COMÚN (STANDALONE - COMPATIBLE CON HEIDISQL)
 -- ────────────────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS proyectos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    sede_id    INT NULL,
-    nombre_proyecto VARCHAR(200) NOT NULL,
-    objetivo_id TINYINT UNSIGNED NOT NULL,
-    descripcion TEXT,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    meta_general VARCHAR(500),
-    estado ENUM('planificacion', 'activo', 'completado', 'cancelado') DEFAULT 'planificacion',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (sede_id)    REFERENCES ods_login.sedes(id) ON DELETE SET NULL,
-    FOREIGN KEY (objetivo_id) REFERENCES ods_login.ods_catalog(id),
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_sede    (sede_id),
-    INDEX idx_objetivo (objetivo_id),
-    INDEX idx_estado (estado)
-);
+-- [ ELIMINADA: La tabla proyectos ahora vive en ods_master.proyectos ]
 
 CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
@@ -90,7 +66,7 @@ CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     fecha_proxima_medicion DATE,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (proyecto_id) REFERENCES ods_master.proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (indicador_master_id) REFERENCES ods_login.indicador_master(id),
     INDEX idx_proyecto_master (proyecto_id, indicador_master_id)
 );
@@ -148,10 +124,10 @@ SELECT
         END, 2
     ) AS progreso_porcentaje,
     p.created_at         AS fecha_creacion
-FROM proyectos p
+FROM ods_master.proyectos p
 LEFT JOIN ods_login.usuarios u    ON p.usuario_id = u.id
 LEFT JOIN ods_login.sedes s       ON p.sede_id = s.id
-LEFT JOIN ods_login.ods_catalog cat ON p.objetivo_id = cat.id
+LEFT JOIN ods_login.ods_catalog cat ON 5 = cat.id
 LEFT JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 GROUP BY p.id, p.nombre_proyecto, u.username, s.nombre, cat.nombre,
          p.fecha_inicio, p.fecha_fin, p.estado, p.created_at;
@@ -181,29 +157,23 @@ SELECT
         END, 2
     ) AS porcentaje_logro,
     pi.updated_at AS ultima_actualizacion
-FROM proyectos p
+FROM ods_master.proyectos p
 INNER JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 
 -- ────────────────────────────────────────────────────────────
--- TRIGGERS ESPECÍFICOS (usan la tabla auditoria_ods01)
+-- TRIGGERS ESPECÍFICOS
 -- ────────────────────────────────────────────────────────────
 
+-- [ ELIMINADA: La auditoría de inserción de proyectos ahora ocurre en ods_master ]
+
 DELIMITER //
-CREATE TRIGGER auditoria_proyectos_insert
-AFTER INSERT ON proyectos
-FOR EACH ROW
-BEGIN
-    INSERT INTO auditoria_ods01 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
-    VALUES ('proyectos', NEW.id, 'INSERT', NEW.usuario_id, 
-            JSON_OBJECT('nombre', NEW.nombre_proyecto, 'estado', NEW.estado));
-END//
 
 CREATE TRIGGER auditoria_indicadores_insert
 AFTER INSERT ON proyecto_indicadores
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria_ods01 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods05 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('proyecto_indicadores', NEW.id, 'INSERT', NULL,
             JSON_OBJECT(
                 'proyecto_id', NEW.proyecto_id,
@@ -216,54 +186,46 @@ CREATE TRIGGER registrar_medicion_y_actualizar_valor
 AFTER INSERT ON mediciones_historicas
 FOR EACH ROW
 BEGIN
-    -- Actualizar el valor_actual en la tabla relacional al recibir una nueva medición
     UPDATE proyecto_indicadores 
     SET valor_actual = NEW.valor_calculado,
         updated_at = CURRENT_TIMESTAMP
     WHERE id = NEW.proyecto_indicador_id;
     
-    INSERT INTO auditoria_ods01 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods05 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('mediciones_historicas', NEW.id, 'INSERT', NULL,
             JSON_OBJECT('indicador_id', NEW.proyecto_indicador_id, 'valor', NEW.valor_calculado));
 END//
 DELIMITER ;
 
 -- ────────────────────────────────────────────────────────────
--- VISTAS Y PROCEDIMIENTOS QUE REQUIEREN NOMBRE DE AUDITORÍA ÚNICA
+-- VISTAS Y PROCEDIMIENTOS
 -- ────────────────────────────────────────────────────────────
 
 CREATE VIEW vista_admin_auditoria_reciente AS
 SELECT 
     a.id, a.tabla_afectada, a.registro_id, a.accion,
     u.username AS usuario, a.fecha_cambio, a.ip_address
-FROM auditoria_ods01 a
+FROM auditoria_ods05 a
 LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
 ORDER BY a.fecha_cambio DESC;
 
 DELIMITER //
 CREATE PROCEDURE sp_admin_reporte_proyecto(IN proyecto_id_param INT)
 BEGIN
-    -- Información básica
-    SELECT * FROM proyectos WHERE id = proyecto_id_param;
-    
-    -- Indicadores del proyecto
+    SELECT * FROM ods_master.proyectos WHERE id = proyecto_id_param;
     SELECT pi.*, m.codigo, m.nombre 
     FROM proyecto_indicadores pi
     JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id
     WHERE pi.proyecto_id = proyecto_id_param;
-    
-    -- Historial de auditoría
-    SELECT * FROM auditoria_ods01 
-    WHERE (tabla_afectada = 'proyectos' AND registro_id = proyecto_id_param)
-       OR (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
+    SELECT * FROM auditoria_ods05 
+    WHERE (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
 END//
 DELIMITER ;
 
 -- ────────────────────────────────────────────────────────────
 -- COMENTARIOS Y FINALIZACIÓN
 -- ────────────────────────────────────────────────────────────
+ALTER TABLE auditoria_ods05 COMMENT 'Auditoría interna de cambios en la base de datos ODS05';
+CREATE INDEX idx_auditoria_fecha_tabla ON auditoria_ods05(fecha_cambio, tabla_afectada);
 
-ALTER TABLE auditoria_ods01 COMMENT 'Auditoría interna de cambios en la base de datos ODS01';
-CREATE INDEX idx_auditoria_fecha_tabla ON auditoria_ods01(fecha_cambio, tabla_afectada);
-
-SELECT 'Base de datos ODS01 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;
+SELECT 'Base de datos ODS05 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;

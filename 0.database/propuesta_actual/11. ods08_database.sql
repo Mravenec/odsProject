@@ -1,44 +1,43 @@
--- Base de Datos ODS02: Hambre Cero
+-- Base de Datos ODS08: Trabajo Decente y Crecimiento Económico
 -- Sistema completo con triggers automáticos y vistas para administrador
 -- La lógica común (tablas compartidas, vistas genéricas) está en ods_common.sql
 
-CREATE DATABASE IF NOT EXISTS ods02 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE ods02;
+CREATE DATABASE IF NOT EXISTS ods08 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ods08;
 
-SET @ODS_NUM = 2;
+SET @ODS_NUM = 8;
 
 -- ────────────────────────────────────────────────────────────
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
--- 1. Asegurar que el ODS existe en el catálogo
 INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Hambre Cero', '#DDA63A', 'Poner fin al hambre, lograr la seguridad alimentaria y la mejora de la nutrición');
+VALUES (@ODS_NUM, 'Trabajo Decente y Crecimiento Económico', '#A21942', 'Promover el crecimiento económico sostenido, inclusivo y sostenible, el empleo pleno y productivo y el trabajo decente para todos');
 
--- 2. Sembrar indicadores maestros para este ODS
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 
-(@ODS_NUM, '2.1.1', 'Prevalencia de la subalimentación', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '2.1.2', 'Prevalencia de la inseguridad alimentaria moderada o grave entre la población, según la escala de experiencia de inseguridad alimentaria', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '2.2.1', 'Prevalencia del retraso del crecimiento (estatura para la edad, desviación típica < -2 entre los niños menores de 5 años)', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '2.2.2', 'Prevalencia de la malnutrición (peso para la estatura, desviación típica > +2 o < -2 de la mediana de los patrones de crecimiento infantil de la OMS) entre los niños menores de 5 años, desglosada por tipo (emaciación y sobrepeso)', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '2.2.3', 'Prevalencia de la anemia en las mujeres de entre 15 y 49 años, según el embarazo (porcentaje)', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '2.2.4', 'Prevalencia del umbral mínimo de diversidad alimentaria, por grupo de población (porcentaje)', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '2.3.1', 'Volumen de producción por unidad de trabajo desglosado por tamaño y tipo de explotación agrícola y ganadera', 'valor', 'Monto'),
-(@ODS_NUM, '2.3.2', 'Media de ingresos de los productores de alimentos en pequeña escala, desglosada por tamaño y tipo de explotación', 'valor', 'Monto'),
-(@ODS_NUM, '2.4.1', 'Proporción de la superficie agrícola en que se practica una agricultura productiva y sostenible', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '2.5.1', 'Número de: a) recursos genéticos vegetales y b) animales para la alimentación y la agricultura conservados en instalaciones de conservación a mediano y largo plazo', 'count', 'Unidades'),
-(@ODS_NUM, '2.5.2', 'Proporción de razas y variedades locales y transfronterizas consideradas en riesgo de extinción', '(p1 / p2) * 100', 'Porcentaje'),
-(@ODS_NUM, '2.a.1', 'Índice de orientación agrícola para el gasto público', 'valor', 'Indice'),
-(@ODS_NUM, '2.a.2', 'Total de corrientes oficiales de recursos (asistencia oficial para el desarrollo más otras corrientes oficiales) destinadas al sector agrícola', 'valor', 'Monto'),
-(@ODS_NUM, '2.b.1', 'Subsidios a la exportación de productos agropecuarios', 'valor', 'Monto'),
-(@ODS_NUM, '2.c.1', 'Indicador de anomalías en los precios de los alimentos', 'valor', 'Indice');
+(@ODS_NUM, '8.1.1', 'Tasa de crecimiento anual del PIB real por persona empleada', 'valor', 'Porcentaje'),
+(@ODS_NUM, '8.2.1', 'Tasa de crecimiento anual del PIB real por persona empleada', 'valor', 'Porcentaje'),
+(@ODS_NUM, '8.3.1', 'Proporción del empleo informal en el empleo no agrario, desglosada por sexo', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '8.4.1', 'Huella material, huella material per cápita y huella material por unidad de PIB', 'valor', 'Toneladas/USD'),
+(@ODS_NUM, '8.4.2', 'Consumo material doméstico, consumo material doméstico per cápita y consumo material doméstico por unidad de PIB', 'valor', 'Toneladas/USD'),
+(@ODS_NUM, '8.5.1', 'Ingreso por hora medio de empleadas y empleados, desglosado por sexo, edad, ocupación y personas con discapacidad', 'valor', 'Monto/Hora'),
+(@ODS_NUM, '8.5.2', 'Tasa de desempleo, desglosada por sexo, edad y personas con discapacidad', 'valor', 'Porcentaje'),
+(@ODS_NUM, '8.6.1', 'Proporción de jóvenes (de 15 a 24 años) que no cursan estudios, no tienen empleo ni reciben formación', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '8.7.1', 'Proporción y número de niños de entre 5 y 17 años que realizan trabajo infantil, desglosados por sexo y edad', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '8.8.1', 'Tasas de frecuencia de lesiones profesionales mortales y no mortales, desglosadas por sexo y situación migratoria', 'valor', 'Tasa'),
+(@ODS_NUM, '8.8.2', 'Nivel de cumplimiento nacional de los derechos laborales (libertad de asociación y negociación colectiva) con arreglo a las fuentes de la Organización Internacional del Trabajo (OIT) y la legislación nacional, por sexo y situación migratoria', 'valor', 'Puntaje'),
+(@ODS_NUM, '8.9.1', 'PIB generado directamente por el turismo en proporción al PIB total y a la tasa de crecimiento', 'valor', 'Porcentaje'),
+(@ODS_NUM, '8.10.1', 'Número de sucursales de bancos comerciales y cajeros automáticos por cada 100.000 adultos', 'valor', 'Unidades/100k'),
+(@ODS_NUM, '8.10.2', 'Proporción de adultos (de 15 años o más) que tienen una cuenta en un banco u otra institución financiera o un proveedor de servicios de dinero móvil', '(p1 / p2) * 100', 'Porcentaje'),
+(@ODS_NUM, '8.a.1', 'Compromisos y desembolsos de la ayuda para el comercio', 'valor', 'Monto'),
+(@ODS_NUM, '8.b.1', 'Existencia de una estrategia nacional para el empleo de los jóvenes, ya sea de forma independiente o como parte de una estrategia nacional de empleo', 'valor', 'Binario (1/0)');
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA DE AUDITORÍA (nombre único por ODS)
 -- ────────────────────────────────────────────────────────────
 
-CREATE TABLE auditoria_ods02 (
+CREATE TABLE auditoria_ods08 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tabla_afectada VARCHAR(50) NOT NULL,
     registro_id INT NOT NULL,
@@ -56,27 +55,7 @@ CREATE TABLE auditoria_ods02 (
 -- ────────────────────────────────────────────────────────────
 -- ESTRUCTURA COMÚN (STANDALONE - COMPATIBLE CON HEIDISQL)
 -- ────────────────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS proyectos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    sede_id    INT NULL,
-    nombre_proyecto VARCHAR(200) NOT NULL,
-    objetivo_id TINYINT UNSIGNED NOT NULL,
-    descripcion TEXT,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    meta_general VARCHAR(500),
-    estado ENUM('planificacion', 'activo', 'completado', 'cancelado') DEFAULT 'planificacion',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (sede_id)    REFERENCES ods_login.sedes(id) ON DELETE SET NULL,
-    FOREIGN KEY (objetivo_id) REFERENCES ods_login.ods_catalog(id),
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_sede    (sede_id),
-    INDEX idx_objetivo (objetivo_id),
-    INDEX idx_estado (estado)
-);
+-- [ ELIMINADA: La tabla proyectos ahora vive en ods_master.proyectos ]
 
 CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
@@ -89,7 +68,7 @@ CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     fecha_proxima_medicion DATE,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (proyecto_id) REFERENCES ods_master.proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (indicador_master_id) REFERENCES ods_login.indicador_master(id),
     INDEX idx_proyecto_master (proyecto_id, indicador_master_id)
 );
@@ -147,10 +126,10 @@ SELECT
         END, 2
     ) AS progreso_porcentaje,
     p.created_at         AS fecha_creacion
-FROM proyectos p
+FROM ods_master.proyectos p
 LEFT JOIN ods_login.usuarios u    ON p.usuario_id = u.id
 LEFT JOIN ods_login.sedes s       ON p.sede_id = s.id
-LEFT JOIN ods_login.ods_catalog cat ON p.objetivo_id = cat.id
+LEFT JOIN ods_login.ods_catalog cat ON 8 = cat.id
 LEFT JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 GROUP BY p.id, p.nombre_proyecto, u.username, s.nombre, cat.nombre,
          p.fecha_inicio, p.fecha_fin, p.estado, p.created_at;
@@ -180,29 +159,23 @@ SELECT
         END, 2
     ) AS porcentaje_logro,
     pi.updated_at AS ultima_actualizacion
-FROM proyectos p
+FROM ods_master.proyectos p
 INNER JOIN proyecto_indicadores pi ON p.id = pi.proyecto_id
 INNER JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id;
 
 -- ────────────────────────────────────────────────────────────
--- TRIGGERS ESPECÍFICOS (usan la tabla auditoria_ods02)
+-- TRIGGERS ESPECÍFICOS
 -- ────────────────────────────────────────────────────────────
 
+-- [ ELIMINADA: La auditoría de inserción de proyectos ahora ocurre en ods_master ]
+
 DELIMITER //
-CREATE TRIGGER auditoria_proyectos_insert
-AFTER INSERT ON proyectos
-FOR EACH ROW
-BEGIN
-    INSERT INTO auditoria_ods02 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
-    VALUES ('proyectos', NEW.id, 'INSERT', NEW.usuario_id, 
-            JSON_OBJECT('nombre', NEW.nombre_proyecto, 'estado', NEW.estado));
-END//
 
 CREATE TRIGGER auditoria_indicadores_insert
 AFTER INSERT ON proyecto_indicadores
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria_ods02 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods08 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('proyecto_indicadores', NEW.id, 'INSERT', NULL,
             JSON_OBJECT(
                 'proyecto_id', NEW.proyecto_id,
@@ -220,43 +193,35 @@ BEGIN
         updated_at = CURRENT_TIMESTAMP
     WHERE id = NEW.proyecto_indicador_id;
     
-    INSERT INTO auditoria_ods02 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
+    INSERT INTO auditoria_ods08 (tabla_afectada, registro_id, accion, usuario_id, valores_nuevos)
     VALUES ('mediciones_historicas', NEW.id, 'INSERT', NULL,
             JSON_OBJECT('indicador_id', NEW.proyecto_indicador_id, 'valor', NEW.valor_calculado));
 END//
 DELIMITER ;
 
 -- ────────────────────────────────────────────────────────────
--- VISTAS Y PROCEDIMIENTOS QUE REQUIEREN NOMBRE DE AUDITORÍA ÚNICA
+-- VISTAS Y PROCEDIMIENTOS
 -- ────────────────────────────────────────────────────────────
 
 CREATE VIEW vista_admin_auditoria_reciente AS
 SELECT 
     a.id, a.tabla_afectada, a.registro_id, a.accion,
     u.username AS usuario, a.fecha_cambio, a.ip_address
-FROM auditoria_ods02 a
+FROM auditoria_ods08 a
 LEFT JOIN ods_login.usuarios u ON a.usuario_id = u.id
 ORDER BY a.fecha_cambio DESC;
 
 DELIMITER //
 CREATE PROCEDURE sp_admin_reporte_proyecto(IN proyecto_id_param INT)
 BEGIN
-    SELECT * FROM proyectos WHERE id = proyecto_id_param;
+    SELECT * FROM ods_master.proyectos WHERE id = proyecto_id_param;
     SELECT pi.*, m.codigo, m.nombre 
     FROM proyecto_indicadores pi
     JOIN ods_login.indicador_master m ON pi.indicador_master_id = m.id
     WHERE pi.proyecto_id = proyecto_id_param;
-    SELECT * FROM auditoria_ods02 
-    WHERE (tabla_afectada = 'proyectos' AND registro_id = proyecto_id_param)
-       OR (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
+    SELECT * FROM auditoria_ods08 
+    WHERE (tabla_afectada = 'proyecto_indicadores' AND registro_id IN (SELECT id FROM proyecto_indicadores WHERE proyecto_id = proyecto_id_param));
 END//
 DELIMITER ;
 
--- ────────────────────────────────────────────────────────────
--- COMENTARIOS Y FINALIZACIÓN
--- ────────────────────────────────────────────────────────────
-
-ALTER TABLE auditoria_ods02 COMMENT 'Auditoría interna de cambios en la base de datos ODS02';
-CREATE INDEX idx_auditoria_fecha_tabla ON auditoria_ods02(fecha_cambio, tabla_afectada);
-
-SELECT 'Base de datos ODS02 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;
+SELECT 'Base de datos ODS08 configurada exitosamente' AS mensaje, NOW() AS fecha_creacion;
