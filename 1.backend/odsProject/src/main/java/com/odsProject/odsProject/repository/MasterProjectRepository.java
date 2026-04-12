@@ -96,11 +96,11 @@ public class MasterProjectRepository implements IMasterProjectRepository {
         // Conteo de usuarios (Métrica global centralizada)
         Integer totalUsuarios = dsl.selectCount().from(USUARIOS).fetchOne(0, Integer.class);
 
-        dashboard.put("total_proyectos", total != null ? total : 0);
-        dashboard.put("proyectos_activos", activos != null ? activos : 0);
-        dashboard.put("proyectos_completados", completados != null ? completados : 0);
-        dashboard.put("proyectos_planificacion", planificacion != null ? planificacion : 0);
-        dashboard.put("total_usuarios", totalUsuarios != null ? totalUsuarios : 0);
+        dashboard.put("totalProyectos", total != null ? total : 0);
+        dashboard.put("proyectosActivos", activos != null ? activos : 0);
+        dashboard.put("proyectosCompletados", completados != null ? completados : 0);
+        dashboard.put("proyectosPlanificacion", planificacion != null ? planificacion : 0);
+        dashboard.put("totalUsuarios", totalUsuarios != null ? totalUsuarios : 0);
         
         // Proyectos por estado (para gráficos)
         java.util.Map<String, Integer> estados = new java.util.HashMap<>();

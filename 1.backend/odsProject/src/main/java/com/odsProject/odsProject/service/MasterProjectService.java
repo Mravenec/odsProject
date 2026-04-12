@@ -132,10 +132,10 @@ public class MasterProjectService implements IMasterProjectService {
             }
         }
 
-        dashboard.put("indicadores_totales_ecosistema", totalIndicatorsAllOds);
-        dashboard.put("indicadores_completados_ecosistema", completedIndicatorsAllOds);
-        dashboard.put("progreso_global_promedio", odsWithIndicatorsCount > 0 ? summedProgressAllOds / odsWithIndicatorsCount : 0.0);
-        dashboard.put("ods_activos_con_datos", odsWithIndicatorsCount);
+        dashboard.put("indicadoresTotalesEcosistema", totalIndicatorsAllOds);
+        dashboard.put("indicadoresCompletadosEcosistema", completedIndicatorsAllOds);
+        dashboard.put("progresoPromedio", odsWithIndicatorsCount > 0 ? summedProgressAllOds / odsWithIndicatorsCount : 0.0);
+        dashboard.put("odsActivosConDatos", odsWithIndicatorsCount);
         
         return dashboard;
     }
