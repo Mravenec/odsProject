@@ -106,6 +106,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo01PobrezaRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo01PobrezaRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo01PobrezaRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo01PobrezaRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

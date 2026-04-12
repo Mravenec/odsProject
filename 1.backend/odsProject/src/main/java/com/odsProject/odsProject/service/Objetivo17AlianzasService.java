@@ -117,6 +117,7 @@ public class Objetivo17AlianzasService implements IObjetivo17AlianzasService {
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo17AlianzasRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo17AlianzasRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo17AlianzasRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo17AlianzasRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicator basado en sus parámetros y fórmula

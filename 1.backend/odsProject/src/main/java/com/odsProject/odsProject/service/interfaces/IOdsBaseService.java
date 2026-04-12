@@ -204,6 +204,13 @@ public interface IOdsBaseService<T, E, P, M, MH, A> {
     Double calculateProjectProgress(Integer proyectoId);
     
     /**
+     * Obtiene datos del dashboard administrativo para este ODS
+     * 
+     * @return Map con datos del dashboard
+     */
+    Map<String, Object> getDashboardData();
+
+    /**
      * Obtiene estadísticas generales del ODS
      * 
      * @return Map con estadísticas generales

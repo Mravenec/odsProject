@@ -69,6 +69,7 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
     @Override public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(Integer medicionId, MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.updateMedicionHistorica(medicion)); }
     @Override public ResponseEntity<Void> deleteMedicionHistorica(Integer medicionId) { objetivo14VidaSubmarinaService.deleteMedicionHistorica(medicionId); return ResponseEntity.noContent().build(); }
 
+    @Override public ResponseEntity<java.util.Map<String, Object>> getDashboard() { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getDashboardData()); }
     @Override public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getOdsStatistics()); }
     @Override public ResponseEntity<Double> getProjectProgress(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.calculateProjectProgress(proyectoId)); }
     @Override public ResponseEntity<Boolean> validateIndicador(VistaAdminDetalleIndicadores indicador) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.validateIndicatorData(indicador)); }

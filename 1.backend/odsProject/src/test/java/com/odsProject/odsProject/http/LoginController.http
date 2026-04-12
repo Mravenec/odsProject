@@ -1,4 +1,4 @@
-### Login & Security - HTTP Endpoints
+### Login Controller - HTTP Endpoints
 ### Base URL: http://localhost:8080
 
 ### Variables
@@ -8,78 +8,71 @@
 
 # ── 1. Autenticación ──
 
-### Login de Usuario
+### Login Exitoso (Gestor ODS 01)
 # @name login
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
   "email": "{{email}}",
-  "password": "{{password}}",
-  "ip": "127.0.0.1",
-  "userAgent": "VS Code REST Client"
+  "password": "{{password}}"
 }
 
-### Validar Token actual
-GET {{baseUrl}}/api/login/auth/validate
-# Authorization: Bearer {{login.response.body.token}}
-
-### Refrescar Token
-POST {{baseUrl}}/api/login/auth/refresh
-# Authorization: Bearer {{login.response.body.token}}
-
-### Cerrar Sesión
-POST {{baseUrl}}/api/login/auth/logout
-# Authorization: Bearer {{login.response.body.token}}
-
-# ── 2. Gestión de Usuarios ──
-
-### Obtener perfil de usuario por ID
-GET {{baseUrl}}/api/login/users/2
-
-### Obtener usuario por username
-GET {{baseUrl}}/api/login/users/username/gestor01
-
-### Verificar disponibilidad de email
-GET {{baseUrl}}/api/login/users/check-email/{{email}}
-
-### Iniciar recuperación de contraseña
-POST {{baseUrl}}/api/login/users/recovery
+### Login Fallido (Password incorrecto)
+POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "{{email}}"
+  "email": "{{email}}",
+  "password": "wrongpassword"
 }
 
-# ── 3. Catálogos y Permisos ──
+### Login Fallido (Usuario no existe)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
 
-### Listar Roles del sistema
-GET {{baseUrl}}/api/login/roles
+{
+  "email": "noexiste@ods.cr",
+  "password": "password123"
+}
 
-### Listar Sedes disponibles
+# ── 2. Gestión de Sesiones ──
+
+### Validar Token (Requiere login previo)
+@authToken = {{login.response.body.token}}
+
+GET {{baseUrl}}/api/login/auth/validate
+Authorization: Bearer {{authToken}}
+
+### Refrescar Token
+POST {{baseUrl}}/api/login/auth/refresh
+Authorization: Bearer {{authToken}}
+
+### Logout
+POST {{baseUrl}}/api/login/auth/logout
+Authorization: Bearer {{authToken}}
+
+# ── 3. Gestión de Usuarios y Sedes ──
+
+### Obtener todas las Sedes
 GET {{baseUrl}}/api/login/sedes
 
-### Obtener permisos ODS del usuario
-GET {{baseUrl}}/api/login/users/2/permits
+### Obtener Sede por ID
+GET {{baseUrl}}/api/login/sedes/1
 
-### Verificar permiso para ODS 01
-GET {{baseUrl}}/api/login/users/2/permits/1
+### Obtener todos los Roles
+GET {{baseUrl}}/api/login/roles
 
-# ── 4. Administración y Auditoría ──
+### Listar Usuarios Activos (Vista)
+GET {{baseUrl}}/api/login/vistas/usuarios-activos
 
-### Resumen general (Admin)
-GET {{baseUrl}}/api/login/admin/summary
+### Resumen General del Sistema (Vista)
+GET {{baseUrl}}/api/login/vistas/resumen-general
 
-### Usuarios activos
-GET {{baseUrl}}/api/login/admin/active-users
+# ── 4. Auditoría ──
 
-### Historial de login
-GET {{baseUrl}}/api/login/users/2/login-history?dias=30
+### Auditoría de Login Reciente (Últimos 7 días)
+GET {{baseUrl}}/api/login/vistas/auditoria?dias=7
 
-### Estadísticas del sistema
-GET {{baseUrl}}/api/login/admin/statistics
-
-# ── 5. Utilidades ──
-
-### Health Check
-GET {{baseUrl}}/api/login/health
+### Intentos Fallidos Recientes (Últimas 24 horas)
+GET {{baseUrl}}/api/login/auditoria/fallidos?horas=24

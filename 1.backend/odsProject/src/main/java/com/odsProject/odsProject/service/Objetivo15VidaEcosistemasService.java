@@ -107,6 +107,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo15VidaEcosistemasRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo15VidaEcosistemasRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo15VidaEcosistemasRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo15VidaEcosistemasRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

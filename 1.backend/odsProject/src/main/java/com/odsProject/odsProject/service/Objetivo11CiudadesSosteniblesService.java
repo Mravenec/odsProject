@@ -109,6 +109,7 @@ public class Objetivo11CiudadesSosteniblesService implements IObjetivo11Ciudades
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo11CiudadesSosteniblesRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo11CiudadesSosteniblesRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo11CiudadesSosteniblesRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo11CiudadesSosteniblesRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

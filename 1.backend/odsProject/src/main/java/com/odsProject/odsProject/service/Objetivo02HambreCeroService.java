@@ -107,6 +107,7 @@ public class Objetivo02HambreCeroService implements IObjetivo02HambreCeroService
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo02HambreCeroRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo02HambreCeroRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo02HambreCeroRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo02HambreCeroRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

@@ -117,6 +117,7 @@ public class Objetivo16PazJusticiaService implements IObjetivo16PazJusticiaServi
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo16PazJusticiaRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo16PazJusticiaRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo16PazJusticiaRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo16PazJusticiaRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

@@ -3,7 +3,7 @@
 
 ### Variables
 @baseUrl = http://localhost:8080
-@proyectoId = 1
+@proyectoId = 2
 @indicadorId = 1
 @metaId = 1
 @medicionId = 1
@@ -170,6 +170,9 @@ Content-Type: application/json
 }
 
 # ── 6. Utilidades y Estadísticas ──
+
+### Obtener dashboard administrativo
+GET {{baseUrl}}/api/ods/02/dashboard
 
 ### Obtener estadísticas del ODS
 GET {{baseUrl}}/api/ods/02/estadisticas

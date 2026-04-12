@@ -72,6 +72,7 @@ public class Objetivo06AguaSaneamientoController implements IObjetivo06AguaSanea
     @Override public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(Integer medicionId, MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo06AguaSaneamientoService.updateMedicionHistorica(medicion)); }
     @Override public ResponseEntity<Void> deleteMedicionHistorica(Integer medicionId) { objetivo06AguaSaneamientoService.deleteMedicionHistorica(medicionId); return ResponseEntity.noContent().build(); }
 
+    @Override public ResponseEntity<java.util.Map<String, Object>> getDashboard() { return ResponseEntity.ok(objetivo06AguaSaneamientoService.getDashboardData()); }
     @Override public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() { return ResponseEntity.ok(objetivo06AguaSaneamientoService.getOdsStatistics()); }
     @Override public ResponseEntity<Double> getProjectProgress(Integer proyectoId) { return ResponseEntity.ok(objetivo06AguaSaneamientoService.calculateProjectProgress(proyectoId)); }
     @Override public ResponseEntity<Boolean> validateIndicador(VistaAdminDetalleIndicadores indicador) { return ResponseEntity.ok(objetivo06AguaSaneamientoService.validateIndicatorData(indicador)); }

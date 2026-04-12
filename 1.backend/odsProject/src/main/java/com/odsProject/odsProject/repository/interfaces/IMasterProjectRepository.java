@@ -65,6 +65,12 @@ public interface IMasterProjectRepository {
     void delete(Integer id);
 
     /**
+     * Obtiene estadísticas globales de todos los proyectos en el sistema
+     * @return Mapa con métricas administrativas (conteo por estado, totales, etc.)
+     */
+    java.util.Map<String, Object> spAdminGlobalDashboard();
+
+    /**
      * Verifica si un proyecto existe por ID
      * @param id ID del proyecto
      * @return true si existe, false si no

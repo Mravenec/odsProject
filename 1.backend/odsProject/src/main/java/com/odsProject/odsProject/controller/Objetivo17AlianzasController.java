@@ -85,6 +85,7 @@ public class Objetivo17AlianzasController implements IObjetivo17AlianzasControll
     @Override public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(Integer medicionId, MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo17AlianzasService.updateMedicionHistorica(medicion)); }
     @Override public ResponseEntity<Void> deleteMedicionHistorica(Integer medicionId) { objetivo17AlianzasService.deleteMedicionHistorica(medicionId); return ResponseEntity.noContent().build(); }
 
+    @Override public ResponseEntity<java.util.Map<String, Object>> getDashboard() { return ResponseEntity.ok(objetivo17AlianzasService.getDashboardData()); }
     @Override public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() { return ResponseEntity.ok(objetivo17AlianzasService.getOdsStatistics()); }
     @Override public ResponseEntity<Double> getProjectProgress(Integer proyectoId) { return ResponseEntity.ok(objetivo17AlianzasService.calculateProjectProgress(proyectoId)); }
     @Override public ResponseEntity<Boolean> validateIndicador(VistaAdminDetalleIndicadores indicador) { return ResponseEntity.ok(objetivo17AlianzasService.validateIndicatorData(indicador)); }

@@ -100,6 +100,7 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo07EnergiaRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo07EnergiaRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo07EnergiaRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo07EnergiaRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

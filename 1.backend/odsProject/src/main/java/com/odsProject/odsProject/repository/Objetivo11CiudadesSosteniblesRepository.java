@@ -7,6 +7,7 @@ import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.AuditoriaOds11;
 import com.odsProject.odsProject.database.jooq.ods11.routines.SpAdminReporteProyecto;
+import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.repository.interfaces.IObjetivo11CiudadesSosteniblesRepository;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -24,6 +25,7 @@ import static com.odsProject.odsProject.database.jooq.ods_master.tables.Proyecto
 import static com.odsProject.odsProject.database.jooq.ods11.tables.ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
 import static com.odsProject.odsProject.database.jooq.ods11.tables.MedicionesHistoricas.MEDICIONES_HISTORICAS;
 import static com.odsProject.odsProject.database.jooq.ods11.tables.AuditoriaOds11.AUDITORIA_ODS11;
+import static com.odsProject.odsProject.database.jooq.ods11.tables.VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorMaster.INDICADOR_MASTER;
 
 /**
@@ -163,7 +165,7 @@ public class Objetivo11CiudadesSosteniblesRepository implements IObjetivo11Ciuda
     // IOdsBaseRepository
     @Override public List<Proyectos> findAllProyectos() { return dsl.selectFrom(PROYECTOS).fetchInto(Proyectos.class); }
     @Override public Optional<Proyectos> findProyectoById(Integer id) { return dsl.selectFrom(PROYECTOS).where(PROYECTOS.ID.eq(id)).fetchOptionalInto(Proyectos.class); }
-    @Override public List<Proyectos> findProyectosByUsuario(Integer usuarioId) { dsl.selectFrom(PROYECTOS).where(PROYECTOS.USUARIO_ID.eq(usuarioId)).fetchInto(Proyectos.class); return dsl.selectFrom(PROYECTOS).where(PROYECTOS.USUARIO_ID.eq(usuarioId)).fetchInto(Proyectos.class); }
+    @Override public List<Proyectos> findProyectosByUsuario(Integer usuarioId) { return dsl.selectFrom(PROYECTOS).where(PROYECTOS.USUARIO_ID.eq(usuarioId)).fetchInto(Proyectos.class); }
     @Override public List<Proyectos> findProyectosByEstado(String estado) { return dsl.selectFrom(PROYECTOS).where(PROYECTOS.ESTADO.cast(String.class).eq(estado)).fetchInto(Proyectos.class); }
     @Override public Proyectos saveProyecto(Proyectos proyecto) { return dsl.insertInto(PROYECTOS).set(dsl.newRecord(PROYECTOS, proyecto)).returning().fetchOneInto(Proyectos.class); }
     @Override public Proyectos updateProyecto(Proyectos proyecto) { return dsl.update(PROYECTOS).set(dsl.newRecord(PROYECTOS, proyecto)).where(PROYECTOS.ID.eq(proyecto.getId())).returning().fetchOneInto(Proyectos.class); }
@@ -208,7 +210,10 @@ public class Objetivo11CiudadesSosteniblesRepository implements IObjetivo11Ciuda
     @Override public List<AuditoriaOds11> findAuditoriaReciente(Integer dias) { return dsl.selectFrom(AUDITORIA_ODS11).where("{0} >= DATE_SUB(NOW(), INTERVAL ? DAY)", AUDITORIA_ODS11.FECHA_CAMBIO, dias).fetchInto(AuditoriaOds11.class); }
     @Override public List<AuditoriaOds11> findAuditoriaByRegistro(String tablaAfectada, Integer registroId) { return dsl.selectFrom(AUDITORIA_ODS11).where(AUDITORIA_ODS11.TABLA_AFECTADA.eq(tablaAfectada)).and(AUDITORIA_ODS11.REGISTRO_ID.eq(registroId)).fetchInto(AuditoriaOds11.class); }
 
-    @Override public Map<String, Object> spAdminDashboard() { return Map.of("status", "not_implemented"); }
+    @Override public Map<String, Object> spAdminDashboard() {
+        List<VistaAdminResumenGeneral> resumen = dsl.selectFrom(VISTA_ADMIN_RESUMEN_GENERAL).fetchInto(VistaAdminResumenGeneral.class);
+        return Map.of("status", "executed", "message", "Dashboard data retrieved from view for ODS11", "data", resumen);
+    }
     @Override public Map<String, Object> spAdminReporteProyecto(Integer proyectoId) {
         SpAdminReporteProyecto sp = new SpAdminReporteProyecto();
         sp.setProyectoIdParam(proyectoId);

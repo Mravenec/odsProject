@@ -12,7 +12,10 @@ import java.util.Set;
 
 /**
  * Servicio de Evaluación de Fórmulas Dinámicas
- * Implementa el motor de cálculo basado en exp4j
+ * Implementa el motor de cálculo basado en exp4j para todo el ecosistema ODS.
+ * 
+ * Este servicio es transversal y permite la evaluación de expresiones matemáticas
+ * definidas dinámicamente en el catálogo de indicadores.
  */
 @Service
 public class EvaluationService implements IEvaluationService {

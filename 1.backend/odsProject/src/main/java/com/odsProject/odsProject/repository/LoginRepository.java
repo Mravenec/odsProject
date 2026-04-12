@@ -43,6 +43,9 @@ import static com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes.SED
 @Repository
 public class LoginRepository implements ILoginRepository {
 
+    /**
+     * Contexto DSL para la base de datos 'ods_login'
+     */
     @Autowired
     @Qualifier("dslOdsLogin")
     private DSLContext dsl;

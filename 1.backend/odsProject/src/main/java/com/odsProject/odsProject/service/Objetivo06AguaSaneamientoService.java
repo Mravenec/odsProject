@@ -104,6 +104,7 @@ public class Objetivo06AguaSaneamientoService implements IObjetivo06AguaSaneamie
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo06AguaSaneamientoRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo06AguaSaneamientoRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo06AguaSaneamientoRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo06AguaSaneamientoRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

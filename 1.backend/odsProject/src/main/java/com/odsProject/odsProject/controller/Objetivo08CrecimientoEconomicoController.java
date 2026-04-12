@@ -76,6 +76,7 @@ public class Objetivo08CrecimientoEconomicoController implements IObjetivo08Crec
     @Override public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(Integer medicionId, MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo08CrecimientoEconomicoService.updateMedicionHistorica(medicion)); }
     @Override public ResponseEntity<Void> deleteMedicionHistorica(Integer medicionId) { objetivo08CrecimientoEconomicoService.deleteMedicionHistorica(medicionId); return ResponseEntity.noContent().build(); }
 
+    @Override public ResponseEntity<java.util.Map<String, Object>> getDashboard() { return ResponseEntity.ok(objetivo08CrecimientoEconomicoService.getDashboardData()); }
     @Override public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() { return ResponseEntity.ok(objetivo08CrecimientoEconomicoService.getOdsStatistics()); }
     @Override public ResponseEntity<Double> getProjectProgress(Integer proyectoId) { return ResponseEntity.ok(objetivo08CrecimientoEconomicoService.calculateProjectProgress(proyectoId)); }
     @Override public ResponseEntity<Boolean> validateIndicador(VistaAdminDetalleIndicadores indicador) { return ResponseEntity.ok(objetivo08CrecimientoEconomicoService.validateIndicatorData(indicador)); }

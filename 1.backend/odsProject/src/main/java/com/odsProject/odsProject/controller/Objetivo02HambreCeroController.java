@@ -74,6 +74,7 @@ public class Objetivo02HambreCeroController implements IObjetivo02HambreCeroCont
     @Override public ResponseEntity<MedicionesHistoricas> updateMedicionHistorica(Integer medicionId, MedicionesHistoricas medicion) { return ResponseEntity.ok(objetivo02HambreCeroService.updateMedicionHistorica(medicion)); }
     @Override public ResponseEntity<Void> deleteMedicionHistorica(Integer medicionId) { objetivo02HambreCeroService.deleteMedicionHistorica(medicionId); return ResponseEntity.noContent().build(); }
 
+    @Override public ResponseEntity<java.util.Map<String, Object>> getDashboard() { return ResponseEntity.ok(objetivo02HambreCeroService.getDashboardData()); }
     @Override public ResponseEntity<java.util.Map<String, Object>> getEstadisticas() { return ResponseEntity.ok(objetivo02HambreCeroService.getOdsStatistics()); }
     @Override public ResponseEntity<Double> getProjectProgress(Integer proyectoId) { return ResponseEntity.ok(objetivo02HambreCeroService.calculateProjectProgress(proyectoId)); }
     @Override public ResponseEntity<Boolean> validateIndicador(VistaAdminDetalleIndicadores indicador) { return ResponseEntity.ok(objetivo02HambreCeroService.validateIndicatorData(indicador)); }

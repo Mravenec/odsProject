@@ -105,6 +105,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo09InfraestructuraRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo09InfraestructuraRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo09InfraestructuraRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo09InfraestructuraRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

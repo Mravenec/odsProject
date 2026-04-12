@@ -107,6 +107,7 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo10ReduccionDesigualdadRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo10ReduccionDesigualdadRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo10ReduccionDesigualdadRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo10ReduccionDesigualdadRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

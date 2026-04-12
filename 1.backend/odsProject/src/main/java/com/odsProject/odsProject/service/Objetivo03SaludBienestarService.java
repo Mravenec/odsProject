@@ -122,6 +122,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo03SaludBienestarRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo03SaludBienestarRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo03SaludBienestarRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo03SaludBienestarRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

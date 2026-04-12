@@ -105,6 +105,7 @@ public class Objetivo04EducacionService implements IObjetivo04EducacionService {
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo04EducacionRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo04EducacionRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo04EducacionRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo04EducacionRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

@@ -34,4 +34,7 @@ public interface IMasterProjectController {
 
     @GetMapping("/{id}/summary")
     ResponseEntity<Map<String, Object>> getProjectSummary(@PathVariable Integer id);
+
+    @GetMapping("/dashboard")
+    ResponseEntity<Map<String, Object>> getGlobalDashboard();
 }

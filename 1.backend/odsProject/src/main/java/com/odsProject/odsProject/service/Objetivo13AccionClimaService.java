@@ -104,6 +104,7 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo13AccionClimaRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo13AccionClimaRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo13AccionClimaRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo13AccionClimaRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

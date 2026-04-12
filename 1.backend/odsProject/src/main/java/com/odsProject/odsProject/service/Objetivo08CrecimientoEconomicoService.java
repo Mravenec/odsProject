@@ -110,6 +110,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo08CrecimientoEconomicoRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo08CrecimientoEconomicoRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo08CrecimientoEconomicoRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo08CrecimientoEconomicoRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

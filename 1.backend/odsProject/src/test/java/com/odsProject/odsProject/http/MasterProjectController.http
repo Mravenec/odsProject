@@ -1,0 +1,52 @@
+### Master Project - HTTP Endpoints
+### Base URL: http://localhost:8080
+
+### Variables
+@baseUrl = http://localhost:8080
+@proyectoId = 1
+@userId = 2
+
+# ── 1. Dashboard y Resúmenes ──
+
+### Obtener Dashboard Global (Consolidado Ecosistema)
+GET {{baseUrl}}/api/projects/dashboard
+
+### Obtener resumen de un proyecto (Agregación ODS)
+GET {{baseUrl}}/api/projects/{{proyectoId}}/summary
+
+# ── 2. Gestión Maestra de Proyectos ──
+
+### Listar todos los proyectos
+GET {{baseUrl}}/api/projects
+
+### Obtener proyecto por ID
+GET {{baseUrl}}/api/projects/{{proyectoId}}
+
+### Obtener proyectos por usuario
+GET {{baseUrl}}/api/projects/user/{{userId}}
+
+### Crear nuevo proyecto en Maestro
+POST {{baseUrl}}/api/projects
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "sedeId": 1,
+  "nombreProyecto": "Nuevo Proyecto Estratégico 2024",
+  "descripcion": "Proyecto centralizado para múltiples ODS",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "estado": "planificacion"
+}
+
+### Actualizar estado de proyecto
+PUT {{baseUrl}}/api/projects/{{proyectoId}}
+Content-Type: application/json
+
+{
+  "id": {{proyectoId}},
+  "estado": "activo"
+}
+
+### Eliminar proyecto (Cascada en todos los ODS)
+DELETE {{baseUrl}}/api/projects/{{proyectoId}}

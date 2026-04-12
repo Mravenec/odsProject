@@ -28,6 +28,13 @@ public interface IMasterProjectService {
     Map<String, Object> calculateProjectSummary(Integer proyectoId);
 
     /**
+     * Obtiene el resumen consolidado de todo el ecosistema ODS
+     * Agrega datos de proyectos, sedes e indicadores globales
+     * @return Mapa con el Dashboard Maestro
+     */
+    Map<String, Object> getGlobalDashboardData();
+
+    /**
      * Evalúa un indicador específico dentro de un proyecto ODS
      * Actualiza el valor_actual basado en los parámetros cargados
      * 

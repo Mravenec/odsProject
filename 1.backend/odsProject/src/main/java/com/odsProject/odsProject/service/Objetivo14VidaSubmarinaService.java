@@ -103,6 +103,7 @@ public class Objetivo14VidaSubmarinaService implements IObjetivo14VidaSubmarinaS
     @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo14VidaSubmarinaRepository.existsIndicador(indicadorId); }
     @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo14VidaSubmarinaRepository.existsMetaProyecto(metaId); }
     @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo14VidaSubmarinaRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo14VidaSubmarinaRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula

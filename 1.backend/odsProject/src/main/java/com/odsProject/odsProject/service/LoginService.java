@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -95,14 +96,19 @@ public class LoginService implements ILoginService {
             Optional<Roles> rolOpt = loginRepository.findRolById(usuario.getRolId());
             String rolName = rolOpt.isPresent() ? rolOpt.get().getNombre() : "USER";
 
+            // Obtener sede detallada
+            Optional<Sedes> sedeOpt = loginRepository.findSedeById(usuario.getSedeId());
+            String sedeName = sedeOpt.isPresent() ? sedeOpt.get().getNombre() : "Sede Central";
+
             // Crear mapa de respuesta
-            Map<String, Object> result = Map.of(
-                "usuario", usuario,
-                "token", UUID.randomUUID().toString(), // Token temporal
-                "rol", rolName, // Rol real desde DB
-                "permisos", List.of("READ", "WRITE"),
-                "loginStatus", "success"
-            );
+            Map<String, Object> result = new HashMap<>();
+            result.put("usuario", usuario);
+            result.put("token", UUID.randomUUID().toString()); // Token temporal
+            result.put("rol", rolName); // Rol real desde DB
+            result.put("sedeId", usuario.getSedeId());
+            result.put("sedeNombre", sedeName);
+            result.put("permisos", List.of("READ", "WRITE"));
+            result.put("loginStatus", "success");
             
             // Crear y guardar sesión
             String token = (String) result.get("token");

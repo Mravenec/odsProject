@@ -1,6 +1,6 @@
 ### ODS Ecosystem Mocks - Verification Endpoints
 ### Base URL: http://localhost:8080
-### This file verifies the data inserted by 'ods_mocks.sql'
+### This file verifies the data inserted by 'ods_mocks.sql' (V3)
 
 ### Variables
 @baseUrl = http://localhost:8080
@@ -27,78 +27,92 @@ Content-Type: application/json
   "password": "password123"
 }
 
-# ── 2. ODS 01: Fin de la Pobreza ──
+# ── 2. ODS 01: Fin de la Pobreza (Proyecto 1) ──
 
 ### Listar proyectos ODS 01
 GET {{baseUrl}}/api/ods/01/proyectos
 
-### Obtener indicadores del Proyecto 1 (Extrema Pobreza)
-# Debería devolver 2 indicadores (1.1.1 y 1.2.1)
+### Obtener indicadores del Proyecto 1 (Reducción Pobreza)
+# Debería devolver indicadores 1.1.1 y 1.2.1
 GET {{baseUrl}}/api/ods/01/indicadores?proyectoId=1
 
-### Verificar Caso Borde: Meta 0 (Debe retornar "estado_indicador": "SIN DATOS")
-# Indicador 1.2.1 tiene meta_valor = 0 en ods_mocks.sql
+### Verificar Caso Borde: Meta 0 (1.2.1)
+# En ods_mocks.sql, meta_valor = 0
 GET {{baseUrl}}/api/ods/01/indicadores/1.2.1?proyectoId=1
 
-### Obtener mediciones del Indicador 1 (1.1.1)
-GET {{baseUrl}}/api/ods/01/mediciones?indicadorId=1
+### Obtener mediciones del Indicador 1.1.1 (ID=1)
+GET {{baseUrl}}/api/ods/01/indicadores/historicas/1
 
 ### Calcular progreso del Proyecto 1
 GET {{baseUrl}}/api/ods/01/progreso/1
 
-# ── 3. ODS 02: Hambre Cero ──
+# ── 3. ODS 02: Hambre Cero (Proyecto 2) ──
 
 ### Listar proyectos ODS 02
 GET {{baseUrl}}/api/ods/02/proyectos
 
-### Obtener indicadores del Proyecto 1 (Seguridad Alimentaria)
+### Obtener indicadores del Proyecto 2 (Seguridad Alimentaria)
 # Debería devolver 2 indicadores (2.1.1 y 2.1.2)
-GET {{baseUrl}}/api/ods/02/indicadores?proyectoId=1
+GET {{baseUrl}}/api/ods/02/indicadores?proyectoId=2
 
-### Verificar Caso Borde en ODS 02: Meta 0 (Debe retornar "estado_indicador": "SIN DATOS")
-# Indicador 2.1.2 tiene meta_valor = 0 en ods_mocks.sql
-GET {{baseUrl}}/api/ods/02/indicadores/2.1.2?proyectoId=1
+### Obtener mediciones del Indicador 2.1.1 (ID=1 en ODS02)
+GET {{baseUrl}}/api/ods/02/indicadores/historicas/1
 
-### Obtener mediciones del Indicador 1 (2.1.1)
-GET {{baseUrl}}/api/ods/02/mediciones?indicadorId=1
-
-# ── 4. ODS 03: Salud y Bienestar ──
+# ── 4. ODS 03: Salud y Bienestar (Proyecto 3) ──
 
 ### Listar proyectos ODS 03
 GET {{baseUrl}}/api/ods/03/proyectos
 
-### Obtener indicadores del Proyecto 1 (Mortalidad Materna)
-GET {{baseUrl}}/api/ods/03/indicadores?proyectoId=1
+### Obtener indicadores del Proyecto 3 (Mortalidad Materna)
+GET {{baseUrl}}/api/ods/03/indicadores?proyectoId=3
 
-# ── 5. ODS 04: Educación de Calidad ──
+# ── 5. ODS 04: Educación de Calidad (Proyecto 4) ──
 
 ### Listar proyectos ODS 04
 GET {{baseUrl}}/api/ods/04/proyectos
 
-### Obtener indicadores del Proyecto 1 (Bilingüismo)
-GET {{baseUrl}}/api/ods/04/indicadores?proyectoId=1
+### Obtener indicadores del Proyecto 4 (Bilingüismo)
+GET {{baseUrl}}/api/ods/04/indicadores?proyectoId=4
 
-# ── 6. ODS 13: Acción por el Clima ──
+# ── 6. ODS 13: Acción por el Clima (Proyecto 5) ──
 
 ### Listar proyectos ODS 13
 GET {{baseUrl}}/api/ods/13/proyectos
 
-### Obtener indicadores del Proyecto 1 (Reforestación Manglares)
-GET {{baseUrl}}/api/ods/13/indicadores?proyectoId=1
+### Obtener indicadores del Proyecto 5 (Reforestación Manglares)
+GET {{baseUrl}}/api/ods/13/indicadores?proyectoId=5
 
 ### Verificar Formula Custom (13.1.1)
-GET {{baseUrl}}/api/ods/13/indicadores/13.1.1?proyectoId=1
+# Formula: (area_reforestada / area_objetivo) * 100
+# Valores: (12.5 / 50.0) * 100 = 25.0
+GET {{baseUrl}}/api/ods/13/indicadores/13.1.1?proyectoId=5
 
-### Calcular progreso del Proyecto 1 (ODS 13)
-GET {{baseUrl}}/api/ods/13/progreso/1
+### Calcular progreso del Proyecto 5 (ODS 13)
+GET {{baseUrl}}/api/ods/13/progreso/5
 
-# ── 7. Estadísticas de Red General ──
+# ── 7. Dashboards Administrativos (V3) ──
+### Dashboard Global (Master Project)
+GET {{baseUrl}}/api/projects/dashboard
+
+### Dashboard ODS 01 (Fin de la Pobreza)
+GET {{baseUrl}}/api/ods/01/dashboard
+
+### Dashboard ODS 02 (Hambre Cero)
+GET {{baseUrl}}/api/ods/02/dashboard
+
+### Dashboard ODS 13 (Acción por el Clima)
+GET {{baseUrl}}/api/ods/13/dashboard
+
+### Dashboard ODS 16 (Paz y Justicia)
+GET {{baseUrl}}/api/ods/16/dashboard
+
+### Dashboard ODS 17 (Alianzas)
+GET {{baseUrl}}/api/ods/17/dashboard
+
+# ── 8. Estadísticas Generales ──
 
 ### Estadísticas ODS 01
 GET {{baseUrl}}/api/ods/01/estadisticas
-
-### Estadísticas ODS 02
-GET {{baseUrl}}/api/ods/02/estadisticas
 
 ### Estadísticas ODS 13
 GET {{baseUrl}}/api/ods/13/estadisticas

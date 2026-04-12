@@ -82,6 +82,31 @@ public class MasterProjectRepository implements IMasterProjectRepository {
     }
 
     @Override
+    public java.util.Map<String, Object> spAdminGlobalDashboard() {
+        java.util.Map<String, Object> dashboard = new java.util.HashMap<>();
+        
+        // Métricas básicas de proyectos
+        Integer total = dsl.selectCount().from(PROYECTOS).fetchOne(0, Integer.class);
+        Integer activos = dsl.selectCount().from(PROYECTOS).where(PROYECTOS.ESTADO.cast(String.class).eq("activo")).fetchOne(0, Integer.class);
+        Integer completados = dsl.selectCount().from(PROYECTOS).where(PROYECTOS.ESTADO.cast(String.class).eq("completado")).fetchOne(0, Integer.class);
+        Integer planificacion = dsl.selectCount().from(PROYECTOS).where(PROYECTOS.ESTADO.cast(String.class).eq("planificacion")).fetchOne(0, Integer.class);
+
+        dashboard.put("total_proyectos", total != null ? total : 0);
+        dashboard.put("proyectos_activos", activos != null ? activos : 0);
+        dashboard.put("proyectos_completados", completados != null ? completados : 0);
+        dashboard.put("proyectos_planificacion", planificacion != null ? planificacion : 0);
+        
+        // Proyectos por estado (para gráficos)
+        java.util.Map<String, Integer> estados = new java.util.HashMap<>();
+        estados.put("Activo", activos);
+        estados.put("Completado", completados);
+        estados.put("Planificación", planificacion);
+        dashboard.put("distribucion_estados", estados);
+
+        return dashboard;
+    }
+
+    @Override
     public boolean exists(Integer id) {
         return dsl.fetchExists(dsl.selectOne().from(PROYECTOS).where(PROYECTOS.ID.eq(id)));
     }

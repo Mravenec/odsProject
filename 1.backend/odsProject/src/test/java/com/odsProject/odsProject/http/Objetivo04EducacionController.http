@@ -172,6 +172,9 @@ Content-Type: application/json
 
 # ── 6. Utilidades y Estadísticas ──
 
+### Obtener dashboard administrativo
+GET {{baseUrl}}/api/ods/04/dashboard
+
 ### Obtener estadísticas del ODS
 GET {{baseUrl}}/api/ods/04/estadisticas
 

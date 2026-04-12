@@ -7,6 +7,7 @@ import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.AuditoriaOds17;
 import com.odsProject.odsProject.database.jooq.ods17.routines.SpAdminReporteProyecto;
+import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.repository.interfaces.IObjetivo17AlianzasRepository;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -24,6 +25,7 @@ import static com.odsProject.odsProject.database.jooq.ods_master.tables.Proyecto
 import static com.odsProject.odsProject.database.jooq.ods17.tables.ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
 import static com.odsProject.odsProject.database.jooq.ods17.tables.MedicionesHistoricas.MEDICIONES_HISTORICAS;
 import static com.odsProject.odsProject.database.jooq.ods17.tables.AuditoriaOds17.AUDITORIA_ODS17;
+import static com.odsProject.odsProject.database.jooq.ods17.tables.VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorMaster.INDICADOR_MASTER;
 
 /**
@@ -216,7 +218,10 @@ public class Objetivo17AlianzasRepository implements IObjetivo17AlianzasReposito
     @Override public List<AuditoriaOds17> findAuditoriaReciente(Integer dias) { return dsl.selectFrom(AUDITORIA_ODS17).where("{0} >= DATE_SUB(NOW(), INTERVAL ? DAY)", AUDITORIA_ODS17.FECHA_CAMBIO, dias).fetchInto(AuditoriaOds17.class); }
     @Override public List<AuditoriaOds17> findAuditoriaByRegistro(String tablaAfectada, Integer registroId) { return dsl.selectFrom(AUDITORIA_ODS17).where(AUDITORIA_ODS17.TABLA_AFECTADA.eq(tablaAfectada)).and(AUDITORIA_ODS17.REGISTRO_ID.eq(registroId)).fetchInto(AuditoriaOds17.class); }
 
-    @Override public Map<String, Object> spAdminDashboard() { return Map.of("status", "not_implemented"); }
+    @Override public Map<String, Object> spAdminDashboard() {
+        List<VistaAdminResumenGeneral> resumen = dsl.selectFrom(VISTA_ADMIN_RESUMEN_GENERAL).fetchInto(VistaAdminResumenGeneral.class);
+        return Map.of("status", "executed", "message", "Dashboard data retrieved from view for ODS17", "data", resumen);
+    }
     @Override public Map<String, Object> spAdminReporteProyecto(Integer proyectoId) {
         SpAdminReporteProyecto sp = new SpAdminReporteProyecto();
         sp.setProyectoIdParam(proyectoId);

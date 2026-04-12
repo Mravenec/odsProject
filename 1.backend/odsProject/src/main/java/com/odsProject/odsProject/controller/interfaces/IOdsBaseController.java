@@ -210,6 +210,13 @@ public interface IOdsBaseController<T, E, P, M, MH, A> {
     // ── Endpoints de Utilidades ──
 
     /**
+     * GET /api/ods/{odsId}/dashboard
+     * Obtiene datos del dashboard administrativo para este ODS
+     */
+    @GetMapping("/dashboard")
+    ResponseEntity<java.util.Map<String, Object>> getDashboard();
+
+    /**
      * GET /api/ods/{odsId}/estadisticas
      * Obtiene estadísticas generales del ODS
      */

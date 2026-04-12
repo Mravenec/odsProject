@@ -66,4 +66,10 @@ public class MasterProjectController implements IMasterProjectController {
     public ResponseEntity<Map<String, Object>> getProjectSummary(@PathVariable Integer id) {
         return ResponseEntity.ok(masterProjectService.calculateProjectSummary(id));
     }
+
+    @Override
+    @GetMapping("/dashboard")
+    public ResponseEntity<Map<String, Object>> getGlobalDashboard() {
+        return ResponseEntity.ok(masterProjectService.getGlobalDashboardData());
+    }
 }
