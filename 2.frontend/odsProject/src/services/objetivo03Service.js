@@ -46,6 +46,17 @@ export const objetivo03Service = {
     }
   },
 
+  // Dashboard específico del ODS 03 (V3)
+  getDashboard: async () => {
+    try {
+      const response = await api.get(`/ods/03/dashboard`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error fetching ODS 03 dashboard:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
   /**
    * Mantiene compatibilidad con llamadas individuales si existieran, 
    * aunque el ProjectCreationPage ahora usa getIndicators.

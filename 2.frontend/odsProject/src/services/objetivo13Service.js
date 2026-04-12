@@ -46,6 +46,17 @@ export const objetivo13Service = {
     }
   },
 
+  // Dashboard específico del ODS 13 (V3)
+  getDashboard: async () => {
+    try {
+      const response = await api.get(`/ods/13/dashboard`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error fetching ODS 13 dashboard:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
   /**
    * Mantiene compatibilidad con llamadas individuales si existieran.
    */

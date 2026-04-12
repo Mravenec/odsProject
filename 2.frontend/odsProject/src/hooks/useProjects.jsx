@@ -4,6 +4,7 @@ import { evaluationEngine } from '../utils/evaluationEngine';
 
 export const useProjects = () => {
   const [projects, setProjects] = useState([]);
+  const [globalDashboard, setGlobalDashboard] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -98,6 +99,29 @@ export const useProjects = () => {
     }
   }, []);
 
+  /**
+   * Carga métricas globales del Dashboard Core V3
+   */
+  const fetchGlobalDashboard = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await projectService.getGlobalDashboardData();
+      if (result.success) {
+        setGlobalDashboard(result.data);
+        return result.data;
+      } else {
+        setError(result.error);
+        return null;
+      }
+    } catch (err) {
+      setError(err.message);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const deleteProject = async (projectId, odsId) => {
     setLoading(true);
     try {
@@ -139,11 +163,13 @@ export const useProjects = () => {
 
   return {
     projects,
+    globalDashboard,
     loading,
     error,
     fetchUserProjects,
     fetchAdminProjects,
     fetchStatistics,
+    fetchGlobalDashboard,
     createProject,
     createFullProject,
     getProjectResults,

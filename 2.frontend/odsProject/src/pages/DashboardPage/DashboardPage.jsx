@@ -10,14 +10,14 @@ const DashboardPage = () => {
   const navigate = useNavigate();
   const { 
     projects, 
+    globalDashboard,
     loading: projectsLoading, 
     error: projectsError, 
     fetchUserProjects, 
     fetchAdminProjects,
-    fetchStatistics 
+    fetchGlobalDashboard 
   } = useProjects();
   
-  const [adminStats, setAdminStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,21 +30,10 @@ const DashboardPage = () => {
     try {
       setLoading(true);
       if (isAdmin()) {
-        const allProjects = await fetchAdminProjects();
-        const statsRes = await fetchStatistics();
-        
-        if (statsRes.success) {
-          setAdminStats({
-            totalProjects: allProjects.length,
-            activeProjects: allProjects.filter(p => p.status === 'active' || p.status === 'activo' || p.status === 'planificacion').length,
-            completedProjects: allProjects.filter(p => p.status === 'completed' || p.status === 'completado').length,
-            totalUsers: statsRes.data.totalUsers || 0
-          });
-        }
+        await fetchAdminProjects();
+        await fetchGlobalDashboard();
       } else if (isUser() && user?.id) {
         await fetchUserProjects(user.id);
-      } else {
-        console.warn('[Dashboard] User data incomplete for fetching projects');
       }
     } catch (error) {
       console.error('Error loading dashboard data:', error);
@@ -120,36 +109,54 @@ const DashboardPage = () => {
           )}
         </section>
 
-        {isAdmin() && adminStats && (
+        {isAdmin() && globalDashboard && (
           <section className="stats-container">
             <div className="stat-card blue">
               <div className="stat-icon">📊</div>
               <div className="stat-info">
                 <h3>Total Proyectos</h3>
-                <p className="stat-value">{adminStats.totalProjects}</p>
+                <p className="stat-value">{globalDashboard.totalProyectos || 0}</p>
               </div>
             </div>
             <div className="stat-card green">
               <div className="stat-icon">⚡</div>
               <div className="stat-info">
                 <h3>Activos</h3>
-                <p className="stat-value">{adminStats.activeProjects}</p>
+                <p className="stat-value">{globalDashboard.proyectosActivos || 0}</p>
               </div>
             </div>
             <div className="stat-card purple">
               <div className="stat-icon">✅</div>
               <div className="stat-info">
                 <h3>Completados</h3>
-                <p className="stat-value">{adminStats.completedProjects}</p>
+                <p className="stat-value">{globalDashboard.proyectosCompletados || 0}</p>
               </div>
             </div>
             <div className="stat-card orange">
               <div className="stat-icon">👥</div>
               <div className="stat-info">
                 <h3>Usuarios</h3>
-                <p className="stat-value">{adminStats.totalUsers}</p>
+                <p className="stat-value">{globalDashboard.totalUsuarios || 0}</p>
               </div>
             </div>
+          </section>
+        )}
+
+        {isAdmin() && globalDashboard && globalDashboard.progresoPromedio !== undefined && (
+          <section className="ecosystem-impact-section fade-in">
+             <div className="impact-card">
+                <div className="impact-header">
+                  <h3>Impacto Global del Ecosistema</h3>
+                  <span className="impact-value">{(globalDashboard.progresoPromedio || 0).toFixed(1)}%</span>
+                </div>
+                <div className="progress-bar-container">
+                  <div 
+                    className="progress-bar-fill" 
+                    style={{ width: `${Math.min(100, globalDashboard.progresoPromedio || 0)}%` }}
+                  ></div>
+                </div>
+                <p className="impact-footer">Promedio de logro de metas a través de los 17 ODS</p>
+             </div>
           </section>
         )}
 
@@ -208,8 +215,23 @@ const DashboardPage = () => {
                         </div>
 
                         <div className="project-meta-info">
-                          <span className="label">Meta ODS {project.objective}</span>
-                          <span className="indicators-count">{project.indicators.length} indicadores</span>
+                          <div className="meta-stats-row">
+                            <span className="label">Meta ODS {project.objective}</span>
+                            <span className="indicators-count">
+                              <strong>{project.indicatorsAchieved || 0}/{project.totalIndicators || project.indicators.length}</strong> indicadores
+                            </span>
+                          </div>
+                          
+                          <div className="mini-progress-section">
+                            <div className="mini-progress-bar">
+                              <div 
+                                className="mini-progress-fill" 
+                                style={{ width: `${Math.min(100, project.progressPercentage || 0)}%` }}
+                              ></div>
+                            </div>
+                            <span className="progress-percent">{(project.progressPercentage || 0).toFixed(0)}%</span>
+                          </div>
+
                           <span className="date-info">Vence: {formatDate(project.endDate)}</span>
                         </div>
 

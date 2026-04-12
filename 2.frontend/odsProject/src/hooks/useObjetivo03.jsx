@@ -8,11 +8,8 @@ import { objetivo03Service } from '../services/objetivo03Service';
  */
 export const useObjetivo03 = (proyectoId) => {
   const [indicators, setIndicators] = useState({});
-  const [stats, setStats] = useState({
-    totalProyectos: 0,
-    totalIndicadores: 0,
-    indicadoresConDatos: 0
-  });
+  const [stats, setStats] = useState({ totalProyectos: 0, totalIndicadores: 0 });
+  const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -41,6 +38,17 @@ export const useObjetivo03 = (proyectoId) => {
     }
   }, [proyectoId]);
 
+  const fetchDashboard = useCallback(async () => {
+    try {
+      const res = await objetivo03Service.getDashboard();
+      if (res.success) setDashboard(res.data);
+      return res;
+    } catch (err) {
+      console.error('[useObjetivo03] Error fetching dashboard:', err);
+      return { success: false, error: err.message };
+    }
+  }, []);
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -48,8 +56,10 @@ export const useObjetivo03 = (proyectoId) => {
   return {
     indicators,
     stats,
+    dashboard,
     loading,
     error,
-    refetch: fetchData
+    refetch: fetchData,
+    fetchDashboard
   };
 };

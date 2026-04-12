@@ -181,6 +181,23 @@ export const projectService = {
     }
   },
 
+  /**
+   * Obtiene datos del Dashboard Global (Core V3)
+   * Consolida métricas de los 17 ODS
+   */
+  async getGlobalDashboardData() {
+    try {
+      const response = await api.get('/projects/dashboard');
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      console.error('[projectService] Error fetching global dashboard:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
   async getStatistics(odsId = '01') {
     const formattedOdsId = String(odsId).padStart(2, '0');
     try {
@@ -209,6 +226,10 @@ export const projectService = {
       status: (p.estado || 'planificacion').toLowerCase(),
       startDate: p.fechaInicio,
       endDate: p.fechaFin,
+      // Campos enriquecidos V3
+      totalIndicators: p.totalIndicadores || 0,
+      indicatorsAchieved: p.indicadoresLogrados || 0,
+      progressPercentage: p.progresoPorcentaje || 0,
       indicators: p.indicadores || [],
       indicatorConfigs: p.configuracionIndicadores || p.indicator_configs || {}
     };

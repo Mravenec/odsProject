@@ -46,6 +46,17 @@ export const objetivo11Service = {
     }
   },
 
+  // Dashboard específico del ODS 11 (V3)
+  getDashboard: async () => {
+    try {
+      const response = await api.get(`/ods/11/dashboard`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error fetching ODS 11 dashboard:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
   /**
    * Mantiene compatibilidad con llamadas individuales si existieran.
    */

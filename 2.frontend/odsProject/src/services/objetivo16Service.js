@@ -46,6 +46,17 @@ export const objetivo16Service = {
     }
   },
 
+  // Dashboard específico del ODS 16 (V3)
+  getDashboard: async () => {
+    try {
+      const response = await api.get(`/ods/16/dashboard`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error fetching ODS 16 dashboard:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
   /**
    * Mantiene compatibilidad con llamadas individuales si existieran.
    */

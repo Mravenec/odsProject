@@ -44,6 +44,17 @@ export const objetivo01Service = {
     }
   },
 
+  // Dashboard específico del ODS 01 (V3)
+  getDashboard: async () => {
+    try {
+      const response = await api.get(`/ods/01/dashboard`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error fetching ODS 01 dashboard:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
   // Mantener métodos individuales para compatibilidad, pero parametrizados
   getIndicador_1_1_1: async (proyectoId = 1) => {
     try {

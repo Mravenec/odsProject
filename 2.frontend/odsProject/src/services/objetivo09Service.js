@@ -43,6 +43,17 @@ export const objetivo09Service = {
     }
   },
 
+  // Dashboard específico del ODS 09 (V3)
+  getDashboard: async () => {
+    try {
+      const response = await api.get(`/ods/09/dashboard`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error fetching ODS 09 dashboard:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
   // Métodos individuales adaptados
   getIndicador_9_1_1: async (proyectoId = 1) => {
     try {

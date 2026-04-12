@@ -13,6 +13,7 @@ export const useObjetivo14 = (proyectoId) => {
     totalIndicadores: 0,
     indicadoresConDatos: 0
   });
+  const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -41,6 +42,17 @@ export const useObjetivo14 = (proyectoId) => {
     }
   }, [proyectoId]);
 
+  const fetchDashboard = useCallback(async () => {
+    try {
+      const res = await objetivo14Service.getDashboard();
+      if (res.success) setDashboard(res.data);
+      return res;
+    } catch (err) {
+      console.error('[useObjetivo14] Error fetching dashboard:', err);
+      return { success: false, error: err.message };
+    }
+  }, []);
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -48,8 +60,10 @@ export const useObjetivo14 = (proyectoId) => {
   return {
     indicators,
     stats,
+    dashboard,
     loading,
     error,
-    refetch: fetchData
+    refetch: fetchData,
+    fetchDashboard
   };
 };
