@@ -23,8 +23,9 @@ public class MedicionParametroValoresRecord extends UpdatableRecordImpl<Medicion
     /**
      * Setter for <code>ods16.medicion_parametro_valores.id</code>.
      */
-    public void setId(Integer value) {
+    public MedicionParametroValoresRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -37,8 +38,9 @@ public class MedicionParametroValoresRecord extends UpdatableRecordImpl<Medicion
     /**
      * Setter for <code>ods16.medicion_parametro_valores.medicion_id</code>.
      */
-    public void setMedicionId(Integer value) {
+    public MedicionParametroValoresRecord setMedicionId(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -51,8 +53,9 @@ public class MedicionParametroValoresRecord extends UpdatableRecordImpl<Medicion
     /**
      * Setter for <code>ods16.medicion_parametro_valores.parametro_id</code>.
      */
-    public void setParametroId(Integer value) {
+    public MedicionParametroValoresRecord setParametroId(Integer value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -65,8 +68,9 @@ public class MedicionParametroValoresRecord extends UpdatableRecordImpl<Medicion
     /**
      * Setter for <code>ods16.medicion_parametro_valores.valor_ingresado</code>.
      */
-    public void setValorIngresado(BigDecimal value) {
+    public MedicionParametroValoresRecord setValorIngresado(BigDecimal value) {
         set(3, value);
+        return this;
     }
 
     /**

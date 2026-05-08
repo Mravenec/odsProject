@@ -27,6 +27,10 @@ public class Proyectos implements Serializable {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private String metaGeneral;
+    private String responsableNombre;
+    private String locationProvince;
+    private String locationCanton;
+    private String locationDistrict;
     private ProyectosEstado estado;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -42,6 +46,10 @@ public class Proyectos implements Serializable {
         this.fechaInicio = value.fechaInicio;
         this.fechaFin = value.fechaFin;
         this.metaGeneral = value.metaGeneral;
+        this.responsableNombre = value.responsableNombre;
+        this.locationProvince = value.locationProvince;
+        this.locationCanton = value.locationCanton;
+        this.locationDistrict = value.locationDistrict;
         this.estado = value.estado;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
@@ -56,6 +64,10 @@ public class Proyectos implements Serializable {
         LocalDate fechaInicio,
         LocalDate fechaFin,
         String metaGeneral,
+        String responsableNombre,
+        String locationProvince,
+        String locationCanton,
+        String locationDistrict,
         ProyectosEstado estado,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
@@ -68,6 +80,10 @@ public class Proyectos implements Serializable {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.metaGeneral = metaGeneral;
+        this.responsableNombre = responsableNombre;
+        this.locationProvince = locationProvince;
+        this.locationCanton = locationCanton;
+        this.locationDistrict = locationDistrict;
         this.estado = estado;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -83,8 +99,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.id</code>.
      */
-    public void setId(Integer id) {
+    public Proyectos setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -97,8 +114,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.usuario_id</code>.
      */
-    public void setUsuarioId(Integer usuarioId) {
+    public Proyectos setUsuarioId(Integer usuarioId) {
         this.usuarioId = usuarioId;
+        return this;
     }
 
     /**
@@ -111,8 +129,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.sede_id</code>.
      */
-    public void setSedeId(Integer sedeId) {
+    public Proyectos setSedeId(Integer sedeId) {
         this.sedeId = sedeId;
+        return this;
     }
 
     /**
@@ -125,8 +144,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.nombre_proyecto</code>.
      */
-    public void setNombreProyecto(String nombreProyecto) {
+    public Proyectos setNombreProyecto(String nombreProyecto) {
         this.nombreProyecto = nombreProyecto;
+        return this;
     }
 
     /**
@@ -139,8 +159,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.descripcion</code>.
      */
-    public void setDescripcion(String descripcion) {
+    public Proyectos setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+        return this;
     }
 
     /**
@@ -153,8 +174,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.fecha_inicio</code>.
      */
-    public void setFechaInicio(LocalDate fechaInicio) {
+    public Proyectos setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
+        return this;
     }
 
     /**
@@ -167,8 +189,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.fecha_fin</code>.
      */
-    public void setFechaFin(LocalDate fechaFin) {
+    public Proyectos setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
+        return this;
     }
 
     /**
@@ -181,8 +204,69 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.meta_general</code>.
      */
-    public void setMetaGeneral(String metaGeneral) {
+    public Proyectos setMetaGeneral(String metaGeneral) {
         this.metaGeneral = metaGeneral;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.responsable_nombre</code>.
+     */
+    public String getResponsableNombre() {
+        return this.responsableNombre;
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.responsable_nombre</code>.
+     */
+    public Proyectos setResponsableNombre(String responsableNombre) {
+        this.responsableNombre = responsableNombre;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.location_province</code>.
+     */
+    public String getLocationProvince() {
+        return this.locationProvince;
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.location_province</code>.
+     */
+    public Proyectos setLocationProvince(String locationProvince) {
+        this.locationProvince = locationProvince;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.location_canton</code>.
+     */
+    public String getLocationCanton() {
+        return this.locationCanton;
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.location_canton</code>.
+     */
+    public Proyectos setLocationCanton(String locationCanton) {
+        this.locationCanton = locationCanton;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.location_district</code>.
+     */
+    public String getLocationDistrict() {
+        return this.locationDistrict;
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.location_district</code>.
+     */
+    public Proyectos setLocationDistrict(String locationDistrict) {
+        this.locationDistrict = locationDistrict;
+        return this;
     }
 
     /**
@@ -195,8 +279,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.estado</code>.
      */
-    public void setEstado(ProyectosEstado estado) {
+    public Proyectos setEstado(ProyectosEstado estado) {
         this.estado = estado;
+        return this;
     }
 
     /**
@@ -209,8 +294,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public Proyectos setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     /**
@@ -223,8 +309,9 @@ public class Proyectos implements Serializable {
     /**
      * Setter for <code>ods_master.proyectos.updated_at</code>.
      */
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public Proyectos setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+        return this;
     }
 
     @Override
@@ -284,6 +371,30 @@ public class Proyectos implements Serializable {
         }
         else if (!this.metaGeneral.equals(other.metaGeneral))
             return false;
+        if (this.responsableNombre == null) {
+            if (other.responsableNombre != null)
+                return false;
+        }
+        else if (!this.responsableNombre.equals(other.responsableNombre))
+            return false;
+        if (this.locationProvince == null) {
+            if (other.locationProvince != null)
+                return false;
+        }
+        else if (!this.locationProvince.equals(other.locationProvince))
+            return false;
+        if (this.locationCanton == null) {
+            if (other.locationCanton != null)
+                return false;
+        }
+        else if (!this.locationCanton.equals(other.locationCanton))
+            return false;
+        if (this.locationDistrict == null) {
+            if (other.locationDistrict != null)
+                return false;
+        }
+        else if (!this.locationDistrict.equals(other.locationDistrict))
+            return false;
         if (this.estado == null) {
             if (other.estado != null)
                 return false;
@@ -317,6 +428,10 @@ public class Proyectos implements Serializable {
         result = prime * result + ((this.fechaInicio == null) ? 0 : this.fechaInicio.hashCode());
         result = prime * result + ((this.fechaFin == null) ? 0 : this.fechaFin.hashCode());
         result = prime * result + ((this.metaGeneral == null) ? 0 : this.metaGeneral.hashCode());
+        result = prime * result + ((this.responsableNombre == null) ? 0 : this.responsableNombre.hashCode());
+        result = prime * result + ((this.locationProvince == null) ? 0 : this.locationProvince.hashCode());
+        result = prime * result + ((this.locationCanton == null) ? 0 : this.locationCanton.hashCode());
+        result = prime * result + ((this.locationDistrict == null) ? 0 : this.locationDistrict.hashCode());
         result = prime * result + ((this.estado == null) ? 0 : this.estado.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -335,6 +450,10 @@ public class Proyectos implements Serializable {
         sb.append(", ").append(fechaInicio);
         sb.append(", ").append(fechaFin);
         sb.append(", ").append(metaGeneral);
+        sb.append(", ").append(responsableNombre);
+        sb.append(", ").append(locationProvince);
+        sb.append(", ").append(locationCanton);
+        sb.append(", ").append(locationDistrict);
         sb.append(", ").append(estado);
         sb.append(", ").append(createdAt);
         sb.append(", ").append(updatedAt);

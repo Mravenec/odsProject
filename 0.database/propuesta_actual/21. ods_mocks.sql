@@ -28,9 +28,9 @@ INSERT INTO sedes (id, nombre, descripcion) VALUES
   (6, 'CFP', 'Centro de Formación Pedagógica y Tecnología Educativa');
 
 INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sede_id, is_active, email_verificado) VALUES
-  (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Ana García López', 2, 2, TRUE, TRUE),
-  (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'Carlos Rodríguez Mora', 2, 5, TRUE, TRUE),
-  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$kk4GLfeuXtXbsdS0Dj01mepTBBAWTV814xwLBkR4bBlyRiSyxvqMq', 'María Jiménez Solano', 3, 2, TRUE, TRUE);
+  (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Ana García López', 2, 2, TRUE, TRUE),
+  (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Carlos Rodríguez Mora', 2, 5, TRUE, TRUE),
+  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'María Jiménez Solano', 3, 2, TRUE, TRUE);
 
 INSERT INTO permisos_ods (usuario_id, ods_num, puede_crear, puede_editar, puede_ver) VALUES
   (2, 1, TRUE, TRUE, TRUE), (3, 2, TRUE, TRUE, TRUE);

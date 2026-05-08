@@ -28,6 +28,7 @@ CREATE TABLE proyecto_indicadores (
     valor_actual        DECIMAL(15,4) DEFAULT 0,          -- Último resultado calculado
     meta_valor          DECIMAL(15,4) NOT NULL,
     meta_unidad         VARCHAR(50) NOT NULL,
+    meta_nombre             VARCHAR(300) NULL,
     fecha_proxima_medicion DATE,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS proyecto_indicadores (
     valor_actual        DECIMAL(15,4) DEFAULT 0,
     meta_valor          DECIMAL(15,4) NOT NULL,
     meta_unidad         VARCHAR(50) NOT NULL,
+    meta_nombre             VARCHAR(300) NULL,
     fecha_proxima_medicion DATE,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -147,6 +148,7 @@ SELECT
     pi.valor_actual,
     pi.meta_valor,
     pi.meta_unidad,
+    pi.meta_nombre,
     CASE
         WHEN pi.meta_valor IS NULL OR pi.meta_valor = 0 OR pi.valor_actual IS NULL THEN 'SIN DATOS'
         WHEN pi.valor_actual >= pi.meta_valor             THEN 'LOGRADO'

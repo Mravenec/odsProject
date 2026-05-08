@@ -1,3 +1,8 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth.jsx';
+import { useProjects } from '../../hooks/useProjects.jsx';
+import { projectService } from '../../services/projectService';
 import { 
   FileText, 
   MapPin, 
@@ -47,14 +52,14 @@ const ProjectResultsPage = () => {
   const fetchProject = async () => {
     try {
       setLoading(true);
-      // Usar el ID del usuario actual para filtrar
-      const userProjects = await fetchUserProjects(user?.id);
-      const currentProject = userProjects.find(p => p.id === parseInt(projectId));
+      const result = await projectService.getProjectById(projectId);
       
-      if (!currentProject) {
+      if (!result.success || !result.data) {
         setError('Proyecto no encontrado');
         return;
       }
+      
+      const currentProject = result.data;
       
       setProject(currentProject);
       
@@ -65,7 +70,7 @@ const ProjectResultsPage = () => {
         const initialFormData = {};
         const initialParamValues = {};
         
-        currentProject.indicators.forEach(indicator => {
+        currentProject.indicators?.forEach(indicator => {
           initialFormData[indicator] = '';
           
           const config = currentProject.indicatorConfigs?.[indicator];
@@ -150,6 +155,20 @@ const ProjectResultsPage = () => {
         <div className="loader-content">
           <p>Generando reporte de impacto...</p>
           <span className="loader-subtext">Analizando métricas ODS vinculadas</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !project) {
+    return (
+      <div className="project-results-page premium-view">
+        <div className="error-container fade-in">
+          <h2>Error al cargar el proyecto</h2>
+          <p>{error || 'El proyecto solicitado no está disponible.'}</p>
+          <button className="btn-primary" onClick={() => navigate('/dashboard')}>
+            Volver al Dashboard
+          </button>
         </div>
       </div>
     );
@@ -278,7 +297,7 @@ const ProjectResultsPage = () => {
             </div>
 
             <div className="indicators-grid-layout">
-              {results ? (
+              {results?.indicatorResults ? (
                 results.indicatorResults.map((result, index) => (
                   <div key={index} className="indicator-report-wrapper">
                     <IndicatorCard 
@@ -292,7 +311,7 @@ const ProjectResultsPage = () => {
               ) : (
                 <form onSubmit={handleSubmit} className="modern-form">
                   <div className="indicators-entry-list">
-                    {project.indicators.map((indicator, index) => {
+                    {project.indicators?.map((indicator, index) => {
                       const config = project.indicatorConfigs?.[indicator];
                       const { value, achievement } = calculateIndicatorAchievement(config, paramValues[indicator] || {});
                       

@@ -24,8 +24,9 @@ public class IndicadorMasterRecord extends UpdatableRecordImpl<IndicadorMasterRe
     /**
      * Setter for <code>ods_login.indicador_master.id</code>.
      */
-    public void setId(Integer value) {
+    public IndicadorMasterRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -38,8 +39,9 @@ public class IndicadorMasterRecord extends UpdatableRecordImpl<IndicadorMasterRe
     /**
      * Setter for <code>ods_login.indicador_master.ods_id</code>.
      */
-    public void setOdsId(UByte value) {
+    public IndicadorMasterRecord setOdsId(UByte value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -52,8 +54,9 @@ public class IndicadorMasterRecord extends UpdatableRecordImpl<IndicadorMasterRe
     /**
      * Setter for <code>ods_login.indicador_master.codigo</code>.
      */
-    public void setCodigo(String value) {
+    public IndicadorMasterRecord setCodigo(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -66,8 +69,9 @@ public class IndicadorMasterRecord extends UpdatableRecordImpl<IndicadorMasterRe
     /**
      * Setter for <code>ods_login.indicador_master.nombre</code>.
      */
-    public void setNombre(String value) {
+    public IndicadorMasterRecord setNombre(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -80,8 +84,9 @@ public class IndicadorMasterRecord extends UpdatableRecordImpl<IndicadorMasterRe
     /**
      * Setter for <code>ods_login.indicador_master.descripcion</code>.
      */
-    public void setDescripcion(String value) {
+    public IndicadorMasterRecord setDescripcion(String value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -94,8 +99,9 @@ public class IndicadorMasterRecord extends UpdatableRecordImpl<IndicadorMasterRe
     /**
      * Setter for <code>ods_login.indicador_master.formula_default</code>.
      */
-    public void setFormulaDefault(String value) {
+    public IndicadorMasterRecord setFormulaDefault(String value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -108,8 +114,9 @@ public class IndicadorMasterRecord extends UpdatableRecordImpl<IndicadorMasterRe
     /**
      * Setter for <code>ods_login.indicador_master.unidad_medida_default</code>.
      */
-    public void setUnidadMedidaDefault(String value) {
+    public IndicadorMasterRecord setUnidadMedidaDefault(String value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -122,8 +129,9 @@ public class IndicadorMasterRecord extends UpdatableRecordImpl<IndicadorMasterRe
     /**
      * Setter for <code>ods_login.indicador_master.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public IndicadorMasterRecord setCreatedAt(LocalDateTime value) {
         set(7, value);
+        return this;
     }
 
     /**

@@ -5,8 +5,10 @@ import LoginPage from './pages/LoginPage/LoginPage.jsx';
 import DashboardPage from './pages/DashboardPage/DashboardPage.jsx';
 import ProjectCreationPage from './pages/ProjectCreationPage/ProjectCreationPage.jsx';
 import ProjectResultsPage from './pages/ProjectResultsPage/ProjectResultsPage.jsx';
+import ProjectListPage from './pages/ProjectListPage/ProjectListPage.jsx';
 import AdminProjectOverviewPage from './pages/Admin/Overview/OverviewPage.jsx';
 import AdminResultsReviewPage from './pages/Admin/Results/ResultsPage.jsx';
+import EvaluationPage from './pages/EvaluationPage/EvaluationPage';
 
 function App() {
   return (
@@ -43,8 +45,10 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/projects" element={<ProjectListPage />} />
         <Route path="/projects/create" element={<ProjectCreationPage />} />
         <Route path="/projects/:projectId/results" element={<ProjectResultsPage />} />
+        <Route path="/projects/:projectId/evaluation" element={<EvaluationPage />} />
         
         {user?.role === 'admin' && (
           <>

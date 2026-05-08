@@ -1,0 +1,180 @@
+### ODS Project — API Tests
+### Use with IntelliJ IDEA HTTP Client or VS Code REST Client
+
+@base = http://localhost:8080/api
+@token = {{login.response.body.token}}
+
+### ① LOGIN (Gestor ODS01)
+# @name login
+POST {{base}}/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "ana.garcia@ods.cr",
+  "password": "password123",
+  "ip": "127.0.0.1",
+  "userAgent": "http-client"
+}
+
+###
+
+### ② VALIDATE TOKEN
+GET {{base}}/login/auth/validate
+Authorization: Bearer {{token}}
+
+###
+
+### ③ CATÁLOGO — 17 ODS
+GET {{base}}/catalog/ods
+Authorization: Bearer {{token}}
+
+###
+
+### ④ INDICADORES DEL ODS 1
+GET {{base}}/catalog/ods/1/indicadores
+Authorization: Bearer {{token}}
+
+###
+
+### ⑤ PARÁMETROS DEL INDICADOR 1.1.1 (id=1 en la BD)
+GET {{base}}/catalog/indicadores/1/parametros
+Authorization: Bearer {{token}}
+
+###
+
+### ⑥ SEDES
+GET {{base}}/login/sedes
+Authorization: Bearer {{token}}
+
+###
+
+### ⑦ PROYECTOS DEL USUARIO
+GET {{base}}/projects/user/2
+Authorization: Bearer {{token}}
+
+###
+
+### ⑧ CREAR PROYECTO (con campos nuevos)
+# @name createProject
+POST {{base}}/projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Reducción Pobreza Extrema — Test E2E",
+  "descripcion": "Iniciativa de prueba del flujo completo",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2025-12-31",
+  "responsableNombre": "Ileana Cartín Guerrero",
+  "locationProvince": "Cartago",
+  "locationCanton": "Turrialba",
+  "locationDistrict": "La Suiza",
+  "estado": "planificacion"
+}
+
+###
+
+### ⑨ VER PROYECTO
+GET {{base}}/projects/{{createProject.response.body.id}}
+Authorization: Bearer {{token}}
+
+###
+
+### ⑩ VINCULAR INDICADOR 1.1.1 (con meta_nombre)
+# @name createIndicador
+POST {{base}}/ods/01/indicadores
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "proyectoId": 6,
+  "indicadorMasterId": 1,
+  "formulaCustom": "(p1 / p2) * 100",
+  "metaValor": 3.0,
+  "metaUnidad": "Porcentaje",
+  "metaNombre": "Reducir la pobreza extrema a menos del 3% de la población del cantón"
+}
+
+###
+
+### ⑪ AGREGAR PARÁMETRO p1
+POST {{base}}/ods/01/metas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "proyectoIndicadorId": 6,
+  "nombreParametro": "Personas en pobreza extrema",
+  "nombreVariable": "p1",
+  "tipoDato": "Decimal",
+  "valorActual": 12000
+}
+
+###
+
+### ⑫ AGREGAR PARÁMETRO p2
+POST {{base}}/ods/01/metas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "proyectoIndicadorId": 6,
+  "nombreParametro": "Población total del área",
+  "nombreVariable": "p2",
+  "tipoDato": "Decimal",
+  "valorActual": 500000
+}
+
+###
+
+### ⑬ VER INDICADORES DEL PROYECTO (con valor_actual calculado)
+GET {{base}}/ods/01/indicadores?proyectoId=6
+Authorization: Bearer {{token}}
+
+###
+
+### ⑭ REGISTRAR MEDICIÓN
+POST {{base}}/ods/01/mediciones
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "proyectoIndicadorId": 6,
+  "valorCalculado": 2.4,
+  "fechaMedicion": "2024-06-15",
+  "responsable": "Ana García"
+}
+
+###
+
+### ⑮ VER HISTÓRICO
+GET {{base}}/ods/01/mediciones?indicadorId=6
+Authorization: Bearer {{token}}
+
+###
+
+### ⑯ PROGRESO DEL PROYECTO
+GET {{base}}/projects/6/summary
+Authorization: Bearer {{token}}
+
+###
+
+### ⑰ DASHBOARD ADMIN
+GET {{base}}/login/admin/summary
+Authorization: Bearer {{token}}
+
+###
+
+### ⑱ LOGIN ADMIN
+# @name loginAdmin
+POST {{base}}/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ods.local",
+  "password": "Admin1234!",
+  "ip": "127.0.0.1",
+  "userAgent": "http-client"
+}

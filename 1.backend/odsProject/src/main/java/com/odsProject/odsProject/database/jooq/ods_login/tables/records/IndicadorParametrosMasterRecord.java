@@ -22,8 +22,9 @@ public class IndicadorParametrosMasterRecord extends UpdatableRecordImpl<Indicad
     /**
      * Setter for <code>ods_login.indicador_parametros_master.id</code>.
      */
-    public void setId(Integer value) {
+    public IndicadorParametrosMasterRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -37,8 +38,9 @@ public class IndicadorParametrosMasterRecord extends UpdatableRecordImpl<Indicad
      * Setter for
      * <code>ods_login.indicador_parametros_master.indicador_id</code>.
      */
-    public void setIndicadorId(Integer value) {
+    public IndicadorParametrosMasterRecord setIndicadorId(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -53,8 +55,9 @@ public class IndicadorParametrosMasterRecord extends UpdatableRecordImpl<Indicad
      * Setter for
      * <code>ods_login.indicador_parametros_master.nombre_parametro</code>.
      */
-    public void setNombreParametro(String value) {
+    public IndicadorParametrosMasterRecord setNombreParametro(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -69,8 +72,9 @@ public class IndicadorParametrosMasterRecord extends UpdatableRecordImpl<Indicad
      * Setter for
      * <code>ods_login.indicador_parametros_master.descripcion_param</code>.
      */
-    public void setDescripcionParam(String value) {
+    public IndicadorParametrosMasterRecord setDescripcionParam(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -84,8 +88,9 @@ public class IndicadorParametrosMasterRecord extends UpdatableRecordImpl<Indicad
     /**
      * Setter for <code>ods_login.indicador_parametros_master.tipo_dato</code>.
      */
-    public void setTipoDato(IndicadorParametrosMasterTipoDato value) {
+    public IndicadorParametrosMasterRecord setTipoDato(IndicadorParametrosMasterTipoDato value) {
         set(4, value);
+        return this;
     }
 
     /**

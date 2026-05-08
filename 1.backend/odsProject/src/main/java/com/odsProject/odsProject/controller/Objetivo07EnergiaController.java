@@ -11,6 +11,10 @@ import com.odsProject.odsProject.controller.interfaces.IObjetivo07EnergiaControl
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import java.util.Collections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +27,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/ods/07")
 public class Objetivo07EnergiaController implements IObjetivo07EnergiaController {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo07EnergiaController.class);
 
     @Autowired
     private Objetivo07EnergiaService objetivo07EnergiaService;
@@ -51,13 +57,29 @@ public class Objetivo07EnergiaController implements IObjetivo07EnergiaController
 
     @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getIndicadores(Integer proyectoId) { return ResponseEntity.ok(objetivo07EnergiaService.getAllIndicators(proyectoId)); }
     @Override public ResponseEntity<VistaAdminDetalleIndicadores> getIndicador(Integer indicadorId) { return objetivo07EnergiaService.findIndicadorById(indicadorId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
-    @Override public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo07EnergiaService.saveIndicador(indicador)); }
+    @Override
+    public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) {
+        try {
+            return ResponseEntity.ok(objetivo07EnergiaService.saveIndicador(indicador));
+        } catch (Exception e) {
+            log.error("createIndicador error: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @Override public ResponseEntity<ProyectoIndicadores> updateIndicador(Integer indicadorId, ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo07EnergiaService.updateIndicador(indicador)); }
     @Override public ResponseEntity<Void> deleteIndicador(Integer indicadorId) { objetivo07EnergiaService.deleteIndicador(indicadorId); return ResponseEntity.noContent().build(); }
 
     @Override public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo07EnergiaService.findAllMetasProyecto(proyectoId)); }
     @Override public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(Integer metaId) { return objetivo07EnergiaService.findMetaProyectoById(metaId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
-    @Override public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo07EnergiaService.saveMetaProyecto(meta)); }
+    @Override
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) {
+        try {
+            return ResponseEntity.ok(objetivo07EnergiaService.saveMetaProyecto(meta));
+        } catch (Exception e) {
+            log.error("createMetaProyecto error: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @Override public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(Integer metaId, ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo07EnergiaService.updateMetaProyecto(meta)); }
     @Override public ResponseEntity<Void> deleteMetaProyecto(Integer metaId) { objetivo07EnergiaService.deleteMetaProyecto(metaId); return ResponseEntity.noContent().build(); }
 

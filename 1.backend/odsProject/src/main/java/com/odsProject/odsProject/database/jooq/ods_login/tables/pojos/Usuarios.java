@@ -102,8 +102,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.id</code>.
      */
-    public void setId(Integer id) {
+    public Usuarios setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -116,8 +117,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.username</code>.
      */
-    public void setUsername(String username) {
+    public Usuarios setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     /**
@@ -130,8 +132,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.email</code>.
      */
-    public void setEmail(String email) {
+    public Usuarios setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     /**
@@ -144,8 +147,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.password_hash</code>.
      */
-    public void setPasswordHash(String passwordHash) {
+    public Usuarios setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+        return this;
     }
 
     /**
@@ -158,8 +162,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.full_name</code>.
      */
-    public void setFullName(String fullName) {
+    public Usuarios setFullName(String fullName) {
         this.fullName = fullName;
+        return this;
     }
 
     /**
@@ -172,8 +177,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.rol_id</code>.
      */
-    public void setRolId(Integer rolId) {
+    public Usuarios setRolId(Integer rolId) {
         this.rolId = rolId;
+        return this;
     }
 
     /**
@@ -186,8 +192,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.sede_id</code>.
      */
-    public void setSedeId(Integer sedeId) {
+    public Usuarios setSedeId(Integer sedeId) {
         this.sedeId = sedeId;
+        return this;
     }
 
     /**
@@ -200,8 +207,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.is_active</code>.
      */
-    public void setIsActive(Byte isActive) {
+    public Usuarios setIsActive(Byte isActive) {
         this.isActive = isActive;
+        return this;
     }
 
     /**
@@ -214,8 +222,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.email_verificado</code>.
      */
-    public void setEmailVerificado(Byte emailVerificado) {
+    public Usuarios setEmailVerificado(Byte emailVerificado) {
         this.emailVerificado = emailVerificado;
+        return this;
     }
 
     /**
@@ -228,8 +237,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.ultimo_login</code>.
      */
-    public void setUltimoLogin(LocalDateTime ultimoLogin) {
+    public Usuarios setUltimoLogin(LocalDateTime ultimoLogin) {
         this.ultimoLogin = ultimoLogin;
+        return this;
     }
 
     /**
@@ -242,8 +252,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.intentos_fallidos</code>.
      */
-    public void setIntentosFallidos(UByte intentosFallidos) {
+    public Usuarios setIntentosFallidos(UByte intentosFallidos) {
         this.intentosFallidos = intentosFallidos;
+        return this;
     }
 
     /**
@@ -256,8 +267,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.bloqueado_hasta</code>.
      */
-    public void setBloqueadoHasta(LocalDateTime bloqueadoHasta) {
+    public Usuarios setBloqueadoHasta(LocalDateTime bloqueadoHasta) {
         this.bloqueadoHasta = bloqueadoHasta;
+        return this;
     }
 
     /**
@@ -270,8 +282,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.token_recuperacion</code>.
      */
-    public void setTokenRecuperacion(String tokenRecuperacion) {
+    public Usuarios setTokenRecuperacion(String tokenRecuperacion) {
         this.tokenRecuperacion = tokenRecuperacion;
+        return this;
     }
 
     /**
@@ -284,8 +297,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.token_expira</code>.
      */
-    public void setTokenExpira(LocalDateTime tokenExpira) {
+    public Usuarios setTokenExpira(LocalDateTime tokenExpira) {
         this.tokenExpira = tokenExpira;
+        return this;
     }
 
     /**
@@ -298,8 +312,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public Usuarios setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     /**
@@ -312,8 +327,9 @@ public class Usuarios implements Serializable {
     /**
      * Setter for <code>ods_login.usuarios.updated_at</code>.
      */
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public Usuarios setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+        return this;
     }
 
     @Override

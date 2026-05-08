@@ -75,17 +75,17 @@ public class IndicadorMaster extends TableImpl<IndicadorMasterRecord> {
     /**
      * The column <code>ods_login.indicador_master.nombre</code>.
      */
-    public final TableField<IndicadorMasterRecord, String> NOMBRE = createField(DSL.name("nombre"), SQLDataType.CLOB(65535).nullable(false), this, "");
+    public final TableField<IndicadorMasterRecord, String> NOMBRE = createField(DSL.name("nombre"), SQLDataType.CLOB.nullable(false), this, "");
 
     /**
      * The column <code>ods_login.indicador_master.descripcion</code>.
      */
-    public final TableField<IndicadorMasterRecord, String> DESCRIPCION = createField(DSL.name("descripcion"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+    public final TableField<IndicadorMasterRecord, String> DESCRIPCION = createField(DSL.name("descripcion"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
      * The column <code>ods_login.indicador_master.formula_default</code>.
      */
-    public final TableField<IndicadorMasterRecord, String> FORMULA_DEFAULT = createField(DSL.name("formula_default"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+    public final TableField<IndicadorMasterRecord, String> FORMULA_DEFAULT = createField(DSL.name("formula_default"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
      * The column <code>ods_login.indicador_master.unidad_medida_default</code>.

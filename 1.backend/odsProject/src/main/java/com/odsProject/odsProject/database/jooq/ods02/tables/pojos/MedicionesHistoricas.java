@@ -70,8 +70,9 @@ public class MedicionesHistoricas implements Serializable {
     /**
      * Setter for <code>ods02.mediciones_historicas.id</code>.
      */
-    public void setId(Integer id) {
+    public MedicionesHistoricas setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -86,8 +87,9 @@ public class MedicionesHistoricas implements Serializable {
      * Setter for
      * <code>ods02.mediciones_historicas.proyecto_indicador_id</code>.
      */
-    public void setProyectoIndicadorId(Integer proyectoIndicadorId) {
+    public MedicionesHistoricas setProyectoIndicadorId(Integer proyectoIndicadorId) {
         this.proyectoIndicadorId = proyectoIndicadorId;
+        return this;
     }
 
     /**
@@ -100,8 +102,9 @@ public class MedicionesHistoricas implements Serializable {
     /**
      * Setter for <code>ods02.mediciones_historicas.valor_calculado</code>.
      */
-    public void setValorCalculado(BigDecimal valorCalculado) {
+    public MedicionesHistoricas setValorCalculado(BigDecimal valorCalculado) {
         this.valorCalculado = valorCalculado;
+        return this;
     }
 
     /**
@@ -114,8 +117,9 @@ public class MedicionesHistoricas implements Serializable {
     /**
      * Setter for <code>ods02.mediciones_historicas.fecha_medicion</code>.
      */
-    public void setFechaMedicion(LocalDate fechaMedicion) {
+    public MedicionesHistoricas setFechaMedicion(LocalDate fechaMedicion) {
         this.fechaMedicion = fechaMedicion;
+        return this;
     }
 
     /**
@@ -128,8 +132,9 @@ public class MedicionesHistoricas implements Serializable {
     /**
      * Setter for <code>ods02.mediciones_historicas.responsable</code>.
      */
-    public void setResponsable(String responsable) {
+    public MedicionesHistoricas setResponsable(String responsable) {
         this.responsable = responsable;
+        return this;
     }
 
     /**
@@ -142,8 +147,9 @@ public class MedicionesHistoricas implements Serializable {
     /**
      * Setter for <code>ods02.mediciones_historicas.metodo_medicion</code>.
      */
-    public void setMetodoMedicion(String metodoMedicion) {
+    public MedicionesHistoricas setMetodoMedicion(String metodoMedicion) {
         this.metodoMedicion = metodoMedicion;
+        return this;
     }
 
     /**
@@ -156,8 +162,9 @@ public class MedicionesHistoricas implements Serializable {
     /**
      * Setter for <code>ods02.mediciones_historicas.observaciones</code>.
      */
-    public void setObservaciones(String observaciones) {
+    public MedicionesHistoricas setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+        return this;
     }
 
     /**
@@ -170,8 +177,9 @@ public class MedicionesHistoricas implements Serializable {
     /**
      * Setter for <code>ods02.mediciones_historicas.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public MedicionesHistoricas setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     @Override

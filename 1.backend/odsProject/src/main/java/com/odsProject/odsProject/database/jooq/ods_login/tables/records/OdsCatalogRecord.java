@@ -24,8 +24,9 @@ public class OdsCatalogRecord extends UpdatableRecordImpl<OdsCatalogRecord> {
     /**
      * Setter for <code>ods_login.ods_catalog.id</code>.
      */
-    public void setId(UByte value) {
+    public OdsCatalogRecord setId(UByte value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -38,8 +39,9 @@ public class OdsCatalogRecord extends UpdatableRecordImpl<OdsCatalogRecord> {
     /**
      * Setter for <code>ods_login.ods_catalog.nombre</code>.
      */
-    public void setNombre(String value) {
+    public OdsCatalogRecord setNombre(String value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -52,8 +54,9 @@ public class OdsCatalogRecord extends UpdatableRecordImpl<OdsCatalogRecord> {
     /**
      * Setter for <code>ods_login.ods_catalog.descripcion</code>.
      */
-    public void setDescripcion(String value) {
+    public OdsCatalogRecord setDescripcion(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -66,8 +69,9 @@ public class OdsCatalogRecord extends UpdatableRecordImpl<OdsCatalogRecord> {
     /**
      * Setter for <code>ods_login.ods_catalog.color_hex</code>.
      */
-    public void setColorHex(String value) {
+    public OdsCatalogRecord setColorHex(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -80,8 +84,9 @@ public class OdsCatalogRecord extends UpdatableRecordImpl<OdsCatalogRecord> {
     /**
      * Setter for <code>ods_login.ods_catalog.icono_url</code>.
      */
-    public void setIconoUrl(String value) {
+    public OdsCatalogRecord setIconoUrl(String value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -94,8 +99,9 @@ public class OdsCatalogRecord extends UpdatableRecordImpl<OdsCatalogRecord> {
     /**
      * Setter for <code>ods_login.ods_catalog.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public OdsCatalogRecord setCreatedAt(LocalDateTime value) {
         set(5, value);
+        return this;
     }
 
     /**

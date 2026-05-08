@@ -25,8 +25,9 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     /**
      * Setter for <code>ods12.mediciones_historicas.id</code>.
      */
-    public void setId(Integer value) {
+    public MedicionesHistoricasRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -40,8 +41,9 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
      * Setter for
      * <code>ods12.mediciones_historicas.proyecto_indicador_id</code>.
      */
-    public void setProyectoIndicadorId(Integer value) {
+    public MedicionesHistoricasRecord setProyectoIndicadorId(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -55,8 +57,9 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     /**
      * Setter for <code>ods12.mediciones_historicas.valor_calculado</code>.
      */
-    public void setValorCalculado(BigDecimal value) {
+    public MedicionesHistoricasRecord setValorCalculado(BigDecimal value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -69,8 +72,9 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     /**
      * Setter for <code>ods12.mediciones_historicas.fecha_medicion</code>.
      */
-    public void setFechaMedicion(LocalDate value) {
+    public MedicionesHistoricasRecord setFechaMedicion(LocalDate value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -83,8 +87,9 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     /**
      * Setter for <code>ods12.mediciones_historicas.responsable</code>.
      */
-    public void setResponsable(String value) {
+    public MedicionesHistoricasRecord setResponsable(String value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -97,8 +102,9 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     /**
      * Setter for <code>ods12.mediciones_historicas.metodo_medicion</code>.
      */
-    public void setMetodoMedicion(String value) {
+    public MedicionesHistoricasRecord setMetodoMedicion(String value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -111,8 +117,9 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     /**
      * Setter for <code>ods12.mediciones_historicas.observaciones</code>.
      */
-    public void setObservaciones(String value) {
+    public MedicionesHistoricasRecord setObservaciones(String value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -125,8 +132,9 @@ public class MedicionesHistoricasRecord extends UpdatableRecordImpl<MedicionesHi
     /**
      * Setter for <code>ods12.mediciones_historicas.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public MedicionesHistoricasRecord setCreatedAt(LocalDateTime value) {
         set(7, value);
+        return this;
     }
 
     /**

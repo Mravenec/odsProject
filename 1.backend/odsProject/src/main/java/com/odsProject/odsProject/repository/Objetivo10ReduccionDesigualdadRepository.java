@@ -9,6 +9,7 @@ import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.AuditoriaOds10
 import com.odsProject.odsProject.database.jooq.ods10.routines.SpAdminReporteProyecto;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.repository.interfaces.IObjetivo10ReduccionDesigualdadRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.jooq.types.UByte;
@@ -31,6 +32,7 @@ import static com.odsProject.odsProject.database.jooq.ods_login.tables.Indicador
 /**
  * Implementación del Repositorio para el Objetivo 10: Reducción de las Desigualdades
  */
+@Slf4j
 @Repository
 public class Objetivo10ReduccionDesigualdadRepository implements IObjetivo10ReduccionDesigualdadRepository {
 
@@ -49,6 +51,7 @@ public class Objetivo10ReduccionDesigualdadRepository implements IObjetivo10Redu
                 PROYECTO_INDICADORES.VALOR_ACTUAL,
                 PROYECTO_INDICADORES.META_VALOR,
                 PROYECTO_INDICADORES.META_UNIDAD,
+                PROYECTO_INDICADORES.META_NOMBRE,
                 DSL.case_()
                     .when(PROYECTO_INDICADORES.META_VALOR.isNull()
                           .or(PROYECTO_INDICADORES.META_VALOR.eq(java.math.BigDecimal.ZERO))
@@ -100,6 +103,7 @@ public class Objetivo10ReduccionDesigualdadRepository implements IObjetivo10Redu
             PROYECTO_INDICADORES.VALOR_ACTUAL, 
             PROYECTO_INDICADORES.META_VALOR, 
             PROYECTO_INDICADORES.META_UNIDAD,
+            PROYECTO_INDICADORES.META_NOMBRE,
             DSL.case_()
                 .when(PROYECTO_INDICADORES.META_VALOR.isNull()
                       .or(PROYECTO_INDICADORES.META_VALOR.eq(java.math.BigDecimal.ZERO))
@@ -135,6 +139,7 @@ public class Objetivo10ReduccionDesigualdadRepository implements IObjetivo10Redu
             PROYECTO_INDICADORES.VALOR_ACTUAL, 
             PROYECTO_INDICADORES.META_VALOR, 
             PROYECTO_INDICADORES.META_UNIDAD,
+            PROYECTO_INDICADORES.META_NOMBRE,
             DSL.case_()
                 .when(PROYECTO_INDICADORES.META_VALOR.isNull()
                       .or(PROYECTO_INDICADORES.META_VALOR.eq(java.math.BigDecimal.ZERO))
@@ -175,7 +180,35 @@ public class Objetivo10ReduccionDesigualdadRepository implements IObjetivo10Redu
         return dsl.select(INDICADOR_MASTER.CODIGO.as("indicador_codigo"), INDICADOR_MASTER.NOMBRE.as("indicador_nombre")).from(INDICADOR_MASTER).where(INDICADOR_MASTER.ODS_ID.eq(UByte.valueOf(10))).and(INDICADOR_MASTER.CODIGO.startsWith(prefix)).fetchInto(VistaAdminDetalleIndicadores.class);
     }
 
-    @Override public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) { return dsl.insertInto(PROYECTO_INDICADORES).set(dsl.newRecord(PROYECTO_INDICADORES, indicador)).returning().fetchOneInto(ProyectoIndicadores.class); }
+    @Override public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
+        Integer newId;
+        try {
+            // Intento primario: con meta_nombre
+            newId = dsl.insertInto(PROYECTO_INDICADORES)
+                .set(PROYECTO_INDICADORES.PROYECTO_ID,         indicador.getProyectoId())
+                .set(PROYECTO_INDICADORES.INDICADOR_MASTER_ID, indicador.getIndicadorMasterId())
+                .set(PROYECTO_INDICADORES.META_VALOR,          indicador.getMetaValor())
+                .set(PROYECTO_INDICADORES.META_UNIDAD,         indicador.getMetaUnidad() != null ? indicador.getMetaUnidad() : "unidad")
+                .set(PROYECTO_INDICADORES.FORMULA_CUSTOM,      indicador.getFormulaCustom())
+                .set(org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("meta_nombre"), String.class), indicador.getMetaNombre())
+                .returningResult(PROYECTO_INDICADORES.ID)
+                .fetchOneInto(Integer.class);
+        } catch (Exception e) {
+            // Fallback: sin meta_nombre (esquema antiguo)
+            log.warn("[saveIndicador] Fallback sin meta_nombre: {}", e.getMessage());
+            newId = dsl.insertInto(PROYECTO_INDICADORES)
+                .set(PROYECTO_INDICADORES.PROYECTO_ID,         indicador.getProyectoId())
+                .set(PROYECTO_INDICADORES.INDICADOR_MASTER_ID, indicador.getIndicadorMasterId())
+                .set(PROYECTO_INDICADORES.META_VALOR,          indicador.getMetaValor())
+                .set(PROYECTO_INDICADORES.META_UNIDAD,         indicador.getMetaUnidad() != null ? indicador.getMetaUnidad() : "unidad")
+                .set(PROYECTO_INDICADORES.FORMULA_CUSTOM,      indicador.getFormulaCustom())
+                .returningResult(PROYECTO_INDICADORES.ID)
+                .fetchOneInto(Integer.class);
+        }
+        return dsl.selectFrom(PROYECTO_INDICADORES)
+            .where(PROYECTO_INDICADORES.ID.eq(newId))
+            .fetchOneInto(ProyectoIndicadores.class);
+    }
     @Override public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {
         dsl.update(PROYECTO_INDICADORES).set(dsl.newRecord(PROYECTO_INDICADORES, indicador)).where(PROYECTO_INDICADORES.ID.eq(indicador.getId())).execute();
         return dsl.selectFrom(PROYECTO_INDICADORES).where(PROYECTO_INDICADORES.ID.eq(indicador.getId())).fetchOneInto(ProyectoIndicadores.class);
@@ -190,7 +223,29 @@ public class Objetivo10ReduccionDesigualdadRepository implements IObjetivo10Redu
     @Override public List<ProyectoIndicadorParametros> findMetasByProyecto(Integer proyectoId) {
         return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS).where(PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID.in(dsl.select(PROYECTO_INDICADORES.ID).from(PROYECTO_INDICADORES).where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId)))).fetchInto(ProyectoIndicadorParametros.class);
     }
-    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { return dsl.insertInto(PROYECTO_INDICADOR_PARAMETROS).set(dsl.newRecord(PROYECTO_INDICADOR_PARAMETROS, meta)).returning().fetchOneInto(ProyectoIndicadorParametros.class); }
+    @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
+        // tipo_dato es ENUM en DB — usar DSL.field(String) para evitar ClassCastException
+        String tipoDatoLiteral = (meta.getTipoDato() != null)
+            ? meta.getTipoDato().getLiteral()
+            : "Decimal";
+        String nombreVar = (meta.getNombreVariable() != null && !meta.getNombreVariable().isEmpty())
+            ? meta.getNombreVariable()
+            : meta.getNombreParametro();
+
+        Integer newId = dsl.insertInto(PROYECTO_INDICADOR_PARAMETROS)
+            .set(PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID, meta.getProyectoIndicadorId())
+            .set(PROYECTO_INDICADOR_PARAMETROS.NOMBRE_PARAMETRO,      meta.getNombreParametro())
+            .set(org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("nombre_variable"), String.class), nombreVar)
+            .set(org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("tipo_dato"),       String.class), tipoDatoLiteral)
+            .set(PROYECTO_INDICADOR_PARAMETROS.VALOR_ACTUAL,
+                 meta.getValorActual() != null ? meta.getValorActual() : java.math.BigDecimal.ZERO)
+            .returningResult(PROYECTO_INDICADOR_PARAMETROS.ID)
+            .fetchOneInto(Integer.class);
+
+        return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS)
+            .where(PROYECTO_INDICADOR_PARAMETROS.ID.eq(newId))
+            .fetchOneInto(ProyectoIndicadorParametros.class);
+    }
     @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) {
         dsl.update(PROYECTO_INDICADOR_PARAMETROS).set(dsl.newRecord(PROYECTO_INDICADOR_PARAMETROS, meta)).where(PROYECTO_INDICADOR_PARAMETROS.ID.eq(meta.getId())).execute();
         return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS).where(PROYECTO_INDICADOR_PARAMETROS.ID.eq(meta.getId())).fetchOneInto(ProyectoIndicadorParametros.class);

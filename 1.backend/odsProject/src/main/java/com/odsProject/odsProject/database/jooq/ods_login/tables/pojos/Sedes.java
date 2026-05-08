@@ -52,8 +52,9 @@ public class Sedes implements Serializable {
     /**
      * Setter for <code>ods_login.sedes.id</code>.
      */
-    public void setId(Integer id) {
+    public Sedes setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -66,8 +67,9 @@ public class Sedes implements Serializable {
     /**
      * Setter for <code>ods_login.sedes.nombre</code>.
      */
-    public void setNombre(String nombre) {
+    public Sedes setNombre(String nombre) {
         this.nombre = nombre;
+        return this;
     }
 
     /**
@@ -80,8 +82,9 @@ public class Sedes implements Serializable {
     /**
      * Setter for <code>ods_login.sedes.descripcion</code>.
      */
-    public void setDescripcion(String descripcion) {
+    public Sedes setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+        return this;
     }
 
     /**
@@ -94,8 +97,9 @@ public class Sedes implements Serializable {
     /**
      * Setter for <code>ods_login.sedes.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public Sedes setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     @Override

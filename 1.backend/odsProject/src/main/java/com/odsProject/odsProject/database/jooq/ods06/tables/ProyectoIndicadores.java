@@ -76,7 +76,7 @@ public class ProyectoIndicadores extends TableImpl<ProyectoIndicadoresRecord> {
     /**
      * The column <code>ods06.proyecto_indicadores.formula_custom</code>.
      */
-    public final TableField<ProyectoIndicadoresRecord, String> FORMULA_CUSTOM = createField(DSL.name("formula_custom"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+    public final TableField<ProyectoIndicadoresRecord, String> FORMULA_CUSTOM = createField(DSL.name("formula_custom"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
      * The column <code>ods06.proyecto_indicadores.valor_actual</code>.
@@ -92,6 +92,11 @@ public class ProyectoIndicadores extends TableImpl<ProyectoIndicadoresRecord> {
      * The column <code>ods06.proyecto_indicadores.meta_unidad</code>.
      */
     public final TableField<ProyectoIndicadoresRecord, String> META_UNIDAD = createField(DSL.name("meta_unidad"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+
+    /**
+     * The column <code>ods06.proyecto_indicadores.meta_nombre</code>.
+     */
+    public final TableField<ProyectoIndicadoresRecord, String> META_NOMBRE = createField(DSL.name("meta_nombre"), SQLDataType.VARCHAR(300).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column

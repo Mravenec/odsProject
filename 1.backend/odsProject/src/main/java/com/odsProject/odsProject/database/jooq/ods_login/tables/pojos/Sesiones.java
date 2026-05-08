@@ -68,8 +68,9 @@ public class Sesiones implements Serializable {
     /**
      * Setter for <code>ods_login.sesiones.id</code>.
      */
-    public void setId(Integer id) {
+    public Sesiones setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -82,8 +83,9 @@ public class Sesiones implements Serializable {
     /**
      * Setter for <code>ods_login.sesiones.usuario_id</code>.
      */
-    public void setUsuarioId(Integer usuarioId) {
+    public Sesiones setUsuarioId(Integer usuarioId) {
         this.usuarioId = usuarioId;
+        return this;
     }
 
     /**
@@ -96,8 +98,9 @@ public class Sesiones implements Serializable {
     /**
      * Setter for <code>ods_login.sesiones.token_hash</code>.
      */
-    public void setTokenHash(String tokenHash) {
+    public Sesiones setTokenHash(String tokenHash) {
         this.tokenHash = tokenHash;
+        return this;
     }
 
     /**
@@ -110,8 +113,9 @@ public class Sesiones implements Serializable {
     /**
      * Setter for <code>ods_login.sesiones.ip_address</code>.
      */
-    public void setIpAddress(String ipAddress) {
+    public Sesiones setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+        return this;
     }
 
     /**
@@ -124,8 +128,9 @@ public class Sesiones implements Serializable {
     /**
      * Setter for <code>ods_login.sesiones.user_agent</code>.
      */
-    public void setUserAgent(String userAgent) {
+    public Sesiones setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+        return this;
     }
 
     /**
@@ -138,8 +143,9 @@ public class Sesiones implements Serializable {
     /**
      * Setter for <code>ods_login.sesiones.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public Sesiones setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     /**
@@ -152,8 +158,9 @@ public class Sesiones implements Serializable {
     /**
      * Setter for <code>ods_login.sesiones.expira_en</code>.
      */
-    public void setExpiraEn(LocalDateTime expiraEn) {
+    public Sesiones setExpiraEn(LocalDateTime expiraEn) {
         this.expiraEn = expiraEn;
+        return this;
     }
 
     /**
@@ -166,8 +173,9 @@ public class Sesiones implements Serializable {
     /**
      * Setter for <code>ods_login.sesiones.revocada</code>.
      */
-    public void setRevocada(Byte revocada) {
+    public Sesiones setRevocada(Byte revocada) {
         this.revocada = revocada;
+        return this;
     }
 
     @Override

@@ -69,12 +69,12 @@ public class Tables {
     public static final Usuarios USUARIOS = Usuarios.USUARIOS;
 
     /**
-     * The table <code>ods_login.vista_admin_auditoria_login_reciente</code>.
+     * VIEW
      */
     public static final VistaAdminAuditoriaLoginReciente VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE = VistaAdminAuditoriaLoginReciente.VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE;
 
     /**
-     * The table <code>ods_login.vista_admin_usuarios_activos</code>.
+     * VIEW
      */
     public static final VistaAdminUsuariosActivos VISTA_ADMIN_USUARIOS_ACTIVOS = VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS;
 }

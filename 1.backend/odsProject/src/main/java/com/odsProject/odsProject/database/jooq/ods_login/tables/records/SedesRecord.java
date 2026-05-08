@@ -23,8 +23,9 @@ public class SedesRecord extends UpdatableRecordImpl<SedesRecord> {
     /**
      * Setter for <code>ods_login.sedes.id</code>.
      */
-    public void setId(Integer value) {
+    public SedesRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -37,8 +38,9 @@ public class SedesRecord extends UpdatableRecordImpl<SedesRecord> {
     /**
      * Setter for <code>ods_login.sedes.nombre</code>.
      */
-    public void setNombre(String value) {
+    public SedesRecord setNombre(String value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -51,8 +53,9 @@ public class SedesRecord extends UpdatableRecordImpl<SedesRecord> {
     /**
      * Setter for <code>ods_login.sedes.descripcion</code>.
      */
-    public void setDescripcion(String value) {
+    public SedesRecord setDescripcion(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -65,8 +68,9 @@ public class SedesRecord extends UpdatableRecordImpl<SedesRecord> {
     /**
      * Setter for <code>ods_login.sedes.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public SedesRecord setCreatedAt(LocalDateTime value) {
         set(3, value);
+        return this;
     }
 
     /**

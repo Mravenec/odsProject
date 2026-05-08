@@ -52,8 +52,9 @@ public class MedicionParametroValores implements Serializable {
     /**
      * Setter for <code>ods11.medicion_parametro_valores.id</code>.
      */
-    public void setId(Integer id) {
+    public MedicionParametroValores setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -66,8 +67,9 @@ public class MedicionParametroValores implements Serializable {
     /**
      * Setter for <code>ods11.medicion_parametro_valores.medicion_id</code>.
      */
-    public void setMedicionId(Integer medicionId) {
+    public MedicionParametroValores setMedicionId(Integer medicionId) {
         this.medicionId = medicionId;
+        return this;
     }
 
     /**
@@ -80,8 +82,9 @@ public class MedicionParametroValores implements Serializable {
     /**
      * Setter for <code>ods11.medicion_parametro_valores.parametro_id</code>.
      */
-    public void setParametroId(Integer parametroId) {
+    public MedicionParametroValores setParametroId(Integer parametroId) {
         this.parametroId = parametroId;
+        return this;
     }
 
     /**
@@ -94,8 +97,9 @@ public class MedicionParametroValores implements Serializable {
     /**
      * Setter for <code>ods11.medicion_parametro_valores.valor_ingresado</code>.
      */
-    public void setValorIngresado(BigDecimal valorIngresado) {
+    public MedicionParametroValores setValorIngresado(BigDecimal valorIngresado) {
         this.valorIngresado = valorIngresado;
+        return this;
     }
 
     @Override

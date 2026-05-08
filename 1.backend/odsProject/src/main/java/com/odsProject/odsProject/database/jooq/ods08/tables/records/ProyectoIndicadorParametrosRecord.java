@@ -25,8 +25,9 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
     /**
      * Setter for <code>ods08.proyecto_indicador_parametros.id</code>.
      */
-    public void setId(Integer value) {
+    public ProyectoIndicadorParametrosRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -40,8 +41,9 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
      * Setter for
      * <code>ods08.proyecto_indicador_parametros.proyecto_indicador_id</code>.
      */
-    public void setProyectoIndicadorId(Integer value) {
+    public ProyectoIndicadorParametrosRecord setProyectoIndicadorId(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -56,8 +58,9 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
      * Setter for
      * <code>ods08.proyecto_indicador_parametros.nombre_parametro</code>.
      */
-    public void setNombreParametro(String value) {
+    public ProyectoIndicadorParametrosRecord setNombreParametro(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -72,8 +75,9 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
      * Setter for
      * <code>ods08.proyecto_indicador_parametros.nombre_variable</code>.
      */
-    public void setNombreVariable(String value) {
+    public ProyectoIndicadorParametrosRecord setNombreVariable(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -87,8 +91,9 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
     /**
      * Setter for <code>ods08.proyecto_indicador_parametros.tipo_dato</code>.
      */
-    public void setTipoDato(ProyectoIndicadorParametrosTipoDato value) {
+    public ProyectoIndicadorParametrosRecord setTipoDato(ProyectoIndicadorParametrosTipoDato value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -101,8 +106,9 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
     /**
      * Setter for <code>ods08.proyecto_indicador_parametros.valor_actual</code>.
      */
-    public void setValorActual(BigDecimal value) {
+    public ProyectoIndicadorParametrosRecord setValorActual(BigDecimal value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -115,8 +121,9 @@ public class ProyectoIndicadorParametrosRecord extends UpdatableRecordImpl<Proye
     /**
      * Setter for <code>ods08.proyecto_indicador_parametros.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public ProyectoIndicadorParametrosRecord setCreatedAt(LocalDateTime value) {
         set(6, value);
+        return this;
     }
 
     /**

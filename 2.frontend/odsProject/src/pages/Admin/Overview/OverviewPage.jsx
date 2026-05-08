@@ -182,7 +182,7 @@ const AdminProjectOverviewPage = () => {
                     <td>
                       <div className="project-cell-name">
                         <span className="project-name-bold">{project.name}</span>
-                        <span className="project-user-sm">{project.indicators.length} indicadores activos</span>
+                        <span className="project-user-sm">{project.indicators?.length || 0} indicadores activos</span>
                       </div>
                     </td>
                     <td>{project.userName}</td>
@@ -202,7 +202,7 @@ const AdminProjectOverviewPage = () => {
                     <td className="actions-cell">
                       <button 
                         className="btn-icon view" 
-                        onClick={() => navigate(`/admin/results/${project.id}`)}
+                        onClick={() => navigate(`/projects/${project.id}/results`)}
                         title="Ver Resultados"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>

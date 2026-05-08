@@ -66,7 +66,7 @@ public class OdsCatalog extends TableImpl<OdsCatalogRecord> {
     /**
      * The column <code>ods_login.ods_catalog.descripcion</code>.
      */
-    public final TableField<OdsCatalogRecord, String> DESCRIPCION = createField(DSL.name("descripcion"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+    public final TableField<OdsCatalogRecord, String> DESCRIPCION = createField(DSL.name("descripcion"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
      * The column <code>ods_login.ods_catalog.color_hex</code>.

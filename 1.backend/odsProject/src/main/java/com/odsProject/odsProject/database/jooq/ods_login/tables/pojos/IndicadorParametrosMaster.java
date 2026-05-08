@@ -57,8 +57,9 @@ public class IndicadorParametrosMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_parametros_master.id</code>.
      */
-    public void setId(Integer id) {
+    public IndicadorParametrosMaster setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -73,8 +74,9 @@ public class IndicadorParametrosMaster implements Serializable {
      * Setter for
      * <code>ods_login.indicador_parametros_master.indicador_id</code>.
      */
-    public void setIndicadorId(Integer indicadorId) {
+    public IndicadorParametrosMaster setIndicadorId(Integer indicadorId) {
         this.indicadorId = indicadorId;
+        return this;
     }
 
     /**
@@ -89,8 +91,9 @@ public class IndicadorParametrosMaster implements Serializable {
      * Setter for
      * <code>ods_login.indicador_parametros_master.nombre_parametro</code>.
      */
-    public void setNombreParametro(String nombreParametro) {
+    public IndicadorParametrosMaster setNombreParametro(String nombreParametro) {
         this.nombreParametro = nombreParametro;
+        return this;
     }
 
     /**
@@ -105,8 +108,9 @@ public class IndicadorParametrosMaster implements Serializable {
      * Setter for
      * <code>ods_login.indicador_parametros_master.descripcion_param</code>.
      */
-    public void setDescripcionParam(String descripcionParam) {
+    public IndicadorParametrosMaster setDescripcionParam(String descripcionParam) {
         this.descripcionParam = descripcionParam;
+        return this;
     }
 
     /**
@@ -119,8 +123,9 @@ public class IndicadorParametrosMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_parametros_master.tipo_dato</code>.
      */
-    public void setTipoDato(IndicadorParametrosMasterTipoDato tipoDato) {
+    public IndicadorParametrosMaster setTipoDato(IndicadorParametrosMasterTipoDato tipoDato) {
         this.tipoDato = tipoDato;
+        return this;
     }
 
     @Override

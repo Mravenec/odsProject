@@ -83,6 +83,7 @@ export const objetivo13Service = {
         indicadorMasterId: indicatorData.indicadorMasterId,
         metaValor: indicatorData.metaValor,
         metaUnidad: indicatorData.metaUnidad || 'unidad',
+        metaNombre:       indicatorData.metaNombre || null,
         formulaCustom: indicatorData.formulaCustom || null
       };
       const response = await api.post(`/ods/13/indicadores`, backendData);
@@ -99,6 +100,7 @@ export const objetivo13Service = {
       const backendData = {
         proyectoIndicadorId: parameterData.proyectoIndicadorId,
         nombreParametro: parameterData.nombreParametro,
+                nombreVariable:  parameterData.nombreVariable || parameterData.nombreParametro,
         tipoDato: parameterData.tipoDato || 'Decimal'
       };
       const response = await api.post(`/ods/13/metas`, backendData);
@@ -108,4 +110,33 @@ export const objetivo13Service = {
       throw new Error(error.response?.data?.message || 'Error al guardar parámetro');
     }
   }
+,
+  getMetasProyecto: async (proyectoId) => {
+    try {
+      const res = await api.get('/ods/13/metas', { params: { proyectoId } });
+      return { success: true, data: res.data || [] };
+    } catch (e) { return { success: true, data: [] }; }
+  },
+
+
+  getMediciones: async (proyectoIndicadorId) => {
+    try {
+      const res = await api.get('/ods/13/mediciones', { params: { indicadorId: proyectoIndicadorId } });
+      return { success: true, data: res.data || [] };
+    } catch (e) { return { success: false, data: [] }; }
+  },
+
+  createMedicion: async ({ proyectoIndicadorId, valorCalculado, fechaMedicion, responsable }) => {
+    try {
+      const res = await api.post('/ods/13/mediciones', {
+        proyectoIndicadorId,
+        valorCalculado,
+        fechaMedicion: fechaMedicion || new Date().toISOString().split('T')[0],
+        responsable: responsable || 'Sistema'
+      });
+      return { success: true, data: res.data };
+    } catch (e) { throw new Error(e.response?.data?.message || 'Error al registrar medición'); }
+  },
+
+
 };

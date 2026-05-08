@@ -24,8 +24,9 @@ public class AuditoriaLoginRecord extends UpdatableRecordImpl<AuditoriaLoginReco
     /**
      * Setter for <code>ods_login.auditoria_login.id</code>.
      */
-    public void setId(Integer value) {
+    public AuditoriaLoginRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -38,8 +39,9 @@ public class AuditoriaLoginRecord extends UpdatableRecordImpl<AuditoriaLoginReco
     /**
      * Setter for <code>ods_login.auditoria_login.usuario_id</code>.
      */
-    public void setUsuarioId(Integer value) {
+    public AuditoriaLoginRecord setUsuarioId(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -52,8 +54,9 @@ public class AuditoriaLoginRecord extends UpdatableRecordImpl<AuditoriaLoginReco
     /**
      * Setter for <code>ods_login.auditoria_login.email_intento</code>.
      */
-    public void setEmailIntento(String value) {
+    public AuditoriaLoginRecord setEmailIntento(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -66,8 +69,9 @@ public class AuditoriaLoginRecord extends UpdatableRecordImpl<AuditoriaLoginReco
     /**
      * Setter for <code>ods_login.auditoria_login.evento</code>.
      */
-    public void setEvento(AuditoriaLoginEvento value) {
+    public AuditoriaLoginRecord setEvento(AuditoriaLoginEvento value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -80,8 +84,9 @@ public class AuditoriaLoginRecord extends UpdatableRecordImpl<AuditoriaLoginReco
     /**
      * Setter for <code>ods_login.auditoria_login.ip_address</code>.
      */
-    public void setIpAddress(String value) {
+    public AuditoriaLoginRecord setIpAddress(String value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -94,8 +99,9 @@ public class AuditoriaLoginRecord extends UpdatableRecordImpl<AuditoriaLoginReco
     /**
      * Setter for <code>ods_login.auditoria_login.user_agent</code>.
      */
-    public void setUserAgent(String value) {
+    public AuditoriaLoginRecord setUserAgent(String value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -108,8 +114,9 @@ public class AuditoriaLoginRecord extends UpdatableRecordImpl<AuditoriaLoginReco
     /**
      * Setter for <code>ods_login.auditoria_login.detalle</code>.
      */
-    public void setDetalle(String value) {
+    public AuditoriaLoginRecord setDetalle(String value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -122,8 +129,9 @@ public class AuditoriaLoginRecord extends UpdatableRecordImpl<AuditoriaLoginReco
     /**
      * Setter for <code>ods_login.auditoria_login.fecha_evento</code>.
      */
-    public void setFechaEvento(LocalDateTime value) {
+    public AuditoriaLoginRecord setFechaEvento(LocalDateTime value) {
         set(7, value);
+        return this;
     }
 
     /**

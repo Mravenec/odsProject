@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useCatalog } from '../../hooks/useCatalog';
 import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
@@ -107,6 +108,8 @@ const ProjectCreationPage = () => {
     loading: projectsLoading, 
     error: projectsError
   } = useProjects();
+
+  const { } = useCatalog();
 
   const {
     provincias,
@@ -339,19 +342,53 @@ const ProjectCreationPage = () => {
     }
 
     try {
+      // ── S4: Pre-cargar metadata de ODS que aún no se cargaron ──────────────
+      const odsNoLoaded = formData.selectedOds.filter(id => !hasMetadataForOds(id));
+      if (odsNoLoaded.length > 0) {
+        // Cargar en paralelo los ODS sin metadata (más rápido que secuencial)
+        await Promise.allSettled(odsNoLoaded.map(id => loadOdsMetadata(id)));
+      }
+
+      // ── S4: Validar que todos los indicadores seleccionados tienen masterId ──
+      const sinMasterId = formData.indicators.filter(code => {
+        const meta = indicatorMetadata[code];
+        return !meta || !meta.masterId;
+      });
+
+      if (sinMasterId.length > 0) {
+        alert(
+          `No se pudo cargar el catálogo para los siguientes indicadores:
+${sinMasterId.join(', ')}
+
+` +
+          'Verifique la conexión con el servidor y vuelva a intentarlo.'
+        );
+        return;
+      }
+
       const finalData = {
         ...formData,
         objective: formData.primaryOds,
         indicatorConfigs,
-        indicatorMetadata, // Pasamos los metadatos que contienen los masterId
+        indicatorMetadata,
         userId: user.id
       };
       
-      // Usar el nuevo orquestador que guarda todo el proyecto + indicadores + parámetros
       const result = await createFullProject(finalData, SERVICES_MAP);
       
       if (result.success) {
-        navigate('/dashboard');
+        // ── S5: Mostrar advertencia si algunos indicadores no se pudieron guardar ──
+        if (result.skippedIndicators && result.skippedIndicators.length > 0) {
+          alert(
+            `Proyecto creado con ${result.savedIndicators || 0} indicador(es) guardado(s).
+` +
+            `Advertencia: No se pudieron guardar: ${result.skippedIndicators.join(', ')}
+
+` +
+            'Puede configurarlos más tarde desde la página de evaluación.'
+          );
+        }
+        navigate(`/projects/${result.data?.id || result.data}/evaluation`);
       }
     } catch (err) {
       console.error('[ProjectCreation] Error persistiendo proyecto:', err);
@@ -596,9 +633,16 @@ const ProjectCreationPage = () => {
         </form>
       </main>
 
-      {configuringIndicator && (
+      {configuringIndicator && (() => {
+        const _meta = indicatorMetadata[configuringIndicator] || {};
+        const _ind = {
+          codigo: configuringIndicator,
+          code: configuringIndicator,
+          nombre: _meta.description || configuringIndicator
+        };
+        return (
         <IndicatorConfigModal 
-          indicator={configuringIndicator}
+          indicator={_ind}
           existingConfig={indicatorConfigs[configuringIndicator]}
           onSave={(config) => {
             setIndicatorConfigs(prev => ({ ...prev, [configuringIndicator]: config }));
@@ -606,7 +650,8 @@ const ProjectCreationPage = () => {
           }}
           onClose={() => setConfiguringIndicator(null)}
         />
-      )}
+        );
+      })()}
     </div>
   );
 };

@@ -62,8 +62,9 @@ public class OdsCatalog implements Serializable {
     /**
      * Setter for <code>ods_login.ods_catalog.id</code>.
      */
-    public void setId(UByte id) {
+    public OdsCatalog setId(UByte id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -76,8 +77,9 @@ public class OdsCatalog implements Serializable {
     /**
      * Setter for <code>ods_login.ods_catalog.nombre</code>.
      */
-    public void setNombre(String nombre) {
+    public OdsCatalog setNombre(String nombre) {
         this.nombre = nombre;
+        return this;
     }
 
     /**
@@ -90,8 +92,9 @@ public class OdsCatalog implements Serializable {
     /**
      * Setter for <code>ods_login.ods_catalog.descripcion</code>.
      */
-    public void setDescripcion(String descripcion) {
+    public OdsCatalog setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+        return this;
     }
 
     /**
@@ -104,8 +107,9 @@ public class OdsCatalog implements Serializable {
     /**
      * Setter for <code>ods_login.ods_catalog.color_hex</code>.
      */
-    public void setColorHex(String colorHex) {
+    public OdsCatalog setColorHex(String colorHex) {
         this.colorHex = colorHex;
+        return this;
     }
 
     /**
@@ -118,8 +122,9 @@ public class OdsCatalog implements Serializable {
     /**
      * Setter for <code>ods_login.ods_catalog.icono_url</code>.
      */
-    public void setIconoUrl(String iconoUrl) {
+    public OdsCatalog setIconoUrl(String iconoUrl) {
         this.iconoUrl = iconoUrl;
+        return this;
     }
 
     /**
@@ -132,8 +137,9 @@ public class OdsCatalog implements Serializable {
     /**
      * Setter for <code>ods_login.ods_catalog.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public OdsCatalog setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     @Override

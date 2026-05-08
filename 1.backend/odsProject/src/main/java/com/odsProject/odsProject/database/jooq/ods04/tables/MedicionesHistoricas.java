@@ -92,7 +92,7 @@ public class MedicionesHistoricas extends TableImpl<MedicionesHistoricasRecord> 
     /**
      * The column <code>ods04.mediciones_historicas.observaciones</code>.
      */
-    public final TableField<MedicionesHistoricasRecord, String> OBSERVACIONES = createField(DSL.name("observaciones"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+    public final TableField<MedicionesHistoricasRecord, String> OBSERVACIONES = createField(DSL.name("observaciones"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
      * The column <code>ods04.mediciones_historicas.created_at</code>.

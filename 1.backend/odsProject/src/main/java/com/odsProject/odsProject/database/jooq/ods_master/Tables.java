@@ -4,13 +4,7 @@
 package com.odsProject.odsProject.database.jooq.ods_master;
 
 
-import com.odsProject.odsProject.database.jooq.ods_master.tables.MedicionParametroValores;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoIndicadorParametros;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenProyectosOds;
 
 
@@ -21,42 +15,12 @@ import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenPro
 public class Tables {
 
     /**
-     * The table <code>ods_master.medicion_parametro_valores</code>.
-     */
-    public static final MedicionParametroValores MEDICION_PARAMETRO_VALORES = MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
-
-    /**
-     * The table <code>ods_master.mediciones_historicas</code>.
-     */
-    public static final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
-
-    /**
-     * The table <code>ods_master.proyecto_indicador_parametros</code>.
-     */
-    public static final ProyectoIndicadorParametros PROYECTO_INDICADOR_PARAMETROS = ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
-
-    /**
-     * The table <code>ods_master.proyecto_indicadores</code>.
-     */
-    public static final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
-
-    /**
      * The table <code>ods_master.proyectos</code>.
      */
     public static final Proyectos PROYECTOS = Proyectos.PROYECTOS;
 
     /**
-     * The table <code>ods_master.vista_admin_detalle_indicadores</code>.
-     */
-    public static final VistaAdminDetalleIndicadores VISTA_ADMIN_DETALLE_INDICADORES = VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
-
-    /**
-     * The table <code>ods_master.vista_admin_resumen_general</code>.
-     */
-    public static final VistaAdminResumenGeneral VISTA_ADMIN_RESUMEN_GENERAL = VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
-
-    /**
-     * The table <code>ods_master.vista_resumen_proyectos_ods</code>.
+     * VIEW
      */
     public static final VistaResumenProyectosOds VISTA_RESUMEN_PROYECTOS_ODS = VistaResumenProyectosOds.VISTA_RESUMEN_PROYECTOS_ODS;
 }

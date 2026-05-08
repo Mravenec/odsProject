@@ -70,8 +70,9 @@ public class IndicadorMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_master.id</code>.
      */
-    public void setId(Integer id) {
+    public IndicadorMaster setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -84,8 +85,9 @@ public class IndicadorMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_master.ods_id</code>.
      */
-    public void setOdsId(UByte odsId) {
+    public IndicadorMaster setOdsId(UByte odsId) {
         this.odsId = odsId;
+        return this;
     }
 
     /**
@@ -98,8 +100,9 @@ public class IndicadorMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_master.codigo</code>.
      */
-    public void setCodigo(String codigo) {
+    public IndicadorMaster setCodigo(String codigo) {
         this.codigo = codigo;
+        return this;
     }
 
     /**
@@ -112,8 +115,9 @@ public class IndicadorMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_master.nombre</code>.
      */
-    public void setNombre(String nombre) {
+    public IndicadorMaster setNombre(String nombre) {
         this.nombre = nombre;
+        return this;
     }
 
     /**
@@ -126,8 +130,9 @@ public class IndicadorMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_master.descripcion</code>.
      */
-    public void setDescripcion(String descripcion) {
+    public IndicadorMaster setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+        return this;
     }
 
     /**
@@ -140,8 +145,9 @@ public class IndicadorMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_master.formula_default</code>.
      */
-    public void setFormulaDefault(String formulaDefault) {
+    public IndicadorMaster setFormulaDefault(String formulaDefault) {
         this.formulaDefault = formulaDefault;
+        return this;
     }
 
     /**
@@ -154,8 +160,9 @@ public class IndicadorMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_master.unidad_medida_default</code>.
      */
-    public void setUnidadMedidaDefault(String unidadMedidaDefault) {
+    public IndicadorMaster setUnidadMedidaDefault(String unidadMedidaDefault) {
         this.unidadMedidaDefault = unidadMedidaDefault;
+        return this;
     }
 
     /**
@@ -168,8 +175,9 @@ public class IndicadorMaster implements Serializable {
     /**
      * Setter for <code>ods_login.indicador_master.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public IndicadorMaster setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     @Override

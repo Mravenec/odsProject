@@ -21,7 +21,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.UUID;
+
 
 /**
  * Implementación del Servicio para el Sistema de Login
@@ -34,6 +42,25 @@ public class LoginService implements ILoginService {
     @Autowired
     private LoginRepository loginRepository;
     
+    @Value("${app.jwt.secret}")
+    private String jwtSecret;
+
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private String generateToken(Usuarios usuario, String rolName) {
+        return Jwts.builder()
+            .subject(String.valueOf(usuario.getId()))
+            .claim("rol", rolName)
+            .claim("email", usuario.getEmail())
+            .claim("fullName", usuario.getFullName())
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + 86400000L))
+            .signWith(getSigningKey(), Jwts.SIG.HS256)
+            .compact();
+    }
+
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // ── Autenticación ──
@@ -103,7 +130,7 @@ public class LoginService implements ILoginService {
             // Crear mapa de respuesta
             Map<String, Object> result = new HashMap<>();
             result.put("usuario", usuario);
-            result.put("token", UUID.randomUUID().toString()); // Token temporal
+            result.put("token", generateToken(usuario, rolName));
             result.put("rol", rolName); // Rol real desde DB
             result.put("sedeId", usuario.getSedeId());
             result.put("sedeNombre", sedeName);
@@ -161,29 +188,18 @@ public class LoginService implements ILoginService {
     @Override
     public Optional<Usuarios> validateToken(String token) {
         try {
-            if (token == null || token.trim().isEmpty()) {
-                return Optional.empty();
-            }
-            
-            // Extraer token del header Authorization (formato: "Bearer <token>")
-            String actualToken = token;
-            if (token.startsWith("Bearer ")) {
-                actualToken = token.substring(7); // Remover "Bearer "
-            }
-            
-            // Buscar sesión por token
-            Optional<Sesiones> sesionOpt = loginRepository.findSesionByToken(actualToken);
-            
-            if (sesionOpt.isPresent()) {
-                Sesiones sesion = sesionOpt.get();
-                
-                // Buscar usuario por ID de sesión
-                return loginRepository.findUsuarioById(sesion.getUsuarioId());
-            }
-            
-            return Optional.empty();
-            
+            if (token == null || token.trim().isEmpty()) return Optional.empty();
+            String actualToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+            Claims claims = Jwts.parser().verifyWith(getSigningKey()).build()
+                .parseSignedClaims(actualToken).getPayload();
+            Integer userId = Integer.parseInt(claims.getSubject());
+            return loginRepository.findUsuarioById(userId);
         } catch (Exception e) {
+            try {
+                String actualToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+                Optional<Sesiones> sesionOpt = loginRepository.findSesionByToken(actualToken);
+                if (sesionOpt.isPresent()) return loginRepository.findUsuarioById(sesionOpt.get().getUsuarioId());
+            } catch (Exception ex) {}
             return Optional.empty();
         }
     }

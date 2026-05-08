@@ -24,8 +24,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.id</code>.
      */
-    public void setId(Integer value) {
+    public UsuariosRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -38,8 +39,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.username</code>.
      */
-    public void setUsername(String value) {
+    public UsuariosRecord setUsername(String value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -52,8 +54,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.email</code>.
      */
-    public void setEmail(String value) {
+    public UsuariosRecord setEmail(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -66,8 +69,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.password_hash</code>.
      */
-    public void setPasswordHash(String value) {
+    public UsuariosRecord setPasswordHash(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -80,8 +84,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.full_name</code>.
      */
-    public void setFullName(String value) {
+    public UsuariosRecord setFullName(String value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -94,8 +99,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.rol_id</code>.
      */
-    public void setRolId(Integer value) {
+    public UsuariosRecord setRolId(Integer value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -108,8 +114,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.sede_id</code>.
      */
-    public void setSedeId(Integer value) {
+    public UsuariosRecord setSedeId(Integer value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -122,8 +129,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.is_active</code>.
      */
-    public void setIsActive(Byte value) {
+    public UsuariosRecord setIsActive(Byte value) {
         set(7, value);
+        return this;
     }
 
     /**
@@ -136,8 +144,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.email_verificado</code>.
      */
-    public void setEmailVerificado(Byte value) {
+    public UsuariosRecord setEmailVerificado(Byte value) {
         set(8, value);
+        return this;
     }
 
     /**
@@ -150,8 +159,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.ultimo_login</code>.
      */
-    public void setUltimoLogin(LocalDateTime value) {
+    public UsuariosRecord setUltimoLogin(LocalDateTime value) {
         set(9, value);
+        return this;
     }
 
     /**
@@ -164,8 +174,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.intentos_fallidos</code>.
      */
-    public void setIntentosFallidos(UByte value) {
+    public UsuariosRecord setIntentosFallidos(UByte value) {
         set(10, value);
+        return this;
     }
 
     /**
@@ -178,8 +189,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.bloqueado_hasta</code>.
      */
-    public void setBloqueadoHasta(LocalDateTime value) {
+    public UsuariosRecord setBloqueadoHasta(LocalDateTime value) {
         set(11, value);
+        return this;
     }
 
     /**
@@ -192,8 +204,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.token_recuperacion</code>.
      */
-    public void setTokenRecuperacion(String value) {
+    public UsuariosRecord setTokenRecuperacion(String value) {
         set(12, value);
+        return this;
     }
 
     /**
@@ -206,8 +219,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.token_expira</code>.
      */
-    public void setTokenExpira(LocalDateTime value) {
+    public UsuariosRecord setTokenExpira(LocalDateTime value) {
         set(13, value);
+        return this;
     }
 
     /**
@@ -220,8 +234,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public UsuariosRecord setCreatedAt(LocalDateTime value) {
         set(14, value);
+        return this;
     }
 
     /**
@@ -234,8 +249,9 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Setter for <code>ods_login.usuarios.updated_at</code>.
      */
-    public void setUpdatedAt(LocalDateTime value) {
+    public UsuariosRecord setUpdatedAt(LocalDateTime value) {
         set(15, value);
+        return this;
     }
 
     /**

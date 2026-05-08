@@ -67,8 +67,9 @@ public class ProyectoIndicadorParametros implements Serializable {
     /**
      * Setter for <code>ods11.proyecto_indicador_parametros.id</code>.
      */
-    public void setId(Integer id) {
+    public ProyectoIndicadorParametros setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -83,8 +84,9 @@ public class ProyectoIndicadorParametros implements Serializable {
      * Setter for
      * <code>ods11.proyecto_indicador_parametros.proyecto_indicador_id</code>.
      */
-    public void setProyectoIndicadorId(Integer proyectoIndicadorId) {
+    public ProyectoIndicadorParametros setProyectoIndicadorId(Integer proyectoIndicadorId) {
         this.proyectoIndicadorId = proyectoIndicadorId;
+        return this;
     }
 
     /**
@@ -99,8 +101,9 @@ public class ProyectoIndicadorParametros implements Serializable {
      * Setter for
      * <code>ods11.proyecto_indicador_parametros.nombre_parametro</code>.
      */
-    public void setNombreParametro(String nombreParametro) {
+    public ProyectoIndicadorParametros setNombreParametro(String nombreParametro) {
         this.nombreParametro = nombreParametro;
+        return this;
     }
 
     /**
@@ -115,8 +118,9 @@ public class ProyectoIndicadorParametros implements Serializable {
      * Setter for
      * <code>ods11.proyecto_indicador_parametros.nombre_variable</code>.
      */
-    public void setNombreVariable(String nombreVariable) {
+    public ProyectoIndicadorParametros setNombreVariable(String nombreVariable) {
         this.nombreVariable = nombreVariable;
+        return this;
     }
 
     /**
@@ -129,8 +133,9 @@ public class ProyectoIndicadorParametros implements Serializable {
     /**
      * Setter for <code>ods11.proyecto_indicador_parametros.tipo_dato</code>.
      */
-    public void setTipoDato(ProyectoIndicadorParametrosTipoDato tipoDato) {
+    public ProyectoIndicadorParametros setTipoDato(ProyectoIndicadorParametrosTipoDato tipoDato) {
         this.tipoDato = tipoDato;
+        return this;
     }
 
     /**
@@ -143,8 +148,9 @@ public class ProyectoIndicadorParametros implements Serializable {
     /**
      * Setter for <code>ods11.proyecto_indicador_parametros.valor_actual</code>.
      */
-    public void setValorActual(BigDecimal valorActual) {
+    public ProyectoIndicadorParametros setValorActual(BigDecimal valorActual) {
         this.valorActual = valorActual;
+        return this;
     }
 
     /**
@@ -157,8 +163,9 @@ public class ProyectoIndicadorParametros implements Serializable {
     /**
      * Setter for <code>ods11.proyecto_indicador_parametros.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public ProyectoIndicadorParametros setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     @Override

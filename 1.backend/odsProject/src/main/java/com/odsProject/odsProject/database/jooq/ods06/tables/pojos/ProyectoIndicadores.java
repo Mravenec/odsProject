@@ -25,6 +25,7 @@ public class ProyectoIndicadores implements Serializable {
     private BigDecimal valorActual;
     private BigDecimal metaValor;
     private String metaUnidad;
+    private String metaNombre;
     private LocalDate fechaProximaMedicion;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -39,6 +40,7 @@ public class ProyectoIndicadores implements Serializable {
         this.valorActual = value.valorActual;
         this.metaValor = value.metaValor;
         this.metaUnidad = value.metaUnidad;
+        this.metaNombre = value.metaNombre;
         this.fechaProximaMedicion = value.fechaProximaMedicion;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
@@ -52,6 +54,7 @@ public class ProyectoIndicadores implements Serializable {
         BigDecimal valorActual,
         BigDecimal metaValor,
         String metaUnidad,
+        String metaNombre,
         LocalDate fechaProximaMedicion,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
@@ -63,6 +66,7 @@ public class ProyectoIndicadores implements Serializable {
         this.valorActual = valorActual;
         this.metaValor = metaValor;
         this.metaUnidad = metaUnidad;
+        this.metaNombre = metaNombre;
         this.fechaProximaMedicion = fechaProximaMedicion;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -78,8 +82,9 @@ public class ProyectoIndicadores implements Serializable {
     /**
      * Setter for <code>ods06.proyecto_indicadores.id</code>.
      */
-    public void setId(Integer id) {
+    public ProyectoIndicadores setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -92,8 +97,9 @@ public class ProyectoIndicadores implements Serializable {
     /**
      * Setter for <code>ods06.proyecto_indicadores.proyecto_id</code>.
      */
-    public void setProyectoId(Integer proyectoId) {
+    public ProyectoIndicadores setProyectoId(Integer proyectoId) {
         this.proyectoId = proyectoId;
+        return this;
     }
 
     /**
@@ -106,8 +112,9 @@ public class ProyectoIndicadores implements Serializable {
     /**
      * Setter for <code>ods06.proyecto_indicadores.indicador_master_id</code>.
      */
-    public void setIndicadorMasterId(Integer indicadorMasterId) {
+    public ProyectoIndicadores setIndicadorMasterId(Integer indicadorMasterId) {
         this.indicadorMasterId = indicadorMasterId;
+        return this;
     }
 
     /**
@@ -120,8 +127,9 @@ public class ProyectoIndicadores implements Serializable {
     /**
      * Setter for <code>ods06.proyecto_indicadores.formula_custom</code>.
      */
-    public void setFormulaCustom(String formulaCustom) {
+    public ProyectoIndicadores setFormulaCustom(String formulaCustom) {
         this.formulaCustom = formulaCustom;
+        return this;
     }
 
     /**
@@ -134,8 +142,9 @@ public class ProyectoIndicadores implements Serializable {
     /**
      * Setter for <code>ods06.proyecto_indicadores.valor_actual</code>.
      */
-    public void setValorActual(BigDecimal valorActual) {
+    public ProyectoIndicadores setValorActual(BigDecimal valorActual) {
         this.valorActual = valorActual;
+        return this;
     }
 
     /**
@@ -148,8 +157,9 @@ public class ProyectoIndicadores implements Serializable {
     /**
      * Setter for <code>ods06.proyecto_indicadores.meta_valor</code>.
      */
-    public void setMetaValor(BigDecimal metaValor) {
+    public ProyectoIndicadores setMetaValor(BigDecimal metaValor) {
         this.metaValor = metaValor;
+        return this;
     }
 
     /**
@@ -162,8 +172,24 @@ public class ProyectoIndicadores implements Serializable {
     /**
      * Setter for <code>ods06.proyecto_indicadores.meta_unidad</code>.
      */
-    public void setMetaUnidad(String metaUnidad) {
+    public ProyectoIndicadores setMetaUnidad(String metaUnidad) {
         this.metaUnidad = metaUnidad;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods06.proyecto_indicadores.meta_nombre</code>.
+     */
+    public String getMetaNombre() {
+        return this.metaNombre;
+    }
+
+    /**
+     * Setter for <code>ods06.proyecto_indicadores.meta_nombre</code>.
+     */
+    public ProyectoIndicadores setMetaNombre(String metaNombre) {
+        this.metaNombre = metaNombre;
+        return this;
     }
 
     /**
@@ -178,8 +204,9 @@ public class ProyectoIndicadores implements Serializable {
      * Setter for
      * <code>ods06.proyecto_indicadores.fecha_proxima_medicion</code>.
      */
-    public void setFechaProximaMedicion(LocalDate fechaProximaMedicion) {
+    public ProyectoIndicadores setFechaProximaMedicion(LocalDate fechaProximaMedicion) {
         this.fechaProximaMedicion = fechaProximaMedicion;
+        return this;
     }
 
     /**
@@ -192,8 +219,9 @@ public class ProyectoIndicadores implements Serializable {
     /**
      * Setter for <code>ods06.proyecto_indicadores.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public ProyectoIndicadores setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     /**
@@ -206,8 +234,9 @@ public class ProyectoIndicadores implements Serializable {
     /**
      * Setter for <code>ods06.proyecto_indicadores.updated_at</code>.
      */
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public ProyectoIndicadores setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+        return this;
     }
 
     @Override
@@ -261,6 +290,12 @@ public class ProyectoIndicadores implements Serializable {
         }
         else if (!this.metaUnidad.equals(other.metaUnidad))
             return false;
+        if (this.metaNombre == null) {
+            if (other.metaNombre != null)
+                return false;
+        }
+        else if (!this.metaNombre.equals(other.metaNombre))
+            return false;
         if (this.fechaProximaMedicion == null) {
             if (other.fechaProximaMedicion != null)
                 return false;
@@ -293,6 +328,7 @@ public class ProyectoIndicadores implements Serializable {
         result = prime * result + ((this.valorActual == null) ? 0 : this.valorActual.hashCode());
         result = prime * result + ((this.metaValor == null) ? 0 : this.metaValor.hashCode());
         result = prime * result + ((this.metaUnidad == null) ? 0 : this.metaUnidad.hashCode());
+        result = prime * result + ((this.metaNombre == null) ? 0 : this.metaNombre.hashCode());
         result = prime * result + ((this.fechaProximaMedicion == null) ? 0 : this.fechaProximaMedicion.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -310,6 +346,7 @@ public class ProyectoIndicadores implements Serializable {
         sb.append(", ").append(valorActual);
         sb.append(", ").append(metaValor);
         sb.append(", ").append(metaUnidad);
+        sb.append(", ").append(metaNombre);
         sb.append(", ").append(fechaProximaMedicion);
         sb.append(", ").append(createdAt);
         sb.append(", ").append(updatedAt);

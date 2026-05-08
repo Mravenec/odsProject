@@ -5,13 +5,7 @@ package com.odsProject.odsProject.database.jooq.ods_master;
 
 
 import com.odsProject.odsProject.database.jooq.DefaultCatalog;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.MedicionParametroValores;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoIndicadorParametros;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenProyectosOds;
 
 import java.util.Arrays;
@@ -36,42 +30,12 @@ public class OdsMaster extends SchemaImpl {
     public static final OdsMaster ODS_MASTER = new OdsMaster();
 
     /**
-     * The table <code>ods_master.medicion_parametro_valores</code>.
-     */
-    public final MedicionParametroValores MEDICION_PARAMETRO_VALORES = MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
-
-    /**
-     * The table <code>ods_master.mediciones_historicas</code>.
-     */
-    public final MedicionesHistoricas MEDICIONES_HISTORICAS = MedicionesHistoricas.MEDICIONES_HISTORICAS;
-
-    /**
-     * The table <code>ods_master.proyecto_indicador_parametros</code>.
-     */
-    public final ProyectoIndicadorParametros PROYECTO_INDICADOR_PARAMETROS = ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS;
-
-    /**
-     * The table <code>ods_master.proyecto_indicadores</code>.
-     */
-    public final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
-
-    /**
      * The table <code>ods_master.proyectos</code>.
      */
     public final Proyectos PROYECTOS = Proyectos.PROYECTOS;
 
     /**
-     * The table <code>ods_master.vista_admin_detalle_indicadores</code>.
-     */
-    public final VistaAdminDetalleIndicadores VISTA_ADMIN_DETALLE_INDICADORES = VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
-
-    /**
-     * The table <code>ods_master.vista_admin_resumen_general</code>.
-     */
-    public final VistaAdminResumenGeneral VISTA_ADMIN_RESUMEN_GENERAL = VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
-
-    /**
-     * The table <code>ods_master.vista_resumen_proyectos_ods</code>.
+     * VIEW
      */
     public final VistaResumenProyectosOds VISTA_RESUMEN_PROYECTOS_ODS = VistaResumenProyectosOds.VISTA_RESUMEN_PROYECTOS_ODS;
 
@@ -91,13 +55,7 @@ public class OdsMaster extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            MedicionParametroValores.MEDICION_PARAMETRO_VALORES,
-            MedicionesHistoricas.MEDICIONES_HISTORICAS,
-            ProyectoIndicadorParametros.PROYECTO_INDICADOR_PARAMETROS,
-            ProyectoIndicadores.PROYECTO_INDICADORES,
             Proyectos.PROYECTOS,
-            VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES,
-            VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL,
             VistaResumenProyectosOds.VISTA_RESUMEN_PROYECTOS_ODS
         );
     }

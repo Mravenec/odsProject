@@ -1,0 +1,5 @@
+# 1. Borrar
+python 0.database/drop_db.py
+
+# 2. Instalar y Cargar Mocks
+python 0.database/setup_db.py; python 0.database/load_mocks.py

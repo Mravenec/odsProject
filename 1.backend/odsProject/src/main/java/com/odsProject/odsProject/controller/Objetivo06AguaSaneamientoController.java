@@ -11,6 +11,10 @@ import com.odsProject.odsProject.controller.interfaces.IObjetivo06AguaSaneamient
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import java.util.Collections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +27,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/ods/06")
 public class Objetivo06AguaSaneamientoController implements IObjetivo06AguaSaneamientoController {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo06AguaSaneamientoController.class);
 
     @Autowired
     private Objetivo06AguaSaneamientoService objetivo06AguaSaneamientoService;
@@ -56,13 +62,29 @@ public class Objetivo06AguaSaneamientoController implements IObjetivo06AguaSanea
 
     @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getIndicadores(Integer proyectoId) { return ResponseEntity.ok(objetivo06AguaSaneamientoService.getAllIndicators(proyectoId)); }
     @Override public ResponseEntity<VistaAdminDetalleIndicadores> getIndicador(Integer indicadorId) { return objetivo06AguaSaneamientoService.findIndicadorById(indicadorId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
-    @Override public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo06AguaSaneamientoService.saveIndicador(indicador)); }
+    @Override
+    public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) {
+        try {
+            return ResponseEntity.ok(objetivo06AguaSaneamientoService.saveIndicador(indicador));
+        } catch (Exception e) {
+            log.error("createIndicador error: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @Override public ResponseEntity<ProyectoIndicadores> updateIndicador(Integer indicadorId, ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo06AguaSaneamientoService.updateIndicador(indicador)); }
     @Override public ResponseEntity<Void> deleteIndicador(Integer indicadorId) { objetivo06AguaSaneamientoService.deleteIndicador(indicadorId); return ResponseEntity.noContent().build(); }
 
     @Override public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo06AguaSaneamientoService.findAllMetasProyecto(proyectoId)); }
     @Override public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(Integer metaId) { return objetivo06AguaSaneamientoService.findMetaProyectoById(metaId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
-    @Override public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo06AguaSaneamientoService.saveMetaProyecto(meta)); }
+    @Override
+    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) {
+        try {
+            return ResponseEntity.ok(objetivo06AguaSaneamientoService.saveMetaProyecto(meta));
+        } catch (Exception e) {
+            log.error("createMetaProyecto error: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @Override public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(Integer metaId, ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo06AguaSaneamientoService.updateMetaProyecto(meta)); }
     @Override public ResponseEntity<Void> deleteMetaProyecto(Integer metaId) { objetivo06AguaSaneamientoService.deleteMetaProyecto(metaId); return ResponseEntity.noContent().build(); }
 

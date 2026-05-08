@@ -46,17 +46,17 @@ public class Tables {
     public static final ProyectoIndicadores PROYECTO_INDICADORES = ProyectoIndicadores.PROYECTO_INDICADORES;
 
     /**
-     * The table <code>ods09.vista_admin_auditoria_reciente</code>.
+     * VIEW
      */
     public static final VistaAdminAuditoriaReciente VISTA_ADMIN_AUDITORIA_RECIENTE = VistaAdminAuditoriaReciente.VISTA_ADMIN_AUDITORIA_RECIENTE;
 
     /**
-     * The table <code>ods09.vista_admin_detalle_indicadores</code>.
+     * VIEW
      */
     public static final VistaAdminDetalleIndicadores VISTA_ADMIN_DETALLE_INDICADORES = VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
 
     /**
-     * The table <code>ods09.vista_admin_resumen_general</code>.
+     * VIEW
      */
     public static final VistaAdminResumenGeneral VISTA_ADMIN_RESUMEN_GENERAL = VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
 }

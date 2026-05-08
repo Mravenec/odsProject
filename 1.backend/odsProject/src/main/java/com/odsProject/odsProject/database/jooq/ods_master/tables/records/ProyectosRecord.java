@@ -25,8 +25,9 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Setter for <code>ods_master.proyectos.id</code>.
      */
-    public void setId(Integer value) {
+    public ProyectosRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -39,8 +40,9 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Setter for <code>ods_master.proyectos.usuario_id</code>.
      */
-    public void setUsuarioId(Integer value) {
+    public ProyectosRecord setUsuarioId(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -53,8 +55,9 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Setter for <code>ods_master.proyectos.sede_id</code>.
      */
-    public void setSedeId(Integer value) {
+    public ProyectosRecord setSedeId(Integer value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -67,8 +70,9 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Setter for <code>ods_master.proyectos.nombre_proyecto</code>.
      */
-    public void setNombreProyecto(String value) {
+    public ProyectosRecord setNombreProyecto(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -81,8 +85,9 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Setter for <code>ods_master.proyectos.descripcion</code>.
      */
-    public void setDescripcion(String value) {
+    public ProyectosRecord setDescripcion(String value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -95,8 +100,9 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Setter for <code>ods_master.proyectos.fecha_inicio</code>.
      */
-    public void setFechaInicio(LocalDate value) {
+    public ProyectosRecord setFechaInicio(LocalDate value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -109,8 +115,9 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Setter for <code>ods_master.proyectos.fecha_fin</code>.
      */
-    public void setFechaFin(LocalDate value) {
+    public ProyectosRecord setFechaFin(LocalDate value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -123,8 +130,9 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Setter for <code>ods_master.proyectos.meta_general</code>.
      */
-    public void setMetaGeneral(String value) {
+    public ProyectosRecord setMetaGeneral(String value) {
         set(7, value);
+        return this;
     }
 
     /**
@@ -135,45 +143,108 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     }
 
     /**
+     * Setter for <code>ods_master.proyectos.responsable_nombre</code>.
+     */
+    public ProyectosRecord setResponsableNombre(String value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.responsable_nombre</code>.
+     */
+    public String getResponsableNombre() {
+        return (String) get(8);
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.location_province</code>.
+     */
+    public ProyectosRecord setLocationProvince(String value) {
+        set(9, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.location_province</code>.
+     */
+    public String getLocationProvince() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.location_canton</code>.
+     */
+    public ProyectosRecord setLocationCanton(String value) {
+        set(10, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.location_canton</code>.
+     */
+    public String getLocationCanton() {
+        return (String) get(10);
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.location_district</code>.
+     */
+    public ProyectosRecord setLocationDistrict(String value) {
+        set(11, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.location_district</code>.
+     */
+    public String getLocationDistrict() {
+        return (String) get(11);
+    }
+
+    /**
      * Setter for <code>ods_master.proyectos.estado</code>.
      */
-    public void setEstado(ProyectosEstado value) {
-        set(8, value);
+    public ProyectosRecord setEstado(ProyectosEstado value) {
+        set(12, value);
+        return this;
     }
 
     /**
      * Getter for <code>ods_master.proyectos.estado</code>.
      */
     public ProyectosEstado getEstado() {
-        return (ProyectosEstado) get(8);
+        return (ProyectosEstado) get(12);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
-        set(9, value);
+    public ProyectosRecord setCreatedAt(LocalDateTime value) {
+        set(13, value);
+        return this;
     }
 
     /**
      * Getter for <code>ods_master.proyectos.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(9);
+        return (LocalDateTime) get(13);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.updated_at</code>.
      */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(10, value);
+    public ProyectosRecord setUpdatedAt(LocalDateTime value) {
+        set(14, value);
+        return this;
     }
 
     /**
      * Getter for <code>ods_master.proyectos.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(10);
+        return (LocalDateTime) get(14);
     }
 
     // -------------------------------------------------------------------------
@@ -199,7 +270,7 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Create a detached, initialised ProyectosRecord
      */
-    public ProyectosRecord(Integer id, Integer usuarioId, Integer sedeId, String nombreProyecto, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, String metaGeneral, ProyectosEstado estado, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProyectosRecord(Integer id, Integer usuarioId, Integer sedeId, String nombreProyecto, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, String metaGeneral, String responsableNombre, String locationProvince, String locationCanton, String locationDistrict, ProyectosEstado estado, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(Proyectos.PROYECTOS);
 
         setId(id);
@@ -210,6 +281,10 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
         setFechaInicio(fechaInicio);
         setFechaFin(fechaFin);
         setMetaGeneral(metaGeneral);
+        setResponsableNombre(responsableNombre);
+        setLocationProvince(locationProvince);
+        setLocationCanton(locationCanton);
+        setLocationDistrict(locationDistrict);
         setEstado(estado);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
@@ -231,6 +306,10 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
             setFechaInicio(value.getFechaInicio());
             setFechaFin(value.getFechaFin());
             setMetaGeneral(value.getMetaGeneral());
+            setResponsableNombre(value.getResponsableNombre());
+            setLocationProvince(value.getLocationProvince());
+            setLocationCanton(value.getLocationCanton());
+            setLocationDistrict(value.getLocationDistrict());
             setEstado(value.getEstado());
             setCreatedAt(value.getCreatedAt());
             setUpdatedAt(value.getUpdatedAt());

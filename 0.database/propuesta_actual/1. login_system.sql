@@ -454,7 +454,7 @@ CREATE INDEX idx_sesiones_expira_revocada      ON sesiones(expira_en, revocada);
 
 INSERT IGNORE INTO usuarios (username, email, password_hash, full_name, rol_id, is_active, email_verificado)
 VALUES ('admin', 'admin@ods.local',
-        '$2b$12$Mz3n8g34Ig8QllOrTDPKP.CiqYrhzBYy4l3JsJLmp1paGYZkPlBSy',
+        '$2b$12$MOCK_HASH_1234567890',
         'Administrador del Sistema', 1, TRUE, TRUE);
 
 -- ────────────────────────────────────────────────────────────

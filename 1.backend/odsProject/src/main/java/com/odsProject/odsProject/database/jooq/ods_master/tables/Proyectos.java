@@ -81,7 +81,7 @@ public class Proyectos extends TableImpl<ProyectosRecord> {
     /**
      * The column <code>ods_master.proyectos.descripcion</code>.
      */
-    public final TableField<ProyectosRecord, String> DESCRIPCION = createField(DSL.name("descripcion"), SQLDataType.CLOB(65535).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+    public final TableField<ProyectosRecord, String> DESCRIPCION = createField(DSL.name("descripcion"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
 
     /**
      * The column <code>ods_master.proyectos.fecha_inicio</code>.
@@ -97,6 +97,26 @@ public class Proyectos extends TableImpl<ProyectosRecord> {
      * The column <code>ods_master.proyectos.meta_general</code>.
      */
     public final TableField<ProyectosRecord, String> META_GENERAL = createField(DSL.name("meta_general"), SQLDataType.VARCHAR(500).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>ods_master.proyectos.responsable_nombre</code>.
+     */
+    public final TableField<ProyectosRecord, String> RESPONSABLE_NOMBRE = createField(DSL.name("responsable_nombre"), SQLDataType.VARCHAR(150).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>ods_master.proyectos.location_province</code>.
+     */
+    public final TableField<ProyectosRecord, String> LOCATION_PROVINCE = createField(DSL.name("location_province"), SQLDataType.VARCHAR(80).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>ods_master.proyectos.location_canton</code>.
+     */
+    public final TableField<ProyectosRecord, String> LOCATION_CANTON = createField(DSL.name("location_canton"), SQLDataType.VARCHAR(80).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>ods_master.proyectos.location_district</code>.
+     */
+    public final TableField<ProyectosRecord, String> LOCATION_DISTRICT = createField(DSL.name("location_district"), SQLDataType.VARCHAR(80).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>ods_master.proyectos.estado</code>.

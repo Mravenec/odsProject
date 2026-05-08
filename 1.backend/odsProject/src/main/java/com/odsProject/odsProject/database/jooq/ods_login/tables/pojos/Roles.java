@@ -52,8 +52,9 @@ public class Roles implements Serializable {
     /**
      * Setter for <code>ods_login.roles.id</code>.
      */
-    public void setId(Integer id) {
+    public Roles setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -66,8 +67,9 @@ public class Roles implements Serializable {
     /**
      * Setter for <code>ods_login.roles.nombre</code>.
      */
-    public void setNombre(String nombre) {
+    public Roles setNombre(String nombre) {
         this.nombre = nombre;
+        return this;
     }
 
     /**
@@ -80,8 +82,9 @@ public class Roles implements Serializable {
     /**
      * Setter for <code>ods_login.roles.descripcion</code>.
      */
-    public void setDescripcion(String descripcion) {
+    public Roles setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+        return this;
     }
 
     /**
@@ -94,8 +97,9 @@ public class Roles implements Serializable {
     /**
      * Setter for <code>ods_login.roles.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public Roles setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     @Override

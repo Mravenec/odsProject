@@ -5,49 +5,88 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>3.3.0</version>
+		<relativePath/>
 	</parent>
 	<groupId>com.odsProject</groupId>
 	<artifactId>odsProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>odsProject</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Sistema ODS Agenda 2030 — UTN Costa Rica</description>
 	<properties>
 		<java.version>21</java.version>
+		<jooq.version>3.19.6</jooq.version>
 	</properties>
+
 	<dependencies>
+		<!-- Web MVC -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- JOOQ -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jooq</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc</artifactId>
-		</dependency>
+
+		<!-- MariaDB Driver -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 			<version>3.3.3</version>
 		</dependency>
+
+		<!-- Spring Security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
+		<!-- JWT -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jooq-test</artifactId>
-			<scope>test</scope>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.5</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
-			<scope>test</scope>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.5</version>
+			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.5</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Formula engine (fórmulas variables) -->
 		<dependency>
 			<groupId>net.objecthunter</groupId>
 			<artifactId>exp4j</artifactId>
 			<version>0.4.8</version>
+		</dependency>
+
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Tests -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -56,13 +95,21 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
-			
+
 			<!-- JOOQ Code Generation Plugin -->
 			<plugin>
 				<groupId>org.jooq</groupId>
 				<artifactId>jooq-codegen-maven</artifactId>
-				<version>3.19.29</version>
+				<version>${jooq.version}</version>
 				<configuration>
 					<jdbc>
 						<driver>org.mariadb.jdbc.Driver</driver>
@@ -74,64 +121,29 @@
 						<database>
 							<name>org.jooq.meta.mariadb.MariaDBDatabase</name>
 							<includes>.*</includes>
+							<excludes>
+								<!-- Permitir vistas para reportes administrativos -->
+							</excludes>
 							<schemata>
-								<schema>
-									<inputSchema>ods_login</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods01</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods02</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods03</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods04</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods05</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods06</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods07</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods08</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods09</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods10</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods11</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods12</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods13</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods14</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods15</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods16</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods_master</inputSchema>
-								</schema>
-								<schema>
-									<inputSchema>ods17</inputSchema>
-								</schema>
+								<schema><inputSchema>ods_login</inputSchema></schema>
+								<schema><inputSchema>ods_master</inputSchema></schema>
+								<schema><inputSchema>ods01</inputSchema></schema>
+								<schema><inputSchema>ods02</inputSchema></schema>
+								<schema><inputSchema>ods03</inputSchema></schema>
+								<schema><inputSchema>ods04</inputSchema></schema>
+								<schema><inputSchema>ods05</inputSchema></schema>
+								<schema><inputSchema>ods06</inputSchema></schema>
+								<schema><inputSchema>ods07</inputSchema></schema>
+								<schema><inputSchema>ods08</inputSchema></schema>
+								<schema><inputSchema>ods09</inputSchema></schema>
+								<schema><inputSchema>ods10</inputSchema></schema>
+								<schema><inputSchema>ods11</inputSchema></schema>
+								<schema><inputSchema>ods12</inputSchema></schema>
+								<schema><inputSchema>ods13</inputSchema></schema>
+								<schema><inputSchema>ods14</inputSchema></schema>
+								<schema><inputSchema>ods15</inputSchema></schema>
+								<schema><inputSchema>ods16</inputSchema></schema>
+								<schema><inputSchema>ods17</inputSchema></schema>
 							</schemata>
 						</database>
 						<target>
@@ -141,6 +153,8 @@
 						<generate>
 							<pojos>true</pojos>
 							<immutablePojos>false</immutablePojos>
+							<daos>false</daos>
+							<fluentSetters>true</fluentSetters>
 							<implicitJoinPathsToOne>false</implicitJoinPathsToOne>
 							<implicitJoinPathsToMany>false</implicitJoinPathsToMany>
 						</generate>
@@ -155,8 +169,14 @@
 						</goals>
 					</execution>
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.mariadb.jdbc</groupId>
+						<artifactId>mariadb-java-client</artifactId>
+						<version>3.3.3</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

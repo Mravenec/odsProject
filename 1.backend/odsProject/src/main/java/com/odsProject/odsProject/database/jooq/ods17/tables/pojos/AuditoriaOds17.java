@@ -72,8 +72,9 @@ public class AuditoriaOds17 implements Serializable {
     /**
      * Setter for <code>ods17.auditoria_ods17.id</code>.
      */
-    public void setId(Integer id) {
+    public AuditoriaOds17 setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -86,8 +87,9 @@ public class AuditoriaOds17 implements Serializable {
     /**
      * Setter for <code>ods17.auditoria_ods17.tabla_afectada</code>.
      */
-    public void setTablaAfectada(String tablaAfectada) {
+    public AuditoriaOds17 setTablaAfectada(String tablaAfectada) {
         this.tablaAfectada = tablaAfectada;
+        return this;
     }
 
     /**
@@ -100,8 +102,9 @@ public class AuditoriaOds17 implements Serializable {
     /**
      * Setter for <code>ods17.auditoria_ods17.registro_id</code>.
      */
-    public void setRegistroId(Integer registroId) {
+    public AuditoriaOds17 setRegistroId(Integer registroId) {
         this.registroId = registroId;
+        return this;
     }
 
     /**
@@ -114,8 +117,9 @@ public class AuditoriaOds17 implements Serializable {
     /**
      * Setter for <code>ods17.auditoria_ods17.accion</code>.
      */
-    public void setAccion(String accion) {
+    public AuditoriaOds17 setAccion(String accion) {
         this.accion = accion;
+        return this;
     }
 
     /**
@@ -128,8 +132,9 @@ public class AuditoriaOds17 implements Serializable {
     /**
      * Setter for <code>ods17.auditoria_ods17.usuario_id</code>.
      */
-    public void setUsuarioId(Integer usuarioId) {
+    public AuditoriaOds17 setUsuarioId(Integer usuarioId) {
         this.usuarioId = usuarioId;
+        return this;
     }
 
     /**
@@ -142,8 +147,9 @@ public class AuditoriaOds17 implements Serializable {
     /**
      * Setter for <code>ods17.auditoria_ods17.valores_anteriores</code>.
      */
-    public void setValoresAnteriores(String valoresAnteriores) {
+    public AuditoriaOds17 setValoresAnteriores(String valoresAnteriores) {
         this.valoresAnteriores = valoresAnteriores;
+        return this;
     }
 
     /**
@@ -156,8 +162,9 @@ public class AuditoriaOds17 implements Serializable {
     /**
      * Setter for <code>ods17.auditoria_ods17.valores_nuevos</code>.
      */
-    public void setValoresNuevos(String valoresNuevos) {
+    public AuditoriaOds17 setValoresNuevos(String valoresNuevos) {
         this.valoresNuevos = valoresNuevos;
+        return this;
     }
 
     /**
@@ -170,8 +177,9 @@ public class AuditoriaOds17 implements Serializable {
     /**
      * Setter for <code>ods17.auditoria_ods17.fecha_cambio</code>.
      */
-    public void setFechaCambio(LocalDateTime fechaCambio) {
+    public AuditoriaOds17 setFechaCambio(LocalDateTime fechaCambio) {
         this.fechaCambio = fechaCambio;
+        return this;
     }
 
     /**
@@ -184,8 +192,9 @@ public class AuditoriaOds17 implements Serializable {
     /**
      * Setter for <code>ods17.auditoria_ods17.ip_address</code>.
      */
-    public void setIpAddress(String ipAddress) {
+    public AuditoriaOds17 setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+        return this;
     }
 
     @Override

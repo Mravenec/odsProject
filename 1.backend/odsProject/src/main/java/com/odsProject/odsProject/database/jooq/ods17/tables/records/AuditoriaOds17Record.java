@@ -23,8 +23,9 @@ public class AuditoriaOds17Record extends UpdatableRecordImpl<AuditoriaOds17Reco
     /**
      * Setter for <code>ods17.auditoria_ods17.id</code>.
      */
-    public void setId(Integer value) {
+    public AuditoriaOds17Record setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -37,8 +38,9 @@ public class AuditoriaOds17Record extends UpdatableRecordImpl<AuditoriaOds17Reco
     /**
      * Setter for <code>ods17.auditoria_ods17.tabla_afectada</code>.
      */
-    public void setTablaAfectada(String value) {
+    public AuditoriaOds17Record setTablaAfectada(String value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -51,8 +53,9 @@ public class AuditoriaOds17Record extends UpdatableRecordImpl<AuditoriaOds17Reco
     /**
      * Setter for <code>ods17.auditoria_ods17.registro_id</code>.
      */
-    public void setRegistroId(Integer value) {
+    public AuditoriaOds17Record setRegistroId(Integer value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -65,8 +68,9 @@ public class AuditoriaOds17Record extends UpdatableRecordImpl<AuditoriaOds17Reco
     /**
      * Setter for <code>ods17.auditoria_ods17.accion</code>.
      */
-    public void setAccion(String value) {
+    public AuditoriaOds17Record setAccion(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -79,8 +83,9 @@ public class AuditoriaOds17Record extends UpdatableRecordImpl<AuditoriaOds17Reco
     /**
      * Setter for <code>ods17.auditoria_ods17.usuario_id</code>.
      */
-    public void setUsuarioId(Integer value) {
+    public AuditoriaOds17Record setUsuarioId(Integer value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -93,8 +98,9 @@ public class AuditoriaOds17Record extends UpdatableRecordImpl<AuditoriaOds17Reco
     /**
      * Setter for <code>ods17.auditoria_ods17.valores_anteriores</code>.
      */
-    public void setValoresAnteriores(String value) {
+    public AuditoriaOds17Record setValoresAnteriores(String value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -107,8 +113,9 @@ public class AuditoriaOds17Record extends UpdatableRecordImpl<AuditoriaOds17Reco
     /**
      * Setter for <code>ods17.auditoria_ods17.valores_nuevos</code>.
      */
-    public void setValoresNuevos(String value) {
+    public AuditoriaOds17Record setValoresNuevos(String value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -121,8 +128,9 @@ public class AuditoriaOds17Record extends UpdatableRecordImpl<AuditoriaOds17Reco
     /**
      * Setter for <code>ods17.auditoria_ods17.fecha_cambio</code>.
      */
-    public void setFechaCambio(LocalDateTime value) {
+    public AuditoriaOds17Record setFechaCambio(LocalDateTime value) {
         set(7, value);
+        return this;
     }
 
     /**
@@ -135,8 +143,9 @@ public class AuditoriaOds17Record extends UpdatableRecordImpl<AuditoriaOds17Reco
     /**
      * Setter for <code>ods17.auditoria_ods17.ip_address</code>.
      */
-    public void setIpAddress(String value) {
+    public AuditoriaOds17Record setIpAddress(String value) {
         set(8, value);
+        return this;
     }
 
     /**

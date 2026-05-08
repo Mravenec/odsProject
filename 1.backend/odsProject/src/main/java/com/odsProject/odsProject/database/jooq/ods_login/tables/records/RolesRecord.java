@@ -23,8 +23,9 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> {
     /**
      * Setter for <code>ods_login.roles.id</code>.
      */
-    public void setId(Integer value) {
+    public RolesRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -37,8 +38,9 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> {
     /**
      * Setter for <code>ods_login.roles.nombre</code>.
      */
-    public void setNombre(String value) {
+    public RolesRecord setNombre(String value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -51,8 +53,9 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> {
     /**
      * Setter for <code>ods_login.roles.descripcion</code>.
      */
-    public void setDescripcion(String value) {
+    public RolesRecord setDescripcion(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -65,8 +68,9 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> {
     /**
      * Setter for <code>ods_login.roles.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public RolesRecord setCreatedAt(LocalDateTime value) {
         set(3, value);
+        return this;
     }
 
     /**

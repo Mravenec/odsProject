@@ -25,8 +25,9 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
     /**
      * Setter for <code>ods14.proyecto_indicadores.id</code>.
      */
-    public void setId(Integer value) {
+    public ProyectoIndicadoresRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -39,8 +40,9 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
     /**
      * Setter for <code>ods14.proyecto_indicadores.proyecto_id</code>.
      */
-    public void setProyectoId(Integer value) {
+    public ProyectoIndicadoresRecord setProyectoId(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -53,8 +55,9 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
     /**
      * Setter for <code>ods14.proyecto_indicadores.indicador_master_id</code>.
      */
-    public void setIndicadorMasterId(Integer value) {
+    public ProyectoIndicadoresRecord setIndicadorMasterId(Integer value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -67,8 +70,9 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
     /**
      * Setter for <code>ods14.proyecto_indicadores.formula_custom</code>.
      */
-    public void setFormulaCustom(String value) {
+    public ProyectoIndicadoresRecord setFormulaCustom(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -81,8 +85,9 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
     /**
      * Setter for <code>ods14.proyecto_indicadores.valor_actual</code>.
      */
-    public void setValorActual(BigDecimal value) {
+    public ProyectoIndicadoresRecord setValorActual(BigDecimal value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -95,8 +100,9 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
     /**
      * Setter for <code>ods14.proyecto_indicadores.meta_valor</code>.
      */
-    public void setMetaValor(BigDecimal value) {
+    public ProyectoIndicadoresRecord setMetaValor(BigDecimal value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -109,8 +115,9 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
     /**
      * Setter for <code>ods14.proyecto_indicadores.meta_unidad</code>.
      */
-    public void setMetaUnidad(String value) {
+    public ProyectoIndicadoresRecord setMetaUnidad(String value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -121,11 +128,27 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
     }
 
     /**
+     * Setter for <code>ods14.proyecto_indicadores.meta_nombre</code>.
+     */
+    public ProyectoIndicadoresRecord setMetaNombre(String value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods14.proyecto_indicadores.meta_nombre</code>.
+     */
+    public String getMetaNombre() {
+        return (String) get(7);
+    }
+
+    /**
      * Setter for
      * <code>ods14.proyecto_indicadores.fecha_proxima_medicion</code>.
      */
-    public void setFechaProximaMedicion(LocalDate value) {
-        set(7, value);
+    public ProyectoIndicadoresRecord setFechaProximaMedicion(LocalDate value) {
+        set(8, value);
+        return this;
     }
 
     /**
@@ -133,35 +156,37 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
      * <code>ods14.proyecto_indicadores.fecha_proxima_medicion</code>.
      */
     public LocalDate getFechaProximaMedicion() {
-        return (LocalDate) get(7);
+        return (LocalDate) get(8);
     }
 
     /**
      * Setter for <code>ods14.proyecto_indicadores.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
-        set(8, value);
+    public ProyectoIndicadoresRecord setCreatedAt(LocalDateTime value) {
+        set(9, value);
+        return this;
     }
 
     /**
      * Getter for <code>ods14.proyecto_indicadores.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(8);
+        return (LocalDateTime) get(9);
     }
 
     /**
      * Setter for <code>ods14.proyecto_indicadores.updated_at</code>.
      */
-    public void setUpdatedAt(LocalDateTime value) {
-        set(9, value);
+    public ProyectoIndicadoresRecord setUpdatedAt(LocalDateTime value) {
+        set(10, value);
+        return this;
     }
 
     /**
      * Getter for <code>ods14.proyecto_indicadores.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(9);
+        return (LocalDateTime) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -187,7 +212,7 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
     /**
      * Create a detached, initialised ProyectoIndicadoresRecord
      */
-    public ProyectoIndicadoresRecord(Integer id, Integer proyectoId, Integer indicadorMasterId, String formulaCustom, BigDecimal valorActual, BigDecimal metaValor, String metaUnidad, LocalDate fechaProximaMedicion, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProyectoIndicadoresRecord(Integer id, Integer proyectoId, Integer indicadorMasterId, String formulaCustom, BigDecimal valorActual, BigDecimal metaValor, String metaUnidad, String metaNombre, LocalDate fechaProximaMedicion, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(ProyectoIndicadores.PROYECTO_INDICADORES);
 
         setId(id);
@@ -197,6 +222,7 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
         setValorActual(valorActual);
         setMetaValor(metaValor);
         setMetaUnidad(metaUnidad);
+        setMetaNombre(metaNombre);
         setFechaProximaMedicion(fechaProximaMedicion);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
@@ -217,6 +243,7 @@ public class ProyectoIndicadoresRecord extends UpdatableRecordImpl<ProyectoIndic
             setValorActual(value.getValorActual());
             setMetaValor(value.getMetaValor());
             setMetaUnidad(value.getMetaUnidad());
+            setMetaNombre(value.getMetaNombre());
             setFechaProximaMedicion(value.getFechaProximaMedicion());
             setCreatedAt(value.getCreatedAt());
             setUpdatedAt(value.getUpdatedAt());

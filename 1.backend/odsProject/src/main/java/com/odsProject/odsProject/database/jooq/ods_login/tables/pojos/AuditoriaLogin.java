@@ -70,8 +70,9 @@ public class AuditoriaLogin implements Serializable {
     /**
      * Setter for <code>ods_login.auditoria_login.id</code>.
      */
-    public void setId(Integer id) {
+    public AuditoriaLogin setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -84,8 +85,9 @@ public class AuditoriaLogin implements Serializable {
     /**
      * Setter for <code>ods_login.auditoria_login.usuario_id</code>.
      */
-    public void setUsuarioId(Integer usuarioId) {
+    public AuditoriaLogin setUsuarioId(Integer usuarioId) {
         this.usuarioId = usuarioId;
+        return this;
     }
 
     /**
@@ -98,8 +100,9 @@ public class AuditoriaLogin implements Serializable {
     /**
      * Setter for <code>ods_login.auditoria_login.email_intento</code>.
      */
-    public void setEmailIntento(String emailIntento) {
+    public AuditoriaLogin setEmailIntento(String emailIntento) {
         this.emailIntento = emailIntento;
+        return this;
     }
 
     /**
@@ -112,8 +115,9 @@ public class AuditoriaLogin implements Serializable {
     /**
      * Setter for <code>ods_login.auditoria_login.evento</code>.
      */
-    public void setEvento(AuditoriaLoginEvento evento) {
+    public AuditoriaLogin setEvento(AuditoriaLoginEvento evento) {
         this.evento = evento;
+        return this;
     }
 
     /**
@@ -126,8 +130,9 @@ public class AuditoriaLogin implements Serializable {
     /**
      * Setter for <code>ods_login.auditoria_login.ip_address</code>.
      */
-    public void setIpAddress(String ipAddress) {
+    public AuditoriaLogin setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+        return this;
     }
 
     /**
@@ -140,8 +145,9 @@ public class AuditoriaLogin implements Serializable {
     /**
      * Setter for <code>ods_login.auditoria_login.user_agent</code>.
      */
-    public void setUserAgent(String userAgent) {
+    public AuditoriaLogin setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+        return this;
     }
 
     /**
@@ -154,8 +160,9 @@ public class AuditoriaLogin implements Serializable {
     /**
      * Setter for <code>ods_login.auditoria_login.detalle</code>.
      */
-    public void setDetalle(String detalle) {
+    public AuditoriaLogin setDetalle(String detalle) {
         this.detalle = detalle;
+        return this;
     }
 
     /**
@@ -168,8 +175,9 @@ public class AuditoriaLogin implements Serializable {
     /**
      * Setter for <code>ods_login.auditoria_login.fecha_evento</code>.
      */
-    public void setFechaEvento(LocalDateTime fechaEvento) {
+    public AuditoriaLogin setFechaEvento(LocalDateTime fechaEvento) {
         this.fechaEvento = fechaEvento;
+        return this;
     }
 
     @Override

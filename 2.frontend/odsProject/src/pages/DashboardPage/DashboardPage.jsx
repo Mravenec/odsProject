@@ -6,7 +6,7 @@ import { getOdsColor } from '../../utils/formatters';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
-  const { user, logout, isAdmin, isUser } = useAuth();
+  const { user, logout, isAdmin, isGestor } = useAuth();
   const navigate = useNavigate();
   const { 
     projects, 
@@ -32,7 +32,7 @@ const DashboardPage = () => {
       if (isAdmin()) {
         await fetchAdminProjects();
         await fetchGlobalDashboard();
-      } else if (isUser() && user?.id) {
+      } else if (user?.id) {
         await fetchUserProjects(user.id);
       }
     } catch (error) {
@@ -47,11 +47,16 @@ const DashboardPage = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('es-ES', { 
-      day: 'numeric', 
-      month: 'short', 
-      year: 'numeric' 
-    });
+    if (!dateString) return 'Sin fecha';
+    try {
+      return new Date(dateString).toLocaleDateString('es-ES', { 
+        day: 'numeric', 
+        month: 'short', 
+        year: 'numeric' 
+      });
+    } catch (e) {
+      return 'Fecha inválida';
+    }
   };
 
   if (loading || projectsLoading) {
@@ -99,10 +104,10 @@ const DashboardPage = () => {
 
         <section className="welcome-section">
           <div className="welcome-text">
-            <h2>¡Qué bueno verte de nuevo, {user?.name?.split(' ')[0] || 'Usuario'}!</h2>
+            <h2>¡Qué bueno verte de nuevo, {user?.fullName?.split(' ')[0] || user?.username || 'Usuario'}!</h2>
             <p>Aquí tienes un resumen del impacto generado hoy.</p>
           </div>
-          {isUser() && (
+          {isGestor() && (
             <button className="btn-create-header" onClick={() => navigate('/projects/create')}>
               <span>+ Nuevo Proyecto</span>
             </button>
@@ -180,7 +185,7 @@ const DashboardPage = () => {
               <div className="user-projects-section">
                 <div className="section-header">
                   <h3>Mis Proyectos Recientes</h3>
-                  <button className="btn-link" onClick={() => navigate('/projects/create')}>Ver todos</button>
+                  <button className="btn-link" onClick={() => navigate('/projects')}>Ver todos</button>
                 </div>
                 
                 {projects.length > 0 ? (
@@ -218,7 +223,7 @@ const DashboardPage = () => {
                           <div className="meta-stats-row">
                             <span className="label">Meta ODS {project.objective}</span>
                             <span className="indicators-count">
-                              <strong>{project.indicatorsAchieved || 0}/{project.totalIndicators || project.indicators.length}</strong> indicadores
+                               <strong>{project.indicatorsAchieved || 0}/{project.totalIndicators || project.indicators?.length || 0}</strong> indicadores
                             </span>
                           </div>
                           

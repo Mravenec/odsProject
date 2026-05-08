@@ -102,7 +102,7 @@
 }
 
 .role-tag.admin { background: #fee2e2; color: #ef4444; }
-.role-tag.user { background: #dcfce7; color: #10b981; }
+.role-tag.user, .role-tag.gestor { background: #dcfce7; color: #10b981; }
 
 .btn-logout {
   background: transparent;
@@ -687,4 +687,26 @@
 .btn-action-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 15px var(--primary-glow);
+}
+
+.header-actions-inline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-create-small {
+  background: var(--primary);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 10px var(--primary-glow);
+  transition: all 0.2s ease;
+}
+
+.btn-create-small:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px var(--primary-glow);
 }

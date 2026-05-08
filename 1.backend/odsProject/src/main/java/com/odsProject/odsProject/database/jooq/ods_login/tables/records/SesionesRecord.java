@@ -23,8 +23,9 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     /**
      * Setter for <code>ods_login.sesiones.id</code>.
      */
-    public void setId(Integer value) {
+    public SesionesRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -37,8 +38,9 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     /**
      * Setter for <code>ods_login.sesiones.usuario_id</code>.
      */
-    public void setUsuarioId(Integer value) {
+    public SesionesRecord setUsuarioId(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -51,8 +53,9 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     /**
      * Setter for <code>ods_login.sesiones.token_hash</code>.
      */
-    public void setTokenHash(String value) {
+    public SesionesRecord setTokenHash(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -65,8 +68,9 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     /**
      * Setter for <code>ods_login.sesiones.ip_address</code>.
      */
-    public void setIpAddress(String value) {
+    public SesionesRecord setIpAddress(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -79,8 +83,9 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     /**
      * Setter for <code>ods_login.sesiones.user_agent</code>.
      */
-    public void setUserAgent(String value) {
+    public SesionesRecord setUserAgent(String value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -93,8 +98,9 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     /**
      * Setter for <code>ods_login.sesiones.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public SesionesRecord setCreatedAt(LocalDateTime value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -107,8 +113,9 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     /**
      * Setter for <code>ods_login.sesiones.expira_en</code>.
      */
-    public void setExpiraEn(LocalDateTime value) {
+    public SesionesRecord setExpiraEn(LocalDateTime value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -121,8 +128,9 @@ public class SesionesRecord extends UpdatableRecordImpl<SesionesRecord> {
     /**
      * Setter for <code>ods_login.sesiones.revocada</code>.
      */
-    public void setRevocada(Byte value) {
+    public SesionesRecord setRevocada(Byte value) {
         set(7, value);
+        return this;
     }
 
     /**

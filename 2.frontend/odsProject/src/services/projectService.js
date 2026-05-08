@@ -1,237 +1,237 @@
 import api from './api';
 
+/**
+ * Servicio de Proyectos — Alineado con MasterProjectController.java
+ * 
+ * Backend endpoints (MasterProjectController):
+ *   GET    /api/projects                 → Todos los proyectos
+ *   GET    /api/projects/{id}            → Proyecto por ID
+ *   GET    /api/projects/user/{userId}   → Proyectos del usuario
+ *   POST   /api/projects                 → Crear proyecto
+ *   PUT    /api/projects/{id}            → Actualizar proyecto
+ *   DELETE /api/projects/{id}            → Eliminar proyecto
+ *   GET    /api/projects/dashboard       → Dashboard global
+ */
 export const projectService = {
-  // Nota: El backend tiene proyectos por ODS. 
-  // Si no se especifica odsId, por defecto usamos '01' (Fin de la Pobreza)
   
-  async getAllProjects(odsId = '01') {
-    const formattedOdsId = String(odsId).padStart(2, '0');
+  // ── Mapeo Backend → Frontend ────────────────────────────────────
+  _mapBackendToFrontend(p) {
+    return {
+      id: p.id,
+      name: p.nombreProyecto || p.nombre_proyecto,
+      description: p.descripcion,
+      userId: p.usuarioId || p.usuario_id,
+      sedeId: p.sedeId || p.sede_id,
+      objective: p.objetivoId || p.objetivo_id,  // ODS number
+      startDate: p.fechaInicio || p.fecha_inicio,
+      endDate: p.fechaFin || p.fecha_fin,
+      status: p.estado,
+      createdAt: p.createdAt || p.created_at
+    };
+  },
+
+  // ── CRUD Proyectos ──────────────────────────────────────────────
+  async getAllProjects() {
     try {
-      const response = await api.get(`/ods/${formattedOdsId}/proyectos`);
+      const response = await api.get('/projects');
       return {
         success: true,
-        data: (response.data || []).map(p => this._mapBackendToFrontend(p, formattedOdsId))
+        data: (response.data || []).map(p => this._mapBackendToFrontend(p))
       };
     } catch (error) {
-      console.error(`Error fetching projects for ODS ${formattedOdsId}:`, error);
-      return { success: false, error: error.message };
+      console.error('Error fetching projects:', error);
+      return { success: false, error: error.message, data: [] };
     }
   },
 
-  // Alias para compatibilidad con Dashboard
   async getAdminProjects() {
     return this.getAllProjects();
   },
 
-  async getUserProjects(userId, odsId = '01') {
-    const res = await this.getAllProjects(odsId);
-    if (res.success) {
-      // El backend actual parece devolver todos, así que filtramos por userId si el backend no lo hace
-      // Aunque en una versión real el backend debería filtrar
-      res.data = res.data.filter(p => p.userId === userId);
+  async getUserProjects(userId) {
+    try {
+      const response = await api.get(`/projects/user/${userId}`);
+      return (response.data || []).map(p => this._mapBackendToFrontend(p));
+    } catch (error) {
+      console.error('Error fetching user projects:', error);
+      return [];
     }
-    return res.data; // Dashboard espera el array directamente
+  },
+
+  async getProjectById(projectId) {
+    try {
+      const response = await api.get(`/projects/${projectId}`);
+      return { success: true, data: this._mapBackendToFrontend(response.data) };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
   },
 
   async createProject(projectData) {
-    const odsId = String(projectData.objective || '01').padStart(2, '0');
-    
-    // Buscar sede id por nombre si no viene
-    const sedeId = projectData.sedeId || 1; // Default
-    
     const backendData = {
       usuarioId: projectData.userId,
-      sedeId: sedeId,
+      sedeId: projectData.sedeId || 1,
       nombreProyecto: projectData.name,
-      objetivoId: parseInt(odsId),
       descripcion: projectData.description,
       fechaInicio: projectData.startDate,
       fechaFin: projectData.endDate,
-      metaGeneral: projectData.description?.substring(0, 100), // Fallback
-      estado: 'planificacion'
+      metaGeneral: projectData.description?.substring(0, 100),
+      responsableNombre: projectData.responsableNombre || null,
+        locationProvince:  projectData.locationProvince  || null,
+        locationCanton:    projectData.locationCanton    || null,
+        locationDistrict:  projectData.locationDistrict  || null,
+        estado: 'planificacion'
     };
-
     try {
-      const response = await api.post(`/ods/${odsId}/proyectos`, backendData);
-      return {
-        success: true,
-        data: this._mapBackendToFrontend(response.data, odsId)
-      };
+      const response = await api.post('/projects', backendData);
+      return { success: true, data: this._mapBackendToFrontend(response.data) };
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Error al crear el proyecto');
     }
   },
 
-  /**
-   * Orquestador para creación completa de proyecto (Encabezado + Indicadores + Parámetros)
-   */
-  async createFullProject(projectData, servicesMap) {
+  async updateProject(projectId, projectData) {
+    const backendData = {
+      id: projectId,
+      usuarioId: projectData.userId,
+      sedeId: projectData.sedeId || 1,
+      nombreProyecto: projectData.name,
+      descripcion: projectData.description,
+      fechaInicio: projectData.startDate,
+      fechaFin: projectData.endDate,
+      estado: projectData.status || 'activo'
+    };
     try {
-      // 1. Crear encabezado del proyecto
-      const headerRes = await this.createProject(projectData);
-      if (!headerRes.success) throw new Error('No se pudo crear el encabezado del proyecto');
-      
-      const projectId = headerRes.data.id;
-      const primaryOds = projectData.objective;
-      const service = servicesMap[primaryOds];
-
-      if (!service) throw new Error(`Servicio para ODS ${primaryOds} no disponible`);
-
-      // 2. Vincular indicadores seleccionados
-      if (projectData.indicators && projectData.indicators.length > 0) {
-        for (const code of projectData.indicators) {
-          const config = projectData.indicatorConfigs[code] || {};
-          const meta = projectData.indicatorMetadata[code] || {};
-
-          if (!meta.masterId) {
-            console.warn(`Indicador ${code} no tiene masterId. Saltando vinculación.`);
-            continue;
-          }
-
-          const indRes = await service.saveIndicator({
-            proyectoId: projectId,
-            indicadorMasterId: meta.masterId,
-            metaValor: config.targetValue || config.goalValue || 0,
-            metaUnidad: meta.unit || 'unidad',
-            formulaCustom: config.formula || null
-          });
-
-          // 3. Guardar parámetros/variables si existen
-          if (indRes.success && config.parameters && config.parameters.length > 0) {
-            const proyectoIndicadorId = indRes.data.id;
-            for (const param of config.parameters) {
-              await service.saveParameter({
-                proyectoIndicadorId,
-                nombreParametro: param.name || param,
-                tipoDato: 'Decimal'
-              });
-            }
-          }
-        }
-      }
-
-      return headerRes;
-    } catch (error) {
-      console.error('[projectService] Error in createFullProject:', error);
-      throw error;
-    }
-  },
-
-  async updateProject(projectData, odsId) {
-    const formattedOdsId = String(odsId).padStart(2, '0');
-    try {
-      const response = await api.put(`/ods/${formattedOdsId}/proyectos/${projectData.id}`, projectData);
-      return {
-        success: true,
-        data: this._mapBackendToFrontend(response.data, formattedOdsId)
-      };
+      const response = await api.put(`/projects/${projectId}`, backendData);
+      return { success: true, data: this._mapBackendToFrontend(response.data) };
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Error al actualizar el proyecto');
     }
   },
 
-  async updateProjectResults(resultsData, odsId = '01') {
-    const formattedOdsId = String(odsId).padStart(2, '0');
+  async deleteProject(projectId) {
     try {
-      const response = await api.put(`/ods/${formattedOdsId}/proyectos/${resultsData.projectId}`, {
-        id: resultsData.projectId,
-        estado: 'COMPLETADO'
-      });
-      return {
-        success: true,
-        data: this._mapBackendToFrontend(response.data, formattedOdsId)
-      };
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  },
-
-  async getProjectResults(projectId, odsId = '01') {
-    const formattedOdsId = String(odsId).padStart(2, '0');
-    try {
-      const response = await api.get(`/ods/${formattedOdsId}/progreso/${projectId}`);
-      // El backend devuelve un Double (progreso). 
-      // El frontend espera un objeto complejo con score e indicadores.
-      // Simulamos la estructura esperada por la UI con los datos reales disponibles
-      return {
-        overallScore: response.data || 0,
-        indicatorsAchieved: (response.data >= 100) ? 1 : 0,
-        totalIndicators: 1,
-        indicatorResults: [
-          {
-            indicator: 'Progreso General',
-            goalAchievement: response.data || 0,
-            targetValue: 100,
-            finalValue: response.data || 0
-          }
-        ]
-      };
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  },
-
-  async deleteProject(projectId, odsId = '01') {
-    const formattedOdsId = String(odsId).padStart(2, '0');
-    try {
-      await api.delete(`/ods/${formattedOdsId}/proyectos/${projectId}`);
+      await api.delete(`/projects/${projectId}`);
       return { success: true };
     } catch (error) {
-      throw new Error(error.message);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // ── Dashboard ────────────────────────────────────────────────────
+  async getGlobalDashboard() {
+    try {
+      const response = await api.get('/projects/dashboard');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error: error.message, data: {} };
+    }
+  },
+
+  // ── Resultados del Proyecto ──────────────────────────────────────
+  async getProjectResults(projectId, odsNum) {
+    const formattedOds = String(odsNum).padStart(2, '0');
+    try {
+      const response = await api.get(`/ods/${formattedOds}/indicadores/proyecto`, {
+        params: { proyectoId: projectId }
+      });
+      return { success: true, data: response.data || [] };
+    } catch (error) {
+      return { success: false, error: error.message, data: [] };
     }
   },
 
   /**
-   * Obtiene datos del Dashboard Global (Core V3)
-   * Consolida métricas de los 17 ODS
+   * Orquestador de creación completa de proyecto:
+   *  1. Crear el proyecto en ods_master
+   *  2. Vincular indicadores ODS al proyecto
+   *  3. Guardar configuración de fórmulas y parámetros
    */
-  async getGlobalDashboardData() {
+  async createFullProject(projectData, servicesMap) {
     try {
-      const response = await api.get('/projects/dashboard');
-      return {
-        success: true,
-        data: response.data
-      };
-    } catch (error) {
-      console.error('[projectService] Error fetching global dashboard:', error);
-      return { success: false, error: error.message };
-    }
-  },
+      // ─ 1. Crear encabezado del proyecto ─
+      const headerRes = await this.createProject(projectData);
+      if (!headerRes.success) throw new Error('No se pudo crear el encabezado del proyecto');
+      const projectId = headerRes.data?.id || headerRes.data;
 
-  async getStatistics(odsId = '01') {
-    const formattedOdsId = String(odsId).padStart(2, '0');
-    try {
-      const response = await api.get(`/ods/${formattedOdsId}/estadisticas`);
-      return {
-        success: true,
-        data: {
-          totalProjects: response.data?.totalProyectos || 0,
-          totalUsers: response.data?.totalUsuarios || 0
+      const { indicators, indicatorConfigs, indicatorMetadata } = projectData;
+
+      // ── S5: Contadores para feedback al usuario ───────────────────────────
+      let savedIndicators = 0;
+      let skippedIndicators = [];
+      let savedParameters = 0;
+
+      // ─ 2. Iterar flat array ["1.1.1", "3.1.1", "13.2.1"] ─
+      // Cada código determina su ODS por prefijo → servicio correcto
+      if (Array.isArray(indicators) && indicators.length > 0) {
+        for (const code of indicators) {
+          const odsNum  = parseInt(code.split('.')[0]);  // "3.1.1" → 3 → servicesMap[3]
+          const service = servicesMap[odsNum];
+          if (!service?.saveIndicator) {
+            console.warn(`[ProjectService] Sin servicio para ODS ${odsNum} (${code})`);
+            skippedIndicators.push(code);
+            continue;
+          }
+
+          const config = indicatorConfigs?.[code] || {};
+          const meta   = indicatorMetadata?.[code] || {};
+
+          if (!meta.masterId) {
+            console.warn(`[ProjectService] Sin masterId para ${code} — saltando`);
+            skippedIndicators.push(code);
+            continue;
+          }
+
+          // 2a. Guardar el indicador con fórmula y meta
+          let indRes;
+          try {
+            indRes = await service.saveIndicator({
+              proyectoId:        projectId,
+              indicadorMasterId: meta.masterId,
+              metaValor:         parseFloat(config.goal?.value) || 0,
+              metaUnidad:        config.goal?.unit  || meta.unit || 'unidad',
+              metaNombre:        config.goal?.name  || null,
+              formulaCustom:     config.formula     || null
+            });
+            if (indRes?.success) savedIndicators++;
+          } catch (e) {
+            console.warn(`[ProjectService] Error guardando indicador ${code}:`, e.message);
+            skippedIndicators.push(code);
+            continue;
+          }
+
+          // 2b. Guardar cada variable/parámetro libre que el usuario definió
+          if (indRes?.success && Array.isArray(config.parameters) && config.parameters.length > 0) {
+            const proyectoIndicadorId = indRes.data?.id || indRes.data;
+            for (const param of config.parameters) {
+              if (!param.name?.trim()) continue;
+              try {
+                await service.saveParameter({
+                  proyectoIndicadorId,
+                  nombreParametro: param.name,
+                  nombreVariable:  param.name,
+                  tipoDato:        param.type || 'Decimal',
+                  valorActual:     0
+                });
+                savedParameters++;
+              } catch (e) {
+                console.warn(`[ProjectService] Error guardando parámetro ${param.name}:`, e.message);
+              }
+            }
+          }
         }
+      }
+
+      // ── S5: Retornar resultado con estadísticas del cascade ───────────────
+      return {
+        ...headerRes,
+        savedIndicators,
+        skippedIndicators,
+        savedParameters
       };
     } catch (error) {
-      return { success: false, error: error.message };
+      console.error('[projectService] Error in createFullProject:', error);
+      throw error;
     }
   },
-
-  // Helper para mapear campos
-  _mapBackendToFrontend(p, odsId) {
-    return {
-      id: p.id,
-      userId: p.usuarioId,
-      name: p.nombreProyecto || p.nombre || 'Proyecto sin nombre',
-      description: p.descripcion,
-      objective: odsId,
-      objectiveName: `ODS ${odsId}`,
-      status: (p.estado || 'planificacion').toLowerCase(),
-      startDate: p.fechaInicio,
-      endDate: p.fechaFin,
-      // Campos enriquecidos V3
-      totalIndicators: p.totalIndicadores || 0,
-      indicatorsAchieved: p.indicadoresLogrados || 0,
-      progressPercentage: p.progresoPorcentaje || 0,
-      indicators: p.indicadores || [],
-      indicatorConfigs: p.configuracionIndicadores || p.indicator_configs || {}
-    };
-  }
 };

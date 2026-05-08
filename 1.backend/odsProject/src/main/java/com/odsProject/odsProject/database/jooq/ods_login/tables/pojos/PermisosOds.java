@@ -66,8 +66,9 @@ public class PermisosOds implements Serializable {
     /**
      * Setter for <code>ods_login.permisos_ods.id</code>.
      */
-    public void setId(Integer id) {
+    public PermisosOds setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -80,8 +81,9 @@ public class PermisosOds implements Serializable {
     /**
      * Setter for <code>ods_login.permisos_ods.usuario_id</code>.
      */
-    public void setUsuarioId(Integer usuarioId) {
+    public PermisosOds setUsuarioId(Integer usuarioId) {
         this.usuarioId = usuarioId;
+        return this;
     }
 
     /**
@@ -94,8 +96,9 @@ public class PermisosOds implements Serializable {
     /**
      * Setter for <code>ods_login.permisos_ods.ods_num</code>.
      */
-    public void setOdsNum(UByte odsNum) {
+    public PermisosOds setOdsNum(UByte odsNum) {
         this.odsNum = odsNum;
+        return this;
     }
 
     /**
@@ -108,8 +111,9 @@ public class PermisosOds implements Serializable {
     /**
      * Setter for <code>ods_login.permisos_ods.puede_crear</code>.
      */
-    public void setPuedeCrear(Byte puedeCrear) {
+    public PermisosOds setPuedeCrear(Byte puedeCrear) {
         this.puedeCrear = puedeCrear;
+        return this;
     }
 
     /**
@@ -122,8 +126,9 @@ public class PermisosOds implements Serializable {
     /**
      * Setter for <code>ods_login.permisos_ods.puede_editar</code>.
      */
-    public void setPuedeEditar(Byte puedeEditar) {
+    public PermisosOds setPuedeEditar(Byte puedeEditar) {
         this.puedeEditar = puedeEditar;
+        return this;
     }
 
     /**
@@ -136,8 +141,9 @@ public class PermisosOds implements Serializable {
     /**
      * Setter for <code>ods_login.permisos_ods.puede_ver</code>.
      */
-    public void setPuedeVer(Byte puedeVer) {
+    public PermisosOds setPuedeVer(Byte puedeVer) {
         this.puedeVer = puedeVer;
+        return this;
     }
 
     /**
@@ -150,8 +156,9 @@ public class PermisosOds implements Serializable {
     /**
      * Setter for <code>ods_login.permisos_ods.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public PermisosOds setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     @Override

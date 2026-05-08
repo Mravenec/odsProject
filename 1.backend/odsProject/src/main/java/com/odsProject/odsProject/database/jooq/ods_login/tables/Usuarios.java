@@ -188,7 +188,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
 
     @Override
     public List<UniqueKey<UsuariosRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_USUARIOS_EMAIL, Keys.KEY_USUARIOS_USERNAME);
+        return Arrays.asList(Keys.KEY_USUARIOS_USERNAME, Keys.KEY_USUARIOS_EMAIL);
     }
 
     @Override

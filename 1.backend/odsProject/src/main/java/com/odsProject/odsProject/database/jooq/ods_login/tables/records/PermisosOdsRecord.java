@@ -24,8 +24,9 @@ public class PermisosOdsRecord extends UpdatableRecordImpl<PermisosOdsRecord> {
     /**
      * Setter for <code>ods_login.permisos_ods.id</code>.
      */
-    public void setId(Integer value) {
+    public PermisosOdsRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -38,8 +39,9 @@ public class PermisosOdsRecord extends UpdatableRecordImpl<PermisosOdsRecord> {
     /**
      * Setter for <code>ods_login.permisos_ods.usuario_id</code>.
      */
-    public void setUsuarioId(Integer value) {
+    public PermisosOdsRecord setUsuarioId(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -52,8 +54,9 @@ public class PermisosOdsRecord extends UpdatableRecordImpl<PermisosOdsRecord> {
     /**
      * Setter for <code>ods_login.permisos_ods.ods_num</code>.
      */
-    public void setOdsNum(UByte value) {
+    public PermisosOdsRecord setOdsNum(UByte value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -66,8 +69,9 @@ public class PermisosOdsRecord extends UpdatableRecordImpl<PermisosOdsRecord> {
     /**
      * Setter for <code>ods_login.permisos_ods.puede_crear</code>.
      */
-    public void setPuedeCrear(Byte value) {
+    public PermisosOdsRecord setPuedeCrear(Byte value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -80,8 +84,9 @@ public class PermisosOdsRecord extends UpdatableRecordImpl<PermisosOdsRecord> {
     /**
      * Setter for <code>ods_login.permisos_ods.puede_editar</code>.
      */
-    public void setPuedeEditar(Byte value) {
+    public PermisosOdsRecord setPuedeEditar(Byte value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -94,8 +99,9 @@ public class PermisosOdsRecord extends UpdatableRecordImpl<PermisosOdsRecord> {
     /**
      * Setter for <code>ods_login.permisos_ods.puede_ver</code>.
      */
-    public void setPuedeVer(Byte value) {
+    public PermisosOdsRecord setPuedeVer(Byte value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -108,8 +114,9 @@ public class PermisosOdsRecord extends UpdatableRecordImpl<PermisosOdsRecord> {
     /**
      * Setter for <code>ods_login.permisos_ods.created_at</code>.
      */
-    public void setCreatedAt(LocalDateTime value) {
+    public PermisosOdsRecord setCreatedAt(LocalDateTime value) {
         set(6, value);
+        return this;
     }
 
     /**
