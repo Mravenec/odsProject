@@ -287,4 +287,38 @@ public interface IOdsBaseController<T, E, P, M, MH, A> {
     ResponseEntity<Boolean> existsMedicionHistorica(
         @PathVariable Integer medicionId
     );
+
+    // ── Sprint 2 / 5: Medición auditada y traza ────────────────────────────
+
+    /**
+     * POST /api/ods/{odsId}/mediciones/auditada
+     *
+     * Body (Map plano, sin DTO):
+     *   {
+     *     "proyectoIndicadorId": 123,
+     *     "fechaMedicion": "2026-05-10",
+     *     "responsable": "Juan Pérez",
+     *     "metodoMedicion": "encuesta",
+     *     "observaciones": "...",
+     *     "valoresParametros": { "<parametroId>": <valor>, ... }
+     *   }
+     *
+     * El backend recalcula valor_calculado a partir de la fórmula del indicador,
+     * persiste medición + valores de parámetros en una sola transacción y devuelve
+     * el resultado con meta_alcanzada.
+     */
+    @PostMapping("/mediciones/auditada")
+    ResponseEntity<java.util.Map<String, Object>> createMedicionAuditada(
+        @RequestBody java.util.Map<String, Object> payload
+    );
+
+    /**
+     * GET /api/ods/{odsId}/mediciones/{medicionId}/auditoria
+     * Devuelve la traza completa de una medición:
+     *   fórmula vigente, valores por parámetro, valor calculado y meta_alcanzada.
+     */
+    @GetMapping("/mediciones/{medicionId}/auditoria")
+    ResponseEntity<java.util.Map<String, Object>> getMedicionAuditoria(
+        @PathVariable Integer medicionId
+    );
 }

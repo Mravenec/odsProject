@@ -257,4 +257,33 @@ public interface IOdsBaseService<T, E, P, M, MH, A> {
      * @return Lista de indicadores que pertenecen a la meta especificada
      */
     List<T> findIndicadoresByMeta(Integer proyectoId, String metaPrefix);
+
+    // ── Sprint 2 / 5: Medición auditada — el cálculo lo hace el backend ─────
+    //
+    // payload esperado:
+    //   {
+    //     "proyectoIndicadorId": 123,
+    //     "fechaMedicion": "2026-05-10",
+    //     "responsable": "Juan Pérez",
+    //     "metodoMedicion": "encuesta",
+    //     "observaciones": "...",
+    //     "valoresParametros": { "<parametroId>": <valor>, ... }
+    //   }
+    //
+    // El servicio:
+    //   1. Recupera la fórmula vigente de proyecto_indicadores
+    //   2. Reconstruye el Map<nombre_variable, valor> usando los IDs enviados
+    //   3. Calcula valor_calculado server-side (NO confía en el cliente)
+    //   4. Persiste mediciones_historicas + medicion_parametro_valores en la
+    //      misma transacción
+    //   5. Devuelve { medicion, valor, metaValor, metaAlcanzada, formula, parametros }
+    Map<String, Object> saveMedicionAuditada(Map<String, Object> payload);
+
+    /**
+     * Devuelve toda la traza de una medición histórica:
+     *   - la fórmula vigente
+     *   - el valor calculado y la meta
+     *   - los valores ingresados por cada parámetro
+     */
+    Map<String, Object> getMedicionAuditoria(Integer medicionId);
 }

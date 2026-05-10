@@ -1,10 +1,23 @@
-import { evaluationEngine } from '../../utils/evaluationEngine';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { projectService } from '../../services/projectService';
+import { evaluationEngine } from '../../utils/evaluationEngine';
 
-// Map ODS number -> service import (dynamic require pattern)
+/**
+ * EvaluationPage — Sprint 4 / 5
+ *
+ * Cambios vs. la versión anterior:
+ *   1. Se envía proyecto_indicadores.id (ind.id) y NO el indicadorMasterId
+ *      al guardar la medición.
+ *   2. Usa el endpoint /mediciones/auditada que recalcula server-side y persiste
+ *      medicion_parametro_valores en una sola transacción.
+ *   3. Agrega tab "Auditoría" para ver la traza de mediciones por indicador.
+ *   4. El cálculo local sigue mostrándose como preview (UX inmediata) pero el
+ *      valor que queda guardado es el que devuelve el backend.
+ */
+
+// Resolver dinámico de servicios por ODS
 const getService = async (odsNum) => {
   const n = String(odsNum).padStart(2, '0');
   try {
@@ -34,6 +47,8 @@ const EvaluationPage = () => {
   const [openOds, setOpenOds]           = useState({});
   const [saving, setSaving]             = useState({});
   const [loadingPage, setLoadingPage]   = useState(true);
+  const [auditTrail, setAuditTrail]     = useState({});       // codigo -> [auditoria]
+  const [loadingAudit, setLoadingAudit] = useState({});
 
   const loadAllIndicators = useCallback(async (pid) => {
     const result = {};
@@ -41,19 +56,15 @@ const EvaluationPage = () => {
       try {
         const svc = await getService(n);
         if (!svc) continue;
-        // Load indicators enriched (VistaAdminDetalleIndicadores)
         const data = await (svc.getIndicators ? svc.getIndicators(pid) : svc.getAllIndicators?.(pid));
         if (!data || Object.keys(data).length === 0) continue;
-        
-        // Load parametros for this ODS in this project
+
         const metasRes = svc.getMetasProyecto ? await svc.getMetasProyecto(pid) : { data: [] };
         const metas = metasRes.data || [];
-        
-        // Enrich each indicator with its parametros
+
         const list = Object.values(data).filter(i => i && i.proyectoId);
         const enriched = list.map(ind => ({
           ...ind,
-          // Also expose these fields that VistaAdminDetalleIndicadores returns
           indicadorCodigo: ind.indicadorCodigo || ind.codigo,
           indicadorNombre: ind.indicadorNombre || ind.nombre,
           indicadorMasterId: ind.indicadorMasterId || ind.masterId,
@@ -64,13 +75,12 @@ const EvaluationPage = () => {
           metaNombre: ind.metaNombre || '',
           estadoIndicador: ind.estadoIndicador || 'SIN DATOS',
           porcentajeLogro: ind.porcentajeLogro || 0,
-          // Attach parametros that belong to this indicator
           parametros: metas.filter(m =>
             m.proyectoIndicadorId === ind.id ||
             m.proyecto_indicador_id === ind.id
           )
         }));
-        
+
         if (enriched.length > 0) result[n] = enriched;
       } catch (e) { console.error('ODS', n, e); }
     }
@@ -85,7 +95,6 @@ const EvaluationPage = () => {
         setProject(projRes.data || projRes);
         const indicators = await loadAllIndicators(parseInt(projectId));
         setAllIndicators(indicators);
-        // Open all ODS that have data
         const opened = {};
         Object.keys(indicators).forEach(k => { opened[k] = true; });
         setOpenOds(opened);
@@ -93,7 +102,7 @@ const EvaluationPage = () => {
       setLoadingPage(false);
     };
     if (projectId) load();
-  }, [projectId]);
+  }, [projectId, loadAllIndicators]);
 
   const handleParamChange = (codigo, paramVar, value) => {
     setParamInputs(prev => ({
@@ -102,47 +111,125 @@ const EvaluationPage = () => {
     }));
   };
 
-  const evaluateFormula = (formula, params) => {
-    if (!formula || formula === 'valor') return null;
-    try {
-      const result = evaluationEngine.evaluateFormula(formula, params);
-      return parseFloat(result.toFixed(4));
-    } catch { return null; }
-  };
-
+  /**
+   * Calcula y persiste vía /mediciones/auditada.
+   * El backend recalcula valor_calculado con exp4j; el valor del cliente es solo preview UX.
+   */
   const handleCalcular = async (odsNum, indicator) => {
     const codigo = indicator.indicadorCodigo;
     const formula = indicator.formulaCustom || indicator.formulaDefault || 'valor';
     const params = paramInputs[codigo] || {};
-    const result = formula === 'valor'
-      ? parseFloat(Object.values(params)[0] || 0)
-      : evaluateFormula(formula, params);
 
-    if (result === null || isNaN(result)) {
-      return alert('Error al calcular. Verifique los valores ingresados.');
+    // Preview local (rápido, no persiste)
+    const localPreview = formula === 'valor'
+      ? parseFloat(Object.values(params)[0] || 0)
+      : evaluationEngine.evaluateFormula(formula, params);
+
+    // Construir { parametroId → valor } para el backend
+    const valoresParametros = {};
+    for (const p of (indicator.parametros || [])) {
+      const varName = p.nombreVariable || p.nombreParametro;
+      const v = parseFloat(params[varName]);
+      if (!isNaN(v)) {
+        valoresParametros[p.id] = v;
+      }
     }
 
-    const metaVal = parseFloat(indicator.metaValor || 0);
-    const pct = metaVal > 0 ? Math.min((result / metaVal) * 100, 200) : 0;
-    const status = result >= metaVal ? 'Cumplido' : 'En Progreso';
-
-    setCalcResults(prev => ({ ...prev, [codigo]: { result, pct, status } }));
-
-    // Save to backend
     setSaving(prev => ({ ...prev, [codigo]: true }));
     try {
       const svc = await getService(odsNum);
-      if (svc?.createMedicion) {
-        await svc.createMedicion({
-          proyectoIndicadorId: indicator.indicadorMasterId || indicator.id,
-          valorCalculado: result,
-          fechaMedicion: new Date().toISOString().split('T')[0],
-          responsable: user?.fullName || user?.name || 'Sistema'
-        });
+      if (!svc?.createMedicionAuditada) {
+        // Fallback: si por alguna razón el servicio no expone createMedicionAuditada
+        if (svc?.createMedicion) {
+          await svc.createMedicion({
+            proyectoIndicadorId: indicator.id, // ← FIX: era indicadorMasterId
+            valorCalculado: localPreview,
+            fechaMedicion: new Date().toISOString().split('T')[0],
+            responsable: user?.fullName || user?.name || 'Sistema'
+          });
+        }
+        const metaVal = parseFloat(indicator.metaValor || 0);
+        const pct = metaVal > 0 ? Math.min((localPreview / metaVal) * 100, 200) : 0;
+        const status = localPreview >= metaVal ? 'Cumplido' : 'En Progreso';
+        setCalcResults(prev => ({ ...prev, [codigo]: { result: localPreview, pct, status } }));
+        return;
       }
-    } catch (e) { console.error('Error guardando medición:', e); }
-    setSaving(prev => ({ ...prev, [codigo]: false }));
+
+      // Endpoint auditado del backend
+      const auditedRes = await svc.createMedicionAuditada({
+        proyectoIndicadorId: indicator.id,
+        fechaMedicion: new Date().toISOString().split('T')[0],
+        responsable: user?.fullName || user?.name || 'Sistema',
+        metodoMedicion: 'manual',
+        valoresParametros
+      });
+
+      // El backend devuelve { medicion, valor, metaValor, metaAlcanzada, estado, ... }
+      const valor = parseFloat(auditedRes.data?.valor || auditedRes.valor || localPreview);
+      const metaVal = parseFloat(auditedRes.data?.metaValor || indicator.metaValor || 0);
+      const alcanzada = (auditedRes.data || auditedRes).metaAlcanzada;
+      const pct = metaVal > 0 ? Math.min((valor / metaVal) * 100, 200) : 0;
+      const status = alcanzada ? 'Cumplido' : 'En Progreso';
+      setCalcResults(prev => ({
+        ...prev,
+        [codigo]: {
+          result: valor, pct, status,
+          medicionId: (auditedRes.data || auditedRes).medicion?.id,
+          backendCalculated: true
+        }
+      }));
+
+      // Refrescar auditoría visible (si el tab está abierto)
+      if (activeTab === 'auditoria') refreshAuditTrail(odsNum, indicator);
+    } catch (e) {
+      console.error('Error guardando medición auditada:', e);
+      alert('Error al guardar la medición. Verifique la consola.');
+    } finally {
+      setSaving(prev => ({ ...prev, [codigo]: false }));
+    }
   };
+
+  const refreshAuditTrail = async (odsNum, indicator) => {
+    const codigo = indicator.indicadorCodigo;
+    setLoadingAudit(prev => ({ ...prev, [codigo]: true }));
+    try {
+      const svc = await getService(odsNum);
+      if (!svc?.getMediciones) return;
+      const res = await svc.getMediciones(indicator.id);
+      const mediciones = res.data || [];
+
+      // Para cada medición, traer la traza completa
+      const trail = [];
+      for (const m of mediciones) {
+        if (svc.getMedicionAuditoria) {
+          try {
+            const aud = await svc.getMedicionAuditoria(m.id);
+            trail.push(aud.data || aud);
+          } catch {
+            trail.push({ medicion: m });
+          }
+        } else {
+          trail.push({ medicion: m });
+        }
+      }
+      setAuditTrail(prev => ({ ...prev, [codigo]: trail }));
+    } catch (e) {
+      console.error('Error cargando auditoría:', e);
+    } finally {
+      setLoadingAudit(prev => ({ ...prev, [codigo]: false }));
+    }
+  };
+
+  // Cargar auditoría al cambiar de tab
+  useEffect(() => {
+    if (activeTab !== 'auditoria') return;
+    Object.entries(allIndicators).forEach(([odsNum, indicadores]) => {
+      indicadores.forEach(ind => {
+        if (!auditTrail[ind.indicadorCodigo]) refreshAuditTrail(parseInt(odsNum), ind);
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
 
   if (loadingPage) return (
     <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'60vh',flexDirection:'column',gap:12}}>
@@ -162,79 +249,59 @@ const EvaluationPage = () => {
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:12}}>
           <div style={{flex:1}}>
             <div style={{fontSize:11,color:'#888',fontFamily:'monospace',letterSpacing:'0.06em',marginBottom:4}}>
-              EVALUACIÓN DE PROYECTO
+              PROYECTO #{projectId}
             </div>
-            <h1 style={{margin:0,fontSize:20,fontWeight:600,color:'#111'}}>{project?.nombreProyecto}</h1>
+            <h1 style={{fontSize:20,fontWeight:700,color:'#111',margin:0}}>
+              {project?.name || project?.nombreProyecto || 'Proyecto'}
+            </h1>
           </div>
           <button onClick={() => navigate(-1)} style={{
-            padding:'8px 16px',border:'1px solid #ddd',borderRadius:8,
+            padding:'8px 14px',border:'1px solid #e5e7eb',borderRadius:8,
             background:'#fff',cursor:'pointer',fontSize:13,color:'#555'
           }}>← Volver</button>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:12,marginTop:16}}>
-          {[
-            ['Sede / Área', project?.sede || project?.sedeId],
-            ['Responsable', project?.responsableNombre || '—'],
-            ['Ubicación', project?.locationCanton ? `${project.locationCanton}, ${project.locationProvince}` : '—'],
-            ['Periodo', project?.fechaInicio ? `${project.fechaInicio} → ${project.fechaFin}` : '—'],
-          ].map(([label, val]) => (
-            <div key={label} style={{background:'#f9fafb',borderRadius:8,padding:'10px 14px'}}>
-              <div style={{fontSize:10,color:'#888',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:3}}>{label}</div>
-              <div style={{fontSize:13,fontWeight:500,color:'#333'}}>{val || '—'}</div>
-            </div>
-          ))}
+
+        {/* Métricas resumidas */}
+        <div style={{display:'flex',gap:24,marginTop:14,flexWrap:'wrap'}}>
+          <div>
+            <div style={{fontSize:11,color:'#888',textTransform:'uppercase',letterSpacing:'0.06em'}}>Indicadores</div>
+            <div style={{fontSize:22,fontWeight:700,color:'#111'}}>{totalIndicadores}</div>
+          </div>
+          <div>
+            <div style={{fontSize:11,color:'#888',textTransform:'uppercase',letterSpacing:'0.06em'}}>Logrados</div>
+            <div style={{fontSize:22,fontWeight:700,color:'#2dba74'}}>{logrados}</div>
+          </div>
         </div>
       </div>
 
-      {/* Progress bar */}
-      {totalIndicadores > 0 && (
-        <div style={{background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,padding:16,marginBottom:20}}>
-          <div style={{display:'flex',justifyContent:'space-between',fontSize:13,color:'#555',marginBottom:8}}>
-            <span>Progreso de evaluación</span>
-            <span style={{fontWeight:600,color:'#2dba74'}}>{logrados} / {totalIndicadores} evaluados</span>
-          </div>
-          <div style={{background:'#f0f4ff',borderRadius:99,height:8,overflow:'hidden'}}>
-            <div style={{
-              width: totalIndicadores > 0 ? `${(logrados/totalIndicadores)*100}%` : '0%',
-              background:'#2dba74',height:'100%',borderRadius:99,transition:'width 0.4s ease'
-            }} />
-          </div>
-        </div>
-      )}
-
       {/* Tabs */}
-      <div style={{display:'flex',gap:4,marginBottom:20}}>
-        {[['ingreso','📋 Ingreso de datos'],['resumen','📊 Resumen']].map(([id,label]) => (
-          <button key={id} onClick={() => setActiveTab(id)} style={{
-            padding:'10px 20px',border:'1px solid',borderRadius:8,cursor:'pointer',fontSize:13,fontWeight:500,
-            background: activeTab===id ? '#3b5bdb' : '#fff',
-            color: activeTab===id ? '#fff' : '#555',
-            borderColor: activeTab===id ? '#3b5bdb' : '#ddd'
-          }}>{label}</button>
+      <div style={{display:'flex',gap:6,marginBottom:18}}>
+        {[
+          {k:'ingreso',  label:'📥 Ingresar valores'},
+          {k:'resumen',  label:'📊 Resumen'},
+          {k:'auditoria',label:'🔍 Auditoría'}
+        ].map(t => (
+          <button key={t.k} onClick={() => setActiveTab(t.k)} style={{
+            padding:'8px 16px',borderRadius:8,
+            background: activeTab===t.k ? '#3b5bdb' : '#fff',
+            color: activeTab===t.k ? '#fff' : '#555',
+            border:'1px solid ' + (activeTab===t.k ? '#3b5bdb' : '#e5e7eb'),
+            fontSize:13,fontWeight:500,cursor:'pointer'
+          }}>{t.label}</button>
         ))}
       </div>
 
-      {/* TAB: Ingreso de datos */}
+      {/* TAB: Ingreso */}
       {activeTab === 'ingreso' && (
-        <div>
-          {Object.keys(allIndicators).length === 0 ? (
-            <div style={{textAlign:'center',padding:60,color:'#888',background:'#fff',borderRadius:12,border:'1px solid #e5e7eb'}}>
-              <div style={{fontSize:40,marginBottom:12}}>📭</div>
-              <div style={{fontSize:16,fontWeight:500,marginBottom:8}}>Sin indicadores vinculados</div>
-              <div style={{fontSize:13}}>Este proyecto aún no tiene indicadores configurados.</div>
-            </div>
-          ) : Object.entries(allIndicators).map(([odsNum, indicadores]) => (
-            <div key={odsNum} style={{background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,marginBottom:12,overflow:'hidden'}}>
-              {/* ODS header */}
-              <div
-                onClick={() => setOpenOds(prev => ({ ...prev, [odsNum]: !prev[odsNum] }))}
-                style={{
-                  display:'flex',alignItems:'center',gap:12,padding:'14px 18px',cursor:'pointer',
-                  background:'#f9fafb',borderBottom: openOds[odsNum] ? '1px solid #e5e7eb' : 'none'
-                }}
-              >
+        <div style={{display:'grid',gap:14}}>
+          {Object.entries(allIndicators).map(([odsNum, indicadores]) => (
+            <div key={odsNum} style={{background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,overflow:'hidden'}}>
+              <div onClick={() => setOpenOds(p => ({...p,[odsNum]: !p[odsNum]}))} style={{
+                padding:14,cursor:'pointer',display:'flex',alignItems:'center',gap:10,
+                borderBottom: openOds[odsNum] ? '1px solid #f3f4f6' : 'none'
+              }}>
                 <div style={{
-                  width:36,height:36,borderRadius:8,background:'#3b5bdb',
+                  width:32,height:32,borderRadius:8,background:'#3b5bdb',
                   display:'flex',alignItems:'center',justifyContent:'center',
                   fontSize:14,fontWeight:700,color:'#fff',flexShrink:0
                 }}>{odsNum}</div>
@@ -242,7 +309,6 @@ const EvaluationPage = () => {
                 <span style={{color:'#aaa',fontSize:12}}>{openOds[odsNum] ? '▲' : '▼'}</span>
               </div>
 
-              {/* Indicadores */}
               {openOds[odsNum] && indicadores.map(ind => {
                 const codigo = ind.indicadorCodigo;
                 const calc = calcResults[codigo];
@@ -262,11 +328,11 @@ const EvaluationPage = () => {
                           border: `1px solid ${calc.status==='Cumplido' ? '#a7f0ca' : '#ffb8b8'}`
                         }}>
                           {calc.status==='Cumplido' ? '✅ Cumplido' : '🔄 En Progreso'}
+                          {calc.backendCalculated && <span style={{marginLeft:6,fontWeight:400,opacity:0.7}}>· auditado</span>}
                         </div>
                       )}
                     </div>
 
-                    {/* Info row: formula + meta */}
                     <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14}}>
                       <div style={{background:'#f0f4ff',borderRadius:8,padding:'10px 14px'}}>
                         <div style={{fontSize:10,color:'#5577dd',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:4}}>Fórmula</div>
@@ -281,7 +347,6 @@ const EvaluationPage = () => {
                       </div>
                     </div>
 
-                    {/* Result display */}
                     {calc && (
                       <div style={{background: calc.status==='Cumplido'?'#e6f9f0':'#fff3f3',borderRadius:8,padding:'10px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:12}}>
                         <div style={{flex:1}}>
@@ -297,28 +362,22 @@ const EvaluationPage = () => {
                       </div>
                     )}
 
-                    {/* Param inputs */}
                     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:10,marginBottom:14}}>
                       {(ind.parametros || []).map((param, idx) => (
                         <div key={idx}>
                           <label style={{fontSize:12,color:'#555',display:'block',marginBottom:4}}>
                             <code style={{
-                              fontFamily:'monospace',
-                              color:'#3b5bdb',
-                              marginRight:6,
-                              background:'#f0f4ff',
-                              padding:'1px 5px',
-                              borderRadius:3
+                              fontFamily:'monospace',color:'#3b5bdb',marginRight:6,
+                              background:'#f0f4ff',padding:'1px 5px',borderRadius:3
                             }}>{param.nombreVariable || param.nombreParametro}</code>
-                            {/* Si el nombre descriptivo es diferente al nombre de variable, mostrarlo */}
                             {param.nombreParametro && param.nombreParametro !== param.nombreVariable && (
                               <span style={{color:'#888',fontSize:11}}>{param.nombreParametro}</span>
                             )}
                           </label>
                           <input
                             type="number"
-                            value={paramInputs[codigo]?.[param.nombreVariable] ?? param.valorActual ?? ''}
-                            onChange={e => handleParamChange(codigo, param.nombreVariable, e.target.value)}
+                            value={paramInputs[codigo]?.[param.nombreVariable || param.nombreParametro] ?? ''}
+                            onChange={e => handleParamChange(codigo, param.nombreVariable || param.nombreParametro, e.target.value)}
                             placeholder={`Valor actual: ${param.valorActual ?? 0}`}
                             style={{
                               width:'100%',border:'1px solid #ddd',borderRadius:8,
@@ -360,9 +419,7 @@ const EvaluationPage = () => {
                 : (ind.estadoIndicador || 'SIN DATOS');
               const pct = calc ? calc.pct : (ind.porcentajeLogro || 0);
               return (
-                <div key={codigo} style={{
-                  background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,padding:16
-                }}>
+                <div key={codigo} style={{background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,padding:16}}>
                   <div style={{fontFamily:'monospace',fontSize:10,color:'#888',marginBottom:4}}>{codigo}</div>
                   <div style={{fontWeight:600,fontSize:13,marginBottom:10,color:'#111',lineHeight:1.4}}>
                     {ind.indicadorNombre}
@@ -370,8 +427,7 @@ const EvaluationPage = () => {
                   <div style={{
                     display:'inline-block',padding:'3px 10px',borderRadius:99,fontSize:11,fontWeight:600,
                     background: (estadoColors[estado]||'#aaa') + '22',
-                    color: estadoColors[estado] || '#666',
-                    marginBottom:10
+                    color: estadoColors[estado] || '#666',marginBottom:10
                   }}>{estadoLabels[estado] || estado}</div>
                   <div style={{background:'#f3f4f6',borderRadius:99,height:6,overflow:'hidden'}}>
                     <div style={{
@@ -390,6 +446,113 @@ const EvaluationPage = () => {
             <div style={{gridColumn:'1/-1',textAlign:'center',padding:40,color:'#888'}}>
               Sin indicadores para mostrar en el resumen.
             </div>
+          )}
+        </div>
+      )}
+
+      {/* TAB: Auditoría */}
+      {activeTab === 'auditoria' && (
+        <div style={{display:'grid',gap:16}}>
+          {Object.entries(allIndicators).flatMap(([odsNum, indicadores]) =>
+            indicadores.map(ind => {
+              const codigo = ind.indicadorCodigo;
+              const trail = auditTrail[codigo] || [];
+              const isLoading = loadingAudit[codigo];
+              return (
+                <div key={codigo} style={{background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,padding:18}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+                    <div>
+                      <div style={{fontFamily:'monospace',fontSize:11,color:'#888'}}>ODS {odsNum} · {codigo}</div>
+                      <div style={{fontWeight:600,fontSize:14,color:'#111'}}>{ind.indicadorNombre}</div>
+                    </div>
+                    <button onClick={() => refreshAuditTrail(parseInt(odsNum), ind)} style={{
+                      padding:'6px 12px',border:'1px solid #e5e7eb',borderRadius:8,
+                      background:'#fff',cursor:'pointer',fontSize:12
+                    }}>↻ Refrescar</button>
+                  </div>
+                  <div style={{background:'#f0f4ff',borderRadius:8,padding:'8px 12px',marginBottom:10,fontSize:12}}>
+                    <span style={{color:'#5577dd',textTransform:'uppercase',letterSpacing:'0.06em',fontSize:10}}>Fórmula vigente: </span>
+                    <code style={{color:'#3b5bdb'}}>{ind.formulaCustom || ind.formulaDefault || 'valor'}</code>
+                  </div>
+
+                  {isLoading ? (
+                    <div style={{padding:20,textAlign:'center',color:'#888',fontSize:13}}>Cargando auditoría…</div>
+                  ) : trail.length === 0 ? (
+                    <div style={{padding:20,textAlign:'center',color:'#888',fontSize:13}}>Sin mediciones registradas todavía.</div>
+                  ) : (
+                    <div style={{display:'grid',gap:8}}>
+                      {trail.map((entry, i) => {
+                        const m = entry.medicion || {};
+                        const valores = entry.valoresParametros || [];
+                        const ok = entry.metaAlcanzada;
+                        return (
+                          <details key={i} style={{
+                            border:'1px solid #f3f4f6',borderRadius:8,padding:'8px 12px',
+                            background: ok ? '#f0fdf4' : '#fef9f3'
+                          }}>
+                            <summary style={{cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',gap:10}}>
+                              <div>
+                                <span style={{fontWeight:600,fontSize:13}}>
+                                  {m.fechaMedicion || '—'}
+                                </span>
+                                <span style={{color:'#888',marginLeft:10,fontSize:12}}>
+                                  por {m.responsable || 'sistema'}
+                                </span>
+                              </div>
+                              <div>
+                                <span style={{fontWeight:700,marginRight:10}}>
+                                  {m.valorCalculado ?? '—'} {ind.metaUnidad}
+                                </span>
+                                {ok != null && (
+                                  <span style={{
+                                    padding:'2px 8px',borderRadius:99,fontSize:11,fontWeight:600,
+                                    background: ok ? '#dcfce7' : '#fee2e2',
+                                    color: ok ? '#166534' : '#991b1b'
+                                  }}>{ok ? 'LOGRADO' : 'No alcanzada'}</span>
+                                )}
+                              </div>
+                            </summary>
+                            <div style={{marginTop:10,fontSize:12,color:'#555'}}>
+                              {valores.length > 0 ? (
+                                <table style={{width:'100%',borderCollapse:'collapse'}}>
+                                  <thead>
+                                    <tr style={{borderBottom:'1px solid #e5e7eb'}}>
+                                      <th style={{textAlign:'left',padding:'4px 8px',fontSize:11,color:'#666'}}>Variable</th>
+                                      <th style={{textAlign:'left',padding:'4px 8px',fontSize:11,color:'#666'}}>Parámetro</th>
+                                      <th style={{textAlign:'right',padding:'4px 8px',fontSize:11,color:'#666'}}>Valor ingresado</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {valores.map((v, j) => (
+                                      <tr key={j} style={{borderBottom:'1px solid #f3f4f6'}}>
+                                        <td style={{padding:'4px 8px',fontFamily:'monospace',color:'#3b5bdb'}}>
+                                          {v.nombre_variable || v.nombreVariable || '—'}
+                                        </td>
+                                        <td style={{padding:'4px 8px'}}>{v.nombre_parametro || v.nombreParametro || '—'}</td>
+                                        <td style={{padding:'4px 8px',textAlign:'right',fontWeight:500}}>
+                                          {v.valor_ingresado ?? v.valorIngresado ?? '—'}
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              ) : (
+                                <div style={{color:'#888'}}>Sin valores de parámetros registrados (medición pre-Sprint 2).</div>
+                              )}
+                              {m.observaciones && (
+                                <div style={{marginTop:8,padding:8,background:'#fff',borderRadius:6,fontSize:12,color:'#444'}}>
+                                  <strong>Observaciones:</strong> {m.observaciones}
+                                </div>
+                              )}
+                            </div>
+                          </details>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })
           )}
         </div>
       )}

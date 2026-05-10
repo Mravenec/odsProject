@@ -28,6 +28,7 @@ import static com.odsProject.odsProject.database.jooq.ods16.tables.MedicionesHis
 import static com.odsProject.odsProject.database.jooq.ods16.tables.AuditoriaOds16.AUDITORIA_ODS16;
 import static com.odsProject.odsProject.database.jooq.ods16.tables.VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorMaster.INDICADOR_MASTER;
+import static com.odsProject.odsProject.database.jooq.ods16.tables.MedicionParametroValores.MEDICION_PARAMETRO_VALORES;
 
 /**
  * Implementación del Repositorio para el Objetivo 16: Paz, Justicia e Instituciones Sólidas
@@ -307,4 +308,47 @@ public class Objetivo16PazJusticiaRepository implements IObjetivo16PazJusticiaRe
     public List<ProyectoIndicadorParametros> findMetasByProyectoIndicador(Integer proyectoIndicadorId) {
         return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS).where(PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID.eq(proyectoIndicadorId)).fetchInto(ProyectoIndicadorParametros.class);
     }
+
+    // ─────────────────────────────────────────────────────────────────────
+    //  Sprint 2: auditoría granular de mediciones (medicion_parametro_valores)
+    // ─────────────────────────────────────────────────────────────────────
+
+    @Override
+    public MedicionesHistoricas findMedicionByIdEntity(Integer medicionId) {
+        if (medicionId == null) return null;
+        return dsl.selectFrom(MEDICIONES_HISTORICAS)
+            .where(MEDICIONES_HISTORICAS.ID.eq(medicionId))
+            .fetchOneInto(MedicionesHistoricas.class);
+    }
+
+    @Override
+    public Integer insertMedicionParametroValor(Integer medicionId, Integer parametroId, java.math.BigDecimal valor) {
+        if (medicionId == null || parametroId == null) return null;
+        java.math.BigDecimal v = valor != null ? valor : java.math.BigDecimal.ZERO;
+        return dsl.insertInto(MEDICION_PARAMETRO_VALORES)
+            .set(MEDICION_PARAMETRO_VALORES.MEDICION_ID, medicionId)
+            .set(MEDICION_PARAMETRO_VALORES.PARAMETRO_ID, parametroId)
+            .set(MEDICION_PARAMETRO_VALORES.VALOR_INGRESADO, v)
+            .returningResult(MEDICION_PARAMETRO_VALORES.ID)
+            .fetchOneInto(Integer.class);
+    }
+
+    @Override
+    public java.util.List<java.util.Map<String, Object>> findMedicionParametroValoresByMedicion(Integer medicionId) {
+        if (medicionId == null) return java.util.Collections.emptyList();
+        return dsl.select(
+                MEDICION_PARAMETRO_VALORES.ID,
+                MEDICION_PARAMETRO_VALORES.MEDICION_ID,
+                MEDICION_PARAMETRO_VALORES.PARAMETRO_ID,
+                MEDICION_PARAMETRO_VALORES.VALOR_INGRESADO,
+                PROYECTO_INDICADOR_PARAMETROS.NOMBRE_PARAMETRO,
+                PROYECTO_INDICADOR_PARAMETROS.NOMBRE_VARIABLE
+            )
+            .from(MEDICION_PARAMETRO_VALORES)
+            .leftJoin(PROYECTO_INDICADOR_PARAMETROS)
+            .on(PROYECTO_INDICADOR_PARAMETROS.ID.eq(MEDICION_PARAMETRO_VALORES.PARAMETRO_ID))
+            .where(MEDICION_PARAMETRO_VALORES.MEDICION_ID.eq(medicionId))
+            .fetchMaps();
+    }
+
 }

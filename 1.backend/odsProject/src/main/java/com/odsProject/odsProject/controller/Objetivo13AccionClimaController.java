@@ -101,4 +101,31 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
     @Override public ResponseEntity<Boolean> existsIndicador(Integer indicadorId) { return ResponseEntity.ok(objetivo13AccionClimaService.existsIndicador(indicadorId)); }
     @Override public ResponseEntity<Boolean> existsMetaProyecto(Integer metaId) { return ResponseEntity.ok(objetivo13AccionClimaService.existsMetaProyecto(metaId)); }
     @Override public ResponseEntity<Boolean> existsMedicionHistorica(Integer medicionId) { return ResponseEntity.ok(objetivo13AccionClimaService.existsMedicionHistorica(medicionId)); }
+
+    // ─────────────────────────────────────────────────────────────────────
+    //  Sprint 2/5: Endpoints de medición auditada
+    // ─────────────────────────────────────────────────────────────────────
+
+    @Override
+    public ResponseEntity<java.util.Map<String, Object>> createMedicionAuditada(java.util.Map<String, Object> payload) {
+        try {
+            return ResponseEntity.ok(objetivo13AccionClimaService.saveMedicionAuditada(payload));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(java.util.Map.of("error", e.getMessage() != null ? e.getMessage() : "error interno"));
+        }
+    }
+
+    @Override
+    public ResponseEntity<java.util.Map<String, Object>> getMedicionAuditoria(Integer medicionId) {
+        try {
+            return ResponseEntity.ok(objetivo13AccionClimaService.getMedicionAuditoria(medicionId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.NOT_FOUND)
+                .body(java.util.Map.of("error", e.getMessage()));
+        }
+    }
+
 }

@@ -160,6 +160,31 @@ public interface IOdsBaseRepository<T, E, P, M, MH, A> {
      * @return Medición guardada con ID asignado
      */
     MH saveMedicion(MH medicion);
+
+    // ── Sprint 2: auditoría granular (medicion_parametro_valores) ─────────
+
+    /**
+     * Encuentra una medición histórica por su ID. Retorna null si no existe.
+     * Usado por la lógica de auditoría que necesita conocer el indicador
+     * vinculado a la medición.
+     */
+    MH findMedicionByIdEntity(Integer medicionId);
+
+    /**
+     * Persiste un valor ingresado para un parámetro durante una medición concreta.
+     * Inserta en {@code medicion_parametro_valores}. Devuelve el ID generado.
+     */
+    Integer insertMedicionParametroValor(Integer medicionId,
+                                         Integer parametroId,
+                                         java.math.BigDecimal valor);
+
+    /**
+     * Lista los valores ingresados (parametroId → valor) de una medición.
+     * Devuelve cada fila como Map plano para evitar fugar el POJO específico
+     * del ODS al contrato base.
+     */
+    List<java.util.Map<String, Object>> findMedicionParametroValoresByMedicion(Integer medicionId);
+
     
     // ── Auditoría ──
     

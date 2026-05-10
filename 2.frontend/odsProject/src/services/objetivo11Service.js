@@ -138,5 +138,34 @@ export const objetivo11Service = {
     } catch (e) { throw new Error(e.response?.data?.message || 'Error al registrar medición'); }
   },
 
+  // ─────────────────────────────────────────────────────────────────────
+  //  Sprint 2/5: Medición auditada y traza
+  //  El cliente envía valoresParametros; el backend recalcula y persiste atómico.
+  // ─────────────────────────────────────────────────────────────────────
+
+  createMedicionAuditada: async ({ proyectoIndicadorId, fechaMedicion, responsable, metodoMedicion, observaciones, valoresParametros }) => {
+    try {
+      const res = await api.post('/ods/11/mediciones/auditada', {
+        proyectoIndicadorId,
+        fechaMedicion: fechaMedicion || new Date().toISOString().split('T')[0],
+        responsable: responsable || 'Sistema',
+        metodoMedicion: metodoMedicion || 'manual',
+        observaciones: observaciones || null,
+        valoresParametros: valoresParametros || {}
+      });
+      return { success: true, data: res.data };
+    } catch (e) {
+      throw new Error(e.response?.data?.error || e.message || 'Error al guardar medición auditada');
+    }
+  },
+
+  getMedicionAuditoria: async (medicionId) => {
+    try {
+      const res = await api.get(`/ods/11/mediciones/${medicionId}/auditoria`);
+      return { success: true, data: res.data };
+    } catch (e) {
+      return { success: false, error: e.response?.data?.error || e.message };
+    }
+  }
 
 };

@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './IndicatorConfigModal.css';
+import { evaluacionService } from '../../../services/evaluacionService';
 
 /**
- * IndicatorConfigModal
- * Permite al usuario definir libremente las variables de un indicador,
- * construir la fórmula de cálculo y establecer la meta del proyecto.
- * No depende de ningún catálogo del backend — las variables son libres.
+ * IndicatorConfigModal — Sprint 4
+ *
+ * Bug histórico arreglado: la inserción de variables y operadores ahora respeta
+ * la posición del cursor del textarea (useRef + selectionStart/selectionEnd).
+ *
+ * Si el usuario escribe "()" y deja el cursor entre los paréntesis, al hacer
+ * clic en la chip "p1" el textarea queda con "(p1)" y el caret pegado después
+ * de "p1". Igual para los operadores +, -, *, /.
+ *
+ * Además: validación en vivo contra el backend usando POST /api/evaluacion/validar-formula
+ * y muestra al usuario qué variables están en la fórmula y cuáles le faltan o sobran.
  */
 const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) => {
+  const formulaRef = useRef(null);
+
   const [paramCount, setParamCount] = useState(
     existingConfig?.parameters?.length || 1
   );
@@ -18,6 +28,16 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
   const [goal, setGoal] = useState(
     existingConfig?.goal || { name: '', value: '', unit: 'Percentage' }
   );
+
+  // Estado de validación live
+  const [validation, setValidation] = useState({
+    valida: true,
+    sintaxisValida: true,
+    variablesEnFormula: [],
+    faltantes: [],
+    sobrantes: []
+  });
+  const [validating, setValidating] = useState(false);
 
   // Sincroniza el array de parámetros cuando el usuario cambia la cantidad
   useEffect(() => {
@@ -34,16 +54,50 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     });
   }, [paramCount]);
 
-  // Inserta el nombre de la variable en la posición del cursor del textarea
-  const insertParam = (name) => {
-    if (!name.trim()) return;
-    setFormula(prev => prev + (prev ? ' ' : '') + name);
-  };
+  /**
+   * Inserta texto en la posición exacta del cursor del textarea.
+   * Reemplaza la selección si la hay. Restaura el cursor justo después
+   * del texto insertado en el siguiente paint.
+   */
+  const insertAtCursor = useCallback((text) => {
+    const ta = formulaRef.current;
+    if (!ta) {
+      // Fallback: concatenar al final si no hay ref aún
+      setFormula(prev => prev + text);
+      return;
+    }
+    const start = ta.selectionStart ?? formula.length;
+    const end   = ta.selectionEnd   ?? formula.length;
+    const before = formula.substring(0, start);
+    const after  = formula.substring(end);
+    const next   = before + text + after;
+    setFormula(next);
+
+    // Reposicionar el cursor DESPUÉS de que React aplique el setState
+    requestAnimationFrame(() => {
+      const node = formulaRef.current;
+      if (node) {
+        node.focus();
+        const pos = start + text.length;
+        node.setSelectionRange(pos, pos);
+      }
+    });
+  }, [formula]);
+
+  // Insertar el nombre de una variable
+  const insertParam = useCallback((name) => {
+    if (!name?.trim()) return;
+    insertAtCursor(name);
+  }, [insertAtCursor]);
+
+  // Insertar un operador / paréntesis
+  const insertOperator = useCallback((op) => {
+    insertAtCursor(op);
+  }, [insertAtCursor]);
 
   const handleParamChange = (index, field, value) => {
     setParameters(prev => {
       const updated = [...prev];
-      // Nombres de variables: sin espacios, solo letras/números/guión_bajo
       updated[index] = {
         ...updated[index],
         [field]: field === 'name'
@@ -53,6 +107,28 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
       return updated;
     });
   };
+
+  // Validación en vivo (debounced) cuando cambia la fórmula o las variables
+  useEffect(() => {
+    if (!formula.trim()) {
+      setValidation({ valida: true, sintaxisValida: true, variablesEnFormula: [], faltantes: [], sobrantes: [] });
+      return;
+    }
+    const declaradas = parameters.map(p => p.name).filter(n => n && n.trim());
+    const handle = setTimeout(async () => {
+      setValidating(true);
+      try {
+        const res = await evaluacionService.validarFormula(formula, declaradas);
+        setValidation(res);
+      } catch (e) {
+        // Sin backend: validación visual se omite, no bloqueamos el flujo
+        setValidation(v => ({ ...v, sintaxisValida: true, valida: true }));
+      } finally {
+        setValidating(false);
+      }
+    }, 350);
+    return () => clearTimeout(handle);
+  }, [formula, parameters]);
 
   const handleSave = () => {
     if (!formula.trim()) {
@@ -68,6 +144,13 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
       alert('Asigne un nombre a todos los parámetros antes de guardar.');
       return;
     }
+    if (validation.faltantes && validation.faltantes.length > 0) {
+      const ok = window.confirm(
+        `La fórmula usa variables no declaradas: ${validation.faltantes.join(', ')}\n\n` +
+        '¿Desea guardar de todas formas? Estas variables se sembrarán automáticamente con tipo Decimal.'
+      );
+      if (!ok) return;
+    }
     onSave({ parameters, formula, goal });
   };
 
@@ -75,6 +158,18 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
   const indicatorLabel = typeof indicator === 'string'
     ? indicator
     : (indicator?.nombre || indicator?.name || indicator?.codigo || indicator?.code || '');
+
+  const operatorChips = [
+    { label: '(', insert: '(' },
+    { label: ')', insert: ')' },
+    { label: '+', insert: ' + ' },
+    { label: '−', insert: ' - ' },
+    { label: '×', insert: ' * ' },
+    { label: '÷', insert: ' / ' },
+    { label: '× 100', insert: ' * 100' }
+  ];
+
+  const namedParams = parameters.filter(p => p.name.trim());
 
   return (
     <div className="modal-overlay">
@@ -119,7 +214,7 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
                       disabled={!p.name.trim()}
                       className="btn-text-action"
                     >
-                      Insertar en fórmula
+                      Insertar en posición del cursor
                     </button>
                   </div>
                   <div className="param-inputs">
@@ -145,27 +240,82 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
           <section className="config-section">
             <label className="config-label">Fórmula de Cálculo</label>
             <p className="section-hint">
-              Construya la expresión matemática usando los nombres de las variables definidas arriba.
+              Posicione el cursor dentro del textarea y haga clic en una variable u operador para insertarlo en ese punto exacto.
             </p>
             <textarea
+              ref={formulaRef}
               value={formula}
               onChange={e => setFormula(e.target.value)}
               className="formula-textarea"
               placeholder="Ej: (total_becados / total_estudiantes) * 100"
               spellCheck={false}
             />
-            {/* Chips de inserción rápida */}
-            <div className="param-chips">
-              {parameters.filter(p => p.name.trim()).map((p, i) => (
+
+            {/* Chips de inserción rápida — variables */}
+            {namedParams.length > 0 && (
+              <div className="param-chips">
+                {namedParams.map((p, i) => (
+                  <button
+                    key={`chip-${i}`}
+                    type="button"
+                    onClick={() => insertParam(p.name)}
+                    className="formula-chip"
+                  >
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Chips de inserción rápida — operadores */}
+            <div className="param-chips" style={{ marginTop: 8 }}>
+              {operatorChips.map(op => (
                 <button
-                  key={`chip-${i}`}
+                  key={`op-${op.label}`}
                   type="button"
-                  onClick={() => insertParam(p.name)}
+                  onClick={() => insertOperator(op.insert)}
                   className="formula-chip"
+                  style={{ fontFamily: 'ui-monospace, SFMono-Regular, monospace' }}
                 >
-                  {p.name}
+                  {op.label}
                 </button>
               ))}
+            </div>
+
+            {/* Panel de validación en vivo */}
+            <div className="formula-validation" style={{
+              marginTop: 12,
+              padding: '10px 12px',
+              borderRadius: 8,
+              fontSize: 12,
+              background: validation.valida ? '#f0fdf4' : '#fff7ed',
+              border: `1px solid ${validation.valida ? '#bbf7d0' : '#fed7aa'}`,
+              color: '#374151'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <strong>{validation.valida ? '✓' : '⚠'} Validación</strong>
+                {validating && <span style={{ color: '#6b7280' }}>verificando…</span>}
+              </div>
+              {validation.variablesEnFormula?.length > 0 && (
+                <div style={{ marginTop: 4 }}>
+                  Variables en la fórmula: <code>{Array.from(validation.variablesEnFormula).join(', ')}</code>
+                </div>
+              )}
+              {validation.faltantes?.length > 0 && (
+                <div style={{ marginTop: 4, color: '#b45309' }}>
+                  Faltan declarar: <code>{Array.from(validation.faltantes).join(', ')}</code>
+                </div>
+              )}
+              {validation.sobrantes?.length > 0 && (
+                <div style={{ marginTop: 4, color: '#6b7280' }}>
+                  Declaradas pero no usadas: <code>{Array.from(validation.sobrantes).join(', ')}</code>
+                </div>
+              )}
+              {!validation.sintaxisValida && (
+                <div style={{ marginTop: 4, color: '#b91c1c' }}>
+                  Error de sintaxis en la fórmula.
+                </div>
+              )}
             </div>
           </section>
 

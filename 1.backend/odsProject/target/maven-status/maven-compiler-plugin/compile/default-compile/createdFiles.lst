@@ -49,6 +49,7 @@ com\odsProject\odsProject\service\Objetivo05GeneroService.class
 com\odsProject\odsProject\database\jooq\ods14\tables\pojos\AuditoriaOds14.class
 com\odsProject\odsProject\repository\Objetivo02HambreCeroRepository.class
 com\odsProject\odsProject\repository\interfaces\ILoginRepository.class
+com\odsProject\odsProject\controller\EvaluationController.class
 com\odsProject\odsProject\database\jooq\ods01\tables\MedicionesHistoricas.class
 com\odsProject\odsProject\service\interfaces\ILoginService.class
 com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\Sesiones.class
@@ -80,6 +81,7 @@ com\odsProject\odsProject\database\jooq\ods16\tables\VistaAdminAuditoriaReciente
 com\odsProject\odsProject\service\Objetivo11CiudadesSosteniblesService.class
 com\odsProject\odsProject\database\jooq\ods03\Routines.class
 com\odsProject\odsProject\database\jooq\ods16\tables\ProyectoIndicadorParametros.class
+com\odsProject\odsProject\config\TransactionManagerConfig.class
 com\odsProject\odsProject\database\jooq\ods09\tables\pojos\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\OdsProjectApplication.class
 com\odsProject\odsProject\database\jooq\ods02\tables\ProyectoIndicadorParametros.class
@@ -463,6 +465,7 @@ com\odsProject\odsProject\database\jooq\ods16\Routines.class
 com\odsProject\odsProject\database\jooq\ods10\tables\pojos\ProyectoIndicadores.class
 com\odsProject\odsProject\database\jooq\ods14\Ods14.class
 com\odsProject\odsProject\database\jooq\ods17\tables\pojos\ProyectoIndicadores.class
+com\odsProject\odsProject\service\FormulaUtils.class
 com\odsProject\odsProject\database\jooq\ods15\tables\pojos\ProyectoIndicadorParametros.class
 com\odsProject\odsProject\database\jooq\ods12\tables\pojos\ProyectoIndicadores.class
 com\odsProject\odsProject\database\jooq\ods17\Indexes.class
