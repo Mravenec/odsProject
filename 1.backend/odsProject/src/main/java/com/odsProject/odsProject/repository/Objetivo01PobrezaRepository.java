@@ -218,26 +218,49 @@ public class Objetivo01PobrezaRepository implements IObjetivo01PobrezaRepository
         return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS).where(PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID.in(dsl.select(PROYECTO_INDICADORES.ID).from(PROYECTO_INDICADORES).where(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId)))).fetchInto(ProyectoIndicadorParametros.class);
     }
     @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) {
-        // tipo_dato es ENUM en DB — usar DSL.field(String) para evitar ClassCastException
+        // ─── FIX integración Sprint 3 ↔ frontend.saveParameter ──────────────
+        //
+        // El esquema tiene UNIQUE KEY uk_proyecto_param (proyecto_indicador_id,
+        // nombre_parametro). Cuando saveIndicador dispara seedParametrosFromFormula
+        // (Sprint 3), los parámetros ya existen con tipo_dato=Decimal por defecto.
+        // Si el frontend luego llama POST /metas para asignar el tipo elegido por
+        // el usuario, un INSERT plano choca con duplicate key → 500.
+        //
+        // UPSERT vía INSERT ... ON DUPLICATE KEY UPDATE: si la fila existe se
+        // actualizan nombre_variable, tipo_dato y valor_actual con lo que mandó
+        // el cliente (refinamiento del auto-seed). Si no existe, se inserta normal.
+        // ────────────────────────────────────────────────────────────────────
         String tipoDatoLiteral = (meta.getTipoDato() != null)
             ? meta.getTipoDato().getLiteral()
             : "Decimal";
         String nombreVar = (meta.getNombreVariable() != null && !meta.getNombreVariable().isEmpty())
             ? meta.getNombreVariable()
             : meta.getNombreParametro();
+        java.math.BigDecimal valorActual = meta.getValorActual() != null
+            ? meta.getValorActual()
+            : java.math.BigDecimal.ZERO;
 
-        Integer newId = dsl.insertInto(PROYECTO_INDICADOR_PARAMETROS)
+        org.jooq.Field<String> NOMBRE_VARIABLE_F =
+            org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("nombre_variable"), String.class);
+        org.jooq.Field<String> TIPO_DATO_F =
+            org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("tipo_dato"), String.class);
+
+        dsl.insertInto(PROYECTO_INDICADOR_PARAMETROS)
             .set(PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID, meta.getProyectoIndicadorId())
             .set(PROYECTO_INDICADOR_PARAMETROS.NOMBRE_PARAMETRO,      meta.getNombreParametro())
-            .set(org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("nombre_variable"), String.class), nombreVar)
-            .set(org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("tipo_dato"),       String.class), tipoDatoLiteral)
-            .set(PROYECTO_INDICADOR_PARAMETROS.VALOR_ACTUAL,
-                 meta.getValorActual() != null ? meta.getValorActual() : java.math.BigDecimal.ZERO)
-            .returningResult(PROYECTO_INDICADOR_PARAMETROS.ID)
-            .fetchOneInto(Integer.class);
+            .set(NOMBRE_VARIABLE_F, nombreVar)
+            .set(TIPO_DATO_F,       tipoDatoLiteral)
+            .set(PROYECTO_INDICADOR_PARAMETROS.VALOR_ACTUAL, valorActual)
+            .onDuplicateKeyUpdate()
+            .set(NOMBRE_VARIABLE_F, nombreVar)
+            .set(TIPO_DATO_F,       tipoDatoLiteral)
+            .set(PROYECTO_INDICADOR_PARAMETROS.VALOR_ACTUAL, valorActual)
+            .execute();
 
+        // Refetch por la llave única (ON DUPLICATE KEY UPDATE no soporta RETURNING)
         return dsl.selectFrom(PROYECTO_INDICADOR_PARAMETROS)
-            .where(PROYECTO_INDICADOR_PARAMETROS.ID.eq(newId))
+            .where(PROYECTO_INDICADOR_PARAMETROS.PROYECTO_INDICADOR_ID.eq(meta.getProyectoIndicadorId()))
+            .and(PROYECTO_INDICADOR_PARAMETROS.NOMBRE_PARAMETRO.eq(meta.getNombreParametro()))
             .fetchOneInto(ProyectoIndicadorParametros.class);
     }
     @Override public List<MedicionesHistoricas> findMedicionesByIndicador(Integer indicadorId) { return dsl.selectFrom(MEDICIONES_HISTORICAS).where(MEDICIONES_HISTORICAS.PROYECTO_INDICADOR_ID.eq(indicadorId)).fetchInto(MedicionesHistoricas.class); }

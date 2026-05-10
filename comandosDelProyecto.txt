@@ -3,3 +3,9 @@ python 0.database/drop_db.py
 
 # 2. Instalar y Cargar Mocks
 python 0.database/setup_db.py; python 0.database/load_mocks.py
+
+#3. Backend
+cd 1.backend/odsProject; mvn spring-boot:run
+
+#4. Frontend
+cd 2.frontend/odsProject; npm run dev

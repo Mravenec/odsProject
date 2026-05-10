@@ -192,3 +192,48 @@ cd 1.backend/odsProject
   se conservó al lado del proyecto para reproducibilidad.
 - `apply_sprints.py` queda en el root del repo para que veas exactamente qué
   cambios programáticos se aplicaron y puedas re-ejecutarlos si hace falta.
+
+---
+
+## Hotfix post-Sprint 3 — Conflicto saveIndicador ↔ frontend.saveParameter
+
+### Síntoma
+Al crear un proyecto con indicadores que tienen fórmula custom (ej. `(a+b)/100`),
+los `POST /api/ods/XX/metas` para los parámetros `a` y `b` devolvían
+**500 Internal Server Error**. Los proyectos se creaban con el header y los
+indicadores, pero los parámetros del usuario no quedaban guardados con el
+`tipo_dato` que él eligió.
+
+### Causa raíz
+El esquema `proyecto_indicador_parametros` tiene
+`UNIQUE KEY uk_proyecto_param (proyecto_indicador_id, nombre_parametro)`.
+
+Sprint 3 introdujo `seedParametrosFromFormula(...)` dentro de `saveIndicador`,
+que inserta los parámetros detectados en la fórmula con `tipo_dato = Decimal`
+y `nombre_variable = nombre_parametro` por defecto.
+
+El frontend, después de crear el indicador, sigue iterando sobre
+`config.parameters` y llamando `service.saveParameter(...)` por cada uno con el
+`tipo_dato` que el usuario eligió. Como el auto-seed ya insertó la fila, el
+INSERT plano de `saveMetaProyecto` choca con el unique → 500.
+
+### Fix aplicado
+`Objetivo[XX]Repository.saveMetaProyecto` reemplazado por **UPSERT** vía
+`INSERT ... ON DUPLICATE KEY UPDATE` (soporte nativo MariaDB / JOOQ). La fila
+que sembró el auto-seed se "refina" con lo que mandó el frontend
+(`nombre_variable`, `tipo_dato`, `valor_actual`). Si no existía, se inserta
+normal. Idempotente y compatible con reintentos.
+
+- 17/17 repositorios actualizados con el mismo patrón.
+- Cero cambios en la BD ni en JOOQ.
+- El controller no se tocó (su contrato `POST /metas` y respuesta no cambian).
+
+### Por qué no se eligieron las propuestas alternativas
+- **DTOs (IA #1):** El error es 500 (lógica/SQL), no 400 (deserialización).
+  Jackson sí puede crear los POJOs JOOQ aquí. Meter DTOs duplicaba el modelo
+  sin resolver nada y rompía la regla "sin DTOs".
+- **Eliminar la llamada a `saveParameter` desde el frontend (IA #2):** el
+  diagnóstico apuntaba al lado correcto pero la corrección perdía información:
+  el auto-seed no sabe el `tipo_dato` que el usuario eligió ni un
+  `nombre_variable` distinto del `nombre_parametro`. La UPSERT mantiene ambos
+  flujos coexistentes y sin conflicto.
