@@ -172,6 +172,7 @@ com\odsProject\odsProject\database\jooq\ods04\Keys.class
 com\odsProject\odsProject\database\jooq\ods05\tables\pojos\ProyectoIndicadorParametros.class
 com\odsProject\odsProject\database\jooq\ods06\tables\VistaAdminDetalleIndicadores.class
 com\odsProject\odsProject\database\jooq\ods08\enums\VistaAdminResumenGeneralEstado.class
+com\odsProject\odsProject\database\jooq\ods_master\tables\records\ProyectoOdsRecord.class
 com\odsProject\odsProject\repository\Objetivo05GeneroRepository.class
 com\odsProject\odsProject\database\jooq\ods07\tables\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\database\jooq\ods07\routines\SpAdminReporteProyecto.class
@@ -529,6 +530,7 @@ com\odsProject\odsProject\database\jooq\ods12\tables\pojos\VistaAdminDetalleIndi
 com\odsProject\odsProject\database\jooq\ods13\enums\ProyectoIndicadorParametrosTipoDato.class
 com\odsProject\odsProject\database\jooq\ods04\tables\records\AuditoriaOds04Record.class
 com\odsProject\odsProject\repository\interfaces\IObjetivo01PobrezaRepository.class
+com\odsProject\odsProject\database\jooq\ods_master\tables\ProyectoOds.class
 com\odsProject\odsProject\database\jooq\ods02\tables\records\AuditoriaOds02Record.class
 com\odsProject\odsProject\database\jooq\ods03\tables\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\database\jooq\ods06\tables\pojos\AuditoriaOds06.class
@@ -622,6 +624,7 @@ com\odsProject\odsProject\service\Objetivo10ReduccionDesigualdadService.class
 com\odsProject\odsProject\database\jooq\ods04\tables\pojos\AuditoriaOds04.class
 com\odsProject\odsProject\database\jooq\ods16\enums\VistaAdminResumenGeneralEstado.class
 com\odsProject\odsProject\database\jooq\ods13\tables\ProyectoIndicadores.class
+com\odsProject\odsProject\database\jooq\ods_master\tables\pojos\ProyectoOds.class
 com\odsProject\odsProject\database\jooq\ods09\tables\pojos\VistaAdminResumenGeneral.class
 com\odsProject\odsProject\repository\Objetivo15VidaEcosistemasRepository.class
 com\odsProject\odsProject\database\jooq\ods04\tables\records\VistaAdminDetalleIndicadoresRecord.class

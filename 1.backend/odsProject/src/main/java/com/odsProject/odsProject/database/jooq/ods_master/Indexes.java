@@ -4,6 +4,7 @@
 package com.odsProject.odsProject.database.jooq.ods_master;
 
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoOds;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos;
 
 import org.jooq.Index;
@@ -23,6 +24,7 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     public static final Index PROYECTOS_IDX_ESTADO = Internal.createIndex(DSL.name("idx_estado"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.ESTADO }, false);
+    public static final Index PROYECTO_ODS_IDX_ODS = Internal.createIndex(DSL.name("idx_ods"), ProyectoOds.PROYECTO_ODS, new OrderField[] { ProyectoOds.PROYECTO_ODS.ODS_ID }, false);
     public static final Index PROYECTOS_IDX_SEDE = Internal.createIndex(DSL.name("idx_sede"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.SEDE_ID }, false);
     public static final Index PROYECTOS_IDX_USUARIO = Internal.createIndex(DSL.name("idx_usuario"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.USUARIO_ID }, false);
 }

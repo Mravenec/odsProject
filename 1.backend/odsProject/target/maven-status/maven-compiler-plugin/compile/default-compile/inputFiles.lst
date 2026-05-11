@@ -1,4 +1,5 @@
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\config\DataSourceConfig.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\config\GlobalExceptionHandler.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\config\JacksonConfig.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\config\JooqConfig.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\config\SecurityConfig.java
@@ -640,9 +641,12 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\Keys.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\OdsMaster.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\Tables.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\tables\pojos\ProyectoOds.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\tables\pojos\Proyectos.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\tables\pojos\VistaResumenProyectosOds.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\tables\ProyectoOds.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\tables\Proyectos.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\tables\records\ProyectoOdsRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\tables\records\ProyectosRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\tables\records\VistaResumenProyectosOdsRecord.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\database\jooq\ods_master\tables\VistaResumenProyectosOds.java

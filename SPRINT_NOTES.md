@@ -237,3 +237,131 @@ normal. Idempotente y compatible con reintentos.
   el auto-seed no sabe el `tipo_dato` que el usuario eligió ni un
   `nombre_variable` distinto del `nombre_parametro`. La UPSERT mantiene ambos
   flujos coexistentes y sin conflicto.
+
+---
+
+## Sprints 1-6 — Persistencia Proyecto ↔ ODS ↔ Indicadores
+
+Plan completo aplicado tras detectar que aún no se guardaba la cadena
+completa. Sin cambios al `pom.xml`.
+
+### Sprint 1 — Observabilidad ✓
+- `config/GlobalExceptionHandler.java` ya existía y fue verificado.
+- Removido `try/catch` con `500 sin body` de los 17 controllers de ODS
+  (`createIndicador` y `createMetaProyecto`).
+- `application-dev.properties` con log SQL JOOQ y stack traces.
+- Frontend `api.js`: interceptor pone `error.userMessage` con el detalle.
+
+### Sprint 2 — Modelo explícito Proyecto ↔ ODS ✓
+- Nueva tabla `ods_master.proyecto_ods` con UNIQUE `(proyecto_id, ods_id)`,
+  trigger `trg_proyecto_ods_unico_primario` y FK a `ods_login.ods_catalog`.
+- Vista `vista_resumen_proyectos_ods` ampliada con `ods_vinculados` y
+  `ods_primario` agregados.
+- En backend NO usamos POJO JOOQ para la tabla nueva — accedemos con
+  `DSL.table()/DSL.field()` raw para no requerir regenerar JOOQ antes de
+  compilar. Cuando el usuario corra `mvn spring-boot:run` la BD nueva está
+  presente y JOOQ regenera POJOs oficiales que NO chocan con el código.
+
+### Sprint 3 — Orquestador transaccional ✓
+- `MasterProjectRepository.linkOds / findOdsByProyecto / unlinkOds`.
+- `MasterProjectService.createFullProject(Map)` con patrón Saga:
+  registra compensaciones (deque LIFO) y, ante fallo fatal, las ejecuta
+  para borrar lo creado. Usa reflexión para llamar `saveIndicador` y
+  `saveMetaProyecto` de los 17 servicios sin generar 17 ramas.
+- Nuevo endpoint `POST /api/projects/full` y `GET /api/projects/{id}/ods`.
+
+### Sprint 4 — Per-ODS idempotente ✓
+- ALTER en las 18 tablas SQL: `INDEX idx_proyecto_master` →
+  `UNIQUE KEY uk_proyecto_indicador`.
+- `saveIndicador` en los 17 repos reemplazado por UPSERT
+  `INSERT … ON DUPLICATE KEY UPDATE`. Re-ejecutar `createFullProject`
+  con los mismos IDs ya no falla con `Duplicate entry`.
+
+### Sprint 5 — Frontend: una llamada ✓
+- `projectService.createFullProject` armaba N+1 requests; ahora arma el
+  árbol y hace un único `POST /api/projects/full`.
+- `getOdsByProyecto(id)` agregado.
+- `ProjectCreationPage` muestra errores granulares por indicador y el
+  estado de las compensaciones cuando `success=false`.
+- `api.js` interceptor expone `error.userMessage` para que la UI lo lea.
+
+### Sprint 6 — Verificación E2E ✓
+- `requests/full_e2e.http` con 5 casos: mínimo, multi-ODS, idempotencia,
+  error FK con rollback, lectura de ODS por proyecto.
+- `MasterProjectFullSaveIT.java`: test de contexto Spring + plantilla para
+  el caso real cuando hay BD viva (descomentar el método).
+
+### Cómo correrlo
+1. **BD**: `mysql -u root -p < 0.database/00_run_all.sql` (incluye proyecto_ods
+   y el UNIQUE en proyecto_indicadores de los 17 ODS).
+2. **Backend**: `cd 1.backend/odsProject && ./mvnw spring-boot:run`
+   - JOOQ se regenera al arrancar contra la BD recién cargada.
+3. **Frontend**: `cd 2.frontend/odsProject && npm install && npm run dev`.
+4. **Validación**: abrir `requests/full_e2e.http` en IntelliJ o VS Code
+   REST Client y ejecutar los 5 casos en orden.
+
+### Sigue sin necesitarse cambios en `pom.xml`
+`spring-boot-starter-web`, `spring-boot-starter-jooq`, `spring-boot-starter-test`
+ya cubren `@ControllerAdvice`, `@Transactional`, `@SpringBootTest` y
+`TestRestTemplate`. Cualquier cambio adicional al pom es innecesario para
+esta entrega.
+
+---
+
+## Sprint 7 — Hotfix: trigger mutante en `proyecto_ods`
+
+**Síntoma reportado**
+```
+SQL [insert into `ods_master`.`proyecto_ods` ... on duplicate key update ...];
+(conn=1054) Can't update table 'proyecto_ods' in stored function/trigger
+because it is already used by statement which invoked this stored function/trigger
+```
+
+**Causa raíz**
+El trigger `BEFORE INSERT trg_proyecto_ods_unico_primario` que agregué en
+Sprint 2 intentaba hacer `UPDATE proyecto_ods` desde dentro de un
+`INSERT INTO proyecto_ods`. MariaDB y MySQL prohíben estáticamente que un
+trigger modifique la misma tabla que lo activó (error 1442). Es un antipatrón
+conocido como *mutating trigger*; funciona en PostgreSQL y SQL Server, no en
+MariaDB/MySQL.
+
+**Fix aplicado**
+- `0.database/propuesta_actual/2. ods_master_database.sql`: trigger
+  reemplazado por `DROP TRIGGER IF EXISTS` para idempotencia.
+- `0.database/hotfix_sprint7.sql` nuevo: migración aplicable sin recargar
+  todo el schema.
+- `MasterProjectRepository.linkOds`: si `esPrimario=true`, primero hace
+  `UPDATE` despromoviendo a los otros primarios del mismo proyecto,
+  después el `UPSERT`. Las dos sentencias usan el mismo `DSLContext`,
+  conexión reutilizada.
+
+**Por qué no usar DTOs (refutación de la IA #1 una vez más)**
+El error fue siempre SQL (FK violation + trigger inválido), no
+deserialización Jackson. Ninguna parte del fix de Sprint 7 requiere DTOs.
+La regla "sin DTOs" se mantiene intacta.
+
+**Cómo aplicar**
+```bash
+# Si tu BD ya está cargada:
+mysql -u root -p < 0.database/hotfix_sprint7.sql
+
+# Reemplazá MasterProjectRepository.java por la versión de este zip y arrancá:
+cd 1.backend/odsProject && ./mvnw spring-boot:run
+```
+
+**Validación**
+Repetir el POST que mostró el error:
+```json
+POST /api/projects/full
+{
+  "proyecto": { "usuarioId": 2, "sedeId": 1, "nombreProyecto": "PruebitaSimple",
+                "descripcion": "Solamente una pruebita simple",
+                "fechaInicio": "2026-05-11", "fechaFin": "2026-06-30",
+                "estado": "planificacion" },
+  "odsIds": [1],
+  "primaryOdsId": 1,
+  "indicadores": [...]
+}
+```
+Esperado: `success=true`, `proyectoId != null`, fila en `proyecto_ods`
+con `es_primario=1`. Sin error 1442.

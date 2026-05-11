@@ -59,29 +59,13 @@ public class Objetivo14VidaSubmarinaController implements IObjetivo14VidaSubmari
 
     @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getIndicadores(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.getAllIndicators(proyectoId)); }
     @Override public ResponseEntity<VistaAdminDetalleIndicadores> getIndicador(Integer indicadorId) { return objetivo14VidaSubmarinaService.findIndicadorById(indicadorId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
-    @Override
-    public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) {
-        try {
-            return ResponseEntity.ok(objetivo14VidaSubmarinaService.saveIndicador(indicador));
-        } catch (Exception e) {
-            log.error("createIndicador error: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    @Override public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.saveIndicador(indicador)); }
     @Override public ResponseEntity<ProyectoIndicadores> updateIndicador(Integer indicadorId, ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.updateIndicador(indicador)); }
     @Override public ResponseEntity<Void> deleteIndicador(Integer indicadorId) { objetivo14VidaSubmarinaService.deleteIndicador(indicadorId); return ResponseEntity.noContent().build(); }
 
     @Override public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.findAllMetasProyecto(proyectoId)); }
     @Override public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(Integer metaId) { return objetivo14VidaSubmarinaService.findMetaProyectoById(metaId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
-    @Override
-    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) {
-        try {
-            return ResponseEntity.ok(objetivo14VidaSubmarinaService.saveMetaProyecto(meta));
-        } catch (Exception e) {
-            log.error("createMetaProyecto error: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.saveMetaProyecto(meta)); }
     @Override public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(Integer metaId, ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo14VidaSubmarinaService.updateMetaProyecto(meta)); }
     @Override public ResponseEntity<Void> deleteMetaProyecto(Integer metaId) { objetivo14VidaSubmarinaService.deleteMetaProyecto(metaId); return ResponseEntity.noContent().build(); }
 

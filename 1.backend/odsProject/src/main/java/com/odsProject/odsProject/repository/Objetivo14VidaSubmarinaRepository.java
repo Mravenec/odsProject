@@ -178,32 +178,37 @@ public class Objetivo14VidaSubmarinaRepository implements IObjetivo14VidaSubmari
     }
 
     @Override public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
-        Integer newId;
-        try {
-            // Intento primario: con meta_nombre
-            newId = dsl.insertInto(PROYECTO_INDICADORES)
-                .set(PROYECTO_INDICADORES.PROYECTO_ID,         indicador.getProyectoId())
-                .set(PROYECTO_INDICADORES.INDICADOR_MASTER_ID, indicador.getIndicadorMasterId())
-                .set(PROYECTO_INDICADORES.META_VALOR,          indicador.getMetaValor())
-                .set(PROYECTO_INDICADORES.META_UNIDAD,         indicador.getMetaUnidad() != null ? indicador.getMetaUnidad() : "unidad")
-                .set(PROYECTO_INDICADORES.FORMULA_CUSTOM,      indicador.getFormulaCustom())
-                .set(org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("meta_nombre"), String.class), indicador.getMetaNombre())
-                .returningResult(PROYECTO_INDICADORES.ID)
-                .fetchOneInto(Integer.class);
-        } catch (Exception e) {
-            // Fallback: sin meta_nombre (esquema antiguo)
-            log.warn("[saveIndicador] Fallback sin meta_nombre: {}", e.getMessage());
-            newId = dsl.insertInto(PROYECTO_INDICADORES)
-                .set(PROYECTO_INDICADORES.PROYECTO_ID,         indicador.getProyectoId())
-                .set(PROYECTO_INDICADORES.INDICADOR_MASTER_ID, indicador.getIndicadorMasterId())
-                .set(PROYECTO_INDICADORES.META_VALOR,          indicador.getMetaValor())
-                .set(PROYECTO_INDICADORES.META_UNIDAD,         indicador.getMetaUnidad() != null ? indicador.getMetaUnidad() : "unidad")
-                .set(PROYECTO_INDICADORES.FORMULA_CUSTOM,      indicador.getFormulaCustom())
-                .returningResult(PROYECTO_INDICADORES.ID)
-                .fetchOneInto(Integer.class);
+        // ─── Sprint 4: UPSERT idempotente ────────────────────────────────
+        // Con la UNIQUE KEY uk_proyecto_indicador (proyecto_id, indicador_master_id)
+        // podemos re-llamar este método tantas veces como queramos: si el par ya
+        // existe, se actualiza la meta y la fórmula; si no, se inserta.
+        // ──────────────────────────────────────────────────────────────────
+        if (indicador.getProyectoId() == null || indicador.getIndicadorMasterId() == null) {
+            throw new IllegalArgumentException("proyectoId e indicadorMasterId son requeridos");
         }
+        String unidad = indicador.getMetaUnidad() != null ? indicador.getMetaUnidad() : "unidad";
+        java.math.BigDecimal valor = indicador.getMetaValor() != null
+            ? indicador.getMetaValor() : java.math.BigDecimal.ZERO;
+        org.jooq.Field<String> METANOMBRE_F =
+            org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("meta_nombre"), String.class);
+
+        dsl.insertInto(PROYECTO_INDICADORES)
+            .set(PROYECTO_INDICADORES.PROYECTO_ID,         indicador.getProyectoId())
+            .set(PROYECTO_INDICADORES.INDICADOR_MASTER_ID, indicador.getIndicadorMasterId())
+            .set(PROYECTO_INDICADORES.META_VALOR,          valor)
+            .set(PROYECTO_INDICADORES.META_UNIDAD,         unidad)
+            .set(PROYECTO_INDICADORES.FORMULA_CUSTOM,      indicador.getFormulaCustom())
+            .set(METANOMBRE_F,                             indicador.getMetaNombre())
+            .onDuplicateKeyUpdate()
+            .set(PROYECTO_INDICADORES.META_VALOR,          valor)
+            .set(PROYECTO_INDICADORES.META_UNIDAD,         unidad)
+            .set(PROYECTO_INDICADORES.FORMULA_CUSTOM,      indicador.getFormulaCustom())
+            .set(METANOMBRE_F,                             indicador.getMetaNombre())
+            .execute();
+
         return dsl.selectFrom(PROYECTO_INDICADORES)
-            .where(PROYECTO_INDICADORES.ID.eq(newId))
+            .where(PROYECTO_INDICADORES.PROYECTO_ID.eq(indicador.getProyectoId()))
+            .and(PROYECTO_INDICADORES.INDICADOR_MASTER_ID.eq(indicador.getIndicadorMasterId()))
             .fetchOneInto(ProyectoIndicadores.class);
     }
     @Override public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) {

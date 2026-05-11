@@ -377,18 +377,34 @@ ${sinMasterId.join(', ')}
       const result = await createFullProject(finalData, SERVICES_MAP);
       
       if (result.success) {
-        // ── S5: Mostrar advertencia si algunos indicadores no se pudieron guardar ──
-        if (result.skippedIndicators && result.skippedIndicators.length > 0) {
-          alert(
-            `Proyecto creado con ${result.savedIndicators || 0} indicador(es) guardado(s).
-` +
-            `Advertencia: No se pudieron guardar: ${result.skippedIndicators.join(', ')}
+        // ── S5: feedback granular si hay errores parciales ──
+        const hasPartialErrors = result.errores && result.errores.length > 0;
+        const hasSkipped       = result.skippedIndicators && result.skippedIndicators.length > 0;
 
-` +
-            'Puede configurarlos más tarde desde la página de evaluación.'
-          );
+        if (hasPartialErrors || hasSkipped) {
+          const lineas = [];
+          lineas.push(`Proyecto #${result.proyectoId} creado con ${result.savedIndicators || 0} indicador(es).`);
+          if (result.odsVinculados?.length) {
+            lineas.push(`ODS vinculados: ${result.odsVinculados.join(', ')}`);
+          }
+          if (hasSkipped) {
+            lineas.push(`\nOmitidos (sin masterId): ${result.skippedIndicators.join(', ')}`);
+          }
+          if (hasPartialErrors) {
+            lineas.push('\nErrores parciales:');
+            result.errores.forEach(e => {
+              const tag = e.indicadorMasterId ? `ODS ${e.odsId} indicador ${e.indicadorMasterId}` : `Etapa ${e.etapa}`;
+              lineas.push(`  • ${tag}: ${e.error}`);
+            });
+          }
+          alert(lineas.join('\n'));
         }
-        navigate(`/projects/${result.data?.id || result.data}/evaluation`);
+        navigate(`/projects/${result.proyectoId || result.data?.id}/evaluation`);
+      } else {
+        // success === false: rollback completo (compensaciones se ejecutaron)
+        const errLines = (result.errores || []).map(e =>
+          `  • [${e.etapa}] ${e.error}`).join('\n');
+        alert(`No se pudo crear el proyecto.\n\n${errLines || 'Error desconocido'}`);
       }
     } catch (err) {
       console.error('[ProjectCreation] Error persistiendo proyecto:', err);

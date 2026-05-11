@@ -34,7 +34,7 @@ CREATE TABLE proyecto_indicadores (
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (proyecto_id) REFERENCES ods_master.proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (indicador_master_id) REFERENCES ods_login.indicador_master(id),
-    INDEX idx_proyecto_master (proyecto_id, indicador_master_id)
+    UNIQUE KEY uk_proyecto_indicador (proyecto_id, indicador_master_id)
 );
 
 -- Parámetros específicos definidos para el indicador en este proyecto

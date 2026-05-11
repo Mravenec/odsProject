@@ -18,11 +18,21 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor para manejar errores
+// Interceptor para manejar errores — Sprint 1
+// El GlobalExceptionHandler del backend devuelve { timestamp, status, error,
+// message, sqlState?, hint? }. Aquí surfacamos el message al stack para que la
+// UI lo muestre.
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error.response?.data || error.message);
+    const data = error.response?.data;
+    const enrichedMsg = data?.message
+      || data?.hint
+      || data?.error
+      || error.message;
+    // Adjunto un message legible al objeto error
+    error.userMessage = enrichedMsg;
+    console.error(`[API ${error.response?.status || '???'}]`, enrichedMsg, data);
     return Promise.reject(error);
   }
 );

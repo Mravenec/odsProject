@@ -39,7 +39,34 @@ CREATE TABLE proyectos (
 -- Proporciona una visión unificada de los proyectos con sus ODS vinculados
 -- ────────────────────────────────────────────────────────────
 
-CREATE VIEW vista_resumen_proyectos_ods AS
+-- ────────────────────────────────────────────────────────────
+-- TABLA: proyecto_ods (Sprint 2 — relación explícita Proyecto ↔ ODS)
+-- ────────────────────────────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS proyecto_ods (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    proyecto_id         INT NOT NULL,
+    ods_id              TINYINT UNSIGNED NOT NULL,         -- 1 a 17 (FK lógica a ods_login.ods_catalog.id)
+    es_primario         BOOLEAN NOT NULL DEFAULT FALSE,
+    fecha_vinculacion   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (ods_id)      REFERENCES ods_login.ods_catalog(id),
+    UNIQUE KEY uk_proyecto_ods (proyecto_id, ods_id),
+    INDEX idx_ods (ods_id)
+) ENGINE=InnoDB;
+
+-- Sprint 7 — La unicidad del ODS primario por proyecto se enforce en código
+-- Java (MasterProjectRepository.linkOds). MariaDB no permite que un trigger
+-- modifique la misma tabla que lo activa (error 1442), así que la regla vive
+-- en la capa de servicio. Aquí solo dejamos el DROP IF EXISTS por idempotencia.
+DROP TRIGGER IF EXISTS trg_proyecto_ods_unico_primario;
+
+-- ────────────────────────────────────────────────────────────
+-- VISTA: vista_resumen_proyectos_ods
+-- Proporciona una visión unificada de los proyectos con sus ODS vinculados
+-- ────────────────────────────────────────────────────────────
+
+CREATE OR REPLACE VIEW vista_resumen_proyectos_ods AS
 SELECT 
     p.id AS proyecto_id,
     p.nombre_proyecto,
@@ -47,9 +74,13 @@ SELECT
     s.nombre AS sede,
     p.estado,
     p.fecha_inicio,
-    p.fecha_fin
+    p.fecha_fin,
+    GROUP_CONCAT(DISTINCT po.ods_id ORDER BY po.ods_id) AS ods_vinculados,
+    MAX(CASE WHEN po.es_primario = TRUE THEN po.ods_id END) AS ods_primario
 FROM proyectos p
 JOIN ods_login.usuarios u ON p.usuario_id = u.id
-LEFT JOIN ods_login.sedes s ON p.sede_id = s.id;
+LEFT JOIN ods_login.sedes s ON p.sede_id = s.id
+LEFT JOIN proyecto_ods po ON po.proyecto_id = p.id
+GROUP BY p.id, p.nombre_proyecto, u.full_name, s.nombre, p.estado, p.fecha_inicio, p.fecha_fin;
 
 SELECT 'Base de datos ods_master creada exitosamente' AS mensaje;

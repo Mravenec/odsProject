@@ -26,6 +26,7 @@ import org.jooq.TableOptions;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.ULong;
 
 
 /**
@@ -88,12 +89,24 @@ public class VistaResumenProyectosOds extends TableImpl<VistaResumenProyectosOds
      */
     public final TableField<VistaResumenProyectosOdsRecord, LocalDate> FECHA_FIN = createField(DSL.name("fecha_fin"), SQLDataType.LOCALDATE.nullable(false), this, "");
 
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> ODS_VINCULADOS = createField(DSL.name("ods_vinculados"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_primario</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, ULong> ODS_PRIMARIO = createField(DSL.name("ods_primario"), SQLDataType.BIGINTUNSIGNED.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINTUNSIGNED)), this, "");
+
     private VistaResumenProyectosOds(Name alias, Table<VistaResumenProyectosOdsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
 
     private VistaResumenProyectosOds(Name alias, Table<VistaResumenProyectosOdsRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("VIEW"), TableOptions.view("create view `vista_resumen_proyectos_ods` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`full_name` AS `gestor`,`s`.`nombre` AS `sede`,`p`.`estado` AS `estado`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin` from ((`ods_master`.`proyectos` `p` join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods_login`.`sedes` `s` on(`p`.`sede_id` = `s`.`id`))"), where);
+        super(alias, null, aliased, parameters, DSL.comment("VIEW"), TableOptions.view("create view `vista_resumen_proyectos_ods` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`full_name` AS `gestor`,`s`.`nombre` AS `sede`,`p`.`estado` AS `estado`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin`,group_concat(distinct `po`.`ods_id` order by `po`.`ods_id` ASC separator ',') AS `ods_vinculados`,max(case when `po`.`es_primario` = 1 then `po`.`ods_id` end) AS `ods_primario` from (((`ods_master`.`proyectos` `p` join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods_login`.`sedes` `s` on(`p`.`sede_id` = `s`.`id`)) left join `ods_master`.`proyecto_ods` `po` on(`po`.`proyecto_id` = `p`.`id`)) group by `p`.`id`,`p`.`nombre_proyecto`,`u`.`full_name`,`s`.`nombre`,`p`.`estado`,`p`.`fecha_inicio`,`p`.`fecha_fin`"), where);
     }
 
     /**

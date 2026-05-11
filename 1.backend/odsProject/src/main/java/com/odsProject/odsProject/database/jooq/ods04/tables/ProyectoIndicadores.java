@@ -150,7 +150,7 @@ public class ProyectoIndicadores extends TableImpl<ProyectoIndicadoresRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PROYECTO_INDICADORES_IDX_PROYECTO_MASTER, Indexes.PROYECTO_INDICADORES_INDICADOR_MASTER_ID);
+        return Arrays.asList(Indexes.PROYECTO_INDICADORES_INDICADOR_MASTER_ID);
     }
 
     @Override
@@ -161,6 +161,11 @@ public class ProyectoIndicadores extends TableImpl<ProyectoIndicadoresRecord> {
     @Override
     public UniqueKey<ProyectoIndicadoresRecord> getPrimaryKey() {
         return Keys.KEY_PROYECTO_INDICADORES_PRIMARY;
+    }
+
+    @Override
+    public List<UniqueKey<ProyectoIndicadoresRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.KEY_PROYECTO_INDICADORES_UK_PROYECTO_INDICADOR);
     }
 
     @Override

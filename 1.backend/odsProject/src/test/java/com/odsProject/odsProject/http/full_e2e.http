@@ -1,0 +1,154 @@
+### ============================================================
+### Sprint 6 — Casos end-to-end del orquestador /api/projects/full
+### Ejecutar contra: http://localhost:8080
+### Recomendado: IntelliJ HTTP Client, VS Code REST Client
+### ============================================================
+
+@host = http://localhost:8080
+
+### -----------------------------------------------------------
+### Caso 1 — Proyecto mínimo: 1 ODS, 1 indicador, 2 parámetros
+### Esperado: proyectoId != null, odsVinculados=[17], indicadoresCreados.length=1
+### -----------------------------------------------------------
+POST {{host}}/api/projects/full
+Content-Type: application/json
+
+{
+  "proyecto": {
+    "usuarioId": 1,
+    "sedeId": 1,
+    "nombreProyecto": "S6-Caso1 - Test Mínimo",
+    "descripcion": "Sprint 6 E2E caso 1",
+    "fechaInicio": "2026-01-01",
+    "fechaFin": "2026-12-31",
+    "estado": "planificacion",
+    "responsableNombre": "QA Sprint 6"
+  },
+  "odsIds": [17],
+  "primaryOdsId": 17,
+  "indicadores": [
+    {
+      "odsId": 17,
+      "indicadorMasterId": 1,
+      "metaValor": 80,
+      "metaUnidad": "Porcentaje",
+      "metaNombre": "Cobertura cantonal",
+      "formulaCustom": "(a+b)/100",
+      "parametros": [
+        { "nombreParametro": "a", "nombreVariable": "a", "tipoDato": "Integer" },
+        { "nombreParametro": "b", "nombreVariable": "b", "tipoDato": "Integer" }
+      ]
+    }
+  ]
+}
+
+
+### -----------------------------------------------------------
+### Caso 2 — Proyecto multi-ODS: 3 ODS, 4 indicadores
+### Esperado: odsVinculados=[1,3,17], indicadoresCreados.length=4
+### -----------------------------------------------------------
+POST {{host}}/api/projects/full
+Content-Type: application/json
+
+{
+  "proyecto": {
+    "usuarioId": 1,
+    "sedeId": 1,
+    "nombreProyecto": "S6-Caso2 - Multi ODS",
+    "descripcion": "Plan integral 2026",
+    "fechaInicio": "2026-02-01",
+    "fechaFin": "2026-12-31",
+    "estado": "planificacion"
+  },
+  "odsIds": [1, 3, 17],
+  "primaryOdsId": 3,
+  "indicadores": [
+    { "odsId": 1,  "indicadorMasterId": 1, "metaValor": 50, "metaUnidad": "Porcentaje", "formulaCustom": "p1/p2*100" },
+    { "odsId": 1,  "indicadorMasterId": 2, "metaValor": 90, "metaUnidad": "Porcentaje", "formulaCustom": "p1/p2*100" },
+    { "odsId": 3,  "indicadorMasterId": 1, "metaValor": 70, "metaUnidad": "Porcentaje", "formulaCustom": "(p1+p2)/p3" },
+    { "odsId": 17, "indicadorMasterId": 1, "metaValor": 80, "metaUnidad": "Porcentaje", "formulaCustom": "(a+b)/100" }
+  ]
+}
+
+
+### -----------------------------------------------------------
+### Caso 3 — Idempotencia: re-ejecutar el mismo proyecto
+### Después del Caso 1, repetir un POST equivalente con
+### proyectoId != null. El segundo POST NO debe duplicar indicadores
+### (la UNIQUE uk_proyecto_indicador hace UPSERT).
+### -----------------------------------------------------------
+POST {{host}}/api/projects/full
+Content-Type: application/json
+
+{
+  "proyecto": {
+    "usuarioId": 1,
+    "sedeId": 1,
+    "nombreProyecto": "S6-Caso3 - Idempotencia",
+    "descripcion": "Test idempotencia",
+    "fechaInicio": "2026-01-01",
+    "fechaFin": "2026-12-31",
+    "estado": "planificacion"
+  },
+  "odsIds": [17],
+  "indicadores": [
+    {
+      "odsId": 17,
+      "indicadorMasterId": 1,
+      "metaValor": 100,
+      "metaUnidad": "Porcentaje",
+      "formulaCustom": "(a+b)/100",
+      "parametros": [
+        { "nombreParametro": "a", "tipoDato": "Decimal" },
+        { "nombreParametro": "b", "tipoDato": "Decimal" }
+      ]
+    }
+  ]
+}
+
+
+### -----------------------------------------------------------
+### Caso 4 — Error: indicadorMasterId inexistente (FK violation)
+### Esperado: success=false, proyectoId=null, errores con causa real.
+### El proyecto NO debe quedar en BD (compensaciones).
+### -----------------------------------------------------------
+POST {{host}}/api/projects/full
+Content-Type: application/json
+
+{
+  "proyecto": {
+    "usuarioId": 1,
+    "sedeId": 1,
+    "nombreProyecto": "S6-Caso4 - Error FK",
+    "descripcion": "Debe fallar y rollback",
+    "fechaInicio": "2026-01-01",
+    "fechaFin": "2026-12-31",
+    "estado": "planificacion"
+  },
+  "odsIds": [17],
+  "indicadores": [
+    { "odsId": 17, "indicadorMasterId": 99999999, "metaValor": 10, "metaUnidad": "Porcentaje" }
+  ]
+}
+
+
+### -----------------------------------------------------------
+### Caso 5 — Lectura: ODS de un proyecto
+### Reemplazar {projectId} con un ID real devuelto por Caso 1.
+### -----------------------------------------------------------
+GET {{host}}/api/projects/1/ods
+
+
+### -----------------------------------------------------------
+### Verificación manual en MariaDB (para correr fuera del .http):
+###
+###   SELECT * FROM ods_master.proyectos ORDER BY id DESC LIMIT 5;
+###   SELECT * FROM ods_master.proyecto_ods WHERE proyecto_id = <ID>;
+###   SELECT * FROM ods17.proyecto_indicadores WHERE proyecto_id = <ID>;
+###   SELECT * FROM ods17.proyecto_indicador_parametros
+###     WHERE proyecto_indicador_id IN (
+###       SELECT id FROM ods17.proyecto_indicadores WHERE proyecto_id = <ID>
+###     );
+###
+### Después del Caso 4, los SELECT NO deben encontrar al proyecto.
+### -----------------------------------------------------------

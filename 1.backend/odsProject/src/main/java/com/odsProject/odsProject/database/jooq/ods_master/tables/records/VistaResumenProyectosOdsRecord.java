@@ -10,6 +10,7 @@ import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenPro
 import java.time.LocalDate;
 
 import org.jooq.impl.TableRecordImpl;
+import org.jooq.types.ULong;
 
 
 /**
@@ -131,6 +132,40 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
         return (LocalDate) get(6);
     }
 
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
+     */
+    public VistaResumenProyectosOdsRecord setOdsVinculados(String value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
+     */
+    public String getOdsVinculados() {
+        return (String) get(7);
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_primario</code>.
+     */
+    public VistaResumenProyectosOdsRecord setOdsPrimario(ULong value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_primario</code>.
+     */
+    public ULong getOdsPrimario() {
+        return (ULong) get(8);
+    }
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -145,7 +180,7 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
     /**
      * Create a detached, initialised VistaResumenProyectosOdsRecord
      */
-    public VistaResumenProyectosOdsRecord(Integer proyectoId, String nombreProyecto, String gestor, String sede, VistaResumenProyectosOdsEstado estado, LocalDate fechaInicio, LocalDate fechaFin) {
+    public VistaResumenProyectosOdsRecord(Integer proyectoId, String nombreProyecto, String gestor, String sede, VistaResumenProyectosOdsEstado estado, LocalDate fechaInicio, LocalDate fechaFin, String odsVinculados, ULong odsPrimario) {
         super(VistaResumenProyectosOds.VISTA_RESUMEN_PROYECTOS_ODS);
 
         setProyectoId(proyectoId);
@@ -155,6 +190,8 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
         setEstado(estado);
         setFechaInicio(fechaInicio);
         setFechaFin(fechaFin);
+        setOdsVinculados(odsVinculados);
+        setOdsPrimario(odsPrimario);
         resetChangedOnNotNull();
     }
 
@@ -172,6 +209,8 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
             setEstado(value.getEstado());
             setFechaInicio(value.getFechaInicio());
             setFechaFin(value.getFechaFin());
+            setOdsVinculados(value.getOdsVinculados());
+            setOdsPrimario(value.getOdsPrimario());
             resetChangedOnNotNull();
         }
     }

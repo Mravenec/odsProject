@@ -59,29 +59,13 @@ public class Objetivo13AccionClimaController implements IObjetivo13AccionClimaCo
 
     @Override public ResponseEntity<List<VistaAdminDetalleIndicadores>> getIndicadores(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.getAllIndicators(proyectoId)); }
     @Override public ResponseEntity<VistaAdminDetalleIndicadores> getIndicador(Integer indicadorId) { return objetivo13AccionClimaService.findIndicadorById(indicadorId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
-    @Override
-    public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) {
-        try {
-            return ResponseEntity.ok(objetivo13AccionClimaService.saveIndicador(indicador));
-        } catch (Exception e) {
-            log.error("createIndicador error: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    @Override public ResponseEntity<ProyectoIndicadores> createIndicador(ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo13AccionClimaService.saveIndicador(indicador)); }
     @Override public ResponseEntity<ProyectoIndicadores> updateIndicador(Integer indicadorId, ProyectoIndicadores indicador) { return ResponseEntity.ok(objetivo13AccionClimaService.updateIndicador(indicador)); }
     @Override public ResponseEntity<Void> deleteIndicador(Integer indicadorId) { objetivo13AccionClimaService.deleteIndicador(indicadorId); return ResponseEntity.noContent().build(); }
 
     @Override public ResponseEntity<List<ProyectoIndicadorParametros>> getMetasProyecto(Integer proyectoId) { return ResponseEntity.ok(objetivo13AccionClimaService.findAllMetasProyecto(proyectoId)); }
     @Override public ResponseEntity<ProyectoIndicadorParametros> getMetaProyecto(Integer metaId) { return objetivo13AccionClimaService.findMetaProyectoById(metaId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
-    @Override
-    public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) {
-        try {
-            return ResponseEntity.ok(objetivo13AccionClimaService.saveMetaProyecto(meta));
-        } catch (Exception e) {
-            log.error("createMetaProyecto error: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    @Override public ResponseEntity<ProyectoIndicadorParametros> createMetaProyecto(ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo13AccionClimaService.saveMetaProyecto(meta)); }
     @Override public ResponseEntity<ProyectoIndicadorParametros> updateMetaProyecto(Integer metaId, ProyectoIndicadorParametros meta) { return ResponseEntity.ok(objetivo13AccionClimaService.updateMetaProyecto(meta)); }
     @Override public ResponseEntity<Void> deleteMetaProyecto(Integer metaId) { objetivo13AccionClimaService.deleteMetaProyecto(metaId); return ResponseEntity.noContent().build(); }
 

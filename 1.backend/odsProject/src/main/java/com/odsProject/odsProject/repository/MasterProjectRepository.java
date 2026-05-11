@@ -117,4 +117,81 @@ public class MasterProjectRepository implements IMasterProjectRepository {
     public boolean exists(Integer id) {
         return dsl.fetchExists(dsl.selectOne().from(PROYECTOS).where(PROYECTOS.ID.eq(id)));
     }
+
+    // ─────────────────────────────────────────────────────────────────────
+    //  Sprint 2/3: Relación explícita Proyecto ↔ ODS (tabla proyecto_ods)
+    //
+    //  Usamos DSL.table()/DSL.field() con SQL raw para no depender de POJOs
+    //  JOOQ que aún no se han regenerado. Cuando el usuario corra
+    //  `mvn spring-boot:run` con la BD actualizada, JOOQ generará una
+    //  ProyectoOds POJO oficial, pero este código sigue funcionando.
+    // ─────────────────────────────────────────────────────────────────────
+
+    private static final org.jooq.Table<?> PROYECTO_ODS =
+        org.jooq.impl.DSL.table(org.jooq.impl.DSL.name("ods_master", "proyecto_ods"));
+    private static final org.jooq.Field<Integer> PO_ID =
+        org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("ods_master", "proyecto_ods", "id"), Integer.class);
+    private static final org.jooq.Field<Integer> PO_PROYECTO_ID =
+        org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("ods_master", "proyecto_ods", "proyecto_id"), Integer.class);
+    private static final org.jooq.Field<Integer> PO_ODS_ID =
+        org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("ods_master", "proyecto_ods", "ods_id"), Integer.class);
+    private static final org.jooq.Field<Boolean> PO_ES_PRIMARIO =
+        org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("ods_master", "proyecto_ods", "es_primario"), Boolean.class);
+    private static final org.jooq.Field<java.time.LocalDateTime> PO_FECHA =
+        org.jooq.impl.DSL.field(org.jooq.impl.DSL.name("ods_master", "proyecto_ods", "fecha_vinculacion"), java.time.LocalDateTime.class);
+
+    @Override
+    public Integer linkOds(Integer proyectoId, Integer odsId, boolean esPrimario) {
+        if (proyectoId == null || odsId == null) {
+            throw new IllegalArgumentException("proyectoId y odsId son requeridos");
+        }
+
+        // ─── Sprint 7 — Hotfix trigger mutante ──────────────────────────────
+        // Antes había un BEFORE INSERT trigger en proyecto_ods que despromovía
+        // a los otros ODS primarios del mismo proyecto. MariaDB lo prohíbe
+        // (error 1442: "Can't update table in stored function/trigger because
+        // it is already used by statement which invoked this trigger").
+        // La regla vive ahora en código: si vamos a marcar este vínculo como
+        // primario, primero hacemos UPDATE de los otros del mismo proyecto.
+        // ────────────────────────────────────────────────────────────────────
+        if (esPrimario) {
+            dsl.update(PROYECTO_ODS)
+               .set(PO_ES_PRIMARIO, false)
+               .where(PO_PROYECTO_ID.eq(proyectoId))
+               .and(PO_ES_PRIMARIO.eq(true))
+               .execute();
+        }
+
+        // UPSERT del vínculo (la UNIQUE uk_proyecto_ods evita duplicados)
+        dsl.insertInto(PROYECTO_ODS)
+           .set(PO_PROYECTO_ID, proyectoId)
+           .set(PO_ODS_ID,      odsId)
+           .set(PO_ES_PRIMARIO, esPrimario)
+           .onDuplicateKeyUpdate()
+           .set(PO_ES_PRIMARIO, esPrimario)
+           .execute();
+        // Refetch del ID
+        return dsl.select(PO_ID)
+                  .from(PROYECTO_ODS)
+                  .where(PO_PROYECTO_ID.eq(proyectoId)).and(PO_ODS_ID.eq(odsId))
+                  .fetchOneInto(Integer.class);
+    }
+
+    @Override
+    public List<java.util.Map<String, Object>> findOdsByProyecto(Integer proyectoId) {
+        if (proyectoId == null) return java.util.Collections.emptyList();
+        return dsl.select(PO_ID, PO_PROYECTO_ID, PO_ODS_ID, PO_ES_PRIMARIO, PO_FECHA)
+                  .from(PROYECTO_ODS)
+                  .where(PO_PROYECTO_ID.eq(proyectoId))
+                  .orderBy(PO_ODS_ID.asc())
+                  .fetchMaps();
+    }
+
+    @Override
+    public void unlinkOds(Integer proyectoId, Integer odsId) {
+        if (proyectoId == null || odsId == null) return;
+        dsl.deleteFrom(PROYECTO_ODS)
+           .where(PO_PROYECTO_ID.eq(proyectoId)).and(PO_ODS_ID.eq(odsId))
+           .execute();
+    }
 }

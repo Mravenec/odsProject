@@ -72,4 +72,18 @@ public class MasterProjectController implements IMasterProjectController {
     public ResponseEntity<Map<String, Object>> getGlobalDashboard() {
         return ResponseEntity.ok(masterProjectService.getGlobalDashboardData());
     }
+
+    // ── Sprint 3 ─────────────────────────────────────────────────────────
+
+    @Override
+    @PostMapping("/full")
+    public ResponseEntity<Map<String, Object>> createFullProject(@RequestBody Map<String, Object> payload) {
+        return ResponseEntity.ok(masterProjectService.createFullProject(payload));
+    }
+
+    @Override
+    @GetMapping("/{id}/ods")
+    public ResponseEntity<List<Map<String, Object>>> getOdsByProyecto(@PathVariable Integer id) {
+        return ResponseEntity.ok(masterProjectService.getOdsByProyecto(id));
+    }
 }

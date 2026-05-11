@@ -76,4 +76,25 @@ public interface IMasterProjectRepository {
      * @return true si existe, false si no
      */
     boolean exists(Integer id);
+
+    // ── Sprint 2/3: Relación explícita Proyecto ↔ ODS ────────────────────
+
+    /**
+     * Vincula un proyecto a un ODS. Idempotente: si ya está vinculado, actualiza
+     * el flag es_primario. Si es_primario=true, despromueve los demás del mismo proyecto.
+     *
+     * @return el ID generado o existente del registro en proyecto_ods
+     */
+    Integer linkOds(Integer proyectoId, Integer odsId, boolean esPrimario);
+
+    /**
+     * Devuelve la lista de ODS vinculados a un proyecto.
+     */
+    java.util.List<java.util.Map<String, Object>> findOdsByProyecto(Integer proyectoId);
+
+    /**
+     * Desvincula un ODS de un proyecto. ON DELETE CASCADE en BD ya borra los
+     * indicadores asociados; este método solo limpia la fila de proyecto_ods.
+     */
+    void unlinkOds(Integer proyectoId, Integer odsId);
 }

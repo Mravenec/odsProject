@@ -37,4 +37,21 @@ public interface IMasterProjectController {
 
     @GetMapping("/dashboard")
     ResponseEntity<Map<String, Object>> getGlobalDashboard();
+
+    // ── Sprint 3: Endpoints para orquestación completa ───────────────────
+
+    /**
+     * POST /api/projects/full
+     * Crea un proyecto con ODS vinculados, indicadores y parámetros en una sola
+     * llamada. Devuelve un resumen con errores granulares si algo falló a mitad.
+     */
+    @PostMapping("/full")
+    ResponseEntity<Map<String, Object>> createFullProject(@RequestBody Map<String, Object> payload);
+
+    /**
+     * GET /api/projects/{id}/ods
+     * Devuelve los ODS vinculados a un proyecto (con bandera es_primario).
+     */
+    @GetMapping("/{id}/ods")
+    ResponseEntity<List<Map<String, Object>>> getOdsByProyecto(@PathVariable Integer id);
 }

@@ -9,6 +9,8 @@ import com.odsProject.odsProject.database.jooq.ods_master.enums.VistaResumenProy
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import org.jooq.types.ULong;
+
 
 /**
  * VIEW
@@ -25,6 +27,8 @@ public class VistaResumenProyectosOds implements Serializable {
     private VistaResumenProyectosOdsEstado estado;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private String odsVinculados;
+    private ULong odsPrimario;
 
     public VistaResumenProyectosOds() {}
 
@@ -36,6 +40,8 @@ public class VistaResumenProyectosOds implements Serializable {
         this.estado = value.estado;
         this.fechaInicio = value.fechaInicio;
         this.fechaFin = value.fechaFin;
+        this.odsVinculados = value.odsVinculados;
+        this.odsPrimario = value.odsPrimario;
     }
 
     public VistaResumenProyectosOds(
@@ -45,7 +51,9 @@ public class VistaResumenProyectosOds implements Serializable {
         String sede,
         VistaResumenProyectosOdsEstado estado,
         LocalDate fechaInicio,
-        LocalDate fechaFin
+        LocalDate fechaFin,
+        String odsVinculados,
+        ULong odsPrimario
     ) {
         this.proyectoId = proyectoId;
         this.nombreProyecto = nombreProyecto;
@@ -54,6 +62,8 @@ public class VistaResumenProyectosOds implements Serializable {
         this.estado = estado;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.odsVinculados = odsVinculados;
+        this.odsPrimario = odsPrimario;
     }
 
     /**
@@ -167,6 +177,40 @@ public class VistaResumenProyectosOds implements Serializable {
         return this;
     }
 
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
+     */
+    public String getOdsVinculados() {
+        return this.odsVinculados;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
+     */
+    public VistaResumenProyectosOds setOdsVinculados(String odsVinculados) {
+        this.odsVinculados = odsVinculados;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_primario</code>.
+     */
+    public ULong getOdsPrimario() {
+        return this.odsPrimario;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.ods_primario</code>.
+     */
+    public VistaResumenProyectosOds setOdsPrimario(ULong odsPrimario) {
+        this.odsPrimario = odsPrimario;
+        return this;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -218,6 +262,18 @@ public class VistaResumenProyectosOds implements Serializable {
         }
         else if (!this.fechaFin.equals(other.fechaFin))
             return false;
+        if (this.odsVinculados == null) {
+            if (other.odsVinculados != null)
+                return false;
+        }
+        else if (!this.odsVinculados.equals(other.odsVinculados))
+            return false;
+        if (this.odsPrimario == null) {
+            if (other.odsPrimario != null)
+                return false;
+        }
+        else if (!this.odsPrimario.equals(other.odsPrimario))
+            return false;
         return true;
     }
 
@@ -232,6 +288,8 @@ public class VistaResumenProyectosOds implements Serializable {
         result = prime * result + ((this.estado == null) ? 0 : this.estado.hashCode());
         result = prime * result + ((this.fechaInicio == null) ? 0 : this.fechaInicio.hashCode());
         result = prime * result + ((this.fechaFin == null) ? 0 : this.fechaFin.hashCode());
+        result = prime * result + ((this.odsVinculados == null) ? 0 : this.odsVinculados.hashCode());
+        result = prime * result + ((this.odsPrimario == null) ? 0 : this.odsPrimario.hashCode());
         return result;
     }
 
@@ -246,6 +304,8 @@ public class VistaResumenProyectosOds implements Serializable {
         sb.append(", ").append(estado);
         sb.append(", ").append(fechaInicio);
         sb.append(", ").append(fechaFin);
+        sb.append(", ").append(odsVinculados);
+        sb.append(", ").append(odsPrimario);
 
         sb.append(")");
         return sb.toString();
