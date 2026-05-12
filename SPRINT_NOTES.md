@@ -424,3 +424,79 @@ Ninguna de las 2 IAs externas tenía razón completa, pero la #2 sí identificó
 los 3 bugs estructurales con precisión. Los recomendados "implementar DTOs" de
 la #1 no resuelven nada acá: el problema nunca fue Jackson, era lógica de
 orquestación + faltante de JOIN.
+
+---
+
+## Sprint 9 — ProjectResultsPage muestra ODS, indicadores y fórmulas
+
+### Síntoma reportado
+La BD guarda todo correctamente (Sprint 8 confirmado con queries SQL):
+proyecto, `proyecto_ods`, `proyecto_indicadores`, `proyecto_indicador_parametros`.
+Pero al hacer click en una card del listado, la página de detalle muestra
+"Sin ODS vinculados", sin indicadores y sin fórmulas.
+
+### Causa raíz (verificada línea por línea)
+`ProjectResultsPage.jsx` viene de la era localStorage. En su `useEffect` original
+llama a `projectService.getProjectById(id)` y luego intenta leer:
+
+```js
+project.objective           // ← undefined: proyecto no tiene esta columna
+project.indicators?.map(...)  // ← undefined?.map(): no renderiza nada
+project.indicatorConfigs?.[code] // ← undefined: sin fórmulas
+project.targetValues[code]    // ← undefined: sin metas
+```
+
+Esos campos existían cuando el proyecto era un objeto plano en localStorage
+con todos sus indicadores anidados adentro. Cuando migramos a backend con
+tablas normalizadas (`proyecto_ods`, `proyecto_indicadores`, ...), el shape
+cambió pero la página quedó leyendo el shape viejo.
+
+### Fix aplicado
+Reescritura del `useEffect` y de la sección "Objetivos de Desarrollo Sostenible":
+
+**fetchProject (nuevo flujo):**
+1. `GET /api/projects/{id}` → cabecera Proyectos.
+2. `GET /api/projects/{id}/ods` → lista de ODS vinculados (proyecto_ods).
+3. Para cada ODS vinculado, import dinámico de `objetivoXXService` y dos llamadas
+   paralelas: `getIndicators(projectId)` + `getMetasProyecto(projectId)`.
+4. Construye `project.linkedOds = [{odsId, esPrimario, indicators, parameters}]`.
+5. Mantiene `project.objective` y `project.indicators` como campos legacy para
+   no romper otros componentes que aún los leen.
+
+**Rendering (nueva sección):**
+- Itera `project.linkedOds.map(...)` en lugar de un solo `project.objective`.
+- Muestra el badge "PRIMARIO" en el ODS marcado como tal.
+- Por cada indicador: código, nombre, meta, **fórmula**, y la lista de variables.
+- Casa parámetros con indicadores extrayendo las variables de la fórmula con
+  regex (`/[a-zA-Z_][a-zA-Z0-9_]*/g`) y matching contra `param.nombreVariable`.
+  Esto evita tener que cambiar el view de BD para exponer `proyecto_indicador_id`.
+
+**Botón "Ir a evaluación" → `/projects/{id}/evaluation`**
+Para que el usuario pase fácil del detalle a la carga de mediciones reales.
+
+### Archivos afectados
+- `2.frontend/odsProject/src/pages/ProjectResultsPage/ProjectResultsPage.jsx`
+  (reescritura quirúrgica de 2 bloques)
+
+### Por qué NO toqué el backend ni la BD
+La BD ya tiene todo lo necesario:
+- `ods_master.proyectos` ✓
+- `ods_master.proyecto_ods` ✓
+- `ods0X.proyecto_indicadores` ✓ (con `formula_custom`, `meta_valor`, etc.)
+- `ods0X.proyecto_indicador_parametros` ✓
+
+Los endpoints también:
+- `GET /api/projects/{id}` (Sprint 3)
+- `GET /api/projects/{id}/ods` (Sprint 3)
+- `GET /api/ods/XX/indicadores?proyectoId={id}` (preexistente)
+- `GET /api/ods/XX/metas?proyectoId={id}` (preexistente)
+
+El bug era 100% frontend: una página vieja que leía un shape que ya no existe.
+
+### Validación esperada
+Después de aplicar el zip, abrir un proyecto que tenga indicadores en BD
+(como el proyecto 6 del usuario) debe mostrar:
+- "2 ODS Vinculados" en el badge.
+- ODS 1 (PRIMARIO) con indicador `1.1.1`, fórmula `(a + b)/ 100`, meta 70%,
+  y variables `a` (Integer), `b` (Integer).
+- ODS 2 con indicador `2.1.1`, fórmula `(a + b)`, meta 50%, mismas variables.

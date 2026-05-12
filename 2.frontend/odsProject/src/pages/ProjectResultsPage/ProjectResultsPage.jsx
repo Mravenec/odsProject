@@ -52,40 +52,97 @@ const ProjectResultsPage = () => {
   const fetchProject = async () => {
     try {
       setLoading(true);
-      const result = await projectService.getProjectById(projectId);
-      
-      if (!result.success || !result.data) {
+
+      // ── Sprint 9: traer el "árbol completo" del proyecto desde la BD ─────
+      // Antes la página esperaba project.indicators / project.indicatorConfigs /
+      // project.objective / project.targetValues que solo existían en el
+      // formulario de creación (era localStorage). Esa info ya no viaja
+      // con getProjectById; ahora la armamos a partir de:
+      //   1) GET /api/projects/{id}                → cabecera Proyectos
+      //   2) GET /api/projects/{id}/ods            → ODS vinculados
+      //   3) GET /api/ods/{XX}/indicadores         → indicadores del proyecto
+      //   4) GET /api/ods/{XX}/metas               → parámetros de cada indicador
+      // ─────────────────────────────────────────────────────────────────────
+
+      const headerRes = await projectService.getProjectById(projectId);
+      if (!headerRes.success || !headerRes.data) {
         setError('Proyecto no encontrado');
         return;
       }
-      
-      const currentProject = result.data;
-      
-      setProject(currentProject);
-      
-      if (currentProject.status === 'completed' || currentProject.status === 'completado') {
-        const resultsData = await getProjectResults(currentProject.id, currentProject.objective);
-        setResults(resultsData);
-      } else {
-        const initialFormData = {};
-        const initialParamValues = {};
-        
-        currentProject.indicators?.forEach(indicator => {
-          initialFormData[indicator] = '';
-          
-          const config = currentProject.indicatorConfigs?.[indicator];
-          if (config && config.parameters) {
-            initialParamValues[indicator] = {};
-            config.parameters.forEach(p => {
-              initialParamValues[indicator][p.name] = '';
-            });
+      const currentProject = headerRes.data;
+
+      // ODS vinculados (proyecto_ods)
+      const odsRes = await projectService.getOdsByProyecto(projectId);
+      const linkedOdsRaw = odsRes.success ? odsRes.data : [];
+
+      // Por cada ODS, importar dinámicamente su servicio y pedir
+      // indicadores + parámetros del proyecto. En paralelo.
+      const linkedOds = (await Promise.all(
+        linkedOdsRaw.map(async odsLink => {
+          const odsId = parseInt(odsLink.ods_id ?? odsLink.odsId);
+          if (!odsId || Number.isNaN(odsId)) return null;
+          const padded = String(odsId).padStart(2, '0');
+
+          let svc;
+          try {
+            const mod = await import(`../../services/objetivo${padded}Service.js`);
+            svc = mod.default || mod[`objetivo${padded}Service`];
+          } catch (e) {
+            console.warn(`[ProjectResultsPage] sin servicio para ODS ${padded}`, e);
+            return null;
           }
-        });
-        
-        setFormData(initialFormData);
-        setParamValues(initialParamValues);
-      }
+          if (!svc?.getIndicators) return null;
+
+          // La vista admin_detalle_indicadores hace LEFT JOIN entre todos los
+          // master indicators y los del proyecto. Los que pertenecen al
+          // proyecto son los que tienen fórmula o meta cargada.
+          const indicatorsMap = await svc.getIndicators(parseInt(projectId));
+          const indicators = Object.values(indicatorsMap)
+            .filter(ind => ind && (
+              (ind.formula && ind.formula.trim().length > 0) ||
+              (typeof ind.targetValue === 'number' && ind.targetValue > 0) ||
+              ind.currentValue != null ||
+              ind.hasData
+            ))
+            .sort((a, b) => String(a.code).localeCompare(String(b.code)));
+
+          // Parámetros (proyecto_indicador_parametros)
+          let parameters = [];
+          if (svc.getMetasProyecto) {
+            try {
+              const mp = await svc.getMetasProyecto(parseInt(projectId));
+              parameters = mp?.data || mp || [];
+            } catch (e) {
+              console.warn(`[ProjectResultsPage] error parámetros ODS ${padded}`, e);
+            }
+          }
+
+          return {
+            odsId,
+            esPrimario: !!(odsLink.es_primario ?? odsLink.esPrimario),
+            fechaVinculacion: odsLink.fecha_vinculacion ?? odsLink.fechaVinculacion,
+            indicators,
+            parameters
+          };
+        })
+      )).filter(Boolean);
+
+      // Ordenar: primario primero, luego por número de ODS
+      linkedOds.sort((a, b) => {
+        if (a.esPrimario && !b.esPrimario) return -1;
+        if (!a.esPrimario && b.esPrimario) return 1;
+        return a.odsId - b.odsId;
+      });
+
+      setProject({
+        ...currentProject,
+        linkedOds,
+        // Mantenemos campos legacy para que el resto de la página no rompa
+        objective: linkedOds.find(o => o.esPrimario)?.odsId ?? linkedOds[0]?.odsId ?? currentProject.objective,
+        indicators: linkedOds.flatMap(o => o.indicators.map(i => i.code))
+      });
     } catch (err) {
+      console.error('[ProjectResultsPage] fetchProject error', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -279,72 +336,209 @@ const ProjectResultsPage = () => {
             <h2>Objetivos de Desarrollo Sostenible</h2>
           </div>
           <div className="ods-count-badge">
-            {project.objective ? '1 ODS Vinculado' : 'Sin ODS vinculados'}
+            {project.linkedOds && project.linkedOds.length > 0
+              ? `${project.linkedOds.length} ODS Vinculado${project.linkedOds.length !== 1 ? 's' : ''}`
+              : 'Sin ODS vinculados'}
           </div>
         </div>
 
+        {/* ── Sprint 9: iterar TODOS los ODS vinculados, no solo el primario ── */}
         <div className="ods-impact-list">
-          {/* En este proyecto, el objetivo es el ODS principal */}
-          <div className="ods-impact-item">
-            <div className="ods-summary-header">
-              <div 
-                className="ods-number-box" 
-                style={{ backgroundColor: getOdsColor(project.objective) }}
-              >
-                {project.objective}
-              </div>
-              <span className="ods-full-name">Objetivo {project.objective}: {getObjectiveName(project.objective)}</span>
-            </div>
+          {project.linkedOds && project.linkedOds.length > 0 ? (
+            project.linkedOds.map(ods => {
+              // ── Para cada indicador, extraer variables de su fórmula y casar
+              //    los parámetros del ODS por nombre_variable. La API del view
+              //    de indicadores no expone proyecto_indicador_id, así que
+              //    matcheamos por las variables que aparecen en la fórmula.
+              const RESERVED = new Set([
+                'sqrt','sin','cos','tan','log','exp','round','floor','ceil','abs',
+                'pi','e','valor','count'
+              ]);
+              const extractVars = (formula) => {
+                if (!formula) return new Set();
+                const matches = String(formula).match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
+                return new Set(matches.filter(v => !RESERVED.has(v.toLowerCase())));
+              };
 
-            <div className="indicators-grid-layout">
-              {results?.indicatorResults ? (
-                results.indicatorResults.map((result, index) => (
-                  <div key={index} className="indicator-report-wrapper">
-                    <IndicatorCard 
-                      {...result}
-                      index={index + 1}
-                      mode="view"
-                      config={project.indicatorConfigs?.[result.indicator]}
-                    />
+              const paramsByIndicatorCode = {};
+              for (const ind of ods.indicators) {
+                paramsByIndicatorCode[ind.code] = [];
+              }
+              const assigned = new Set();
+              for (const ind of ods.indicators) {
+                const vars = extractVars(ind.formula);
+                for (const p of (ods.parameters || [])) {
+                  if (assigned.has(p.id)) continue;
+                  const varName = p.nombreVariable || p.nombreParametro;
+                  if (vars.has(varName)) {
+                    paramsByIndicatorCode[ind.code].push(p);
+                    assigned.add(p.id);
+                  }
+                }
+              }
+              // Parámetros sin match (caso raro): los pegamos al primer indicador
+              const unmatched = (ods.parameters || []).filter(p => !assigned.has(p.id));
+              if (unmatched.length > 0 && ods.indicators[0]) {
+                paramsByIndicatorCode[ods.indicators[0].code].push(...unmatched);
+              }
+
+              return (
+                <div key={ods.odsId} className="ods-impact-item" style={{ marginBottom: 24 }}>
+                  <div className="ods-summary-header">
+                    <div
+                      className="ods-number-box"
+                      style={{ backgroundColor: getOdsColor(ods.odsId) }}
+                    >
+                      {ods.odsId}
+                    </div>
+                    <span className="ods-full-name">
+                      Objetivo {ods.odsId}: {getObjectiveName(ods.odsId)}
+                      {ods.esPrimario && (
+                        <span style={{
+                          marginLeft: 10, fontSize: 11, fontWeight: 600,
+                          padding: '2px 8px', borderRadius: 99,
+                          background: '#fef3c7', color: '#92400e'
+                        }}>
+                          PRIMARIO
+                        </span>
+                      )}
+                    </span>
                   </div>
-                ))
-              ) : (
-                <form onSubmit={handleSubmit} className="modern-form">
-                  <div className="indicators-entry-list">
-                    {project.indicators?.map((indicator, index) => {
-                      const config = project.indicatorConfigs?.[indicator];
-                      const { value, achievement } = calculateIndicatorAchievement(config, paramValues[indicator] || {});
-                      
-                      return (
-                        <IndicatorCard 
-                          key={index}
-                          indicator={indicator}
-                          targetValue={project.targetValues[indicator]}
-                          mode="input"
-                          inputValue={formData[indicator] || ''}
-                          onInputChange={handleInputChange}
-                          index={index + 1}
-                          config={config}
-                          paramValues={paramValues[indicator] || {}}
-                          onParamChange={handleParamChange}
-                          calculatedValue={value}
-                          currentAchievement={achievement}
-                        />
-                      );
-                    })}
-                  </div>
-                  <div className="form-submit-footer">
-                    <button type="button" className="btn-secondary-flat" onClick={() => navigate('/dashboard')}>
-                      Cancelar
-                    </button>
-                    <button type="submit" className="btn-primary-glow" disabled={submitting}>
-                      {submitting ? <span className="spinner"></span> : 'Publicar Medición de Impacto'}
-                    </button>
-                  </div>
-                </form>
-              )}
+
+                  {ods.indicators && ods.indicators.length > 0 ? (
+                    <div className="indicators-grid-layout" style={{ display: 'grid', gap: 14, marginTop: 14 }}>
+                      {ods.indicators.map((ind, idx) => {
+                        const params = paramsByIndicatorCode[ind.code] || [];
+
+                        return (
+                          <div
+                            key={`${ods.odsId}-${ind.code || idx}`}
+                            style={{
+                              background: '#fff', border: '1px solid #e5e7eb',
+                              borderRadius: 10, padding: 16
+                            }}
+                          >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10 }}>
+                              <div style={{ flex: 1 }}>
+                                <div style={{
+                                  fontFamily: 'monospace', fontSize: 11,
+                                  color: '#888', marginBottom: 4
+                                }}>
+                                  {ind.code}
+                                </div>
+                                <div style={{ fontWeight: 600, fontSize: 14, color: '#111' }}>
+                                  {ind.name}
+                                </div>
+                              </div>
+                              {typeof ind.targetValue === 'number' && ind.targetValue > 0 && (
+                                <div style={{
+                                  padding: '4px 10px', borderRadius: 99,
+                                  background: '#eef2ff', color: '#3b5bdb',
+                                  fontSize: 12, fontWeight: 600, whiteSpace: 'nowrap'
+                                }}>
+                                  Meta: {ind.targetValue} {ind.unit || ''}
+                                </div>
+                              )}
+                            </div>
+
+                            {ind.formula && ind.formula.trim() !== '' && (
+                              <div style={{
+                                marginTop: 10, padding: '8px 12px',
+                                background: '#f0f4ff', borderRadius: 6,
+                                fontFamily: 'monospace', fontSize: 13,
+                                color: '#3b5bdb'
+                              }}>
+                                <span style={{
+                                  fontSize: 10, color: '#5577dd',
+                                  textTransform: 'uppercase', letterSpacing: '0.06em',
+                                  marginRight: 8
+                                }}>
+                                  Fórmula:
+                                </span>
+                                {ind.formula}
+                              </div>
+                            )}
+
+                            {/* Parámetros del indicador (variables de la fórmula) */}
+                            {params.length > 0 && (
+                              <div style={{ marginTop: 10 }}>
+                                <div style={{
+                                  fontSize: 11, color: '#666',
+                                  textTransform: 'uppercase', letterSpacing: '0.06em',
+                                  marginBottom: 6
+                                }}>
+                                  Variables ({params.length})
+                                </div>
+                                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                                  {params.map(p => (
+                                    <div
+                                      key={p.id}
+                                      style={{
+                                        display: 'inline-flex', alignItems: 'center', gap: 6,
+                                        padding: '4px 10px', borderRadius: 6,
+                                        background: '#f3f4f6', fontSize: 12
+                                      }}
+                                    >
+                                      <code style={{
+                                        fontFamily: 'monospace', fontWeight: 600,
+                                        color: '#3b5bdb'
+                                      }}>
+                                        {p.nombreVariable || p.nombreParametro}
+                                      </code>
+                                      <span style={{ color: '#888' }}>·</span>
+                                      <span style={{ color: '#555' }}>{p.tipoDato}</span>
+                                      <span style={{ color: '#888' }}>·</span>
+                                      <span style={{ color: '#555', fontVariantNumeric: 'tabular-nums' }}>
+                                        actual: {p.valorActual ?? 0}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {ind.currentValue != null && (
+                              <div style={{ marginTop: 8, fontSize: 12, color: '#555' }}>
+                                Valor calculado actual:&nbsp;
+                                <strong style={{ color: '#111' }}>
+                                  {ind.currentValue} {ind.unit || ''}
+                                </strong>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div style={{
+                      padding: 14, color: '#888', fontSize: 13,
+                      background: '#fafafa', borderRadius: 8, marginTop: 10
+                    }}>
+                      Sin indicadores cargados todavía en este ODS.
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <div style={{ padding: 20, textAlign: 'center', color: '#888' }}>
+              Este proyecto aún no tiene ODS vinculados.
             </div>
-          </div>
+          )}
+        </div>
+
+        {/* Botón hacia la página de evaluación para cargar valores */}
+        <div style={{ marginTop: 20, display: 'flex', justifyContent: 'flex-end' }}>
+          <button
+            className="btn-primary"
+            onClick={() => navigate(`/projects/${projectId}/evaluation`)}
+            style={{
+              padding: '10px 18px', background: '#3b5bdb', color: '#fff',
+              border: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 14
+            }}
+          >
+            Ir a evaluación →
+          </button>
         </div>
       </div>
 
