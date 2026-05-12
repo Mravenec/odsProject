@@ -1,6 +1,7 @@
 package com.odsProject.odsProject.repository;
 
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds;
 import com.odsProject.odsProject.repository.interfaces.IMasterProjectRepository;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.odsProject.odsProject.database.jooq.ods_master.Tables.PROYECTOS;
+import static com.odsProject.odsProject.database.jooq.ods_master.Tables.VISTA_RESUMEN_PROYECTOS_ODS;
 import static com.odsProject.odsProject.database.jooq.ods_login.Tables.USUARIOS;
 import org.jooq.impl.DSL;
 
@@ -116,6 +118,36 @@ public class MasterProjectRepository implements IMasterProjectRepository {
     @Override
     public boolean exists(Integer id) {
         return dsl.fetchExists(dsl.selectOne().from(PROYECTOS).where(PROYECTOS.ID.eq(id)));
+    }
+
+    // ── Sprint 8.3: listados enriquecidos con ODS via la view de ods_master ──
+
+    @Override
+    public List<VistaResumenProyectosOds> findAllWithOds() {
+        return dsl.selectFrom(VISTA_RESUMEN_PROYECTOS_ODS)
+                  .orderBy(VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID.desc())
+                  .fetchInto(VistaResumenProyectosOds.class);
+    }
+
+    @Override
+    public List<VistaResumenProyectosOds> findByUsuarioWithOds(Integer usuarioId) {
+        if (usuarioId == null) return java.util.Collections.emptyList();
+        // La vista no expone usuario_id; hacemos join contra proyectos para filtrar.
+        return dsl.select(
+                    VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID,
+                    VISTA_RESUMEN_PROYECTOS_ODS.NOMBRE_PROYECTO,
+                    VISTA_RESUMEN_PROYECTOS_ODS.GESTOR,
+                    VISTA_RESUMEN_PROYECTOS_ODS.SEDE,
+                    VISTA_RESUMEN_PROYECTOS_ODS.ESTADO,
+                    VISTA_RESUMEN_PROYECTOS_ODS.FECHA_INICIO,
+                    VISTA_RESUMEN_PROYECTOS_ODS.FECHA_FIN,
+                    VISTA_RESUMEN_PROYECTOS_ODS.ODS_VINCULADOS,
+                    VISTA_RESUMEN_PROYECTOS_ODS.ODS_PRIMARIO)
+                  .from(VISTA_RESUMEN_PROYECTOS_ODS)
+                  .join(PROYECTOS).on(PROYECTOS.ID.eq(VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID))
+                  .where(PROYECTOS.USUARIO_ID.eq(usuarioId))
+                  .orderBy(VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID.desc())
+                  .fetchInto(VistaResumenProyectosOds.class);
     }
 
     // ─────────────────────────────────────────────────────────────────────

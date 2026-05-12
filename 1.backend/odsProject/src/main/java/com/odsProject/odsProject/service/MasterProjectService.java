@@ -217,6 +217,17 @@ public class MasterProjectService implements IMasterProjectService {
             if (odsIds != null) odsToLink.addAll(odsIds);
             odsToLink.addAll(odsSetFromIndicators);
 
+            // ── Sprint 8.2: validación dura. Si no hay ODS para vincular,
+            //    el proyecto sería un huérfano: cabecera sin cuerpo. Antes
+            //    el método retornaba success=true y el usuario veía un
+            //    proyecto "Objetivo Desconocido" en el listado.
+            if (odsToLink.isEmpty()) {
+                throw new IllegalStateException(
+                    "El proyecto no puede crearse sin ODS vinculados. " +
+                    "Recibí 'odsIds' vacío y ningún indicador con 'odsId'. " +
+                    "Asegurate de enviar al menos un ODS o un indicador.");
+            }
+
             for (Integer odsId : odsToLink) {
                 boolean esPrimario = odsId.equals(primaryOdsId);
                 masterProjectRepository.linkOds(proyectoId, odsId, esPrimario);
@@ -300,6 +311,20 @@ public class MasterProjectService implements IMasterProjectService {
     @Override
     public List<Map<String, Object>> getOdsByProyecto(Integer proyectoId) {
         return masterProjectRepository.findOdsByProyecto(proyectoId);
+    }
+
+    // ── Sprint 8.3: Listados enriquecidos ────────────────────────────────
+
+    @Override
+    public List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+            getAllProyectosWithOds() {
+        return masterProjectRepository.findAllWithOds();
+    }
+
+    @Override
+    public List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+            getProyectosWithOdsByUsuario(Integer usuarioId) {
+        return masterProjectRepository.findByUsuarioWithOds(usuarioId);
     }
 
     // ── Helpers internos ─────────────────────────────────────────────────

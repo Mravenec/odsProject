@@ -124,8 +124,19 @@ const ProjectListPage = () => {
               >
                 <div className="card-top" style={{ borderTop: `4px solid ${getOdsColor(project.objective)}` }}>
                   <div className="ods-badge-small" style={{ backgroundColor: getOdsColor(project.objective) }}>
-                    ODS {project.objective}
+                    ODS {project.objective || '?'}
                   </div>
+                  {/* Sprint 8.3: si el proyecto cubre más de un ODS, mostrar el contador */}
+                  {Array.isArray(project.odsVinculados) && project.odsVinculados.length > 1 && (
+                    <div className="ods-badge-extra"
+                         title={`Otros ODS: ${project.odsVinculados.filter(n => n !== project.objective).join(', ')}`}
+                         style={{
+                           fontSize: 11, padding: '2px 7px', borderRadius: 99,
+                           background: 'rgba(0,0,0,0.06)', color: '#444', marginLeft: 6
+                         }}>
+                      +{project.odsVinculados.length - 1}
+                    </div>
+                  )}
                   <span className={`status-tag ${project.status}`}>
                     {project.status === 'active' || project.status === 'activo' ? 'En Curso' : 'Finalizado'}
                   </span>

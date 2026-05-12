@@ -78,4 +78,20 @@ public interface IMasterProjectService {
      * Devuelve la lista de ODS vinculados a un proyecto.
      */
     List<Map<String, Object>> getOdsByProyecto(Integer proyectoId);
+
+    // ── Sprint 8.3: Listados enriquecidos con ODS ────────────────────────
+
+    /**
+     * Lista todos los proyectos con su ODS primario y los ODS vinculados.
+     * Reemplaza al getAllProyectos cuando el frontend necesita mostrar el ODS
+     * en el listado (la vista de ProjectListPage).
+     */
+    List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+        getAllProyectosWithOds();
+
+    /**
+     * Lista los proyectos de un usuario con su ODS primario y ODS vinculados.
+     */
+    List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+        getProyectosWithOdsByUsuario(Integer usuarioId);
 }

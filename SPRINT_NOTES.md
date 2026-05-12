@@ -365,3 +365,62 @@ POST /api/projects/full
 ```
 Esperado: `success=true`, `proyectoId != null`, fila en `proyecto_ods`
 con `es_primario=1`. Sin error 1442.
+
+---
+
+## Sprint 8 — Fix proyecto sin ODS vinculados (sin DTOs, sin cambios en BD)
+
+### Diagnóstico verificado en código
+Después de Sprint 7 el POST `/api/projects/full` ya no daba error 1442, pero
+el proyecto se creaba huérfano: en la BD entraba la fila a `ods_master.proyectos`
+pero NO a `ods_master.proyecto_ods`. En la UI eso se veía como "Sin ODS
+vinculados" y "Objetivo Desconocido". Tres bugs independientes lo causaban:
+
+| # | Síntoma | Archivo | Causa |
+|---|---|---|---|
+| 1 | Payload con `odsIds: []` | `projectService.js:158-171` | `odsSet` se llenaba SOLO con ODS de indicadores marcados; ignoraba `formData.selectedOds` |
+| 2 | Backend respondía `success=true` con 0 ODS | `MasterProjectService.java:220` | No había validación de `odsToLink.isEmpty()` |
+| 3 | Listado mostraba "Objetivo Desconocido" | `MasterProjectRepository.findByUsuario` | `SELECT * FROM proyectos` sin JOIN con `proyecto_ods` |
+
+### Fix aplicado
+
+**Sprint 8.1 — Frontend `projectService.createFullProject`**
+Antes del loop de indicadores, sembrar `odsSet` con `projectData.selectedOds`.
+Si el usuario marcó ODS en la cuadrícula pero no eligió indicadores adentro,
+igual se vinculan. El campo se desestructura del payload (`const { ..., selectedOds }`).
+
+**Sprint 8.2 — Backend `MasterProjectService.createFullProject`**
+Después de construir `odsToLink`, si está vacío se lanza `IllegalStateException`
+con mensaje claro. El catch fatal ejecuta las compensaciones (borra el proyecto
+recién creado), así no quedan huérfanos. El usuario ve por qué falló.
+
+**Sprint 8.3 — Backend listados enriquecidos**
+- Aprovechamos `VistaResumenProyectosOds` (el POJO JOOQ generado del view
+  `vista_resumen_proyectos_ods` que ya teníamos en BD). No hay DTOs.
+- Repo: `findAllWithOds()` y `findByUsuarioWithOds(usuarioId)` con JOIN contra `proyectos`.
+- Service: `getAllProyectosWithOds()` y `getProyectosWithOdsByUsuario(id)`.
+- Controller: `GET /api/projects/with-ods` y `GET /api/projects/user/{id}/with-ods`.
+- Frontend: `projectService.getAllProjects()` y `getUserProjects(id)` ahora
+  pegan a los endpoints `/with-ods`. El mapper lee `p.odsPrimario` y lo parsea
+  como ODS principal; `p.odsVinculados` viene como CSV y se splittea a array.
+- `ProjectListPage.jsx`: si el proyecto cubre más de un ODS, muestra `+N`
+  como badge secundario.
+
+### Por qué NO se necesitan cambios en BD
+La tabla `proyecto_ods`, la vista `vista_resumen_proyectos_ods`, sus POJOs
+JOOQ y las FKs ya existían desde Sprint 2. El bug era 100% en código.
+
+### Validación
+Con el zip nuevo:
+1. Recargá frontend y backend (`npm run dev` + `./mvnw spring-boot:run`).
+2. Creá un proyecto picando ODS pero sin elegir indicadores → ahora se vincula
+   el ODS al proyecto (antes quedaba huérfano).
+3. Creá un proyecto sin ODS ni indicadores → el backend lo rechaza con mensaje
+   claro y el proyecto NO se crea (compensación borra el header).
+4. En la lista de proyectos → el ODS aparece correctamente con su color y nombre.
+
+### Lección
+Ninguna de las 2 IAs externas tenía razón completa, pero la #2 sí identificó
+los 3 bugs estructurales con precisión. Los recomendados "implementar DTOs" de
+la #1 no resuelven nada acá: el problema nunca fue Jackson, era lógica de
+orquestación + faltante de JOIN.

@@ -77,6 +77,24 @@ public interface IMasterProjectRepository {
      */
     boolean exists(Integer id);
 
+    // ── Sprint 8.3: Listados enriquecidos con info de ODS ────────────────
+    //
+    // Devuelven el view POJO ya generado por JOOQ (VistaResumenProyectosOds),
+    // que incluye odsPrimario y odsVinculados (CSV). Sin esto la UI muestra
+    // "Objetivo Desconocido" en el listado.
+
+    /**
+     * Lista todos los proyectos con su ODS primario y la lista CSV de ODS vinculados.
+     */
+    java.util.List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+        findAllWithOds();
+
+    /**
+     * Lista los proyectos de un usuario con su ODS primario y ODS vinculados.
+     */
+    java.util.List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+        findByUsuarioWithOds(Integer usuarioId);
+
     // ── Sprint 2/3: Relación explícita Proyecto ↔ ODS ────────────────────
 
     /**

@@ -16,13 +16,29 @@ export const projectService = {
   
   // ── Mapeo Backend → Frontend ────────────────────────────────────
   _mapBackendToFrontend(p) {
+    // Sprint 8.3: la vista vista_resumen_proyectos_ods devuelve campos
+    // distintos a la tabla proyectos. Soportamos ambos para que el
+    // listado y el detalle coexistan sin romper.
+    const odsPrimarioRaw = p.odsPrimario ?? p.ods_primario;
+    const odsPrimario = odsPrimarioRaw != null
+      ? parseInt(odsPrimarioRaw)
+      : null;
+    const odsVinculadosCsv = p.odsVinculados ?? p.ods_vinculados;
+    const odsVinculados = typeof odsVinculadosCsv === 'string' && odsVinculadosCsv.length > 0
+      ? odsVinculadosCsv.split(',').map(s => parseInt(s.trim())).filter(n => !Number.isNaN(n))
+      : [];
+
     return {
-      id: p.id,
+      id: p.id ?? p.proyectoId ?? p.proyecto_id,
       name: p.nombreProyecto || p.nombre_proyecto,
       description: p.descripcion,
       userId: p.usuarioId || p.usuario_id,
       sedeId: p.sedeId || p.sede_id,
-      objective: p.objetivoId || p.objetivo_id,  // ODS number
+      // ODS primario: lo lee tanto del campo del view (odsPrimario)
+      // como del fallback histórico (objetivoId / objetivo_id)
+      objective: p.objetivoId || p.objetivo_id || odsPrimario,
+      odsPrimario,
+      odsVinculados,
       startDate: p.fechaInicio || p.fecha_inicio,
       endDate: p.fechaFin || p.fecha_fin,
       status: p.estado,
@@ -31,9 +47,12 @@ export const projectService = {
   },
 
   // ── CRUD Proyectos ──────────────────────────────────────────────
+  // Sprint 8.3: por defecto pegamos al endpoint /with-ods que devuelve
+  // el ODS primario y el CSV de vinculados. Antes la pantalla de listado
+  // mostraba "Objetivo Desconocido" porque /api/projects no incluye esa info.
   async getAllProjects() {
     try {
-      const response = await api.get('/projects');
+      const response = await api.get('/projects/with-ods');
       return {
         success: true,
         data: (response.data || []).map(p => this._mapBackendToFrontend(p))
@@ -50,7 +69,7 @@ export const projectService = {
 
   async getUserProjects(userId) {
     try {
-      const response = await api.get(`/projects/user/${userId}`);
+      const response = await api.get(`/projects/user/${userId}/with-ods`);
       return (response.data || []).map(p => this._mapBackendToFrontend(p));
     } catch (error) {
       console.error('Error fetching user projects:', error);
@@ -151,12 +170,23 @@ export const projectService = {
    */
   async createFullProject(projectData, servicesMap) {
     try {
-      const { indicators, indicatorConfigs, indicatorMetadata } = projectData;
+      const { indicators, indicatorConfigs, indicatorMetadata, selectedOds } = projectData;
 
       // ── Armar el array de indicadores con ODS inferido del prefijo del código ──
       const indicadoresPayload = [];
       const odsSet = new Set();
       const skippedIndicators = [];
+
+      // ── Sprint 8.1: SEMBRAR el set con los ODS que el usuario marcó en la
+      //    cuadrícula, ANTES de iterar los indicadores. Si el usuario eligió
+      //    ODS pero no marcó indicadores adentro, igual queremos vincularlos.
+      //    Antes este bug causaba odsIds=[] y el proyecto quedaba huérfano.
+      if (Array.isArray(selectedOds)) {
+        for (const odsId of selectedOds) {
+          const n = parseInt(odsId);
+          if (!Number.isNaN(n)) odsSet.add(n);
+        }
+      }
 
       if (Array.isArray(indicators) && indicators.length > 0) {
         for (const code of indicators) {

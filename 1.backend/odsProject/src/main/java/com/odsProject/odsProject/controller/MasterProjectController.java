@@ -86,4 +86,20 @@ public class MasterProjectController implements IMasterProjectController {
     public ResponseEntity<List<Map<String, Object>>> getOdsByProyecto(@PathVariable Integer id) {
         return ResponseEntity.ok(masterProjectService.getOdsByProyecto(id));
     }
+
+    // ── Sprint 8.3 ───────────────────────────────────────────────────────
+
+    @Override
+    @GetMapping("/with-ods")
+    public ResponseEntity<List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>>
+            getAllProyectosWithOds() {
+        return ResponseEntity.ok(masterProjectService.getAllProyectosWithOds());
+    }
+
+    @Override
+    @GetMapping("/user/{userId}/with-ods")
+    public ResponseEntity<List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>>
+            getProyectosWithOdsByUsuario(@PathVariable Integer userId) {
+        return ResponseEntity.ok(masterProjectService.getProyectosWithOdsByUsuario(userId));
+    }
 }
