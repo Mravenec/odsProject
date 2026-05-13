@@ -22,7 +22,7 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     existingConfig?.parameters?.length || 1
   );
   const [parameters, setParameters] = useState(() =>
-    existingConfig?.parameters?.map(p => ({ ...p })) || [{ name: '', type: 'Decimal' }]
+    existingConfig?.parameters?.map(p => ({ ...p })) || [{ name: '', type: 'Integer' }]
   );
   const [formula, setFormula] = useState(existingConfig?.formula || '');
   const [goal, setGoal] = useState(
@@ -46,7 +46,7 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
       if (count > prev.length) {
         const extras = Array.from(
           { length: count - prev.length },
-          () => ({ name: '', type: 'Decimal' })
+          () => ({ name: '', type: 'Integer' })
         );
         return [...prev, ...extras];
       }

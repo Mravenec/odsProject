@@ -22,6 +22,8 @@ import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
 import { useGeo } from '../../hooks/useGeo.jsx';
 import { getObjectiveName, getOdsColor, odsColors } from '../../utils/formatters';
+import { usePermissions } from '../../hooks/usePermissions';
+
 
 // Servicios de Objetivos
 import { objetivo01Service } from '../../services/objetivo01Service';
@@ -99,6 +101,7 @@ const SDG_INDICATORS_CATALOG = {
 
 const ProjectCreationPage = () => {
   const { user, loading: authLoading, getSedes, getActiveUsers } = useAuth();
+  const perms = usePermissions();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   
@@ -399,8 +402,14 @@ ${sinMasterId.join(', ')}
           }
           alert(lineas.join('\n'));
         }
-        navigate(`/projects/${result.proyectoId || result.data?.id}/evaluation`);
+        
+        if (perms.canEnterMeasurements) {
+          navigate(`/projects/${result.proyectoId || result.data?.id}/evaluation`);
+        } else {
+          navigate('/dashboard');
+        }
       } else {
+
         // success === false: rollback completo (compensaciones se ejecutaron)
         const errLines = (result.errores || []).map(e =>
           `  • [${e.etapa}] ${e.error}`).join('\n');

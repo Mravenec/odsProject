@@ -212,10 +212,20 @@ const DashboardPage = () => {
                 
                 {projects.length > 0 ? (
                   <div className="projects-list">
-                    {projects.map(project => (
+                    {projects.map(project => {
+                      // Combinar ODS primario con vinculados, eliminar duplicados y ordenar
+                      const allOds = [
+                        project.objective,
+                        ...(project.odsVinculados || [])
+                      ].filter(ods => ods != null && !isNaN(ods))
+                       .map(ods => parseInt(ods))
+                       .filter((value, index, self) => self.indexOf(value) === index)
+                       .sort((a, b) => a - b);
+
+                      return (
                       <div key={project.id} className="project-item-card enriched">
                         <div className="project-card-badge-ods" style={{ backgroundColor: getOdsColor(project.objective) }}>
-                          {project.objective}
+                          {allOds.length > 1 ? `${allOds[0]}+${allOds.length - 1}` : allOds[0]}
                         </div>
                         
                         <div className="project-main-info">
@@ -243,7 +253,12 @@ const DashboardPage = () => {
 
                         <div className="project-meta-info">
                           <div className="meta-stats-row">
-                            <span className="label">Meta ODS {project.objective}</span>
+                            <span className="label">
+                              {allOds.length > 1
+                                ? `Metas ODS ${allOds.join(', ')}`
+                                : `Meta ODS ${allOds[0]}`
+                              }
+                            </span>
                             <span className="indicators-count">
                                <strong>{project.indicatorsAchieved || 0}/{project.totalIndicators || project.indicators?.length || 0}</strong> indicadores
                             </span>
@@ -271,7 +286,8 @@ const DashboardPage = () => {
                            </button>
                         </div>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="empty-state">
