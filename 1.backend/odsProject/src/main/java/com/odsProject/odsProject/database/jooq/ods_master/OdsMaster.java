@@ -5,6 +5,7 @@ package com.odsProject.odsProject.database.jooq.ods_master;
 
 
 import com.odsProject.odsProject.database.jooq.DefaultCatalog;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoDocumentos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoOds;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenProyectosOds;
@@ -29,6 +30,11 @@ public class OdsMaster extends SchemaImpl {
      * The reference instance of <code>ods_master</code>
      */
     public static final OdsMaster ODS_MASTER = new OdsMaster();
+
+    /**
+     * The table <code>ods_master.proyecto_documentos</code>.
+     */
+    public final ProyectoDocumentos PROYECTO_DOCUMENTOS = ProyectoDocumentos.PROYECTO_DOCUMENTOS;
 
     /**
      * The table <code>ods_master.proyecto_ods</code>.
@@ -61,6 +67,7 @@ public class OdsMaster extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            ProyectoDocumentos.PROYECTO_DOCUMENTOS,
             ProyectoOds.PROYECTO_ODS,
             Proyectos.PROYECTOS,
             VistaResumenProyectosOds.VISTA_RESUMEN_PROYECTOS_ODS

@@ -9,13 +9,14 @@ import ProjectListPage from './pages/ProjectListPage/ProjectListPage.jsx';
 import AdminProjectOverviewPage from './pages/Admin/Overview/OverviewPage.jsx';
 import AdminResultsReviewPage from './pages/Admin/Results/ResultsPage.jsx';
 import EvaluationPage from './pages/EvaluationPage/EvaluationPage';
+import AuditQueuePage from './pages/AuditQueuePage/AuditQueuePage.jsx';
+import ForbiddenPage from './pages/ForbiddenPage/ForbiddenPage.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <Router><AppContent /></Router>
     </AuthProvider>
   );
 }
@@ -23,22 +24,19 @@ function App() {
 function AppContent() {
   const { isAuthenticated, user, loading } = useAuth();
   const hasToken = !!localStorage.getItem('token');
-  
+
   if (loading) {
     return (
       <div className="global-loader-container">
         <div className="loader"></div>
         <div className="loader-content">
           <p>Sincronizando con ODS Core...</p>
-          <span className="loader-subtext">Verificando credenciales de {hasToken ? 'sesión' : 'acceso'}</span>
+          <span className="loader-subtext">Verificando {hasToken ? 'sesión' : 'acceso'}</span>
         </div>
       </div>
     );
   }
-
-  if (!isAuthenticated || !user || !user.id) {
-    return <LoginPage />;
-  }
+  if (!isAuthenticated || !user || !user.id) return <LoginPage />;
 
   return (
     <div className="App">
@@ -46,17 +44,49 @@ function AppContent() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/projects" element={<ProjectListPage />} />
-        <Route path="/projects/create" element={<ProjectCreationPage />} />
         <Route path="/projects/:projectId/results" element={<ProjectResultsPage />} />
-        <Route path="/projects/:projectId/evaluation" element={<EvaluationPage />} />
-        
-        {user?.role === 'admin' && (
-          <>
-            <Route path="/admin/projects" element={<AdminProjectOverviewPage />} />
-            <Route path="/admin/results/:projectId" element={<AdminResultsReviewPage />} />
-          </>
-        )}
-        
+        <Route path="/forbidden" element={<ForbiddenPage />} />
+
+        {/* Sprint 10: gestor crea (admin/auditor/consultor no) */}
+        <Route path="/projects/create" element={
+          <ProtectedRoute require="canCreateProject" redirectTo="/forbidden">
+            <ProjectCreationPage />
+          </ProtectedRoute>
+        }/>
+
+        {/* Sprint 14: cola de auditoría (admin/auditor) */}
+        <Route path="/audit" element={
+          <ProtectedRoute require="canViewAuditQueue" redirectTo="/forbidden">
+            <AuditQueuePage />
+          </ProtectedRoute>
+        }/>
+
+        {/* Sprint 14: workbench de auditoría = EvaluationPage gated */}
+        <Route path="/audit/:projectId" element={
+          <ProtectedRoute require="canEnterMeasurements" redirectTo="/forbidden">
+            <EvaluationPage />
+          </ProtectedRoute>
+        }/>
+
+        {/* Legacy: /projects/:id/evaluation también gated igual */}
+        <Route path="/projects/:projectId/evaluation" element={
+          <ProtectedRoute require="canEnterMeasurements" redirectTo="/forbidden">
+            <EvaluationPage />
+          </ProtectedRoute>
+        }/>
+
+        {/* Admin */}
+        <Route path="/admin/projects" element={
+          <ProtectedRoute require="canViewAdminPanel" redirectTo="/forbidden">
+            <AdminProjectOverviewPage />
+          </ProtectedRoute>
+        }/>
+        <Route path="/admin/results/:projectId" element={
+          <ProtectedRoute require="canViewAdminPanel" redirectTo="/forbidden">
+            <AdminResultsReviewPage />
+          </ProtectedRoute>
+        }/>
+
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </div>

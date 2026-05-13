@@ -18,12 +18,18 @@ export const objetivo15Service = {
 
         acc[code] = {
           code: code,
+          // Sprint 15: preservar referencias para que EvaluationPage pueda
+          // resolver el proyecto_indicador.id vía saveIndicator (UPSERT idempotente).
+          proyectoId: ind.proyectoId,
           masterId: ind.indicadorMasterId,
           name: ind.indicadorNombre,
           currentValue: ind.valorActual !== undefined && ind.valorActual !== null ? ind.valorActual : null,
           targetValue: ind.metaValor || 0,
           unit: ind.metaUnidad || 'unidad',
+          metaNombre: ind.metaNombre || null,
           formula: ind.formulaCustom || '',
+          estadoIndicador: ind.estadoIndicador,
+          porcentajeLogro: ind.porcentajeLogro,
           updatedAt: ind.ultimaActualizacion,
           hasData: ind.valorActual !== null
         };

@@ -83,4 +83,24 @@ LEFT JOIN ods_login.sedes s ON p.sede_id = s.id
 LEFT JOIN proyecto_ods po ON po.proyecto_id = p.id
 GROUP BY p.id, p.nombre_proyecto, u.full_name, s.nombre, p.estado, p.fecha_inicio, p.fecha_fin;
 
+-- ────────────────────────────────────────────────────────────
+-- TABLA: proyecto_documentos (Sprint 11 — evidencia de cierre)
+-- El gestor sube documento(s) al cerrar; auditor los descarga para auditar.
+-- ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS proyecto_documentos (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    proyecto_id     INT NOT NULL,
+    nombre_archivo  VARCHAR(255) NOT NULL,
+    tipo_mime       VARCHAR(120) NOT NULL,
+    tamanio_bytes   INT NOT NULL,
+    contenido       LONGBLOB NOT NULL,
+    subido_por      INT NOT NULL,
+    subido_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    descripcion     VARCHAR(500),
+    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (subido_por)  REFERENCES ods_login.usuarios(id),
+    INDEX idx_proyecto (proyecto_id),
+    INDEX idx_subido_at (subido_at)
+) ENGINE=InnoDB;
+
 SELECT 'Base de datos ods_master creada exitosamente' AS mensaje;

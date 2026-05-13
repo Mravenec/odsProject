@@ -500,3 +500,207 @@ Después de aplicar el zip, abrir un proyecto que tenga indicadores en BD
 - ODS 1 (PRIMARIO) con indicador `1.1.1`, fórmula `(a + b)/ 100`, meta 70%,
   y variables `a` (Integer), `b` (Integer).
 - ODS 2 con indicador `2.1.1`, fórmula `(a + b)`, meta 50%, mismas variables.
+
+---
+
+## Sprint 14 — Auditoría operativa por rol + dashboard de logro
+
+### Problema reportado
+- Admin/auditor no tenían un camino claro para ingresar los datos del documento y disparar el cálculo de la fórmula.
+- Consultor no veía si los proyectos alcanzaron sus metas.
+- El usuario `auditor` no existía en los seeds (rol estaba en la tabla pero no había usuario).
+
+### Implementación
+
+**Sprint 14.1 — `<AchievementBadge>` componente compartido**
+Renderiza el estado de meta de un indicador o proyecto:
+- 🟢 LOGRADO (≥100%) — meta cumplida
+- 🔵 CERCA META (≥80%)
+- 🟡 PROGRESO (≥50%)
+- 🔴 BAJO (<50%) — no alcanzó la meta
+- ⚪ SIN DATOS — pendiente de auditar
+
+Función `deriveEstado(porcentaje)` exportada para usar el mismo criterio en
+toda la app. Coincide con la lógica del view `vista_admin_detalle_indicadores`
+del backend (que devuelve estos mismos labels).
+
+**Sprint 14.2 — `AuditQueuePage` para admin/auditor**
+Nueva página `/audit` con cola de proyectos pendientes de auditoría:
+- Lista de TODOS los proyectos del sistema (vía `/api/projects/with-ods`)
+- Por cada uno: cuenta de documentos subidos por el gestor
+- Filtros: "Todos", "Pendientes de auditar" (con doc pero no completado), "Con documento"
+- Click → entra a `/audit/:id` (alias de EvaluationPage con permission gate)
+- Gated por `canViewAuditQueue` (admin + auditor) en `ProtectedRoute`
+
+**Sprint 14.3 — `ProjectResultsPage` mejorado**
+- Card de estado de logro del proyecto: promedio de % de los indicadores auditados
+- Por cada indicador, AchievementBadge individual visible para TODOS los roles
+- Botón verde "Auditar este proyecto" solo para admin/auditor
+- Sección de Documentos (EvidenceSection) integrada
+- Consultor ve TODA la info en modo solo-lectura
+
+**Sprint 14.4 — Dashboard adaptado por rol**
+- Admin/auditor ven card "Cola de Auditoría" (verde) → `/audit`
+- Admin además ve card "Gestión de Proyectos" → `/admin/projects`
+- Gestor ve "Nuevo Proyecto" + lista de sus proyectos recientes
+- Consultor ve "Ver todos los proyectos"
+
+**Sprint 14.5 — EvaluationPage es la pantalla de medición**
+Esta página ya existía y funciona: itera los 17 ODS, muestra indicadores del
+proyecto, recibe valores de cada parámetro, llama a `createMedicionAuditada`
+del backend (que calcula la fórmula y persiste). El Sprint 14 simplemente:
+- La hace accesible vía `/audit/:id` (más semántico)
+- La gatea con `canEnterMeasurements` (gestor/consultor NO pueden entrar)
+- Importa `usePermissions` y deja `readOnly` derivado para futuro uso
+
+**Sprint 14.6 — Usuario auditor seedado**
+En `21. ods_mocks.sql`:
+```sql
+(5, 'auditor_general', 'auditor@ods.cr', '$2b$12$MOCK_HASH_1234567890',
+ 'Luis Vargas Castro', 4, 2, TRUE, TRUE)
+```
+El rol auditor (rol_id=4) ya existía en `1. login_system.sql` pero faltaba un
+usuario con ese rol para probar el flujo.
+
+### Cero archivos basura
+Los hotfix SQL de sprints anteriores (hotfix_sprint7.sql, hotfix_sprint11.sql)
+fueron eliminados porque sus cambios ya están integrados en
+`0.database/propuesta_actual/2. ods_master_database.sql`. Lo que queda es
+canónico, no migraciones temporales.
+
+### Flujo end-to-end completo
+
+1. **`gestor_pobreza`** crea proyecto → asigna ODS + indicadores + fórmula `(a+b)/100`
+2. Durante el período, el sistema espera
+3. Al cerrar el período, el gestor abre el proyecto → **sube documento** (Excel/PDF) con resultados → ve solo el estado "SIN DATOS"
+4. **`admin`** o **`auditor_general`** → entra a Dashboard → click "Cola de Auditoría"
+5. Ve la lista, identifica el proyecto con doc subido, hace click → entra a `/audit/:id`
+6. Descarga el documento (botón en EvidenceSection)
+7. Lee los números del doc, los ingresa en el formulario (a=5, b=10)
+8. Click "Guardar medición" → backend calcula `(5+10)/100 = 0.15`, persiste en `proyecto_indicadores.valor_actual`, retorna `metaAlcanzada: false` (porque 0.15 < meta 70)
+9. **`consultor_general`** → entra a Dashboard → "Ver todos los proyectos"
+10. Ve la card del proyecto con badge **🔴 No alcanzó (15%)** — sin tener que abrirlo
+11. Si abre el detalle, ve el indicador específico con su estado y los valores ingresados
+
+Toda la cadena funciona con la regla del profesor: **el gestor NO mide, el auditor SÍ; el consultor SÍ ve resultados auditados pero NO los modifica**.
+
+### Cómo correrlo
+```bash
+mysql -u root -p < 0.database/00_run_all.sql   # carga todo limpio
+cd 1.backend/odsProject && ./mvnw spring-boot:run
+cd 2.frontend/odsProject && npm install && npm run dev
+```
+
+Usuarios de prueba (todos con password mock):
+- `admin` (admin del sistema)
+- `gestor_pobreza` / `gestor_hambre` (crean proyectos)
+- `auditor_general` (audita) ← **nuevo**
+- `consultor_general` (solo lectura)
+
+---
+
+## Sprint 15 — FIX EvaluationPage no mostraba datos
+
+### Bug reportado por el usuario
+Admin entra a `/projects/6/evaluation`, ve la tarjeta del proyecto con
+"Indicadores: 0 — Logrados: 0", y al hacer clic en cualquier tab (Ingresar
+valores / Resumen / Auditoría) no aparece ningún contenido.
+
+Aunque la BD tenía `proyecto_indicadores` cargados para el proyecto 6, la UI
+los descartaba.
+
+### Causa raíz
+
+El backend devuelve `proyecto_id` (entre otros campos) en el response de
+`/api/ods/XX/indicadores?proyectoId=Y`. Sin embargo, el mapping del frontend
+en los 17 `objetivoXXService.getIndicators` se quedaba con un subset de
+campos y descartaba `proyectoId`:
+
+```js
+acc[code] = {
+  code, masterId, name, currentValue, targetValue, unit, formula, updatedAt, hasData
+};   // ← proyectoId NO está
+```
+
+Luego en `EvaluationPage.loadAllIndicators`:
+```js
+const list = Object.values(data).filter(i => i && i.proyectoId);
+// → SIEMPRE array vacío → "Indicadores: 0"
+```
+
+Además, el view `vista_admin_detalle_indicadores` **no expone** el campo
+`proyecto_indicadores.id` (proyecto_indicador_id), que es lo que la página
+necesita para llamar a `createMedicionAuditada`. Así que aunque el filtro
+funcionara, la persistencia de mediciones también estaba rota.
+
+### Fix aplicado (cero cambios al backend)
+
+**15.1 — Frontend services (×17)**
+Script Python actualizó el mapping de los 17 `objetivoXXService.js` para
+preservar los campos que el backend YA devuelve:
+
+```js
+acc[code] = {
+  code,
+  proyectoId: ind.proyectoId,                  // ← AHORA preservado
+  masterId: ind.indicadorMasterId,
+  name: ind.indicadorNombre,
+  currentValue, targetValue, unit,
+  metaNombre: ind.metaNombre || null,
+  formula: ind.formulaCustom || '',
+  estadoIndicador: ind.estadoIndicador,        // ← para AchievementBadge
+  porcentajeLogro: ind.porcentajeLogro,
+  updatedAt, hasData
+};
+```
+
+Marker `Sprint 15` deja huella en cada archivo para futura referencia.
+
+**15.2 — EvaluationPage.loadAllIndicators**
+- El filtro `i.proyectoId` ahora funciona porque el mapping preserva el campo.
+- Matching de parámetros a indicadores se rehizo por **extracción de variables
+  de la fórmula con regex** (no por proyecto_indicador_id que no existe):
+  ```js
+  const RESERVED = new Set(['sqrt','sin','cos','tan','log','exp','round','floor','ceil','abs','pi','e','valor','count']);
+  const vars = new Set((formula.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [])
+                       .filter(v => !RESERVED.has(v.toLowerCase())));
+  // Filtra metas cuyo nombreVariable coincide con vars
+  ```
+- Params normalizados a camelCase consistente: `{id, nombreParametro, nombreVariable, tipoDato, valorActual}`.
+
+**15.3 — EvaluationPage.handleCalcular (reescrito)**
+- **Guard `readOnly`**: si el rol no permite mediciones, muestra alert y
+  return. Doble defensa frente al ProtectedRoute.
+- **UPSERT idempotente** para resolver `proyectoIndicadorId`: si no lo tenemos
+  cacheado en `indicator.id`, llamamos a `svc.saveIndicator(...)` pasando los
+  mismos `metaValor/metaUnidad/formulaCustom` que YA están en BD. El backend
+  hace `INSERT...ON DUPLICATE KEY UPDATE` (de Sprint 4) y nos devuelve la fila
+  con su `id`. Lo cacheamos en `indicator.id` para próximos clicks.
+- **Refresh de parámetros**: si `indicator.parametros` está vacío, llamamos
+  `svc.getMetasProyecto` y filtramos por `proyectoIndicadorId`. Normalizamos a
+  camelCase.
+- **`valoresParametros`** se construye solo con `p.id != null` para evitar
+  payloads inválidos.
+- Llama `createMedicionAuditada({proyectoIndicadorId, valoresParametros, ...})`.
+
+**15.4 — Render: feedback visual para readOnly**
+- Inputs `disabled={readOnly}`, fondo gris + cursor not-allowed
+- Botón `🔢 Calcular y Evaluar` reemplazado por mensaje `🔒 Solo lectura` si readOnly
+- Warning `⚠️ Sin parámetros configurados` si el indicador no tiene params
+- Botón disabled si `parametros.length === 0`
+
+### Resultado E2E
+
+1. `auditor_general` (o `admin`) abre `/projects/6/evaluation`
+2. Ve "Indicadores: 1 — Logrados: 0" en el header
+3. El panel "Ingresar valores" muestra el ODS 1 expandido automáticamente
+4. Lista el indicador `1.1.1` con su fórmula `(a+b)/100`, meta 70, estado SIN DATOS
+5. Inputs editables para variables `a` y `b`
+6. Click "🔢 Calcular y Evaluar" → frontend hace UPSERT, resuelve id, envía medición
+7. Backend calcula `(5+10)/100 = 0.15`, devuelve `metaAlcanzada: false`
+8. UI muestra badge "🔄 En Progreso · auditado" + pct 0.21%
+9. Consultor en `/projects` ve la card del proyecto con badge "🔴 No alcanzó (0.21%)"
+
+### Si fuese gestor o consultor
+- ProtectedRoute al `/projects/:id/evaluation` bloquea con redirect a `/forbidden`
+- Si llegan por otra vía: `readOnly=true` deshabilita inputs y muestra "🔒"

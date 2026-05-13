@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
+import { usePermissions } from '../../hooks/usePermissions';
 import { getOdsColor } from '../../utils/formatters';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
   const { user, logout, isAdmin, isGestor } = useAuth();
+  const perms = usePermissions();
   const navigate = useNavigate();
   const { 
     projects, 
@@ -29,9 +31,10 @@ const DashboardPage = () => {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      if (isAdmin()) {
+      // Sprint 10/14: admin/auditor/consultor → vista global; gestor → solo suyos
+      if (perms.canViewGlobalDashboard) {
         await fetchAdminProjects();
-        await fetchGlobalDashboard();
+        if (perms.canViewAdminPanel) await fetchGlobalDashboard();
       } else if (user?.id) {
         await fetchUserProjects(user.id);
       }
@@ -107,9 +110,16 @@ const DashboardPage = () => {
             <h2>¡Qué bueno verte de nuevo, {user?.fullName?.split(' ')[0] || user?.username || 'Usuario'}!</h2>
             <p>Aquí tienes un resumen del impacto generado hoy.</p>
           </div>
-          {isGestor() && (
+          {perms.canCreateProject && (
             <button className="btn-create-header" onClick={() => navigate('/projects/create')}>
               <span>+ Nuevo Proyecto</span>
+            </button>
+          )}
+          {perms.canViewAuditQueue && (
+            <button className="btn-create-header" 
+              onClick={() => navigate('/audit')}
+              style={{background:'#16a34a',marginLeft:8}}>
+              <span>📋 Cola de auditoría</span>
             </button>
           )}
         </section>
@@ -167,24 +177,36 @@ const DashboardPage = () => {
 
         <div className="dashboard-grid">
           <section className="main-panel">
-            {isAdmin() ? (
+            {perms.canViewAuditQueue ? (
               <div className="admin-actions-grid">
-                <div className="action-card" onClick={() => navigate('/admin/projects')}>
-                  <div className="action-icon">📂</div>
-                  <h4>Gestión de Proyectos</h4>
-                  <p>Supervisar y filtrar todos los proyectos activos en el sistema.</p>
-                  <span className="action-link">Acceder →</span>
+                {/* Sprint 14: Cola de auditoría — admin/auditor */}
+                <div className="action-card" onClick={() => navigate('/audit')}
+                     style={{borderTop:'4px solid #16a34a'}}>
+                  <div className="action-icon">🔍</div>
+                  <h4>Cola de Auditoría</h4>
+                  <p>Revisar documentos del gestor e ingresar las mediciones que el sistema calculará según la fórmula.</p>
+                  <span className="action-link" style={{color:'#16a34a'}}>Auditar proyectos →</span>
                 </div>
-                <div className="action-card disabled">
-                  <div className="action-icon">📈</div>
-                  <h4>Reportes de Impacto</h4>
-                  <p>Próximamente: Generación de informes PDF y analítica avanzada.</p>
+                {/* Solo admin: panel admin completo */}
+                {perms.canViewAdminPanel && (
+                  <div className="action-card" onClick={() => navigate('/admin/projects')}>
+                    <div className="action-icon">📂</div>
+                    <h4>Gestión de Proyectos</h4>
+                    <p>Supervisar y filtrar todos los proyectos del sistema.</p>
+                    <span className="action-link">Acceder →</span>
+                  </div>
+                )}
+                <div className="action-card" onClick={() => navigate('/projects')}>
+                  <div className="action-icon">📊</div>
+                  <h4>Ver todos los proyectos</h4>
+                  <p>Listado completo con estado de meta auditado por proyecto.</p>
+                  <span className="action-link">Ver →</span>
                 </div>
               </div>
             ) : (
               <div className="user-projects-section">
                 <div className="section-header">
-                  <h3>Mis Proyectos Recientes</h3>
+                  <h3>{perms.canCreateProject ? 'Mis Proyectos Recientes' : 'Proyectos del sistema'}</h3>
                   <button className="btn-link" onClick={() => navigate('/projects')}>Ver todos</button>
                 </div>
                 

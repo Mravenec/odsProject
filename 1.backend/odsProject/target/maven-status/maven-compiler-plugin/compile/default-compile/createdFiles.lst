@@ -12,6 +12,7 @@ com\odsProject\odsProject\database\jooq\ods07\tables\pojos\ProyectoIndicadores.c
 com\odsProject\odsProject\database\jooq\ods03\tables\records\VistaAdminResumenGeneralRecord.class
 com\odsProject\odsProject\database\jooq\ods02\tables\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\database\jooq\ods_master\tables\VistaResumenProyectosOds.class
+com\odsProject\odsProject\service\DocumentService.class
 com\odsProject\odsProject\database\jooq\ods05\Ods05.class
 com\odsProject\odsProject\database\jooq\ods15\tables\pojos\MedicionParametroValores.class
 com\odsProject\odsProject\database\jooq\ods16\tables\records\MedicionesHistoricasRecord.class
@@ -178,6 +179,7 @@ com\odsProject\odsProject\database\jooq\ods07\tables\VistaAdminAuditoriaReciente
 com\odsProject\odsProject\database\jooq\ods07\routines\SpAdminReporteProyecto.class
 com\odsProject\odsProject\database\jooq\ods03\tables\records\MedicionesHistoricasRecord.class
 com\odsProject\odsProject\database\jooq\ods17\enums\ProyectoIndicadorParametrosTipoDato.class
+com\odsProject\odsProject\repository\DocumentRepository.class
 com\odsProject\odsProject\database\jooq\ods06\tables\records\AuditoriaOds06Record.class
 com\odsProject\odsProject\database\jooq\ods11\tables\ProyectoIndicadorParametros.class
 com\odsProject\odsProject\database\jooq\ods_login\enums\AuditoriaLoginEvento.class
@@ -245,6 +247,7 @@ com\odsProject\odsProject\database\jooq\ods16\tables\records\VistaAdminResumenGe
 com\odsProject\odsProject\repository\interfaces\IObjetivo07EnergiaRepository.class
 com\odsProject\odsProject\database\jooq\ods10\Indexes.class
 com\odsProject\odsProject\database\jooq\ods02\tables\records\MedicionParametroValoresRecord.class
+com\odsProject\odsProject\controller\DocumentController.class
 com\odsProject\odsProject\database\jooq\ods06\tables\MedicionesHistoricas.class
 com\odsProject\odsProject\database\jooq\ods11\tables\records\ProyectoIndicadorParametrosRecord.class
 com\odsProject\odsProject\database\jooq\ods16\Indexes.class
@@ -263,6 +266,7 @@ com\odsProject\odsProject\database\jooq\ods04\tables\VistaAdminAuditoriaReciente
 com\odsProject\odsProject\database\jooq\ods07\tables\pojos\MedicionesHistoricas.class
 com\odsProject\odsProject\database\jooq\ods17\tables\ProyectoIndicadores.class
 com\odsProject\odsProject\service\interfaces\IObjetivo07EnergiaService.class
+com\odsProject\odsProject\database\jooq\ods_master\tables\records\ProyectoDocumentosRecord.class
 com\odsProject\odsProject\database\jooq\ods14\tables\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\database\jooq\ods02\enums\ProyectoIndicadorParametrosTipoDato.class
 com\odsProject\odsProject\database\jooq\ods03\enums\VistaAdminResumenGeneralEstado.class
@@ -528,6 +532,7 @@ com\odsProject\odsProject\database\jooq\ods04\tables\records\VistaAdminAuditoria
 com\odsProject\odsProject\database\jooq\ods07\tables\pojos\VistaAdminDetalleIndicadores.class
 com\odsProject\odsProject\database\jooq\ods12\tables\pojos\VistaAdminDetalleIndicadores.class
 com\odsProject\odsProject\database\jooq\ods13\enums\ProyectoIndicadorParametrosTipoDato.class
+com\odsProject\odsProject\database\jooq\ods_master\tables\pojos\ProyectoDocumentos.class
 com\odsProject\odsProject\database\jooq\ods04\tables\records\AuditoriaOds04Record.class
 com\odsProject\odsProject\repository\interfaces\IObjetivo01PobrezaRepository.class
 com\odsProject\odsProject\database\jooq\ods_master\tables\ProyectoOds.class
@@ -665,6 +670,7 @@ com\odsProject\odsProject\database\jooq\ods08\tables\records\ProyectoIndicadorPa
 com\odsProject\odsProject\controller\Objetivo13AccionClimaController.class
 com\odsProject\odsProject\database\jooq\ods11\enums\ProyectoIndicadorParametrosTipoDato.class
 com\odsProject\odsProject\database\jooq\ods17\tables\records\VistaAdminDetalleIndicadoresRecord.class
+com\odsProject\odsProject\database\jooq\ods_master\tables\ProyectoDocumentos.class
 com\odsProject\odsProject\service\interfaces\IObjetivo08CrecimientoEconomicoService.class
 com\odsProject\odsProject\database\jooq\ods09\tables\pojos\VistaAdminDetalleIndicadores.class
 com\odsProject\odsProject\database\jooq\ods11\tables\records\ProyectoIndicadoresRecord.class

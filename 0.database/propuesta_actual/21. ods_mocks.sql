@@ -30,7 +30,9 @@ INSERT INTO sedes (id, nombre, descripcion) VALUES
 INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sede_id, is_active, email_verificado) VALUES
   (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Ana García López', 2, 2, TRUE, TRUE),
   (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Carlos Rodríguez Mora', 2, 5, TRUE, TRUE),
-  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'María Jiménez Solano', 3, 2, TRUE, TRUE);
+  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'María Jiménez Solano', 3, 2, TRUE, TRUE),
+  -- Sprint 14: usuario auditor (rol_id=4)
+  (5, 'auditor_general', 'auditor@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Luis Vargas Castro', 4, 2, TRUE, TRUE);
 
 INSERT INTO permisos_ods (usuario_id, ods_num, puede_crear, puede_editar, puede_ver) VALUES
   (2, 1, TRUE, TRUE, TRUE), (3, 2, TRUE, TRUE, TRUE);

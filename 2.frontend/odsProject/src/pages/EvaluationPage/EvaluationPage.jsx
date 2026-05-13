@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { usePermissions } from '../../hooks/usePermissions';
 import { projectService } from '../../services/projectService';
 import { evaluationEngine } from '../../utils/evaluationEngine';
 
@@ -39,6 +40,8 @@ const EvaluationPage = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const perms = usePermissions();
+  const readOnly = !perms.canEnterMeasurements;
   const [project, setProject]           = useState(null);
   const [allIndicators, setAllIndicators] = useState({});
   const [paramInputs, setParamInputs]   = useState({});
@@ -62,24 +65,47 @@ const EvaluationPage = () => {
         const metasRes = svc.getMetasProyecto ? await svc.getMetasProyecto(pid) : { data: [] };
         const metas = metasRes.data || [];
 
+        // Sprint 15: filtramos por proyectoId (ahora preservado en el mapping)
         const list = Object.values(data).filter(i => i && i.proyectoId);
-        const enriched = list.map(ind => ({
-          ...ind,
-          indicadorCodigo: ind.indicadorCodigo || ind.codigo,
-          indicadorNombre: ind.indicadorNombre || ind.nombre,
-          indicadorMasterId: ind.indicadorMasterId || ind.masterId,
-          formulaCustom: ind.formulaCustom || ind.formula,
-          formulaDefault: ind.formulaDefault || 'valor',
-          metaValor: ind.metaValor || ind.targetValue || 0,
-          metaUnidad: ind.metaUnidad || ind.unit || 'Porcentaje',
-          metaNombre: ind.metaNombre || '',
-          estadoIndicador: ind.estadoIndicador || 'SIN DATOS',
-          porcentajeLogro: ind.porcentajeLogro || 0,
-          parametros: metas.filter(m =>
-            m.proyectoIndicadorId === ind.id ||
-            m.proyecto_indicador_id === ind.id
-          )
-        }));
+
+        // Sprint 15: matchear parámetros a indicadores por nombre de variable
+        // (el backend no expone proyecto_indicador_id en la vista, por eso no
+        // podemos hacer match por id). Extraemos variables de cada fórmula.
+        const RESERVED = new Set(['sqrt','sin','cos','tan','log','exp','round','floor','ceil','abs','pi','e','valor','count']);
+        const extractVars = (formula) => {
+          if (!formula) return new Set();
+          return new Set((String(formula).match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [])
+            .filter(v => !RESERVED.has(v.toLowerCase())));
+        };
+
+        const enriched = list.map(ind => {
+          const vars = extractVars(ind.formula || ind.formulaCustom);
+          const matchingParams = metas.filter(m => {
+            const varName = m.nombreVariable || m.nombre_variable || m.nombreParametro || m.nombre_parametro;
+            return vars.has(varName);
+          });
+          return {
+            ...ind,
+            indicadorCodigo: ind.indicadorCodigo || ind.codigo || ind.code,
+            indicadorNombre: ind.indicadorNombre || ind.nombre || ind.name,
+            indicadorMasterId: ind.indicadorMasterId || ind.masterId,
+            formulaCustom: ind.formulaCustom || ind.formula,
+            formulaDefault: ind.formulaDefault || 'valor',
+            metaValor: ind.metaValor || ind.targetValue || 0,
+            metaUnidad: ind.metaUnidad || ind.unit || 'Porcentaje',
+            metaNombre: ind.metaNombre || '',
+            estadoIndicador: ind.estadoIndicador || 'SIN DATOS',
+            porcentajeLogro: ind.porcentajeLogro || 0,
+            // Normalizar params: usar las claves camelCase consistentes
+            parametros: matchingParams.map(p => ({
+              id: p.id ?? p.ID,
+              nombreParametro: p.nombreParametro ?? p.nombre_parametro,
+              nombreVariable:  p.nombreVariable  ?? p.nombre_variable,
+              tipoDato:        p.tipoDato        ?? p.tipo_dato,
+              valorActual:     p.valorActual     ?? p.valor_actual
+            }))
+          };
+        });
 
         if (enriched.length > 0) result[n] = enriched;
       } catch (e) { console.error('ODS', n, e); }
@@ -116,6 +142,12 @@ const EvaluationPage = () => {
    * El backend recalcula valor_calculado con exp4j; el valor del cliente es solo preview UX.
    */
   const handleCalcular = async (odsNum, indicator) => {
+    // Sprint 14: bloqueo dura para roles solo-lectura (consultor, gestor)
+    if (readOnly) {
+      alert('Tu rol no permite ingresar mediciones. Esta vista es de solo lectura.');
+      return;
+    }
+
     const codigo = indicator.indicadorCodigo;
     const formula = indicator.formulaCustom || indicator.formulaDefault || 'valor';
     const params = paramInputs[codigo] || {};
@@ -125,24 +157,74 @@ const EvaluationPage = () => {
       ? parseFloat(Object.values(params)[0] || 0)
       : evaluationEngine.evaluateFormula(formula, params);
 
-    // Construir { parametroId → valor } para el backend
-    const valoresParametros = {};
-    for (const p of (indicator.parametros || [])) {
-      const varName = p.nombreVariable || p.nombreParametro;
-      const v = parseFloat(params[varName]);
-      if (!isNaN(v)) {
-        valoresParametros[p.id] = v;
-      }
-    }
-
     setSaving(prev => ({ ...prev, [codigo]: true }));
     try {
       const svc = await getService(odsNum);
+
+      // ── Sprint 15: resolver proyecto_indicador.id ──────────────────────
+      // El backend no expone pi.id en la vista. Hacemos UPSERT idempotente
+      // (saveIndicator) pasando exactamente los mismos valores que ya están en
+      // BD; eso devuelve la fila con su id correcto.
+      let proyectoIndicadorId = indicator.id;
+      if (!proyectoIndicadorId && svc.saveIndicator) {
+        try {
+          const upsertRes = await svc.saveIndicator({
+            proyectoId: parseInt(projectId),
+            indicadorMasterId: indicator.indicadorMasterId || indicator.masterId,
+            metaValor: parseFloat(indicator.metaValor) || 0,
+            metaUnidad: indicator.metaUnidad || 'unidad',
+            metaNombre: indicator.metaNombre || null,
+            formulaCustom: indicator.formulaCustom || indicator.formula || null
+          });
+          proyectoIndicadorId = upsertRes?.data?.id ?? upsertRes?.id;
+          indicator.id = proyectoIndicadorId; // cache para próximos clicks
+        } catch (e) {
+          console.warn('No se pudo resolver proyectoIndicadorId vía saveIndicator:', e);
+        }
+      }
+
+      if (!proyectoIndicadorId) {
+        alert('No se pudo identificar el indicador en BD. Recargá la página e intentá de nuevo.');
+        return;
+      }
+
+      // ── Sprint 15: resolver los param.id si no los tenemos en local ──
+      let parametrosLocales = indicator.parametros || [];
+      if (parametrosLocales.length === 0 || !parametrosLocales[0]?.id) {
+        if (svc.getMetasProyecto) {
+          try {
+            const refresh = await svc.getMetasProyecto(parseInt(projectId));
+            const allMetas = refresh?.data || [];
+            // Filtrar los que pertenecen a este indicador
+            parametrosLocales = allMetas
+              .filter(m => (m.proyectoIndicadorId ?? m.proyecto_indicador_id) === proyectoIndicadorId)
+              .map(p => ({
+                id: p.id ?? p.ID,
+                nombreParametro: p.nombreParametro ?? p.nombre_parametro,
+                nombreVariable:  p.nombreVariable  ?? p.nombre_variable,
+                tipoDato:        p.tipoDato        ?? p.tipo_dato,
+                valorActual:     p.valorActual     ?? p.valor_actual
+              }));
+            indicator.parametros = parametrosLocales;
+          } catch {}
+        }
+      }
+
+      // Construir { parametroId → valor } para el backend
+      const valoresParametros = {};
+      for (const p of parametrosLocales) {
+        const varName = p.nombreVariable || p.nombreParametro;
+        const v = parseFloat(params[varName]);
+        if (!isNaN(v) && p.id != null) {
+          valoresParametros[p.id] = v;
+        }
+      }
+
       if (!svc?.createMedicionAuditada) {
-        // Fallback: si por alguna razón el servicio no expone createMedicionAuditada
+        // Fallback: usar createMedicion si createMedicionAuditada no existe
         if (svc?.createMedicion) {
           await svc.createMedicion({
-            proyectoIndicadorId: indicator.id, // ← FIX: era indicadorMasterId
+            proyectoIndicadorId,
             valorCalculado: localPreview,
             fechaMedicion: new Date().toISOString().split('T')[0],
             responsable: user?.fullName || user?.name || 'Sistema'
@@ -157,7 +239,7 @@ const EvaluationPage = () => {
 
       // Endpoint auditado del backend
       const auditedRes = await svc.createMedicionAuditada({
-        proyectoIndicadorId: indicator.id,
+        proyectoIndicadorId,
         fechaMedicion: new Date().toISOString().split('T')[0],
         responsable: user?.fullName || user?.name || 'Sistema',
         metodoMedicion: 'manual',
@@ -376,29 +458,48 @@ const EvaluationPage = () => {
                           </label>
                           <input
                             type="number"
+                            disabled={readOnly}
                             value={paramInputs[codigo]?.[param.nombreVariable || param.nombreParametro] ?? ''}
                             onChange={e => handleParamChange(codigo, param.nombreVariable || param.nombreParametro, e.target.value)}
-                            placeholder={`Valor actual: ${param.valorActual ?? 0}`}
+                            placeholder={readOnly ? `Solo lectura · actual: ${param.valorActual ?? 0}` : `Valor actual: ${param.valorActual ?? 0}`}
                             style={{
                               width:'100%',border:'1px solid #ddd',borderRadius:8,
-                              padding:'9px 12px',fontSize:13,boxSizing:'border-box'
+                              padding:'9px 12px',fontSize:13,boxSizing:'border-box',
+                              background: readOnly ? '#f9fafb' : '#fff',
+                              color: readOnly ? '#888' : '#111',
+                              cursor: readOnly ? 'not-allowed' : 'text'
                             }}
                           />
                         </div>
                       ))}
                     </div>
 
-                    <button
-                      onClick={() => handleCalcular(odsNum, ind)}
-                      disabled={isSaving}
-                      style={{
-                        padding:'10px 22px',border:'none',borderRadius:8,
-                        background: isSaving ? '#94a3b8' : '#3b5bdb',color:'#fff',
-                        cursor: isSaving ? 'not-allowed' : 'pointer',fontSize:13,fontWeight:500
-                      }}
-                    >
-                      {isSaving ? 'Guardando...' : '🔢 Calcular y Evaluar'}
-                    </button>
+                    {(ind.parametros || []).length === 0 && (
+                      <div style={{padding:14,background:'#fef3c7',color:'#92400e',
+                                   borderRadius:8,fontSize:13,marginBottom:14}}>
+                        ⚠️ Este indicador no tiene parámetros configurados.
+                        El gestor debe agregarlos en el formulario de creación.
+                      </div>
+                    )}
+
+                    {!readOnly ? (
+                      <button
+                        onClick={() => handleCalcular(odsNum, ind)}
+                        disabled={isSaving || (ind.parametros || []).length === 0}
+                        style={{
+                          padding:'10px 22px',border:'none',borderRadius:8,
+                          background: isSaving ? '#94a3b8' : '#3b5bdb',color:'#fff',
+                          cursor: isSaving ? 'not-allowed' : 'pointer',fontSize:13,fontWeight:500,
+                          opacity: (ind.parametros || []).length === 0 ? 0.5 : 1
+                        }}
+                      >
+                        {isSaving ? 'Guardando...' : '🔢 Calcular y Evaluar'}
+                      </button>
+                    ) : (
+                      <div style={{fontSize:12,color:'#888',padding:'8px 0',fontStyle:'italic'}}>
+                        🔒 Tu rol no permite ingresar mediciones. Esta es una vista de solo lectura.
+                      </div>
+                    )}
                   </div>
                 );
               })}

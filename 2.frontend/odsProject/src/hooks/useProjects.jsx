@@ -23,6 +23,18 @@ export const useProjects = () => {
     }
   }, []);
 
+  // Sprint 10 — admin/auditor/consultor ven TODOS los proyectos
+  const fetchAllProjects = useCallback(async () => {
+    setLoading(true); setError(null);
+    try {
+      const result = await projectService.getAllProjects();
+      const data = result?.data || [];
+      setProjects(data);
+      return data;
+    } catch (err) { setError(err.message); return []; }
+    finally { setLoading(false); }
+  }, []);
+
   const createProject = async (projectData) => {
     setLoading(true);
     setError(null);
@@ -167,6 +179,7 @@ export const useProjects = () => {
     loading,
     error,
     fetchUserProjects,
+    fetchAllProjects,
     fetchAdminProjects,
     fetchStatistics,
     fetchGlobalDashboard,

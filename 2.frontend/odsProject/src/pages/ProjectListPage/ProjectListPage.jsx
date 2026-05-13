@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
+import { usePermissions } from '../../hooks/usePermissions';
+import AchievementBadge from '../../components/AchievementBadge';
 import { formatDate, getOdsColor } from '../../utils/formatters';
 import { 
   ArrowLeft, 
@@ -18,11 +20,13 @@ import './ProjectListPage.css';
 
 const ProjectListPage = () => {
   const { user, isGestor } = useAuth();
+  const perms = usePermissions();
   const navigate = useNavigate();
   const { 
     projects: allProjectsHook, 
     loading: projectsLoading, 
     fetchUserProjects,
+    fetchAllProjects,
     deleteProject 
   } = useProjects();
   
@@ -30,11 +34,12 @@ const ProjectListPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
 
+  // Sprint 10: gestor ve solo sus proyectos; otros roles ven todos
   useEffect(() => {
-    if (user?.id) {
-      fetchUserProjects(user.id);
-    }
-  }, [user]);
+    if (!user?.id) return;
+    if (perms.canViewAllProjects) fetchAllProjects();
+    else fetchUserProjects(user.id);
+  }, [user, perms.canViewAllProjects]);
 
   useEffect(() => {
     if (allProjectsHook) {
@@ -80,11 +85,11 @@ const ProjectListPage = () => {
               <ArrowLeft size={20} />
             </button>
             <div className="title-group">
-              <h1>Mis Proyectos</h1>
-              <p>Impacto ODS Registrado</p>
+              <h1>{perms.canViewAllProjects ? 'Proyectos' : 'Mis Proyectos'}</h1>
+              <p>{perms.roleLabel} · Impacto ODS Registrado</p>
             </div>
           </div>
-          {isGestor() && (
+          {perms.canCreateProject && (
             <button className="btn-primary-glow" onClick={() => navigate('/projects/create')}>
               <Plus size={18} />
               Nuevo Proyecto
@@ -157,6 +162,14 @@ const ProjectListPage = () => {
                     </div>
                   </div>
 
+                  {/* Sprint 14: badge de logro (lo que el consultor necesita ver) */}
+                  <div style={{marginTop:10}}>
+                    <AchievementBadge
+                      porcentaje={project.progressPercentage}
+                      estado={project.progressPercentage > 0 ? null : 'SIN DATOS'}
+                      size="sm" />
+                  </div>
+
                   <div className="progress-section">
                     <div className="progress-label">
                       <span>Logro de Metas</span>
@@ -179,13 +192,15 @@ const ProjectListPage = () => {
                     <BarChart3 size={16} />
                     Ver Impacto
                   </button>
-                  <button 
-                    className="btn-card-delete" 
-                    onClick={(e) => handleDelete(e, project.id)}
-                    title="Eliminar Proyecto"
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                  {(perms.canDeleteProject || perms.canEditProject(project)) && (
+                    <button 
+                      className="btn-card-delete" 
+                      onClick={(e) => handleDelete(e, project.id)}
+                      title="Eliminar Proyecto"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  )}
                 </div>
               </div>
             ))
@@ -193,10 +208,16 @@ const ProjectListPage = () => {
             <div className="empty-projects">
               <div className="empty-illus">📂</div>
               <h3>No se encontraron proyectos</h3>
-              <p>¿Por qué no empiezas creando uno nuevo?</p>
-              <button className="btn-primary" onClick={() => navigate('/projects/create')}>
-                Comenzar ahora
-              </button>
+              {perms.canCreateProject ? (
+                <>
+                  <p>¿Por qué no empiezas creando uno nuevo?</p>
+                  <button className="btn-primary" onClick={() => navigate('/projects/create')}>
+                    Comenzar ahora
+                  </button>
+                </>
+              ) : (
+                <p>Aún no hay proyectos en el sistema.</p>
+              )}
             </div>
           )}
         </div>

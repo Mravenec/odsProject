@@ -4,6 +4,7 @@
 package com.odsProject.odsProject.database.jooq.ods_master;
 
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoDocumentos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoOds;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenProyectosOds;
@@ -14,6 +15,11 @@ import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenPro
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Tables {
+
+    /**
+     * The table <code>ods_master.proyecto_documentos</code>.
+     */
+    public static final ProyectoDocumentos PROYECTO_DOCUMENTOS = ProyectoDocumentos.PROYECTO_DOCUMENTOS;
 
     /**
      * The table <code>ods_master.proyecto_ods</code>.
