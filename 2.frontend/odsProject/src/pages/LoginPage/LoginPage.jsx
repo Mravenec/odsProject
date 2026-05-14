@@ -39,9 +39,15 @@ const LoginPage = () => {
       <div className="login-container fade-in">
         <div className="login-card">
           <div className="login-header">
-            <div className="logo-placeholder">ODS</div>
-            <h1>Project ODS</h1>
-            <p className="subtitle">Gestión Inteligente de Objetivos de Desarrollo Sostenible</p>
+            <div className="utn-mark utn-mark--stacked" aria-label="Universidad Técnica Nacional">
+              <span className="utn-mark__logo">UTN</span>
+              <span className="utn-mark__text">
+                <strong>Universidad Técnica Nacional</strong>
+                <span>Costa Rica</span>
+              </span>
+            </div>
+            <h1>Plataforma ODS</h1>
+            <p className="subtitle">Sistema institucional de seguimiento a la Agenda 2030 de Desarrollo Sostenible.</p>
           </div>
           
           <form onSubmit={handleSubmit} className="login-form">
@@ -86,12 +92,12 @@ const LoginPage = () => {
             >
               {loading ? (
                 <span className="spinner"></span>
-              ) : 'Entrar al Dashboard'}
+              ) : 'Ingresar'}
             </button>
           </form>
           
           <div className="login-footer">
-            <p>© 2026 Project ODS • Transformando el futuro</p>
+            <p>© {new Date().getFullYear()} Universidad Técnica Nacional · ¡Tu futuro es ahora!</p>
           </div>
         </div>
       </div>

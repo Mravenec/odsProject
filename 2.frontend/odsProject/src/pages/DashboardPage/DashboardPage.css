@@ -710,3 +710,77 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 14px var(--primary-glow);
 }
+
+/* ─────────────────────────────────────────────────────────────────
+ *  Sprint UTN — ajustes finos para el dashboard
+ *  Se agregan al final para sobreescribir reglas previas sin
+ *  reescribir todo el archivo. Refleja los colores y la tipografía
+ *  del Manual de Identidad Gráfica institucional.
+ * ────────────────────────────────────────────────────────────────*/
+
+/* La marca UTN dentro del header reemplaza al antiguo bloque .brand. */
+.dashboard-header .utn-mark {
+  padding: 0.25rem 0;
+}
+
+/* Estado "planificación": el más común al crear proyectos nuevos.
+ * Antes no tenía estilos y se veía como un texto plano. */
+.status-pill.planificacion {
+  background: var(--utn-celeste-soft);
+  color: var(--utn-azul);
+}
+
+/* Fallback: estado desconocido o ausente. */
+.status-pill.unknown {
+  background: var(--utn-gris-soft);
+  color: var(--text-muted);
+}
+
+/* Re-alineación de status-pill al azul UTN para "Completado". */
+.status-pill.completed,
+.status-pill.completado {
+  background: var(--utn-celeste-soft);
+  color: var(--utn-azul);
+}
+
+/* Titulares secundarios dentro de las tarjetas: tipografía display. */
+.welcome-section h2,
+.user-projects-section h3,
+.section-header h3,
+.impact-header h3,
+.side-card h4,
+.action-card h4,
+.project-item-card h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* Barra de progreso institucional — dorso celeste, fill azul UTN. */
+.progress-bar-container,
+.mini-progress-bar {
+  background: var(--utn-celeste-soft) !important;
+}
+
+.progress-bar-fill,
+.mini-progress-fill {
+  background: linear-gradient(90deg, var(--utn-azul), var(--utn-celeste)) !important;
+}
+
+/* Botón primario del card (Medir Impacto / Ver Reporte). */
+.btn-action-primary {
+  background: var(--utn-azul);
+  color: #fff;
+}
+
+.btn-action-primary:hover {
+  background: var(--utn-azul-hover);
+}
+
+/* Mensaje de impacto global */
+.impact-card {
+  border-top: 3px solid var(--utn-azul);
+}
+
+.impact-value {
+  color: var(--utn-azul);
+}

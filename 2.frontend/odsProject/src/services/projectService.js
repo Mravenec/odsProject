@@ -42,7 +42,19 @@ export const projectService = {
       startDate: p.fechaInicio || p.fecha_inicio,
       endDate: p.fechaFin || p.fecha_fin,
       status: p.estado,
-      createdAt: p.createdAt || p.created_at
+      createdAt: p.createdAt || p.created_at,
+      // Sprint UTN: campos derivados que enrichWithSummaries va a llenar.
+      // Inicializarlos aquí evita renderizar "undefined%"  o "NaN%" mientras
+      // el dashboard espera la respuesta de /summary.
+      totalIndicators: 0,
+      indicatorsAchieved: 0,
+      progressPercentage: 0,
+      odsLinkedCount: 0,
+      // Ubicación geográfica — la vista actual no la expone, pero el
+      // mapper la deja preparada por si en el futuro se agrega al view.
+      provinciaNombre: p.provinciaNombre || p.provincia_nombre || null,
+      cantonNombre:    p.cantonNombre    || p.canton_nombre    || null,
+      distritoNombre:  p.distritoNombre  || p.distrito_nombre  || null
     };
   },
 
@@ -53,10 +65,11 @@ export const projectService = {
   async getAllProjects() {
     try {
       const response = await api.get('/projects/with-ods');
-      return {
-        success: true,
-        data: (response.data || []).map(p => this._mapBackendToFrontend(p))
-      };
+      const mapped = (response.data || []).map(p => this._mapBackendToFrontend(p));
+      // Sprint UTN: la vista no trae totales/avance; los inyectamos aquí
+      // llamando en paralelo a /summary por cada proyecto.
+      const enriched = await this.enrichWithSummaries(mapped);
+      return { success: true, data: enriched };
     } catch (error) {
       console.error('Error fetching projects:', error);
       return { success: false, error: error.message, data: [] };
@@ -70,7 +83,8 @@ export const projectService = {
   async getUserProjects(userId) {
     try {
       const response = await api.get(`/projects/user/${userId}/with-ods`);
-      return (response.data || []).map(p => this._mapBackendToFrontend(p));
+      const mapped = (response.data || []).map(p => this._mapBackendToFrontend(p));
+      return await this.enrichWithSummaries(mapped);
     } catch (error) {
       console.error('Error fetching user projects:', error);
       return [];
@@ -145,6 +159,73 @@ export const projectService = {
     } catch (error) {
       return { success: false, error: error.message, data: {} };
     }
+  },
+
+  /**
+   * Alias compatible con useProjects.jsx que usa getGlobalDashboardData().
+   * Antes esa función no existía en el service y el dashboard quedaba en 0.
+   */
+  async getGlobalDashboardData() {
+    const r = await this.getGlobalDashboard();
+    return { success: r.success, data: r.data || {} };
+  },
+
+  // ── Resumen por proyecto ─────────────────────────────────────────
+  /**
+   * Devuelve el resumen calculado del backend para un proyecto:
+   *   { totalIndicators, odsLinkedCount, averageProgress, status }
+   * Se usa para enriquecer el listado del dashboard porque la vista
+   * VistaResumenProyectosOds NO incluye estos campos.
+   */
+  async getProjectSummary(projectId) {
+    try {
+      const response = await api.get(`/projects/${projectId}/summary`);
+      return { success: true, data: response.data || {} };
+    } catch (error) {
+      return { success: false, error: error.message, data: {} };
+    }
+  },
+
+  /**
+   * Toma una lista ya mapeada por _mapBackendToFrontend y la enriquece,
+   * en paralelo, con los campos derivados del resumen de cada proyecto:
+   *   - totalIndicators
+   *   - indicatorsAchieved  (estimado a partir del promedio de avance)
+   *   - progressPercentage
+   *
+   * Si algún proyecto falla en /summary el listado igual sigue mostrándose,
+   * sólo que ese item queda con los valores en cero (comportamiento previo).
+   */
+  async enrichWithSummaries(projects) {
+    if (!Array.isArray(projects) || projects.length === 0) return projects;
+
+    const settled = await Promise.allSettled(
+      projects.map(p => this.getProjectSummary(p.id))
+    );
+
+    return projects.map((p, idx) => {
+      const r = settled[idx];
+      if (r.status !== 'fulfilled' || !r.value.success) return p;
+
+      const s = r.value.data || {};
+      const totalIndicators = Number(s.totalIndicators) || 0;
+      const averageProgress = Number(s.averageProgress) || 0;
+      // El backend no expone "logrados" individualmente desde /summary,
+      // así que lo derivamos del promedio: porcentaje × indicadores.
+      const indicatorsAchieved = totalIndicators > 0
+        ? Math.round((averageProgress / 100) * totalIndicators)
+        : 0;
+
+      return {
+        ...p,
+        totalIndicators,
+        indicatorsAchieved,
+        progressPercentage: averageProgress,
+        odsLinkedCount: Number(s.odsLinkedCount) || 0,
+        // Si el backend dice "completado" reflejarlo aunque el estado raw venga distinto
+        status: p.status || s.status || 'activo'
+      };
+    });
   },
 
   // ── Resultados del Proyecto ──────────────────────────────────────

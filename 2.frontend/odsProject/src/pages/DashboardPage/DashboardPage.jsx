@@ -75,12 +75,12 @@ const DashboardPage = () => {
     <div className="dashboard-page fade-in">
       <header className="dashboard-header">
         <div className="header-container">
-          <div className="brand">
-            <div className="logo-small">ODS</div>
-            <div className="brand-text">
-              <h1>Project ODS</h1>
-              <p>Agenda 2030 Dashboard</p>
-            </div>
+          <div className="utn-mark" aria-label="Universidad Técnica Nacional">
+            <span className="utn-mark__logo">UTN</span>
+            <span className="utn-mark__text">
+              <strong>Universidad Técnica Nacional</strong>
+              <span>Plataforma ODS · Agenda 2030</span>
+            </span>
           </div>
           <div className="header-actions">
             <div className="user-profile">
@@ -222,21 +222,34 @@ const DashboardPage = () => {
                        .filter((value, index, self) => self.indexOf(value) === index)
                        .sort((a, b) => a - b);
 
+                      // Sprint UTN: normalización defensiva para que el card no muestre
+                      // "0/0 indicadores" ni "NaN%". Si el backend aún no respondió con
+                      // el resumen, los valores caen a cero pero la maquetación se mantiene.
+                      const totalInd       = Number(project.totalIndicators) || project.indicators?.length || 0;
+                      const achievedInd    = Number(project.indicatorsAchieved) || 0;
+                      const progressPct    = Number(project.progressPercentage) || 0;
+                      const isInProgress   = ['active', 'activo', 'planificacion'].includes(project.status);
+                      const statusLabel    = isInProgress ? 'En Curso'
+                                            : project.status === 'completado' ? 'Completado'
+                                            : (project.status || 'Sin estado');
+
                       return (
                       <div key={project.id} className="project-item-card enriched">
                         <div className="project-card-badge-ods" style={{ backgroundColor: getOdsColor(project.objective) }}>
-                          {allOds.length > 1 ? `${allOds[0]}+${allOds.length - 1}` : allOds[0]}
+                          {allOds.length > 1 ? `${allOds[0]}+${allOds.length - 1}` : (allOds[0] ?? '—')}
                         </div>
                         
                         <div className="project-main-info">
                           <div className="title-row">
-                            <h4>{project.name}</h4>
-                            <span className={`status-pill ${project.status}`}>
-                              {project.status === 'active' || project.status === 'activo' || project.status === 'planificacion' ? 'En Curso' : 'Completado'}
+                            <h4>{project.name || 'Proyecto sin nombre'}</h4>
+                            <span className={`status-pill ${project.status || 'unknown'}`}>
+                              {statusLabel}
                             </span>
                           </div>
                           
-                          <p className="project-desc-snippet">{project.description}</p>
+                          <p className="project-desc-snippet">
+                            {project.description || 'Sin descripción registrada para este proyecto.'}
+                          </p>
                           
                           <div className="project-location-badges">
                             {project.provinciaNombre && (
@@ -256,11 +269,11 @@ const DashboardPage = () => {
                             <span className="label">
                               {allOds.length > 1
                                 ? `Metas ODS ${allOds.join(', ')}`
-                                : `Meta ODS ${allOds[0]}`
+                                : `Meta ODS ${allOds[0] ?? '—'}`
                               }
                             </span>
                             <span className="indicators-count">
-                               <strong>{project.indicatorsAchieved || 0}/{project.totalIndicators || project.indicators?.length || 0}</strong> indicadores
+                               <strong>{achievedInd}/{totalInd}</strong> indicadores
                             </span>
                           </div>
                           
@@ -268,10 +281,10 @@ const DashboardPage = () => {
                             <div className="mini-progress-bar">
                               <div 
                                 className="mini-progress-fill" 
-                                style={{ width: `${Math.min(100, project.progressPercentage || 0)}%` }}
+                                style={{ width: `${Math.min(100, progressPct)}%` }}
                               ></div>
                             </div>
-                            <span className="progress-percent">{(project.progressPercentage || 0).toFixed(0)}%</span>
+                            <span className="progress-percent">{progressPct.toFixed(0)}%</span>
                           </div>
 
                           <span className="date-info">Vence: {formatDate(project.endDate)}</span>
@@ -282,7 +295,7 @@ const DashboardPage = () => {
                              className="btn-action-primary"
                              onClick={() => navigate(`/projects/${project.id}/results`)}
                            >
-                             {project.status === 'active' || project.status === 'activo' || project.status === 'planificacion' ? 'Medir Impacto' : 'Ver Reporte'}
+                             {isInProgress ? 'Medir Impacto' : 'Ver Reporte'}
                            </button>
                         </div>
                       </div>

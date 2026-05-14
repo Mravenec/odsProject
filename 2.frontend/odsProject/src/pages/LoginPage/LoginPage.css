@@ -16,7 +16,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.4), rgba(15, 23, 42, 0.7));
+  background: linear-gradient(135deg, rgba(1, 33, 105, 0.78), rgba(0, 21, 63, 0.92));
   z-index: 1;
 }
 
@@ -33,13 +33,14 @@
   -webkit-backdrop-filter: var(--glass);
   padding: 3rem;
   border-radius: var(--radius-xl);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: var(--shadow-lg), 0 0 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(0, 0, 0, 0.10);
   transition: transform 0.3s ease;
+  border-top: 4px solid var(--utn-azul);
 }
 
 .login-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
 }
 
 .login-header {
@@ -47,35 +48,44 @@
   margin-bottom: 2.5rem;
 }
 
-.logo-placeholder {
-  width: 60px;
-  height: 60px;
-  background: var(--primary);
-  color: white;
-  border-radius: 14px;
-  display: flex;
+/* Marca UTN apilada en login (logo arriba, texto centrado debajo). */
+.utn-mark--stacked {
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 1.25rem;
-  margin: 0 auto 1.25rem;
-  box-shadow: 0 8px 20px var(--primary-glow);
+  gap: 1rem;
+  margin: 0 auto 1.5rem;
 }
 
+.utn-mark--stacked .utn-mark__logo {
+  width: 64px;
+  height: 64px;
+  font-size: 1.1rem;
+  border-radius: 14px;
+}
+
+.utn-mark--stacked .utn-mark__text {
+  align-items: center;
+  text-align: center;
+}
+
+.utn-mark--stacked .utn-mark__text strong { font-size: 0.95rem; }
+.utn-mark--stacked .utn-mark__text span   { font-size: 0.7rem;  }
+
 .login-header h1 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  color: #0f172a;
-  margin-bottom: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--utn-azul-deep);
+  margin-bottom: 0.6rem;
 }
 
 .subtitle {
   color: var(--text-muted);
   font-size: 0.95rem;
-  line-height: 1.4;
-  font-weight: 450;
-  max-width: 280px;
+  line-height: 1.45;
+  font-weight: 500;
+  max-width: 320px;
   margin: 0 auto;
 }
 
@@ -94,7 +104,7 @@
 .form-group label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #334155;
+  color: var(--utn-azul-deep);
   margin-left: 2px;
 }
 
@@ -103,34 +113,36 @@
   padding: 0.875rem 1.125rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
   font-size: 1rem;
-  color: #0f172a;
+  color: var(--text-main);
 }
 
 .input-wrapper input:focus {
   outline: none;
-  border-color: var(--primary);
+  border-color: var(--utn-azul);
   background: white;
-  box-shadow: 0 0 0 4px var(--primary-glow);
+  box-shadow: 0 0 0 4px var(--utn-azul-glow);
 }
 
 .login-button {
   margin-top: 1rem;
   width: 100%;
   padding: 1rem;
-  background: var(--primary);
+  background: var(--utn-azul);
   color: white;
+  font-family: var(--font-display);
   font-weight: 700;
+  letter-spacing: 0.02em;
   font-size: 1rem;
   border-radius: var(--radius-md);
-  box-shadow: 0 10px 15px -3px var(--primary-glow);
+  box-shadow: 0 10px 18px -4px var(--utn-azul-glow);
 }
 
 .login-button:hover:not(:disabled) {
-  background: var(--primary-hover);
+  background: var(--utn-azul-hover);
   transform: translateY(-2px);
-  box-shadow: 0 12px 20px var(--primary-glow);
+  box-shadow: 0 14px 22px -4px var(--utn-azul-glow);
 }
 
 .login-button:active:not(:disabled) {
@@ -149,13 +161,13 @@
 }
 
 .login-footer {
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: var(--text-muted);
-  letter-spacing: 0.025em;
-  opacity: 0.8;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
 }
 
 .spinner {

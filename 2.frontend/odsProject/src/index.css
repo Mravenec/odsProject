@@ -1,47 +1,106 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* =====================================================================
+ *  Universidad Técnica Nacional — Manual de Identidad Gráfica
+ *  Hoja de estilos raíz alineada con el Manual de Identidad Gráfica
+ *  oficial de la UTN (Pantone 280 C, 278 C, Cool Gray 3 C y 1665 C).
+ * ===================================================================== */
+
+/* Tipografías oficiales UTN:
+ *   - Century Gothic  → titulares y cuerpos de texto
+ *   - Myriad Pro      → documentos extensos / señalización
+ *   - Helvetica Neue  → firma tipográfica del logotipo
+ *
+ *  Como Century Gothic / Myriad Pro no son fuentes web abiertas, usamos
+ *  fallbacks de alta fidelidad y, opcionalmente, una fuente Google Fonts
+ *  estilísticamente compatible para clientes que no tengan instaladas
+ *  las oficiales. */
+@import url('https://fonts.googleapis.com/css2?family=Questrial&family=Open+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Color Palette - ODS Inspired but modern */
-  --primary: #2563eb;
-  --primary-glow: rgba(37, 99, 235, 0.2);
-  --primary-hover: #1d4ed8;
-  --bg-main: #f8fafc;
-  --bg-card: rgba(255, 255, 255, 0.95);
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  
-  /* Status Colors */
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --info: #3b82f6;
-  
-  /* Shadows & Effects */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  /* ─────────────────────────────────────────────────────────────────
+   *  Paleta corporativa UTN (Manual de Identidad Gráfica, pág. 22)
+   *  Jerarquía de aplicación:
+   *    Nº 1 — Pantone 280 C  → Azul UTN (color institucional principal)
+   *    Nº 2 — Pantone 278 C  → Celeste (complemento del azul)
+   *    Nº 3 — Cool Gray 3 C  → Gris de fondos sobrios / gerenciales
+   *    Nº 4 — Pantone 1665 C → Naranja (sólo materiales promocionales)
+   * ────────────────────────────────────────────────────────────────*/
+  --utn-azul:         #012169;   /* Pantone 280 C  - azul institucional */
+  --utn-azul-hover:   #001a52;
+  --utn-azul-deep:    #00153f;
+  --utn-celeste:      #98BADF;   /* Pantone 278 C  - celeste */
+  --utn-celeste-soft: #d6e4f3;
+  --utn-gris:         #C8C9C7;   /* Pantone Cool Gray 3 C */
+  --utn-gris-soft:    #ECEDED;
+  --utn-naranja:      #DC4405;   /* Pantone 1665 C - sólo promocional */
+  --utn-blanco:       #FFFFFF;
+
+  /* Halo del azul institucional para sombras / focos */
+  --utn-azul-glow:    rgba(1, 33, 105, 0.18);
+
+  /* ─────────────────────────────────────────────────────────────────
+   *  Mapeo de variables del sistema a la paleta UTN.
+   *  El resto de la aplicación consume estas variables, por lo que
+   *  basta con redefinirlas aquí para reflejar el Manual.
+   * ────────────────────────────────────────────────────────────────*/
+  --primary:        var(--utn-azul);
+  --primary-glow:   var(--utn-azul-glow);
+  --primary-hover:  var(--utn-azul-hover);
+  --primary-light:  var(--utn-celeste);
+
+  --bg-main:  #F7F9FC;
+  --bg-card:  rgba(255, 255, 255, 0.96);
+  --text-main:  #1B2440;
+  --text-muted: #5A6478;
+
+  /* Estados — se conservan los semáforos estándar para no romper
+   * pantallas de evaluación, pero el "success" se inclina al verde
+   * institucional que el Manual permite en señalética interna. */
+  --success: #1F9D55;
+  --warning: #E9A23B;
+  --error:   #C53030;
+  --info:    var(--utn-celeste);
+
+  /* Sombras / efectos */
+  --shadow-sm: 0 1px 2px 0 rgba(1, 33, 105, 0.05);
+  --shadow-md: 0 4px 10px -2px rgba(1, 33, 105, 0.10),
+               0 2px 4px  -2px rgba(1, 33, 105, 0.08);
+  --shadow-lg: 0 12px 24px -6px rgba(1, 33, 105, 0.14),
+               0 6px 10px  -4px rgba(1, 33, 105, 0.10);
   --glass: blur(12px);
-  
-  /* Borders */
+
+  /* Bordes */
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
-  --border-color: #e2e8f0;
+  --border-color: #D9DEE7;
+
+  /* Tipografías */
+  --font-display: "Century Gothic", "URW Gothic L", "Avant Garde",
+                  "Questrial", "Open Sans", system-ui, sans-serif;
+  --font-body:    "Myriad Pro", "Open Sans", "Helvetica Neue",
+                  Helvetica, Arial, sans-serif;
+  --font-sign:    "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: radial-gradient(circle at top right, #f1f5f9, #f8fafc);
+  font-family: var(--font-body);
+  background:
+    radial-gradient(circle at 0% 0%,   rgba(152, 186, 223, 0.20), transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(1, 33, 105, 0.06),    transparent 45%),
+    var(--bg-main);
   color: var(--text-main);
-  line-height: 1.6;
+  line-height: 1.55;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Titulares: tipografía display alineada con Century Gothic. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--utn-azul-deep);
 }
 
 button {
@@ -57,12 +116,80 @@ input, select, textarea {
   transition: all 0.2s ease;
 }
 
-/* Base Animations */
+/* Animaciones base */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.fade-in {
-  animation: fadeIn 0.5s ease forwards;
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+
+/* ─────────────────────────────────────────────────────────────────
+ *  Componente: marca UTN reutilizable (logotipo + firma tipográfica)
+ *  Se usa en login, header del dashboard y donde se necesite exhibir
+ *  la marca institucional respetando el Manual de Identidad Gráfica.
+ * ────────────────────────────────────────────────────────────────*/
+.utn-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: var(--font-sign);
+  color: var(--utn-azul);
+}
+
+.utn-mark__logo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--utn-azul);
+  color: #fff;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  font-family: var(--font-sign);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 14px var(--utn-azul-glow);
+}
+
+/* Los 6 puntos del logotipo UTN representan las 6 instituciones
+ * parauniversitarias que se unieron para formar la Universidad. */
+.utn-mark__logo::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -12px;
+  width: 6px;
+  height: 6px;
+  background: var(--utn-celeste);
+  border-radius: 50%;
+  box-shadow:
+     5px  -4px 0 -1px var(--utn-celeste),
+     9px   1px 0 -2px var(--utn-celeste);
+  transform: translateY(-50%);
+}
+
+.utn-mark__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.utn-mark__text strong {
+  font-family: var(--font-sign);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--utn-azul);
+}
+
+.utn-mark__text span {
+  font-family: var(--font-sign);
+  font-weight: 700;
+  font-size: 0.62rem;
+  letter-spacing: 0.10em;
+  color: var(--text-muted);
+  text-transform: uppercase;
 }
