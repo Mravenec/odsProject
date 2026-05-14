@@ -1,81 +1,103 @@
+/* =====================================================================
+ *  Admin · Review de Resultados — Plataforma ODS UTN
+ * ===================================================================== */
+
 .admin-review-page {
   min-height: 100vh;
-  padding-bottom: 5rem;
+  min-height: 100dvh;
+  padding-bottom: 4rem;
 }
 
 .review-header {
-  background: white;
+  background: #fff;
   border-bottom: 1px solid var(--border-color);
-  padding: 2rem 0;
-  margin-bottom: 2.5rem;
+  padding: clamp(1.25rem, 3vw, 2rem) 0;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: var(--shadow-sm);
 }
 
 .review-header-container {
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 var(--container-pad);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .review-title-area h1 {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
   font-weight: 800;
-  color: #0f172a;
+  color: var(--utn-azul-deep);
+  font-family: var(--font-display);
+  margin: 0;
 }
 
 .review-content {
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 var(--container-pad);
 }
 
 .project-info-card {
-  background: white;
-  border: 1px solid var(--border-color);
+  background: #fff;
+  border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
-  padding: 2rem;
-  margin-bottom: 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  margin-bottom: 1.75rem;
   box-shadow: var(--shadow-sm);
 }
 
 .info-grid-review {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  margin-top: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: 1.5rem;
+  margin-top: 1.25rem;
 }
 
 .info-item h5 {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   color: var(--text-muted);
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+  font-family: var(--font-body);
 }
 
 .info-item p {
   font-size: 1rem;
-  font-weight: 600;
-  color: #1e293b;
+  font-weight: 700;
+  color: var(--utn-azul-deep);
 }
 
 .results-analysis-section h2 {
-  font-size: 1.25rem;
-  margin-bottom: 1.5rem;
-  color: #0f172a;
+  font-size: 1.2rem;
+  margin-bottom: 1.25rem;
+  color: var(--utn-azul-deep);
+  font-family: var(--font-display);
 }
 
 .indicators-group-shared {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
-  margin-top: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: 1.5rem;
+  margin-top: 1.25rem;
 }
 
 .summary-section-admin {
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   max-width: 600px;
   margin-inline: auto;
+}
+
+@media (max-width: 768px) {
+  .review-header-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

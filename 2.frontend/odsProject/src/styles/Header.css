@@ -1,24 +1,31 @@
+/* Header genérico (no es el del dashboard).
+   Se conserva con colores UTN y responsive básico. */
+
 .header {
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 0;
+  background-color: var(--utn-blanco);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  padding: 0.875rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
 .header-container {
-  max-width: 1200px;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--container-pad);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
 }
 
 .header-title {
-  color: #282c34;
-  font-size: 1.5rem;
+  color: var(--utn-azul-deep);
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2vw, 1.4rem);
+  font-weight: 700;
   margin: 0;
 }
 
@@ -27,16 +34,35 @@
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 2rem;
+  gap: clamp(1rem, 2vw, 2rem);
+  flex-wrap: wrap;
 }
 
 .header-nav a {
   text-decoration: none;
-  color: #282c34;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.4rem 0.2rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.header-nav a:hover {
-  color: #007bff;
+.header-nav a:hover,
+.header-nav a:focus-visible {
+  color: var(--utn-azul);
+  border-bottom-color: var(--utn-celeste);
+}
+
+@media (max-width: 640px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .header-nav ul {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
 }

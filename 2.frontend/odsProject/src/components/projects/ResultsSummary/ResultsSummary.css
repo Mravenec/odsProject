@@ -1,26 +1,30 @@
+/* =====================================================================
+ *  ResultsSummary — Tarjeta resumen circular del progreso
+ * ===================================================================== */
+
 .shared-results-summary {
-  background: white;
-  border: 1px solid var(--ods-border-slate);
-  border-radius: 1.5rem;
-  padding: 2.5rem;
+  background: #fff;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  box-shadow: var(--ods-card-shadow);
-  gap: 2rem;
+  box-shadow: var(--shadow-md);
+  gap: 1.5rem;
 }
 
 .summary-circle-container {
   position: relative;
-  width: 180px;
-  height: 180px;
+  width: clamp(150px, 30vw, 180px);
+  height: clamp(150px, 30vw, 180px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  background: #fff;
   border-radius: 50%;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
 }
 
 .progress-ring {
@@ -31,7 +35,7 @@
 
 .progress-ring-track {
   fill: none;
-  stroke: #f1f5f9;
+  stroke: var(--bg-subtle);
   stroke-width: 10;
 }
 
@@ -42,9 +46,9 @@
   transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.progress-ring-fill.success { stroke: var(--ods-accent-green); filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.2)); }
-.progress-ring-fill.warning { stroke: #f59e0b; filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.2)); }
-.progress-ring-fill.danger { stroke: var(--ods-accent-red); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.2)); }
+.progress-ring-fill.success { stroke: var(--success); filter: drop-shadow(0 0 8px rgba(31, 157, 85, 0.25)); }
+.progress-ring-fill.warning { stroke: var(--warning); filter: drop-shadow(0 0 8px rgba(233, 162, 59, 0.25)); }
+.progress-ring-fill.danger  { stroke: var(--error);   filter: drop-shadow(0 0 8px rgba(197, 48, 48, 0.22)); }
 
 .circle-content {
   position: absolute;
@@ -55,45 +59,51 @@
 }
 
 .score-number {
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 6vw, 2.5rem);
   font-weight: 900;
-  color: #0f172a;
+  color: var(--utn-azul-deep);
   line-height: 1;
+  font-family: var(--font-display);
 }
 
 .score-label {
   font-size: 0.65rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--text-muted);
   margin-top: 0.25rem;
+  text-transform: uppercase;
 }
 
+.summary-info { width: 100%; }
+
 .summary-info h3 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--utn-azul-deep);
   margin-bottom: 0.75rem;
+  font-family: var(--font-display);
 }
 
 .summary-stats-text {
   font-size: 0.95rem;
-  color: #475569;
+  color: var(--text-main);
   line-height: 1.6;
 }
 
 .summary-stats-text strong {
-  color: #0f172a;
+  color: var(--utn-azul-deep);
   font-weight: 700;
 }
 
 .success-rate-bar {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
+  width: 100%;
 }
 
 .rate-label {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-muted);
   margin-bottom: 0.5rem;
   text-align: left;
@@ -101,13 +111,14 @@
 
 .rate-bar-bg {
   height: 8px;
-  background: #f1f5f9;
+  background: var(--utn-celeste-soft);
   border-radius: 4px;
   overflow: hidden;
 }
 
 .rate-bar-fill {
   height: 100%;
-  background: var(--primary);
+  background: linear-gradient(90deg, var(--utn-azul), var(--utn-celeste));
   border-radius: 4px;
+  transition: width 0.8s ease-out;
 }

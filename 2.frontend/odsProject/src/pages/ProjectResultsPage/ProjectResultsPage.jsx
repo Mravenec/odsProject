@@ -164,10 +164,11 @@ const ProjectResultsPage = () => {
           <div className="nav-right">
             {/* Sprint 14: botón AUDITAR para admin/auditor */}
             {perms.canEnterMeasurements && (
-              <button onClick={() => navigate(`/audit/${projectId}`)}
-                style={{padding:'10px 18px',background:'#16a34a',color:'#fff',border:'none',
-                        borderRadius:8,cursor:'pointer',fontSize:14,fontWeight:600,
-                        display:'inline-flex',alignItems:'center',gap:8}}>
+              <button
+                type="button"
+                className="btn-audit"
+                onClick={() => navigate(`/audit/${projectId}`)}
+              >
                 <ClipboardCheck size={16} /> Auditar este proyecto
               </button>
             )}
@@ -287,7 +288,7 @@ const ProjectResultsPage = () => {
                           <div style={{display:'flex',gap:8,marginTop:10,flexWrap:'wrap'}}>
                             {typeof ind.targetValue === 'number' && ind.targetValue > 0 && (
                               <div style={{padding:'4px 10px',borderRadius:6,background:'#eef2ff',
-                                           color:'#3b5bdb',fontSize:12,fontWeight:600}}>
+                                           color:'#012169',fontSize:12,fontWeight:600}}>
                                 Meta: {ind.targetValue} {ind.unit || ''}
                               </div>
                             )}
@@ -301,7 +302,7 @@ const ProjectResultsPage = () => {
 
                           {ind.formula && ind.formula.trim() !== '' && (
                             <div style={{marginTop:10,padding:'8px 12px',background:'#f0f4ff',
-                                         borderRadius:6,fontFamily:'monospace',fontSize:13,color:'#3b5bdb'}}>
+                                         borderRadius:6,fontFamily:'monospace',fontSize:13,color:'#012169'}}>
                               <span style={{fontSize:10,color:'#5577dd',textTransform:'uppercase',
                                             letterSpacing:'0.06em',marginRight:8}}>Fórmula:</span>
                               {ind.formula}
@@ -319,7 +320,7 @@ const ProjectResultsPage = () => {
                                   <div key={p.id} style={{display:'inline-flex',alignItems:'center',gap:6,
                                                             padding:'4px 10px',borderRadius:6,
                                                             background:'#f3f4f6',fontSize:12}}>
-                                    <code style={{fontFamily:'monospace',fontWeight:600,color:'#3b5bdb'}}>
+                                    <code style={{fontFamily:'monospace',fontWeight:600,color:'#012169'}}>
                                       {p.nombreVariable || p.nombreParametro}
                                     </code>
                                     <span style={{color:'#888'}}>·</span>

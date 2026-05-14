@@ -1,49 +1,56 @@
-:root {
-  --ods-primary: #1e293b;
-  --ods-secondary: #64748b;
-  --ods-accent: #3b82f6;
-  --ods-bg: #f8fafc;
-  --ods-card: #ffffff;
-  --ods-border: #e2e8f0;
-  --ods-text: #0f172a;
-}
+/* =====================================================================
+ *  Creación de Proyecto — Plataforma ODS UTN
+ *  Mantiene la estructura visual del wizard original (stepper + cards)
+ *  pero alinea los azules genéricos al azul institucional Pantone 280 C.
+ * ===================================================================== */
 
-.dark-mode {
-  --ods-bg: #0f172a;
-  --ods-card: #1e293b;
-  --ods-border: #334155;
-  --ods-text: #f8fafc;
+:root {
+  --ods-primary:   var(--utn-azul-deep);
+  --ods-secondary: var(--text-muted);
+  --ods-accent:    var(--utn-azul);
+  --ods-bg:        var(--bg-main);
+  --ods-card:      #ffffff;
+  --ods-border:    var(--border-color);
+  --ods-text:      var(--text-main);
 }
 
 .project-creation-page {
   min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--ods-bg);
   color: var(--ods-text);
-  padding: 2rem;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  padding: clamp(1rem, 3vw, 2rem);
+  font-family: var(--font-body);
 }
 
 .page-header {
   max-width: 1000px;
-  margin: 0 auto 3rem;
+  margin: 0 auto clamp(1.5rem, 4vw, 3rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .page-header h1 {
-  font-size: 2.25rem;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
   font-weight: 800;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: var(--utn-azul-deep);
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  margin: 0;
+  background: linear-gradient(135deg, var(--utn-azul-deep) 0%, var(--utn-azul) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin: 0;
+  background-clip: text;
+  color: transparent;
 }
 
-/* Stepper UI */
+/* ─── Stepper ──────────────────────────────────────────────────── */
 .stepper {
   max-width: 800px;
-  margin: 0 auto 3rem;
+  margin: 0 auto clamp(1.5rem, 4vw, 3rem);
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -77,47 +84,47 @@
 }
 
 .step.active {
-  background-color: var(--ods-accent);
-  border-color: var(--ods-accent);
-  color: white;
+  background-color: var(--utn-azul);
+  border-color: var(--utn-azul);
+  color: #fff;
   transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 0 6px var(--utn-azul-glow);
 }
 
 .step.completed {
-  background-color: #10b981;
-  border-color: #10b981;
-  color: white;
+  background-color: var(--success);
+  border-color: var(--success);
+  color: #fff;
 }
 
-/* Form Container */
+/* ─── Form card ────────────────────────────────────────────────── */
 .form-card {
   max-width: 1000px;
   margin: 0 auto;
   background-color: var(--ods-card);
-  border-radius: 24px;
-  padding: 3rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  border: 1px solid var(--ods-border);
+  border-radius: var(--radius-xl);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-soft);
   animation: slideUp 0.5s ease-out;
 }
 
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Step 1: Basic Info */
+/* ─── Step 1: form ─────────────────────────────────────────────── */
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .form-group.full-width {
@@ -125,44 +132,51 @@
 }
 
 .form-group label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--ods-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
-.form-group input, 
-.form-group select, 
+.form-group input,
+.form-group select,
 .form-group textarea {
-  padding: 1rem 1.25rem;
-  border-radius: 12px;
-  border: 1px solid var(--ods-border);
-  background-color: var(--ods-bg);
+  width: 100%;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: #fff;
   color: var(--ods-text);
-  font-size: 1rem;
-  transition: all 0.2s;
+  font-size: max(0.95rem, 16px); /* iOS no zoom */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form-group input:focus, 
-.form-group select:focus, 
+.form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--ods-accent);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  border-color: var(--utn-azul);
+  box-shadow: 0 0 0 4px var(--utn-azul-glow);
 }
 
-/* Step 2: ODS Grid */
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+/* ─── Step 2: ODS grid ────────────────────────────────────────── */
 .ods-selection-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 1.5rem;
+  gap: 1.25rem;
   margin-top: 1rem;
 }
 
 .ods-card {
   aspect-ratio: 1;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -172,210 +186,220 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid transparent;
-  background-color: #f1f5f9;
+  background-color: var(--bg-subtle);
   position: relative;
   overflow: hidden;
 }
 
 .ods-card:hover {
-  transform: translateY(-8px);
-  filter: brightness(1.1);
+  transform: translateY(-6px);
+  filter: brightness(1.08);
 }
 
 .ods-card.selected {
-  border-color: white;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transform: scale(1.05);
+  border-color: #fff;
+  box-shadow: 0 12px 24px -8px rgba(0,0,0,0.18);
+  transform: scale(1.04);
 }
 
 .ods-card .ods-number {
   font-size: 1.5rem;
   font-weight: 900;
-  color: white;
+  color: #fff;
   margin-bottom: 0.5rem;
+  font-family: var(--font-display);
 }
 
 .ods-card .ods-title {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  color: white;
-  line-height: 1.2;
+  color: #fff;
+  line-height: 1.25;
 }
 
 .selection-overlay {
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 20px;
-  height: 20px;
-  background-color: white;
+  width: 22px;
+  height: 22px;
+  background-color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #10b981;
+  color: var(--success);
   font-weight: bold;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12);
 }
 
-/* Indicators Drawer/Accordion */
+/* ─── Indicators accordion ────────────────────────────────────── */
 .indicators-panel {
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   border-top: 1px solid var(--ods-border);
   padding-top: 2rem;
 }
 
 .ods-accordion {
-  margin-bottom: 1.25rem;
-  border: 1px solid var(--ods-border);
-  border-radius: 16px;
-  background: white;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: #fff;
   transition: all 0.3s ease;
   overflow: hidden;
 }
 
 .ods-accordion.open {
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-  border-color: var(--ods-accent);
+  box-shadow: var(--shadow-md);
+  border-color: var(--utn-celeste);
 }
 
 .accordion-header {
-  padding: 1.25rem 1.5rem;
+  padding: 1.1rem 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   cursor: pointer;
   background: #fcfcfd;
+  flex-wrap: wrap;
 }
 
 .ods-badge {
   padding: 4px 12px;
-  border-radius: 20px;
-  color: white;
-  font-size: 0.75rem;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.72rem;
   font-weight: 800;
-  margin-right: 1rem;
+  margin-right: 0.75rem;
+  letter-spacing: 0.02em;
 }
 
 .ods-name {
   font-weight: 700;
-  color: var(--ods-text);
+  color: var(--text-main);
   flex-grow: 1;
+  min-width: 0;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .count-badge {
-  background: #f1f5f9;
-  color: #64748b;
-  font-size: 0.75rem;
+  background: var(--utn-celeste-soft);
+  color: var(--utn-azul);
+  font-size: 0.72rem;
   font-weight: 700;
   padding: 4px 10px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
 }
 
 .accordion-content {
-  padding: 1.5rem;
-  border-top: 1px solid var(--ods-border);
-  background: #fafbfc;
+  padding: 1.25rem;
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-subtle);
 }
 
-/* Premium Indicator Cards */
+/* ─── Indicator cards ─────────────────────────────────────────── */
 .indicators-selection-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 1.25rem;
 }
 
 .indicator-li {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 1.25rem;
-  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
 }
 
 .indicator-li:hover {
-  transform: translateY(-4px);
-  border-color: var(--ods-accent);
-  box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  border-color: var(--utn-celeste);
+  box-shadow: var(--shadow-md);
 }
 
 .indicator-li.selected {
-  border: 2px solid var(--ods-accent);
-  background: rgba(59, 130, 246, 0.02);
+  border: 2px solid var(--utn-azul);
+  background: linear-gradient(180deg, rgba(214, 228, 243, 0.25), #fff);
 }
 
 .indicator-main {
   display: flex;
-  gap: 1rem;
+  gap: 0.875rem;
 }
 
 .checkbox {
   flex-shrink: 0;
   width: 24px;
   height: 24px;
-  border: 2.5px solid #cbd5e1;
+  border: 2px solid var(--border-color);
   border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: #fff;
   transition: all 0.2s;
 }
 
 .selected .checkbox {
-  background: var(--ods-accent);
-  border-color: var(--ods-accent);
-  color: white;
+  background: var(--utn-azul);
+  border-color: var(--utn-azul);
+  color: #fff;
 }
 
 .indicator-info {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
+  min-width: 0;
 }
 
 .indicator-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-weight: 800;
-  font-size: 0.75rem;
-  color: var(--ods-accent);
-  background: rgba(59, 130, 246, 0.1);
+  font-size: 0.72rem;
+  color: var(--utn-azul);
+  background: var(--utn-celeste-soft);
   padding: 3px 10px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
 }
 
 .unit-badge {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 800;
-  color: #64748b;
-  background: #f1f5f9;
+  color: var(--text-muted);
+  background: var(--utn-gris-soft);
   padding: 3px 8px;
   border-radius: 5px;
   text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-.label {
+.indicator-li .label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #334155;
-  line-height: 1.6;
-  min-height: 3.2em;
+  color: var(--text-main);
+  line-height: 1.55;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -384,12 +408,12 @@
 
 .btn-config {
   width: 100%;
-  padding: 0.875rem;
-  border-radius: 12px;
-  border: 1px dashed #cbd5e1;
-  background: #f8fafc;
-  color: #64748b;
-  font-size: 0.8125rem;
+  padding: 0.8rem;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border-color);
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+  font-size: 0.8rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -398,33 +422,36 @@
 }
 
 .btn-config:hover {
-  background: #f1f5f9;
+  background: var(--utn-celeste-soft);
   border-style: solid;
-  color: var(--ods-primary);
+  border-color: var(--utn-celeste);
+  color: var(--utn-azul);
 }
 
 .btn-config.active {
   background: #ecfdf5;
-  border: 1px solid #10b981;
+  border: 1px solid var(--success);
   color: #059669;
+  border-style: solid;
 }
 
-/* Metadata Loading */
+/* ─── Spinner ──────────────────────────────────────────────────── */
 .metadata-loader {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  padding: 3rem;
-  background: white;
-  border-radius: 12px;
+  gap: 1.25rem;
+  padding: 2.5rem;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
 }
 
 .spinner-sm {
   width: 32px;
   height: 32px;
-  border: 4px solid #f1f5f9;
-  border-top-color: var(--ods-accent);
+  border: 4px solid var(--utn-celeste-soft);
+  border-top-color: var(--utn-azul);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -432,64 +459,89 @@
 .spinner-xs {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Actions */
+/* ─── Actions ──────────────────────────────────────────────────── */
 .form-actions {
   display: flex;
   justify-content: space-between;
-  margin-top: 3rem;
-  padding-top: 2rem;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
   border-top: 1px solid var(--ods-border);
+  flex-wrap: wrap;
 }
 
 .btn-premium {
-  padding: 1rem 2.5rem;
-  border-radius: 14px;
+  padding: 0.9rem 2rem;
+  border-radius: var(--radius-md);
   font-weight: 700;
-  transition: all 0.3s;
+  font-size: 0.92rem;
+  transition: all 0.3s ease;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
+  background: var(--utn-azul);
+  color: #fff;
   border: none;
-  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 8px 18px -6px var(--utn-azul-glow);
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
+  background: var(--utn-azul-hover);
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 12px 22px -6px var(--utn-azul-glow);
 }
 
 .btn-secondary {
   background-color: transparent;
-  color: var(--ods-secondary);
-  border: 1px solid var(--ods-border);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
-  background-color: var(--ods-bg);
+  background-color: var(--bg-subtle);
+  color: var(--text-main);
 }
 
-/* Mobile Responsiveness */
+/* ─── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-  .form-group.full-width {
-    grid-column: span 1;
-  }
+  .form-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .form-group.full-width { grid-column: span 1; }
   .ods-selection-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 0.875rem;
   }
+  .ods-card .ods-number { font-size: 1.25rem; }
+  .ods-card .ods-title  { font-size: 0.65rem; }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+  .btn-premium { width: 100%; }
+  .accordion-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ods-selection-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.625rem;
+  }
+  .ods-card { padding: 0.5rem; }
+  .indicator-li { padding: 1rem; }
+  .step { width: 36px; height: 36px; font-size: 0.85rem; }
 }

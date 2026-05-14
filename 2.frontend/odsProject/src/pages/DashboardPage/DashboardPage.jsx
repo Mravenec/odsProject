@@ -116,9 +116,8 @@ const DashboardPage = () => {
             </button>
           )}
           {perms.canViewAuditQueue && (
-            <button className="btn-create-header" 
-              onClick={() => navigate('/audit')}
-              style={{background:'#16a34a',marginLeft:8}}>
+            <button className="btn-create-header btn-audit"
+              onClick={() => navigate('/audit')}>
               <span>📋 Cola de auditoría</span>
             </button>
           )}
@@ -180,12 +179,11 @@ const DashboardPage = () => {
             {perms.canViewAuditQueue ? (
               <div className="admin-actions-grid">
                 {/* Sprint 14: Cola de auditoría — admin/auditor */}
-                <div className="action-card" onClick={() => navigate('/audit')}
-                     style={{borderTop:'4px solid #16a34a'}}>
+                <div className="action-card action-card--audit" onClick={() => navigate('/audit')}>
                   <div className="action-icon">🔍</div>
                   <h4>Cola de Auditoría</h4>
                   <p>Revisar documentos del gestor e ingresar las mediciones que el sistema calculará según la fórmula.</p>
-                  <span className="action-link" style={{color:'#16a34a'}}>Auditar proyectos →</span>
+                  <span className="action-link">Auditar proyectos →</span>
                 </div>
                 {/* Solo admin: panel admin completo */}
                 {perms.canViewAdminPanel && (

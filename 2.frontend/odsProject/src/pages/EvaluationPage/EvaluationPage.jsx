@@ -28,8 +28,8 @@ const getService = async (odsNum) => {
 };
 
 const estadoColors = {
-  'LOGRADO':    '#2dba74', 'CERCA META': '#3b5bdb',
-  'PROGRESO':   '#e8c33a', 'BAJO':       '#e05555', 'SIN DATOS':  '#aaa'
+  'LOGRADO':    '#2dba74', 'CERCA META': '#012169',
+  'PROGRESO':   '#e8c33a', 'BAJO':       '#e05555', 'SIN DATOS':  '#94A0B8'
 };
 const estadoLabels = {
   'LOGRADO':'✅ Logrado','CERCA META':'🔵 Cerca de la meta',
@@ -315,8 +315,8 @@ const EvaluationPage = () => {
 
   if (loadingPage) return (
     <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'60vh',flexDirection:'column',gap:12}}>
-      <div style={{width:40,height:40,border:'4px solid #e5e7eb',borderTopColor:'#3b5bdb',borderRadius:'50%',animation:'spin 0.8s linear infinite'}} />
-      <span style={{color:'#888',fontSize:14}}>Cargando evaluación...</span>
+      <div style={{width:40,height:40,border:'4px solid #D9DEE7',borderTopColor:'#012169',borderRadius:'50%',animation:'spin 0.8s linear infinite'}} />
+      <span style={{color:'#5A6478',fontSize:14}}>Cargando evaluación...</span>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
@@ -325,32 +325,32 @@ const EvaluationPage = () => {
   const logrados = Object.values(calcResults).filter(r => r.status === 'Cumplido').length;
 
   return (
-    <div style={{maxWidth:900,margin:'0 auto',padding:'24px 20px',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{maxWidth:900,margin:'0 auto',padding:'24px 20px'}}>
       {/* Header */}
-      <div style={{background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,padding:20,marginBottom:20}}>
+      <div style={{background:'#fff',border:'1px solid #D9DEE7',borderRadius:12,padding:20,marginBottom:20}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:12}}>
           <div style={{flex:1}}>
-            <div style={{fontSize:11,color:'#888',fontFamily:'monospace',letterSpacing:'0.06em',marginBottom:4}}>
+            <div style={{fontSize:11,color:'#5A6478',fontFamily:'monospace',letterSpacing:'0.06em',marginBottom:4}}>
               PROYECTO #{projectId}
             </div>
-            <h1 style={{fontSize:20,fontWeight:700,color:'#111',margin:0}}>
+            <h1 style={{fontSize:20,fontWeight:700,color:'#00153f',margin:0}}>
               {project?.name || project?.nombreProyecto || 'Proyecto'}
             </h1>
           </div>
           <button onClick={() => navigate(-1)} style={{
-            padding:'8px 14px',border:'1px solid #e5e7eb',borderRadius:8,
-            background:'#fff',cursor:'pointer',fontSize:13,color:'#555'
+            padding:'8px 14px',border:'1px solid #D9DEE7',borderRadius:8,
+            background:'#fff',cursor:'pointer',fontSize:13,color:'#1B2440'
           }}>← Volver</button>
         </div>
 
         {/* Métricas resumidas */}
         <div style={{display:'flex',gap:24,marginTop:14,flexWrap:'wrap'}}>
           <div>
-            <div style={{fontSize:11,color:'#888',textTransform:'uppercase',letterSpacing:'0.06em'}}>Indicadores</div>
-            <div style={{fontSize:22,fontWeight:700,color:'#111'}}>{totalIndicadores}</div>
+            <div style={{fontSize:11,color:'#5A6478',textTransform:'uppercase',letterSpacing:'0.06em'}}>Indicadores</div>
+            <div style={{fontSize:22,fontWeight:700,color:'#00153f'}}>{totalIndicadores}</div>
           </div>
           <div>
-            <div style={{fontSize:11,color:'#888',textTransform:'uppercase',letterSpacing:'0.06em'}}>Logrados</div>
+            <div style={{fontSize:11,color:'#5A6478',textTransform:'uppercase',letterSpacing:'0.06em'}}>Logrados</div>
             <div style={{fontSize:22,fontWeight:700,color:'#2dba74'}}>{logrados}</div>
           </div>
         </div>
@@ -365,9 +365,9 @@ const EvaluationPage = () => {
         ].map(t => (
           <button key={t.k} onClick={() => setActiveTab(t.k)} style={{
             padding:'8px 16px',borderRadius:8,
-            background: activeTab===t.k ? '#3b5bdb' : '#fff',
-            color: activeTab===t.k ? '#fff' : '#555',
-            border:'1px solid ' + (activeTab===t.k ? '#3b5bdb' : '#e5e7eb'),
+            background: activeTab===t.k ? '#012169' : '#fff',
+            color: activeTab===t.k ? '#fff' : '#1B2440',
+            border:'1px solid ' + (activeTab===t.k ? '#012169' : '#D9DEE7'),
             fontSize:13,fontWeight:500,cursor:'pointer'
           }}>{t.label}</button>
         ))}
@@ -377,18 +377,18 @@ const EvaluationPage = () => {
       {activeTab === 'ingreso' && (
         <div style={{display:'grid',gap:14}}>
           {Object.entries(allIndicators).map(([odsNum, indicadores]) => (
-            <div key={odsNum} style={{background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,overflow:'hidden'}}>
+            <div key={odsNum} style={{background:'#fff',border:'1px solid #D9DEE7',borderRadius:12,overflow:'hidden'}}>
               <div onClick={() => setOpenOds(p => ({...p,[odsNum]: !p[odsNum]}))} style={{
                 padding:14,cursor:'pointer',display:'flex',alignItems:'center',gap:10,
-                borderBottom: openOds[odsNum] ? '1px solid #f3f4f6' : 'none'
+                borderBottom: openOds[odsNum] ? '1px solid #F1F4FA' : 'none'
               }}>
                 <div style={{
-                  width:32,height:32,borderRadius:8,background:'#3b5bdb',
+                  width:32,height:32,borderRadius:8,background:'#012169',
                   display:'flex',alignItems:'center',justifyContent:'center',
                   fontSize:14,fontWeight:700,color:'#fff',flexShrink:0
                 }}>{odsNum}</div>
                 <div style={{flex:1,fontWeight:500,fontSize:14}}>ODS {odsNum} — {indicadores.length} indicador{indicadores.length!==1?'es':''}</div>
-                <span style={{color:'#aaa',fontSize:12}}>{openOds[odsNum] ? '▲' : '▼'}</span>
+                <span style={{color:'#94A0B8',fontSize:12}}>{openOds[odsNum] ? '▲' : '▼'}</span>
               </div>
 
               {openOds[odsNum] && indicadores.map(ind => {
@@ -396,11 +396,11 @@ const EvaluationPage = () => {
                 const calc = calcResults[codigo];
                 const isSaving = saving[codigo];
                 return (
-                  <div key={codigo} style={{padding:18,borderBottom:'1px solid #f3f4f6'}}>
+                  <div key={codigo} style={{padding:18,borderBottom:'1px solid #F1F4FA'}}>
                     <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:14}}>
                       <div>
-                        <div style={{fontFamily:'monospace',fontSize:11,color:'#888',marginBottom:3}}>{codigo}</div>
-                        <div style={{fontWeight:600,fontSize:14,color:'#111'}}>{ind.indicadorNombre}</div>
+                        <div style={{fontFamily:'monospace',fontSize:11,color:'#5A6478',marginBottom:3}}>{codigo}</div>
+                        <div style={{fontWeight:600,fontSize:14,color:'#00153f'}}>{ind.indicadorNombre}</div>
                       </div>
                       {calc && (
                         <div style={{
@@ -416,15 +416,15 @@ const EvaluationPage = () => {
                     </div>
 
                     <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14}}>
-                      <div style={{background:'#f0f4ff',borderRadius:8,padding:'10px 14px'}}>
-                        <div style={{fontSize:10,color:'#5577dd',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:4}}>Fórmula</div>
-                        <code style={{fontSize:12,color:'#3b5bdb'}}>{ind.formulaCustom || ind.formulaDefault || 'valor'}</code>
+                      <div style={{background:'#d6e4f3',borderRadius:8,padding:'10px 14px'}}>
+                        <div style={{fontSize:10,color:'#012169',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:4}}>Fórmula</div>
+                        <code style={{fontSize:12,color:'#012169'}}>{ind.formulaCustom || ind.formulaDefault || 'valor'}</code>
                       </div>
                       <div style={{background:'#f0fdf4',borderRadius:8,padding:'10px 14px'}}>
                         <div style={{fontSize:10,color:'#22c55e',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:4}}>Meta</div>
                         <div style={{fontSize:13,fontWeight:500,color:'#166534'}}>
                           {ind.metaValor} {ind.metaUnidad}
-                          {ind.metaNombre && <div style={{fontSize:11,color:'#555',marginTop:2,fontWeight:400}}>{ind.metaNombre}</div>}
+                          {ind.metaNombre && <div style={{fontSize:11,color:'#1B2440',marginTop:2,fontWeight:400}}>{ind.metaNombre}</div>}
                         </div>
                       </div>
                     </div>
@@ -432,13 +432,13 @@ const EvaluationPage = () => {
                     {calc && (
                       <div style={{background: calc.status==='Cumplido'?'#e6f9f0':'#fff3f3',borderRadius:8,padding:'10px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:12}}>
                         <div style={{flex:1}}>
-                          <div style={{fontSize:10,color:'#666',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:2}}>Resultado calculado</div>
+                          <div style={{fontSize:10,color:'#5A6478',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:2}}>Resultado calculado</div>
                           <div style={{fontSize:18,fontWeight:700,color: calc.status==='Cumplido'?'#2dba74':'#e05555'}}>
                             {calc.result} <span style={{fontSize:13,fontWeight:400}}>{ind.metaUnidad}</span>
                           </div>
                         </div>
                         <div style={{textAlign:'center'}}>
-                          <div style={{fontSize:10,color:'#666',marginBottom:2}}>Progreso</div>
+                          <div style={{fontSize:10,color:'#5A6478',marginBottom:2}}>Progreso</div>
                           <div style={{fontSize:16,fontWeight:700}}>{calc.pct.toFixed(1)}%</div>
                         </div>
                       </div>
@@ -447,13 +447,13 @@ const EvaluationPage = () => {
                     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:10,marginBottom:14}}>
                       {(ind.parametros || []).map((param, idx) => (
                         <div key={idx}>
-                          <label style={{fontSize:12,color:'#555',display:'block',marginBottom:4}}>
+                          <label style={{fontSize:12,color:'#1B2440',display:'block',marginBottom:4}}>
                             <code style={{
-                              fontFamily:'monospace',color:'#3b5bdb',marginRight:6,
-                              background:'#f0f4ff',padding:'1px 5px',borderRadius:3
+                              fontFamily:'monospace',color:'#012169',marginRight:6,
+                              background:'#d6e4f3',padding:'1px 5px',borderRadius:3
                             }}>{param.nombreVariable || param.nombreParametro}</code>
                             {param.nombreParametro && param.nombreParametro !== param.nombreVariable && (
-                              <span style={{color:'#888',fontSize:11}}>{param.nombreParametro}</span>
+                              <span style={{color:'#5A6478',fontSize:11}}>{param.nombreParametro}</span>
                             )}
                           </label>
                           <input
@@ -465,8 +465,8 @@ const EvaluationPage = () => {
                             style={{
                               width:'100%',border:'1px solid #ddd',borderRadius:8,
                               padding:'9px 12px',fontSize:13,boxSizing:'border-box',
-                              background: readOnly ? '#f9fafb' : '#fff',
-                              color: readOnly ? '#888' : '#111',
+                              background: readOnly ? '#F7F9FC' : '#fff',
+                              color: readOnly ? '#5A6478' : '#00153f',
                               cursor: readOnly ? 'not-allowed' : 'text'
                             }}
                           />
@@ -488,7 +488,7 @@ const EvaluationPage = () => {
                         disabled={isSaving || (ind.parametros || []).length === 0}
                         style={{
                           padding:'10px 22px',border:'none',borderRadius:8,
-                          background: isSaving ? '#94a3b8' : '#3b5bdb',color:'#fff',
+                          background: isSaving ? '#94a3b8' : '#012169',color:'#fff',
                           cursor: isSaving ? 'not-allowed' : 'pointer',fontSize:13,fontWeight:500,
                           opacity: (ind.parametros || []).length === 0 ? 0.5 : 1
                         }}
@@ -496,7 +496,7 @@ const EvaluationPage = () => {
                         {isSaving ? 'Guardando...' : '🔢 Calcular y Evaluar'}
                       </button>
                     ) : (
-                      <div style={{fontSize:12,color:'#888',padding:'8px 0',fontStyle:'italic'}}>
+                      <div style={{fontSize:12,color:'#5A6478',padding:'8px 0',fontStyle:'italic'}}>
                         🔒 Tu rol no permite ingresar mediciones. Esta es una vista de solo lectura.
                       </div>
                     )}
@@ -520,23 +520,23 @@ const EvaluationPage = () => {
                 : (ind.estadoIndicador || 'SIN DATOS');
               const pct = calc ? calc.pct : (ind.porcentajeLogro || 0);
               return (
-                <div key={codigo} style={{background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,padding:16}}>
-                  <div style={{fontFamily:'monospace',fontSize:10,color:'#888',marginBottom:4}}>{codigo}</div>
-                  <div style={{fontWeight:600,fontSize:13,marginBottom:10,color:'#111',lineHeight:1.4}}>
+                <div key={codigo} style={{background:'#fff',border:'1px solid #D9DEE7',borderRadius:12,padding:16}}>
+                  <div style={{fontFamily:'monospace',fontSize:10,color:'#5A6478',marginBottom:4}}>{codigo}</div>
+                  <div style={{fontWeight:600,fontSize:13,marginBottom:10,color:'#00153f',lineHeight:1.4}}>
                     {ind.indicadorNombre}
                   </div>
                   <div style={{
                     display:'inline-block',padding:'3px 10px',borderRadius:99,fontSize:11,fontWeight:600,
-                    background: (estadoColors[estado]||'#aaa') + '22',
-                    color: estadoColors[estado] || '#666',marginBottom:10
+                    background: (estadoColors[estado]||'#94A0B8') + '22',
+                    color: estadoColors[estado] || '#5A6478',marginBottom:10
                   }}>{estadoLabels[estado] || estado}</div>
-                  <div style={{background:'#f3f4f6',borderRadius:99,height:6,overflow:'hidden'}}>
+                  <div style={{background:'#F1F4FA',borderRadius:99,height:6,overflow:'hidden'}}>
                     <div style={{
                       width: Math.min(pct,100) + '%',height:'100%',borderRadius:99,
-                      background: estadoColors[estado] || '#aaa',transition:'width 0.4s'
+                      background: estadoColors[estado] || '#94A0B8',transition:'width 0.4s'
                     }} />
                   </div>
-                  <div style={{textAlign:'right',fontSize:11,color:'#888',marginTop:4}}>
+                  <div style={{textAlign:'right',fontSize:11,color:'#5A6478',marginTop:4}}>
                     {pct.toFixed(1)}% de {ind.metaValor} {ind.metaUnidad}
                   </div>
                 </div>
@@ -544,7 +544,7 @@ const EvaluationPage = () => {
             })
           )}
           {Object.values(allIndicators).flat().length === 0 && (
-            <div style={{gridColumn:'1/-1',textAlign:'center',padding:40,color:'#888'}}>
+            <div style={{gridColumn:'1/-1',textAlign:'center',padding:40,color:'#5A6478'}}>
               Sin indicadores para mostrar en el resumen.
             </div>
           )}
@@ -560,26 +560,26 @@ const EvaluationPage = () => {
               const trail = auditTrail[codigo] || [];
               const isLoading = loadingAudit[codigo];
               return (
-                <div key={codigo} style={{background:'#fff',border:'1px solid #e5e7eb',borderRadius:12,padding:18}}>
+                <div key={codigo} style={{background:'#fff',border:'1px solid #D9DEE7',borderRadius:12,padding:18}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
                     <div>
-                      <div style={{fontFamily:'monospace',fontSize:11,color:'#888'}}>ODS {odsNum} · {codigo}</div>
-                      <div style={{fontWeight:600,fontSize:14,color:'#111'}}>{ind.indicadorNombre}</div>
+                      <div style={{fontFamily:'monospace',fontSize:11,color:'#5A6478'}}>ODS {odsNum} · {codigo}</div>
+                      <div style={{fontWeight:600,fontSize:14,color:'#00153f'}}>{ind.indicadorNombre}</div>
                     </div>
                     <button onClick={() => refreshAuditTrail(parseInt(odsNum), ind)} style={{
-                      padding:'6px 12px',border:'1px solid #e5e7eb',borderRadius:8,
+                      padding:'6px 12px',border:'1px solid #D9DEE7',borderRadius:8,
                       background:'#fff',cursor:'pointer',fontSize:12
                     }}>↻ Refrescar</button>
                   </div>
-                  <div style={{background:'#f0f4ff',borderRadius:8,padding:'8px 12px',marginBottom:10,fontSize:12}}>
-                    <span style={{color:'#5577dd',textTransform:'uppercase',letterSpacing:'0.06em',fontSize:10}}>Fórmula vigente: </span>
-                    <code style={{color:'#3b5bdb'}}>{ind.formulaCustom || ind.formulaDefault || 'valor'}</code>
+                  <div style={{background:'#d6e4f3',borderRadius:8,padding:'8px 12px',marginBottom:10,fontSize:12}}>
+                    <span style={{color:'#012169',textTransform:'uppercase',letterSpacing:'0.06em',fontSize:10}}>Fórmula vigente: </span>
+                    <code style={{color:'#012169'}}>{ind.formulaCustom || ind.formulaDefault || 'valor'}</code>
                   </div>
 
                   {isLoading ? (
-                    <div style={{padding:20,textAlign:'center',color:'#888',fontSize:13}}>Cargando auditoría…</div>
+                    <div style={{padding:20,textAlign:'center',color:'#5A6478',fontSize:13}}>Cargando auditoría…</div>
                   ) : trail.length === 0 ? (
-                    <div style={{padding:20,textAlign:'center',color:'#888',fontSize:13}}>Sin mediciones registradas todavía.</div>
+                    <div style={{padding:20,textAlign:'center',color:'#5A6478',fontSize:13}}>Sin mediciones registradas todavía.</div>
                   ) : (
                     <div style={{display:'grid',gap:8}}>
                       {trail.map((entry, i) => {
@@ -588,7 +588,7 @@ const EvaluationPage = () => {
                         const ok = entry.metaAlcanzada;
                         return (
                           <details key={i} style={{
-                            border:'1px solid #f3f4f6',borderRadius:8,padding:'8px 12px',
+                            border:'1px solid #F1F4FA',borderRadius:8,padding:'8px 12px',
                             background: ok ? '#f0fdf4' : '#fef9f3'
                           }}>
                             <summary style={{cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',gap:10}}>
@@ -596,7 +596,7 @@ const EvaluationPage = () => {
                                 <span style={{fontWeight:600,fontSize:13}}>
                                   {m.fechaMedicion || '—'}
                                 </span>
-                                <span style={{color:'#888',marginLeft:10,fontSize:12}}>
+                                <span style={{color:'#5A6478',marginLeft:10,fontSize:12}}>
                                   por {m.responsable || 'sistema'}
                                 </span>
                               </div>
@@ -613,20 +613,20 @@ const EvaluationPage = () => {
                                 )}
                               </div>
                             </summary>
-                            <div style={{marginTop:10,fontSize:12,color:'#555'}}>
+                            <div style={{marginTop:10,fontSize:12,color:'#1B2440'}}>
                               {valores.length > 0 ? (
                                 <table style={{width:'100%',borderCollapse:'collapse'}}>
                                   <thead>
-                                    <tr style={{borderBottom:'1px solid #e5e7eb'}}>
-                                      <th style={{textAlign:'left',padding:'4px 8px',fontSize:11,color:'#666'}}>Variable</th>
-                                      <th style={{textAlign:'left',padding:'4px 8px',fontSize:11,color:'#666'}}>Parámetro</th>
-                                      <th style={{textAlign:'right',padding:'4px 8px',fontSize:11,color:'#666'}}>Valor ingresado</th>
+                                    <tr style={{borderBottom:'1px solid #D9DEE7'}}>
+                                      <th style={{textAlign:'left',padding:'4px 8px',fontSize:11,color:'#5A6478'}}>Variable</th>
+                                      <th style={{textAlign:'left',padding:'4px 8px',fontSize:11,color:'#5A6478'}}>Parámetro</th>
+                                      <th style={{textAlign:'right',padding:'4px 8px',fontSize:11,color:'#5A6478'}}>Valor ingresado</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     {valores.map((v, j) => (
-                                      <tr key={j} style={{borderBottom:'1px solid #f3f4f6'}}>
-                                        <td style={{padding:'4px 8px',fontFamily:'monospace',color:'#3b5bdb'}}>
+                                      <tr key={j} style={{borderBottom:'1px solid #F1F4FA'}}>
+                                        <td style={{padding:'4px 8px',fontFamily:'monospace',color:'#012169'}}>
                                           {v.nombre_variable || v.nombreVariable || '—'}
                                         </td>
                                         <td style={{padding:'4px 8px'}}>{v.nombre_parametro || v.nombreParametro || '—'}</td>
@@ -638,7 +638,7 @@ const EvaluationPage = () => {
                                   </tbody>
                                 </table>
                               ) : (
-                                <div style={{color:'#888'}}>Sin valores de parámetros registrados (medición pre-Sprint 2).</div>
+                                <div style={{color:'#5A6478'}}>Sin valores de parámetros registrados (medición pre-Sprint 2).</div>
                               )}
                               {m.observaciones && (
                                 <div style={{marginTop:8,padding:8,background:'#fff',borderRadius:6,fontSize:12,color:'#444'}}>

@@ -1,28 +1,42 @@
+/* =====================================================================
+ *  Admin · Overview — Plataforma ODS UTN
+ *  En escritorio: tabla densa.
+ *  En móvil: la misma tabla se reorganiza visualmente como tarjetas
+ *  apiladas (sin tocar el JSX) usando data-label en cada td.
+ * ===================================================================== */
+
 .admin-projects-page {
   min-height: 100vh;
-  padding-bottom: 5rem;
+  min-height: 100dvh;
+  padding-bottom: 4rem;
 }
 
 .admin-header {
-  background: white;
+  background: #fff;
   border-bottom: 1px solid var(--border-color);
-  padding: 2rem 0;
-  margin-bottom: 2.5rem;
+  padding: clamp(1.25rem, 3vw, 2rem) 0;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: var(--shadow-sm);
 }
 
 .admin-header-container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 var(--container-pad);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .admin-title-area h1 {
-  font-size: 1.75rem;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
   font-weight: 800;
-  color: #0f172a;
+  color: var(--utn-azul-deep);
+  font-family: var(--font-display);
+  margin: 0;
 }
 
 .admin-subtitle {
@@ -31,27 +45,32 @@
 }
 
 .admin-content {
-  max-width: 1200px;
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 var(--container-pad);
 }
 
+/* ─── Filters bar ─────────────────────────────────────────────── */
 .filters-bar {
-  background: white;
-  padding: 1.25rem;
+  background: #fff;
+  padding: 1.1rem 1.25rem;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
-  margin-bottom: 2rem;
+  border: 1px solid var(--border-soft);
+  margin-bottom: 1.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
 }
 
 .search-wrapper {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  flex: 1 1 240px;
 }
 
 .search-input {
@@ -59,21 +78,30 @@
   padding: 0.75rem 1rem 0.75rem 2.5rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-  font-size: 0.9rem;
+  font-size: max(0.9rem, 16px);
+  background: #fff;
 }
 
-.search-icon {
+.search-input:focus {
+  outline: none;
+  border-color: var(--utn-azul);
+  box-shadow: 0 0 0 3px var(--utn-azul-glow);
+}
+
+.search-wrapper .search-icon {
   position: absolute;
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #94a3b8;
+  color: var(--text-soft);
+  pointer-events: none;
 }
 
+/* ─── Table ────────────────────────────────────────────────────── */
 .table-container {
-  background: white;
+  background: #fff;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-soft);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
@@ -85,39 +113,41 @@
 }
 
 .admin-table th {
-  background: #f8fafc;
-  padding: 1rem 1.5rem;
-  font-size: 0.75rem;
+  background: var(--bg-subtle);
+  padding: 0.95rem 1.25rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  font-weight: 700;
-  color: #64748b;
-  letter-spacing: 0.05em;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
   border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
 }
 
 .admin-table td {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border-color);
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--border-soft);
   font-size: 0.9rem;
-  color: #334155;
+  color: var(--text-main);
+  vertical-align: middle;
 }
 
-.admin-table tr:last-child td {
-  border-bottom: none;
-}
+.admin-table tr:last-child td { border-bottom: none; }
 
-.admin-table tr:hover {
-  background: #f8fafc;
+.admin-table tbody tr {
+  transition: background 0.15s ease;
 }
+.admin-table tbody tr:hover { background: var(--bg-subtle); }
 
 .project-cell-name {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .project-name-bold {
   font-weight: 700;
-  color: #0f172a;
+  color: var(--utn-azul-deep);
 }
 
 .project-user-sm {
@@ -126,24 +156,31 @@
 }
 
 .ods-tag-table {
-  background: #eff6ff;
-  color: var(--primary);
-  padding: 2px 8px;
-  border-radius: 4px;
+  background: var(--utn-celeste-soft);
+  color: var(--utn-azul);
+  padding: 3px 9px;
+  border-radius: var(--radius-sm);
   font-weight: 700;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
+  display: inline-block;
+  letter-spacing: 0.02em;
 }
 
 .status-badge-table {
   padding: 4px 10px;
-  border-radius: 100px;
-  font-size: 0.75rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-block;
 }
 
-.status-badge-table.active, .status-badge-table.activo { background: #dcfce7; color: #166534; }
-.status-badge-table.completed, .status-badge-table.completado { background: #e0f2fe; color: #075985; }
+.status-badge-table.active,
+.status-badge-table.activo    { background: #dcfce7;                  color: #166534; }
+.status-badge-table.completed,
+.status-badge-table.completado{ background: var(--utn-celeste-soft);  color: var(--utn-azul); }
+.status-badge-table.planificacion { background: var(--utn-gris-soft); color: var(--text-muted); }
 
 .actions-cell {
   display: flex;
@@ -151,20 +188,21 @@
 }
 
 .btn-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  display: flex;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #f1f5f9;
-  color: #64748b;
+  background: var(--bg-subtle);
+  color: var(--text-muted);
   transition: all 0.2s;
+  border: 1px solid transparent;
 }
 
 .btn-icon:hover {
-  background: var(--primary);
-  color: white;
+  background: var(--utn-azul);
+  color: #fff;
 }
 
 .btn-icon.delete:hover {
@@ -172,23 +210,100 @@
 }
 
 .loading-state-table {
-  padding: 4rem;
+  padding: 3rem;
   text-align: center;
   color: var(--text-muted);
 }
 
+/* ─── Responsive: tabla → tarjetas en móvil ─────────────────── */
 @media (max-width: 768px) {
   .admin-header-container {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: 1rem;
   }
   .filters-bar {
     flex-direction: column;
-    gap: 1rem;
+    align-items: stretch;
+    gap: 0.75rem;
   }
-  .admin-table th:nth-child(4),
-  .admin-table td:nth-child(4) {
-    display: none;
+  .search-wrapper { max-width: none; }
+
+  /* Convertir la tabla en una pila de tarjetas */
+  .table-container {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
   }
+  .admin-table,
+  .admin-table thead,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td {
+    display: block;
+    width: 100%;
+  }
+  .admin-table thead {
+    /* Ocultar los headers — los reemplazamos por data-label */
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+  .admin-table tbody tr {
+    background: #fff;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    margin-bottom: 0.875rem;
+    padding: 0.5rem 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .admin-table tbody tr:hover { background: #fff; }
+
+  .admin-table td {
+    border-bottom: 1px solid var(--border-soft);
+    padding: 0.75rem 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: right;
+  }
+  .admin-table td:last-child { border-bottom: none; }
+
+  /* La etiqueta proviene de un atributo data-label que pueden añadir
+     desde JSX <td data-label="ODS">. Si no existe, no rompe nada. */
+  .admin-table td::before {
+    content: attr(data-label);
+    flex: 0 0 40%;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-align: left;
+  }
+
+  /* Para el nombre del proyecto (primera columna) queremos que
+     ocupe todo el ancho como cabecera de la tarjeta. */
+  .admin-table td:first-child {
+    background: var(--bg-subtle);
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .admin-table td:first-child::before { display: none; }
+  .project-cell-name { gap: 4px; }
+
+  .actions-cell { justify-content: flex-end; }
+}
+
+@media (max-width: 480px) {
+  .admin-title-area h1 { font-size: 1.25rem; }
+  .admin-table td { padding: 0.625rem 0.875rem; font-size: 0.85rem; }
 }
