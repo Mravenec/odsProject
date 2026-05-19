@@ -218,10 +218,70 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     }
 
     /**
+     * Setter for <code>ods_master.proyectos.auditado_por</code>.
+     */
+    public ProyectosRecord setAuditadoPor(Integer value) {
+        set(13, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.auditado_por</code>.
+     */
+    public Integer getAuditadoPor() {
+        return (Integer) get(13);
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.auditado_en</code>.
+     */
+    public ProyectosRecord setAuditadoEn(LocalDateTime value) {
+        set(14, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.auditado_en</code>.
+     */
+    public LocalDateTime getAuditadoEn() {
+        return (LocalDateTime) get(14);
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.observaciones_cierre</code>.
+     */
+    public ProyectosRecord setObservacionesCierre(String value) {
+        set(15, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.observaciones_cierre</code>.
+     */
+    public String getObservacionesCierre() {
+        return (String) get(15);
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.fecha_envio_revision</code>.
+     */
+    public ProyectosRecord setFechaEnvioRevision(LocalDateTime value) {
+        set(16, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.fecha_envio_revision</code>.
+     */
+    public LocalDateTime getFechaEnvioRevision() {
+        return (LocalDateTime) get(16);
+    }
+
+    /**
      * Setter for <code>ods_master.proyectos.created_at</code>.
      */
     public ProyectosRecord setCreatedAt(LocalDateTime value) {
-        set(13, value);
+        set(17, value);
         return this;
     }
 
@@ -229,14 +289,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(13);
+        return (LocalDateTime) get(17);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.updated_at</code>.
      */
     public ProyectosRecord setUpdatedAt(LocalDateTime value) {
-        set(14, value);
+        set(18, value);
         return this;
     }
 
@@ -244,7 +304,7 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(14);
+        return (LocalDateTime) get(18);
     }
 
     // -------------------------------------------------------------------------
@@ -270,7 +330,7 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Create a detached, initialised ProyectosRecord
      */
-    public ProyectosRecord(Integer id, Integer usuarioId, Integer sedeId, String nombreProyecto, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, String metaGeneral, String responsableNombre, String locationProvince, String locationCanton, String locationDistrict, ProyectosEstado estado, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProyectosRecord(Integer id, Integer usuarioId, Integer sedeId, String nombreProyecto, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, String metaGeneral, String responsableNombre, String locationProvince, String locationCanton, String locationDistrict, ProyectosEstado estado, Integer auditadoPor, LocalDateTime auditadoEn, String observacionesCierre, LocalDateTime fechaEnvioRevision, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(Proyectos.PROYECTOS);
 
         setId(id);
@@ -286,6 +346,10 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
         setLocationCanton(locationCanton);
         setLocationDistrict(locationDistrict);
         setEstado(estado);
+        setAuditadoPor(auditadoPor);
+        setAuditadoEn(auditadoEn);
+        setObservacionesCierre(observacionesCierre);
+        setFechaEnvioRevision(fechaEnvioRevision);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
         resetChangedOnNotNull();
@@ -311,6 +375,10 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
             setLocationCanton(value.getLocationCanton());
             setLocationDistrict(value.getLocationDistrict());
             setEstado(value.getEstado());
+            setAuditadoPor(value.getAuditadoPor());
+            setAuditadoEn(value.getAuditadoEn());
+            setObservacionesCierre(value.getObservacionesCierre());
+            setFechaEnvioRevision(value.getFechaEnvioRevision());
             setCreatedAt(value.getCreatedAt());
             setUpdatedAt(value.getUpdatedAt());
             resetChangedOnNotNull();

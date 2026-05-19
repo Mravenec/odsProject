@@ -366,6 +366,7 @@ com\odsProject\odsProject\database\jooq\ods01\tables\records\MedicionesHistorica
 com\odsProject\odsProject\database\jooq\ods10\tables\records\VistaAdminResumenGeneralRecord.class
 com\odsProject\odsProject\database\jooq\ods05\tables\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\service\Objetivo16PazJusticiaService.class
+com\odsProject\odsProject\config\GlobalExceptionHandler.class
 com\odsProject\odsProject\database\jooq\ods14\Keys.class
 com\odsProject\odsProject\database\jooq\ods09\tables\records\AuditoriaOds09Record.class
 com\odsProject\odsProject\database\jooq\ods15\tables\VistaAdminAuditoriaReciente.class

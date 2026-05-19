@@ -19,6 +19,8 @@ public enum VistaAdminResumenGeneralEstado implements EnumType {
 
     activo("activo"),
 
+    en_revision("en_revision"),
+
     completado("completado"),
 
     cancelado("cancelado");

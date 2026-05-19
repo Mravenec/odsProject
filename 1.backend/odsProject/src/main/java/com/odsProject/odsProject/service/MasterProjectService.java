@@ -481,4 +481,166 @@ public class MasterProjectService implements IMasterProjectService {
         String s = String.valueOf(v).trim();
         return s.isEmpty() ? fallback : s;
     }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    //  Sprint 15 — Máquina de estados del proyecto
+    //
+    //  Transiciones permitidas:
+    //    planificacion → activo                   (auto al primer indicador)
+    //    activo        → en_revision              (Sprint 16: Gestor envía)
+    //    en_revision   → completado               (Sprint 17: Auditor aprueba)
+    //    en_revision   → activo                   (Sprint 17: Auditor rechaza)
+    //    (cualquiera)  → cancelado                (Admin cancela)
+    //
+    //  El método transitionState() es defensivo: valida la transición contra
+    //  esta tabla y rechaza con IllegalStateException si no es permitida.
+    // ═══════════════════════════════════════════════════════════════════════
+
+    private static final java.util.Map<String, java.util.Set<String>> ALLOWED_TRANSITIONS =
+        java.util.Map.of(
+            "planificacion", java.util.Set.of("activo", "cancelado"),
+            "activo",        java.util.Set.of("en_revision", "cancelado"),
+            "en_revision",   java.util.Set.of("completado", "activo", "cancelado"),
+            "completado",    java.util.Set.of("cancelado"),    // mayoritariamente terminal
+            "cancelado",     java.util.Set.of()                // estrictamente terminal
+        );
+
+    /** Roles que pueden disparar cada tipo de transición. */
+    private static final java.util.Map<String, java.util.Set<String>> ROLES_BY_TARGET =
+        java.util.Map.of(
+            "activo",      java.util.Set.of("gestor", "admin", "auditor"),
+            "en_revision", java.util.Set.of("gestor"),
+            "completado",  java.util.Set.of("admin", "auditor"),
+            "cancelado",   java.util.Set.of("admin")
+        );
+
+    @Override
+    public Map<String, Object> transitionState(Integer proyectoId,
+                                               String nuevoEstado,
+                                               Integer actorUserId,
+                                               String actorRole,
+                                               String observaciones) {
+        if (proyectoId == null || nuevoEstado == null)
+            throw new IllegalArgumentException("proyectoId y nuevoEstado son requeridos");
+
+        Proyectos p = masterProjectRepository.findById(proyectoId)
+            .orElseThrow(() -> new IllegalArgumentException("Proyecto no encontrado: " + proyectoId));
+
+        String currentEstado = String.valueOf(p.getEstado()).toLowerCase();
+        String target        = nuevoEstado.toLowerCase();
+
+        // 1. ¿La transición es legal por máquina de estados?
+        java.util.Set<String> permitidas = ALLOWED_TRANSITIONS.getOrDefault(currentEstado, java.util.Set.of());
+        if (!permitidas.contains(target)) {
+            throw new IllegalStateException(
+                "Transición no permitida: " + currentEstado + " → " + target);
+        }
+
+        // 2. ¿El rol puede disparar esta transición?
+        String role = actorRole != null ? actorRole.toLowerCase() : "";
+        java.util.Set<String> rolesAutorizados = ROLES_BY_TARGET.getOrDefault(target, java.util.Set.of());
+        if (!rolesAutorizados.contains(role)) {
+            throw new SecurityException(
+                "Rol '" + role + "' no autorizado para transición → " + target);
+        }
+
+        // 3. Stamping condicional según destino
+        boolean stampCierre  = "completado".equals(target);
+        boolean stampEnvio   = "en_revision".equals(target);
+        Integer auditorStamp = stampCierre ? actorUserId : null;
+
+        int rows = masterProjectRepository.updateEstado(
+            proyectoId, target, auditorStamp, observaciones, stampCierre, stampEnvio);
+        if (rows == 0)
+            throw new IllegalStateException("UPDATE no afectó filas (carrera de concurrencia?)");
+
+        // 4. Devolver el proyecto actualizado en formato amigable para el frontend
+        Proyectos updated = masterProjectRepository.findById(proyectoId).orElse(null);
+        Map<String, Object> resp = new java.util.LinkedHashMap<>();
+        resp.put("success", true);
+        resp.put("proyecto", updated);
+        resp.put("estadoAnterior", currentEstado);
+        resp.put("estadoNuevo", target);
+        return resp;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    //  Sprint 16 — Gestor envía proyecto a auditoría
+    // ═══════════════════════════════════════════════════════════════════════
+
+    @Override
+    public Map<String, Object> enviarARevision(Integer proyectoId, Integer gestorUserId) {
+        if (gestorUserId == null)
+            throw new IllegalArgumentException("actorUserId requerido");
+
+        Proyectos p = masterProjectRepository.findById(proyectoId)
+            .orElseThrow(() -> new IllegalArgumentException("Proyecto no encontrado: " + proyectoId));
+
+        // Sólo el dueño del proyecto puede enviarlo a revisión
+        if (!gestorUserId.equals(p.getUsuarioId())) {
+            throw new SecurityException("Solo el gestor dueño del proyecto puede enviarlo a auditoría");
+        }
+
+        // Precondiciones de negocio
+        int indicadores = masterProjectRepository.countIndicadoresByProyecto(proyectoId);
+        if (indicadores == 0) {
+            throw new IllegalStateException("Debe configurar al menos un indicador antes de enviar a auditoría");
+        }
+        int documentos = masterProjectRepository.countDocumentosByProyecto(proyectoId);
+        if (documentos == 0) {
+            throw new IllegalStateException("Debe subir al menos un documento de evidencia antes de enviar a auditoría");
+        }
+
+        return transitionState(proyectoId, "en_revision", gestorUserId, "gestor", null);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    //  Sprint 17 — Auditor cierra (aprueba) o rechaza
+    // ═══════════════════════════════════════════════════════════════════════
+
+    @Override
+    public Map<String, Object> cerrarAuditoria(Integer proyectoId,
+                                               Integer auditorUserId,
+                                               String auditorRole,
+                                               String observaciones) {
+        if (auditorUserId == null || auditorRole == null)
+            throw new IllegalArgumentException("actorUserId y actorRole requeridos");
+        String role = auditorRole.toLowerCase();
+        if (!(role.equals("admin") || role.equals("auditor"))) {
+            throw new SecurityException("Solo admin o auditor pueden cerrar auditorías");
+        }
+        // Precondición central: TODOS los indicadores deben tener al menos una medición
+        if (!masterProjectRepository.allIndicadoresTienenMedicion(proyectoId)) {
+            throw new IllegalStateException(
+                "No se puede cerrar: faltan mediciones en uno o más indicadores");
+        }
+        return transitionState(proyectoId, "completado", auditorUserId, role, observaciones);
+    }
+
+    @Override
+    public Map<String, Object> rechazarAuditoria(Integer proyectoId,
+                                                 Integer auditorUserId,
+                                                 String auditorRole,
+                                                 String motivoRechazo) {
+        if (auditorUserId == null || auditorRole == null)
+            throw new IllegalArgumentException("actorUserId y actorRole requeridos");
+        if (motivoRechazo == null || motivoRechazo.trim().length() < 10) {
+            throw new IllegalArgumentException("El motivo de rechazo debe tener al menos 10 caracteres");
+        }
+        String role = auditorRole.toLowerCase();
+        if (!(role.equals("admin") || role.equals("auditor"))) {
+            throw new SecurityException("Solo admin o auditor pueden rechazar auditorías");
+        }
+        // El motivo se persiste en observaciones_cierre para que el gestor lo lea como banner
+        return transitionState(proyectoId, "activo", auditorUserId, role, motivoRechazo.trim());
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    //  Sprint 19 — Métricas para AuditQueuePage
+    // ═══════════════════════════════════════════════════════════════════════
+
+    @Override
+    public Map<String, Object> getAuditQueueMetrics() {
+        return masterProjectRepository.auditQueueMetrics();
+    }
 }

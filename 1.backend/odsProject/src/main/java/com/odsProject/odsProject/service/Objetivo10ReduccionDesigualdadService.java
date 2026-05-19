@@ -7,6 +7,7 @@ import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods10.tables.pojos.AuditoriaOds10;
 import com.odsProject.odsProject.repository.Objetivo10ReduccionDesigualdadRepository;
+import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo10ReduccionDesigualdadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
 
     @Autowired
     private EvaluationService evaluationService;
+
+    @Autowired
+    private MasterProjectRepository masterProjectRepository;
 
     @Override public List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findAllIndicadoresByProyectoOds10(proyectoId); }
     @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_10_1_1(Integer proyectoId) { return objetivo10ReduccionDesigualdadRepository.findIndicador_10_1_1(proyectoId); }
@@ -156,6 +160,27 @@ public class Objetivo10ReduccionDesigualdadService implements IObjetivo10Reducci
     @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
+
+
+        // Sprint 18 — Inmutabilidad post-auditoría (service-level guard)
+        // El trigger de BD también bloquea, pero acá lo agarramos primero para
+        // devolver un 409 limpio (IllegalStateException) en vez de propagar
+        // DataAccessException con stack trace.
+        Integer __pidCheck = toInt(payload.get("proyectoIndicadorId"));
+        if (__pidCheck != null) {
+            objetivo10ReduccionDesigualdadRepository.findIndicadorByIdEntity(__pidCheck).ifPresent(__ind -> {
+                Integer __pid = __ind.getProyectoId();
+                if (__pid != null) {
+                    masterProjectRepository.findById(__pid).ifPresent(__p -> {
+                        String __est = String.valueOf(__p.getEstado()).toLowerCase();
+                        if ("completado".equals(__est) || "cancelado".equals(__est)) {
+                            throw new IllegalStateException(
+                                "Proyecto auditado o cancelado: no se permiten nuevas mediciones");
+                        }
+                    });
+                }
+            });
+        }
 
         Integer proyectoIndicadorId = toInt(payload.get("proyectoIndicadorId"));
         if (proyectoIndicadorId == null)

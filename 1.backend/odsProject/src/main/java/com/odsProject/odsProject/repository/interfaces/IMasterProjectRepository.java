@@ -115,4 +115,68 @@ public interface IMasterProjectRepository {
      * indicadores asociados; este método solo limpia la fila de proyecto_ods.
      */
     void unlinkOds(Integer proyectoId, Integer odsId);
+
+    // ─────────────────────────────────────────────────────────────────────
+    //  Sprint 15 — Transiciones de estado + stamping de auditoría
+    // ─────────────────────────────────────────────────────────────────────
+
+    /**
+     * Cambia el estado de un proyecto y, si aplica, registra quién y cuándo lo cerró.
+     *
+     * @param proyectoId           Proyecto a actualizar.
+     * @param nuevoEstado          'planificacion' | 'activo' | 'en_revision' | 'completado' | 'cancelado'
+     * @param auditadoPor          ID del auditor (NULL para transiciones que no son cierre).
+     * @param observaciones        Texto libre o motivo de rechazo (NULL si no aplica).
+     * @param stampAuditadoEn      Si true, setea auditado_en = NOW(). Si false, lo deja como esté.
+     * @param stampEnvioRevision   Si true, setea fecha_envio_revision = NOW().
+     * @return Número de filas afectadas (1 = OK, 0 = proyecto no existe).
+     */
+    int updateEstado(Integer proyectoId,
+                     String nuevoEstado,
+                     Integer auditadoPor,
+                     String observaciones,
+                     boolean stampAuditadoEn,
+                     boolean stampEnvioRevision);
+
+    // ─────────────────────────────────────────────────────────────────────
+    //  Sprint 16/17 — Validaciones de transición (defensa en BD)
+    // ─────────────────────────────────────────────────────────────────────
+
+    /**
+     * Cuenta documentos de evidencia subidos para un proyecto.
+     * Sprint 16 lo usa para validar que el gestor adjuntó al menos un archivo
+     * antes de enviar a revisión.
+     */
+    int countDocumentosByProyecto(Integer proyectoId);
+
+    /**
+     * Cuenta indicadores configurados para un proyecto sumando los 17 schemas
+     * (proyecto_indicadores existe replicado en ods01..ods17).
+     * Sprint 16 lo usa como precondición; Sprint 17 lo usa para validar que
+     * todos los indicadores tienen al menos una medición antes de aprobar.
+     */
+    int countIndicadoresByProyecto(Integer proyectoId);
+
+    /**
+     * Verifica que TODO indicador del proyecto tiene al menos una medición
+     * histórica registrada. Es la precondición central para "Cerrar auditoría"
+     * (Sprint 17): no se puede aprobar un proyecto si faltan datos.
+     *
+     * @return true si todos los indicadores tienen ≥1 medición, false en caso contrario.
+     */
+    boolean allIndicadoresTienenMedicion(Integer proyectoId);
+
+    // ─────────────────────────────────────────────────────────────────────
+    //  Sprint 19 — Métricas para la cola de auditoría
+    // ─────────────────────────────────────────────────────────────────────
+
+    /**
+     * Devuelve métricas agregadas para el panel superior del AuditQueuePage:
+     *   - pendientes    : proyectos en estado 'en_revision'
+     *   - enCurso       : proyectos 'activo' con al menos un documento subido
+     *   - auditadosMes  : proyectos 'completado' cuyo auditado_en cae en el mes actual
+     *   - tiempoPromedioHoras : promedio de horas entre fecha_envio_revision y auditado_en
+     *                           en los últimos 30 días (NULL si aún no hay datos)
+     */
+    java.util.Map<String, Object> auditQueueMetrics();
 }

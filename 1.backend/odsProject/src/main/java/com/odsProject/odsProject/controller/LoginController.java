@@ -89,6 +89,8 @@ public class LoginController implements ILoginController {
         return result.map(user -> {
             Map<String, Object> response = new HashMap<>();
             response.put("user", user);
+            // Incluir el rol explícitamente para el frontend
+            loginService.getRolById(user.getRolId()).ifPresent(r -> response.put("role", r.getNombre()));
             return ResponseEntity.ok(response);
         }).orElseGet(() -> ResponseEntity.badRequest().build());
     }

@@ -54,7 +54,14 @@ export const projectService = {
       // mapper la deja preparada por si en el futuro se agrega al view.
       provinciaNombre: p.provinciaNombre || p.provincia_nombre || null,
       cantonNombre:    p.cantonNombre    || p.canton_nombre    || null,
-      distritoNombre:  p.distritoNombre  || p.distrito_nombre  || null
+      distritoNombre:  p.distritoNombre  || p.distrito_nombre  || null,
+      // Sprint 15/20 — Stamping de auditoría: visible para consultor + listings.
+      // Los nombres del backend cubren ambos casos (POJO directo + view).
+      auditedBy:           p.auditadoPor       ?? p.auditado_por       ?? null,
+      auditedByName:       p.auditorNombre     ?? p.auditor_nombre     ?? null,
+      auditedAt:           p.auditadoEn        ?? p.auditado_en        ?? null,
+      closureObservations: p.observacionesCierre ?? p.observaciones_cierre ?? null,
+      sentForReviewAt:     p.fechaEnvioRevision ?? p.fecha_envio_revision ?? null,
     };
   },
 
@@ -97,6 +104,15 @@ export const projectService = {
       return { success: true, data: this._mapBackendToFrontend(response.data) };
     } catch (error) {
       return { success: false, error: error.message };
+    }
+  },
+
+  async getOdsByProyecto(projectId) {
+    try {
+      const response = await api.get(`/projects/${projectId}/ods`);
+      return { success: true, data: response.data || [] };
+    } catch (error) {
+      return { success: false, error: error.message, data: [] };
     }
   },
 
@@ -356,4 +372,95 @@ export const projectService = {
       return { success: false, error: error.message, data: [] };
     }
   },
+
+  // ═════════════════════════════════════════════════════════════════════
+  //  Sprint 15-19 — Flujo de auditoría (transiciones de estado)
+  //
+  //  Cada método envuelve el endpoint backend correspondiente y normaliza
+  //  el manejo de errores tipados (400/403/409) en {success, error, status}
+  //  para que las páginas decidan qué toast mostrar.
+  // ═════════════════════════════════════════════════════════════════════
+
+  /**
+   * Helper interno: extrae mensaje de error legible del axios error.
+   */
+  _normalizeError(error) {
+    const status = error.response?.status;
+    const body   = error.response?.data || {};
+    const msg    = body.error || body.message || error.message || 'Error desconocido';
+    return { success: false, error: msg, status };
+  },
+
+  /**
+   * Sprint 16 — Gestor envía proyecto a auditoría.
+   * Backend: POST /api/projects/{id}/enviar-revision { actorUserId }
+   */
+  async sendForReview(projectId, actorUserId) {
+    try {
+      const r = await api.post(`/projects/${projectId}/enviar-revision`, { actorUserId });
+      return { success: true, data: r.data };
+    } catch (error) {
+      return this._normalizeError(error);
+    }
+  },
+
+  /**
+   * Sprint 17 — Auditor cierra (aprueba) la auditoría.
+   * Backend: POST /api/projects/{id}/cerrar-auditoria { actorUserId, actorRole, observaciones }
+   */
+  async approveAudit(projectId, actorUserId, actorRole, observaciones) {
+    try {
+      const r = await api.post(`/projects/${projectId}/cerrar-auditoria`, {
+        actorUserId, actorRole, observaciones: observaciones || null
+      });
+      return { success: true, data: r.data };
+    } catch (error) {
+      return this._normalizeError(error);
+    }
+  },
+
+  /**
+   * Sprint 17 — Auditor rechaza la auditoría (devuelve a 'activo').
+   * Backend: POST /api/projects/{id}/rechazar-auditoria { actorUserId, actorRole, motivoRechazo }
+   * El motivoRechazo debe tener al menos 10 caracteres (lo valida también el backend).
+   */
+  async rejectAudit(projectId, actorUserId, actorRole, motivoRechazo) {
+    try {
+      const r = await api.post(`/projects/${projectId}/rechazar-auditoria`, {
+        actorUserId, actorRole, motivoRechazo
+      });
+      return { success: true, data: r.data };
+    } catch (error) {
+      return this._normalizeError(error);
+    }
+  },
+
+  /**
+   * Sprint 15 — Transición de estado genérica (uso administrativo).
+   */
+  async changeProjectState(projectId, estado, actorUserId, actorRole, observaciones) {
+    try {
+      const r = await api.patch(`/projects/${projectId}/estado`, {
+        estado, actorUserId, actorRole, observaciones: observaciones || null
+      });
+      return { success: true, data: r.data };
+    } catch (error) {
+      return this._normalizeError(error);
+    }
+  },
+
+  /**
+   * Sprint 19 — Métricas para el panel del AuditQueuePage.
+   * Backend: GET /api/projects/audit/metrics
+   * Devuelve: { pendientes, enCurso, auditadosMes, tiempoPromedioHoras }
+   */
+  async getAuditMetrics() {
+    try {
+      const r = await api.get('/projects/audit/metrics');
+      return { success: true, data: r.data || {} };
+    } catch (error) {
+      return { success: false, error: error.message, data: {} };
+    }
+  },
+
 };

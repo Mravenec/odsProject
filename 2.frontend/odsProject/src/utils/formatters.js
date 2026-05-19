@@ -96,3 +96,53 @@ export const odsColors = {
 export const getOdsColor = (odsId) => {
   return odsColors[odsId] || '#64748B';
 };
+
+// ═════════════════════════════════════════════════════════════════════
+//  Sprint 18 — Helpers de estado del proyecto
+// ═════════════════════════════════════════════════════════════════════
+
+/**
+ * Devuelve true si el proyecto está en un estado que prohíbe ediciones.
+ * Lo usan los componentes para ocultar botones de edición / upload / delete.
+ * El backend y los triggers de BD también validan, pero esto evita la
+ * vuelta innecesaria al servidor.
+ */
+export const isProjectLocked = (project) => {
+  if (!project) return false;
+  const s = String(project.status || project.estado || '').toLowerCase();
+  return s === 'completado' || s === 'cancelado';
+};
+
+/**
+ * Devuelve true si el proyecto está en revisión (esperando al auditor).
+ * En este estado, el gestor NO puede subir más documentos ni editar.
+ */
+export const isProjectInReview = (project) => {
+  if (!project) return false;
+  return String(project.status || project.estado || '').toLowerCase() === 'en_revision';
+};
+
+/**
+ * Sprint 17 — Etiqueta legible del estado, lista para mostrar en pills.
+ */
+export const getEstadoLabel = (estado) => {
+  const s = String(estado || '').toLowerCase();
+  const labels = {
+    planificacion: 'Planificación',
+    activo:        'Activo',
+    en_revision:   'En revisión',
+    completado:    'Auditado',
+    cancelado:     'Cancelado',
+  };
+  return labels[s] || estado || 'Desconocido';
+};
+
+/**
+ * Sprint 17 — Devuelve la clase CSS apropiada para un pill de estado.
+ * El consumidor solo concatena: `status-pill ${getEstadoClass(estado)}`.
+ */
+export const getEstadoClass = (estado) => {
+  const s = String(estado || '').toLowerCase();
+  // Las clases mapean a definiciones en index.css / DashboardPage.css
+  return s.replace(/[^a-z_]/g, '') || 'unknown';
+};

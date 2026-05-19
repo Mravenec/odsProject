@@ -162,8 +162,37 @@ const ProjectResultsPage = () => {
             </div>
           </div>
           <div className="nav-right">
-            {/* Sprint 14: botón AUDITAR para admin/auditor */}
-            {perms.canEnterMeasurements && (
+            {/* Sprint 16 — Botón "Enviar a auditoría" para el gestor dueño.
+               Solo visible si el proyecto está 'activo' y el user es el dueño. */}
+            {project && project.userId === user?.id
+              && String(project.status||'').toLowerCase() === 'activo'
+              && perms.canEditOwnProject && (
+              <button
+                type="button"
+                className="btn-send-for-review"
+                onClick={async () => {
+                  if (!window.confirm(
+                    '¿Enviar este proyecto a auditoría?\n\n' +
+                    'Después de enviar, no podrás modificar indicadores ni subir documentos ' +
+                    'hasta que el auditor revise el proyecto.'
+                  )) return;
+                  const r = await projectService.sendForReview(projectId, user.id);
+                  if (!r.success) {
+                    alert('No se pudo enviar:\n' + r.error);
+                    return;
+                  }
+                  alert('✓ Proyecto enviado a auditoría.');
+                  window.location.reload();
+                }}
+              >
+                📤 Enviar a auditoría
+              </button>
+            )}
+
+            {/* Sprint 17: botón AUDITAR para admin/auditor (Sprint 14 original).
+               Solo visible si el proyecto está 'en_revision' (no antes, no después). */}
+            {perms.canEnterMeasurements
+              && String(project?.status||'').toLowerCase() === 'en_revision' && (
               <button
                 type="button"
                 className="btn-audit"
@@ -175,6 +204,57 @@ const ProjectResultsPage = () => {
           </div>
         </div>
       </header>
+
+      {/* Sprint 17 — Banner de rechazo visible para el gestor cuando el
+         proyecto vuelve a 'activo' con observaciones de cierre (motivo del rechazo). */}
+      {project && project.userId === user?.id
+        && String(project.status||'').toLowerCase() === 'activo'
+        && project.closureObservations && (
+        <div style={{
+          maxWidth:'var(--container-max, 1200px)',margin:'1rem auto 0',
+          padding:'1rem 1.25rem',background:'#fffbeb',
+          border:'1px solid #fef3c7',borderLeft:'4px solid #E9A23B',
+          borderRadius:8,color:'#78350f'
+        }}>
+          <div style={{fontWeight:800,fontSize:'0.78rem',textTransform:'uppercase',
+                       letterSpacing:'0.1em',color:'#854d0e',marginBottom:4}}>
+            ⚠ La auditoría fue rechazada
+          </div>
+          <div style={{fontSize:'0.92rem',lineHeight:1.5}}>
+            <strong>Motivo:</strong> {project.closureObservations}
+          </div>
+          <div style={{fontSize:'0.8rem',marginTop:6,color:'#92400e'}}>
+            Corregí lo indicado y volvé a enviar el proyecto a auditoría.
+          </div>
+        </div>
+      )}
+
+      {/* Sprint 20 — Panel de auditoría para consultor / admin / auditor
+         visible cuando el proyecto YA fue cerrado (estado completado). */}
+      {project && String(project.status||'').toLowerCase() === 'completado' && (
+        <div style={{
+          maxWidth:'var(--container-max, 1200px)',margin:'1rem auto 0',
+          padding:'1rem 1.25rem',background:'#ecfdf5',
+          border:'1px solid #dcfce7',borderLeft:'4px solid #1F9D55',
+          borderRadius:8
+        }}>
+          <div style={{display:'flex',alignItems:'center',gap:8,
+                       fontWeight:800,fontSize:'0.78rem',textTransform:'uppercase',
+                       letterSpacing:'0.1em',color:'#166534',marginBottom:6}}>
+            <CheckCircle2 size={14} /> Auditoría cerrada · datos firmados
+          </div>
+          <div style={{fontSize:'0.92rem',color:'#14532d',lineHeight:1.55}}>
+            Auditado por <strong>{project.auditedByName || `Usuario #${project.auditedBy}`}</strong>
+            {project.auditedAt && <> el <strong>{formatDate(project.auditedAt)}</strong></>}.
+            {project.closureObservations && (
+              <div style={{marginTop:6,padding:'0.6rem 0.8rem',background:'#fff',
+                           borderRadius:6,color:'#1B2440',fontSize:'0.88rem',fontStyle:'italic'}}>
+                "{project.closureObservations}"
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <main className="premium-main">
         <div className="report-grid">

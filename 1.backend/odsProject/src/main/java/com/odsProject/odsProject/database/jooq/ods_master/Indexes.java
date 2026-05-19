@@ -24,6 +24,8 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
+    public static final Index PROYECTOS_IDX_AUDITADO_EN = Internal.createIndex(DSL.name("idx_auditado_en"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.AUDITADO_EN }, false);
+    public static final Index PROYECTOS_IDX_AUDITOR = Internal.createIndex(DSL.name("idx_auditor"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.AUDITADO_POR }, false);
     public static final Index PROYECTOS_IDX_ESTADO = Internal.createIndex(DSL.name("idx_estado"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.ESTADO }, false);
     public static final Index PROYECTO_ODS_IDX_ODS = Internal.createIndex(DSL.name("idx_ods"), ProyectoOds.PROYECTO_ODS, new OrderField[] { ProyectoOds.PROYECTO_ODS.ODS_ID }, false);
     public static final Index PROYECTO_DOCUMENTOS_IDX_PROYECTO = Internal.createIndex(DSL.name("idx_proyecto"), ProyectoDocumentos.PROYECTO_DOCUMENTOS, new OrderField[] { ProyectoDocumentos.PROYECTO_DOCUMENTOS.PROYECTO_ID }, false);

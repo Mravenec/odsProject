@@ -7,6 +7,7 @@ import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MedicionesHistoricas;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.AuditoriaOds13;
 import com.odsProject.odsProject.repository.Objetivo13AccionClimaticaRepository;
+import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo13AccionClimaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,95 +23,98 @@ import java.util.Optional;
 public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaService {
 
     @Autowired
-    private Objetivo13AccionClimaticaRepository objetivo13AccionClimaRepository;
+    private Objetivo13AccionClimaticaRepository objetivo13AccionClimaticaRepository;
 
     @Autowired
     private EvaluationService evaluationService;
 
-    @Override public List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId) { return objetivo13AccionClimaRepository.findAllIndicadoresByProyectoOds13(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_1_1(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_1_1(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_1_2(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_1_2(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_1_3(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_1_3(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_2_1(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_2_1(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_2_2(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_2_2(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_2_3(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_2_3(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_3_1(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_3_1(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_3_2(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_3_2(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_a_1(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_a_1(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_b_1(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_b_1(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_b_2(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicador_13_b_2(proyectoId); }
+    @Autowired
+    private MasterProjectRepository masterProjectRepository;
 
-    @Override public List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds13(Integer proyectoId) { return objetivo13AccionClimaRepository.findAllIndicadoresByProyectoOds13(proyectoId); }
-    @Override public List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) { return objetivo13AccionClimaRepository.findIndicadoresByMeta(proyectoId, metaPrefix); }
+    @Override public List<VistaAdminDetalleIndicadores> getAllIndicators(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findAllIndicadoresByProyectoOds13(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_1_1(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_1_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_1_2(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_1_2(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_1_3(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_1_3(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_2_1(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_2_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_2_2(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_2_2(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_2_3(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_2_3(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_3_1(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_3_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_3_2(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_3_2(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_a_1(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_a_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_b_1(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_b_1(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> getIndicador_13_b_2(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicador_13_b_2(proyectoId); }
 
-    @Override public List<Proyectos> getAllProjectsOds13() { return objetivo13AccionClimaRepository.findAllProyectosOds13(); }
-    @Override public Optional<Proyectos> getProjectOds13ById(Integer proyectoId) { return objetivo13AccionClimaRepository.findProyectoOds13ById(proyectoId); }
-    @Override public List<ProyectoIndicadorParametros> getAllMetasProyectoOds13(Integer proyectoId) { return objetivo13AccionClimaRepository.findAllMetasProyectoOds13(proyectoId); }
-    @Override public Optional<ProyectoIndicadorParametros> getMetaProyectoOds13ById(Integer metaId) { return objetivo13AccionClimaRepository.findMetaProyectoOds13ById(metaId); }
-    @Override public List<MedicionesHistoricas> getAllMedicionesHistoricasOds13(Integer indicadorId) { return objetivo13AccionClimaRepository.findAllMedicionesHistoricasOds13(indicadorId); }
-    @Override public Optional<MedicionesHistoricas> getMedicionHistoricaOds13ById(Integer medicionId) { return objetivo13AccionClimaRepository.findMedicionHistoricaOds13ById(medicionId); }
+    @Override public List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyectoOds13(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findAllIndicadoresByProyectoOds13(proyectoId); }
+    @Override public List<VistaAdminDetalleIndicadores> findIndicadoresByMeta(Integer proyectoId, String metaPrefix) { return objetivo13AccionClimaticaRepository.findIndicadoresByMeta(proyectoId, metaPrefix); }
+
+    @Override public List<Proyectos> getAllProjectsOds13() { return objetivo13AccionClimaticaRepository.findAllProyectosOds13(); }
+    @Override public Optional<Proyectos> getProjectOds13ById(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findProyectoOds13ById(proyectoId); }
+    @Override public List<ProyectoIndicadorParametros> getAllMetasProyectoOds13(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findAllMetasProyectoOds13(proyectoId); }
+    @Override public Optional<ProyectoIndicadorParametros> getMetaProyectoOds13ById(Integer metaId) { return objetivo13AccionClimaticaRepository.findMetaProyectoOds13ById(metaId); }
+    @Override public List<MedicionesHistoricas> getAllMedicionesHistoricasOds13(Integer indicadorId) { return objetivo13AccionClimaticaRepository.findAllMedicionesHistoricasOds13(indicadorId); }
+    @Override public Optional<MedicionesHistoricas> getMedicionHistoricaOds13ById(Integer medicionId) { return objetivo13AccionClimaticaRepository.findMedicionHistoricaOds13ById(medicionId); }
 
     @Override public Double calculateProjectProgress(Integer proyectoId) {
-        List<VistaAdminDetalleIndicadores> indicadores = objetivo13AccionClimaRepository.findIndicadoresByProyecto(proyectoId);
+        List<VistaAdminDetalleIndicadores> indicadores = objetivo13AccionClimaticaRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
         long withData = indicadores.stream().filter(ind -> ind.getValorActual() != null).count();
         return (double) withData / indicadores.size() * 100.0;
     }
 
     @Override public Map<String, Object> getOds13Statistics() {
-        List<Proyectos> proyectos = objetivo13AccionClimaRepository.findAllProyectosOds13();
-        List<VistaAdminDetalleIndicadores> indicadores = proyectos.stream().flatMap(p -> objetivo13AccionClimaRepository.findIndicadoresByProyecto(p.getId()).stream()).toList();
+        List<Proyectos> proyectos = objetivo13AccionClimaticaRepository.findAllProyectosOds13();
+        List<VistaAdminDetalleIndicadores> indicadores = proyectos.stream().flatMap(p -> objetivo13AccionClimaticaRepository.findIndicadoresByProyecto(p.getId()).stream()).toList();
         return Map.of("totalProyectos", proyectos.size(), "totalIndicadores", indicadores.size(), "indicadoresConDatos", indicadores.stream().filter(i -> i.getValorActual() != null).count());
     }
 
     // IOdsBaseService implementations
-    @Override public List<Proyectos> findAllProyectos() { return objetivo13AccionClimaRepository.findAllProyectos(); }
-    @Override public Optional<Proyectos> findProyectoById(Integer proyectoId) { return objetivo13AccionClimaRepository.findProyectoById(proyectoId); }
-    @Override public Proyectos saveProyecto(Proyectos proyecto) { return objetivo13AccionClimaRepository.saveProyecto(proyecto); }
-    @Override public Proyectos updateProyecto(Proyectos proyecto) { return objetivo13AccionClimaRepository.updateProyecto(proyecto); }
-    @Override public Boolean deleteProyecto(Integer proyectoId) { try { objetivo13AccionClimaRepository.deleteProyecto(proyectoId); return true; } catch (Exception e) { return false; } }
+    @Override public List<Proyectos> findAllProyectos() { return objetivo13AccionClimaticaRepository.findAllProyectos(); }
+    @Override public Optional<Proyectos> findProyectoById(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findProyectoById(proyectoId); }
+    @Override public Proyectos saveProyecto(Proyectos proyecto) { return objetivo13AccionClimaticaRepository.saveProyecto(proyecto); }
+    @Override public Proyectos updateProyecto(Proyectos proyecto) { return objetivo13AccionClimaticaRepository.updateProyecto(proyecto); }
+    @Override public Boolean deleteProyecto(Integer proyectoId) { try { objetivo13AccionClimaticaRepository.deleteProyecto(proyectoId); return true; } catch (Exception e) { return false; } }
 
-    @Override public List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) { return objetivo13AccionClimaRepository.findIndicadoresByProyecto(proyectoId); }
-    @Override public Optional<VistaAdminDetalleIndicadores> findIndicadorById(Integer indicadorId) { return objetivo13AccionClimaRepository.findIndicadorById(indicadorId); }
+    @Override public List<VistaAdminDetalleIndicadores> findAllIndicadoresByProyecto(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findIndicadoresByProyecto(proyectoId); }
+    @Override public Optional<VistaAdminDetalleIndicadores> findIndicadorById(Integer indicadorId) { return objetivo13AccionClimaticaRepository.findIndicadorById(indicadorId); }
     
     @Override public ProyectoIndicadores saveIndicador(ProyectoIndicadores indicador) {
-        ProyectoIndicadores saved = objetivo13AccionClimaRepository.saveIndicador(indicador);
+        ProyectoIndicadores saved = objetivo13AccionClimaticaRepository.saveIndicador(indicador);
         if (saved != null && saved.getFormulaCustom() != null) {
             seedParametrosFromFormula(saved.getId(), saved.getFormulaCustom());
         }
         return saved;
     }
-    @Override public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) { return objetivo13AccionClimaRepository.updateIndicador(indicador); }
-    @Override public Boolean deleteIndicador(Integer indicadorId) { try { objetivo13AccionClimaRepository.deleteIndicador(indicadorId); return true; } catch (Exception e) { return false; } }
+    @Override public ProyectoIndicadores updateIndicador(ProyectoIndicadores indicador) { return objetivo13AccionClimaticaRepository.updateIndicador(indicador); }
+    @Override public Boolean deleteIndicador(Integer indicadorId) { try { objetivo13AccionClimaticaRepository.deleteIndicador(indicadorId); return true; } catch (Exception e) { return false; } }
 
-    @Override public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) { return objetivo13AccionClimaRepository.findMetasByProyecto(proyectoId); }
-    @Override public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) { return objetivo13AccionClimaRepository.findMetaProyectoOds13ById(metaId); }
+    @Override public List<ProyectoIndicadorParametros> findAllMetasProyecto(Integer proyectoId) { return objetivo13AccionClimaticaRepository.findMetasByProyecto(proyectoId); }
+    @Override public Optional<ProyectoIndicadorParametros> findMetaProyectoById(Integer metaId) { return objetivo13AccionClimaticaRepository.findMetaProyectoOds13ById(metaId); }
     @Override public ProyectoIndicadorParametros saveMetaProyecto(ProyectoIndicadorParametros meta) { 
-        ProyectoIndicadorParametros saved = objetivo13AccionClimaRepository.saveMetaProyecto(meta);
+        ProyectoIndicadorParametros saved = objetivo13AccionClimaticaRepository.saveMetaProyecto(meta);
         recalculateIndicator(saved.getProyectoIndicadorId());
         return saved;
     }
     @Override public ProyectoIndicadorParametros updateMetaProyecto(ProyectoIndicadorParametros meta) { 
-        ProyectoIndicadorParametros updated = objetivo13AccionClimaRepository.updateMetaProyecto(meta);
+        ProyectoIndicadorParametros updated = objetivo13AccionClimaticaRepository.updateMetaProyecto(meta);
         recalculateIndicator(updated.getProyectoIndicadorId());
         return updated;
     }
-    @Override public Boolean deleteMetaProyecto(Integer metaId) { try { objetivo13AccionClimaRepository.deleteMetaProyecto(metaId); return true; } catch (Exception e) { return false; } }
+    @Override public Boolean deleteMetaProyecto(Integer metaId) { try { objetivo13AccionClimaticaRepository.deleteMetaProyecto(metaId); return true; } catch (Exception e) { return false; } }
 
-    @Override public List<MedicionesHistoricas> findAllMedicionesHistoricas(Integer indicadorId) { return objetivo13AccionClimaRepository.findMedicionesByIndicador(indicadorId); }
-    @Override public Optional<MedicionesHistoricas> findMedicionHistoricaById(Integer medicionId) { return objetivo13AccionClimaRepository.findMedicionHistoricaOds13ById(medicionId); }
-    @Override public MedicionesHistoricas saveMedicionHistorica(MedicionesHistoricas medicion) { return objetivo13AccionClimaRepository.saveMedicion(medicion); }
-    @Override public MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion) { return objetivo13AccionClimaRepository.updateMedicionHistorica(medicion); }
-    @Override public Boolean deleteMedicionHistorica(Integer medicionId) { try { objetivo13AccionClimaRepository.deleteMedicionHistorica(medicionId); return true; } catch (Exception e) { return false; } }
+    @Override public List<MedicionesHistoricas> findAllMedicionesHistoricas(Integer indicadorId) { return objetivo13AccionClimaticaRepository.findMedicionesByIndicador(indicadorId); }
+    @Override public Optional<MedicionesHistoricas> findMedicionHistoricaById(Integer medicionId) { return objetivo13AccionClimaticaRepository.findMedicionHistoricaOds13ById(medicionId); }
+    @Override public MedicionesHistoricas saveMedicionHistorica(MedicionesHistoricas medicion) { return objetivo13AccionClimaticaRepository.saveMedicion(medicion); }
+    @Override public MedicionesHistoricas updateMedicionHistorica(MedicionesHistoricas medicion) { return objetivo13AccionClimaticaRepository.updateMedicionHistorica(medicion); }
+    @Override public Boolean deleteMedicionHistorica(Integer medicionId) { try { objetivo13AccionClimaticaRepository.deleteMedicionHistorica(medicionId); return true; } catch (Exception e) { return false; } }
 
     @Override public Boolean validateIndicatorData(VistaAdminDetalleIndicadores indicador) { return indicador.getProyectoId() != null && indicador.getIndicadorCodigo() != null; }
     @Override public Boolean validateProjectData(Proyectos proyecto) { return proyecto != null && proyecto.getNombreProyecto() != null && !proyecto.getNombreProyecto().trim().isEmpty(); }
     @Override public Map<String, Object> getOdsStatistics() { return getOds13Statistics(); }
-    @Override public Boolean existsProyecto(Integer proyectoId) { return objetivo13AccionClimaRepository.existsProyecto(proyectoId); }
-    @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo13AccionClimaRepository.existsIndicador(indicadorId); }
-    @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo13AccionClimaRepository.existsMetaProyecto(metaId); }
-    @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo13AccionClimaRepository.existsMedicionHistorica(medicionId); }
-    @Override public Map<String, Object> getDashboardData() { return objetivo13AccionClimaRepository.spAdminDashboard(); }
+    @Override public Boolean existsProyecto(Integer proyectoId) { return objetivo13AccionClimaticaRepository.existsProyecto(proyectoId); }
+    @Override public Boolean existsIndicador(Integer indicadorId) { return objetivo13AccionClimaticaRepository.existsIndicador(indicadorId); }
+    @Override public Boolean existsMetaProyecto(Integer metaId) { return objetivo13AccionClimaticaRepository.existsMetaProyecto(metaId); }
+    @Override public Boolean existsMedicionHistorica(Integer medicionId) { return objetivo13AccionClimaticaRepository.existsMedicionHistorica(medicionId); }
+    @Override public Map<String, Object> getDashboardData() { return objetivo13AccionClimaticaRepository.spAdminDashboard(); }
 
     /**
      * Recalcula el valor actual de un indicador basado en sus parámetros y fórmula
@@ -118,13 +122,13 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
     private void recalculateIndicator(Integer proyectoIndicadorId) {
         if (proyectoIndicadorId == null) return;
 
-        Optional<ProyectoIndicadores> optIndicador = objetivo13AccionClimaRepository.findIndicadorByIdEntity(proyectoIndicadorId);
+        Optional<ProyectoIndicadores> optIndicador = objetivo13AccionClimaticaRepository.findIndicadorByIdEntity(proyectoIndicadorId);
         if (optIndicador.isEmpty()) return;
 
         ProyectoIndicadores indicador = optIndicador.get();
         if (indicador.getFormulaCustom() == null || indicador.getFormulaCustom().isEmpty()) return;
 
-        List<ProyectoIndicadorParametros> parametros = objetivo13AccionClimaRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
+        List<ProyectoIndicadorParametros> parametros = objetivo13AccionClimaticaRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
         
         java.util.Map<String, java.math.BigDecimal> paramsMap = new java.util.HashMap<>();
         for (ProyectoIndicadorParametros p : parametros) {
@@ -137,7 +141,7 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
         try {
             java.math.BigDecimal result = evaluationService.evaluateFormula(indicador.getFormulaCustom(), paramsMap);
             indicador.setValorActual(result);
-            objetivo13AccionClimaRepository.updateIndicador(indicador);
+            objetivo13AccionClimaticaRepository.updateIndicador(indicador);
         } catch (Exception e) {
             System.err.println("Error recalculando indicador ODS13 " + proyectoIndicadorId + ": " + e.getMessage());
         }
@@ -154,18 +158,39 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
+
+        // Sprint 18 — Inmutabilidad post-auditoría (service-level guard)
+        // El trigger de BD también bloquea, pero acá lo agarramos primero para
+        // devolver un 409 limpio (IllegalStateException) en vez de propagar
+        // DataAccessException con stack trace.
+        Integer __pidCheck = toInt(payload.get("proyectoIndicadorId"));
+        if (__pidCheck != null) {
+            objetivo13AccionClimaticaRepository.findIndicadorByIdEntity(__pidCheck).ifPresent(__ind -> {
+                Integer __pid = __ind.getProyectoId();
+                if (__pid != null) {
+                    masterProjectRepository.findById(__pid).ifPresent(__p -> {
+                        String __est = String.valueOf(__p.getEstado()).toLowerCase();
+                        if ("completado".equals(__est) || "cancelado".equals(__est)) {
+                            throw new IllegalStateException(
+                                "Proyecto auditado o cancelado: no se permiten nuevas mediciones");
+                        }
+                    });
+                }
+            });
+        }
+
         Integer proyectoIndicadorId = toInt(payload.get("proyectoIndicadorId"));
         if (proyectoIndicadorId == null)
             throw new IllegalArgumentException("proyectoIndicadorId es requerido");
 
-        Optional<ProyectoIndicadores> optInd = objetivo13AccionClimaRepository.findIndicadorByIdEntity(proyectoIndicadorId);
+        Optional<ProyectoIndicadores> optInd = objetivo13AccionClimaticaRepository.findIndicadorByIdEntity(proyectoIndicadorId);
         if (optInd.isEmpty())
             throw new IllegalArgumentException("Indicador no encontrado: " + proyectoIndicadorId);
         ProyectoIndicadores indicador = optInd.get();
 
         // 1. Reconstruir Map<nombre_variable, valor> a partir de los IDs ingresados
         java.util.List<ProyectoIndicadorParametros> parametros =
-            objetivo13AccionClimaRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
+            objetivo13AccionClimaticaRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
         java.util.Map<Integer, ProyectoIndicadorParametros> paramsById = new java.util.HashMap<>();
         for (ProyectoIndicadorParametros p : parametros) paramsById.put(p.getId(), p);
 
@@ -217,10 +242,10 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
         Object obs = payload.get("observaciones");
         if (obs != null) medicion.setObservaciones(String.valueOf(obs));
 
-        MedicionesHistoricas saved = objetivo13AccionClimaRepository.saveMedicion(medicion);
+        MedicionesHistoricas saved = objetivo13AccionClimaticaRepository.saveMedicion(medicion);
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
-            objetivo13AccionClimaRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            objetivo13AccionClimaticaRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
         }
 
         // 4. Construir respuesta auditable
@@ -252,15 +277,15 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
     public java.util.Map<String, Object> getMedicionAuditoria(Integer medicionId) {
         if (medicionId == null) throw new IllegalArgumentException("medicionId requerido");
 
-        MedicionesHistoricas medicion = objetivo13AccionClimaRepository.findMedicionByIdEntity(medicionId);
+        MedicionesHistoricas medicion = objetivo13AccionClimaticaRepository.findMedicionByIdEntity(medicionId);
         if (medicion == null) throw new IllegalArgumentException("Medición no encontrada: " + medicionId);
 
         Optional<ProyectoIndicadores> optInd =
-            objetivo13AccionClimaRepository.findIndicadorByIdEntity(medicion.getProyectoIndicadorId());
+            objetivo13AccionClimaticaRepository.findIndicadorByIdEntity(medicion.getProyectoIndicadorId());
         ProyectoIndicadores indicador = optInd.orElse(null);
 
         java.util.List<java.util.Map<String, Object>> valores =
-            objetivo13AccionClimaRepository.findMedicionParametroValoresByMedicion(medicionId);
+            objetivo13AccionClimaticaRepository.findMedicionParametroValoresByMedicion(medicionId);
 
         java.util.Map<String, Object> out = new java.util.LinkedHashMap<>();
         out.put("medicion", medicion);
@@ -288,7 +313,7 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
         if (variables.isEmpty()) return;
 
         java.util.List<ProyectoIndicadorParametros> existentes =
-            objetivo13AccionClimaRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
+            objetivo13AccionClimaticaRepository.findMetasByProyectoIndicador(proyectoIndicadorId);
         java.util.Set<String> yaSembradas = new java.util.HashSet<>();
         for (ProyectoIndicadorParametros p : existentes) {
             if (p.getNombreVariable() != null) yaSembradas.add(p.getNombreVariable());
@@ -303,7 +328,7 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
             nuevo.setNombreVariable(v);
             nuevo.setValorActual(java.math.BigDecimal.ZERO);
             try {
-                objetivo13AccionClimaRepository.saveMetaProyecto(nuevo);
+                objetivo13AccionClimaticaRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
                 System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }

@@ -9,6 +9,7 @@ import com.odsProject.odsProject.database.jooq.ods_master.enums.VistaResumenProy
 import com.odsProject.odsProject.database.jooq.ods_master.tables.records.VistaResumenProyectosOdsRecord;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import org.jooq.Condition;
@@ -91,6 +92,36 @@ public class VistaResumenProyectosOds extends TableImpl<VistaResumenProyectosOds
 
     /**
      * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_por</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, Integer> AUDITADO_POR = createField(DSL.name("auditado_por"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.auditor_nombre</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> AUDITOR_NOMBRE = createField(DSL.name("auditor_nombre"), SQLDataType.VARCHAR(150), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_en</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, LocalDateTime> AUDITADO_EN = createField(DSL.name("auditado_en"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.observaciones_cierre</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> OBSERVACIONES_CIERRE = createField(DSL.name("observaciones_cierre"), SQLDataType.VARCHAR(1000).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.fecha_envio_revision</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, LocalDateTime> FECHA_ENVIO_REVISION = createField(DSL.name("fecha_envio_revision"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column
      * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
      */
     public final TableField<VistaResumenProyectosOdsRecord, String> ODS_VINCULADOS = createField(DSL.name("ods_vinculados"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
@@ -106,7 +137,7 @@ public class VistaResumenProyectosOds extends TableImpl<VistaResumenProyectosOds
     }
 
     private VistaResumenProyectosOds(Name alias, Table<VistaResumenProyectosOdsRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("VIEW"), TableOptions.view("create view `vista_resumen_proyectos_ods` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`full_name` AS `gestor`,`s`.`nombre` AS `sede`,`p`.`estado` AS `estado`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin`,group_concat(distinct `po`.`ods_id` order by `po`.`ods_id` ASC separator ',') AS `ods_vinculados`,max(case when `po`.`es_primario` = 1 then `po`.`ods_id` end) AS `ods_primario` from (((`ods_master`.`proyectos` `p` join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods_login`.`sedes` `s` on(`p`.`sede_id` = `s`.`id`)) left join `ods_master`.`proyecto_ods` `po` on(`po`.`proyecto_id` = `p`.`id`)) group by `p`.`id`,`p`.`nombre_proyecto`,`u`.`full_name`,`s`.`nombre`,`p`.`estado`,`p`.`fecha_inicio`,`p`.`fecha_fin`"), where);
+        super(alias, null, aliased, parameters, DSL.comment("VIEW"), TableOptions.view("create view `vista_resumen_proyectos_ods` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`full_name` AS `gestor`,`s`.`nombre` AS `sede`,`p`.`estado` AS `estado`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin`,`p`.`auditado_por` AS `auditado_por`,`auditor`.`full_name` AS `auditor_nombre`,`p`.`auditado_en` AS `auditado_en`,`p`.`observaciones_cierre` AS `observaciones_cierre`,`p`.`fecha_envio_revision` AS `fecha_envio_revision`,group_concat(distinct `po`.`ods_id` order by `po`.`ods_id` ASC separator ',') AS `ods_vinculados`,max(case when `po`.`es_primario` = 1 then `po`.`ods_id` end) AS `ods_primario` from ((((`ods_master`.`proyectos` `p` join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods_login`.`sedes` `s` on(`p`.`sede_id` = `s`.`id`)) left join `ods_login`.`usuarios` `auditor` on(`p`.`auditado_por` = `auditor`.`id`)) left join `ods_master`.`proyecto_ods` `po` on(`po`.`proyecto_id` = `p`.`id`)) group by `p`.`id`,`p`.`nombre_proyecto`,`u`.`full_name`,`s`.`nombre`,`p`.`estado`,`p`.`fecha_inicio`,`p`.`fecha_fin`,`p`.`auditado_por`,`auditor`.`full_name`,`p`.`auditado_en`,`p`.`observaciones_cierre`,`p`.`fecha_envio_revision`"), where);
     }
 
     /**

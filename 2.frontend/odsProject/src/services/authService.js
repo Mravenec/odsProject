@@ -17,7 +17,11 @@ export const authService = {
       username: source.username || source.email,
       name: source.fullName || source.nombre || source.username,
       email: source.email,
-      role: source.role || source.rol || (source.rolId === 1 ? 'admin' : 'gestor')
+      role: source.role || source.rol || (
+        source.rolId === 1 ? 'admin' : 
+        source.rolId === 2 ? 'gestor' : 
+        source.rolId === 4 ? 'auditor' : 'consultor'
+      )
     };
   },
 

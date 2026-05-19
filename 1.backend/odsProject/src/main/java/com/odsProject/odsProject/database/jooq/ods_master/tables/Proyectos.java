@@ -124,6 +124,26 @@ public class Proyectos extends TableImpl<ProyectosRecord> {
     public final TableField<ProyectosRecord, ProyectosEstado> ESTADO = createField(DSL.name("estado"), SQLDataType.VARCHAR(13).defaultValue(DSL.field(DSL.raw("'planificacion'"), SQLDataType.VARCHAR)).asEnumDataType(ProyectosEstado.class), this, "");
 
     /**
+     * The column <code>ods_master.proyectos.auditado_por</code>.
+     */
+    public final TableField<ProyectosRecord, Integer> AUDITADO_POR = createField(DSL.name("auditado_por"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>ods_master.proyectos.auditado_en</code>.
+     */
+    public final TableField<ProyectosRecord, LocalDateTime> AUDITADO_EN = createField(DSL.name("auditado_en"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>ods_master.proyectos.observaciones_cierre</code>.
+     */
+    public final TableField<ProyectosRecord, String> OBSERVACIONES_CIERRE = createField(DSL.name("observaciones_cierre"), SQLDataType.VARCHAR(1000).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>ods_master.proyectos.fecha_envio_revision</code>.
+     */
+    public final TableField<ProyectosRecord, LocalDateTime> FECHA_ENVIO_REVISION = createField(DSL.name("fecha_envio_revision"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
      * The column <code>ods_master.proyectos.created_at</code>.
      */
     public final TableField<ProyectosRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)), this, "");
@@ -169,7 +189,7 @@ public class Proyectos extends TableImpl<ProyectosRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PROYECTOS_IDX_ESTADO, Indexes.PROYECTOS_IDX_SEDE, Indexes.PROYECTOS_IDX_USUARIO);
+        return Arrays.asList(Indexes.PROYECTOS_IDX_AUDITADO_EN, Indexes.PROYECTOS_IDX_AUDITOR, Indexes.PROYECTOS_IDX_ESTADO, Indexes.PROYECTOS_IDX_SEDE, Indexes.PROYECTOS_IDX_USUARIO);
     }
 
     @Override
@@ -184,7 +204,7 @@ public class Proyectos extends TableImpl<ProyectosRecord> {
 
     @Override
     public List<ForeignKey<ProyectosRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.PROYECTOS_IBFK_1, Keys.PROYECTOS_IBFK_2);
+        return Arrays.asList(Keys.PROYECTOS_IBFK_1, Keys.PROYECTOS_IBFK_2, Keys.PROYECTOS_IBFK_3);
     }
 
     @Override

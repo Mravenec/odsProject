@@ -200,6 +200,60 @@ END//
 DELIMITER ;
 
 -- ────────────────────────────────────────────────────────────
+
+-- ────────────────────────────────────────────────────────────
+-- Sprint 18 — INMUTABILIDAD POST-AUDITORÍA
+-- Una vez que un proyecto está 'completado' o 'cancelado', sus indicadores
+-- y mediciones quedan inmutables. Estos triggers son la última línea de
+-- defensa: aunque el backend Java falle, la BD rechaza la mutación.
+-- ────────────────────────────────────────────────────────────
+DELIMITER //
+
+CREATE TRIGGER trg_proteger_indicadores_cierre
+BEFORE UPDATE ON proyecto_indicadores
+FOR EACH ROW
+BEGIN
+    DECLARE v_estado VARCHAR(20);
+    SELECT estado INTO v_estado
+      FROM ods_master.proyectos
+     WHERE id = NEW.proyecto_id;
+    IF v_estado IN ('completado','cancelado') THEN
+        SIGNAL SQLSTATE '45000'
+          SET MESSAGE_TEXT = 'Proyecto auditado: indicadores inmutables';
+    END IF;
+END//
+
+CREATE TRIGGER trg_proteger_indicadores_delete
+BEFORE DELETE ON proyecto_indicadores
+FOR EACH ROW
+BEGIN
+    DECLARE v_estado VARCHAR(20);
+    SELECT estado INTO v_estado
+      FROM ods_master.proyectos
+     WHERE id = OLD.proyecto_id;
+    IF v_estado IN ('completado','cancelado') THEN
+        SIGNAL SQLSTATE '45000'
+          SET MESSAGE_TEXT = 'Proyecto auditado: no se permite eliminar indicadores';
+    END IF;
+END//
+
+CREATE TRIGGER trg_proteger_mediciones_insert
+BEFORE INSERT ON mediciones_historicas
+FOR EACH ROW
+BEGIN
+    DECLARE v_estado VARCHAR(20);
+    SELECT p.estado INTO v_estado
+      FROM proyecto_indicadores pi
+      JOIN ods_master.proyectos p ON p.id = pi.proyecto_id
+     WHERE pi.id = NEW.proyecto_indicador_id;
+    IF v_estado = 'cancelado' THEN
+        SIGNAL SQLSTATE '45000'
+          SET MESSAGE_TEXT = 'Proyecto cancelado: no se permiten nuevas mediciones';
+    END IF;
+END//
+
+DELIMITER ;
+
 -- VISTAS Y PROCEDIMIENTOS
 -- ────────────────────────────────────────────────────────────
 

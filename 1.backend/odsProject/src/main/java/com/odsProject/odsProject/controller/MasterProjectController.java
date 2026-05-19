@@ -102,4 +102,112 @@ public class MasterProjectController implements IMasterProjectController {
             getProyectosWithOdsByUsuario(@PathVariable Integer userId) {
         return ResponseEntity.ok(masterProjectService.getProyectosWithOdsByUsuario(userId));
     }
+
+    // ═════════════════════════════════════════════════════════════════════
+    //  Sprint 15 — Transición genérica de estado
+    //  Sprint 16/17 — Endpoints semánticos para el flujo de auditoría
+    //  Sprint 19 — Métricas para AuditQueuePage
+    //
+    //  Convención de errores (manejada por GlobalExceptionHandler + acá):
+    //    400 → IllegalArgumentException  (datos faltantes / formato)
+    //    403 → SecurityException         (rol no autorizado / no es dueño)
+    //    409 → IllegalStateException     (transición inválida / precondición)
+    // ═════════════════════════════════════════════════════════════════════
+
+    @Override
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<Map<String, Object>> changeProjectState(@PathVariable Integer id,
+                                                                  @RequestBody Map<String, Object> body) {
+        try {
+            String estado = String.valueOf(body.getOrDefault("estado", ""));
+            String observ = body.get("observaciones") != null ? String.valueOf(body.get("observaciones")) : null;
+            Integer actor = toIntOrNull(body.get("actorUserId"));
+            String role   = body.get("actorRole") != null ? String.valueOf(body.get("actorRole")) : "admin";
+            Map<String, Object> r = masterProjectService.transitionState(id, estado, actor, role, observ);
+            return ResponseEntity.ok(r);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "error", e.getMessage()));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN)
+                .body(Map.of("success", false, "error", e.getMessage()));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.CONFLICT)
+                .body(Map.of("success", false, "error", e.getMessage()));
+        }
+    }
+
+    @Override
+    @PostMapping("/{id}/enviar-revision")
+    public ResponseEntity<Map<String, Object>> enviarRevision(@PathVariable Integer id,
+                                                              @RequestBody(required = false) Map<String, Object> body) {
+        try {
+            Integer actor = body != null ? toIntOrNull(body.get("actorUserId")) : null;
+            Map<String, Object> r = masterProjectService.enviarARevision(id, actor);
+            return ResponseEntity.ok(r);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "error", e.getMessage()));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN)
+                .body(Map.of("success", false, "error", e.getMessage()));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.CONFLICT)
+                .body(Map.of("success", false, "error", e.getMessage()));
+        }
+    }
+
+    @Override
+    @PostMapping("/{id}/cerrar-auditoria")
+    public ResponseEntity<Map<String, Object>> cerrarAuditoria(@PathVariable Integer id,
+                                                               @RequestBody Map<String, Object> body) {
+        try {
+            Integer actor = toIntOrNull(body.get("actorUserId"));
+            String role   = body.get("actorRole") != null ? String.valueOf(body.get("actorRole")) : "";
+            String obs    = body.get("observaciones") != null ? String.valueOf(body.get("observaciones")) : null;
+            Map<String, Object> r = masterProjectService.cerrarAuditoria(id, actor, role, obs);
+            return ResponseEntity.ok(r);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "error", e.getMessage()));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN)
+                .body(Map.of("success", false, "error", e.getMessage()));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.CONFLICT)
+                .body(Map.of("success", false, "error", e.getMessage()));
+        }
+    }
+
+    @Override
+    @PostMapping("/{id}/rechazar-auditoria")
+    public ResponseEntity<Map<String, Object>> rechazarAuditoria(@PathVariable Integer id,
+                                                                 @RequestBody Map<String, Object> body) {
+        try {
+            Integer actor = toIntOrNull(body.get("actorUserId"));
+            String role   = body.get("actorRole") != null ? String.valueOf(body.get("actorRole")) : "";
+            String motivo = body.get("motivoRechazo") != null ? String.valueOf(body.get("motivoRechazo")) : "";
+            Map<String, Object> r = masterProjectService.rechazarAuditoria(id, actor, role, motivo);
+            return ResponseEntity.ok(r);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "error", e.getMessage()));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN)
+                .body(Map.of("success", false, "error", e.getMessage()));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.CONFLICT)
+                .body(Map.of("success", false, "error", e.getMessage()));
+        }
+    }
+
+    @Override
+    @GetMapping("/audit/metrics")
+    public ResponseEntity<Map<String, Object>> getAuditMetrics() {
+        return ResponseEntity.ok(masterProjectService.getAuditQueueMetrics());
+    }
+
+    /** Conversión segura para los campos de body que el frontend manda como Integer o String. */
+    private static Integer toIntOrNull(Object v) {
+        if (v == null) return null;
+        if (v instanceof Number n) return n.intValue();
+        try { return Integer.parseInt(String.valueOf(v).trim()); }
+        catch (NumberFormatException e) { return null; }
+    }
 }

@@ -32,6 +32,10 @@ public class Proyectos implements Serializable {
     private String locationCanton;
     private String locationDistrict;
     private ProyectosEstado estado;
+    private Integer auditadoPor;
+    private LocalDateTime auditadoEn;
+    private String observacionesCierre;
+    private LocalDateTime fechaEnvioRevision;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -51,6 +55,10 @@ public class Proyectos implements Serializable {
         this.locationCanton = value.locationCanton;
         this.locationDistrict = value.locationDistrict;
         this.estado = value.estado;
+        this.auditadoPor = value.auditadoPor;
+        this.auditadoEn = value.auditadoEn;
+        this.observacionesCierre = value.observacionesCierre;
+        this.fechaEnvioRevision = value.fechaEnvioRevision;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
     }
@@ -69,6 +77,10 @@ public class Proyectos implements Serializable {
         String locationCanton,
         String locationDistrict,
         ProyectosEstado estado,
+        Integer auditadoPor,
+        LocalDateTime auditadoEn,
+        String observacionesCierre,
+        LocalDateTime fechaEnvioRevision,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
     ) {
@@ -85,6 +97,10 @@ public class Proyectos implements Serializable {
         this.locationCanton = locationCanton;
         this.locationDistrict = locationDistrict;
         this.estado = estado;
+        this.auditadoPor = auditadoPor;
+        this.auditadoEn = auditadoEn;
+        this.observacionesCierre = observacionesCierre;
+        this.fechaEnvioRevision = fechaEnvioRevision;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -285,6 +301,66 @@ public class Proyectos implements Serializable {
     }
 
     /**
+     * Getter for <code>ods_master.proyectos.auditado_por</code>.
+     */
+    public Integer getAuditadoPor() {
+        return this.auditadoPor;
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.auditado_por</code>.
+     */
+    public Proyectos setAuditadoPor(Integer auditadoPor) {
+        this.auditadoPor = auditadoPor;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.auditado_en</code>.
+     */
+    public LocalDateTime getAuditadoEn() {
+        return this.auditadoEn;
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.auditado_en</code>.
+     */
+    public Proyectos setAuditadoEn(LocalDateTime auditadoEn) {
+        this.auditadoEn = auditadoEn;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.observaciones_cierre</code>.
+     */
+    public String getObservacionesCierre() {
+        return this.observacionesCierre;
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.observaciones_cierre</code>.
+     */
+    public Proyectos setObservacionesCierre(String observacionesCierre) {
+        this.observacionesCierre = observacionesCierre;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.fecha_envio_revision</code>.
+     */
+    public LocalDateTime getFechaEnvioRevision() {
+        return this.fechaEnvioRevision;
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.fecha_envio_revision</code>.
+     */
+    public Proyectos setFechaEnvioRevision(LocalDateTime fechaEnvioRevision) {
+        this.fechaEnvioRevision = fechaEnvioRevision;
+        return this;
+    }
+
+    /**
      * Getter for <code>ods_master.proyectos.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
@@ -401,6 +477,30 @@ public class Proyectos implements Serializable {
         }
         else if (!this.estado.equals(other.estado))
             return false;
+        if (this.auditadoPor == null) {
+            if (other.auditadoPor != null)
+                return false;
+        }
+        else if (!this.auditadoPor.equals(other.auditadoPor))
+            return false;
+        if (this.auditadoEn == null) {
+            if (other.auditadoEn != null)
+                return false;
+        }
+        else if (!this.auditadoEn.equals(other.auditadoEn))
+            return false;
+        if (this.observacionesCierre == null) {
+            if (other.observacionesCierre != null)
+                return false;
+        }
+        else if (!this.observacionesCierre.equals(other.observacionesCierre))
+            return false;
+        if (this.fechaEnvioRevision == null) {
+            if (other.fechaEnvioRevision != null)
+                return false;
+        }
+        else if (!this.fechaEnvioRevision.equals(other.fechaEnvioRevision))
+            return false;
         if (this.createdAt == null) {
             if (other.createdAt != null)
                 return false;
@@ -433,6 +533,10 @@ public class Proyectos implements Serializable {
         result = prime * result + ((this.locationCanton == null) ? 0 : this.locationCanton.hashCode());
         result = prime * result + ((this.locationDistrict == null) ? 0 : this.locationDistrict.hashCode());
         result = prime * result + ((this.estado == null) ? 0 : this.estado.hashCode());
+        result = prime * result + ((this.auditadoPor == null) ? 0 : this.auditadoPor.hashCode());
+        result = prime * result + ((this.auditadoEn == null) ? 0 : this.auditadoEn.hashCode());
+        result = prime * result + ((this.observacionesCierre == null) ? 0 : this.observacionesCierre.hashCode());
+        result = prime * result + ((this.fechaEnvioRevision == null) ? 0 : this.fechaEnvioRevision.hashCode());
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         return result;
@@ -455,6 +559,10 @@ public class Proyectos implements Serializable {
         sb.append(", ").append(locationCanton);
         sb.append(", ").append(locationDistrict);
         sb.append(", ").append(estado);
+        sb.append(", ").append(auditadoPor);
+        sb.append(", ").append(auditadoEn);
+        sb.append(", ").append(observacionesCierre);
+        sb.append(", ").append(fechaEnvioRevision);
         sb.append(", ").append(createdAt);
         sb.append(", ").append(updatedAt);
 

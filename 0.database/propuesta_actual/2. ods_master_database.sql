@@ -24,14 +24,29 @@ CREATE TABLE proyectos (
     location_province       VARCHAR(80)   NULL,
     location_canton         VARCHAR(80)   NULL,
     location_district       VARCHAR(80)   NULL,
-    estado ENUM('planificacion', 'activo', 'completado', 'cancelado') DEFAULT 'planificacion',
+    -- Sprint 15: máquina de estados extendida con 'en_revision' como pivote del flujo
+    -- Gestor → Auditor. El nuevo valor se intercala entre 'activo' y 'completado'
+    -- para representar la posición lógica en el ciclo de vida.
+    estado ENUM('planificacion','activo','en_revision','completado','cancelado') DEFAULT 'planificacion',
+    -- Sprint 15: stamping de auditoría — quién y cuándo cerró la auditoría.
+    -- NULL mientras el proyecto no ha sido cerrado. Permite trazabilidad
+    -- institucional (firma del auditor responsable).
+    auditado_por        INT          NULL,
+    auditado_en         TIMESTAMP    NULL,
+    observaciones_cierre VARCHAR(1000) NULL,   -- texto libre del auditor al cerrar
+                                               --   o motivo de rechazo (vuelve a activo)
+    fecha_envio_revision TIMESTAMP    NULL,    -- momento en que el gestor envió a auditar
+                                               --   se usa para calcular tiempo de respuesta
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (sede_id)    REFERENCES ods_login.sedes(id) ON DELETE SET NULL,
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_sede    (sede_id),
-    INDEX idx_estado (estado)
+    FOREIGN KEY (usuario_id)   REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (sede_id)      REFERENCES ods_login.sedes(id)    ON DELETE SET NULL,
+    FOREIGN KEY (auditado_por) REFERENCES ods_login.usuarios(id) ON DELETE SET NULL,
+    INDEX idx_usuario     (usuario_id),
+    INDEX idx_sede        (sede_id),
+    INDEX idx_estado      (estado),
+    INDEX idx_auditado_en (auditado_en),
+    INDEX idx_auditor     (auditado_por)
 ) ENGINE=InnoDB;
 
 -- ────────────────────────────────────────────────────────────
@@ -75,13 +90,22 @@ SELECT
     p.estado,
     p.fecha_inicio,
     p.fecha_fin,
+    -- Sprint 15 & 20: campos de auditoría expuestos al frontend
+    p.auditado_por,
+    auditor.full_name AS auditor_nombre,
+    p.auditado_en,
+    p.observaciones_cierre,
+    p.fecha_envio_revision,
     GROUP_CONCAT(DISTINCT po.ods_id ORDER BY po.ods_id) AS ods_vinculados,
     MAX(CASE WHEN po.es_primario = TRUE THEN po.ods_id END) AS ods_primario
 FROM proyectos p
 JOIN ods_login.usuarios u ON p.usuario_id = u.id
 LEFT JOIN ods_login.sedes s ON p.sede_id = s.id
+LEFT JOIN ods_login.usuarios auditor ON p.auditado_por = auditor.id
 LEFT JOIN proyecto_ods po ON po.proyecto_id = p.id
-GROUP BY p.id, p.nombre_proyecto, u.full_name, s.nombre, p.estado, p.fecha_inicio, p.fecha_fin;
+GROUP BY p.id, p.nombre_proyecto, u.full_name, s.nombre, p.estado,
+         p.fecha_inicio, p.fecha_fin, p.auditado_por, auditor.full_name,
+         p.auditado_en, p.observaciones_cierre, p.fecha_envio_revision;
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA: proyecto_documentos (Sprint 11 — evidencia de cierre)

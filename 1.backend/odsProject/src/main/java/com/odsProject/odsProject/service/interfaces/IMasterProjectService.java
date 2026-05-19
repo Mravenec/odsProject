@@ -94,4 +94,74 @@ public interface IMasterProjectService {
      */
     List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
         getProyectosWithOdsByUsuario(Integer usuarioId);
+
+    // ═════════════════════════════════════════════════════════════════════
+    //  Sprint 15 — State Machine de transiciones del proyecto
+    // ═════════════════════════════════════════════════════════════════════
+
+    /**
+     * Transición genérica con validación. Devuelve el proyecto actualizado.
+     * Lanza:
+     *   - IllegalStateException si la transición no es permitida por la máquina de estados
+     *   - SecurityException si el rol del actor no autoriza esta transición
+     *   - IllegalArgumentException si los datos requeridos no llegaron
+     */
+    Map<String, Object> transitionState(Integer proyectoId,
+                                        String nuevoEstado,
+                                        Integer actorUserId,
+                                        String actorRole,
+                                        String observaciones);
+
+    // ═════════════════════════════════════════════════════════════════════
+    //  Sprint 16 — Cierre del gestor
+    // ═════════════════════════════════════════════════════════════════════
+
+    /**
+     * "Enviar a auditoría". Solo el dueño del proyecto puede llamarlo.
+     * Precondiciones validadas:
+     *   - El proyecto está en estado 'activo' (planificacion también se acepta para flexibilidad)
+     *   - El proyecto tiene ≥ 1 indicador configurado
+     *   - El proyecto tiene ≥ 1 documento de evidencia subido
+     * Efecto:
+     *   - estado → 'en_revision'
+     *   - fecha_envio_revision = NOW()
+     */
+    Map<String, Object> enviarARevision(Integer proyectoId, Integer gestorUserId);
+
+    // ═════════════════════════════════════════════════════════════════════
+    //  Sprint 17 — Cierre del auditor
+    // ═════════════════════════════════════════════════════════════════════
+
+    /**
+     * "Cerrar auditoría" (aprobar). Solo admin/auditor.
+     * Precondiciones:
+     *   - role ∈ {admin, auditor}
+     *   - proyecto.estado == 'en_revision'
+     *   - allIndicadoresTienenMedicion == true
+     * Efecto:
+     *   - estado → 'completado'
+     *   - auditado_por = actorUserId, auditado_en = NOW()
+     *   - observaciones_cierre = texto opcional de la firma
+     */
+    Map<String, Object> cerrarAuditoria(Integer proyectoId,
+                                        Integer auditorUserId,
+                                        String auditorRole,
+                                        String observaciones);
+
+    /**
+     * "Rechazar auditoría". Devuelve a 'activo' con motivo obligatorio.
+     */
+    Map<String, Object> rechazarAuditoria(Integer proyectoId,
+                                          Integer auditorUserId,
+                                          String auditorRole,
+                                          String motivoRechazo);
+
+    // ═════════════════════════════════════════════════════════════════════
+    //  Sprint 19 — Métricas para AuditQueuePage
+    // ═════════════════════════════════════════════════════════════════════
+
+    /**
+     * Devuelve { pendientes, enCurso, auditadosMes, tiempoPromedioHoras }.
+     */
+    Map<String, Object> getAuditQueueMetrics();
 }

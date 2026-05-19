@@ -8,6 +8,7 @@ import com.odsProject.odsProject.database.jooq.ods_master.enums.VistaResumenProy
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.jooq.types.ULong;
 
@@ -27,6 +28,11 @@ public class VistaResumenProyectosOds implements Serializable {
     private VistaResumenProyectosOdsEstado estado;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private Integer auditadoPor;
+    private String auditorNombre;
+    private LocalDateTime auditadoEn;
+    private String observacionesCierre;
+    private LocalDateTime fechaEnvioRevision;
     private String odsVinculados;
     private ULong odsPrimario;
 
@@ -40,6 +46,11 @@ public class VistaResumenProyectosOds implements Serializable {
         this.estado = value.estado;
         this.fechaInicio = value.fechaInicio;
         this.fechaFin = value.fechaFin;
+        this.auditadoPor = value.auditadoPor;
+        this.auditorNombre = value.auditorNombre;
+        this.auditadoEn = value.auditadoEn;
+        this.observacionesCierre = value.observacionesCierre;
+        this.fechaEnvioRevision = value.fechaEnvioRevision;
         this.odsVinculados = value.odsVinculados;
         this.odsPrimario = value.odsPrimario;
     }
@@ -52,6 +63,11 @@ public class VistaResumenProyectosOds implements Serializable {
         VistaResumenProyectosOdsEstado estado,
         LocalDate fechaInicio,
         LocalDate fechaFin,
+        Integer auditadoPor,
+        String auditorNombre,
+        LocalDateTime auditadoEn,
+        String observacionesCierre,
+        LocalDateTime fechaEnvioRevision,
         String odsVinculados,
         ULong odsPrimario
     ) {
@@ -62,6 +78,11 @@ public class VistaResumenProyectosOds implements Serializable {
         this.estado = estado;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.auditadoPor = auditadoPor;
+        this.auditorNombre = auditorNombre;
+        this.auditadoEn = auditadoEn;
+        this.observacionesCierre = observacionesCierre;
+        this.fechaEnvioRevision = fechaEnvioRevision;
         this.odsVinculados = odsVinculados;
         this.odsPrimario = odsPrimario;
     }
@@ -179,6 +200,91 @@ public class VistaResumenProyectosOds implements Serializable {
 
     /**
      * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_por</code>.
+     */
+    public Integer getAuditadoPor() {
+        return this.auditadoPor;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_por</code>.
+     */
+    public VistaResumenProyectosOds setAuditadoPor(Integer auditadoPor) {
+        this.auditadoPor = auditadoPor;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditor_nombre</code>.
+     */
+    public String getAuditorNombre() {
+        return this.auditorNombre;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditor_nombre</code>.
+     */
+    public VistaResumenProyectosOds setAuditorNombre(String auditorNombre) {
+        this.auditorNombre = auditorNombre;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_en</code>.
+     */
+    public LocalDateTime getAuditadoEn() {
+        return this.auditadoEn;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_en</code>.
+     */
+    public VistaResumenProyectosOds setAuditadoEn(LocalDateTime auditadoEn) {
+        this.auditadoEn = auditadoEn;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.observaciones_cierre</code>.
+     */
+    public String getObservacionesCierre() {
+        return this.observacionesCierre;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.observaciones_cierre</code>.
+     */
+    public VistaResumenProyectosOds setObservacionesCierre(String observacionesCierre) {
+        this.observacionesCierre = observacionesCierre;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.fecha_envio_revision</code>.
+     */
+    public LocalDateTime getFechaEnvioRevision() {
+        return this.fechaEnvioRevision;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.fecha_envio_revision</code>.
+     */
+    public VistaResumenProyectosOds setFechaEnvioRevision(LocalDateTime fechaEnvioRevision) {
+        this.fechaEnvioRevision = fechaEnvioRevision;
+        return this;
+    }
+
+    /**
+     * Getter for
      * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
      */
     public String getOdsVinculados() {
@@ -262,6 +368,36 @@ public class VistaResumenProyectosOds implements Serializable {
         }
         else if (!this.fechaFin.equals(other.fechaFin))
             return false;
+        if (this.auditadoPor == null) {
+            if (other.auditadoPor != null)
+                return false;
+        }
+        else if (!this.auditadoPor.equals(other.auditadoPor))
+            return false;
+        if (this.auditorNombre == null) {
+            if (other.auditorNombre != null)
+                return false;
+        }
+        else if (!this.auditorNombre.equals(other.auditorNombre))
+            return false;
+        if (this.auditadoEn == null) {
+            if (other.auditadoEn != null)
+                return false;
+        }
+        else if (!this.auditadoEn.equals(other.auditadoEn))
+            return false;
+        if (this.observacionesCierre == null) {
+            if (other.observacionesCierre != null)
+                return false;
+        }
+        else if (!this.observacionesCierre.equals(other.observacionesCierre))
+            return false;
+        if (this.fechaEnvioRevision == null) {
+            if (other.fechaEnvioRevision != null)
+                return false;
+        }
+        else if (!this.fechaEnvioRevision.equals(other.fechaEnvioRevision))
+            return false;
         if (this.odsVinculados == null) {
             if (other.odsVinculados != null)
                 return false;
@@ -288,6 +424,11 @@ public class VistaResumenProyectosOds implements Serializable {
         result = prime * result + ((this.estado == null) ? 0 : this.estado.hashCode());
         result = prime * result + ((this.fechaInicio == null) ? 0 : this.fechaInicio.hashCode());
         result = prime * result + ((this.fechaFin == null) ? 0 : this.fechaFin.hashCode());
+        result = prime * result + ((this.auditadoPor == null) ? 0 : this.auditadoPor.hashCode());
+        result = prime * result + ((this.auditorNombre == null) ? 0 : this.auditorNombre.hashCode());
+        result = prime * result + ((this.auditadoEn == null) ? 0 : this.auditadoEn.hashCode());
+        result = prime * result + ((this.observacionesCierre == null) ? 0 : this.observacionesCierre.hashCode());
+        result = prime * result + ((this.fechaEnvioRevision == null) ? 0 : this.fechaEnvioRevision.hashCode());
         result = prime * result + ((this.odsVinculados == null) ? 0 : this.odsVinculados.hashCode());
         result = prime * result + ((this.odsPrimario == null) ? 0 : this.odsPrimario.hashCode());
         return result;
@@ -304,6 +445,11 @@ public class VistaResumenProyectosOds implements Serializable {
         sb.append(", ").append(estado);
         sb.append(", ").append(fechaInicio);
         sb.append(", ").append(fechaFin);
+        sb.append(", ").append(auditadoPor);
+        sb.append(", ").append(auditorNombre);
+        sb.append(", ").append(auditadoEn);
+        sb.append(", ").append(observacionesCierre);
+        sb.append(", ").append(fechaEnvioRevision);
         sb.append(", ").append(odsVinculados);
         sb.append(", ").append(odsPrimario);
 

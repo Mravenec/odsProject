@@ -8,6 +8,7 @@ import com.odsProject.odsProject.database.jooq.ods_master.enums.VistaResumenProy
 import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenProyectosOds;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.jooq.impl.TableRecordImpl;
 import org.jooq.types.ULong;
@@ -134,10 +135,95 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
 
     /**
      * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_por</code>.
+     */
+    public VistaResumenProyectosOdsRecord setAuditadoPor(Integer value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_por</code>.
+     */
+    public Integer getAuditadoPor() {
+        return (Integer) get(7);
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditor_nombre</code>.
+     */
+    public VistaResumenProyectosOdsRecord setAuditorNombre(String value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditor_nombre</code>.
+     */
+    public String getAuditorNombre() {
+        return (String) get(8);
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_en</code>.
+     */
+    public VistaResumenProyectosOdsRecord setAuditadoEn(LocalDateTime value) {
+        set(9, value);
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.auditado_en</code>.
+     */
+    public LocalDateTime getAuditadoEn() {
+        return (LocalDateTime) get(9);
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.observaciones_cierre</code>.
+     */
+    public VistaResumenProyectosOdsRecord setObservacionesCierre(String value) {
+        set(10, value);
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.observaciones_cierre</code>.
+     */
+    public String getObservacionesCierre() {
+        return (String) get(10);
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.fecha_envio_revision</code>.
+     */
+    public VistaResumenProyectosOdsRecord setFechaEnvioRevision(LocalDateTime value) {
+        set(11, value);
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.fecha_envio_revision</code>.
+     */
+    public LocalDateTime getFechaEnvioRevision() {
+        return (LocalDateTime) get(11);
+    }
+
+    /**
+     * Setter for
      * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
      */
     public VistaResumenProyectosOdsRecord setOdsVinculados(String value) {
-        set(7, value);
+        set(12, value);
         return this;
     }
 
@@ -146,7 +232,7 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
      * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
      */
     public String getOdsVinculados() {
-        return (String) get(7);
+        return (String) get(12);
     }
 
     /**
@@ -154,7 +240,7 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
      * <code>ods_master.vista_resumen_proyectos_ods.ods_primario</code>.
      */
     public VistaResumenProyectosOdsRecord setOdsPrimario(ULong value) {
-        set(8, value);
+        set(13, value);
         return this;
     }
 
@@ -163,7 +249,7 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
      * <code>ods_master.vista_resumen_proyectos_ods.ods_primario</code>.
      */
     public ULong getOdsPrimario() {
-        return (ULong) get(8);
+        return (ULong) get(13);
     }
 
     // -------------------------------------------------------------------------
@@ -180,7 +266,7 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
     /**
      * Create a detached, initialised VistaResumenProyectosOdsRecord
      */
-    public VistaResumenProyectosOdsRecord(Integer proyectoId, String nombreProyecto, String gestor, String sede, VistaResumenProyectosOdsEstado estado, LocalDate fechaInicio, LocalDate fechaFin, String odsVinculados, ULong odsPrimario) {
+    public VistaResumenProyectosOdsRecord(Integer proyectoId, String nombreProyecto, String gestor, String sede, VistaResumenProyectosOdsEstado estado, LocalDate fechaInicio, LocalDate fechaFin, Integer auditadoPor, String auditorNombre, LocalDateTime auditadoEn, String observacionesCierre, LocalDateTime fechaEnvioRevision, String odsVinculados, ULong odsPrimario) {
         super(VistaResumenProyectosOds.VISTA_RESUMEN_PROYECTOS_ODS);
 
         setProyectoId(proyectoId);
@@ -190,6 +276,11 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
         setEstado(estado);
         setFechaInicio(fechaInicio);
         setFechaFin(fechaFin);
+        setAuditadoPor(auditadoPor);
+        setAuditorNombre(auditorNombre);
+        setAuditadoEn(auditadoEn);
+        setObservacionesCierre(observacionesCierre);
+        setFechaEnvioRevision(fechaEnvioRevision);
         setOdsVinculados(odsVinculados);
         setOdsPrimario(odsPrimario);
         resetChangedOnNotNull();
@@ -209,6 +300,11 @@ public class VistaResumenProyectosOdsRecord extends TableRecordImpl<VistaResumen
             setEstado(value.getEstado());
             setFechaInicio(value.getFechaInicio());
             setFechaFin(value.getFechaFin());
+            setAuditadoPor(value.getAuditadoPor());
+            setAuditorNombre(value.getAuditorNombre());
+            setAuditadoEn(value.getAuditadoEn());
+            setObservacionesCierre(value.getObservacionesCierre());
+            setFechaEnvioRevision(value.getFechaEnvioRevision());
             setOdsVinculados(value.getOdsVinculados());
             setOdsPrimario(value.getOdsPrimario());
             resetChangedOnNotNull();

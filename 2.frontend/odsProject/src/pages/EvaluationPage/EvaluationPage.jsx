@@ -43,6 +43,41 @@ const EvaluationPage = () => {
   const perms = usePermissions();
   const readOnly = !perms.canEnterMeasurements;
   const [project, setProject]           = useState(null);
+
+  // ── Sprint 17 — Modales de aprobar / rechazar ─────────────────────
+  const [showApproveModal, setShowApproveModal] = useState(false);
+  const [showRejectModal, setShowRejectModal]   = useState(false);
+  const [approveObs, setApproveObs] = useState('');
+  const [rejectMotivo, setRejectMotivo] = useState('');
+  const [auditClosing, setAuditClosing] = useState(false);
+  const [auditError, setAuditError] = useState(null);
+
+  const handleApprove = async () => {
+    setAuditClosing(true); setAuditError(null);
+    const r = await projectService.approveAudit(
+      parseInt(projectId), user.id, user.role, approveObs.trim() || null
+    );
+    setAuditClosing(false);
+    if (!r.success) { setAuditError(r.error); return; }
+    setShowApproveModal(false);
+    alert('✓ Auditoría cerrada exitosamente. El proyecto queda firmado y bloqueado.');
+    navigate('/audit');
+  };
+
+  const handleReject = async () => {
+    if (rejectMotivo.trim().length < 10) {
+      setAuditError('El motivo debe tener al menos 10 caracteres'); return;
+    }
+    setAuditClosing(true); setAuditError(null);
+    const r = await projectService.rejectAudit(
+      parseInt(projectId), user.id, user.role, rejectMotivo.trim()
+    );
+    setAuditClosing(false);
+    if (!r.success) { setAuditError(r.error); return; }
+    setShowRejectModal(false);
+    alert('Proyecto devuelto al gestor con el motivo del rechazo.');
+    navigate('/audit');
+  };
   const [allIndicators, setAllIndicators] = useState({});
   const [paramInputs, setParamInputs]   = useState({});
   const [calcResults, setCalcResults]   = useState({});
@@ -53,9 +88,13 @@ const EvaluationPage = () => {
   const [auditTrail, setAuditTrail]     = useState({});       // codigo -> [auditoria]
   const [loadingAudit, setLoadingAudit] = useState({});
 
-  const loadAllIndicators = useCallback(async (pid) => {
+  const loadAllIndicators = useCallback(async (pid, odsIds = []) => {
     const result = {};
-    for (let n = 1; n <= 17; n++) {
+    const targets = (Array.isArray(odsIds) && odsIds.length > 0) 
+      ? odsIds 
+      : Array.from({length: 17}, (_, i) => i + 1);
+
+    for (const n of targets) {
       try {
         const svc = await getService(n);
         if (!svc) continue;
@@ -118,8 +157,17 @@ const EvaluationPage = () => {
       setLoadingPage(true);
       try {
         const projRes = await projectService.getProjectById(parseInt(projectId));
-        setProject(projRes.data || projRes);
-        const indicators = await loadAllIndicators(parseInt(projectId));
+        const pData = projRes.data || projRes;
+        setProject(pData);
+        
+        // Sprint UTN: obtener ODS vinculados explícitamente para evitar escaneo de 1-17
+        let odsToLoad = pData.odsVinculados || [];
+        if (odsToLoad.length === 0) {
+          const links = await projectService.getOdsByProyecto(parseInt(projectId));
+          odsToLoad = (links.data || []).map(l => l.odsId || l.ods_id);
+        }
+        
+        const indicators = await loadAllIndicators(parseInt(projectId), odsToLoad);
         setAllIndicators(indicators);
         const opened = {};
         Object.keys(indicators).forEach(k => { opened[k] = true; });
@@ -337,10 +385,28 @@ const EvaluationPage = () => {
               {project?.name || project?.nombreProyecto || 'Proyecto'}
             </h1>
           </div>
-          <button onClick={() => navigate(-1)} style={{
-            padding:'8px 14px',border:'1px solid #D9DEE7',borderRadius:8,
-            background:'#fff',cursor:'pointer',fontSize:13,color:'#1B2440'
-          }}>← Volver</button>
+          <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+            {/* Sprint 17 — Botones de cierre del auditor.
+               Solo visibles si el proyecto está 'en_revision' y el usuario es admin/auditor. */}
+            {project && String(project.status||'').toLowerCase() === 'en_revision'
+              && (user?.role === 'admin' || user?.role === 'auditor') && (
+              <>
+                <button onClick={() => setShowApproveModal(true)} style={{
+                  padding:'8px 14px',border:'none',borderRadius:8,
+                  background:'#1F9D55',color:'#fff',cursor:'pointer',fontSize:13,fontWeight:700,
+                  boxShadow:'0 4px 10px -2px rgba(31,157,85,0.25)'
+                }}>✓ Aprobar auditoría</button>
+                <button onClick={() => setShowRejectModal(true)} style={{
+                  padding:'8px 14px',border:'1px solid #C53030',borderRadius:8,
+                  background:'#fff',color:'#C53030',cursor:'pointer',fontSize:13,fontWeight:700
+                }}>✗ Rechazar</button>
+              </>
+            )}
+            <button onClick={() => navigate(-1)} style={{
+              padding:'8px 14px',border:'1px solid #D9DEE7',borderRadius:8,
+              background:'#fff',cursor:'pointer',fontSize:13,color:'#1B2440'
+            }}>← Volver</button>
+          </div>
         </div>
 
         {/* Métricas resumidas */}
@@ -655,6 +721,125 @@ const EvaluationPage = () => {
               );
             })
           )}
+        </div>
+      )}
+
+      {/* ═══ Sprint 17 — Modal de aprobar auditoría ═══════════════════ */}
+      {showApproveModal && (
+        <div style={{
+          position:'fixed',inset:0,background:'rgba(1,33,105,0.45)',
+          display:'flex',alignItems:'center',justifyContent:'center',
+          zIndex:1000,padding:'1rem',backdropFilter:'blur(4px)'
+        }} onClick={() => !auditClosing && setShowApproveModal(false)}>
+          <div style={{
+            background:'#fff',borderRadius:16,maxWidth:520,width:'100%',
+            padding:'1.75rem',boxShadow:'0 24px 48px -12px rgba(1,33,105,0.22)'
+          }} onClick={e => e.stopPropagation()}>
+            <h3 style={{margin:'0 0 0.5rem',fontSize:'1.2rem',color:'#00153f'}}>
+              ✓ Cerrar auditoría
+            </h3>
+            <p style={{color:'#5A6478',fontSize:'0.9rem',lineHeight:1.5,marginBottom:'1rem'}}>
+              Confirmás que <strong>todos los indicadores tienen medición</strong> y
+              que el proyecto queda firmado como <strong>auditado</strong>. Después de
+              esta acción el proyecto será <strong>inmutable</strong>: no se podrán
+              modificar indicadores, mediciones ni documentos.
+            </p>
+            <label style={{display:'block',fontSize:'0.78rem',fontWeight:700,
+                           color:'#012169',marginBottom:'0.4rem',textTransform:'uppercase',letterSpacing:'0.04em'}}>
+              Observaciones de cierre (opcional)
+            </label>
+            <textarea
+              value={approveObs}
+              onChange={e => setApproveObs(e.target.value)}
+              placeholder="Notas para el consultor y archivo histórico..."
+              rows={4}
+              style={{
+                width:'100%',padding:'0.7rem 0.9rem',borderRadius:8,
+                border:'1px solid #D9DEE7',fontSize:'0.92rem',fontFamily:'inherit',
+                resize:'vertical',color:'#1B2440'
+              }}
+            />
+            {auditError && (
+              <div style={{
+                marginTop:'0.75rem',padding:'0.6rem 0.8rem',background:'#fef2f2',
+                border:'1px solid #fecaca',borderRadius:8,color:'#991b1b',fontSize:'0.85rem'
+              }}>
+                {auditError}
+              </div>
+            )}
+            <div style={{display:'flex',justifyContent:'flex-end',gap:8,marginTop:'1.25rem'}}>
+              <button onClick={() => setShowApproveModal(false)} disabled={auditClosing} style={{
+                padding:'0.6rem 1.1rem',border:'1px solid #D9DEE7',borderRadius:8,
+                background:'#fff',color:'#5A6478',cursor:'pointer',fontSize:'0.88rem',fontWeight:600
+              }}>Cancelar</button>
+              <button onClick={handleApprove} disabled={auditClosing} style={{
+                padding:'0.6rem 1.25rem',border:'none',borderRadius:8,
+                background:'#1F9D55',color:'#fff',cursor:'pointer',fontSize:'0.88rem',fontWeight:700
+              }}>{auditClosing ? 'Cerrando...' : 'Cerrar auditoría'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ Sprint 17 — Modal de rechazar auditoría ══════════════════ */}
+      {showRejectModal && (
+        <div style={{
+          position:'fixed',inset:0,background:'rgba(1,33,105,0.45)',
+          display:'flex',alignItems:'center',justifyContent:'center',
+          zIndex:1000,padding:'1rem',backdropFilter:'blur(4px)'
+        }} onClick={() => !auditClosing && setShowRejectModal(false)}>
+          <div style={{
+            background:'#fff',borderRadius:16,maxWidth:520,width:'100%',
+            padding:'1.75rem',boxShadow:'0 24px 48px -12px rgba(1,33,105,0.22)'
+          }} onClick={e => e.stopPropagation()}>
+            <h3 style={{margin:'0 0 0.5rem',fontSize:'1.2rem',color:'#00153f'}}>
+              ✗ Rechazar y devolver al gestor
+            </h3>
+            <p style={{color:'#5A6478',fontSize:'0.9rem',lineHeight:1.5,marginBottom:'1rem'}}>
+              El proyecto vuelve al estado <strong>activo</strong> y el gestor verá tu
+              motivo como banner en su Dashboard. Tiene que tener al menos
+              <strong> 10 caracteres</strong> para ser útil.
+            </p>
+            <label style={{display:'block',fontSize:'0.78rem',fontWeight:700,
+                           color:'#C53030',marginBottom:'0.4rem',textTransform:'uppercase',letterSpacing:'0.04em'}}>
+              Motivo del rechazo (obligatorio)
+            </label>
+            <textarea
+              value={rejectMotivo}
+              onChange={e => setRejectMotivo(e.target.value)}
+              placeholder="Ej: Los documentos no incluyen los valores del indicador 1.2.1; falta evidencia del trimestre 3..."
+              rows={5}
+              style={{
+                width:'100%',padding:'0.7rem 0.9rem',borderRadius:8,
+                border:'1px solid #D9DEE7',fontSize:'0.92rem',fontFamily:'inherit',
+                resize:'vertical',color:'#1B2440'
+              }}
+            />
+            <div style={{fontSize:'0.75rem',color:'#94A0B8',marginTop:4,textAlign:'right'}}>
+              {rejectMotivo.trim().length} / 10 mínimo
+            </div>
+            {auditError && (
+              <div style={{
+                marginTop:'0.75rem',padding:'0.6rem 0.8rem',background:'#fef2f2',
+                border:'1px solid #fecaca',borderRadius:8,color:'#991b1b',fontSize:'0.85rem'
+              }}>
+                {auditError}
+              </div>
+            )}
+            <div style={{display:'flex',justifyContent:'flex-end',gap:8,marginTop:'1.25rem'}}>
+              <button onClick={() => setShowRejectModal(false)} disabled={auditClosing} style={{
+                padding:'0.6rem 1.1rem',border:'1px solid #D9DEE7',borderRadius:8,
+                background:'#fff',color:'#5A6478',cursor:'pointer',fontSize:'0.88rem',fontWeight:600
+              }}>Cancelar</button>
+              <button onClick={handleReject} disabled={auditClosing || rejectMotivo.trim().length < 10} style={{
+                padding:'0.6rem 1.25rem',border:'none',borderRadius:8,
+                background:'#C53030',color:'#fff',
+                cursor: rejectMotivo.trim().length < 10 ? 'not-allowed' : 'pointer',
+                opacity: rejectMotivo.trim().length < 10 ? 0.55 : 1,
+                fontSize:'0.88rem',fontWeight:700
+              }}>{auditClosing ? 'Enviando...' : 'Rechazar y devolver'}</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

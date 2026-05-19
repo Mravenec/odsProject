@@ -391,3 +391,120 @@
   }
   .audit-row-meta .audit-row-sep { display: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  Sprint 19 — Panel de KPIs (4 tarjetas arriba de los filtros)
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.audit-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: #fff;
+  border: 1px solid #E8ECF2;
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  box-shadow: 0 1px 2px rgba(1,33,105,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px -2px rgba(1,33,105,0.10);
+}
+
+.kpi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.kpi-pendientes .kpi-icon { background: #DC4405; }   /* atención: naranja UTN */
+.kpi-encurso   .kpi-icon { background: #012169; }    /* azul UTN */
+.kpi-auditados .kpi-icon { background: #1F9D55; }    /* verde éxito */
+.kpi-tiempo    .kpi-icon { background: #98BADF; color: #012169; }
+
+.kpi-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+
+.kpi-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5A6478;
+}
+
+.kpi-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #00153f;
+  line-height: 1.1;
+  margin: 2px 0;
+}
+
+.kpi-hint {
+  font-size: 0.72rem;
+  color: #94A0B8;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  Sprint 17/20 — Status pills + stamping
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.audit-row-title-line {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.audit-row-state {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.pill-planificacion { background: #ECEDED; color: #5A6478; }
+.pill-activo        { background: #d6e4f3; color: #012169; }
+.pill-en_revision   { background: #fff5ef; color: #DC4405; border: 1px dashed #DC4405; }
+.pill-completado    { background: #dcfce7; color: #166534; }
+.pill-cancelado     { background: #fee2e2; color: #991b1b; }
+.pill-unknown       { background: #ECEDED; color: #5A6478; }
+
+.audit-row-stamping {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #166534;
+  background: #ecfdf5;
+  padding: 4px 10px;
+  border-radius: 8px;
+  display: inline-block;
+  width: fit-content;
+  margin-top: 2px;
+}
+
+.audit-row-stamping strong { color: #14532d; }
+
+.audit-row--audited {
+  background: linear-gradient(180deg, #f0fdf4 0%, #fff 100%);
+}
+
+.audit-row--audited:hover {
+  border-color: #1F9D55;
+}
