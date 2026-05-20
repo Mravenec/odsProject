@@ -498,7 +498,7 @@ public class MasterProjectService implements IMasterProjectService {
 
     private static final java.util.Map<String, java.util.Set<String>> ALLOWED_TRANSITIONS =
         java.util.Map.of(
-            "planificacion", java.util.Set.of("activo", "cancelado"),
+            "planificacion", java.util.Set.of("activo", "en_revision", "cancelado"),
             "activo",        java.util.Set.of("en_revision", "cancelado"),
             "en_revision",   java.util.Set.of("completado", "activo", "cancelado"),
             "completado",    java.util.Set.of("cancelado"),    // mayoritariamente terminal

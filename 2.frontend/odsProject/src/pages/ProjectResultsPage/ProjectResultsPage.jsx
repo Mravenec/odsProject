@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { projectService } from '../../services/projectService';
@@ -28,6 +29,9 @@ const ProjectResultsPage = () => {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState('');
+
+  const [confirmModal, setConfirmModal] = useState({ show: false, message: '', onConfirm: null });
+  const [alertModal, setAlertModal] = useState({ show: false, message: '', isError: false });
 
   useEffect(() => { fetchProjectFull(); }, [projectId]);
 
@@ -170,19 +174,20 @@ const ProjectResultsPage = () => {
               <button
                 type="button"
                 className="btn-send-for-review"
-                onClick={async () => {
-                  if (!window.confirm(
-                    '¿Enviar este proyecto a auditoría?\n\n' +
-                    'Después de enviar, no podrás modificar indicadores ni subir documentos ' +
-                    'hasta que el auditor revise el proyecto.'
-                  )) return;
-                  const r = await projectService.sendForReview(projectId, user.id);
-                  if (!r.success) {
-                    alert('No se pudo enviar:\n' + r.error);
-                    return;
-                  }
-                  alert('✓ Proyecto enviado a auditoría.');
-                  window.location.reload();
+                onClick={() => {
+                  setConfirmModal({
+                    show: true,
+                    message: '¿Enviar este proyecto a auditoría?\n\nDespués de enviar, no podrás modificar indicadores ni subir documentos hasta que el auditor revise el proyecto.',
+                    onConfirm: async () => {
+                      const r = await projectService.sendForReview(projectId, user.id);
+                      if (!r.success) {
+                        setAlertModal({ show: true, message: 'No se pudo enviar:\n' + r.error, isError: true });
+                        return;
+                      }
+                      setAlertModal({ show: true, message: 'Proyecto enviado a auditoría exitosamente.', isError: false });
+                      setTimeout(() => window.location.reload(), 1500);
+                    }
+                  });
                 }}
               >
                 📤 Enviar a auditoría
@@ -427,6 +432,50 @@ const ProjectResultsPage = () => {
         {/* Sprint 12 — Documentos de evidencia */}
         <EvidenceSection project={project} />
       </main>
+
+      {/* Modales Personalizados */}
+      {confirmModal.show && createPortal(
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div style={{ background: '#fff', padding: '24px', borderRadius: '12px', maxWidth: '400px', width: '90%', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
+            <h3 style={{ margin: '0 0 16px 0', color: '#1B2440', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ background: '#f0f4ff', color: '#012169', padding: '8px', borderRadius: '50%', display: 'flex' }}><Target size={20} /></div>
+              Confirmar envío
+            </h3>
+            <p style={{ color: '#4b5563', fontSize: '0.95rem', lineHeight: '1.5', margin: '0 0 24px 0', whiteSpace: 'pre-wrap' }}>{confirmModal.message}</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+              <button onClick={() => setConfirmModal({ show: false, message: '', onConfirm: null })} style={{ padding: '8px 16px', border: '1px solid #d1d5db', background: '#fff', color: '#374151', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>
+                Cancelar
+              </button>
+              <button onClick={() => { confirmModal.onConfirm(); setConfirmModal({ show: false, message: '', onConfirm: null }); }} style={{ padding: '8px 16px', border: 'none', background: '#012169', color: '#fff', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>
+                Enviar a Auditoría
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {alertModal.show && createPortal(
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div style={{ background: '#fff', padding: '24px', borderRadius: '12px', maxWidth: '400px', width: '90%', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
+            <h3 style={{ margin: '0 0 16px 0', color: alertModal.isError ? '#dc2626' : '#166534', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {alertModal.isError ? (
+                <div style={{ background: '#fef2f2', color: '#dc2626', padding: '8px', borderRadius: '50%', display: 'flex' }}><Target size={20} /></div>
+              ) : (
+                <div style={{ background: '#f0fdf4', color: '#16a34a', padding: '8px', borderRadius: '50%', display: 'flex' }}><CheckCircle2 size={20} /></div>
+              )}
+              {alertModal.isError ? 'Error de transición' : '¡Éxito!'}
+            </h3>
+            <p style={{ color: '#4b5563', fontSize: '0.95rem', lineHeight: '1.5', margin: '0 0 24px 0', whiteSpace: 'pre-wrap' }}>{alertModal.message}</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button onClick={() => setAlertModal({ show: false, message: '', isError: false })} style={{ padding: '8px 16px', border: 'none', background: alertModal.isError ? '#dc2626' : '#16a34a', color: '#fff', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>
+                Entendido
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
