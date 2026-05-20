@@ -63,13 +63,13 @@ const AuditQueuePage = () => {
   const counts = {
     all:        rows.length,
     pendientes: rows.filter(r => r.status === 'en_revision').length,
-    en_curso:   rows.filter(r => r.status === 'activo' && r.hasDocs).length,
+    en_curso:   rows.filter(r => ['activo', 'planificacion'].includes(r.status) && r.hasDocs).length,
     auditados:  rows.filter(r => r.status === 'completado').length,
   };
 
   const filtered = rows.filter(r => {
     if (filter === 'pendientes') return r.status === 'en_revision';
-    if (filter === 'en_curso')   return r.status === 'activo' && r.hasDocs;
+    if (filter === 'en_curso')   return ['activo', 'planificacion'].includes(r.status) && r.hasDocs;
     if (filter === 'auditados')  return r.status === 'completado';
     return true;
   });

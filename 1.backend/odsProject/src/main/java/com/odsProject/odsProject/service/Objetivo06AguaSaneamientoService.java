@@ -246,6 +246,11 @@ public class Objetivo06AguaSaneamientoService implements IObjetivo06AguaSaneamie
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo06AguaSaneamientoRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo06AguaSaneamientoRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

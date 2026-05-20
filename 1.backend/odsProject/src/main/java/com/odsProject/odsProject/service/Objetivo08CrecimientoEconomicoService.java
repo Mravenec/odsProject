@@ -252,6 +252,11 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo08CrecimientoEconomicoRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo08CrecimientoEconomicoRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

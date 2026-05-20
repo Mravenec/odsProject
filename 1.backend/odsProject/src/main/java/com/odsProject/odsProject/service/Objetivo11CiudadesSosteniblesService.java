@@ -251,6 +251,11 @@ public class Objetivo11CiudadesSosteniblesService implements IObjetivo11Ciudades
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo11CiudadesSosteniblesRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo11CiudadesSosteniblesRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

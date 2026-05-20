@@ -250,6 +250,11 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo01PobrezaRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo01PobrezaRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

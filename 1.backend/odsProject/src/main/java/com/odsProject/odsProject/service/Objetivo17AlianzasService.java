@@ -259,6 +259,11 @@ public class Objetivo17AlianzasService implements IObjetivo17AlianzasService {
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo17AlianzasRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo17AlianzasRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

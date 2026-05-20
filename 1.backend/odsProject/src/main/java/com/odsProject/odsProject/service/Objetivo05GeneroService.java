@@ -249,6 +249,11 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo05GeneroRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo05GeneroRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

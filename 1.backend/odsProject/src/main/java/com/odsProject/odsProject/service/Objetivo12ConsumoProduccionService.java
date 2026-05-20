@@ -248,6 +248,11 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo12ConsumoProduccionRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo12ConsumoProduccionRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

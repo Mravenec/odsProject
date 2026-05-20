@@ -249,6 +249,11 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo15VidaEcosistemasRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo15VidaEcosistemasRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

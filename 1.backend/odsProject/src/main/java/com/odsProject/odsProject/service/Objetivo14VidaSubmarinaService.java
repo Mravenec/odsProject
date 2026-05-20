@@ -245,6 +245,11 @@ public class Objetivo14VidaSubmarinaService implements IObjetivo14VidaSubmarinaS
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo14VidaSubmarinaRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo14VidaSubmarinaRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

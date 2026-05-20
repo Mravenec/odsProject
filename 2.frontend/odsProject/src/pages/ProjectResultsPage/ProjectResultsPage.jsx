@@ -163,9 +163,9 @@ const ProjectResultsPage = () => {
           </div>
           <div className="nav-right">
             {/* Sprint 16 — Botón "Enviar a auditoría" para el gestor dueño.
-               Solo visible si el proyecto está 'activo' y el user es el dueño. */}
+               Visible si el proyecto está 'activo' o 'planificacion' y el user es el dueño. */}
             {project && project.userId === user?.id
-              && String(project.status||'').toLowerCase() === 'activo'
+              && ['activo', 'planificacion'].includes(String(project.status||'').toLowerCase())
               && perms.canEditOwnProject && (
               <button
                 type="button"

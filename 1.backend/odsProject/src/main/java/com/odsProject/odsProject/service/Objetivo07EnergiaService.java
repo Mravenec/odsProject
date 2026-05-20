@@ -242,6 +242,11 @@ public class Objetivo07EnergiaService implements IObjetivo07EnergiaService {
 
         for (java.util.Map.Entry<Integer, java.math.BigDecimal> e : valoresPorParametroId.entrySet()) {
             objetivo07EnergiaRepository.insertMedicionParametroValor(saved.getId(), e.getKey(), e.getValue());
+            ProyectoIndicadorParametros p = paramsById.get(e.getKey());
+            if (p != null) {
+                p.setValorActual(e.getValue());
+                objetivo07EnergiaRepository.updateMetaProyecto(p);
+            }
         }
 
         // 4. Construir respuesta auditable

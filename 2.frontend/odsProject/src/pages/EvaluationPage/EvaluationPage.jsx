@@ -123,8 +123,11 @@ const EvaluationPage = () => {
             const varName = m.nombreVariable || m.nombre_variable || m.nombreParametro || m.nombre_parametro;
             return vars.has(varName);
           });
+          // Sprint 17 Fix: Recuperar el ID perdido del indicador desde los parámetros
+          const pId = matchingParams.length > 0 ? (matchingParams[0].proyectoIndicadorId ?? matchingParams[0].proyecto_indicador_id) : undefined;
           return {
             ...ind,
+            id: pId,
             indicadorCodigo: ind.indicadorCodigo || ind.codigo || ind.code,
             indicadorNombre: ind.indicadorNombre || ind.nombre || ind.name,
             indicadorMasterId: ind.indicadorMasterId || ind.masterId,
