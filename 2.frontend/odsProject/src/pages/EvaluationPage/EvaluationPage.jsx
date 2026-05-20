@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { usePermissions } from '../../hooks/usePermissions';
@@ -51,6 +52,7 @@ const EvaluationPage = () => {
   const [rejectMotivo, setRejectMotivo] = useState('');
   const [auditClosing, setAuditClosing] = useState(false);
   const [auditError, setAuditError] = useState(null);
+  const [alertModal, setAlertModal] = useState({ show: false, message: '', isError: false, onClose: null });
 
   const handleApprove = async () => {
     setAuditClosing(true); setAuditError(null);
@@ -60,8 +62,12 @@ const EvaluationPage = () => {
     setAuditClosing(false);
     if (!r.success) { setAuditError(r.error); return; }
     setShowApproveModal(false);
-    alert('✓ Auditoría cerrada exitosamente. El proyecto queda firmado y bloqueado.');
-    navigate('/audit');
+    setAlertModal({ 
+      show: true, 
+      message: 'Auditoría cerrada exitosamente. El proyecto queda firmado y bloqueado.', 
+      isError: false, 
+      onClose: () => navigate('/audit') 
+    });
   };
 
   const handleReject = async () => {
@@ -75,8 +81,12 @@ const EvaluationPage = () => {
     setAuditClosing(false);
     if (!r.success) { setAuditError(r.error); return; }
     setShowRejectModal(false);
-    alert('Proyecto devuelto al gestor con el motivo del rechazo.');
-    navigate('/audit');
+    setAlertModal({ 
+      show: true, 
+      message: 'Proyecto devuelto al gestor con el motivo del rechazo.', 
+      isError: false, 
+      onClose: () => navigate('/audit') 
+    });
   };
   const [allIndicators, setAllIndicators] = useState({});
   const [paramInputs, setParamInputs]   = useState({});
@@ -844,6 +854,36 @@ const EvaluationPage = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modal de Alerta Premium */}
+      {alertModal.show && createPortal(
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div style={{ background: '#fff', padding: '24px', borderRadius: '12px', maxWidth: '400px', width: '90%', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
+            <h3 style={{ margin: '0 0 16px 0', color: alertModal.isError ? '#dc2626' : '#166534', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {alertModal.isError ? (
+                <div style={{ background: '#fef2f2', color: '#dc2626', padding: '8px', borderRadius: '50%', display: 'flex' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+              ) : (
+                <div style={{ background: '#f0fdf4', color: '#16a34a', padding: '8px', borderRadius: '50%', display: 'flex' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+              )}
+              {alertModal.isError ? 'Error' : '¡Éxito!'}
+            </h3>
+            <p style={{ color: '#4b5563', fontSize: '0.95rem', lineHeight: '1.5', margin: '0 0 24px 0', whiteSpace: 'pre-wrap' }}>{alertModal.message}</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button onClick={() => {
+                setAlertModal({ show: false, message: '', isError: false, onClose: null });
+                if (alertModal.onClose) alertModal.onClose();
+              }} style={{ padding: '8px 16px', border: 'none', background: alertModal.isError ? '#dc2626' : '#16a34a', color: '#fff', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>
+                Entendido
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
       )}
     </div>
   );
