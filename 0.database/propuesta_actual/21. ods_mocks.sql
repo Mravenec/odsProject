@@ -86,26 +86,30 @@ TRUNCATE TABLE auditoria_ods01;
 SET FOREIGN_KEY_CHECKS = 1;
 
 SET @ind111 = (SELECT id FROM ods_login.indicador_master WHERE codigo = '1.1.1' AND ods_id = 1);
-INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, meta_valor, meta_unidad) VALUES
-  (1, 1, @ind111, 2.5, 'Porcentaje'),
-  (2, 1, (SELECT id FROM ods_login.indicador_master WHERE codigo = '1.2.1' AND ods_id = 1), 0, 'Porcentaje'), -- Caso Borde: Meta 0 (SIN DATOS)
-  (3, 5, @ind111, 5.0, 'Porcentaje'); -- ODS 1 vinculado como secundario para el Proyecto 5
+INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, formula_custom, meta_valor, meta_unidad) VALUES
+  (1, 1, @ind111, '(p1/p2)*100', 2.5, 'Porcentaje'),
+  (2, 1, (SELECT id FROM ods_login.indicador_master WHERE codigo = '1.2.1' AND ods_id = 1), '(p1/p2)*100', 10.0, 'Porcentaje'),
+  (3, 5, @ind111, '(p1/p2)*100', 5.0, 'Porcentaje');
 
 INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_parametro, nombre_variable, tipo_dato, valor_actual) VALUES
   (1, 1, 'Población Pobre', 'p1', 'Decimal', 12500),
   (2, 1, 'Población Total', 'p2', 'Decimal', 500000),
   (3, 3, 'Población Pobre', 'p1', 'Decimal', 500),
-  (4, 3, 'Población Total', 'p2', 'Decimal', 10000);
+  (4, 3, 'Población Total', 'p2', 'Decimal', 10000),
+  (5, 2, 'Población Pobreza Relativa', 'p1', 'Decimal', 10000),
+  (6, 2, 'Población Total', 'p2', 'Decimal', 500000);
 
 INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, fecha_medicion, responsable) VALUES
   (1, 1, 3.1, '2023-06-15', 'Ana García'),
   (2, 1, 2.8, '2023-12-15', 'Ana García'),
-  (3, 1, 2.5, '2024-03-30', 'Ana García');
+  (3, 1, 2.5, '2024-03-30', 'Ana García'),
+  (4, 2, 2.0, '2024-04-01', 'Ana García');
 
 INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES
   (1, 1, 15500), (1, 2, 500000),
   (2, 1, 14000), (2, 2, 500000),
-  (3, 1, 12500), (3, 2, 500000);
+  (3, 1, 12500), (3, 2, 500000),
+  (4, 5, 10000), (4, 6, 500000);
 
 -- ────────────────────────────────────────────────────────────
 -- 3. ODS 02: HAMBRE CERO
@@ -118,18 +122,23 @@ TRUNCATE TABLE auditoria_ods02;
 SET FOREIGN_KEY_CHECKS = 1;
 
 SET @ind211 = (SELECT id FROM ods_login.indicador_master WHERE codigo = '2.1.1' AND ods_id = 2);
-INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, meta_valor, meta_unidad) VALUES
-  (1, 2, @ind211, 1.5, 'Porcentaje'),
-  (2, 2, (SELECT id FROM ods_login.indicador_master WHERE codigo = '2.1.2' AND ods_id = 2), 0, 'Porcentaje'); -- Caso Borde: Meta 0 (SIN DATOS)
+INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, formula_custom, meta_valor, meta_unidad) VALUES
+  (1, 2, @ind211, '(p1/p2)*100', 1.5, 'Porcentaje'),
+  (2, 2, (SELECT id FROM ods_login.indicador_master WHERE codigo = '2.1.2' AND ods_id = 2), '(p1/p2)*100', 5.0, 'Porcentaje');
 
 INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_parametro, nombre_variable, tipo_dato, valor_actual) VALUES
   (1, 1, 'Personas Subalimentadas', 'p1', 'Decimal', 5400),
-  (2, 1, 'Población Total', 'p2', 'Decimal', 300000);
+  (2, 1, 'Población Total', 'p2', 'Decimal', 300000),
+  (3, 2, 'Inseguridad Alimentaria', 'p1', 'Decimal', 1500),
+  (4, 2, 'Población Total', 'p2', 'Decimal', 300000);
 
 INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, fecha_medicion, responsable) VALUES
-  (1, 1, 1.8, '2023-08-10', 'Carlos Rodríguez');
+  (1, 1, 1.8, '2023-08-10', 'Carlos Rodríguez'),
+  (2, 2, 0.5, '2023-09-10', 'Carlos Rodríguez');
+
 INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES
-  (1, 1, 5400), (1, 2, 300000);
+  (1, 1, 5400), (1, 2, 300000),
+  (2, 3, 1500), (2, 4, 300000);
 
 -- ────────────────────────────────────────────────────────────
 -- 4. OTROS ODS PRIORITARIOS (03, 04, 05, 13)
@@ -138,12 +147,18 @@ INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresa
 -- ODS 03
 USE ods03; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores; TRUNCATE TABLE mediciones_historicas; TRUNCATE TABLE proyecto_indicador_parametros; TRUNCATE TABLE proyecto_indicadores; TRUNCATE TABLE auditoria_ods03; SET FOREIGN_KEY_CHECKS = 1;
 SET @ind311 = (SELECT id FROM ods_login.indicador_master WHERE codigo = '3.1.1' AND ods_id = 3);
-INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, meta_valor, meta_unidad) VALUES (1, 3, @ind311, 50, 'Tasa/100k');
+INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, formula_custom, meta_valor, meta_unidad) VALUES (1, 3, @ind311, '(p1/p2)*100000', 50, 'Tasa/100k');
+INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_parametro, nombre_variable, tipo_dato, valor_actual) VALUES (1, 1, 'Muertes', 'p1', 'Decimal', 10), (2, 1, 'Nacimientos', 'p2', 'Decimal', 20000);
+INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, fecha_medicion, responsable) VALUES (1, 1, 50.0, '2024-01-01', 'Admin');
+INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES (1, 1, 10), (1, 2, 20000);
 
 -- ODS 04
 USE ods04; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores; TRUNCATE TABLE mediciones_historicas; TRUNCATE TABLE proyecto_indicador_parametros; TRUNCATE TABLE proyecto_indicadores; TRUNCATE TABLE auditoria_ods04; SET FOREIGN_KEY_CHECKS = 1;
 SET @ind411 = (SELECT id FROM ods_login.indicador_master WHERE codigo = '4.1.1' AND ods_id = 4);
-INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, meta_valor, meta_unidad) VALUES (1, 4, @ind411, 95, 'Porcentaje');
+INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, formula_custom, meta_valor, meta_unidad) VALUES (1, 4, @ind411, '(p1/p2)*100', 95, 'Porcentaje');
+INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_parametro, nombre_variable, tipo_dato, valor_actual) VALUES (1, 1, 'Estudiantes', 'p1', 'Decimal', 950), (2, 1, 'Total Niños', 'p2', 'Decimal', 1000);
+INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, fecha_medicion, responsable) VALUES (1, 1, 95.0, '2024-01-01', 'Admin');
+INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES (1, 1, 950), (1, 2, 1000);
 
 -- ODS 13 (Formulas Custom)
 USE ods13; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores; TRUNCATE TABLE mediciones_historicas; TRUNCATE TABLE proyecto_indicador_parametros; TRUNCATE TABLE proyecto_indicadores; TRUNCATE TABLE auditoria_ods13; SET FOREIGN_KEY_CHECKS = 1;
