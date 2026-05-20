@@ -1,4 +1,4 @@
-# ODS Agenda 2030 — Sistema de Seguimiento UTN Costa Rica
+# ODS Agenda 2030 — Sistema de Seguimiento UTN Costa Rica.
 
 Sistema web para el registro, configuración y evaluación de proyectos alineados a los **17 Objetivos de Desarrollo Sostenible (ODS)** de la Agenda 2030. Desarrollado para la **Universidad Técnica Nacional de Costa Rica**.
 
