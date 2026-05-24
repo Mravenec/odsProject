@@ -103,9 +103,9 @@ public interface IMasterProjectController {
      *   - countDocumentos  > 0
      * Efecto: estado → 'en_revision', fecha_envio_revision = NOW().
      */
-    @PostMapping("/{id}/enviar-revision")
-    ResponseEntity<Map<String, Object>> enviarRevision(@PathVariable Integer id,
-                                                       @RequestBody(required = false) Map<String, Object> body);
+    @PostMapping({"/{id}/enviar-evaluacion", "/{id}/enviar-revision"})
+    ResponseEntity<Map<String, Object>> enviarEvaluacion(@PathVariable Integer id,
+                                                         @RequestBody(required = false) Map<String, Object> body);
 
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 17 — Auditor cierra (aprueba o rechaza)
@@ -120,9 +120,9 @@ public interface IMasterProjectController {
      *   - allIndicadoresTienenMedicion() == true
      * Efecto: estado → 'completado', auditado_por = actor, auditado_en = NOW().
      */
-    @PostMapping("/{id}/cerrar-auditoria")
-    ResponseEntity<Map<String, Object>> cerrarAuditoria(@PathVariable Integer id,
-                                                        @RequestBody Map<String, Object> body);
+    @PostMapping({"/{id}/aprobar-evaluacion", "/{id}/cerrar-auditoria"})
+    ResponseEntity<Map<String, Object>> aprobarEvaluacion(@PathVariable Integer id,
+                                                          @RequestBody Map<String, Object> body);
 
     /**
      * POST /api/projects/{id}/rechazar-auditoria
@@ -130,9 +130,9 @@ public interface IMasterProjectController {
      * Devuelve el proyecto a 'activo' con observaciones_cierre = motivoRechazo
      * para que el gestor lo lea como banner.
      */
-    @PostMapping("/{id}/rechazar-auditoria")
-    ResponseEntity<Map<String, Object>> rechazarAuditoria(@PathVariable Integer id,
-                                                          @RequestBody Map<String, Object> body);
+    @PostMapping({"/{id}/rechazar-evaluacion", "/{id}/rechazar-auditoria"})
+    ResponseEntity<Map<String, Object>> rechazarEvaluacion(@PathVariable Integer id,
+                                                             @RequestBody Map<String, Object> body);
 
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 19 — Métricas para el panel del AuditQueuePage
@@ -142,6 +142,6 @@ public interface IMasterProjectController {
      * GET /api/projects/audit/metrics
      * Devuelve { pendientes, enCurso, auditadosMes, tiempoPromedioHoras }.
      */
-    @GetMapping("/audit/metrics")
-    ResponseEntity<Map<String, Object>> getAuditMetrics();
+    @GetMapping({"/evaluacion/metrics", "/audit/metrics"})
+    ResponseEntity<Map<String, Object>> getEvaluationMetrics();
 }

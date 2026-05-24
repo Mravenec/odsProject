@@ -177,20 +177,20 @@ const ProjectResultsPage = () => {
                 onClick={() => {
                   setConfirmModal({
                     show: true,
-                    message: '¿Enviar este proyecto a auditoría?\n\nDespués de enviar, no podrás modificar indicadores ni subir documentos hasta que el auditor revise el proyecto.',
+                    message: '¿Enviar este proyecto a evaluación?\n\nDespués de enviar, no podrás modificar indicadores ni subir documentos hasta que el evaluador revise el proyecto.',
                     onConfirm: async () => {
-                      const r = await projectService.sendForReview(projectId, user.id);
+                      const r = await projectService.sendForEvaluation(projectId, user.id);
                       if (!r.success) {
                         setAlertModal({ show: true, message: 'No se pudo enviar:\n' + r.error, isError: true });
                         return;
                       }
-                      setAlertModal({ show: true, message: 'Proyecto enviado a auditoría exitosamente.', isError: false });
+                      setAlertModal({ show: true, message: 'Proyecto enviado a evaluación exitosamente.', isError: false });
                       setTimeout(() => window.location.reload(), 1500);
                     }
                   });
                 }}
               >
-                📤 Enviar a auditoría
+                📤 Enviar a evaluación
               </button>
             )}
 
@@ -201,9 +201,9 @@ const ProjectResultsPage = () => {
               <button
                 type="button"
                 className="btn-audit"
-                onClick={() => navigate(`/audit/${projectId}`)}
+                onClick={() => navigate(`/evaluacion/${projectId}`)}
               >
-                <ClipboardCheck size={16} /> Auditar este proyecto
+                <ClipboardCheck size={16} /> Evaluar este proyecto
               </button>
             )}
           </div>
@@ -223,13 +223,13 @@ const ProjectResultsPage = () => {
         }}>
           <div style={{fontWeight:800,fontSize:'0.78rem',textTransform:'uppercase',
                        letterSpacing:'0.1em',color:'#854d0e',marginBottom:4}}>
-            ⚠ La auditoría fue rechazada
+            ⚠ La evaluación fue rechazada
           </div>
           <div style={{fontSize:'0.92rem',lineHeight:1.5}}>
             <strong>Motivo:</strong> {project.closureObservations}
           </div>
           <div style={{fontSize:'0.8rem',marginTop:6,color:'#92400e'}}>
-            Corregí lo indicado y volvé a enviar el proyecto a auditoría.
+            Corregí lo indicado y volvé a enviar el proyecto a evaluación.
           </div>
         </div>
       )}
@@ -246,10 +246,10 @@ const ProjectResultsPage = () => {
           <div style={{display:'flex',alignItems:'center',gap:8,
                        fontWeight:800,fontSize:'0.78rem',textTransform:'uppercase',
                        letterSpacing:'0.1em',color:'#166534',marginBottom:6}}>
-            <CheckCircle2 size={14} /> Auditoría cerrada · datos firmados
+            <CheckCircle2 size={14} /> Evaluación cerrada · datos firmados
           </div>
           <div style={{fontSize:'0.92rem',color:'#14532d',lineHeight:1.55}}>
-            Auditado por <strong>{project.auditedByName || `Usuario #${project.auditedBy}`}</strong>
+            Evaluado por <strong>{project.auditedByName || `Usuario #${project.auditedBy}`}</strong>
             {project.auditedAt && <> el <strong>{formatDate(project.auditedAt)}</strong></>}.
             {project.closureObservations && (
               <div style={{marginTop:6,padding:'0.6rem 0.8rem',background:'#fff',
@@ -303,7 +303,7 @@ const ProjectResultsPage = () => {
                 <>
                   <AchievementBadge estado="SIN DATOS" size="lg" showPct={false} />
                   <div style={{marginTop:10,color:'#888',fontSize:13}}>
-                    Pendiente de auditoría<br/>
+                    Pendiente de evaluación<br/>
                     <span style={{fontSize:11}}>{project.totalIndicadores} indicador(es) cargado(s)</span>
                   </div>
                 </>
@@ -311,7 +311,7 @@ const ProjectResultsPage = () => {
                 <>
                   <AchievementBadge porcentaje={project.pctProyecto} size="lg" />
                   <div style={{marginTop:10,color:'#666',fontSize:13}}>
-                    {project.auditados} de {project.totalIndicadores} indicador(es) auditado(s)
+                    {project.auditados} de {project.totalIndicadores} indicador(es) evaluado(s)
                   </div>
                 </>
               )}
@@ -447,7 +447,7 @@ const ProjectResultsPage = () => {
                 Cancelar
               </button>
               <button onClick={() => { confirmModal.onConfirm(); setConfirmModal({ show: false, message: '', onConfirm: null }); }} style={{ padding: '8px 16px', border: 'none', background: '#012169', color: '#fff', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>
-                Enviar a Auditoría
+                Enviar a evaluación
               </button>
             </div>
           </div>

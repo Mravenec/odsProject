@@ -56,7 +56,7 @@ const EvaluationPage = () => {
 
   const handleApprove = async () => {
     setAuditClosing(true); setAuditError(null);
-    const r = await projectService.approveAudit(
+    const r = await projectService.approveEvaluation(
       parseInt(projectId), user.id, user.role, approveObs.trim() || null
     );
     setAuditClosing(false);
@@ -64,9 +64,9 @@ const EvaluationPage = () => {
     setShowApproveModal(false);
     setAlertModal({ 
       show: true, 
-      message: 'Auditoría cerrada exitosamente. El proyecto queda firmado y bloqueado.', 
+      message: 'Evaluación cerrada exitosamente. El proyecto queda firmado y bloqueado.', 
       isError: false, 
-      onClose: () => navigate('/audit') 
+      onClose: () => navigate('/evaluacion') 
     });
   };
 
@@ -75,7 +75,7 @@ const EvaluationPage = () => {
       setAuditError('El motivo debe tener al menos 10 caracteres'); return;
     }
     setAuditClosing(true); setAuditError(null);
-    const r = await projectService.rejectAudit(
+    const r = await projectService.rejectEvaluation(
       parseInt(projectId), user.id, user.role, rejectMotivo.trim()
     );
     setAuditClosing(false);
@@ -85,7 +85,7 @@ const EvaluationPage = () => {
       show: true, 
       message: 'Proyecto devuelto al gestor con el motivo del rechazo.', 
       isError: false, 
-      onClose: () => navigate('/audit') 
+      onClose: () => navigate('/evaluacion') 
     });
   };
   const [allIndicators, setAllIndicators] = useState({});
@@ -402,13 +402,13 @@ const EvaluationPage = () => {
             {/* Sprint 17 — Botones de cierre del auditor.
                Solo visibles si el proyecto está 'en_revision' y el usuario es admin/auditor. */}
             {project && String(project.status||'').toLowerCase() === 'en_revision'
-              && (user?.role === 'admin' || user?.role === 'auditor') && (
+              && (user?.role === 'admin' || user?.role === 'evaluador') && (
               <>
                 <button onClick={() => setShowApproveModal(true)} style={{
                   padding:'8px 14px',border:'none',borderRadius:8,
                   background:'#1F9D55',color:'#fff',cursor:'pointer',fontSize:13,fontWeight:700,
                   boxShadow:'0 4px 10px -2px rgba(31,157,85,0.25)'
-                }}>✓ Aprobar auditoría</button>
+                }}>✓ Aprobar evaluación</button>
                 <button onClick={() => setShowRejectModal(true)} style={{
                   padding:'8px 14px',border:'1px solid #C53030',borderRadius:8,
                   background:'#fff',color:'#C53030',cursor:'pointer',fontSize:13,fontWeight:700
@@ -440,7 +440,7 @@ const EvaluationPage = () => {
         {[
           {k:'ingreso',  label:'📥 Ingresar valores'},
           {k:'resumen',  label:'📊 Resumen'},
-          {k:'auditoria',label:'🔍 Auditoría'}
+          {k:'auditoria',label:'🔍 Evaluación'}
         ].map(t => (
           <button key={t.k} onClick={() => setActiveTab(t.k)} style={{
             padding:'8px 16px',borderRadius:8,
@@ -489,7 +489,7 @@ const EvaluationPage = () => {
                           border: `1px solid ${calc.status==='Cumplido' ? '#a7f0ca' : '#ffb8b8'}`
                         }}>
                           {calc.status==='Cumplido' ? '✅ Cumplido' : '🔄 En Progreso'}
-                          {calc.backendCalculated && <span style={{marginLeft:6,fontWeight:400,opacity:0.7}}>· auditado</span>}
+                          {calc.backendCalculated && <span style={{marginLeft:6,fontWeight:400,opacity:0.7}}>· evaluado</span>}
                         </div>
                       )}
                     </div>
@@ -656,7 +656,7 @@ const EvaluationPage = () => {
                   </div>
 
                   {isLoading ? (
-                    <div style={{padding:20,textAlign:'center',color:'#5A6478',fontSize:13}}>Cargando auditoría…</div>
+                    <div style={{padding:20,textAlign:'center',color:'#5A6478',fontSize:13}}>Cargando evaluación…</div>
                   ) : trail.length === 0 ? (
                     <div style={{padding:20,textAlign:'center',color:'#5A6478',fontSize:13}}>Sin mediciones registradas todavía.</div>
                   ) : (
@@ -749,11 +749,11 @@ const EvaluationPage = () => {
             padding:'1.75rem',boxShadow:'0 24px 48px -12px rgba(1,33,105,0.22)'
           }} onClick={e => e.stopPropagation()}>
             <h3 style={{margin:'0 0 0.5rem',fontSize:'1.2rem',color:'#00153f'}}>
-              ✓ Cerrar auditoría
+              ✓ Cerrar evaluación
             </h3>
             <p style={{color:'#5A6478',fontSize:'0.9rem',lineHeight:1.5,marginBottom:'1rem'}}>
               Confirmás que <strong>todos los indicadores tienen medición</strong> y
-              que el proyecto queda firmado como <strong>auditado</strong>. Después de
+              que el proyecto queda firmado como <strong>evaluado</strong>. Después de
               esta acción el proyecto será <strong>inmutable</strong>: no se podrán
               modificar indicadores, mediciones ni documentos.
             </p>
@@ -788,7 +788,7 @@ const EvaluationPage = () => {
               <button onClick={handleApprove} disabled={auditClosing} style={{
                 padding:'0.6rem 1.25rem',border:'none',borderRadius:8,
                 background:'#1F9D55',color:'#fff',cursor:'pointer',fontSize:'0.88rem',fontWeight:700
-              }}>{auditClosing ? 'Cerrando...' : 'Cerrar auditoría'}</button>
+              }}>{auditClosing ? 'Cerrando...' : 'Cerrar evaluación'}</button>
             </div>
           </div>
         </div>

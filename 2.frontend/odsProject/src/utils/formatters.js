@@ -114,7 +114,7 @@ export const isProjectLocked = (project) => {
 };
 
 /**
- * Devuelve true si el proyecto está en revisión (esperando al auditor).
+ * Devuelve true si el proyecto está en evaluación (esperando al evaluador).
  * En este estado, el gestor NO puede subir más documentos ni editar.
  */
 export const isProjectInReview = (project) => {
@@ -130,8 +130,8 @@ export const getEstadoLabel = (estado) => {
   const labels = {
     planificacion: 'Planificación',
     activo:        'Activo',
-    en_revision:   'En revisión',
-    completado:    'Auditado',
+    en_revision:   'En evaluación',
+    completado:    'Evaluado',
     cancelado:     'Cancelado',
   };
   return labels[s] || estado || 'Desconocido';

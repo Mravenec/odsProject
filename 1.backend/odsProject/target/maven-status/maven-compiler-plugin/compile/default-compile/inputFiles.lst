@@ -8,6 +8,7 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\CatalogController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\DocumentController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\EvaluationController.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\ExportController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\interfaces\ILoginController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\interfaces\IMasterProjectController.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\controller\interfaces\IObjetivo01PobrezaController.java
@@ -697,6 +698,7 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\repository\Objetivo17AlianzasRepository.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\DocumentService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\EvaluationService.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\ExportService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\FormulaUtils.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\interfaces\IEvaluationService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\interfaces\ILoginService.java
@@ -738,3 +740,5 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\Objetivo15VidaEcosistemasService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\Objetivo16PazJusticiaService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\Objetivo17AlianzasService.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\util\ProjectAccessHelper.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\util\ProjectEditGuard.java

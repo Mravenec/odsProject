@@ -126,7 +126,7 @@ public interface IMasterProjectService {
      *   - estado → 'en_revision'
      *   - fecha_envio_revision = NOW()
      */
-    Map<String, Object> enviarARevision(Integer proyectoId, Integer gestorUserId);
+    Map<String, Object> enviarEvaluacion(Integer proyectoId, Integer gestorUserId);
 
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 17 — Cierre del auditor
@@ -143,18 +143,18 @@ public interface IMasterProjectService {
      *   - auditado_por = actorUserId, auditado_en = NOW()
      *   - observaciones_cierre = texto opcional de la firma
      */
-    Map<String, Object> cerrarAuditoria(Integer proyectoId,
-                                        Integer auditorUserId,
-                                        String auditorRole,
-                                        String observaciones);
+    Map<String, Object> aprobarEvaluacion(Integer proyectoId,
+                                          Integer evaluadorUserId,
+                                          String evaluadorRole,
+                                          String observaciones);
 
     /**
      * "Rechazar auditoría". Devuelve a 'activo' con motivo obligatorio.
      */
-    Map<String, Object> rechazarAuditoria(Integer proyectoId,
-                                          Integer auditorUserId,
-                                          String auditorRole,
-                                          String motivoRechazo);
+    Map<String, Object> rechazarEvaluacion(Integer proyectoId,
+                                           Integer evaluadorUserId,
+                                           String evaluadorRole,
+                                           String motivoRechazo);
 
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 19 — Métricas para AuditQueuePage
@@ -163,5 +163,5 @@ public interface IMasterProjectService {
     /**
      * Devuelve { pendientes, enCurso, auditadosMes, tiempoPromedioHoras }.
      */
-    Map<String, Object> getAuditQueueMetrics();
+    Map<String, Object> getEvaluationQueueMetrics();
 }

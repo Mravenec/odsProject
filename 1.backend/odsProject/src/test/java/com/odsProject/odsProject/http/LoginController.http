@@ -18,6 +18,16 @@ Content-Type: application/json
   "password": "{{password}}"
 }
 
+### Login Exitoso (Evaluador — Sprint 3, rol evaluador)
+# @name loginEvaluador
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "evaluador@ods.cr",
+  "password": "{{password}}"
+}
+
 ### Login Fallido (Password incorrecto)
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
@@ -69,10 +79,10 @@ GET {{baseUrl}}/api/login/vistas/usuarios-activos
 ### Resumen General del Sistema (Vista)
 GET {{baseUrl}}/api/login/vistas/resumen-general
 
-# ── 4. Auditoría ──
+# ── 4. Registro de eventos de login (tabla auditoria_login) ──
 
-### Auditoría de Login Reciente (Últimos 7 días)
+### Eventos de login recientes (Últimos 7 días)
 GET {{baseUrl}}/api/login/vistas/auditoria?dias=7
 
-### Intentos Fallidos Recientes (Últimas 24 horas)
+### Intentos fallidos recientes (Últimas 24 horas)
 GET {{baseUrl}}/api/login/auditoria/fallidos?horas=24

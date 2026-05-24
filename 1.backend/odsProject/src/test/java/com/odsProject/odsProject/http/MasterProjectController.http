@@ -50,3 +50,86 @@ Content-Type: application/json
 
 ### Eliminar proyecto (Cascada en todos los ODS)
 DELETE {{baseUrl}}/api/projects/{{proyectoId}}
+
+### ─── Flujo de Evaluación (Sprint 3) ───────────────────────────────
+
+@actorUserId = 5
+@actorRole = evaluador
+
+### Gestor envía proyecto a evaluación
+POST {{baseUrl}}/api/projects/{{proyectoId}}/enviar-evaluacion
+Content-Type: application/json
+
+{
+  "actorUserId": {{actorUserId}}
+}
+
+###
+
+### Evaluador aprueba la evaluación
+POST {{baseUrl}}/api/projects/{{proyectoId}}/aprobar-evaluacion
+Content-Type: application/json
+
+{
+  "actorUserId": {{actorUserId}},
+  "actorRole": "{{actorRole}}",
+  "observaciones": "Indicadores completos y coherentes. Proyecto evaluado satisfactoriamente."
+}
+
+###
+
+### Evaluador rechaza la evaluación
+POST {{baseUrl}}/api/projects/{{proyectoId}}/rechazar-evaluacion
+Content-Type: application/json
+
+{
+  "actorUserId": {{actorUserId}},
+  "actorRole": "{{actorRole}}",
+  "motivoRechazo": "Faltan documentos de respaldo para el indicador 3."
+}
+
+###
+
+### Métricas de la cola de evaluación
+GET {{baseUrl}}/api/projects/evaluacion/metrics
+
+###
+
+### Alias deprecados (compatibilidad Sprint 3)
+
+### enviar-revision → mismo que enviar-evaluacion
+POST {{baseUrl}}/api/projects/{{proyectoId}}/enviar-revision
+Content-Type: application/json
+
+{
+  "actorUserId": {{actorUserId}}
+}
+
+###
+
+### cerrar-auditoria → mismo que aprobar-evaluacion
+POST {{baseUrl}}/api/projects/{{proyectoId}}/cerrar-auditoria
+Content-Type: application/json
+
+{
+  "actorUserId": {{actorUserId}},
+  "actorRole": "{{actorRole}}",
+  "observaciones": "Prueba alias cerrar-auditoria"
+}
+
+###
+
+### rechazar-auditoria → mismo que rechazar-evaluacion
+POST {{baseUrl}}/api/projects/{{proyectoId}}/rechazar-auditoria
+Content-Type: application/json
+
+{
+  "actorUserId": {{actorUserId}},
+  "actorRole": "{{actorRole}}",
+  "motivoRechazo": "Prueba alias rechazar-auditoria con motivo suficientemente largo."
+}
+
+###
+
+### audit/metrics → mismo que evaluacion/metrics
+GET {{baseUrl}}/api/projects/audit/metrics

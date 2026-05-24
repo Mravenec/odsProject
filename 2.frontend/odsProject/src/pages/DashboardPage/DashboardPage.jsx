@@ -117,8 +117,8 @@ const DashboardPage = () => {
           )}
           {perms.canViewAuditQueue && (
             <button className="btn-create-header btn-audit"
-              onClick={() => navigate('/audit')}>
-              <span>📋 Cola de auditoría</span>
+              onClick={() => navigate('/evaluacion')}>
+              <span>📋 Cola de evaluación</span>
             </button>
           )}
         </section>
@@ -178,12 +178,12 @@ const DashboardPage = () => {
           <section className="main-panel">
             {perms.canViewAuditQueue ? (
               <div className="admin-actions-grid">
-                {/* Sprint 14: Cola de auditoría — admin/auditor */}
-                <div className="action-card action-card--audit" onClick={() => navigate('/audit')}>
+                {/* Sprint 3: Cola de evaluación — admin/evaluador */}
+                <div className="action-card action-card--audit" onClick={() => navigate('/evaluacion')}>
                   <div className="action-icon">🔍</div>
-                  <h4>Cola de Auditoría</h4>
+                  <h4>Cola de Evaluación</h4>
                   <p>Revisar documentos del gestor e ingresar las mediciones que el sistema calculará según la fórmula.</p>
-                  <span className="action-link">Auditar proyectos →</span>
+                  <span className="action-link">Evaluar proyectos →</span>
                 </div>
                 {/* Solo admin: panel admin completo */}
                 {perms.canViewAdminPanel && (
@@ -197,7 +197,7 @@ const DashboardPage = () => {
                 <div className="action-card" onClick={() => navigate('/projects')}>
                   <div className="action-icon">📊</div>
                   <h4>Ver todos los proyectos</h4>
-                  <p>Listado completo con estado de meta auditado por proyecto.</p>
+                  <p>Listado completo con estado de meta evaluado por proyecto.</p>
                   <span className="action-link">Ver →</span>
                 </div>
               </div>

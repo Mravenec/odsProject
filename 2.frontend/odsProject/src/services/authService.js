@@ -20,7 +20,7 @@ export const authService = {
       role: source.role || source.rol || (
         source.rolId === 1 ? 'admin' : 
         source.rolId === 2 ? 'gestor' : 
-        source.rolId === 4 ? 'auditor' : 'consultor'
+        source.rolId === 4 ? 'evaluador' : 'consultor'
       )
     };
   },

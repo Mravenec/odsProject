@@ -29,7 +29,7 @@ INSERT IGNORE INTO roles (nombre, descripcion) VALUES
     ('admin',       'Administrador con acceso total al sistema'),
     ('gestor',      'Gestor de proyectos ODS: crea y edita sus propios proyectos'),
     ('consultor',   'Acceso de solo lectura a reportes y dashboards'),
-    ('auditor',     'Acceso a registros de auditoría de todos los ODS');
+    ('evaluador',   'Evaluador académico: revisa y cierra el proceso de evaluación de proyectos ODS');
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA: sedes

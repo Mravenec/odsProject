@@ -3,7 +3,7 @@ import { useAuth } from './useAuth.jsx';
 
 /**
  * Sprint 10 — Matriz central de permisos por rol.
- * Roles: admin, gestor, auditor, consultor.
+ * Roles: admin, gestor, evaluador, consultor.
  * Regla del profesor: el que propone NO mide; el que mide NO propone.
  */
 const ROLE_MATRIX = {
@@ -16,14 +16,14 @@ const ROLE_MATRIX = {
     canApproveProject:  true, canDeleteProject: true,
     roleLabel: 'Administrador',
   },
-  auditor: {
+  evaluador: {
     canViewAllProjects: true, canViewGlobalDashboard: true,
     canViewAdminPanel:  false, canViewAuditQueue: true,
     canCreateProject:   false, canEditAnyProject: false, canEditOwnProject: false,
     canUploadEvidence:  false, canDownloadEvidence: true,
     canEnterMeasurements: true, canViewMeasurements: true,
     canApproveProject:  true, canDeleteProject: false,
-    roleLabel: 'Auditor',
+    roleLabel: 'Evaluador',
   },
   gestor: {
     canViewAllProjects: false, canViewGlobalDashboard: false,

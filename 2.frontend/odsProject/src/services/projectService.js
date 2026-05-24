@@ -395,9 +395,9 @@ export const projectService = {
    * Sprint 16 — Gestor envía proyecto a auditoría.
    * Backend: POST /api/projects/{id}/enviar-revision { actorUserId }
    */
-  async sendForReview(projectId, actorUserId) {
+  async sendForEvaluation(projectId, actorUserId) {
     try {
-      const r = await api.post(`/projects/${projectId}/enviar-revision`, { actorUserId });
+      const r = await api.post(`/projects/${projectId}/enviar-evaluacion`, { actorUserId });
       return { success: true, data: r.data };
     } catch (error) {
       return this._normalizeError(error);
@@ -408,9 +408,9 @@ export const projectService = {
    * Sprint 17 — Auditor cierra (aprueba) la auditoría.
    * Backend: POST /api/projects/{id}/cerrar-auditoria { actorUserId, actorRole, observaciones }
    */
-  async approveAudit(projectId, actorUserId, actorRole, observaciones) {
+  async approveEvaluation(projectId, actorUserId, actorRole, observaciones) {
     try {
-      const r = await api.post(`/projects/${projectId}/cerrar-auditoria`, {
+      const r = await api.post(`/projects/${projectId}/aprobar-evaluacion`, {
         actorUserId, actorRole, observaciones: observaciones || null
       });
       return { success: true, data: r.data };
@@ -424,9 +424,9 @@ export const projectService = {
    * Backend: POST /api/projects/{id}/rechazar-auditoria { actorUserId, actorRole, motivoRechazo }
    * El motivoRechazo debe tener al menos 10 caracteres (lo valida también el backend).
    */
-  async rejectAudit(projectId, actorUserId, actorRole, motivoRechazo) {
+  async rejectEvaluation(projectId, actorUserId, actorRole, motivoRechazo) {
     try {
-      const r = await api.post(`/projects/${projectId}/rechazar-auditoria`, {
+      const r = await api.post(`/projects/${projectId}/rechazar-evaluacion`, {
         actorUserId, actorRole, motivoRechazo
       });
       return { success: true, data: r.data };
@@ -454,9 +454,9 @@ export const projectService = {
    * Backend: GET /api/projects/audit/metrics
    * Devuelve: { pendientes, enCurso, auditadosMes, tiempoPromedioHoras }
    */
-  async getAuditMetrics() {
+  async getEvaluationMetrics() {
     try {
-      const r = await api.get('/projects/audit/metrics');
+      const r = await api.get('/projects/evaluacion/metrics');
       return { success: true, data: r.data || {} };
     } catch (error) {
       return { success: false, error: error.message, data: {} };

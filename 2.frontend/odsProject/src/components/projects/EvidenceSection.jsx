@@ -38,7 +38,7 @@ export default function EvidenceSection({ project }) {
 
       <p className="evidence-intro">
         {canUpload
-          ? 'Subí el documento (Word/Excel/PDF) con los resultados del proyecto. El auditor lo leerá para ingresar las mediciones.'
+          ? 'Subí el documento (Word/Excel/PDF) con los resultados del proyecto. El evaluador lo leerá para ingresar las mediciones.'
           : perms.canEnterMeasurements
             ? 'Documentos cargados por el gestor. Descargalos antes de ingresar las mediciones.'
             : 'Documentos disponibles para descargar.'}

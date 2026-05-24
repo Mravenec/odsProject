@@ -31,8 +31,8 @@ INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sed
   (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Ana García López', 2, 2, TRUE, TRUE),
   (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Carlos Rodríguez Mora', 2, 5, TRUE, TRUE),
   (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'María Jiménez Solano', 3, 2, TRUE, TRUE),
-  -- Sprint 14: usuario auditor (rol_id=4)
-  (5, 'auditor_general', 'auditor@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Luis Vargas Castro', 4, 2, TRUE, TRUE),
+  -- Sprint 3: usuario evaluador (rol_id=4)
+  (5, 'evaluador_general', 'evaluador@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Luis Vargas Castro', 4, 2, TRUE, TRUE),
   -- Gestor General para pruebas del Payload
   (6, 'gestor_general', 'gestor@ods.com', '$2b$12$MOCK_HASH_1234567890', 'Gestor General ODS', 2, 2, TRUE, TRUE);
 

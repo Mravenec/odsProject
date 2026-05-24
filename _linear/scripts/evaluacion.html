@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprint 3 — Refactorizar Auditoría → Evaluación · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --utn-azul:     #012169;
+    --utn-naranja:  #DC4405;
+    --utn-celeste:  #98BADF;
+    --utn-gris:     #C8C9C7;
+
+    --db:    #EAB308;
+    --jooq:  #06B6D4;
+    --be:    #22C55E;
+    --http:  #8B5CF6;
+    --fe:    #0EA5E9;
+
+    --bg:    #06080F;
+    --surface: #0D1117;
+    --surface2: #161B27;
+    --border: rgba(255,255,255,0.07);
+    --text:  #E2E8F0;
+    --muted: #64748B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Header ── */
+  .hero {
+    position: relative;
+    padding: 80px 48px 64px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 40px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(1,33,105,0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--utn-naranja);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--utn-naranja);
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 60px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--utn-celeste);
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 20px;
+    max-width: 600px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 4px;
+  }
+  .meta-chip span { color: #fff; }
+
+  /* ── Layout ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+
+  /* ── Section titles ── */
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 32px;
+  }
+
+  /* ── Pipeline ── */
+  .pipeline {
+    padding: 72px 48px;
+    position: relative;
+  }
+  .pipeline-intro {
+    max-width: 600px;
+    margin-bottom: 56px;
+  }
+  .pipeline-intro p { color: var(--muted); font-size: 15px; }
+
+  .layers { display: flex; flex-direction: column; gap: 0; position: relative; }
+  .layers::before {
+    content: '';
+    position: absolute;
+    left: 23px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--db), var(--jooq), var(--be), var(--http), var(--fe));
+    opacity: 0.3;
+  }
+
+  .layer {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 24px;
+    padding-bottom: 48px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .layer:nth-child(1) { animation-delay: 0.05s }
+  .layer:nth-child(2) { animation-delay: 0.1s }
+  .layer:nth-child(3) { animation-delay: 0.15s }
+  .layer:nth-child(4) { animation-delay: 0.2s }
+  .layer:nth-child(5) { animation-delay: 0.25s }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .layer-dot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+  }
+  .dot {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+    border: 2px solid;
+    background: var(--bg);
+  }
+  .dot.db    { border-color: var(--db);   color: var(--db);   }
+  .dot.jooq  { border-color: var(--jooq); color: var(--jooq); }
+  .dot.be    { border-color: var(--be);   color: var(--be);   }
+  .dot.http  { border-color: var(--http); color: var(--http); }
+  .dot.fe    { border-color: var(--fe);   color: var(--fe);   }
+
+  .layer-content { padding-top: 8px; }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .layer-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .layer-num.db    { color: var(--db);   }
+  .layer-num.jooq  { color: var(--jooq); }
+  .layer-num.be    { color: var(--be);   }
+  .layer-num.http  { color: var(--http); }
+  .layer-num.fe    { color: var(--fe);   }
+
+  .layer-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* ── Cards de issues dentro de cada capa ── */
+  .issues { display: flex; flex-direction: column; gap: 12px; }
+
+  .issue-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .issue-card:hover { border-color: rgba(255,255,255,0.15); }
+
+  .issue-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 24px 16px;
+  }
+  .issue-layer-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .issue-layer-dot.db    { background: var(--db);   }
+  .issue-layer-dot.jooq  { background: var(--jooq); }
+  .issue-layer-dot.be    { background: var(--be);   }
+  .issue-layer-dot.http  { background: var(--http); }
+  .issue-layer-dot.fe    { background: var(--fe);   }
+
+  .issue-info { flex: 1; }
+  .issue-id {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+  }
+  .issue-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .issue-body { padding: 0 24px 20px 48px; }
+
+  .issue-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: #94A3B8;
+  }
+  .check-box {
+    width: 14px; height: 14px;
+    border: 1.5px solid #334155;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* código inline */
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    background: rgba(255,255,255,0.06);
+    color: #CBD5E1;
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  /* bloque de código */
+  .code-block {
+    background: #0A0E1A;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 16px;
+    margin: 12px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #7DD3FC;
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .comment { color: #4B5563; }
+  .code-block .key     { color: #34D399; }
+  .code-block .string  { color: #FCA5A5; }
+  .code-block .cmd     { color: #FDE68A; }
+
+  .cmd-block {
+    background: #000;
+    border-left: 3px solid var(--be);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #86EFAC;
+  }
+
+  .diff-block {
+    background: #0A0E1A;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 10px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .diff-block .diff-head {
+    background: #1a2035;
+    padding: 6px 14px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .diff-block .diff-body { padding: 12px 14px; }
+  .diff-del { color: #FCA5A5; }
+  .diff-add { color: #86EFAC; }
+  .diff-ctx { color: #475569; }
+
+  /* ── Deps ── */
+  .deps-section {
+    padding: 0 48px 72px;
+  }
+  .deps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .dep-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .dep-arrow { color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+  .dep-child { color: #fff; font-weight: 500; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+  .dep-parent { color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+  .dep-note { color: #475569; font-size: 11px; margin-top: 2px; }
+
+  /* ── Pipeline visual ── */
+  .flow-section {
+    padding: 0 48px 72px;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .flow-node {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .flow-node.db    { border-color: var(--db);   color: var(--db);   }
+  .flow-node.jooq  { border-color: var(--jooq); color: var(--jooq); }
+  .flow-node.be    { border-color: var(--be);   color: var(--be);   }
+  .flow-node.http  { border-color: var(--http); color: var(--http); }
+  .flow-node.fe    { border-color: var(--fe);   color: var(--fe);   }
+  .flow-arrow {
+    color: var(--muted);
+    padding: 0 8px;
+    font-size: 14px;
+  }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .utn-mark {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--utn-celeste);
+    letter-spacing: 0.05em;
+  }
+
+  /* Separadores de sección */
+  .section-sep {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 48px;
+  }
+
+  /* tag de estado */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .tag.backlog { border-color: #475569; color: #94A3B8; }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────── -->
+<header class="hero">
+  <div class="hero-eyebrow">ODS UTN · Linear Sprint Board</div>
+  <h1>Sprint 3<br><em>Evaluación</em></h1>
+  <p class="hero-sub">
+    Refactorización completa de <code>auditoría</code> → <code>evaluación</code>
+    en toda la plataforma: base de datos, JOOQ, Spring Boot y React.
+  </p>
+  <div class="hero-meta">
+    <div class="meta-chip">Capa DB <span>1 issue</span></div>
+    <div class="meta-chip">JOOQ <span>1 issue</span></div>
+    <div class="meta-chip">Backend <span>3 issues</span></div>
+    <div class="meta-chip">Run + .http <span>1 issue</span></div>
+    <div class="meta-chip">Frontend <span>5 issues</span></div>
+    <div class="meta-chip">Dependencias <span>12 enlaces</span></div>
+  </div>
+</header>
+
+<!-- ── FLUJO VISUAL ────────────────────────────────────────────────── -->
+<section class="flow-section" style="padding-top:72px">
+  <div class="section-label">Orden de ejecución</div>
+  <div class="section-title">Pipeline multi-agente</div>
+  <div class="flow-row">
+    <div class="flow-node db">DB-1<br><small>SQL scripts</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node jooq">JOOQ-1<br><small>generate-sources</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node be">BE-1<br><small>Controller paths</small></div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-node be">BE-2<br><small>Service métodos</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node be">BE-3<br><small>Strings "auditor"</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node http">BE-4<br><small>Run + .http</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node fe">FE-1<br><small>projectService</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node fe">FE-2,3,4<br><small>Componentes</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node fe">FE-5<br><small>npm run dev</small></div>
+  </div>
+  <p style="margin-top:16px; font-size:13px; color:var(--muted)">
+    Cada capa está bloqueada por la anterior. BE-1 y BE-2 pueden ir en paralelo una vez que JOOQ termina.
+    FE-2, FE-3 y FE-4 pueden ir en paralelo una vez que FE-1 termina.
+  </p>
+</section>
+
+<hr class="section-sep">
+
+<!-- ── CAPAS ─────────────────────────────────────────────────────────── -->
+<section class="pipeline">
+  <div class="pipeline-intro">
+    <div class="section-label">Issues del sprint</div>
+    <div class="section-title">Detalle por capa</div>
+    <p>Cada issue contiene el contexto exacto del código encontrado, los cambios a realizar y el checklist de verificación.</p>
+  </div>
+
+  <div class="layers">
+
+    <!-- ── CAPA 1: DB ── -->
+    <div class="layer">
+      <div class="layer-dot">
+        <div class="dot db">DB</div>
+      </div>
+      <div class="layer-content">
+        <div class="layer-header">
+          <div class="layer-num db">Capa 1</div>
+          <div class="layer-title">Base de Datos</div>
+        </div>
+        <div class="issues">
+
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot db"></div>
+              <div class="issue-info">
+                <div class="issue-id">DB-1 · Backlog · role:database · type:refactor · 1pt</div>
+                <div class="issue-title">Renombrar rol <code>auditor</code> → <code>evaluador</code> en login_system.sql</div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <p class="issue-desc">
+                La tabla <code>roles</code> en <code>1. login_system.sql</code> tiene el INSERT con <code>'auditor'</code>.
+                El mock en <code>21. ods_mocks.sql</code> tiene un usuario con <code>rol_id=4</code> y username <code>auditor_general</code>.
+                Ambos archivos deben actualizarse antes de correr los scripts de DB.
+              </p>
+
+              <div class="diff-block">
+                <div class="diff-head">1. login_system.sql — tabla roles</div>
+                <div class="diff-body">
+<span class="diff-del">- ('auditor', 'Acceso a registros de auditoría de todos los ODS')</span>
+<span class="diff-add">+ ('evaluador', 'Evaluador académico: revisa y cierra el proceso de evaluación de proyectos ODS')</span>
+                </div>
+              </div>
+
+              <div class="diff-block">
+                <div class="diff-head">21. ods_mocks.sql — usuario mock</div>
+                <div class="diff-body">
+<span class="diff-del">- (5, 'auditor_general', 'auditor@ods.cr', '...HASH...', 'Luis Vargas Castro', 4, 2, TRUE, TRUE),</span>
+<span class="diff-add">+ (5, 'evaluador_general', 'evaluador@ods.cr', '...HASH...', 'Luis Vargas Castro', 4, 2, TRUE, TRUE),</span>
+                </div>
+              </div>
+
+              <p class="issue-desc" style="margin-top:12px">Comandos a ejecutar en orden:</p>
+              <div class="cmd-block">python 0.database/drop_db.py
+python 0.database/setup_db.py
+python 0.database/load_mocks.py</div>
+
+              <div class="checklist">
+                <div class="check-item"><div class="check-box"></div>Editar <code>1. login_system.sql</code> — cambiar <code>auditor</code> → <code>evaluador</code></div>
+                <div class="check-item"><div class="check-box"></div>Editar <code>21. ods_mocks.sql</code> — actualizar usuario mock</div>
+                <div class="check-item"><div class="check-box"></div><code>python 0.database/drop_db.py</code></div>
+                <div class="check-item"><div class="check-box"></div><code>python 0.database/setup_db.py</code></div>
+                <div class="check-item"><div class="check-box"></div><code>python 0.database/load_mocks.py</code></div>
+                <div class="check-item"><div class="check-box"></div>Verificar en DB: <code>SELECT nombre FROM roles;</code> muestra <code>evaluador</code></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /layer DB -->
+
+    <!-- ── CAPA 2: JOOQ ── -->
+    <div class="layer">
+      <div class="layer-dot">
+        <div class="dot jooq">JQ</div>
+      </div>
+      <div class="layer-content">
+        <div class="layer-header">
+          <div class="layer-num jooq">Capa 2</div>
+          <div class="layer-title">JOOQ — Regenerar POJOs</div>
+        </div>
+        <div class="issues">
+
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot jooq"></div>
+              <div class="issue-info">
+                <div class="issue-id">JOOQ-1 · Backlog · role:backend · type:refactor · 1pt · bloqueado por DB-1</div>
+                <div class="issue-title">Regenerar POJOs con JOOQ tras el cambio en DB</div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <p class="issue-desc">
+                El cambio de <code>auditor</code> → <code>evaluador</code> es un cambio de <em>datos</em>,
+                no de esquema. Los POJOs generados para la tabla <code>roles</code> no cambian.
+                Aun así, el paso de regeneración es obligatorio en el pipeline para confirmar
+                que la DB está sana y detectar cualquier cambio de vista inesperado.
+              </p>
+              <div class="cmd-block">cd 1.backend/odsProject
+mvn generate-sources -P jooq</div>
+              <p class="issue-desc">Verificar que <code>git diff --name-only src/main/java/.../jooq/</code> no muestra cambios inesperados.</p>
+              <div class="checklist">
+                <div class="check-item"><div class="check-box"></div>DB levantada y con rol <code>evaluador</code> confirmado (DB-1 completado)</div>
+                <div class="check-item"><div class="check-box"></div><code>mvn generate-sources</code> sin errores</div>
+                <div class="check-item"><div class="check-box"></div>No hay archivos JOOQ modificados inesperadamente (<code>git diff --name-only</code>)</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /layer JOOQ -->
+
+    <!-- ── CAPA 3: BACKEND REFACTOR ── -->
+    <div class="layer">
+      <div class="layer-dot">
+        <div class="dot be">BE</div>
+      </div>
+      <div class="layer-content">
+        <div class="layer-header">
+          <div class="layer-num be">Capa 3</div>
+          <div class="layer-title">Backend — Refactor Java</div>
+        </div>
+        <div class="issues">
+
+          <!-- BE-1 -->
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot be"></div>
+              <div class="issue-info">
+                <div class="issue-id">BE-1 · Backlog · role:backend · type:refactor · 2pts · bloqueado por JOOQ-1</div>
+                <div class="issue-title">Renombrar paths y métodos en <code>MasterProjectController</code></div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <p class="issue-desc">
+                Cuatro endpoints en <code>MasterProjectController.java</code> (líneas 140, 159, 180)
+                y en <code>IMasterProjectController.java</code> usan el término "auditoría":
+              </p>
+              <div class="diff-block">
+                <div class="diff-head">MasterProjectController.java — @PostMapping paths</div>
+                <div class="diff-body">
+<span class="diff-del">- @PostMapping("/{id}/enviar-revision")</span>
+<span class="diff-add">+ @PostMapping({"/{id}/enviar-evaluacion", "/{id}/enviar-revision"}) // alias deprecado</span>
+<span class="diff-ctx">  </span>
+<span class="diff-del">- @PostMapping("/{id}/cerrar-auditoria")</span>
+<span class="diff-add">+ @PostMapping({"/{id}/aprobar-evaluacion", "/{id}/cerrar-auditoria"})</span>
+<span class="diff-ctx">  </span>
+<span class="diff-del">- @PostMapping("/{id}/rechazar-auditoria")</span>
+<span class="diff-add">+ @PostMapping({"/{id}/rechazar-evaluacion", "/{id}/rechazar-auditoria"})</span>
+<span class="diff-ctx">  </span>
+<span class="diff-del">- @GetMapping("/audit/metrics")</span>
+<span class="diff-add">+ @GetMapping({"/evaluacion/metrics", "/audit/metrics"})</span>
+                </div>
+              </div>
+              <div class="checklist">
+                <div class="check-item"><div class="check-box"></div>Renombrar los 4 <code>@Mapping</code> con alias deprecados</div>
+                <div class="check-item"><div class="check-box"></div>Renombrar nombres de método: <code>enviarRevision → enviarEvaluacion</code>, etc.</div>
+                <div class="check-item"><div class="check-box"></div>Actualizar firmas en <code>IMasterProjectController.java</code></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BE-2 -->
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot be"></div>
+              <div class="issue-info">
+                <div class="issue-id">BE-2 · Backlog · role:backend · type:refactor · 1pt · bloqueado por JOOQ-1 (paralelo a BE-1)</div>
+                <div class="issue-title">Renombrar métodos en <code>MasterProjectService</code></div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <div class="diff-block">
+                <div class="diff-head">MasterProjectService.java + IMasterProjectService.java</div>
+                <div class="diff-body">
+<span class="diff-del">- enviarRevision(Integer id, Map body)</span>
+<span class="diff-add">+ enviarEvaluacion(Integer id, Map body)</span>
+<span class="diff-ctx">  </span>
+<span class="diff-del">- cerrarAuditoria(Integer id, Map body)</span>
+<span class="diff-add">+ aprobarEvaluacion(Integer id, Map body)</span>
+<span class="diff-ctx">  </span>
+<span class="diff-del">- rechazarAuditoria(Integer id, Map body)</span>
+<span class="diff-add">+ rechazarEvaluacion(Integer id, Map body)</span>
+                </div>
+              </div>
+              <div class="checklist">
+                <div class="check-item"><div class="check-box"></div>Renombrar los 3 métodos en <code>MasterProjectService.java</code></div>
+                <div class="check-item"><div class="check-box"></div>Renombrar firmas en <code>IMasterProjectService.java</code></div>
+                <div class="check-item"><div class="check-box"></div>Actualizar llamadas en el Controller a los nuevos nombres</div>
+                <div class="check-item"><div class="check-box"></div><code>mvn compile</code> sin errores</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BE-3 -->
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot be"></div>
+              <div class="issue-info">
+                <div class="issue-id">BE-3 · Backlog · role:backend · type:refactor · 1pt · bloqueado por BE-2</div>
+                <div class="issue-title">Reemplazar string <code>"auditor"</code> → <code>"evaluador"</code> en lógica de negocio</div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <p class="issue-desc">
+                Hay 4 ocurrencias del string <code>"auditor"</code> en <code>MasterProjectService.java</code>
+                dentro de la lógica de transiciones de estado y guards de autorización:
+              </p>
+              <div class="diff-block">
+                <div class="diff-head">MasterProjectService.java — líneas 511, 513, 609, 631</div>
+                <div class="diff-body">
+<span class="diff-ctx">// Mapa de transiciones (línea 511):</span>
+<span class="diff-del">- "activo", Set.of("gestor", "admin", "auditor"),</span>
+<span class="diff-add">+ "activo", Set.of("gestor", "admin", "evaluador"),</span>
+<span class="diff-ctx">  </span>
+<span class="diff-del">- "completado", Set.of("admin", "auditor"),</span>
+<span class="diff-add">+ "completado", Set.of("admin", "evaluador"),</span>
+<span class="diff-ctx">  </span>
+<span class="diff-ctx">// Guards (líneas 609 y 631):</span>
+<span class="diff-del">- if (!(role.equals("admin") || role.equals("auditor")))</span>
+<span class="diff-add">+ if (!(role.equals("admin") || role.equals("evaluador")))</span>
+                </div>
+              </div>
+              <div class="checklist">
+                <div class="check-item"><div class="check-box"></div>Reemplazar las 4 ocurrencias de <code>"auditor"</code> → <code>"evaluador"</code></div>
+                <div class="check-item"><div class="check-box"></div><code>mvn compile</code> sin errores</div>
+                <div class="check-item"><div class="check-box"></div>Login con usuario <code>evaluador_general</code> del mock → debe autenticarse correctamente</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /layer BE -->
+
+    <!-- ── CAPA 4: RUN + HTTP ── -->
+    <div class="layer">
+      <div class="layer-dot">
+        <div class="dot http">RUN</div>
+      </div>
+      <div class="layer-content">
+        <div class="layer-header">
+          <div class="layer-num http">Capa 4</div>
+          <div class="layer-title">Spring Boot — Run + Tests .http</div>
+        </div>
+        <div class="issues">
+
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot http"></div>
+              <div class="issue-info">
+                <div class="issue-id">BE-4 · Backlog · role:backend · type:test · 2pts · bloqueado por BE-1, BE-3</div>
+                <div class="issue-title">Levantar Spring Boot y actualizar <code>MasterProjectController.http</code></div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <div class="cmd-block">cd 1.backend/odsProject
+mvn spring-boot:run</div>
+              <p class="issue-desc" style="margin-top:12px">Agregar la sección de evaluación al archivo <code>MasterProjectController.http</code>:</p>
+              <div class="code-block"><span class="comment">### ─── Flujo de Evaluación ───────────────────────────────</span>
+<span class="key">@proyectoId</span> = 1
+<span class="key">@actorUserId</span> = 5
+<span class="key">@actorRole</span> = evaluador
+
+<span class="comment">### Gestor envía proyecto a evaluación</span>
+<span class="cmd">POST</span> {{baseUrl}}/api/projects/{{proyectoId}}/enviar-evaluacion
+Content-Type: application/json
+
+{ <span class="string">"actorUserId"</span>: {{actorUserId}} }
+
+###
+
+<span class="comment">### Evaluador aprueba la evaluación</span>
+<span class="cmd">POST</span> {{baseUrl}}/api/projects/{{proyectoId}}/aprobar-evaluacion
+Content-Type: application/json
+
+{
+  <span class="string">"actorUserId"</span>: {{actorUserId}},
+  <span class="string">"actorRole"</span>: <span class="string">"evaluador"</span>,
+  <span class="string">"observaciones"</span>: <span class="string">"Indicadores completos."</span>
+}
+
+###
+
+<span class="comment">### Evaluador rechaza la evaluación</span>
+<span class="cmd">POST</span> {{baseUrl}}/api/projects/{{proyectoId}}/rechazar-evaluacion
+Content-Type: application/json
+
+{
+  <span class="string">"actorUserId"</span>: {{actorUserId}},
+  <span class="string">"actorRole"</span>: <span class="string">"evaluador"</span>,
+  <span class="string">"motivoRechazo"</span>: <span class="string">"Faltan documentos de respaldo."</span>
+}
+
+###
+
+<span class="comment">### Métricas de cola de evaluación</span>
+<span class="cmd">GET</span> {{baseUrl}}/api/projects/evaluacion/metrics</div>
+              <div class="checklist">
+                <div class="check-item"><div class="check-box"></div><code>mvn spring-boot:run</code> sin errores de arranque</div>
+                <div class="check-item"><div class="check-box"></div>GET <code>/evaluacion/metrics</code> → 200 OK</div>
+                <div class="check-item"><div class="check-box"></div>POST <code>/enviar-evaluacion</code> → estado pasa a <code>en_revision</code></div>
+                <div class="check-item"><div class="check-box"></div>POST <code>/aprobar-evaluacion</code> con rol <code>evaluador</code> → estado pasa a <code>completado</code></div>
+                <div class="check-item"><div class="check-box"></div>POST <code>/rechazar-evaluacion</code> → estado vuelve a <code>activo</code></div>
+                <div class="check-item"><div class="check-box"></div>POST <code>/aprobar-evaluacion</code> con rol <code>gestor</code> → 403 Forbidden</div>
+                <div class="check-item"><div class="check-box"></div>Alias viejos (<code>/enviar-revision</code>) responden 200 (compatibilidad)</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /layer RUN -->
+
+    <!-- ── CAPA 5: FRONTEND ── -->
+    <div class="layer">
+      <div class="layer-dot">
+        <div class="dot fe">FE</div>
+      </div>
+      <div class="layer-content">
+        <div class="layer-header">
+          <div class="layer-num fe">Capa 5</div>
+          <div class="layer-title">Frontend — React</div>
+        </div>
+        <div class="issues">
+
+          <!-- FE-1 -->
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot fe"></div>
+              <div class="issue-info">
+                <div class="issue-id">FE-1 · Backlog · role:frontend · type:refactor · 1pt · bloqueado por BE-4</div>
+                <div class="issue-title">Actualizar <code>projectService.js</code> + <code>usePermissions.js</code></div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <div class="diff-block">
+                <div class="diff-head">projectService.js — 4 métodos y paths</div>
+                <div class="diff-body">
+<span class="diff-del">- sendForReview()    → /enviar-revision</span>
+<span class="diff-add">+ sendForEvaluation() → /enviar-evaluacion</span>
+<span class="diff-del">- approveAudit()     → /cerrar-auditoria</span>
+<span class="diff-add">+ approveEvaluation() → /aprobar-evaluacion</span>
+<span class="diff-del">- rejectAudit()      → /rechazar-auditoria</span>
+<span class="diff-add">+ rejectEvaluation()  → /rechazar-evaluacion</span>
+<span class="diff-del">- getAuditMetrics()  → /audit/metrics</span>
+<span class="diff-add">+ getEvaluationMetrics() → /evaluacion/metrics</span>
+                </div>
+              </div>
+              <div class="diff-block">
+                <div class="diff-head">usePermissions.js — ROLE_MATRIX</div>
+                <div class="diff-body">
+<span class="diff-del">- auditor: { canViewAuditQueue: true, ... }</span>
+<span class="diff-add">+ evaluador: { canViewAuditQueue: true, ... }</span>
+                </div>
+              </div>
+              <div class="checklist">
+                <div class="check-item"><div class="check-box"></div>Renombrar los 4 métodos en <code>projectService.js</code></div>
+                <div class="check-item"><div class="check-box"></div>Renombrar entrada <code>auditor</code> → <code>evaluador</code> en <code>ROLE_MATRIX</code></div>
+                <div class="check-item"><div class="check-box"></div>Buscar y actualizar todos los usos de <code>sendForReview</code>, <code>approveAudit</code>, etc. en el resto del código</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FE-2 -->
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot fe"></div>
+              <div class="issue-info">
+                <div class="issue-id">FE-2 · Backlog · role:frontend · type:refactor · 2pts · bloqueado por FE-1</div>
+                <div class="issue-title">Renombrar <code>AuditQueuePage</code> → <code>EvaluationQueuePage</code></div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <p class="issue-desc">Carpeta, archivos y todos los textos del componente. Cambios verificados línea por línea:</p>
+              <div class="code-block"><span class="comment">Renombrar carpeta y archivos:</span>
+<span class="diff-del">src/pages/AuditQueuePage/AuditQueuePage.jsx</span>
+<span class="diff-del">src/pages/AuditQueuePage/AuditQueuePage.css</span>
+        ↓
+<span class="diff-add">src/pages/EvaluationQueuePage/EvaluationQueuePage.jsx</span>
+<span class="diff-add">src/pages/EvaluationQueuePage/EvaluationQueuePage.css</span>
+
+<span class="comment">Textos a cambiar (verificados):</span>
+<span class="diff-del">"Cola de auditoría"       → </span><span class="diff-add">"Cola de Evaluación"</span>
+<span class="diff-del">"Pendientes de auditar"   → </span><span class="diff-add">"Pendientes de evaluación"</span>
+<span class="diff-del">"Auditados"               → </span><span class="diff-add">"Evaluados"</span>
+<span class="diff-del">"Auditados este mes"      → </span><span class="diff-add">"Evaluados este mes"</span>
+<span class="diff-del">"En espera del auditor"   → </span><span class="diff-add">"En espera del evaluador"</span>
+<span class="diff-del">navigate(`/audit/${p.id}`) → </span><span class="diff-add">navigate(`/evaluacion/${p.id}`)</span>
+
+<span class="comment">Clases CSS:</span>
+<span class="diff-del">.audit-queue-page  → </span><span class="diff-add">.evaluation-queue-page</span>
+<span class="diff-del">.audit-header      → </span><span class="diff-add">.evaluation-header</span>
+<span class="diff-del">.audit-filters     → </span><span class="diff-add">.evaluation-filters</span>
+<span class="diff-del">.kpi-auditados     → </span><span class="diff-add">.kpi-evaluados</span></div>
+            </div>
+          </div>
+
+          <!-- FE-3 -->
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot fe"></div>
+              <div class="issue-info">
+                <div class="issue-id">FE-3 · Backlog · role:frontend · type:refactor · 1pt · bloqueado por FE-1 (paralelo a FE-2)</div>
+                <div class="issue-title">Renombrar textos en <code>ProjectResultsPage.jsx</code></div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <div class="diff-block">
+                <div class="diff-head">ProjectResultsPage.jsx — textos visibles al usuario</div>
+                <div class="diff-body">
+<span class="diff-del">- "📤 Enviar a auditoría"</span>
+<span class="diff-add">+ "📤 Enviar a evaluación"</span>
+<span class="diff-del">- '¿Enviar este proyecto a auditoría?...'</span>
+<span class="diff-add">+ '¿Enviar este proyecto a evaluación?...'</span>
+<span class="diff-del">- 'Proyecto enviado a auditoría exitosamente.'</span>
+<span class="diff-add">+ 'Proyecto enviado a evaluación exitosamente.'</span>
+<span class="diff-del">- "Auditar este proyecto"</span>
+<span class="diff-add">+ "Evaluar este proyecto"</span>
+<span class="diff-del">- "⚠ La auditoría fue rechazada"</span>
+<span class="diff-add">+ "⚠ La evaluación fue rechazada"</span>
+<span class="diff-del">- "Auditoría cerrada · datos firmados"</span>
+<span class="diff-add">+ "Evaluación cerrada · datos firmados"</span>
+<span class="diff-del">- "Auditado por [nombre]"</span>
+<span class="diff-add">+ "Evaluado por [nombre]"</span>
+                </div>
+              </div>
+              <div class="checklist">
+                <div class="check-item"><div class="check-box"></div>Reemplazar los 7 textos visibles</div>
+                <div class="check-item"><div class="check-box"></div>Actualizar llamadas al service con nuevos nombres de FE-1</div>
+                <div class="check-item"><div class="check-box"></div>Verificar que el botón "Evaluar" navega a <code>/evaluacion/:id</code></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FE-4 -->
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot fe"></div>
+              <div class="issue-info">
+                <div class="issue-id">FE-4 · Backlog · role:frontend · type:refactor · 1pt · bloqueado por FE-2 y FE-3</div>
+                <div class="issue-title">Actualizar <code>formatters.js</code> y <code>App.jsx</code> — labels y rutas</div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <div class="diff-block">
+                <div class="diff-head">formatters.js — getEstadoLabel()</div>
+                <div class="diff-body">
+<span class="diff-del">- en_revision: 'En revisión'</span>
+<span class="diff-add">+ en_revision: 'En evaluación'</span>
+<span class="diff-del">- completado:  'Auditado'</span>
+<span class="diff-add">+ completado:  'Evaluado'</span>
+                </div>
+              </div>
+              <div class="diff-block">
+                <div class="diff-head">App.jsx — import y rutas</div>
+                <div class="diff-body">
+<span class="diff-del">- import AuditQueuePage from './pages/AuditQueuePage/AuditQueuePage.jsx';</span>
+<span class="diff-add">+ import EvaluationQueuePage from './pages/EvaluationQueuePage/EvaluationQueuePage.jsx';</span>
+<span class="diff-ctx">  </span>
+<span class="diff-del">- &lt;Route path="/audit" element={&lt;AuditQueuePage /&gt;} /&gt;</span>
+<span class="diff-add">+ &lt;Route path="/evaluacion" element={&lt;EvaluationQueuePage /&gt;} /&gt;</span>
+<span class="diff-add">+ &lt;Route path="/audit" element={&lt;Navigate to="/evaluacion" /&gt;} /&gt; {/* alias */}</span>
+<span class="diff-ctx">  </span>
+<span class="diff-del">- &lt;Route path="/audit/:projectId" element={&lt;EvaluationPage /&gt;} /&gt;</span>
+<span class="diff-add">+ &lt;Route path="/evaluacion/:projectId" element={&lt;EvaluationPage /&gt;} /&gt;</span>
+<span class="diff-add">+ &lt;Route path="/audit/:projectId" element={&lt;Navigate to="/evaluacion/:projectId" /&gt;} /&gt;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FE-5 -->
+          <div class="issue-card">
+            <div class="issue-head">
+              <div class="issue-layer-dot fe"></div>
+              <div class="issue-info">
+                <div class="issue-id">FE-5 · Backlog · role:frontend · type:test · 2pts · bloqueado por FE-4</div>
+                <div class="issue-title">Levantar frontend y verificar flujo completo en browser</div>
+              </div>
+            </div>
+            <div class="issue-body">
+              <div class="cmd-block">cd 2.frontend/odsProject
+npm run dev</div>
+              <p class="issue-desc" style="margin-top:12px">Casos de prueba por rol:</p>
+              <div class="checklist">
+                <div class="check-item"><div class="check-box"></div><strong>Gestor:</strong> botón dice "📤 Enviar a evaluación", pill dice "En evaluación", panel dice "Evaluación cerrada"</div>
+                <div class="check-item"><div class="check-box"></div><strong>Evaluador:</strong> login con <code>evaluador@ods.cr</code> exitoso, menú va a <code>/evaluacion</code>, título "Cola de Evaluación"</div>
+                <div class="check-item"><div class="check-box"></div><strong>Evaluador:</strong> tabs dicen "Pendientes de evaluación" y "Evaluados", KPI "Evaluados este mes"</div>
+                <div class="check-item"><div class="check-box"></div><strong>Consultor:</strong> panel dice "Evaluado por [nombre]", NO accede a <code>/evaluacion</code></div>
+                <div class="check-item"><div class="check-box"></div><strong>Dashboard:</strong> badge de estado dice "Evaluado" (no "Auditado")</div>
+                <div class="check-item"><div class="check-box"></div><strong>Rutas antiguas:</strong> <code>/audit</code> redirige a <code>/evaluacion</code></div>
+                <div class="check-item"><div class="check-box"></div>Búsqueda en browser: no quedan textos "auditoría" o "auditor" visibles en la UI</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /layer FE -->
+
+  </div><!-- /layers -->
+</section>
+
+<hr class="section-sep">
+
+<!-- ── DEPENDENCIAS ───────────────────────────────────────────────────── -->
+<section class="deps-section" style="padding-top:64px">
+  <div class="section-label">Grafo de dependencias</div>
+  <div class="section-title">Cada issue está bloqueado por</div>
+  <div class="deps-grid">
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">JOOQ-1</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← DB-1</div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">BE-1</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← JOOQ-1</div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">BE-2</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← JOOQ-1</div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">BE-3</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← BE-2</div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">BE-4 (Run)</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← BE-1, BE-3</div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">FE-1</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← BE-4</div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">FE-2</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← FE-1</div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">FE-3</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← FE-1</div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">FE-4</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← FE-2, FE-3</div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <div>
+        <div class="dep-child">FE-5 (Verify)</div>
+        <div class="dep-note">bloqueado por</div>
+        <div class="dep-parent">← FE-4</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-sep">
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="utn-mark">UTN · ODS Platform</div>
+  <div>Sprint 3 — Refactorizar auditoría → evaluación · 11 issues · 12 dependencias</div>
+</footer>
+
+</body>
+</html>
