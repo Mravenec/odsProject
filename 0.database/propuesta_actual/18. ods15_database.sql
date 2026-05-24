@@ -11,8 +11,8 @@ SET @ODS_NUM = 15;
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Vida de Ecosistemas Terrestres', '#56DB27', 'Gestionar sosteniblemente los bosques, luchar contra la desertificación, detener e invertir la degradación de las tierras y detener la pérdida de biodiversidad');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Vida de Ecosistemas Terrestres', '#56DB27', 'Gestionar sosteniblemente los bosques, luchar contra la desertificación, detener e invertir la degradación de las tierras y detener la pérdida de biodiversidad', '/ods-icons/ods-15.png');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 

@@ -11,8 +11,8 @@ SET @ODS_NUM = 12;
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Producción y Consumo Responsables', '#BF8B2E', 'Garantizar modalidades de consumo y producción sostenibles');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Producción y Consumo Responsables', '#BF8B2E', 'Garantizar modalidades de consumo y producción sostenibles', '/ods-icons/ods-12.png');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 

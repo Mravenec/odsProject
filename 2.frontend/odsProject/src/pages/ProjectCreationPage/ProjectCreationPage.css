@@ -177,7 +177,7 @@
 .ods-card {
   aspect-ratio: 1;
   border-radius: var(--radius-lg);
-  padding: 1rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -202,6 +202,22 @@
   transform: scale(1.04);
 }
 
+.ods-card .ods-icon-probe {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ods-card.ods-card--has-icon {
+  padding: 0;
+}
+
+.ods-card:not(.ods-card--has-icon) {
+  padding: 0.75rem;
+}
+
 .ods-card .ods-number {
   font-size: 1.5rem;
   font-weight: 900;
@@ -217,21 +233,17 @@
   line-height: 1.25;
 }
 
-.selection-overlay {
+.ods-card .selection-overlay {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 22px;
-  height: 22px;
-  background-color: #fff;
-  border-radius: 50%;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: inherit;
   color: var(--success);
   font-weight: bold;
-  font-size: 0.85rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+  z-index: 1;
 }
 
 /* ─── Indicators accordion ────────────────────────────────────── */
@@ -541,7 +553,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 0.625rem;
   }
-  .ods-card { padding: 0.5rem; }
+  .ods-card:not(.ods-card--has-icon) { padding: 0.5rem; }
   .indicator-li { padding: 1rem; }
   .step { width: 36px; height: 36px; font-size: 0.85rem; }
 }

@@ -11,8 +11,8 @@ SET @ODS_NUM = 10;
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Reducción de las Desigualdades', '#E11484', 'Reducir la desigualdad en los países y entre ellos');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Reducción de las Desigualdades', '#E11484', 'Reducir la desigualdad en los países y entre ellos', '/ods-icons/ods-10.png');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 

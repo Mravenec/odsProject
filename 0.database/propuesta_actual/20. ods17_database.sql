@@ -12,8 +12,8 @@ SET @ODS_NUM = 17;
 -- ────────────────────────────────────────────────────────────
 
 -- 1. Asegurar que el ODS existe en el catálogo
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Alianzas para Lograr los Objetivos', '#19486A', 'Fortalecer los medios de ejecución y revitalizar la Alianza Mundial para el Desarrollo Sostenible');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Alianzas para Lograr los Objetivos', '#19486A', 'Fortalecer los medios de ejecución y revitalizar la Alianza Mundial para el Desarrollo Sostenible', '/ods-icons/ods-17.png');
 
 -- 2. Sembrar indicadores maestros para este ODS
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)

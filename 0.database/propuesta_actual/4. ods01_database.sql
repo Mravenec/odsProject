@@ -15,8 +15,8 @@ SET @ODS_NUM = 1;
 -- ────────────────────────────────────────────────────────────
 
 -- 1. Asegurar que el ODS existe en el catálogo
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Fin de la Pobreza', '#E5243B', 'Poner fin a la pobreza en todas sus formas en todo el mundo');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Fin de la Pobreza', '#E5243B', 'Poner fin a la pobreza en todas sus formas en todo el mundo', '/ods-icons/ods-01.png');
 
 -- 2. Sembrar indicadores maestros para este ODS
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)

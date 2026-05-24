@@ -11,8 +11,8 @@ SET @ODS_NUM = 9;
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Industria, Innovación e Infraestructura', '#F36D25', 'Construir infraestructuras resilientes, promover la industrialización inclusiva y sostenible y fomentar la innovación');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Industria, Innovación e Infraestructura', '#F36D25', 'Construir infraestructuras resilientes, promover la industrialización inclusiva y sostenible y fomentar la innovación', '/ods-icons/ods-09.png');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 

@@ -8,7 +8,8 @@ export const catalogService = {
         id: o.id,
         nombre: o.nombre,
         colorHex: o.colorHex || o.color_hex || '#e5243b',
-        descripcion: o.descripcion || ''
+        descripcion: o.descripcion || '',
+        iconoUrl: o.iconoUrl || o.icono_url || null
       }));
     } catch (e) {
       console.error('catalogService.getOdsList:', e);

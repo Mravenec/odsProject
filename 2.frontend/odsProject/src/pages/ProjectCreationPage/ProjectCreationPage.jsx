@@ -99,6 +99,51 @@ const SDG_INDICATORS_CATALOG = {
   "16.5.1": "Proporción de personas que han tenido al menos un contacto con un funcionario público y que han pagado un soborno"
 };
 
+const OdsSelectionCard = ({ ods, selected, onToggle }) => {
+  const [imgFailed, setImgFailed] = useState(false);
+  const showIcon = Boolean(ods.iconoUrl) && !imgFailed;
+
+  return (
+    <div
+      className={`ods-card ${showIcon ? 'ods-card--has-icon' : ''} ${selected ? 'selected' : ''}`}
+      style={{
+        backgroundColor: ods.colorHex,
+        ...(showIcon
+          ? {
+              backgroundImage: `url(${ods.iconoUrl})`,
+              backgroundSize: '100%',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }
+          : {}),
+      }}
+      onClick={onToggle}
+    >
+      {/* img oculto solo para detectar 404 / carga fallida */}
+      {ods.iconoUrl && !imgFailed && (
+        <img
+          src={ods.iconoUrl}
+          alt=""
+          aria-hidden="true"
+          className="ods-icon-probe"
+          onError={() => setImgFailed(true)}
+        />
+      )}
+      {!showIcon && (
+        <>
+          <span className="ods-number">{ods.id}</span>
+          <span className="ods-title">{ods.nombre}</span>
+        </>
+      )}
+      {selected && (
+        <div className="selection-overlay">
+          <Check size={16} />
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ProjectCreationPage = () => {
   const { user, loading: authLoading, getSedes, getActiveUsers } = useAuth();
   const perms = usePermissions();
@@ -112,7 +157,7 @@ const ProjectCreationPage = () => {
     error: projectsError
   } = useProjects();
 
-  const { } = useCatalog();
+  const { odsList } = useCatalog();
 
   const {
     provincias,
@@ -542,21 +587,13 @@ ${sinMasterId.join(', ')}
               </div>
               
               <div className="ods-selection-grid">
-                {Object.keys(odsColors).map(odsId => (
-                  <div 
-                    key={odsId} 
-                    className={`ods-card ${formData.selectedOds.includes(parseInt(odsId)) ? 'selected' : ''}`}
-                    style={{ backgroundColor: odsColors[odsId] }}
-                    onClick={() => toggleOds(parseInt(odsId))}
-                  >
-                    <span className="ods-number">{odsId}</span>
-                    <span className="ods-title">{getObjectiveName(odsId)}</span>
-                    {formData.selectedOds.includes(parseInt(odsId)) && (
-                      <div className="selection-overlay">
-                        <Check size={12} />
-                      </div>
-                    )}
-                  </div>
+                {odsList.map(ods => (
+                  <OdsSelectionCard
+                    key={ods.id}
+                    ods={ods}
+                    selected={formData.selectedOds.includes(ods.id)}
+                    onToggle={() => toggleOds(ods.id)}
+                  />
                 ))}
               </div>
 

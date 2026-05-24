@@ -11,8 +11,8 @@ SET @ODS_NUM = 14;
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Vida Submarina', '#0A97D9', 'Conservar y utilizar de forma sostenible los océanos, los mares y los recursos marinos para el desarrollo sostenible');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Vida Submarina', '#0A97D9', 'Conservar y utilizar de forma sostenible los océanos, los mares y los recursos marinos para el desarrollo sostenible', '/ods-icons/ods-14.png');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 

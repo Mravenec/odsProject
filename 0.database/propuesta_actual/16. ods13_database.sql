@@ -11,8 +11,8 @@ SET @ODS_NUM = 13;
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Acción por el Clima', '#3F7E44', 'Adoptar medidas urgentes para combatir el cambio climático y sus efectos');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Acción por el Clima', '#3F7E44', 'Adoptar medidas urgentes para combatir el cambio climático y sus efectos', '/ods-icons/ods-13.png');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 

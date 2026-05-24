@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resolución — Flujo íconos ODS · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  :root{--bg:#07090F;--surf:#0D1117;--surf2:#131A24;--border:rgba(255,255,255,.07);--text:#E2E8F0;--muted:#64748B;--db:#EAB308;--be:#22C55E;--fe:#0EA5E9;--ux:#EC4899;--green:#22C55E;--orange:#F97316}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6}
+  .hero{padding:64px 48px 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;right:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(34,197,94,.08) 0%,transparent 70%);pointer-events:none}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--green);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .ey::after{content:'';width:32px;height:1px;background:var(--green);display:block}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(26px,4.5vw,44px);font-weight:800;line-height:1.05;color:#fff}
+  h1 em{font-style:normal;background:linear-gradient(135deg,#22C55E,#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{margin-top:14px;font-size:14px;color:var(--muted);max-width:720px}
+  .al{margin:32px 48px 0;padding:14px 18px;border-radius:8px;font-size:13px;display:flex;gap:12px}
+  .al.info{background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.25);border-left:3px solid #06B6D4;color:#67E8F9}
+  .al.ok{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.25);border-left:3px solid var(--green);color:#86EFAC}
+  .al.warn{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.25);border-left:3px solid var(--orange);color:#FDBA74}
+  .sec{padding:48px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:18px}
+  .flow{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:12px}
+  .flow-step{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+  .flow-step:last-child{border-bottom:none;padding-bottom:0}
+  .flow-step:first-child{padding-top:0}
+  .step-n{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);border-radius:4px;padding:4px 8px;flex-shrink:0;margin-top:2px}
+  .step-n.db{color:var(--db);border-color:rgba(234,179,8,.3)}
+  .step-n.be{color:var(--be);border-color:rgba(34,197,94,.3)}
+  .step-n.fe{color:var(--fe);border-color:rgba(14,165,233,.3)}
+  .step-n.static{color:var(--ux);border-color:rgba(236,72,153,.3)}
+  .step-body{flex:1}
+  .step-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+  .step-desc{font-size:13px;color:var(--muted)}
+  code{font-family:'IBM Plex Mono',monospace;font-size:11.5px;background:rgba(255,255,255,.06);color:#CBD5E1;padding:1px 5px;border-radius:3px}
+  .cb2{background:#060912;border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:13px 16px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.75;overflow-x:auto;white-space:pre}
+  .dc{color:#475569}.da{color:#86EFAC}.dk{color:#7DD3FC}.dw{color:#FDE68A}
+  .src-table{width:100%;border-collapse:collapse;font-size:13px}
+  .src-table th{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--surf2)}
+  .src-table td{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top}
+  .src-table tr:last-child td{border-bottom:none}
+  .src-table tr:hover td{background:rgba(255,255,255,.02)}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;display:inline-block}
+  .badge-db{background:rgba(234,179,8,.12);color:var(--db);border:1px solid rgba(234,179,8,.25)}
+  .badge-file{background:rgba(236,72,153,.12);color:var(--ux);border:1px solid rgba(236,72,153,.25)}
+  .badge-be{background:rgba(34,197,94,.12);color:var(--be);border:1px solid rgba(34,197,94,.25)}
+  .plf{display:flex;align-items:center;flex-wrap:wrap;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin:12px 0}
+  .pln{background:var(--surf2);padding:12px 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;border-right:1px solid var(--border)}
+  .pla{padding:0 10px;color:var(--muted);background:var(--surf2);border-right:1px solid var(--border)}
+  .pln:last-child{border-right:none}
+  .issue-ref{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:8px;font-size:13px}
+  .issue-ref strong{color:#fff;font-family:'IBM Plex Mono',monospace;font-size:12px}
+  .issue-ref span{color:var(--muted);font-size:12px}
+  hr.sep{border:none;border-top:1px solid var(--border);margin:48px 48px 0}
+  footer{margin-top:64px;border-top:1px solid var(--border);padding:24px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .utn{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#98BADF}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="ey">ODS UTN · Resolución · Sprint UX íconos</div>
+  <h1>Flujo completo<br><em>BD → BE → FE → PNG</em></h1>
+  <p class="sub">Documento de cierre: de dónde vienen los íconos ODS, cómo fluyen por el sistema y qué se corrigió en el hotfix ODS-100.</p>
+</header>
+
+<div class="al ok"><div>✅</div><div><strong>Respuesta corta:</strong> la ruta <code>iconoUrl</code> y los metadatos (<code>colorHex</code>, <code>nombre</code>) vienen de la <strong>base de datos</strong>. Los bytes del PNG viven como <strong>archivo estático</strong> en <code>public/ods-icons/</code> — la BD no guarda la imagen.</div></div>
+
+<div class="al warn" style="margin-top:8px"><div>⚠️</div><div><strong>Hotfix ODS-100:</strong> usar <code>itemNN.png</code> del tema ods.cr (<code>/themes/custom/ods10/img/</code>), no <code>itemNN-deco.png</code> (página de detalle). Descarga: <code>node _linear/scripts/download-ods-icons.mjs</code></div></div>
+
+<!-- FLUJO COMPLETO -->
+<section class="sec">
+  <div class="sl">Pipeline de datos</div>
+  <div class="st">Flujo completo</div>
+
+  <div class="plf">
+    <div class="pln" style="color:var(--db)">MariaDB</div><div class="pla">→</div>
+    <div class="pln" style="color:var(--be)">Spring Boot</div><div class="pla">→</div>
+    <div class="pln" style="color:var(--fe)">catalogService</div><div class="pla">→</div>
+    <div class="pln" style="color:var(--fe)">OdsSelectionCard</div><div class="pla">+</div>
+    <div class="pln" style="color:var(--ux)">public/ods-icons/</div>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="step-n db">DB</div>
+      <div class="step-body">
+        <div class="step-title">MariaDB — tabla <code>ods_login.ods_catalog</code></div>
+        <div class="step-desc">17 filas con <code>icono_url = '/ods-icons/ods-NN.png'</code>, <code>color_hex</code>, <code>nombre</code>. Poblado por los INSERTs en <code>0.database/propuesta_actual/ods0N_database.sql</code>.</div>
+        <div class="cb2"><span class="dc">-- Ejemplo ODS 1</span>
+<span class="da">INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)</span>
+<span class="da">VALUES (@ODS_NUM, 'Fin de la Pobreza', '#E5243B', '...', '/ods-icons/ods-01.png');</span></div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-n be">BE</div>
+      <div class="step-body">
+        <div class="step-title">Backend — <code>GET /api/catalog/ods</code></div>
+        <div class="step-desc"><code>CatalogController</code> hace <code>fetchInto(OdsCatalog.class)</code> y serializa el POJO JOOQ completo. Sin cambios de código en el sprint — solo necesitaba datos en BD.</div>
+        <div class="cb2"><span class="dc">// Respuesta JSON (ejemplo)</span>
+<span class="dk">{ "id": 1, "nombre": "Fin de la Pobreza", "colorHex": "#E5243B",</span>
+<span class="dk">  "iconoUrl": "/ods-icons/ods-01.png", "descripcion": "..." }</span></div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-n fe">FE</div>
+      <div class="step-body">
+        <div class="step-title">Frontend — <code>catalogService.getOdsList()</code></div>
+        <div class="step-desc"><code>useCatalog()</code> carga al montar. Mapea <code>iconoUrl</code>, <code>colorHex</code>, <code>nombre</code> → <code>odsList</code> en <code>ProjectCreationPage</code>.</div>
+        <div class="cb2"><span class="dc">// catalogService.js</span>
+<span class="da">iconoUrl: o.iconoUrl || o.icono_url || null</span></div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-n fe">UI</div>
+      <div class="step-body">
+        <div class="step-title">Grid — componente <code>OdsSelectionCard</code></div>
+        <div class="step-desc">Patrón igual que ods.cr: <code>backgroundColor</code> + <code>backgroundImage: url(iconoUrl)</code>. Si la imagen falla → fallback número + nombre.</div>
+        <div class="cb2"><span class="dc">// Estilo inline (patrón ods.cr #obj-item1 a)</span>
+<span class="da">backgroundColor: ods.colorHex,</span>
+<span class="da">backgroundImage: `url(${ods.iconoUrl})`,</span>
+<span class="da">backgroundSize: '100%', backgroundRepeat: 'no-repeat'</span></div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-n static">PNG</div>
+      <div class="step-body">
+        <div class="step-title">Archivos estáticos — <code>public/ods-icons/</code></div>
+        <div class="step-desc">Vite sirve en <code>http://localhost:5173/ods-icons/ods-NN.png</code>. Fuente: <code>https://ods.cr/themes/custom/ods10/img/itemNN.png</code> (grid oficial #items-objetivos).</div>
+        <div class="cb2"><span class="dc"># Re-descargar los 17 PNGs</span>
+<span class="da">node _linear/scripts/download-ods-icons.mjs</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TABLA FUENTES -->
+<section class="sec">
+  <div class="sl">Origen de cada dato</div>
+  <div class="st">¿Qué viene de dónde?</div>
+  <table class="src-table">
+    <thead><tr><th>Dato</th><th>Fuente</th><th>Detalle</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>iconoUrl</code></td>
+        <td><span class="badge badge-db">Base de datos</span></td>
+        <td>Columna <code>icono_url</code> en <code>ods_catalog</code>. Solo la ruta relativa, ej. <code>/ods-icons/ods-01.png</code></td>
+      </tr>
+      <tr>
+        <td><code>colorHex</code>, <code>nombre</code>, <code>id</code></td>
+        <td><span class="badge badge-db">Base de datos</span></td>
+        <td>Misma tabla <code>ods_catalog</code>, 17 filas</td>
+      </tr>
+      <tr>
+        <td>JSON del catálogo</td>
+        <td><span class="badge badge-be">Backend API</span></td>
+        <td><code>GET /api/catalog/ods</code> — lee BD vía JOOQ, sin lógica extra</td>
+      </tr>
+      <tr>
+        <td>Bytes del PNG (imagen)</td>
+        <td><span class="badge badge-file">Archivo local</span></td>
+        <td><code>2.frontend/odsProject/public/ods-icons/ods-NN.png</code> — <strong>no</strong> es BLOB en BD</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- FALLBACK -->
+<section class="sec">
+  <div class="sl">Comportamiento defensivo</div>
+  <div class="st">Si falta el PNG en <code>public/</code></div>
+  <div class="al info" style="margin:0">
+    <div>ℹ️</div>
+    <div>La BD sigue devolviendo <code>iconoUrl: "/ods-icons/ods-01.png"</code>. El frontend intenta cargar la ruta → falla → <code>OdsSelectionCard</code> muestra <strong>número + nombre</strong> sobre el <code>colorHex</code> de la BD. La UI no se rompe.</div>
+  </div>
+</section>
+
+<!-- LINEAR -->
+<section class="sec">
+  <div class="sl">Linear · linear_ods</div>
+  <div class="st">Issues del sprint</div>
+  <div class="issue-ref"><strong>ODS-92</strong> <span>— DB: INSERTs icono_url + pipeline + PNGs</span></div>
+  <div class="issue-ref"><strong>ODS-93–94</strong> <span>— JOOQ confirm + BE verifica iconoUrl en API</span></div>
+  <div class="issue-ref"><strong>ODS-95–99</strong> <span>— FE: catalogService, grid, CSS, colores, QA</span></div>
+  <div class="issue-ref"><strong>ODS-100</strong> <span>— HOTFIX: itemNN.png (grid ods.cr) + OdsSelectionCard background-image</span></div>
+</section>
+
+<!-- SCRIPTS -->
+<section class="sec">
+  <div class="sl">Scripts _linear/scripts</div>
+  <div class="st">Utilidades</div>
+  <table class="src-table">
+    <thead><tr><th>Script</th><th>Uso</th></tr></thead>
+    <tbody>
+      <tr><td><code>download-ods-icons.mjs</code></td><td>Descarga 17 PNGs desde ods.cr tema → <code>public/ods-icons/</code></td></tr>
+      <tr><td><code>sprint_ux_ods_icons.mjs</code></td><td>Provisiona issues en Linear (Sprint 5)</td></tr>
+      <tr><td><code>patch-ods-catalog-icono.mjs</code></td><td>Parchea INSERTs SQL con columna <code>icono_url</code></td></tr>
+      <tr><td><code>linear-comment.mjs</code></td><td>Comentarios CLI → Linear</td></tr>
+      <tr><td><code>linear-update-state.mjs</code></td><td>Cambiar estado de issue</td></tr>
+      <tr><td><code>sprint_ux_ods_icons.html</code></td><td>Spec visual del sprint</td></tr>
+      <tr><td><code>resolution.html</code></td><td>Este documento — flujo y cierre</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="sep">
+
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>Resolución íconos ODS · BD guarda ruta · public/ guarda PNG · ODS-92…100</div>
+</footer>
+
+</body>
+</html>

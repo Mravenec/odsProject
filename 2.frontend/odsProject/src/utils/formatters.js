@@ -77,13 +77,13 @@ export const odsColors = {
   6: '#26BDE2', // Agua Limpia y Saneamiento
   7: '#FCC30B', // Energía Asequible y No Contaminante
   8: '#A21942', // Trabajo Decente y Crecimiento Económico
-  9: '#FD6925', // Industria, Innovación e Infraestructura
-  10: '#DD1367', // Reducción de las Desigualdades
-  11: '#FD9D24', // Ciudades y Comunidades Sostenibles
+  9: '#F36D25', // Industria, Innovación e Infraestructura
+  10: '#E11484', // Reducción de las Desigualdades
+  11: '#F99D26', // Ciudades y Comunidades Sostenibles
   12: '#BF8B2E', // Producción y Consumo Responsables
   13: '#3F7E44', // Acción por el Clima
   14: '#0A97D9', // Vida Submarina
-  15: '#56C02B', // Vida de Ecosistemas Terrestres
+  15: '#56DB27', // Vida de Ecosistemas Terrestres
   16: '#00689D', // Paz, Justicia e Instituciones Sólidas
   17: '#19486A'  // Alianzas para Lograr los Objetivos
 };

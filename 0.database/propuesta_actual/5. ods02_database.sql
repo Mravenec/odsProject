@@ -12,8 +12,8 @@ SET @ODS_NUM = 2;
 -- ────────────────────────────────────────────────────────────
 
 -- 1. Asegurar que el ODS existe en el catálogo
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Hambre Cero', '#DDA63A', 'Poner fin al hambre, lograr la seguridad alimentaria y la mejora de la nutrición');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Hambre Cero', '#DDA63A', 'Poner fin al hambre, lograr la seguridad alimentaria y la mejora de la nutrición', '/ods-icons/ods-02.png');
 
 -- 2. Sembrar indicadores maestros para este ODS
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)

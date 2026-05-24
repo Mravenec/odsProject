@@ -11,8 +11,8 @@ SET @ODS_NUM = 7;
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Energía Asequible y No Contaminante', '#FCC30B', 'Garantizar el acceso a una energía asequible, segura, sostenible y moderna para todos');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Energía Asequible y No Contaminante', '#FCC30B', 'Garantizar el acceso a una energía asequible, segura, sostenible y moderna para todos', '/ods-icons/ods-07.png');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 

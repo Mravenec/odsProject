@@ -11,8 +11,8 @@ SET @ODS_NUM = 5;
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Igualdad de Género', '#FF3A21', 'Lograr la igualdad entre los géneros y empoderar a todas las mujeres y las niñas');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Igualdad de Género', '#FF3A21', 'Lograr la igualdad entre los géneros y empoderar a todas las mujeres y las niñas', '/ods-icons/ods-05.png');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 

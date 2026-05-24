@@ -11,8 +11,8 @@ SET @ODS_NUM = 6;
 -- CONFIGURACIÓN DE METADATOS CENTRALIZADOS
 -- ────────────────────────────────────────────────────────────
 
-INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion)
-VALUES (@ODS_NUM, 'Agua Limpia y Saneamiento', '#26BDE2', 'Garantizar la disponibilidad de agua y su gestión sostenible y el saneamiento para todos');
+INSERT IGNORE INTO ods_login.ods_catalog (id, nombre, color_hex, descripcion, icono_url)
+VALUES (@ODS_NUM, 'Agua Limpia y Saneamiento', '#26BDE2', 'Garantizar la disponibilidad de agua y su gestión sostenible y el saneamiento para todos', '/ods-icons/ods-06.png');
 
 INSERT IGNORE INTO ods_login.indicador_master (ods_id, codigo, nombre, formula_default, unidad_medida_default)
 VALUES 
