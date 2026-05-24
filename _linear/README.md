@@ -30,6 +30,25 @@ npm install
 npm run build
 ```
 
+### 🔑 API key en local (scripts y `npm run dev`)
+
+La key **no va en el código** ni en git. Solo en `_linear/.env`:
+
+```bash
+cd _linear
+copy .env.example .env    # Windows
+# Edita .env y reemplaza lin_api_xxx... por tu Personal API key de Linear
+```
+
+Luego puedes correr sin `$env:LINEAR_API_KEY` cada vez:
+
+```bash
+node scripts/evaluacion.mjs
+node scripts/evaluacion-sync-linear.mjs
+```
+
+Si la key anterior se subió a git, **revócala en Linear** y crea una nueva en `.env`.
+
 ---
 
 ## 🔌 Configurar en Claude Desktop
@@ -44,7 +63,7 @@ npm run build
       "command": "node",
       "args": ["/RUTA/ABSOLUTA/_linear/dist/index.js"],
       "env": {
-        "LINEAR_API_KEY": "lin_api_89eOKlnd9NzYLyiW7WSI2v4UNIysuxeEuPHCZHgS",
+        "LINEAR_API_KEY": "<tu-api-key-de-linear>",
         "LINEAR_TEAM_NAME": "linear_ods",
         "HEARTBEAT_TTL_MS": "300000"
       }
@@ -198,6 +217,6 @@ Ejecuta el watchdog para revisar si hay claims expirados.
 
 | Variable | Default | Descripción |
 |---|---|---|
-| `LINEAR_API_KEY` | `lin_api_89e...` | API key de Linear |
+| `LINEAR_API_KEY` | *(obligatoria)* | API key de Linear — solo en variables de entorno |
 | `LINEAR_TEAM_NAME` | `linear_ods` | Nombre del equipo (solo opera sobre este) |
 | `HEARTBEAT_TTL_MS` | `300000` (5 min) | Tiempo antes de que un claim expire |

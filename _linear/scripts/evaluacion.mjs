@@ -5,11 +5,7 @@
  * Pipeline completo con dependencias multi-agente:
  *   DB  →  JOOQ  →  BE (refactor)  →  BE (run + .http)  →  FE
  */
-import { LinearClient } from "@linear/sdk";
-
-const LINEAR_API_KEY   = process.env.LINEAR_API_KEY   || "lin_api_89eOKlnd9NzYLyiW7WSI2v4UNIysuxeEuPHCZHgS";
-const LINEAR_TEAM_NAME = process.env.LINEAR_TEAM_NAME || "linear_ods";
-const linear = new LinearClient({ apiKey: LINEAR_API_KEY });
+import { linear, LINEAR_TEAM_NAME } from "./linear-config.mjs";
 
 async function getTeam() {
   const r = await linear.teams();

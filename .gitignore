@@ -1,0 +1,15 @@
+# Dependencias
+**/node_modules/
+
+# Secretos y entorno local
+.env
+.env.*
+!.env.example
+
+# Build / IDE
+dist/
+target/
+*.class
+
+# Linear MCP estado local
+_linear/state/

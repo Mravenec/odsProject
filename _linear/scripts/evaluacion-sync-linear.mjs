@@ -2,10 +2,7 @@
 /**
  * Sincroniza estado Linear Sprint 3 (ODS-72..82) con el trabajo ya hecho en el repo.
  */
-import { LinearClient } from "@linear/sdk";
-
-const LINEAR_API_KEY = process.env.LINEAR_API_KEY || "lin_api_89eOKlnd9NzYLyiW7WSI2v4UNIysuxeEuPHCZHgS";
-const linear = new LinearClient({ apiKey: LINEAR_API_KEY });
+import { linear } from "./linear-config.mjs";
 
 const DEPS = [
   [73, 72], [74, 73], [75, 73], [76, 75], [77, 74], [77, 76],

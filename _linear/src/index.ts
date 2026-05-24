@@ -12,10 +12,17 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// Carga _linear/.env en local (gitignored); en Claude Desktop usa "env" del config MCP
+import "../load-env.mjs";
+
 // ─── Config ───────────────────────────────────────────────────────────────────
-const LINEAR_API_KEY =
-  process.env.LINEAR_API_KEY ||
-  "lin_api_89eOKlnd9NzYLyiW7WSI2v4UNIysuxeEuPHCZHgS";
+const LINEAR_API_KEY = process.env.LINEAR_API_KEY;
+if (!LINEAR_API_KEY || LINEAR_API_KEY.includes("xxxxxxxx")) {
+  console.error(
+    "LINEAR_API_KEY required: set it in MCP env (Claude config) or in _linear/.env (copy from .env.example)."
+  );
+  process.exit(1);
+}
 const LINEAR_TEAM_NAME = process.env.LINEAR_TEAM_NAME || "linear_ods";
 const HEARTBEAT_TTL_MS = Number(process.env.HEARTBEAT_TTL_MS) || 5 * 60 * 1000; // 5 min
 
