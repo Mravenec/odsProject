@@ -117,5 +117,90 @@ export const authService = {
       console.error('[AuthService] Error obteniendo usuarios activos:', error);
       return { success: false, error: 'No se pudo cargar la lista de personal académico' };
     }
-  }
+  },
+
+  // ── Administración de usuarios (Sprint 6) ──
+
+  _mapAdminUser(u) {
+    if (!u) return null;
+    return {
+      id: u.id,
+      username: u.username,
+      email: u.email,
+      fullName: u.fullName || u.full_name,
+      rolId: u.rolId ?? u.rol_id,
+      rol: u.rol || u.role,
+      sedeId: u.sedeId ?? u.sede_id,
+      sede: u.sede,
+      isActive: u.isActive ?? u.is_active,
+      ultimoLogin: u.ultimoLogin || u.ultimo_login,
+      createdAt: u.createdAt || u.created_at,
+    };
+  },
+
+  _mapRole(r) {
+    return {
+      id: r.id,
+      name: r.name || r.nombre,
+      nombre: r.nombre || r.name,
+    };
+  },
+
+  _apiError(error, fallback) {
+    return error.userMessage || error.response?.data?.message || fallback;
+  },
+
+  async listUsers() {
+    try {
+      const res = await api.get('/login/users');
+      const data = (res.data || []).map(u => this._mapAdminUser(u));
+      return { success: true, data };
+    } catch (error) {
+      console.error('[AuthService] listUsers:', error);
+      return { success: false, error: this._apiError(error, 'No se pudo cargar la lista de usuarios') };
+    }
+  },
+
+  async getRoles() {
+    try {
+      const res = await api.get('/login/roles');
+      const data = (res.data || []).map(r => this._mapRole(r));
+      return { success: true, data };
+    } catch (error) {
+      console.error('[AuthService] getRoles:', error);
+      return { success: false, error: this._apiError(error, 'No se pudo cargar el catálogo de roles') };
+    }
+  },
+
+  async createUser(payload) {
+    try {
+      const res = await api.post('/login/users', payload);
+      return { success: true, data: this._mapAdminUser(res.data) };
+    } catch (error) {
+      console.error('[AuthService] createUser:', error);
+      return { success: false, error: this._apiError(error, 'No se pudo crear el usuario') };
+    }
+  },
+
+  async updateUser(id, payload) {
+    try {
+      const body = { ...payload };
+      if (!body.password) delete body.password;
+      const res = await api.put(`/login/users/${id}`, body);
+      return { success: true, data: this._mapAdminUser(res.data) };
+    } catch (error) {
+      console.error('[AuthService] updateUser:', error);
+      return { success: false, error: this._apiError(error, 'No se pudo actualizar el usuario') };
+    }
+  },
+
+  async deactivateUser(id) {
+    try {
+      const res = await api.patch(`/login/users/${id}/deactivate`);
+      return { success: true, data: this._mapAdminUser(res.data) };
+    } catch (error) {
+      console.error('[AuthService] deactivateUser:', error);
+      return { success: false, error: this._apiError(error, 'No se pudo desactivar el usuario') };
+    }
+  },
 };

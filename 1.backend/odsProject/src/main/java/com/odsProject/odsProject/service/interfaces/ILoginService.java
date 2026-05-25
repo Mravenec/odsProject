@@ -101,6 +101,39 @@ public interface ILoginService {
      * @return Usuario actualizado
      */
     Usuarios updateUsuario(Usuarios usuario);
+
+    /**
+     * Lista usuarios para panel admin (join roles + sedes, sin password)
+     *
+     * @return Lista de registros sanitizados
+     */
+    List<Map<String, Object>> getAllUsuariosAdmin();
+
+    /**
+     * Crea un usuario admin con contraseña hasheada
+     *
+     * @param usuario Datos del usuario
+     * @param password Contraseña en texto plano
+     * @return Usuario creado
+     */
+    Usuarios createUser(Usuarios usuario, String password);
+
+    /**
+     * Actualiza un usuario admin; password opcional
+     *
+     * @param usuario Datos actualizados
+     * @param password Nueva contraseña (null/blank = no cambiar)
+     * @return Usuario actualizado
+     */
+    Usuarios updateUser(Usuarios usuario, String password);
+
+    /**
+     * Desactiva un usuario (is_active = 0)
+     *
+     * @param id ID del usuario
+     * @return Usuario desactivado
+     */
+    Usuarios deactivateUser(Integer id);
     
     /**
      * Cambia la contraseña de un usuario

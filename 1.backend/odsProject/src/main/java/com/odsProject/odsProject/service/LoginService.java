@@ -248,16 +248,22 @@ public class LoginService implements ILoginService {
      */
     @Override
     public Usuarios registerUser(Usuarios usuario, String password) {
-        // Validar que el email y username no existan
-        if (loginRepository.existsEmail(usuario.getEmail())) {
-            throw new RuntimeException("Email ya registrado");
+        if (loginRepository.existsEmail(usuario.getEmail(), null)) {
+            throw new IllegalArgumentException("Email ya registrado");
         }
-        
-        if (loginRepository.existsUsername(usuario.getUsername())) {
-            throw new RuntimeException("Username ya registrado");
+
+        if (loginRepository.existsUsername(usuario.getUsername(), null)) {
+            throw new IllegalArgumentException("Username ya registrado");
         }
-        
-        // Guardar usuario
+
+        if (password != null && !password.isBlank()) {
+            usuario.setPasswordHash(passwordEncoder.encode(password));
+        }
+
+        if (usuario.getIsActive() == null) {
+            usuario.setIsActive((byte) 1);
+        }
+
         return loginRepository.saveUsuario(usuario);
     }
 
@@ -290,14 +296,110 @@ public class LoginService implements ILoginService {
      */
     @Override
     public Usuarios updateUsuario(Usuarios usuario) {
-        // Verificar que el usuario existe
-        Optional<Usuarios> existente = loginRepository.findUsuarioById(usuario.getId());
-        if (existente.isEmpty()) {
-            throw new RuntimeException("Usuario no encontrado");
+        if (loginRepository.findUsuarioById(usuario.getId()).isEmpty()) {
+            throw new IllegalArgumentException("Usuario no encontrado");
         }
-        
-        // Actualizar usuario usando el método del repositorio
+        return loginRepository.updateUsuario(usuario);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, Object>> getAllUsuariosAdmin() {
+        return loginRepository.findAllUsuariosAdmin();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Usuarios createUser(Usuarios usuario, String password) {
+        validateRolAndSede(usuario.getRolId(), usuario.getSedeId());
+
+        if (loginRepository.existsEmail(usuario.getEmail(), null)) {
+            throw new IllegalArgumentException("Email ya registrado");
+        }
+        if (loginRepository.existsUsername(usuario.getUsername(), null)) {
+            throw new IllegalArgumentException("Username ya registrado");
+        }
+        if (password == null || password.isBlank() || !validatePasswordFormat(password)) {
+            throw new IllegalArgumentException("Password inválido");
+        }
+
+        usuario.setPasswordHash(passwordEncoder.encode(password));
+        if (usuario.getIsActive() == null) {
+            usuario.setIsActive((byte) 1);
+        }
+        if (usuario.getEmailVerificado() == null) {
+            usuario.setEmailVerificado((byte) 0);
+        }
+
         return loginRepository.saveUsuario(usuario);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Usuarios updateUser(Usuarios usuario, String password) {
+        Usuarios existente = loginRepository.findUsuarioById(usuario.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        validateRolAndSede(usuario.getRolId(), usuario.getSedeId());
+
+        if (loginRepository.existsEmail(usuario.getEmail(), usuario.getId())) {
+            throw new IllegalArgumentException("Email ya registrado");
+        }
+        if (loginRepository.existsUsername(usuario.getUsername(), usuario.getId())) {
+            throw new IllegalArgumentException("Username ya registrado");
+        }
+
+        if (password != null && !password.isBlank()) {
+            if (!validatePasswordFormat(password)) {
+                throw new IllegalArgumentException("Password inválido");
+            }
+            usuario.setPasswordHash(passwordEncoder.encode(password));
+        } else {
+            usuario.setPasswordHash(null);
+        }
+
+        if (usuario.getIsActive() == null) {
+            usuario.setIsActive(existente.getIsActive());
+        }
+        if (usuario.getEmailVerificado() == null) {
+            usuario.setEmailVerificado(existente.getEmailVerificado());
+        }
+
+        return loginRepository.updateUsuario(usuario);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Usuarios deactivateUser(Integer id) {
+        Usuarios user = loginRepository.findUsuarioById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        Optional<Roles> rol = loginRepository.findRolById(user.getRolId());
+        if (rol.isPresent() && "admin".equals(rol.get().getNombre())
+                && loginRepository.countActiveAdmins() <= 1) {
+            throw new IllegalArgumentException("No se puede desactivar al único admin activo");
+        }
+
+        loginRepository.deactivateUsuario(id);
+        return loginRepository.findUsuarioById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+    }
+
+    private void validateRolAndSede(Integer rolId, Integer sedeId) {
+        if (rolId == null || loginRepository.findRolById(rolId).isEmpty()) {
+            throw new IllegalArgumentException("rolId inválido");
+        }
+        if (sedeId != null && loginRepository.findSedeById(sedeId).isEmpty()) {
+            throw new IllegalArgumentException("sedeId inválido");
+        }
     }
 
     /**
@@ -609,7 +711,7 @@ public class LoginService implements ILoginService {
      */
     @Override
     public Boolean emailExists(String email) {
-        return loginRepository.existsEmail(email);
+        return loginRepository.existsEmail(email, null);
     }
 
     /**
@@ -617,7 +719,7 @@ public class LoginService implements ILoginService {
      */
     @Override
     public Boolean usernameExists(String username) {
-        return loginRepository.existsUsername(username);
+        return loginRepository.existsUsername(username, null);
     }
 
     /**

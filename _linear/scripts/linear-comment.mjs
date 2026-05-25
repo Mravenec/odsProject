@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-/** Comentario en issue Linear: node linear-comment.mjs ODS-92 "texto" */
+/** node linear-comment.mjs ODS-101 "mensaje" */
 import { LinearClient } from "@linear/sdk";
 import "../load-env.mjs";
 
 const [identifier, ...rest] = process.argv.slice(2);
 const body = rest.join(" ");
 if (!identifier || !body) {
-  console.error("Uso: node linear-comment.mjs ODS-92 \"mensaje\"");
+  console.error('Uso: node linear-comment.mjs ODS-101 "mensaje"');
   process.exit(1);
 }
 

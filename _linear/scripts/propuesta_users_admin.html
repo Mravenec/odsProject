@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta — Mantenimiento de Usuarios (Admin) · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  :root{--bg:#07090F;--surf:#0D1117;--surf2:#131A24;--border:rgba(255,255,255,.07);--text:#E2E8F0;--muted:#64748B;--db:#EAB308;--jooq:#06B6D4;--be:#22C55E;--fe:#0EA5E9;--ux:#EC4899;--red:#EF4444;--green:#22C55E;--orange:#F97316}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6}
+  .hero{padding:64px 48px 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;right:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(234,179,8,.08) 0%,transparent 70%);pointer-events:none}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--db);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .ey::after{content:'';width:32px;height:1px;background:var(--db);display:block}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,46px);font-weight:800;line-height:1.05;color:#fff}
+  h1 em{font-style:normal;background:linear-gradient(135deg,#EAB308,#22C55E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{margin-top:14px;font-size:14px;color:var(--muted);max-width:780px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);padding:4px 12px;border-radius:4px}
+  .chip span{color:#fff}.chip.db{border-color:rgba(234,179,8,.3);color:var(--db)}.chip.be{border-color:rgba(34,197,94,.3);color:var(--be)}.chip.fe{border-color:rgba(14,165,233,.3);color:var(--fe)}
+  .al{margin:32px 48px 0;padding:14px 18px;border-radius:8px;font-size:13px;display:flex;gap:12px}
+  .al.info{background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.25);border-left:3px solid var(--jooq);color:#67E8F9}
+  .al.warn{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.25);border-left:3px solid var(--db);color:#FDE68A}
+  .al.ok{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.25);border-left:3px solid var(--green);color:#86EFAC}
+  .sec{padding:48px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:18px}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace}
+  .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surf2)}
+  .tbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top}
+  .tbl tr:hover td{background:rgba(255,255,255,.02)}
+  .ok{color:var(--green)}.gap{color:var(--orange)}.no{color:var(--red)}
+  .plf{display:flex;align-items:stretch;flex-wrap:wrap;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin:12px 0 20px}
+  .pln{background:var(--surf2);padding:12px 16px;display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--border)}
+  .pla{display:flex;align-items:center;padding:0 8px;background:var(--surf2);color:var(--muted);font-size:14px;border-right:1px solid var(--border)}
+  .plnum{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted)}
+  .plname{font-family:'IBM Plex Mono',monospace;font-size:11px}
+  .plname.db{color:var(--db)}.plname.jooq{color:var(--jooq)}.plname.be{color:var(--be)}.plname.fe{color:var(--fe)}
+  .plnote{font-size:10px;color:var(--muted)}
+  .issue{background:var(--surf);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px}
+  .it{padding:16px 20px 12px;display:grid;grid-template-columns:10px 1fr auto;gap:12px;align-items:start}
+  .dot{width:10px;height:10px;border-radius:50%;margin-top:5px}
+  .dot.db{background:var(--db)}.dot.jooq{background:var(--jooq)}.dot.be{background:var(--be)}.dot.fe{background:var(--fe)}
+  .meta{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:4px}
+  .title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
+  .pts{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);padding:2px 9px;border-radius:4px}
+  .body{padding:0 20px 18px 42px}
+  .desc{font-size:13px;color:var(--muted);margin-bottom:10px}
+  code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.06);color:#CBD5E1;padding:1px 5px;border-radius:3px}
+  .cb2{background:#060912;border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:13px 16px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.75;overflow-x:auto;white-space:pre}
+  .dc{color:#475569}.da{color:#86EFAC}.dk{color:#7DD3FC}.dw{color:#FDE68A}.dd{color:#FCA5A5}
+  .cmd{background:#000;border-left:3px solid var(--be);padding:11px 14px;border-radius:0 6px 6px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#86EFAC;margin:10px 0;white-space:pre;overflow-x:auto}
+  .checklist{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+  .ci{display:flex;gap:9px;font-size:13px;color:#94A3B8}
+  .cb{width:14px;height:14px;border:1.5px solid #1e293b;border-radius:3px;flex-shrink:0;margin-top:2px;background:var(--surf2)}
+  .deps{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-top:12px}
+  .dep{background:var(--surf);border:1px solid var(--border);border-radius:7px;padding:11px 14px;font-family:'IBM Plex Mono',monospace;font-size:11px}
+  .dep-ids{color:#fff;font-weight:600}.dep-note{color:var(--muted);font-size:10px;margin-top:3px}
+  hr.sep{border:none;border-top:1px solid var(--border);margin:48px 48px 0}
+  footer{margin-top:64px;border-top:1px solid var(--border);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .utn{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#98BADF}
+  .scope{font-size:13px;color:var(--muted);margin-bottom:8px}
+  .scope li{margin-left:18px;margin-bottom:4px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="ey">ODS UTN · Propuesta Sprint · linear_ods</div>
+  <h1>Mantenimiento de usuarios<br><em>Menú administrador</em></h1>
+  <p class="sub">CRUD de usuarios por sede y rol (admin, gestor, consultor, evaluador). Análisis exhaustivo del repo real — JOOQ + POJOs, sin DTOs. Pipeline: DB → JOOQ → BE → .http → axios → hooks → página.</p>
+  <div class="chips">
+    <div class="chip db">DB <span>schema ya existe — sin migración</span></div>
+    <div class="chip be">BE <span>stubs por cablear — LoginRepository/Service</span></div>
+    <div class="chip fe">FE <span>UsersAdminPage existe — sin ruta ni service</span></div>
+  </div>
+</header>
+
+<div class="al ok"><div>✅</div><div><strong>Buena noticia:</strong> el modelo de datos en <code>ods_login</code> ya soporta asignar usuario → sede → rol. No hace falta crear tablas nuevas. El trabajo es <strong>cablear capas</strong> que hoy están declaradas pero vacías o rotas.</div></div>
+<div class="al warn" style="margin-top:8px"><div>⚠️</div><div><strong>Alcance v1:</strong> CRUD de usuarios (crear, listar, editar, desactivar) con <code>rol_id</code> + <code>sede_id</code> + email. <strong>Fuera de scope:</strong> CRUD de sedes, permisos ODS por usuario, hardening JWT en endpoints admin.</div></div>
+<div class="al info" style="margin-top:8px"><div>ℹ️</div><div><strong>Orden local obligatorio</strong> (comandosDelProyecto.txt): si hay cambios SQL → pasos 1–2 → <code>mvn spring-boot:run</code> (JOOQ) → repo/servicio/controlador → .http → axios → hooks → página → <code>npm run dev</code>.</div></div>
+
+<!-- ESTADO ACTUAL -->
+<section class="sec">
+  <div class="sl">Diagnóstico</div>
+  <div class="st">Estado actual del repo (verificado)</div>
+  <table class="tbl">
+    <thead><tr><th>Capa</th><th>Existe</th><th>Gap</th></tr></thead>
+    <tbody>
+      <tr><td><strong>BD</strong> <code>ods_login.usuarios</code></td><td class="ok">✓ rol_id, sede_id, email, is_active</td><td class="gap">sp_admin_usuarios solo lectura — sin SP de escritura</td></tr>
+      <tr><td><strong>BD</strong> <code>roles</code></td><td class="ok">✓ admin, gestor, consultor, evaluador</td><td class="ok">—</td></tr>
+      <tr><td><strong>BD</strong> <code>sedes</code></td><td class="ok">✓ catálogo + seeds en mocks</td><td class="gap">solo lectura en API — no CRUD sedes (v1)</td></tr>
+      <tr><td><strong>JOOQ</strong></td><td class="ok">✓ Usuarios, Roles, Sedes POJOs</td><td class="ok">regenerar tras cualquier cambio SQL</td></tr>
+      <tr><td><strong>BE</strong> LoginRepository</td><td class="ok">✓ saveUsuario (INSERT)</td><td class="no">falta updateUsuario, list admin join</td></tr>
+      <tr><td><strong>BE</strong> LoginController</td><td class="gap">declarado</td><td class="no">PUT /users stub, GET /roles vacío, POST /admin/users roto</td></tr>
+      <tr><td><strong>FE</strong> UsersAdminPage</td><td class="ok">✓ UI completa (tabla + modal)</td><td class="no">sin ruta, sin authService methods</td></tr>
+      <tr><td><strong>FE</strong> Dashboard</td><td class="gap">stats usuarios</td><td class="no">sin link a /admin/users</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- MODELO BD -->
+<section class="sec">
+  <div class="sl">Base de datos</div>
+  <div class="st">Modelo <code>ods_login</code> — fuente: <code>1. login_system.sql</code></div>
+  <div class="cb2"><span class="dc">-- usuarios (extracto)</span>
+<span class="dk">username, email, password_hash, full_name</span>
+<span class="dk">rol_id  → roles(id)     -- admin|gestor|consultor|evaluador</span>
+<span class="dk">sede_id → sedes(id)     -- nullable, una sede por usuario</span>
+<span class="dk">is_active, email_verificado, ultimo_login, ...</span>
+
+<span class="dc">-- Trigger trg_usuarios_update audita:</span>
+<span class="dw">CAMBIO_PASSWORD · CUENTA_BLOQUEADA · CAMBIO_SEDE</span>
+
+<span class="dc">-- Vista admin (solo activos):</span>
+<span class="da">vista_admin_usuarios_activos</span>
+<span class="dc">-- SP dashboard (solo lectura, 3 result sets):</span>
+<span class="da">sp_admin_usuarios()</span></div>
+  <p class="desc" style="margin-top:12px;font-size:13px;color:var(--muted)"><strong>Decisión v1:</strong> CRUD vía <strong>JOOQ en LoginRepository</strong> (no nuevos SPs). El schema no cambia — DB-1 es verificación + documentación.</p>
+</section>
+
+<!-- ROLES UI -->
+<section class="sec">
+  <div class="sl">Roles en UI vs BD</div>
+  <div class="st">Mapeo de etiquetas (UsersAdminPage)</div>
+  <table class="tbl">
+    <thead><tr><th>BD <code>roles.nombre</code></th><th>Etiqueta UI</th><th>Permisos (usePermissions)</th></tr></thead>
+    <tbody>
+      <tr><td><code>admin</code></td><td>Administrador</td><td>canViewAdminPanel, canDeleteProject, …</td></tr>
+      <tr><td><code>gestor</code></td><td>Profesor/Gestor</td><td>canCreateProject</td></tr>
+      <tr><td><code>consultor</code></td><td>Planeación</td><td>canViewGlobalDashboard</td></tr>
+      <tr><td><code>evaluador</code></td><td>Evaluador</td><td>canViewAuditQueue, canApproveProject</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- API PROPUESTA -->
+<section class="sec">
+  <div class="sl">Contrato API v1</div>
+  <div class="st">Endpoints a implementar — POJOs JOOQ, sin DTOs</div>
+  <p class="desc">Patrón: igual que <code>CatalogController</code> — retornar POJOs o listas sanitizadas (nunca <code>passwordHash</code> en JSON).</p>
+  <table class="tbl">
+    <thead><tr><th>Método</th><th>Ruta</th><th>POJO / respuesta</th><th>Estado hoy</th></tr></thead>
+    <tbody>
+      <tr><td>GET</td><td><code>/api/login/users</code></td><td><code>List&lt;UsuariosAdminView&gt;</code> join roles+sedes, sin password</td><td class="no">no existe</td></tr>
+      <tr><td>GET</td><td><code>/api/login/roles</code></td><td><code>List&lt;Roles&gt;</code></td><td class="no">stub → []</td></tr>
+      <tr><td>GET</td><td><code>/api/login/sedes</code></td><td><code>List&lt;Sedes&gt;</code></td><td class="ok">funciona</td></tr>
+      <tr><td>POST</td><td><code>/api/login/users</code></td><td>body → insert <code>Usuarios</code> + BCrypt password</td><td class="no">register stub</td></tr>
+      <tr><td>PUT</td><td><code>/api/login/users/{id}</code></td><td>update username, email, fullName, rolId, sedeId, password?</td><td class="no">stub 400</td></tr>
+      <tr><td>PATCH</td><td><code>/api/login/users/{id}/deactivate</code></td><td><code>is_active = false</code></td><td class="no">no existe</td></tr>
+    </tbody>
+  </table>
+  <div class="cb2"><span class="dc">// Ejemplo respuesta GET /users (sanitizado — no es DTO, es POJO + join)</span>
+<span class="dk">[</span>
+<span class="dk">  { "id": 2, "username": "gestor_pobreza", "fullName": "Ana García",</span>
+<span class="dk">    "email": "ana.garcia@ods.cr", "rolId": 2, "rol": "gestor",</span>
+<span class="dk">    "sedeId": 2, "sede": "Sede Central", "isActive": true }</span>
+<span class="dk">]</span></div>
+  <p class="desc" style="font-size:12px;color:var(--muted)">Opción A (recomendada): nuevo record POJO <code>UsuarioAdminRow</code> generado como vista SQL. Opción B: proyección JOOQ inline en repository — sin clase DTO separada.</p>
+</section>
+
+<!-- PIPELINE -->
+<section class="sec">
+  <div class="sl">Orden de ejecución</div>
+  <div class="st">Pipeline completo (comandosDelProyecto.txt)</div>
+  <div class="plf">
+    <div class="pln"><div class="plnum">0</div><div class="plname db">DB verify</div><div class="plnote">sin migration v1</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plnum">1–2</div><div class="plname db">drop/setup/load</div><div class="plnote">solo si SQL cambia</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plnum">JOOQ</div><div class="plname jooq">generate-sources</div><div class="plnote">POJOs</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plnum">3</div><div class="plname be">spring-boot:run</div><div class="plnote">repo→svc→ctrl</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plnum">BE</div><div class="plname be">.http tests</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plnum">FE</div><div class="plname fe">authService</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plnum">FE</div><div class="plname fe">route + page</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plnum">4</div><div class="plname fe">npm run dev</div></div>
+  </div>
+  <div class="cmd"># Si NO hay cambios SQL (v1 probable):
+# Saltar paso 1 — ir directo a BE
+
+# Si SÍ hay cambios SQL:
+python 0.database/drop_db.py
+python 0.database/setup_db.py
+python 0.database/load_mocks.py
+
+# Backend + JOOQ
+cd 1.backend/odsProject
+mvn generate-sources
+mvn spring-boot:run
+
+# Frontend
+cd 2.frontend/odsProject
+npm run dev</div>
+</section>
+
+<!-- ISSUES LINEAR -->
+<section class="sec">
+  <div class="sl">Linear · Sprint propuesto</div>
+  <div class="st">10 issues · 13 pts · Epic: Admin / Usuarios</div>
+
+  <!-- DB-1 -->
+  <div class="issue">
+    <div class="it"><div class="dot db"></div><div><div class="meta">USR-1 · role:database · 1pt</div><div class="title">DB: verificar schema ods_login suficiente para CRUD usuarios</div></div><div class="pts">1 pt</div></div>
+    <div class="body">
+      <p class="desc">Confirmar que <code>usuarios</code>, <code>roles</code>, <code>sedes</code> cubren el CRUD v1. Documentar en comentario Linear. <strong>Sin ALTER TABLE en v1</strong> salvo que apruebes vista admin extendida.</p>
+      <div class="checklist">
+        <div class="ci"><div class="cb"></div>SELECT 4 roles, 6 sedes mocks, usuarios con FK válidas</div>
+        <div class="ci"><div class="cb"></div>Confirmar trigger <code>trg_usuarios_update</code> audita CAMBIO_SEDE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOOQ -->
+  <div class="issue">
+    <div class="it"><div class="dot jooq"></div><div><div class="meta">USR-2 · role:backend · 1pt · ← USR-1</div><div class="title">JOOQ: generate-sources — confirmar POJOs Usuarios, Roles, Sedes</div></div><div class="pts">1 pt</div></div>
+    <div class="body">
+      <div class="cmd">cd 1.backend/odsProject && mvn generate-sources</div>
+      <div class="checklist">
+        <div class="ci"><div class="cb"></div><code>Usuarios.java</code> tiene iconoUrl… → <code>rolId</code>, <code>sedeId</code>, <code>passwordHash</code></div>
+        <div class="ci"><div class="cb"></div><code>git diff jooq/</code> vacío si no hubo cambio SQL</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BE REPO -->
+  <div class="issue">
+    <div class="it"><div class="dot be"></div><div><div class="meta">USR-3 · role:backend · 2pts · ← USR-2</div><div class="title">BE: LoginRepository — updateUsuario + listUsuariosAdmin (JOOQ join)</div></div><div class="pts">2 pts</div></div>
+    <div class="body">
+      <div class="cb2"><span class="da">updateUsuario(Usuarios u)     // dsl.update(USUARIOS)...</span>
+<span class="da">deactivateUsuario(Integer id) // is_active = 0</span>
+<span class="da">findAllUsuariosAdmin()        // join ROLES + SEDES, excluir password_hash</span>
+<span class="da">existsEmail / existsUsername    // unicidad en create/update</span></div>
+      <p class="desc">Archivos: <code>LoginRepository.java</code>, <code>ILoginRepository.java</code></p>
+    </div>
+  </div>
+
+  <!-- BE SERVICE -->
+  <div class="issue">
+    <div class="it"><div class="dot be"></div><div><div class="meta">USR-4 · role:backend · 2pts · ← USR-3</div><div class="title">BE: LoginService — createUser, updateUser, deactivateUser (BCrypt)</div></div><div class="pts">2 pts</div></div>
+    <div class="body">
+      <div class="checklist">
+        <div class="ci"><div class="cb"></div>create: hash password con <code>BCryptPasswordEncoder</code> (ya en LoginService)</div>
+        <div class="ci"><div class="cb"></div>update: password opcional — solo si viene en body</div>
+        <div class="ci"><div class="cb"></div>validar rolId ∈ roles, sedeId ∈ sedes</div>
+        <div class="ci"><div class="cb"></div>no permitir desactivar al único admin activo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BE CTRL -->
+  <div class="issue">
+    <div class="it"><div class="dot be"></div><div><div class="meta">USR-5 · role:backend · 2pts · ← USR-4</div><div class="title">BE: LoginController — cablear GET/POST/PUT/PATCH users + GET roles (POJOs)</div></div><div class="pts">2 pts</div></div>
+    <div class="body">
+      <div class="cb2"><span class="da">GET  /api/login/users              → List (sin passwordHash)</span>
+<span class="da">GET  /api/login/roles              → List&lt;Roles&gt;</span>
+<span class="da">POST /api/login/users              → 201 Usuarios sanitizado</span>
+<span class="da">PUT  /api/login/users/{id}         → 200</span>
+<span class="da">PATCH /api/login/users/{id}/deactivate → 200</span></div>
+      <p class="desc">Eliminar dependencia de <code>POST /admin/users</code> con accion — reemplazar por REST claro. Sanitizar: nunca serializar <code>passwordHash</code>.</p>
+    </div>
+  </div>
+
+  <!-- BE HTTP -->
+  <div class="issue">
+    <div class="it"><div class="dot be"></div><div><div class="meta">USR-6 · role:backend · 1pt · ← USR-5</div><div class="title">BE: .http — CRUD usuarios + roles + sedes</div></div><div class="pts">1 pt</div></div>
+    <div class="body">
+      <p class="desc">Archivo: <code>src/test/java/.../http/users-admin.http</code> (nuevo). Login admin → CRUD → verificar lista.</p>
+    </div>
+  </div>
+
+  <!-- FE SERVICE -->
+  <div class="issue">
+    <div class="it"><div class="dot fe"></div><div><div class="meta">USR-7 · role:frontend · 1pt · ← USR-6</div><div class="title">FE: authService — listUsers, getRoles, createUser, updateUser, deactivateUser</div></div><div class="pts">1 pt</div></div>
+    <div class="body">
+      <div class="cb2"><span class="dc">// Mapeo snake_case → camelCase (patrón catalogService)</span>
+<span class="da">listUsers()      → GET /login/users</span>
+<span class="da">getRoles()       → GET /login/roles</span>
+<span class="da">createUser(p)    → POST /login/users</span>
+<span class="da">updateUser(id,p) → PUT /login/users/{id}</span>
+<span class="da">deactivateUser(id) → PATCH /login/users/{id}/deactivate</span></div>
+    </div>
+  </div>
+
+  <!-- FE ROUTE -->
+  <div class="issue">
+    <div class="it"><div class="dot fe"></div><div><div class="meta">USR-8 · role:frontend · 2pts · ← USR-7</div><div class="title">FE: cablear UsersAdminPage — ruta, permiso, dashboard link</div></div><div class="pts">2 pts</div></div>
+    <div class="body">
+      <div class="checklist">
+        <div class="ci"><div class="cb"></div><code>App.jsx</code>: <code>/admin/users</code> + <code>ProtectedRoute require="canManageUsers"</code></div>
+        <div class="ci"><div class="cb"></div><code>usePermissions.js</code>: <code>canManageUsers: true</code> solo admin</div>
+        <div class="ci"><div class="cb"></div><code>DashboardPage.jsx</code>: card "Administración de usuarios"</div>
+        <div class="ci"><div class="cb"></div>Página ya existe: <code>pages/Admin/Users/UsersAdminPage.jsx</code></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FE QA -->
+  <div class="issue">
+    <div class="it"><div class="dot fe"></div><div><div class="meta">USR-9 · role:frontend · 1pt · ← USR-8</div><div class="title">FE: npm run dev — verificación CRUD admin en browser</div></div><div class="pts">1 pt</div></div>
+    <div class="body">
+      <div class="checklist">
+        <div class="ci"><div class="cb"></div>Login <code>admin@ods.local</code> → dashboard → usuarios</div>
+        <div class="ci"><div class="cb"></div>Crear gestor en sede Central con email</div>
+        <div class="ci"><div class="cb"></div>Editar rol a evaluador, cambiar sede</div>
+        <div class="ci"><div class="cb"></div>Desactivar → desaparece de lista activos</div>
+        <div class="ci"><div class="cb"></div>Network: nunca expone passwordHash</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPENDENCIAS -->
+<section class="sec">
+  <div class="sl">Multi-agente</div>
+  <div class="st">Grafo de bloqueos Linear</div>
+  <div class="deps">
+    <div class="dep"><div class="dep-ids">USR-2 ← USR-1</div><div class="dep-note">JOOQ tras verificar schema</div></div>
+    <div class="dep"><div class="dep-ids">USR-3 ← USR-2</div><div class="dep-note">Repository necesita POJOs</div></div>
+    <div class="dep"><div class="dep-ids">USR-4 ← USR-3</div><div class="dep-note">Service usa repository</div></div>
+    <div class="dep"><div class="dep-ids">USR-5 ← USR-4</div><div class="dep-note">Controller usa service</div></div>
+    <div class="dep"><div class="dep-ids">USR-6 ← USR-5</div><div class="dep-note">.http tras API lista</div></div>
+    <div class="dep"><div class="dep-ids">USR-7 ← USR-6</div><div class="dep-note">axios tras BE verificado</div></div>
+    <div class="dep"><div class="dep-ids">USR-8 ← USR-7</div><div class="dep-note">página tras service</div></div>
+    <div class="dep"><div class="dep-ids">USR-9 ← USR-8</div><div class="dep-note">QA final</div></div>
+  </div>
+</section>
+
+<!-- FLUJO ORQUESTADOR -->
+<section class="sec">
+  <div class="sl">Orquestación local</div>
+  <div class="st">Flujo Linear (post-aprobación .mjs)</div>
+  <div class="cb2"><span class="dc"># Por cada issue USR-N:</span>
+<span class="da">1. list_available_issues / claim_issue (rol correspondiente)</span>
+<span class="da">2. ping_issue cada 2-3 min mientras trabaja el subagente</span>
+<span class="da">3. submit_for_review + outputArtifacts (archivos, endpoints)</span>
+<span class="da">4. approve_issue → desbloquea dependiente</span>
+<span class="da">5. watchdog_check periódico</span>
+
+<span class="dc"># Subagentes sugeridos:</span>
+<span class="dk">database-agent  → USR-1</span>
+<span class="dk">backend-agent   → USR-2…6</span>
+<span class="dk">frontend-agent  → USR-7…9</span></div>
+</section>
+
+<!-- FUERA DE SCOPE -->
+<section class="sec">
+  <div class="sl">Fuera de scope v1</div>
+  <div class="st">Backlog futuro (no en este sprint)</div>
+  <ul class="scope">
+    <li>CRUD de sedes (POST/PUT sedes)</li>
+    <li>Asignación <code>permisos_ods</code> por gestor (tabla ya existe)</li>
+    <li><code>@PreAuthorize</code> / filtro JWT en endpoints admin</li>
+    <li>Reactivar usuario (<code>is_active = true</code>)</li>
+    <li>Reemplazar <code>POST /admin/users</code> legacy por REST (incluido en USR-5 como deprecación)</li>
+  </ul>
+</section>
+
+<hr class="sep">
+
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>Propuesta USR-1…9 · Pendiente aprobación → sprint_users_admin.mjs</div>
+</footer>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.odsProject.odsProject.controller.interfaces;
 
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Roles;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,32 @@ public interface ILoginController {
     ResponseEntity<Map<String, String>> refreshToken(@RequestHeader("Authorization") String token);
     
     // ── Gestión de Usuarios ──
+
+    /**
+     * Endpoint para listar usuarios (panel admin, join roles + sedes)
+     *
+     * @return ResponseEntity con lista sanitizada (sin passwordHash)
+     */
+    @GetMapping("/users")
+    ResponseEntity<List<Map<String, Object>>> listUsuariosAdmin();
+
+    /**
+     * Endpoint para crear usuario (admin)
+     *
+     * @param userRequest Map con datos del usuario y password
+     * @return ResponseEntity con usuario creado sanitizado
+     */
+    @PostMapping("/users")
+    ResponseEntity<Map<String, Object>> createUser(@RequestBody Map<String, Object> userRequest);
+
+    /**
+     * Endpoint para desactivar usuario
+     *
+     * @param id ID del usuario
+     * @return ResponseEntity con usuario desactivado sanitizado
+     */
+    @PatchMapping("/users/{id}/deactivate")
+    ResponseEntity<Map<String, Object>> deactivateUser(@PathVariable Integer id);
     
     /**
      * Endpoint para registrar nuevo usuario
@@ -133,10 +160,10 @@ public interface ILoginController {
     /**
      * Endpoint para obtener todos los roles
      * 
-     * @return ResponseEntity con lista de roles
+     * @return ResponseEntity con lista de roles (POJOs JOOQ)
      */
     @GetMapping("/roles")
-    ResponseEntity<List<Map<String, Object>>> getAllRoles();
+    ResponseEntity<List<Roles>> getAllRoles();
     
     /**
      * Endpoint para obtener rol por ID

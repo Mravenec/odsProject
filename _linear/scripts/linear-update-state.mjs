@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-/** node linear-update-state.mjs ODS-92 "Done" */
+/** node linear-update-state.mjs ODS-101 "In Progress" */
 import { LinearClient } from "@linear/sdk";
 import "../load-env.mjs";
 
 const [identifier, stateName] = process.argv.slice(2);
 if (!identifier || !stateName) {
-  console.error('Uso: node linear-update-state.mjs ODS-92 "Done"');
+  console.error('Uso: node linear-update-state.mjs ODS-101 "Done"');
   process.exit(1);
 }
 

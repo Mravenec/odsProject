@@ -8,6 +8,7 @@ import ProjectResultsPage from './pages/ProjectResultsPage/ProjectResultsPage.js
 import ProjectListPage from './pages/ProjectListPage/ProjectListPage.jsx';
 import AdminProjectOverviewPage from './pages/Admin/Overview/OverviewPage.jsx';
 import AdminResultsReviewPage from './pages/Admin/Results/ResultsPage.jsx';
+import UsersAdminPage from './pages/Admin/Users/UsersAdminPage.jsx';
 import EvaluationPage from './pages/EvaluationPage/EvaluationPage';
 import EvaluationQueuePage from './pages/EvaluationQueuePage/EvaluationQueuePage.jsx';
 import ForbiddenPage from './pages/ForbiddenPage/ForbiddenPage.jsx';
@@ -91,6 +92,11 @@ function AppContent() {
         <Route path="/admin/results/:projectId" element={
           <ProtectedRoute require="canViewAdminPanel" redirectTo="/forbidden">
             <AdminResultsReviewPage />
+          </ProtectedRoute>
+        }/>
+        <Route path="/admin/users" element={
+          <ProtectedRoute require="canManageUsers" redirectTo="/forbidden">
+            <UsersAdminPage />
           </ProtectedRoute>
         }/>
 

@@ -65,6 +65,35 @@ public interface ILoginRepository {
      * @return Usuario guardado con ID asignado
      */
     Usuarios saveUsuario(Usuarios usuario);
+
+    /**
+     * Actualiza un usuario existente (UPDATE, no INSERT)
+     *
+     * @param usuario Usuario con datos actualizados; passwordHash solo se persiste si no es null
+     * @return Usuario actualizado
+     */
+    Usuarios updateUsuario(Usuarios usuario);
+
+    /**
+     * Desactiva un usuario (is_active = 0)
+     *
+     * @param id ID del usuario
+     */
+    void deactivateUsuario(Integer id);
+
+    /**
+     * Lista todos los usuarios para panel admin con join roles + sedes (sin password_hash)
+     *
+     * @return Registros sanitizados para JSON
+     */
+    List<Map<String, Object>> findAllUsuariosAdmin();
+
+    /**
+     * Cuenta administradores activos (rol admin, is_active = 1)
+     *
+     * @return Número de admins activos
+     */
+    Integer countActiveAdmins();
     
     /**
      * Actualiza la fecha de último login de un usuario
@@ -315,15 +344,17 @@ public interface ILoginRepository {
      * Verifica si un email ya está registrado
      * 
      * @param email Email a verificar
+     * @param excludeId ID a excluir (update); null en create
      * @return true si existe, false otherwise
      */
-    Boolean existsEmail(String email);
+    Boolean existsEmail(String email, Integer excludeId);
     
     /**
      * Verifica si un username ya está registrado
      * 
      * @param username Username a verificar
+     * @param excludeId ID a excluir (update); null en create
      * @return true si existe, false otherwise
      */
-    Boolean existsUsername(String username);
+    Boolean existsUsername(String username, Integer excludeId);
 }

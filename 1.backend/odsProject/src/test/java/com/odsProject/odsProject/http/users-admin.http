@@ -1,0 +1,110 @@
+### Users Admin CRUD — Sprint 6
+### Base URL: http://localhost:8080
+
+@baseUrl = http://localhost:8080
+@adminEmail = admin@ods.local
+@adminPassword = password123
+
+# ── 0. Login admin ──
+
+### Login admin
+# @name loginAdmin
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+@authToken = {{loginAdmin.response.body.token}}
+
+# ── 1. Catálogos ──
+
+### GET roles (List<Roles> POJO)
+GET {{baseUrl}}/api/login/roles
+Authorization: Bearer {{authToken}}
+
+### GET sedes
+GET {{baseUrl}}/api/login/sedes
+Authorization: Bearer {{authToken}}
+
+# ── 2. Listar usuarios admin ──
+
+### GET /api/login/users — join roles + sedes, sin passwordHash
+GET {{baseUrl}}/api/login/users
+Authorization: Bearer {{authToken}}
+
+# ── 3. Crear usuario ──
+
+### POST /api/login/users — crear gestor de prueba
+# @name createUser
+POST {{baseUrl}}/api/login/users
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "username": "test_gestor_s6",
+  "email": "test.gestor.s6@ods.cr",
+  "fullName": "Gestor Prueba Sprint 6",
+  "rolId": 2,
+  "sedeId": 1,
+  "password": "password123"
+}
+
+@newUserId = {{createUser.response.body.id}}
+
+# ── 4. Actualizar usuario ──
+
+### PUT /api/login/users/{id} — actualizar nombre y sede
+PUT {{baseUrl}}/api/login/users/{{newUserId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "username": "test_gestor_s6",
+  "email": "test.gestor.s6@ods.cr",
+  "fullName": "Gestor Prueba Sprint 6 (editado)",
+  "rolId": 2,
+  "sedeId": 2
+}
+
+# ── 5. Desactivar usuario ──
+
+### PATCH /api/login/users/{id}/deactivate
+PATCH {{baseUrl}}/api/login/users/{{newUserId}}/deactivate
+Authorization: Bearer {{authToken}}
+
+# ── 6. Validaciones de error ──
+
+### POST duplicado email — debe fallar 400
+POST {{baseUrl}}/api/login/users
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "username": "otro_user",
+  "email": "ana.garcia@ods.cr",
+  "fullName": "Duplicado",
+  "rolId": 2,
+  "sedeId": 1,
+  "password": "password123"
+}
+
+### PATCH desactivar único admin — debe fallar 400
+PATCH {{baseUrl}}/api/login/users/1/deactivate
+Authorization: Bearer {{authToken}}
+
+### POST rolId inválido — debe fallar 400
+POST {{baseUrl}}/api/login/users
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "username": "bad_rol",
+  "email": "bad.rol@ods.cr",
+  "fullName": "Rol Inválido",
+  "rolId": 999,
+  "sedeId": 1,
+  "password": "password123"
+}

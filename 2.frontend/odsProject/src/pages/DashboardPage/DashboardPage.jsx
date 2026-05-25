@@ -194,6 +194,14 @@ const DashboardPage = () => {
                     <span className="action-link">Acceder →</span>
                   </div>
                 )}
+                {perms.canManageUsers && (
+                  <div className="action-card" onClick={() => navigate('/admin/users')}>
+                    <div className="action-icon">👤</div>
+                    <h4>Administración de usuarios</h4>
+                    <p>Crear, editar y desactivar cuentas por sede y rol.</p>
+                    <span className="action-link">Gestionar usuarios →</span>
+                  </div>
+                )}
                 <div className="action-card" onClick={() => navigate('/projects')}>
                   <div className="action-icon">📊</div>
                   <h4>Ver todos los proyectos</h4>

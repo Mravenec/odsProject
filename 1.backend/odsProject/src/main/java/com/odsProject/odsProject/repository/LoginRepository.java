@@ -107,6 +107,81 @@ public class LoginRepository implements ILoginRepository {
      * {@inheritDoc}
      */
     @Override
+    public Usuarios updateUsuario(Usuarios usuario) {
+        var update = dsl.update(USUARIOS)
+                .set(USUARIOS.USERNAME, usuario.getUsername())
+                .set(USUARIOS.EMAIL, usuario.getEmail())
+                .set(USUARIOS.FULL_NAME, usuario.getFullName())
+                .set(USUARIOS.ROL_ID, usuario.getRolId())
+                .set(USUARIOS.SEDE_ID, usuario.getSedeId());
+
+        if (usuario.getIsActive() != null) {
+            update.set(USUARIOS.IS_ACTIVE, usuario.getIsActive());
+        }
+        if (usuario.getEmailVerificado() != null) {
+            update.set(USUARIOS.EMAIL_VERIFICADO, usuario.getEmailVerificado());
+        }
+        if (usuario.getPasswordHash() != null) {
+            update.set(USUARIOS.PASSWORD_HASH, usuario.getPasswordHash());
+        }
+
+        update.where(USUARIOS.ID.eq(usuario.getId())).execute();
+        return findUsuarioById(usuario.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deactivateUsuario(Integer id) {
+        dsl.update(USUARIOS)
+                .set(USUARIOS.IS_ACTIVE, (byte) 0)
+                .where(USUARIOS.ID.eq(id))
+                .execute();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Map<String, Object>> findAllUsuariosAdmin() {
+        return dsl.select(
+                        USUARIOS.ID.as("id"),
+                        USUARIOS.USERNAME.as("username"),
+                        USUARIOS.FULL_NAME.as("fullName"),
+                        USUARIOS.EMAIL.as("email"),
+                        USUARIOS.ROL_ID.as("rolId"),
+                        ROLES.NOMBRE.as("rol"),
+                        USUARIOS.SEDE_ID.as("sedeId"),
+                        SEDES.NOMBRE.as("sede"),
+                        USUARIOS.IS_ACTIVE.as("isActive"),
+                        USUARIOS.ULTIMO_LOGIN.as("ultimoLogin"),
+                        USUARIOS.CREATED_AT.as("createdAt"))
+                .from(USUARIOS)
+                .leftJoin(ROLES).on(USUARIOS.ROL_ID.eq(ROLES.ID))
+                .leftJoin(SEDES).on(USUARIOS.SEDE_ID.eq(SEDES.ID))
+                .orderBy(USUARIOS.ID.asc())
+                .fetchMaps();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer countActiveAdmins() {
+        return dsl.selectCount()
+                .from(USUARIOS)
+                .join(ROLES).on(USUARIOS.ROL_ID.eq(ROLES.ID))
+                .where(ROLES.NOMBRE.eq("admin"))
+                .and(USUARIOS.IS_ACTIVE.eq((byte) 1))
+                .fetchOne(0, Integer.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void updateUltimoLogin(Integer usuarioId) {
         dsl.update(USUARIOS)
                 .set(USUARIOS.ULTIMO_LOGIN, LocalDateTime.now())
@@ -468,10 +543,14 @@ public class LoginRepository implements ILoginRepository {
      * {@inheritDoc}
      */
     @Override
-    public Boolean existsEmail(String email) {
+    public Boolean existsEmail(String email, Integer excludeId) {
+        var condition = USUARIOS.EMAIL.eq(email);
+        if (excludeId != null) {
+            condition = condition.and(USUARIOS.ID.ne(excludeId));
+        }
         return dsl.selectCount()
                 .from(USUARIOS)
-                .where(USUARIOS.EMAIL.eq(email))
+                .where(condition)
                 .fetchOne(0, Integer.class) > 0;
     }
 
@@ -479,10 +558,14 @@ public class LoginRepository implements ILoginRepository {
      * {@inheritDoc}
      */
     @Override
-    public Boolean existsUsername(String username) {
+    public Boolean existsUsername(String username, Integer excludeId) {
+        var condition = USUARIOS.USERNAME.eq(username);
+        if (excludeId != null) {
+            condition = condition.and(USUARIOS.ID.ne(excludeId));
+        }
         return dsl.selectCount()
                 .from(USUARIOS)
-                .where(USUARIOS.USERNAME.eq(username))
+                .where(condition)
                 .fetchOne(0, Integer.class) > 0;
     }
 }

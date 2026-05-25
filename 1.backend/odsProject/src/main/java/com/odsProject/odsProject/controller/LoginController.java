@@ -14,9 +14,12 @@ import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDeta
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sedes;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Roles;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Usuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEvento;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -111,6 +114,37 @@ public class LoginController implements ILoginController {
      * {@inheritDoc}
      */
     @Override
+    @GetMapping("/users")
+    public ResponseEntity<List<Map<String, Object>>> listUsuariosAdmin() {
+        return ResponseEntity.ok(loginService.getAllUsuariosAdmin());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @PostMapping("/users")
+    public ResponseEntity<Map<String, Object>> createUser(@RequestBody Map<String, Object> userRequest) {
+        Usuarios usuario = mapToUsuario(userRequest, null);
+        String password = stringField(userRequest, "password");
+        Usuarios created = loginService.createUser(usuario, password);
+        return ResponseEntity.status(201).body(sanitizeUsuario(created));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @PatchMapping("/users/{id}/deactivate")
+    public ResponseEntity<Map<String, Object>> deactivateUser(@PathVariable Integer id) {
+        Usuarios deactivated = loginService.deactivateUser(id);
+        return ResponseEntity.ok(sanitizeUsuario(deactivated));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @PostMapping("/users/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody Map<String, Object> userRequest) {
         // Placeholder - service doesn't have matching method
@@ -151,8 +185,10 @@ public class LoginController implements ILoginController {
     @Override
     @PutMapping("/users/{id}")
     public ResponseEntity<Map<String, Object>> updateUsuario(@PathVariable Integer id, @RequestBody Map<String, Object> userRequest) {
-        // Placeholder - service method signature differs
-        return ResponseEntity.badRequest().build();
+        Usuarios usuario = mapToUsuario(userRequest, id);
+        String password = stringField(userRequest, "password");
+        Usuarios updated = loginService.updateUser(usuario, password);
+        return ResponseEntity.ok(sanitizeUsuario(updated));
     }
 
     /**
@@ -207,9 +243,8 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/roles")
-    public ResponseEntity<List<Map<String, Object>>> getAllRoles() {
-        // Placeholder - service returns POJOs, interface expects Maps
-        return ResponseEntity.ok(List.of());
+    public ResponseEntity<List<Roles>> getAllRoles() {
+        return ResponseEntity.ok(loginService.getAllRoles());
     }
 
     /**
@@ -577,6 +612,52 @@ public class LoginController implements ILoginController {
     public ResponseEntity<Map<String, String>> healthCheck() {
         Map<String, String> result = loginService.healthCheck();
         return ResponseEntity.ok(result);
+    }
+
+    private static Usuarios mapToUsuario(Map<String, Object> body, Integer id) {
+        Usuarios u = new Usuarios();
+        if (id != null) {
+            u.setId(id);
+        }
+        u.setUsername(stringField(body, "username"));
+        u.setEmail(stringField(body, "email"));
+        u.setFullName(stringField(body, "fullName"));
+        u.setRolId(intField(body, "rolId"));
+        u.setSedeId(intField(body, "sedeId"));
+        return u;
+    }
+
+    private static String stringField(Map<String, Object> body, String key) {
+        Object value = body.get(key);
+        return value == null ? null : String.valueOf(value);
+    }
+
+    private static Integer intField(Map<String, Object> body, String key) {
+        Object value = body.get(key);
+        if (value == null) {
+            return null;
+        }
+        if (value instanceof Number number) {
+            return number.intValue();
+        }
+        return Integer.valueOf(String.valueOf(value));
+    }
+
+    /** Sanitiza Usuarios POJO para JSON — nunca expone passwordHash. */
+    private static Map<String, Object> sanitizeUsuario(Usuarios u) {
+        Map<String, Object> m = new LinkedHashMap<>();
+        m.put("id", u.getId());
+        m.put("username", u.getUsername());
+        m.put("email", u.getEmail());
+        m.put("fullName", u.getFullName());
+        m.put("rolId", u.getRolId());
+        m.put("sedeId", u.getSedeId());
+        m.put("isActive", u.getIsActive());
+        m.put("emailVerificado", u.getEmailVerificado());
+        m.put("ultimoLogin", u.getUltimoLogin());
+        m.put("createdAt", u.getCreatedAt());
+        m.put("updatedAt", u.getUpdatedAt());
+        return m;
     }
 }
 
