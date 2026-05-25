@@ -6,7 +6,8 @@ export const documentService = {
       const form = new FormData();
       form.append('file', file);
       form.append('usuarioId', String(usuarioId));
-      if (descripcion) form.append('descripcion', descripcion);
+      const desc = descripcion?.trim();
+      if (desc) form.append('descripcion', desc);
       const r = await api.post(`/projects/${proyectoId}/documents`, form,
         { headers: { 'Content-Type': 'multipart/form-data' } });
       return { success: true, data: r.data };

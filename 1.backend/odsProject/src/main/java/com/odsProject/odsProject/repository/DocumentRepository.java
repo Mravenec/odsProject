@@ -1,81 +1,80 @@
 package com.odsProject.odsProject.repository;
 
 import org.jooq.DSLContext;
-import org.jooq.Field;
-import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.name;
-import static org.jooq.impl.DSL.table;
+import static com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoDocumentos.PROYECTO_DOCUMENTOS;
 
 /**
- * Sprint 11 — Acceso a ods_master.proyecto_documentos vía raw DSL.
- * Cuando el usuario corra mvn spring-boot:run JOOQ regenerará el POJO oficial,
- * pero este código sigue funcionando.
+ * Acceso a ods_master.proyecto_documentos vía JOOQ generado (POJOs).
  */
 @Repository
 public class DocumentRepository {
 
-    @Autowired @Qualifier("dslOdsMaster")
+    @Autowired
+    @Qualifier("dslOdsMaster")
     private DSLContext dsl;
 
-    private static final org.jooq.Table<?> DOCS =
-        table(name("ods_master", "proyecto_documentos"));
-    private static final Field<Integer> D_ID =
-        field(name("ods_master","proyecto_documentos","id"), Integer.class);
-    private static final Field<Integer> D_PROYECTO_ID =
-        field(name("ods_master","proyecto_documentos","proyecto_id"), Integer.class);
-    private static final Field<String> D_NOMBRE =
-        field(name("ods_master","proyecto_documentos","nombre_archivo"), String.class);
-    private static final Field<String> D_MIME =
-        field(name("ods_master","proyecto_documentos","tipo_mime"), String.class);
-    private static final Field<Integer> D_TAMANIO =
-        field(name("ods_master","proyecto_documentos","tamanio_bytes"), Integer.class);
-    private static final Field<byte[]> D_CONTENIDO =
-        field(name("ods_master","proyecto_documentos","contenido"), byte[].class);
-    private static final Field<Integer> D_SUBIDO_POR =
-        field(name("ods_master","proyecto_documentos","subido_por"), Integer.class);
-    private static final Field<java.time.LocalDateTime> D_SUBIDO_AT =
-        field(name("ods_master","proyecto_documentos","subido_at"), java.time.LocalDateTime.class);
-    private static final Field<String> D_DESC =
-        field(name("ods_master","proyecto_documentos","descripcion"), String.class);
-
-    public Integer insertDocumento(Integer proyectoId, String nombre, String mime,
-                                   Integer tamanio, byte[] contenido, Integer subidoPor,
-                                   String descripcion) {
-        Record rec = dsl.insertInto(DOCS)
-           .set(D_PROYECTO_ID, proyectoId).set(D_NOMBRE, nombre).set(D_MIME, mime)
-           .set(D_TAMANIO, tamanio).set(D_CONTENIDO, contenido)
-           .set(D_SUBIDO_POR, subidoPor).set(D_DESC, descripcion)
-           .returningResult(D_ID).fetchOne();
-        return rec != null ? rec.get(D_ID) : null;
+    public com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos insertDocumento(
+            Integer proyectoId, String nombre, String mime,
+            Integer tamanio, byte[] contenido, Integer subidoPor,
+            String descripcion) {
+        var doc = new com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos();
+        doc.setProyectoId(proyectoId);
+        doc.setNombreArchivo(nombre);
+        doc.setTipoMime(mime);
+        doc.setTamanioBytes(tamanio);
+        doc.setContenido(contenido);
+        doc.setSubidoPor(subidoPor);
+        doc.setDescripcion(descripcion);
+        return dsl.insertInto(PROYECTO_DOCUMENTOS)
+                .set(PROYECTO_DOCUMENTOS.PROYECTO_ID, doc.getProyectoId())
+                .set(PROYECTO_DOCUMENTOS.NOMBRE_ARCHIVO, doc.getNombreArchivo())
+                .set(PROYECTO_DOCUMENTOS.TIPO_MIME, doc.getTipoMime())
+                .set(PROYECTO_DOCUMENTOS.TAMANIO_BYTES, doc.getTamanioBytes())
+                .set(PROYECTO_DOCUMENTOS.CONTENIDO, doc.getContenido())
+                .set(PROYECTO_DOCUMENTOS.SUBIDO_POR, doc.getSubidoPor())
+                .set(PROYECTO_DOCUMENTOS.DESCRIPCION, doc.getDescripcion())
+                .returning()
+                .fetchOneInto(com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos.class);
     }
 
-    public List<Map<String, Object>> findByProyecto(Integer proyectoId) {
-        if (proyectoId == null) return java.util.Collections.emptyList();
-        return dsl.select(D_ID, D_PROYECTO_ID, D_NOMBRE, D_MIME, D_TAMANIO,
-                          D_SUBIDO_POR, D_SUBIDO_AT, D_DESC)
-                  .from(DOCS).where(D_PROYECTO_ID.eq(proyectoId))
-                  .orderBy(D_SUBIDO_AT.desc()).fetchMaps();
+    public List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos> findByProyecto(
+            Integer proyectoId) {
+        if (proyectoId == null) return Collections.emptyList();
+        return dsl.select(
+                        PROYECTO_DOCUMENTOS.ID,
+                        PROYECTO_DOCUMENTOS.PROYECTO_ID,
+                        PROYECTO_DOCUMENTOS.NOMBRE_ARCHIVO,
+                        PROYECTO_DOCUMENTOS.TIPO_MIME,
+                        PROYECTO_DOCUMENTOS.TAMANIO_BYTES,
+                        PROYECTO_DOCUMENTOS.SUBIDO_POR,
+                        PROYECTO_DOCUMENTOS.SUBIDO_AT,
+                        PROYECTO_DOCUMENTOS.DESCRIPCION)
+                .from(PROYECTO_DOCUMENTOS)
+                .where(PROYECTO_DOCUMENTOS.PROYECTO_ID.eq(proyectoId))
+                .orderBy(PROYECTO_DOCUMENTOS.SUBIDO_AT.desc())
+                .fetchInto(com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos.class);
     }
 
-    public Map<String, Object> findByIdCompleto(Integer id) {
-        if (id == null) return null;
-        return dsl.select(D_ID, D_PROYECTO_ID, D_NOMBRE, D_MIME, D_TAMANIO,
-                          D_CONTENIDO, D_SUBIDO_POR, D_SUBIDO_AT, D_DESC)
-                  .from(DOCS).where(D_ID.eq(id)).fetchOneMap();
+    public Optional<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos> findByIdCompleto(
+            Integer id) {
+        if (id == null) return Optional.empty();
+        return dsl.selectFrom(PROYECTO_DOCUMENTOS)
+                .where(PROYECTO_DOCUMENTOS.ID.eq(id))
+                .fetchOptionalInto(com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos.class);
     }
 
     public boolean delete(Integer documentoId, Integer usuarioId, boolean isAdmin) {
         if (documentoId == null) return false;
-        var q = dsl.deleteFrom(DOCS).where(D_ID.eq(documentoId));
-        if (!isAdmin) q = q.and(D_SUBIDO_POR.eq(usuarioId));
+        var q = dsl.deleteFrom(PROYECTO_DOCUMENTOS).where(PROYECTO_DOCUMENTOS.ID.eq(documentoId));
+        if (!isAdmin) q = q.and(PROYECTO_DOCUMENTOS.SUBIDO_POR.eq(usuarioId));
         return q.execute() > 0;
     }
 }

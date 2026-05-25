@@ -18,38 +18,41 @@ import java.util.Map;
 @RequestMapping("/api")
 public class DocumentController {
 
-    @Autowired private DocumentService documentService;
+    @Autowired
+    private DocumentService documentService;
 
     @PostMapping(value = "/projects/{projectId}/documents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Map<String, Object>> upload(
+    public ResponseEntity<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos> upload(
             @PathVariable Integer projectId,
             @RequestParam("file") MultipartFile file,
             @RequestParam("usuarioId") Integer usuarioId,
             @RequestParam(value = "descripcion", required = false) String descripcion) throws Exception {
-        return ResponseEntity.ok(documentService.uploadDocument(projectId, usuarioId, file, descripcion));
+        return ResponseEntity.ok(
+                documentService.uploadDocument(projectId, usuarioId, file, descripcion));
     }
 
     @GetMapping("/projects/{projectId}/documents")
-    public ResponseEntity<List<Map<String, Object>>> list(@PathVariable Integer projectId) {
+    public ResponseEntity<List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos>> list(
+            @PathVariable Integer projectId) {
         return ResponseEntity.ok(documentService.listByProyecto(projectId));
     }
 
     @GetMapping("/documents/{docId}")
-    public ResponseEntity<Map<String, Object>> metadata(@PathVariable Integer docId) {
-        Map<String, Object> doc = documentService.getDocumentoCompleto(docId);
+    public ResponseEntity<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos> metadata(
+            @PathVariable Integer docId) {
+        var doc = documentService.getDocumentoCompleto(docId);
         if (doc == null) return ResponseEntity.notFound().build();
-        doc.remove("contenido");
+        doc.setContenido(null);
         return ResponseEntity.ok(doc);
     }
 
     @GetMapping("/documents/{docId}/download")
     public ResponseEntity<byte[]> download(@PathVariable Integer docId) {
-        Map<String, Object> doc = documentService.getDocumentoCompleto(docId);
+        var doc = documentService.getDocumentoCompleto(docId);
         if (doc == null) return ResponseEntity.notFound().build();
-        Object c = doc.get("contenido");
-        String nombre = String.valueOf(doc.getOrDefault("nombre_archivo", "documento"));
-        String mime   = String.valueOf(doc.getOrDefault("tipo_mime", "application/octet-stream"));
-        byte[] data = (c instanceof byte[]) ? (byte[]) c : new byte[0];
+        byte[] data = doc.getContenido() != null ? doc.getContenido() : new byte[0];
+        String nombre = doc.getNombreArchivo() != null ? doc.getNombreArchivo() : "documento";
+        String mime = doc.getTipoMime() != null ? doc.getTipoMime() : "application/octet-stream";
         String encoded = URLEncoder.encode(nombre, StandardCharsets.UTF_8).replace("+", "%20");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(mime));
@@ -59,9 +62,10 @@ public class DocumentController {
     }
 
     @DeleteMapping("/documents/{docId}")
-    public ResponseEntity<Map<String, Object>> delete(@PathVariable Integer docId,
-                                                      @RequestParam Integer usuarioId,
-                                                      @RequestParam(value = "admin", defaultValue = "false") boolean admin) {
+    public ResponseEntity<Map<String, Object>> delete(
+            @PathVariable Integer docId,
+            @RequestParam Integer usuarioId,
+            @RequestParam(value = "admin", defaultValue = "false") boolean admin) {
         return ResponseEntity.ok(Map.of("deleted", documentService.deleteDocumento(docId, usuarioId, admin)));
     }
 }

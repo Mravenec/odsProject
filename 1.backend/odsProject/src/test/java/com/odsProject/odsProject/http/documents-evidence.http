@@ -1,0 +1,79 @@
+### Documentos de evidencia — Sprint 7 (EvidenceSection)
+### Base URL: http://localhost:8080
+
+@baseUrl = http://localhost:8080
+@gestorEmail = ana.garcia@ods.cr
+@password = password123
+@proyectoId = 5
+@usuarioId = 2
+
+### Login gestor (dueño proyecto 5)
+# @name loginGestor
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{gestorEmail}}",
+  "password": "{{password}}"
+}
+
+### Listar documentos del proyecto (antes de subir)
+GET {{baseUrl}}/api/projects/{{proyectoId}}/documents
+
+### Subir documento CON descripción
+# @name uploadConDescripcion
+POST {{baseUrl}}/api/projects/{{proyectoId}}/documents
+Content-Type: multipart/form-data; boundary=EvidenceBoundary
+
+--EvidenceBoundary
+Content-Disposition: form-data; name="file"; filename="evidencia-prueba.txt"
+Content-Type: text/plain
+
+Resultados del proyecto — datos de mediciones 2024.
+--EvidenceBoundary
+Content-Disposition: form-data; name="usuarioId"
+
+{{usuarioId}}
+--EvidenceBoundary
+Content-Disposition: form-data; name="descripcion"
+
+Informe final Q1 — resultados preliminares
+--EvidenceBoundary--
+
+### Listar documentos (verificar descripcion en response)
+GET {{baseUrl}}/api/projects/{{proyectoId}}/documents
+
+### Subir documento SIN descripción
+POST {{baseUrl}}/api/projects/{{proyectoId}}/documents
+Content-Type: multipart/form-data; boundary=EvidenceBoundary2
+
+--EvidenceBoundary2
+Content-Disposition: form-data; name="file"; filename="sin-descripcion.txt"
+Content-Type: text/plain
+
+Archivo sin nota opcional.
+--EvidenceBoundary2
+Content-Disposition: form-data; name="usuarioId"
+
+{{usuarioId}}
+--EvidenceBoundary2--
+
+### Metadata documento (sin contenido binario)
+@docId = {{uploadConDescripcion.response.body.id}}
+GET {{baseUrl}}/api/documents/{{docId}}
+
+### Descargar documento
+GET {{baseUrl}}/api/documents/{{docId}}/download
+
+### Eliminar documento de prueba
+DELETE {{baseUrl}}/api/documents/{{docId}}?usuarioId={{usuarioId}}&admin=false
+
+### Login evaluador (solo descarga)
+# @name loginEvaluador
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "evaluador@ods.cr",
+  "password": "{{password}}"
+}

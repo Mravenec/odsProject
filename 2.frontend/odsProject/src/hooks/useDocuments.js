@@ -24,9 +24,9 @@ export function useDocuments(proyectoId) {
     return r;
   };
   const download = (doc) =>
-    documentService.download(doc.id ?? doc.ID, doc.nombre_archivo ?? doc.nombreArchivo ?? 'documento');
+    documentService.download(doc.id, doc.nombreArchivo ?? 'documento');
   const remove = async (doc, usuarioId, isAdmin) => {
-    const r = await documentService.remove(doc.id ?? doc.ID, usuarioId, isAdmin);
+    const r = await documentService.remove(doc.id, usuarioId, isAdmin);
     if (r.success) await reload();
     return r;
   };

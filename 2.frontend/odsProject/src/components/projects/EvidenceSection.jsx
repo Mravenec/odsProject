@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useDocuments } from '../../hooks/useDocuments';
-import { Upload, Download, FileText, Trash2, AlertCircle } from 'lucide-react';
+import { Upload, Download, FileText, Trash2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import './EvidenceSection.css';
 
 export default function EvidenceSection({ project }) {
@@ -11,23 +11,60 @@ export default function EvidenceSection({ project }) {
   const { documents, loading, error, upload, download, remove } = useDocuments(project?.id);
   const fileRef = useRef(null);
   const [descripcion, setDescripcion] = useState('');
+  const [selectedName, setSelectedName] = useState('');
   const [busy, setBusy] = useState(false);
   const [uploadError, setUploadError] = useState('');
+  const [uploadSuccess, setUploadSuccess] = useState('');
   const canUpload = perms.canUploadEvidenceFor(project);
+
+  const handleFileChange = () => {
+    const file = fileRef.current?.files?.[0];
+    setSelectedName(file ? file.name : '');
+    setUploadError('');
+    setUploadSuccess('');
+  };
+
+  const handleSelectClick = () => fileRef.current?.click();
 
   const handleUpload = async () => {
     const file = fileRef.current?.files?.[0];
-    if (!file) { setUploadError('Elegí un archivo primero'); return; }
-    setBusy(true); setUploadError('');
+    if (!file) {
+      setUploadError('Seleccione un archivo primero');
+      return;
+    }
+    setBusy(true);
+    setUploadError('');
+    setUploadSuccess('');
     const r = await upload(file, user.id, descripcion);
     setBusy(false);
-    if (!r.success) { setUploadError(r.error || 'Falló la subida'); return; }
+    if (!r.success) {
+      setUploadError(r.error || 'Error al subir el documento');
+      return;
+    }
+    setUploadSuccess('Documento subido correctamente');
     setDescripcion('');
+    setSelectedName('');
     if (fileRef.current) fileRef.current.value = '';
   };
 
   const formatSize = (b) => !b ? '—' : b < 1024 ? `${b} B` :
-    b < 1024 * 1024 ? `${(b/1024).toFixed(1)} KB` : `${(b/1024/1024).toFixed(2)} MB`;
+    b < 1024 * 1024 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1024 / 1024).toFixed(2)} MB`;
+
+  const introSteps = canUpload ? (
+    <ol className="evidence-steps">
+      <li>Seleccione el archivo (Word, Excel, PDF o texto plano (.txt)) con los resultados del proyecto.</li>
+      <li>Verifique que el nombre del archivo aparezca correctamente debajo del botón.</li>
+      <li>Si lo desea, escriba una descripción breve para el evaluador (opcional).</li>
+      <li>Pulse «Subir documento» y espere la confirmación.</li>
+      <li>Revise la lista: el evaluador descargará el archivo para ingresar las mediciones.</li>
+    </ol>
+  ) : perms.canEnterMeasurements ? (
+    <p className="evidence-intro-text">
+      Documentos cargados por el gestor. Descárguelos antes de ingresar las mediciones.
+    </p>
+  ) : (
+    <p className="evidence-intro-text">Documentos disponibles para descargar.</p>
+  );
 
   return (
     <section className="evidence-section">
@@ -36,32 +73,51 @@ export default function EvidenceSection({ project }) {
         <h2 className="evidence-title">Documentos de evidencia</h2>
       </header>
 
-      <p className="evidence-intro">
-        {canUpload
-          ? 'Subí el documento (Word/Excel/PDF) con los resultados del proyecto. El evaluador lo leerá para ingresar las mediciones.'
-          : perms.canEnterMeasurements
-            ? 'Documentos cargados por el gestor. Descargalos antes de ingresar las mediciones.'
-            : 'Documentos disponibles para descargar.'}
-      </p>
+      <div className="evidence-intro">{introSteps}</div>
 
       {canUpload && (
         <div className="evidence-uploader">
           <input
             ref={fileRef}
             type="file"
-            className="evidence-file-input"
+            className="evidence-file-input-hidden"
             accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.csv,.odt,.ods"
+            onChange={handleFileChange}
           />
+          <div className="evidence-file-row">
+            <button
+              type="button"
+              className="evidence-select-btn"
+              onClick={handleSelectClick}
+              disabled={busy}
+            >
+              Seleccionar archivo
+            </button>
+            <span className={`evidence-file-name${selectedName ? '' : ' evidence-file-name--empty'}`}>
+              {selectedName || 'Ningún archivo seleccionado'}
+            </span>
+          </div>
+          <label className="evidence-desc-label" htmlFor="evidence-desc">
+            Descripción (opcional)
+          </label>
           <input
+            id="evidence-desc"
             type="text"
             className="evidence-desc-input"
-            placeholder="Descripción (opcional)"
+            placeholder="Nota breve para el evaluador"
             value={descripcion}
             onChange={e => setDescripcion(e.target.value)}
+            maxLength={500}
+            disabled={busy}
           />
           {uploadError && (
             <div className="evidence-upload-error">
               <AlertCircle size={16} /> {uploadError}
+            </div>
+          )}
+          {uploadSuccess && (
+            <div className="evidence-upload-success">
+              <CheckCircle2 size={16} /> {uploadSuccess}
             </div>
           )}
           <button
@@ -70,37 +126,35 @@ export default function EvidenceSection({ project }) {
             onClick={handleUpload}
             disabled={busy}
           >
-            <Upload size={14} /> {busy ? 'Subiendo...' : 'Subir documento'}
+            <Upload size={14} /> {busy ? 'Subiendo…' : 'Subir documento'}
           </button>
         </div>
       )}
 
       {loading ? (
-        <div className="evidence-loading">Cargando...</div>
+        <div className="evidence-loading">Cargando…</div>
       ) : error ? (
         <div className="evidence-error">{error}</div>
       ) : documents.length === 0 ? (
-        <div className="evidence-empty">
-          Aún no hay documentos cargados.
-        </div>
+        <div className="evidence-empty">Aún no hay documentos cargados.</div>
       ) : (
         <div className="evidence-list">
           {documents.map(doc => {
-            const id   = doc.id ?? doc.ID;
-            const name = doc.nombre_archivo ?? doc.nombreArchivo;
-            const size = doc.tamanio_bytes ?? doc.tamanioBytes;
-            const date = doc.subido_at ?? doc.subidoAt;
+            const id = doc.id;
+            const name = doc.nombreArchivo;
+            const size = doc.tamanioBytes;
+            const date = doc.subidoAt;
             const desc = doc.descripcion;
-            const sub  = doc.subido_por ?? doc.subidoPor;
+            const sub = doc.subidoPor;
             const isOwn = sub === user?.id;
             return (
               <div key={id} className="evidence-item">
                 <FileText size={20} className="evidence-item-icon" />
                 <div className="evidence-item-info">
                   <div className="evidence-item-name">{name}</div>
+                  {desc && <div className="evidence-item-desc">{desc}</div>}
                   <div className="evidence-item-meta">
                     {formatSize(size)} · {date ? new Date(date).toLocaleString('es-ES') : ''}
-                    {desc && <> · {desc}</>}
                   </div>
                 </div>
                 <button

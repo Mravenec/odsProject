@@ -37,6 +37,29 @@
   margin: 0 0 1rem;
 }
 
+.evidence-intro-text {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.evidence-steps {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.evidence-steps li {
+  margin-bottom: 0.45rem;
+  line-height: 1.45;
+}
+
+.evidence-steps li:last-child {
+  margin-bottom: 0;
+}
+
 /* ─── Uploader ──────────────────────────────────────────────────── */
 .evidence-uploader {
   padding: 1rem;
@@ -49,14 +72,18 @@
   gap: 0.625rem;
 }
 
-.evidence-file-input {
-  font-size: 0.85rem;
-  padding: 0.4rem 0;
-  color: var(--text-main);
+.evidence-file-input-hidden {
+  display: none;
 }
 
-.evidence-file-input::file-selector-button {
-  margin-right: 0.75rem;
+.evidence-file-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.evidence-select-btn {
   padding: 0.45rem 0.875rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--utn-celeste);
@@ -69,9 +96,33 @@
   transition: all 0.2s ease;
 }
 
-.evidence-file-input::file-selector-button:hover {
+.evidence-select-btn:hover:not(:disabled) {
   background: var(--utn-celeste-soft);
   border-color: var(--utn-azul);
+}
+
+.evidence-select-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.evidence-file-name {
+  font-size: 0.85rem;
+  color: var(--utn-azul-deep);
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.evidence-file-name--empty {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-style: italic;
+}
+
+.evidence-desc-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
 .evidence-desc-input {
@@ -94,6 +145,16 @@
   gap: 0.5rem;
   align-items: center;
   color: var(--error);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.25rem 0;
+}
+
+.evidence-upload-success {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: #15803d;
   font-size: 0.85rem;
   font-weight: 600;
   padding: 0.25rem 0;
@@ -192,6 +253,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.evidence-item-desc {
+  font-size: 0.84rem;
+  color: var(--text-main);
+  margin-top: 3px;
+  line-height: 1.35;
 }
 
 .evidence-item-meta {

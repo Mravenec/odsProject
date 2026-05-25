@@ -6,14 +6,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class DocumentService {
-    @Autowired private DocumentRepository documentRepository;
 
-    public Map<String, Object> uploadDocument(Integer proyectoId, Integer usuarioId,
-                                              MultipartFile file, String descripcion) throws Exception {
+    @Autowired
+    private DocumentRepository documentRepository;
+
+    public com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos uploadDocument(
+            Integer proyectoId, Integer usuarioId,
+            MultipartFile file, String descripcion) throws Exception {
         if (file == null || file.isEmpty())
             throw new IllegalArgumentException("Archivo vacío");
         if (proyectoId == null || usuarioId == null)
@@ -21,27 +24,41 @@ public class DocumentService {
         if (file.getSize() > 10L * 1024 * 1024)
             throw new IllegalArgumentException("Archivo supera el límite de 10 MB");
 
-        Integer id = documentRepository.insertDocumento(
-            proyectoId, file.getOriginalFilename(),
-            file.getContentType() != null ? file.getContentType() : "application/octet-stream",
-            (int) file.getSize(), file.getBytes(), usuarioId, descripcion);
+        String desc = descripcion != null && !descripcion.isBlank() ? descripcion.trim() : null;
 
-        Map<String, Object> out = new java.util.LinkedHashMap<>();
-        out.put("id", id);
-        out.put("proyectoId", proyectoId);
-        out.put("nombreArchivo", file.getOriginalFilename());
-        out.put("tipoMime", file.getContentType());
-        out.put("tamanioBytes", file.getSize());
-        return out;
+        var saved = documentRepository.insertDocumento(
+                proyectoId,
+                file.getOriginalFilename(),
+                file.getContentType() != null ? file.getContentType() : "application/octet-stream",
+                (int) file.getSize(),
+                file.getBytes(),
+                usuarioId,
+                desc);
+
+        return sanitize(saved);
     }
 
-    public List<Map<String, Object>> listByProyecto(Integer proyectoId) {
-        return documentRepository.findByProyecto(proyectoId);
+    public List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos> listByProyecto(
+            Integer proyectoId) {
+        return documentRepository.findByProyecto(proyectoId).stream()
+                .map(this::sanitize)
+                .collect(Collectors.toList());
     }
-    public Map<String, Object> getDocumentoCompleto(Integer documentoId) {
-        return documentRepository.findByIdCompleto(documentoId);
+
+    public com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos getDocumentoCompleto(
+            Integer documentoId) {
+        return documentRepository.findByIdCompleto(documentoId).orElse(null);
     }
+
     public boolean deleteDocumento(Integer documentoId, Integer usuarioId, boolean isAdmin) {
         return documentRepository.delete(documentoId, usuarioId, isAdmin);
+    }
+
+    /** Respuesta pública — nunca incluir contenido binario. */
+    private com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos sanitize(
+            com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos doc) {
+        if (doc == null) return null;
+        doc.setContenido(null);
+        return doc;
     }
 }
