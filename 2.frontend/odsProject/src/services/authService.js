@@ -17,11 +17,7 @@ export const authService = {
       username: source.username || source.email,
       name: source.fullName || source.nombre || source.username,
       email: source.email,
-      role: source.role || source.rol || (
-        source.rolId === 1 ? 'admin' : 
-        source.rolId === 2 ? 'gestor' : 
-        source.rolId === 4 ? 'evaluador' : 'consultor'
-      )
+      role: (source.role || source.rol || '').toLowerCase()
     };
   },
 
@@ -143,6 +139,7 @@ export const authService = {
       id: r.id,
       name: r.name || r.nombre,
       nombre: r.nombre || r.name,
+      descripcion: r.descripcion || r.description || '',
     };
   },
 

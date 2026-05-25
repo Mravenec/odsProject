@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../../services/authService';
 import { useAuth } from '../../../hooks/useAuth.jsx';
-import { ArrowLeft, Plus, Pencil, UserX, X } from 'lucide-react';
+import { ArrowLeft, Plus, Pencil, UserX } from 'lucide-react';
 import './UsersAdminPage.css';
 
-const ROLE_LABELS = {
-  admin: 'Administrador',
-  gestor: 'Profesor/Gestor',
-  consultor: 'Planeación',
-  evaluador: 'Evaluador',
+const roleDisplayName = (roles, rolName) => {
+  const key = String(rolName || '').toLowerCase();
+  const match = roles.find(r => (r.nombre || r.name || '').toLowerCase() === key);
+  return match?.nombre || match?.name || rolName || '—';
 };
 
 const EMPTY_FORM = {
@@ -17,9 +16,15 @@ const EMPTY_FORM = {
   email: '',
   fullName: '',
   password: '',
+  passwordConfirm: '',
   rolId: '',
   sedeId: '',
 };
+
+const validatePasswordFormat = (password) =>
+  password.length >= 8
+  && /[a-zA-Z]/.test(password)
+  && /\d/.test(password);
 
 const UsersAdminPage = () => {
   const navigate = useNavigate();
@@ -69,6 +74,7 @@ const UsersAdminPage = () => {
       email: user.email || '',
       fullName: user.fullName || '',
       password: '',
+      passwordConfirm: '',
       rolId: rolMatch?.id ?? '',
       sedeId: sedeMatch?.id ?? '',
     });
@@ -87,14 +93,38 @@ const UsersAdminPage = () => {
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
+  const validatePasswordFields = () => {
+    const pwd = form.password;
+    const confirm = form.passwordConfirm;
+    const changing = modal.mode === 'create' || Boolean(pwd || confirm);
+
+    if (!changing) return '';
+
+    if (modal.mode === 'edit' && !pwd && confirm) {
+      return 'Ingresá la nueva contraseña';
+    }
+    if (modal.mode === 'create' && !pwd) {
+      return 'La contraseña es obligatoria';
+    }
+    if (!confirm) {
+      return 'Confirmá la contraseña';
+    }
+    if (pwd !== confirm) {
+      return 'Las contraseñas no coinciden';
+    }
+    if (!validatePasswordFormat(pwd)) {
+      return 'La contraseña debe tener al menos 8 caracteres, una letra y un número';
+    }
+    return '';
+  };
+
   const validate = () => {
     if (!form.username.trim()) return 'El nombre de usuario es obligatorio';
     if (!form.email.trim()) return 'El correo es obligatorio';
     if (!form.fullName.trim()) return 'El nombre completo es obligatorio';
     if (!form.rolId) return 'Seleccioná un rol';
     if (!form.sedeId) return 'Seleccioná una sede';
-    if (modal.mode === 'create' && !form.password) return 'La contraseña es obligatoria';
-    return '';
+    return validatePasswordFields();
   };
 
   const handleSave = async (e) => {
@@ -107,10 +137,12 @@ const UsersAdminPage = () => {
       username: form.username.trim(),
       email: form.email.trim(),
       fullName: form.fullName.trim(),
-      password: form.password,
       rolId: parseInt(form.rolId, 10),
       sedeId: parseInt(form.sedeId, 10),
     };
+    if (form.password) {
+      payload.password = form.password;
+    }
     const r = modal.mode === 'create'
       ? await authService.createUser(payload)
       : await authService.updateUser(modal.user.id, payload);
@@ -180,7 +212,7 @@ const UsersAdminPage = () => {
                   <td data-label="Usuario">{u.username}</td>
                   <td data-label="Nombre">{u.fullName}</td>
                   <td data-label="Correo">{u.email}</td>
-                  <td data-label="Rol">{ROLE_LABELS[u.rol?.toLowerCase()] || u.rol}</td>
+                  <td data-label="Rol">{roleDisplayName(roles, u.rol)}</td>
                   <td data-label="Sede">{u.sede || '—'}</td>
                   <td data-label="Acciones">
                     <div className="users-admin-actions">
@@ -201,11 +233,11 @@ const UsersAdminPage = () => {
       </main>
 
       {modal.open && (
-        <div className="users-modal-overlay" onClick={closeModal}>
-          <div className="users-modal" onClick={e => e.stopPropagation()}>
+        <div className="users-modal-overlay" role="dialog" aria-modal="true"
+          aria-labelledby="users-modal-title">
+          <div className="users-modal">
             <div className="users-modal-header">
-              <h2>{modal.mode === 'create' ? 'Nuevo usuario' : 'Editar usuario'}</h2>
-              <button type="button" className="btn-icon" onClick={closeModal}><X size={18} /></button>
+              <h2 id="users-modal-title">{modal.mode === 'create' ? 'Nuevo usuario' : 'Editar usuario'}</h2>
             </div>
             <form onSubmit={handleSave} className="users-modal-form">
               <div className="form-row">
@@ -222,18 +254,32 @@ const UsersAdminPage = () => {
               </div>
               <div className="form-row">
                 <label htmlFor="password">
-                  Contraseña {modal.mode === 'create' ? '*' : '(dejar vacío para no cambiar)'}
+                  Contraseña {modal.mode === 'create' ? '*' : '(opcional)'}
                 </label>
                 <input id="password" name="password" type="password" value={form.password}
-                  onChange={handleChange} autoComplete="new-password" />
+                  onChange={handleChange} autoComplete="new-password"
+                  required={modal.mode === 'create'} />
+                <span className="form-hint">Mínimo 8 caracteres, con letra y número.</span>
+              </div>
+              <div className="form-row">
+                <label htmlFor="passwordConfirm">
+                  Repetir contraseña {modal.mode === 'create' || form.password ? '*' : '(opcional)'}
+                </label>
+                <input id="passwordConfirm" name="passwordConfirm" type="password"
+                  value={form.passwordConfirm} onChange={handleChange}
+                  autoComplete="new-password"
+                  required={modal.mode === 'create' || Boolean(form.password)} />
+                {modal.mode === 'edit' && !form.password && (
+                  <span className="form-hint">Dejá ambos campos vacíos para no cambiar la contraseña.</span>
+                )}
               </div>
               <div className="form-row">
                 <label htmlFor="rolId">Rol *</label>
                 <select id="rolId" name="rolId" value={form.rolId} onChange={handleChange} required>
                   <option value="">Seleccionar rol</option>
                   {roles.map(r => (
-                    <option key={r.id} value={r.id}>
-                      {ROLE_LABELS[(r.name || r.nombre || '').toLowerCase()] || r.name || r.nombre}
+                    <option key={r.id} value={r.id} title={r.descripcion || undefined}>
+                      {r.nombre || r.name}
                     </option>
                   ))}
                 </select>

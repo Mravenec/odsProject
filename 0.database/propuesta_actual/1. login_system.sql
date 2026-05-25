@@ -24,11 +24,13 @@ CREATE TABLE roles (
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Roles base del sistema
+-- Roles canónicos del sistema (fuente de verdad — solo estos 4 existen).
+-- NO confundir con proyectos.estado = 'planificacion' (fase del ciclo de vida, no rol de usuario).
+-- id 1=admin, 2=gestor, 3=consultor, 4=evaluador (orden del INSERT).
 INSERT IGNORE INTO roles (nombre, descripcion) VALUES
     ('admin',       'Administrador con acceso total al sistema'),
     ('gestor',      'Gestor de proyectos ODS: crea y edita sus propios proyectos'),
-    ('consultor',   'Acceso de solo lectura a reportes y dashboards'),
+    ('consultor',   'Consultor: acceso de solo lectura a reportes y dashboards'),
     ('evaluador',   'Evaluador académico: revisa y cierra el proceso de evaluación de proyectos ODS');
 
 -- ────────────────────────────────────────────────────────────
