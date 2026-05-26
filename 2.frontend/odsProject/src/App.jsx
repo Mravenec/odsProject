@@ -13,11 +13,14 @@ import EvaluationPage from './pages/EvaluationPage/EvaluationPage';
 import EvaluationQueuePage from './pages/EvaluationQueuePage/EvaluationQueuePage.jsx';
 import ForbiddenPage from './pages/ForbiddenPage/ForbiddenPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { ProjectsProvider } from './hooks/useProjects.jsx';
 
 function App() {
   return (
     <AuthProvider>
-      <Router><AppContent /></Router>
+      <ProjectsProvider>
+        <Router><AppContent /></Router>
+      </ProjectsProvider>
     </AuthProvider>
   );
 }

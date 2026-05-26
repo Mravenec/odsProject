@@ -1,4 +1,5 @@
 import api from './api';
+import { normalizeWorkflowStatus } from '../utils/formatters';
 
 /**
  * Servicio de Proyectos — Alineado con MasterProjectController.java
@@ -41,7 +42,7 @@ export const projectService = {
       odsVinculados,
       startDate: p.fechaInicio || p.fecha_inicio,
       endDate: p.fechaFin || p.fecha_fin,
-      status: p.estado,
+      status: normalizeWorkflowStatus(p.estado ?? p.status),
       createdAt: p.createdAt || p.created_at,
       // Sprint UTN: campos derivados que enrichWithSummaries va a llenar.
       // Inicializarlos aquí evita renderizar "undefined%"  o "NaN%" mientras
@@ -238,8 +239,7 @@ export const projectService = {
         indicatorsAchieved,
         progressPercentage: averageProgress,
         odsLinkedCount: Number(s.odsLinkedCount) || 0,
-        // Si el backend dice "completado" reflejarlo aunque el estado raw venga distinto
-        status: p.status || s.status || 'activo'
+        // status: solo BD (map /with-ods) — no sobrescribir con /summary
       };
     });
   },

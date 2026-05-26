@@ -16,15 +16,26 @@ const _triggerDownload = (blob, filename, contentType) => {
 const _exportPath = (suffix) => `/export${suffix}`;
 
 export const exportService = {
+  async downloadProjectFullReport(projectId) {
+    return this.downloadProjectExport(projectId);
+  },
+
   async downloadProjectExport(projectId) {
     try {
       const r = await api.get(_exportPath(`/proyecto/${projectId}`), { responseType: 'blob' });
       const disposition = r.headers['content-disposition'] || '';
       const match = disposition.match(/filename="?([^";\n]+)"?/);
-      const filename = match?.[1] || `proyecto-${projectId}-export.xlsx`;
+      const filename = match?.[1] || `proyecto-${projectId}-resumen.xlsx`;
       _triggerDownload(r.data, filename, r.headers['content-type']);
       return { success: true };
     } catch (error) {
+      const status = error.response?.status;
+      if (status === 409) {
+        return { success: false, error: 'Proyecto aún no finalizado. Disponible cuando esté evaluado.' };
+      }
+      if (status === 403) {
+        return { success: false, error: 'Sin permisos para exportar este proyecto.' };
+      }
       const msg = error.userMessage || error.message || 'No se pudo exportar el proyecto';
       return { success: false, error: msg };
     }

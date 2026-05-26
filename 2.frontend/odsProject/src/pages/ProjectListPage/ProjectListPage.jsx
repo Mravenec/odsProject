@@ -4,7 +4,8 @@ import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
 import AchievementBadge from '../../components/AchievementBadge';
-import { formatDate, getOdsColor } from '../../utils/formatters';
+import { formatDate, getOdsColor, getEstadoLabel, getEstadoClass, matchesProjectStatusFilter, isProjectCompletado } from '../../utils/formatters';
+import { exportService } from '../../services/exportService';
 import { 
   ArrowLeft, 
   Search, 
@@ -14,7 +15,8 @@ import {
   ExternalLink,
   BarChart3,
   Calendar,
-  MapPin
+  MapPin,
+  FileDown
 } from 'lucide-react';
 import './ProjectListPage.css';
 
@@ -33,6 +35,7 @@ const ProjectListPage = () => {
   const [projects, setProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [exportingId, setExportingId] = useState(null);
 
   // Sprint 10: gestor ve solo sus proyectos; otros roles ven todos
   useEffect(() => {
@@ -53,7 +56,7 @@ const ProjectListPage = () => {
       }
       
       if (filterStatus !== 'all') {
-        filtered = filtered.filter(p => p.status === filterStatus);
+        filtered = filtered.filter(p => matchesProjectStatusFilter(p, filterStatus));
       }
       
       setProjects(filtered);
@@ -64,6 +67,17 @@ const ProjectListPage = () => {
     e.stopPropagation();
     if (window.confirm('¿Estás seguro de que deseas eliminar este proyecto?')) {
       await deleteProject(id);
+    }
+  };
+
+  const handleExportExcel = async (e, project) => {
+    e.stopPropagation();
+    if (!isProjectCompletado(project)) return;
+    setExportingId(project.id);
+    const r = await exportService.downloadProjectFullReport(project.id);
+    setExportingId(null);
+    if (!r.success) {
+      window.alert(r.error || 'No se pudo descargar el Excel');
     }
   };
 
@@ -114,7 +128,8 @@ const ProjectListPage = () => {
             <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
               <option value="all">Todos los estados</option>
               <option value="active">Activos</option>
-              <option value="completed">Completados</option>
+              <option value="in_review">En evaluación</option>
+              <option value="completed">Evaluados</option>
             </select>
           </div>
         </section>
@@ -142,8 +157,8 @@ const ProjectListPage = () => {
                       +{project.odsVinculados.length - 1}
                     </div>
                   )}
-                  <span className={`status-tag ${project.status}`}>
-                    {project.status === 'active' || project.status === 'activo' ? 'En Curso' : 'Finalizado'}
+                  <span className={`status-tag ${getEstadoClass(project.status)}`}>
+                    {getEstadoLabel(project.status)}
                   </span>
                 </div>
 
@@ -192,6 +207,20 @@ const ProjectListPage = () => {
                     <BarChart3 size={16} />
                     Ver Impacto
                   </button>
+                  {perms.canDownloadEvidence && (
+                    <button
+                      type="button"
+                      className={`btn-card-action btn-card-action--excel ${!isProjectCompletado(project) ? 'is-disabled' : ''}`}
+                      onClick={(e) => handleExportExcel(e, project)}
+                      disabled={!isProjectCompletado(project) || exportingId === project.id}
+                      title={isProjectCompletado(project)
+                        ? 'Descargar Excel resumen'
+                        : 'Disponible al finalizar (proyecto evaluado)'}
+                    >
+                      <FileDown size={16} />
+                      {exportingId === project.id ? '…' : 'Excel'}
+                    </button>
+                  )}
                   {(perms.canDeleteProject || perms.canEditProject(project)) && (
                     <button 
                       className="btn-card-delete" 

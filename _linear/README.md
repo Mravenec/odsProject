@@ -262,11 +262,14 @@ flowchart LR
 
   subgraph BE["role:backend"]
     JOOQ[mvn spring-boot:run → POJOs JOOQ]
-    REPO[Repository / POJO]
-    SVC[Service]
-    CTRL[Controller]
-    HTTP[.http — gate FE]
-    JOOQ --> REPO --> SVC --> CTRL --> HTTP
+    IREPO["I*Repository (interfaces)"]
+    REPO["*Repository (impl)"]
+    ISVC["I*Service (interfaces)"]
+    SVC["*Service (impl)"]
+    ICTRL["I*Controller (interfaces)"]
+    CTRL["*Controller (impl)"]
+    HTTP[".http — gate FE"]
+    JOOQ --> IREPO --> REPO --> ISVC --> SVC --> ICTRL --> CTRL --> HTTP
   end
 
   subgraph FE["role:frontend"]
@@ -290,6 +293,55 @@ flowchart LR
 | **GATE_FE** | `role:frontend` | `*Service.js` alineado con API probada; luego hooks y UI |
 
 React **espera al backend** porque necesita endpoints reales y contratos camelCase verificados en `.http`. El backend **espera a la BD** porque JOOQ lee MariaDB viva, no los `.sql`.
+
+### Jerarquía backend — interfaz antes que implementación (obligatoria)
+
+Toda implementación `role:backend` respeta **siete pasos en este orden**, sin saltarse capas ni invertir interfaz/implementación:
+
+| Paso | Artefacto | Paquete | Responsabilidad |
+|---|---|---|---|
+| **1** | `I*Repository` | `repository/interfaces/` | Contrato de acceso a datos (métodos, tipos JOOQ) |
+| **2** | `*Repository` | `repository/` | Implementación JOOQ; **implementa** su `I*Repository` |
+| **3** | `I*Service` | `service/interfaces/` | Contrato de reglas de negocio y orquestación |
+| **4** | `*Service` | `service/` | Implementación; inyecta **`I*Repository`**, no clases concretas de repo |
+| **5** | `I*Controller` | `controller/interfaces/` | Contrato REST (`@RequestMapping`, firmas de endpoints) |
+| **6** | `*Controller` | `controller/` | `@RestController` que **implementa** su `I*Controller`; inyecta **`I*Service`** |
+| **7** | `*.http` | `src/test/.../http/` o `postman/` | Gate HTTP — frontend no empieza antes |
+
+**Reglas de dependencia:**
+
+| Capa | Puede usar | Prohibido |
+|---|---|---|
+| `I*Repository` | POJOs JOOQ, tipos Java | Service, Controller, HTTP, reglas de negocio |
+| `*Repository` | Solo su interfaz + JOOQ | Service, Controller |
+| `I*Service` | Tipos de dominio / DTOs | Controller, SQL directo |
+| `*Service` | `I*Repository`, otros `I*Service` | `*Repository` concreto, Controller |
+| `I*Controller` | Tipos de respuesta HTTP | Repository, lógica de negocio |
+| `*Controller` | `I*Service` | Repository, Service concreto, reglas de dominio |
+| `*Filter` (seguridad) | `I*AuthorizationService` | JWT/reglas de rol en el filtro |
+
+**Cross-cutting (auth):** `IRoleAuthorizationService` → `RoleAuthorizationService` → `RoleAuthorizationFilter` (capa HTTP delgada).
+
+**En planes HTML e issues Linear:**
+
+1. Tabla de archivos y checklist en orden **IREPO → REPO → ISVC → SVC → ICTRL → CTRL → `.http`**.
+2. Un issue BE puede agrupar los 7 pasos, pero el **checklist sigue ese orden** (un ítem por paso cuando aplique).
+3. Issues BE separados: encadenar con `blocks` en el mismo orden (p. ej. issue «Repo export» **blocks** issue «Svc export» **blocks** issue «Ctrl export»).
+4. Al cerrar (`Done`), verificar que Service/Controller **no** inyectan implementaciones concretas de otras capas.
+
+**Ejemplo (export consultor):**
+
+```
+IMasterProjectRepository + IDocumentRepository
+  → MasterProjectRepository + DocumentRepository
+  → IExportService
+  → ExportService
+  → IExportController
+  → ExportController
+  → consultor_flow.http
+
+IRoleAuthorizationService → RoleAuthorizationService → RoleAuthorizationFilter
+```
 
 ### Paralelismo: cuándo sí y cuándo no
 
@@ -548,9 +600,10 @@ Comandos mínimos del script:
 
 Cada issue creado debe tener:
 
-- Label `role:database` | `role:backend` | `role:frontend`  
-- Descripción con **checklist** `- [ ]` (obligatorio antes de Done)  
-- **Pares de handoff** en checklist cuando un ticket depende de otro (ítem «no iniciar» + ítem «marcar ODS-X ítem 1»)  
+- Label `role:database` | `role:backend` | `role:frontend`
+- Descripción con **checklist** `- [ ]` (obligatorio antes de Done)
+- **Issues `role:backend`:** checklist y tabla de archivos en orden **IREPO → REPO → ISVC → SVC → ICTRL → CTRL → `.http`** (ver sección *Jerarquía backend*)
+- **Pares de handoff** en checklist cuando un ticket depende de otro (ítem «no iniciar» + ítem «marcar ODS-X ítem 1»)
 - Comandos concretos (`drop_db` solo si aplica)  
 - `blocks` hacia el issue anterior en la cadena lógica  
 
@@ -589,7 +642,7 @@ next  →  claim_issue                    ← Backlog → Doing
 | Rol | Qué verificar en local |
 |---|---|
 | `role:database` | `drop_db` → `setup_db` → `load_mocks` sin error |
-| `role:backend` | `mvn spring-boot:run` o compile; archivo `.http` con 2xx |
+| `role:backend` | `mvn spring-boot:run` o compile; `.http` 2xx; jerarquía IREPO→REPO→ISVC→SVC→ICTRL→CTRL |
 | `role:frontend` | `npm run dev` flujo manual; `npm run build` exit 0 |
 
 Comandos (desde `_linear/`):
@@ -872,6 +925,18 @@ La fuente de verdad del schema está en:
 
 Los scripts temporales de una tarea **se borran al implementarla**. Lo que queda en git es solo `propuesta_actual/`. El agente backend **no puede** reconstruir el contexto leyendo scripts ya eliminados; depende del merge en `propuesta_actual/` y de los `outputArtifacts` del issue de BD.
 
+### Contraseñas de usuarios — fuente de verdad: base de datos
+
+| Regla | Detalle |
+|---|---|
+| **Almacenamiento** | Columna `ods_login.usuarios.password_hash` — bcrypt cost 12 (`$2b$12$…`) |
+| **Validación backend** | Solo `BCryptPasswordEncoder.matches(plain, hash)` en Service — **sin bypass en Java** |
+| **Seeds de dev** | Contraseña en texto documentada en **comentarios SQL** (`login_system.sql`, `21. ods_mocks.sql`) |
+| **Recarga** | Tras cambiar hashes: `python 0.database/load_mocks.py` (incluye `UPDATE` del admin) |
+| **Prohibido** | `$2b$12$MOCK_HASH_*`, contraseñas hardcodeadas en `LoginService` u otros servicios |
+
+Credenciales QA habituales (ver comentarios en `21. ods_mocks.sql`): `password123` (gestores/consultor general), `Consultor2026!` (`consultor@ods.local`), `Admin1234!` (`admin@ods.local`).
+
 ### Pipeline post-cambio de schema (solo si hubo cambios en BD)
 
 Ejecutar **solo cuando** se modificó algo en `0.database/propuesta_actual/` o en `00_run_all.sql`:
@@ -925,9 +990,11 @@ Issues `role:backend` o `role:frontend` **sin** dependencia de un issue de BD re
 Cadena de dependencias recomendada en Linear:
 
 ```
-[Cambio de schema]  blocks  [API / Repositorio JOOQ]  blocks  [UI]
- role:database              role:backend                  role:frontend
+[Cambio de schema]  blocks  [I*Repository + *Repository]  blocks  [I*Service + *Service]  blocks  [I*Controller + *Controller + .http]  blocks  [UI]
+ role:database              role:backend (repo)              role:backend (svc)              role:backend (ctrl)                      role:frontend
 ```
+
+Cuando el epic BE es **un solo issue**, el checklist interno sigue **IREPO → REPO → ISVC → SVC → ICTRL → CTRL → `.http`**. Cuando son issues separados, encadenar con `blocks` en ese orden.
 
 El agente backend debe llamar `get_issue_context` antes de trabajar. Si la tarea depende de un issue de BD recién cerrado, ahí llegan los `outputArtifacts` (tablas cambiadas, `jooqRegenerated`, etc.). Si **no** hubo cambio de schema, basta con levantar el backend con `mvn spring-boot:run` usando los POJOs ya existentes.
 

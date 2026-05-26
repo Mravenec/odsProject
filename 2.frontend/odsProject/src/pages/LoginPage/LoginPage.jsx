@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import './LoginPage.css';
 
 const LoginPage = () => {
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '',
     password: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const { login, loading } = useAuth();
 
@@ -21,7 +23,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!credentials.username || !credentials.password) {
+    if (!credentials.email || !credentials.password) {
       setError('Por favor complete todos los campos');
       return;
     }
@@ -52,26 +54,26 @@ const LoginPage = () => {
           
           <form onSubmit={handleSubmit} className="login-form">
             <div className="form-group">
-              <label htmlFor="username">Usuario</label>
+              <label htmlFor="email">Correo electrónico</label>
               <div className="input-wrapper">
                 <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={credentials.username}
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={credentials.email}
                   onChange={handleChange}
-                  placeholder="Tu nombre de usuario"
+                  placeholder="correo@ejemplo.com"
                   disabled={loading}
-                  autoComplete="username"
+                  autoComplete="email"
                 />
               </div>
             </div>
             
             <div className="form-group">
               <label htmlFor="password">Contraseña</label>
-              <div className="input-wrapper">
+              <div className="input-wrapper input-wrapper--password">
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   name="password"
                   value={credentials.password}
@@ -80,6 +82,17 @@ const LoginPage = () => {
                   disabled={loading}
                   autoComplete="current-password"
                 />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword(v => !v)}
+                  disabled={loading}
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  aria-pressed={showPassword}
+                  aria-controls="password"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
             

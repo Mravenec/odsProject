@@ -96,7 +96,11 @@ public class MasterProjectService implements IMasterProjectService {
         summary.put("totalIndicators", totalIndicators);
         summary.put("odsLinkedCount", odsCount);
         summary.put("averageProgress", averageProgress);
-        summary.put("status", averageProgress >= 100 ? "completado" : "activo");
+        // Estado de workflow desde BD — no inferir por progreso de indicadores
+        Proyectos proyecto = proyectoOpt.get();
+        summary.put("workflowEstado", proyecto.getEstado() != null
+                ? String.valueOf(proyecto.getEstado()).toLowerCase()
+                : "planificacion");
         
         return summary;
     }

@@ -229,6 +229,35 @@ const ProjectCreationPage = () => {
     loadCatalogs();
   }, [getSedes, getActiveUsers]);
 
+  const isGestor = perms.role === 'gestor';
+
+  // Gestor: área y responsable = usuario autenticado
+  useEffect(() => {
+    if (loadingResources || !isGestor || !user?.id) return;
+
+    const selfInCatalog = academicPersonnel.find(
+      (p) => p.id === user.id
+        || (user.email && String(p.email || '').toLowerCase() === user.email.toLowerCase())
+    );
+
+    const area = selfInCatalog?.sede
+      || catalogSedes.find((s) => s.id === user.sedeId)?.nombre
+      || '';
+
+    const responsable = selfInCatalog?.fullName || user.fullName || user.name || '';
+
+    if (!area && !responsable) return;
+
+    setFormData((prev) => {
+      const nextArea = area || prev.area;
+      const nextResponsable = responsable || prev.responsable;
+      if (nextArea === prev.area && nextResponsable === prev.responsable) return prev;
+      return { ...prev, area: nextArea, responsable: nextResponsable };
+    });
+  }, [loadingResources, isGestor, user, academicPersonnel, catalogSedes]);
+
+  const lockGestorInstitutionalFields = isGestor && Boolean(formData.area && formData.responsable);
+
   // Carga inicial de geografía
   useEffect(() => {
     fetchProvincias();
@@ -506,7 +535,7 @@ ${sinMasterId.join(', ')}
                     value={formData.area} 
                     onChange={handleInputChange} 
                     required 
-                    disabled={loadingResources}
+                    disabled={loadingResources || lockGestorInstitutionalFields}
                   >
                     <option value="">
                       {loadingResources ? 'Cargando áreas...' : 'Seleccione área institucional'}
@@ -517,6 +546,9 @@ ${sinMasterId.join(', ')}
                       </option>
                     ))}
                   </select>
+                  {lockGestorInstitutionalFields && (
+                    <span className="form-hint">Asignado automáticamente según su perfil.</span>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -526,7 +558,7 @@ ${sinMasterId.join(', ')}
                     value={formData.responsable} 
                     onChange={handleResponsableChange} 
                     required
-                    disabled={loadingResources}
+                    disabled={loadingResources || lockGestorInstitutionalFields}
                   >
                     <option value="">
                       {loadingResources ? 'Cargando personal...' : (formData.area ? 'Seleccione personal de esta sede' : 'Seleccione personal académico')}
@@ -537,6 +569,9 @@ ${sinMasterId.join(', ')}
                       </option>
                     ))}
                   </select>
+                  {lockGestorInstitutionalFields && (
+                    <span className="form-hint">Usted es el responsable técnico de este proyecto.</span>
+                  )}
                 </div>
 
                 <div className="form-group">

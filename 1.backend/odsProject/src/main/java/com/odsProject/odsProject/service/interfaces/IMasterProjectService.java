@@ -21,9 +21,8 @@ public interface IMasterProjectService {
 
     // Lógica de Evaluación
     /**
-     * Calcula el progreso de un proyecto sumando los resultados de todos los ODS vinculados
-     * @param proyectoId ID del proyecto
-     * @return Mapa con el resumen de progreso (total indicators, achieved, percentage)
+     * Progreso e indicadores del proyecto. {@code workflowEstado} refleja
+     * ods_master.proyectos.estado (fuente de verdad BD); no usar progreso como estado.
      */
     Map<String, Object> calculateProjectSummary(Integer proyectoId);
 

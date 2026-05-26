@@ -200,6 +200,21 @@
   color: var(--utn-azul);
 }
 
+.status-tag.en_revision {
+  background: #fff5ef;
+  color: #DC4405;
+}
+
+.status-tag.planificacion {
+  background: var(--utn-gris-soft);
+  color: var(--text-muted);
+}
+
+.status-tag.cancelado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 .card-body {
   padding: 0 1.25rem 1.25rem;
   flex: 1;
@@ -294,6 +309,17 @@
 
 .btn-card-action:hover {
   background: var(--utn-celeste-soft);
+}
+
+.btn-card-action--excel.is-disabled,
+.btn-card-action--excel:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-card-action--excel:not(:disabled):hover {
+  background: rgba(21, 128, 61, 0.1);
+  color: #15803d;
 }
 
 .btn-card-delete {

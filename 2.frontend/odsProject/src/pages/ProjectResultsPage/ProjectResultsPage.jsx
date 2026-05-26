@@ -3,12 +3,13 @@ import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { projectService } from '../../services/projectService';
+import { exportService } from '../../services/exportService';
 import { usePermissions } from '../../hooks/usePermissions';
 import {
   FileText, MapPin, Target, Calendar, CheckCircle2,
   Download, ArrowLeft, Building, ClipboardCheck
 } from 'lucide-react';
-import { formatDate, getObjectiveName, getOdsColor } from '../../utils/formatters';
+import { formatDate, getObjectiveName, getOdsColor, isProjectCompletado } from '../../utils/formatters';
 import EvidenceSection from '../../components/projects/EvidenceSection';
 import AchievementBadge, { deriveEstado } from '../../components/AchievementBadge';
 import './ProjectResultsPage.css';
@@ -32,6 +33,7 @@ const ProjectResultsPage = () => {
 
   const [confirmModal, setConfirmModal] = useState({ show: false, message: '', onConfirm: null });
   const [alertModal, setAlertModal] = useState({ show: false, message: '', isError: false });
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => { fetchProjectFull(); }, [projectId]);
 
@@ -149,6 +151,15 @@ const ProjectResultsPage = () => {
     return (allParams || []).filter(p => vars.has(p.nombreVariable || p.nombreParametro));
   };
 
+  const handleDownloadExcel = async () => {
+    setExporting(true);
+    const r = await exportService.downloadProjectFullReport(projectId);
+    setExporting(false);
+    if (!r.success) {
+      setAlertModal({ show: true, message: r.error || 'No se pudo descargar', isError: true });
+    }
+  };
+
   return (
     <div className="project-results-page premium-view fade-in">
       <header className="premium-nav">
@@ -204,6 +215,18 @@ const ProjectResultsPage = () => {
                 onClick={() => navigate(`/evaluacion/${projectId}`)}
               >
                 <ClipboardCheck size={16} /> Evaluar este proyecto
+              </button>
+            )}
+
+            {perms.canDownloadEvidence && isProjectCompletado(project) && (
+              <button
+                type="button"
+                className="btn-export-excel"
+                onClick={handleDownloadExcel}
+                disabled={exporting}
+              >
+                <Download size={16} />
+                {exporting ? 'Generando…' : 'Descargar Excel resumen'}
               </button>
             )}
           </div>

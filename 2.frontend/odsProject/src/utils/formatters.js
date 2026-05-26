@@ -102,31 +102,60 @@ export const getOdsColor = (odsId) => {
 // ═════════════════════════════════════════════════════════════════════
 
 /**
+ * Normaliza el estado de workflow desde API (ENUM BD → string minúscula).
+ * Fuente de verdad: ods_master.proyectos.estado vía vista /with-ods.
+ */
+export const normalizeWorkflowStatus = (estado) => {
+  if (estado == null || estado === '') return '';
+  if (typeof estado === 'string') return estado.toLowerCase();
+  if (typeof estado === 'object' && estado.literal) return String(estado.literal).toLowerCase();
+  return String(estado).toLowerCase();
+};
+
+/** Alias semántico para proyectos ya mapeados en projectService. */
+export const getProjectWorkflowStatus = (project) =>
+  normalizeWorkflowStatus(project?.status ?? project?.estado);
+
+export const isProjectCompletado = (project) =>
+  getProjectWorkflowStatus(project) === 'completado';
+
+export const isProjectActivo = (project) => {
+  const s = getProjectWorkflowStatus(project);
+  return s === 'activo' || s === 'active';
+};
+
+/**
  * Devuelve true si el proyecto está en un estado que prohíbe ediciones.
- * Lo usan los componentes para ocultar botones de edición / upload / delete.
- * El backend y los triggers de BD también validan, pero esto evita la
- * vuelta innecesaria al servidor.
  */
 export const isProjectLocked = (project) => {
   if (!project) return false;
-  const s = String(project.status || project.estado || '').toLowerCase();
+  const s = getProjectWorkflowStatus(project);
   return s === 'completado' || s === 'cancelado';
 };
 
 /**
  * Devuelve true si el proyecto está en evaluación (esperando al evaluador).
- * En este estado, el gestor NO puede subir más documentos ni editar.
  */
-export const isProjectInReview = (project) => {
-  if (!project) return false;
-  return String(project.status || project.estado || '').toLowerCase() === 'en_revision';
+export const isProjectInReview = (project) =>
+  getProjectWorkflowStatus(project) === 'en_revision';
+
+/**
+ * Filtro UI (valores en inglés del select) contra ENUM español de BD.
+ */
+export const matchesProjectStatusFilter = (project, filterStatus) => {
+  if (!filterStatus || filterStatus === 'all') return true;
+  const s = getProjectWorkflowStatus(project);
+  if (filterStatus === 'active') return s === 'activo' || s === 'active' || s === 'planificacion';
+  if (filterStatus === 'completed') return s === 'completado' || s === 'completed';
+  if (filterStatus === 'in_review') return s === 'en_revision';
+  return s === filterStatus;
 };
 
 /**
  * Sprint 17 — Etiqueta legible del estado, lista para mostrar en pills.
  */
 export const getEstadoLabel = (estado) => {
-  const s = String(estado || '').toLowerCase();
+  const s = normalizeWorkflowStatus(estado);
   const labels = {
     planificacion: 'Planificación',
     activo:        'Activo',
@@ -142,7 +171,6 @@ export const getEstadoLabel = (estado) => {
  * El consumidor solo concatena: `status-pill ${getEstadoClass(estado)}`.
  */
 export const getEstadoClass = (estado) => {
-  const s = String(estado || '').toLowerCase();
-  // Las clases mapean a definiciones en index.css / DashboardPage.css
+  const s = normalizeWorkflowStatus(estado);
   return s.replace(/[^a-z_]/g, '') || 'unknown';
 };

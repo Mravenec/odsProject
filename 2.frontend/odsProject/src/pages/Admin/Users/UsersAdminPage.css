@@ -155,6 +155,99 @@
   line-height: 1.35;
 }
 
+.users-modal-form .form-field-error {
+  font-size: 0.78rem;
+  color: #b91c1c;
+  line-height: 1.35;
+}
+
+.users-modal-form .form-field-success {
+  font-size: 0.78rem;
+  color: #15803d;
+  line-height: 1.35;
+}
+
+.password-requirements {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.password-requirement {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.password-requirement--pending {
+  color: var(--text-muted, #64748b);
+}
+
+.password-requirement--pending svg {
+  color: #cbd5e1;
+  flex-shrink: 0;
+}
+
+.password-requirement--met {
+  color: #15803d;
+}
+
+.password-requirement--met svg {
+  color: #22c55e;
+  flex-shrink: 0;
+}
+
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap input {
+  width: 100%;
+  padding-right: 2.75rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted, #64748b);
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  color: var(--utn-azul, #012169);
+  background: var(--bg-subtle, #f4f6f9);
+}
+
+.password-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(1, 33, 105, 0.12);
+}
+
+.users-modal-form input.input--error {
+  border-color: #f87171;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.15);
+}
+
+.users-modal-form input.input--success {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+}
+
 .users-modal-form input,
 .users-modal-form select {
   padding: 0.6rem 0.75rem;

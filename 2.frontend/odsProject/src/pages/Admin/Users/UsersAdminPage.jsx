@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../../services/authService';
 import { useAuth } from '../../../hooks/useAuth.jsx';
-import { ArrowLeft, Plus, Pencil, UserX } from 'lucide-react';
+import { ArrowLeft, Plus, Pencil, UserX, Eye, EyeOff, Check, Circle } from 'lucide-react';
 import './UsersAdminPage.css';
 
 const roleDisplayName = (roles, rolName) => {
@@ -21,10 +21,21 @@ const EMPTY_FORM = {
   sedeId: '',
 };
 
+const PASSWORD_REQUIREMENTS = [
+  { id: 'minLength', label: 'Al menos 8 caracteres', test: (p) => p.length >= 8 },
+  { id: 'hasLetter', label: 'Al menos una letra', test: (p) => /[a-zA-Z]/.test(p) },
+  { id: 'hasNumber', label: 'Al menos un número', test: (p) => /\d/.test(p) },
+];
+
+const getPasswordRequirements = (password) =>
+  PASSWORD_REQUIREMENTS.map(({ id, label, test }) => ({
+    id,
+    label,
+    met: test(password),
+  }));
+
 const validatePasswordFormat = (password) =>
-  password.length >= 8
-  && /[a-zA-Z]/.test(password)
-  && /\d/.test(password);
+  getPasswordRequirements(password).every((r) => r.met);
 
 const UsersAdminPage = () => {
   const navigate = useNavigate();
@@ -38,6 +49,13 @@ const UsersAdminPage = () => {
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+
+  const resetPasswordVisibility = () => {
+    setShowPassword(false);
+    setShowPasswordConfirm(false);
+  };
 
   useEffect(() => { load(); }, []);
 
@@ -59,6 +77,7 @@ const UsersAdminPage = () => {
   const openCreate = () => {
     setForm(EMPTY_FORM);
     setFormError('');
+    resetPasswordVisibility();
     setModal({ open: true, mode: 'create', user: null });
   };
 
@@ -79,6 +98,7 @@ const UsersAdminPage = () => {
       sedeId: sedeMatch?.id ?? '',
     });
     setFormError('');
+    resetPasswordVisibility();
     setModal({ open: true, mode: 'edit', user });
   };
 
@@ -86,12 +106,64 @@ const UsersAdminPage = () => {
     setModal({ open: false, mode: 'create', user: null });
     setForm(EMPTY_FORM);
     setFormError('');
+    resetPasswordVisibility();
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
+    if (formError && (name === 'password' || name === 'passwordConfirm')) {
+      setFormError('');
+    }
   };
+
+  const passwordLiveFeedback = useMemo(() => {
+    const pwd = form.password;
+    const confirm = form.passwordConfirm;
+    const changing = modal.mode === 'create' || Boolean(pwd || confirm);
+
+    if (!changing) {
+      return {
+        passwordError: '',
+        confirmError: '',
+        confirmOk: false,
+        hasLiveError: false,
+        requirements: getPasswordRequirements(''),
+        showRequirements: false,
+        passwordFormatOk: false,
+      };
+    }
+
+    const requirements = getPasswordRequirements(pwd);
+    const passwordFormatOk = Boolean(pwd) && requirements.every((r) => r.met);
+    const passwordError = pwd && !passwordFormatOk
+      ? 'La contraseña no cumple todos los requisitos'
+      : '';
+    const showRequirements = modal.mode === 'create' || Boolean(pwd);
+
+    let confirmError = '';
+    let confirmOk = false;
+
+    if (confirm) {
+      if (pwd !== confirm) {
+        confirmError = 'Las contraseñas no coinciden';
+      } else if (validatePasswordFormat(pwd)) {
+        confirmOk = true;
+      }
+    } else if (pwd && modal.mode === 'edit') {
+      confirmError = 'Confirmá la contraseña';
+    }
+
+    return {
+      passwordError,
+      confirmError,
+      confirmOk,
+      hasLiveError: Boolean(passwordError || confirmError),
+      requirements,
+      showRequirements,
+      passwordFormatOk,
+    };
+  }, [form.password, form.passwordConfirm, modal.mode]);
 
   const validatePasswordFields = () => {
     const pwd = form.password;
@@ -256,21 +328,98 @@ const UsersAdminPage = () => {
                 <label htmlFor="password">
                   Contraseña {modal.mode === 'create' ? '*' : '(opcional)'}
                 </label>
-                <input id="password" name="password" type="password" value={form.password}
-                  onChange={handleChange} autoComplete="new-password"
-                  required={modal.mode === 'create'} />
-                <span className="form-hint">Mínimo 8 caracteres, con letra y número.</span>
+                <div className="password-input-wrap">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={form.password}
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                    required={modal.mode === 'create'}
+                    aria-invalid={Boolean(passwordLiveFeedback.passwordError)}
+                    aria-describedby="password-hint"
+                    className={
+                      passwordLiveFeedback.passwordError
+                        ? 'input--error'
+                        : passwordLiveFeedback.passwordFormatOk
+                          ? 'input--success'
+                          : ''
+                    }
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPassword(v => !v)}
+                    aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                    aria-pressed={showPassword}
+                    aria-controls="password"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                {passwordLiveFeedback.showRequirements && (
+                  <ul id="password-hint" className="password-requirements" aria-live="polite">
+                    {passwordLiveFeedback.requirements.map(({ id, label, met }) => (
+                      <li
+                        key={id}
+                        className={`password-requirement ${met ? 'password-requirement--met' : 'password-requirement--pending'}`}
+                      >
+                        {met ? <Check size={14} aria-hidden="true" /> : <Circle size={14} aria-hidden="true" />}
+                        <span>{label}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div className="form-row">
                 <label htmlFor="passwordConfirm">
                   Repetir contraseña {modal.mode === 'create' || form.password ? '*' : '(opcional)'}
                 </label>
-                <input id="passwordConfirm" name="passwordConfirm" type="password"
-                  value={form.passwordConfirm} onChange={handleChange}
-                  autoComplete="new-password"
-                  required={modal.mode === 'create' || Boolean(form.password)} />
-                {modal.mode === 'edit' && !form.password && (
-                  <span className="form-hint">Dejá ambos campos vacíos para no cambiar la contraseña.</span>
+                <div className="password-input-wrap">
+                  <input
+                    id="passwordConfirm"
+                    name="passwordConfirm"
+                    type={showPasswordConfirm ? 'text' : 'password'}
+                    value={form.passwordConfirm}
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                    required={modal.mode === 'create' || Boolean(form.password)}
+                    aria-invalid={Boolean(passwordLiveFeedback.confirmError)}
+                    aria-describedby="passwordConfirm-hint passwordConfirm-live-feedback"
+                    className={
+                      passwordLiveFeedback.confirmError
+                        ? 'input--error'
+                        : passwordLiveFeedback.confirmOk
+                          ? 'input--success'
+                          : ''
+                    }
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPasswordConfirm(v => !v)}
+                    aria-label={showPasswordConfirm ? 'Ocultar confirmación' : 'Mostrar confirmación'}
+                    aria-pressed={showPasswordConfirm}
+                    aria-controls="passwordConfirm"
+                  >
+                    {showPasswordConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                {passwordLiveFeedback.confirmError && (
+                  <span id="passwordConfirm-live-feedback" className="form-field-error" role="alert">
+                    {passwordLiveFeedback.confirmError}
+                  </span>
+                )}
+                {passwordLiveFeedback.confirmOk && (
+                  <span id="passwordConfirm-live-feedback" className="form-field-success" role="status">
+                    Las contraseñas coinciden
+                  </span>
+                )}
+                {modal.mode === 'edit' && !form.password && !passwordLiveFeedback.confirmError && (
+                  <span id="passwordConfirm-hint" className="form-hint">
+                    Dejá ambos campos vacíos para no cambiar la contraseña.
+                  </span>
                 )}
               </div>
               <div className="form-row">
@@ -296,7 +445,11 @@ const UsersAdminPage = () => {
               {formError && <div className="users-form-error">{formError}</div>}
               <div className="users-modal-footer">
                 <button type="button" className="btn-secondary" onClick={closeModal}>Cancelar</button>
-                <button type="submit" className="btn-primary" disabled={saving}>
+                <button
+                  type="submit"
+                  className="btn-primary"
+                  disabled={saving || passwordLiveFeedback.hasLiveError}
+                >
                   {saving ? 'Guardando...' : modal.mode === 'create' ? 'Crear' : 'Guardar'}
                 </button>
               </div>

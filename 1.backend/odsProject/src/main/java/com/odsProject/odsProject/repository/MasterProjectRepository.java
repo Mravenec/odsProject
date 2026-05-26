@@ -95,6 +95,7 @@ public class MasterProjectRepository implements IMasterProjectRepository {
         Integer activos = dsl.selectCount().from(PROYECTOS).where(DSL.lower(PROYECTOS.ESTADO.cast(String.class)).eq("activo")).fetchOne(0, Integer.class);
         Integer completados = dsl.selectCount().from(PROYECTOS).where(DSL.lower(PROYECTOS.ESTADO.cast(String.class)).eq("completado")).fetchOne(0, Integer.class);
         Integer planificacion = dsl.selectCount().from(PROYECTOS).where(DSL.lower(PROYECTOS.ESTADO.cast(String.class)).eq("planificacion")).fetchOne(0, Integer.class);
+        Integer enRevision = dsl.selectCount().from(PROYECTOS).where(DSL.lower(PROYECTOS.ESTADO.cast(String.class)).eq("en_revision")).fetchOne(0, Integer.class);
         
         // Conteo de usuarios (Métrica global centralizada)
         Integer totalUsuarios = dsl.selectCount().from(USUARIOS).fetchOne(0, Integer.class);
@@ -103,6 +104,7 @@ public class MasterProjectRepository implements IMasterProjectRepository {
         dashboard.put("proyectosActivos", activos != null ? activos : 0);
         dashboard.put("proyectosCompletados", completados != null ? completados : 0);
         dashboard.put("proyectosPlanificacion", planificacion != null ? planificacion : 0);
+        dashboard.put("proyectosEnRevision", enRevision != null ? enRevision : 0);
         dashboard.put("totalUsuarios", totalUsuarios != null ? totalUsuarios : 0);
         
         // Proyectos por estado (para gráficos)
@@ -110,6 +112,7 @@ public class MasterProjectRepository implements IMasterProjectRepository {
         estados.put("Activo", activos != null ? activos : 0);
         estados.put("Completado", completados != null ? completados : 0);
         estados.put("Planificación", planificacion != null ? planificacion : 0);
+        estados.put("En revisión", enRevision != null ? enRevision : 0);
         dashboard.put("distribucion_estados", estados);
 
         return dashboard;
@@ -132,22 +135,15 @@ public class MasterProjectRepository implements IMasterProjectRepository {
     @Override
     public List<VistaResumenProyectosOds> findByUsuarioWithOds(Integer usuarioId) {
         if (usuarioId == null) return java.util.Collections.emptyList();
-        // La vista no expone usuario_id; hacemos join contra proyectos para filtrar.
-        return dsl.select(
-                    VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID,
-                    VISTA_RESUMEN_PROYECTOS_ODS.NOMBRE_PROYECTO,
-                    VISTA_RESUMEN_PROYECTOS_ODS.GESTOR,
-                    VISTA_RESUMEN_PROYECTOS_ODS.SEDE,
-                    VISTA_RESUMEN_PROYECTOS_ODS.ESTADO,
-                    VISTA_RESUMEN_PROYECTOS_ODS.FECHA_INICIO,
-                    VISTA_RESUMEN_PROYECTOS_ODS.FECHA_FIN,
-                    VISTA_RESUMEN_PROYECTOS_ODS.ODS_VINCULADOS,
-                    VISTA_RESUMEN_PROYECTOS_ODS.ODS_PRIMARIO)
-                  .from(VISTA_RESUMEN_PROYECTOS_ODS)
-                  .join(PROYECTOS).on(PROYECTOS.ID.eq(VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID))
-                  .where(PROYECTOS.USUARIO_ID.eq(usuarioId))
-                  .orderBy(VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID.desc())
-                  .fetchInto(VistaResumenProyectosOds.class);
+        // Vista completa (mismo shape que findAllWithOds), filtrada por dueño en proyectos.
+        return dsl.selectFrom(VISTA_RESUMEN_PROYECTOS_ODS)
+                .where(VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID.in(
+                        dsl.select(PROYECTOS.ID)
+                                .from(PROYECTOS)
+                                .where(PROYECTOS.USUARIO_ID.eq(usuarioId))
+                ))
+                .orderBy(VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID.desc())
+                .fetchInto(VistaResumenProyectosOds.class);
     }
 
     // ─────────────────────────────────────────────────────────────────────

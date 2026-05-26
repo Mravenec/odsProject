@@ -1,10 +1,13 @@
 package com.odsProject.odsProject.service;
 
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds;
 import com.odsProject.odsProject.repository.LoginRepository;
+import com.odsProject.odsProject.repository.interfaces.IDocumentRepository;
 import com.odsProject.odsProject.repository.interfaces.IMasterProjectRepository;
+import com.odsProject.odsProject.service.interfaces.IExportService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -19,11 +22,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class ExportService {
+public class ExportService implements IExportService {
 
     @Autowired private IMasterProjectRepository masterProjectRepository;
+    @Autowired private IDocumentRepository documentRepository;
     @Autowired private LoginRepository loginRepository;
 
+    @Override
     public byte[] exportProyecto(Integer proyectoId) {
         Proyectos p = masterProjectRepository.findById(proyectoId)
                 .orElseThrow(() -> new IllegalArgumentException("Proyecto no encontrado: " + proyectoId));
@@ -31,36 +36,18 @@ public class ExportService {
         if (!"completado".equals(estado)) {
             throw new IllegalStateException("Solo proyectos completados pueden exportarse");
         }
+
+        VistaResumenProyectosOds resumen = masterProjectRepository
+                .findResumenWithOdsByProyectoId(proyectoId)
+                .orElse(null);
         List<VistaAdminDetalleIndicadores> indicadores =
                 loginRepository.findVistaDetalleIndicadores(proyectoId);
+        List<ProyectoDocumentos> documentos = documentRepository.findByProyecto(proyectoId);
 
         try (Workbook wb = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            Sheet sheet = wb.createSheet("Proyecto");
-            int rowIdx = 0;
-            rowIdx = writeRow(sheet, rowIdx, "ID", p.getId());
-            rowIdx = writeRow(sheet, rowIdx, "Nombre", p.getNombreProyecto());
-            rowIdx = writeRow(sheet, rowIdx, "Estado", estado);
-            rowIdx = writeRow(sheet, rowIdx, "Fecha inicio", p.getFechaInicio());
-            rowIdx = writeRow(sheet, rowIdx, "Fecha fin", p.getFechaFin());
-            rowIdx = writeRow(sheet, rowIdx, "Responsable", p.getResponsableNombre());
-            rowIdx = writeRow(sheet, rowIdx, "Meta general", p.getMetaGeneral());
-            rowIdx++;
-
-            Row header = sheet.createRow(rowIdx++);
-            String[] cols = {"Código", "Indicador", "Valor actual", "Meta", "Unidad", "% logro", "Estado"};
-            for (int i = 0; i < cols.length; i++) header.createCell(i).setCellValue(cols[i]);
-
-            for (VistaAdminDetalleIndicadores ind : indicadores) {
-                Row r = sheet.createRow(rowIdx++);
-                r.createCell(0).setCellValue(nullSafe(ind.getIndicadorCodigo()));
-                r.createCell(1).setCellValue(nullSafe(ind.getIndicadorNombre()));
-                setNumeric(r, 2, ind.getValorActual());
-                setNumeric(r, 3, ind.getMetaValor());
-                r.createCell(4).setCellValue(nullSafe(ind.getMetaUnidad()));
-                setNumeric(r, 5, ind.getPorcentajeLogro());
-                r.createCell(6).setCellValue(nullSafe(ind.getEstadoIndicador()));
-            }
-            for (int i = 0; i < cols.length; i++) sheet.autoSizeColumn(i);
+            writeGeneralAuditoriaSheet(wb, p, resumen);
+            writeIndicadoresSheet(wb, indicadores);
+            writeEvidenciasSheet(wb, documentos);
             wb.write(out);
             return out.toByteArray();
         } catch (Exception e) {
@@ -68,6 +55,7 @@ public class ExportService {
         }
     }
 
+    @Override
     public byte[] exportPlanificacionConsolidado() {
         List<VistaResumenProyectosOds> proyectos = masterProjectRepository.findAllWithOds().stream()
                 .filter(p -> p.getEstado() != null && "completado".equals(String.valueOf(p.getEstado())))
@@ -108,6 +96,67 @@ public class ExportService {
         } catch (Exception e) {
             throw new RuntimeException("Error generando consolidado: " + e.getMessage(), e);
         }
+    }
+
+    private void writeGeneralAuditoriaSheet(Workbook wb, Proyectos p, VistaResumenProyectosOds resumen) {
+        Sheet sheet = wb.createSheet("General y auditoría");
+        int rowIdx = 0;
+        rowIdx = writeRow(sheet, rowIdx, "ID", p.getId());
+        rowIdx = writeRow(sheet, rowIdx, "Nombre", p.getNombreProyecto());
+        rowIdx = writeRow(sheet, rowIdx, "Estado", String.valueOf(p.getEstado()));
+        rowIdx = writeRow(sheet, rowIdx, "Responsable", p.getResponsableNombre());
+        rowIdx = writeRow(sheet, rowIdx, "Sede", resumen != null ? resumen.getSede() : "");
+        rowIdx = writeRow(sheet, rowIdx, "Gestor", resumen != null ? resumen.getGestor() : "");
+        rowIdx = writeRow(sheet, rowIdx, "Fecha inicio", p.getFechaInicio());
+        rowIdx = writeRow(sheet, rowIdx, "Fecha fin", p.getFechaFin());
+        rowIdx = writeRow(sheet, rowIdx, "Meta general", p.getMetaGeneral());
+        rowIdx = writeRow(sheet, rowIdx, "ODS vinculados", resumen != null ? resumen.getOdsVinculados() : "");
+        rowIdx = writeRow(sheet, rowIdx, "ODS primario", resumen != null && resumen.getOdsPrimario() != null
+                ? String.valueOf(resumen.getOdsPrimario()) : "");
+        rowIdx = writeRow(sheet, rowIdx, "Auditor", resumen != null ? resumen.getAuditorNombre() : "");
+        rowIdx = writeRow(sheet, rowIdx, "Auditado en", resumen != null ? resumen.getAuditadoEn() : p.getAuditadoEn());
+        rowIdx = writeRow(sheet, rowIdx, "Observaciones cierre",
+                p.getObservacionesCierre() != null ? p.getObservacionesCierre()
+                        : (resumen != null ? resumen.getObservacionesCierre() : ""));
+        sheet.autoSizeColumn(0);
+        sheet.autoSizeColumn(1);
+    }
+
+    private void writeIndicadoresSheet(Workbook wb, List<VistaAdminDetalleIndicadores> indicadores) {
+        Sheet sheet = wb.createSheet("Indicadores");
+        Row header = sheet.createRow(0);
+        String[] cols = {"Código", "Indicador", "Valor actual", "Meta", "Unidad", "% logro", "Estado"};
+        for (int i = 0; i < cols.length; i++) header.createCell(i).setCellValue(cols[i]);
+        int rowIdx = 1;
+        for (VistaAdminDetalleIndicadores ind : indicadores) {
+            Row r = sheet.createRow(rowIdx++);
+            r.createCell(0).setCellValue(nullSafe(ind.getIndicadorCodigo()));
+            r.createCell(1).setCellValue(nullSafe(ind.getIndicadorNombre()));
+            setNumeric(r, 2, ind.getValorActual());
+            setNumeric(r, 3, ind.getMetaValor());
+            r.createCell(4).setCellValue(nullSafe(ind.getMetaUnidad()));
+            setNumeric(r, 5, ind.getPorcentajeLogro());
+            r.createCell(6).setCellValue(nullSafe(ind.getEstadoIndicador()));
+        }
+        for (int i = 0; i < cols.length; i++) sheet.autoSizeColumn(i);
+    }
+
+    private void writeEvidenciasSheet(Workbook wb, List<ProyectoDocumentos> documentos) {
+        Sheet sheet = wb.createSheet("Evidencias");
+        Row header = sheet.createRow(0);
+        String[] cols = {"ID", "Archivo", "Tipo MIME", "Tamaño (bytes)", "Subido", "Descripción"};
+        for (int i = 0; i < cols.length; i++) header.createCell(i).setCellValue(cols[i]);
+        int rowIdx = 1;
+        for (ProyectoDocumentos doc : documentos) {
+            Row r = sheet.createRow(rowIdx++);
+            r.createCell(0).setCellValue(doc.getId() != null ? doc.getId() : 0);
+            r.createCell(1).setCellValue(nullSafe(doc.getNombreArchivo()));
+            r.createCell(2).setCellValue(nullSafe(doc.getTipoMime()));
+            r.createCell(3).setCellValue(doc.getTamanioBytes() != null ? doc.getTamanioBytes() : 0);
+            r.createCell(4).setCellValue(doc.getSubidoAt() != null ? doc.getSubidoAt().toString() : "");
+            r.createCell(5).setCellValue(nullSafe(doc.getDescripcion()));
+        }
+        for (int i = 0; i < cols.length; i++) sheet.autoSizeColumn(i);
     }
 
     private static int writeRow(Sheet sheet, int rowIdx, String label, Object value) {

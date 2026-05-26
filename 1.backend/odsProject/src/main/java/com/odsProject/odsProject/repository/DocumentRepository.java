@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository;
 
+import com.odsProject.odsProject.repository.interfaces.IDocumentRepository;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,7 +16,7 @@ import static com.odsProject.odsProject.database.jooq.ods_master.tables.Proyecto
  * Acceso a ods_master.proyecto_documentos vía JOOQ generado (POJOs).
  */
 @Repository
-public class DocumentRepository {
+public class DocumentRepository implements IDocumentRepository {
 
     @Autowired
     @Qualifier("dslOdsMaster")
@@ -43,6 +44,11 @@ public class DocumentRepository {
                 .set(PROYECTO_DOCUMENTOS.DESCRIPCION, doc.getDescripcion())
                 .returning()
                 .fetchOneInto(com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos.class);
+    }
+
+    public List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos> findByProyectoId(
+            Integer proyectoId) {
+        return findByProyecto(proyectoId);
     }
 
     public List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos> findByProyecto(

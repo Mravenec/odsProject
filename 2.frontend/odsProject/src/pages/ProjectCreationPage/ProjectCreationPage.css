@@ -139,6 +139,15 @@
   letter-spacing: 0.06em;
 }
 
+.form-group .form-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 500;
+}
+
 .form-group input,
 .form-group select,
 .form-group textarea {

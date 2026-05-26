@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth.jsx';
 import { useProjects } from '../../../hooks/useProjects.jsx';
-import { formatDate } from '../../../utils/formatters';
+import { formatDate, getEstadoLabel, getEstadoClass, matchesProjectStatusFilter } from '../../../utils/formatters';
 import './OverviewPage.css';
 
 const AdminProjectOverviewPage = () => {
@@ -70,11 +70,7 @@ const AdminProjectOverviewPage = () => {
     }
     
     if (filter.status !== 'all') {
-      filtered = filtered.filter(project => 
-        project.status === filter.status || 
-        (filter.status === 'active' && project.status === 'activo') ||
-        (filter.status === 'completed' && project.status === 'completado')
-      );
+      filtered = filtered.filter(project => matchesProjectStatusFilter(project, filter.status));
     }
     
     setProjects(filtered);
@@ -154,7 +150,8 @@ const AdminProjectOverviewPage = () => {
             <select name="status" value={filter.status} onChange={handleFilterChange} className="filter-select">
               <option value="all">Todos los estados</option>
               <option value="active">Activos</option>
-              <option value="completed">Completados</option>
+              <option value="in_review">En evaluación</option>
+              <option value="completed">Evaluados</option>
             </select>
 
             <button className="btn-icon-clear" onClick={() => setFilter({ user: '', objective: '', status: 'all' })} title="Limpiar Filtros">
@@ -195,8 +192,8 @@ const AdminProjectOverviewPage = () => {
                       </div>
                     </td>
                     <td>
-                      <span className={`status-badge-table ${project.status}`}>
-                        {project.status === 'completed' || project.status === 'completado' ? 'Finalizado' : 'Activo'}
+                      <span className={`status-badge-table ${getEstadoClass(project.status)}`}>
+                        {getEstadoLabel(project.status)}
                       </span>
                     </td>
                     <td className="actions-cell">

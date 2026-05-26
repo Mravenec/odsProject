@@ -9,6 +9,10 @@
 -- ────────────────────────────────────────────────────────────
 USE ods_login;
 
+-- Admin inicial (creado en login_system.sql): mantener hash bcrypt al recargar mocks
+UPDATE usuarios SET password_hash = '$2b$12$4NK2SGLqwC.FGlCUpp6Is.QfrDn0WNyuYEKdy2VDf/aZ/zkLF315i'
+WHERE email = 'admin@ods.local';
+
 SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE sesiones;
 TRUNCATE TABLE permisos_ods;
@@ -27,14 +31,19 @@ INSERT INTO sedes (id, nombre, descripcion) VALUES
   (5, 'Sede San Carlos', 'Sede en la región Huetar Norte'),
   (6, 'CFP', 'Centro de Formación Pedagógica y Tecnología Educativa');
 
+-- Credenciales de desarrollo (contraseña en texto → hash bcrypt cost 12 en password_hash):
+--   password123    → usuarios id 2–6 y consultor_general maria.jimenez@ods.cr
+--   Consultor2026! → consultor@ods.local (id 7)
+--   Admin1234!     → admin@ods.local (login_system.sql + UPDATE arriba)
+
 INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sede_id, is_active, email_verificado) VALUES
-  (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Ana García López', 2, 2, TRUE, TRUE),
-  (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Carlos Rodríguez Mora', 2, 5, TRUE, TRUE),
-  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'María Jiménez Solano', 3, 2, TRUE, TRUE),
+  (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Ana García López', 2, 2, TRUE, TRUE),
+  (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Carlos Rodríguez Mora', 2, 5, TRUE, TRUE),
+  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'María Jiménez Solano', 3, 2, TRUE, TRUE),
   -- Sprint 3: usuario evaluador (rol_id=4)
-  (5, 'evaluador_general', 'evaluador@ods.cr', '$2b$12$MOCK_HASH_1234567890', 'Luis Vargas Castro', 4, 2, TRUE, TRUE),
+  (5, 'evaluador_general', 'evaluador@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Luis Vargas Castro', 4, 2, TRUE, TRUE),
   -- Gestor General para pruebas del Payload
-  (6, 'gestor_general', 'gestor@ods.com', '$2b$12$MOCK_HASH_1234567890', 'Gestor General ODS', 2, 2, TRUE, TRUE);
+  (6, 'gestor_general', 'gestor@ods.com', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Gestor General ODS', 2, 2, TRUE, TRUE);
 
 INSERT INTO permisos_ods (usuario_id, ods_num, puede_crear, puede_editar, puede_ver) VALUES
   (2, 1, TRUE, TRUE, TRUE), 
@@ -207,6 +216,54 @@ INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresa
 USE ods15; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores; TRUNCATE TABLE mediciones_historicas; TRUNCATE TABLE proyecto_indicador_parametros; TRUNCATE TABLE proyecto_indicadores; TRUNCATE TABLE auditoria_ods15; SET FOREIGN_KEY_CHECKS = 1;
 USE ods16; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores; TRUNCATE TABLE mediciones_historicas; TRUNCATE TABLE proyecto_indicador_parametros; TRUNCATE TABLE proyecto_indicadores; TRUNCATE TABLE auditoria_ods16; SET FOREIGN_KEY_CHECKS = 1;
 USE ods17; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores; TRUNCATE TABLE mediciones_historicas; TRUNCATE TABLE proyecto_indicador_parametros; TRUNCATE TABLE proyecto_indicadores; TRUNCATE TABLE auditoria_ods17; SET FOREIGN_KEY_CHECKS = 1;
+
+-- ────────────────────────────────────────────────────────────
+-- 5.1 SPRINT CONSULTOR — Usuario QA + proyecto completado auditado
+-- Rol consultor (rol_id=3), export Excel, QA read-only
+-- ────────────────────────────────────────────────────────────
+USE ods_login;
+
+INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sede_id, is_active, email_verificado) VALUES
+  (7, 'consultor_qa', 'consultor@ods.local', '$2b$12$JQk2UAZcF3H.6/iY4qrC8eANsyds3P3HQaEYP.ZLs626Pe8VgP3DK', 'Consultor QA Local', 3, 2, TRUE, TRUE);
+
+USE ods_master;
+
+INSERT INTO proyectos (
+  id, usuario_id, sede_id, nombre_proyecto, descripcion,
+  fecha_inicio, fecha_fin, meta_general, estado,
+  auditado_por, auditado_en, observaciones_cierre, fecha_envio_revision
+) VALUES (
+  6, 2, 2, 'Proyecto QA Consultor',
+  'Proyecto mock completado para QA del rol consultor y exportación Excel',
+  '2024-01-01', '2024-12-31', 'Validar exportación Excel consultor', 'completado',
+  5, '2024-12-15 10:00:00',
+  'Proyecto auditado y cerrado correctamente. Indicadores y evidencias verificados.',
+  '2024-11-01 08:00:00'
+);
+
+INSERT INTO proyecto_ods (proyecto_id, ods_id, es_primario) VALUES
+  (6, 1, 1);
+
+INSERT INTO proyecto_documentos (proyecto_id, nombre_archivo, tipo_mime, tamanio_bytes, contenido, subido_por, descripcion) VALUES
+  (6, 'informe_cierre_consultor.pdf', 'application/pdf', 2048, 'FAKE_PDF_QA_CONSULTOR', 2, 'Informe final de cierre'),
+  (6, 'datos_indicadores_consultor.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 4096, 'FAKE_XLSX_QA_CONSULTOR', 2, 'Resumen de indicadores');
+
+USE ods01;
+
+SET @ind111_qa = (SELECT id FROM ods_login.indicador_master WHERE codigo = '1.1.1' AND ods_id = 1);
+
+INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, formula_custom, meta_valor, meta_unidad) VALUES
+  (4, 6, @ind111_qa, '(p1/p2)*100', 3.0, 'Porcentaje');
+
+INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_parametro, nombre_variable, tipo_dato, valor_actual) VALUES
+  (7, 4, 'Población Pobre', 'p1', 'Decimal', 3000),
+  (8, 4, 'Población Total', 'p2', 'Decimal', 100000);
+
+INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, fecha_medicion, responsable) VALUES
+  (5, 4, 3.0, '2024-10-01', 'Ana García López');
+
+INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES
+  (5, 7, 3000), (5, 8, 100000);
 
 -- ────────────────────────────────────────────────────────────
 -- 6. FINALIZACIÓN

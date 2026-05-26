@@ -698,8 +698,18 @@
 }
 
 .status-pill.planificacion {
-  background: var(--utn-celeste-soft);
-  color: var(--utn-azul);
+  background: var(--utn-gris-soft);
+  color: var(--text-muted);
+}
+
+.status-pill.en_revision {
+  background: #fff5ef;
+  color: #DC4405;
+}
+
+.status-pill.cancelado {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .status-pill.unknown {

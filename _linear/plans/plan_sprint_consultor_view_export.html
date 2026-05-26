@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<!--
+  PROPUESTA — Sprint Consultor: Vista global + Descarga Excel de proyectos finalizados
+  Plantilla: _plantilla_ods.html · Estilo visual ODS UTN (NO modificar CSS)
+  Fase 1 del pipeline _linear (plan → APROBACIÓN → mjs → multi-agente → resumen)
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta — Consultor: vista + descarga Excel · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  :root{--bg:#07090F;--surf:#0D1117;--surf2:#131A24;--border:rgba(255,255,255,.07);--text:#E2E8F0;--muted:#64748B;--db:#EAB308;--be:#22C55E;--fe:#0EA5E9;--green:#22C55E;--orange:#F97316}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6}
+  .hero{padding:64px 48px 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;right:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(34,197,94,.1) 0%,transparent 70%);pointer-events:none}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--green);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .ey::after{content:'';width:32px;height:1px;background:var(--green);display:block}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,44px);font-weight:800;line-height:1.05;color:#fff}
+  h1 em{font-style:normal;background:linear-gradient(135deg,#22C55E,#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{margin-top:14px;font-size:14px;color:var(--muted);max-width:860px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);padding:4px 12px;border-radius:4px}
+  .chip span{color:#fff}.chip.ok{border-color:rgba(34,197,94,.35);color:var(--green)}
+  .chip.pending{border-color:rgba(249,115,22,.35);color:var(--orange)}
+  .al{margin:32px 48px 0;padding:14px 18px;border-radius:8px;font-size:13px;display:flex;gap:12px}
+  .al.ok{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.25);border-left:3px solid var(--green);color:#86EFAC}
+  .al.pending{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.25);border-left:3px solid var(--orange);color:#FDBA74}
+  .sec{padding:48px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:18px}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace}
+  .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surf2)}
+  .tbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top}
+  .ok{color:var(--green)}.done{color:var(--green)}
+  .issue{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);padding:2px 8px;border-radius:4px}
+  .badge.pending{color:var(--orange);background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.25)}
+  .issue-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .issue-title{font-size:14px;font-weight:500;color:#fff;margin-top:4px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .box{border-radius:8px;padding:14px;font-size:12.5px;line-height:1.55}
+  .box.bad{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);color:#FCA5A5}
+  .box.good{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);color:#BBF7D0}
+  .box h4{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .box.bad h4{color:#FCA5A5}.box.good h4{color:var(--green)}
+  code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.06);color:#CBD5E1;padding:1px 5px;border-radius:3px}
+  .cb2{background:#060912;border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:13px 16px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.75;overflow-x:auto;white-space:pre}
+  .da{color:#86EFAC}.dk{color:#7DD3FC}.dc{color:#64748B}
+  .plf{display:flex;align-items:stretch;flex-wrap:wrap;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin:12px 0 20px}
+  .pln{background:var(--surf2);padding:12px 16px;display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--border)}
+  .pla{display:flex;align-items:center;padding:0 8px;background:var(--surf2);color:var(--muted);font-size:14px;border-right:1px solid var(--border)}
+  .plname{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff}
+  .plnote{font-size:10px;color:var(--muted)}
+  ul.files{margin:0;padding-left:18px;font-size:13px;color:#94A3B8}
+  ul.files li{margin-bottom:6px}
+  hr.sep{border:none;border-top:1px solid var(--border);margin:48px 48px 0}
+  footer{margin-top:64px;border-top:1px solid var(--border);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .utn{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#98BADF}
+  @media(max-width:720px){.compare{grid-template-columns:1fr}.hero,.sec,.al{padding-left:24px;padding-right:24px;margin-left:0;margin-right:0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="ey">ODS UTN · Sprint Consultor · Propuesta · linear_ods</div>
+  <h1>Rol Consultor — vista global de proyectos<br><em>y descarga Excel resumen al finalizar</em></h1>
+  <p class="sub">El rol <code>consultor</code> (id=3) ya existe en BD y en la matriz de permisos del frontend, pero hoy no está enforced de extremo a extremo: el backend está abierto (<code>permitAll()</code>) y no hay botón de descarga conectado. Este sprint cierra el lazo con gating duro por rol en el backend, un Excel enriquecido con el resumen completo del proyecto auditado (info + auditor + indicadores + evidencias) y una UX read-only consistente en lista y detalle.</p>
+  <div class="chips">
+    <div class="chip ok">Estado <span>APROBADO</span></div>
+    <div class="chip">Issues <span>9 planificados</span></div>
+    <div class="chip">Capas <span>DB · BE · FE</span></div>
+    <div class="chip">Epic <span>Consultor — Vista y Exportación</span></div>
+    <div class="chip">Script <span>sprint_consultor_view_export.mjs</span></div>
+  </div>
+</header>
+
+<div class="al ok">
+  <div>✅</div>
+  <div><strong>Propuesta aprobada.</strong> Fase 3 ejecutada: <code>sprint_consultor_view_export.mjs</code> + issues en Linear. Orquestación multiagente: <code>next</code> → Doing → checklist → Testing → Done + handoff cruzado.</div>
+</div>
+
+<section class="sec">
+  <div class="sl">Objetivo</div>
+  <div class="st">Qué resolvemos en este sprint</div>
+  <table class="tbl">
+    <thead><tr><th>Problema actual</th><th>Solución propuesta</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>El rol <code>consultor</code> existe en BD y frontend, pero el backend está totalmente abierto (<code>anyRequest().permitAll()</code>) → un consultor podría hacer <code>POST /api/proyectos</code> con curl.</td>
+        <td class="ok"><code>RoleAuthorizationFilter</code> nuevo: lee el JWT, deriva el rol y rechaza con <strong>403</strong> cualquier <code>POST/PUT/DELETE</code> cuando rol = consultor. Lista blanca: GETs y <code>/api/login/**</code>.</td>
+      </tr>
+      <tr>
+        <td>El <code>ExportService.exportProyecto</code> ya impide descargar proyectos no completados (409), pero el Excel solo lleva info general + indicadores. Falta el "resumen completo" del cierre auditado.</td>
+        <td class="ok">Excel enriquecido de <strong>3 hojas</strong>: (1) <em>General + auditoría</em> (responsable, sede, ODS vinculados, auditor, fecha de cierre, observaciones); (2) <em>Indicadores</em> con % logro; (3) <em>Evidencias</em> (lista de documentos adjuntos).</td>
+      </tr>
+      <tr>
+        <td><code>exportService.js</code> está definido en el frontend pero <strong>no enganchado a ningún botón</strong>. El consultor no tiene manera de descargar nada desde la UI.</td>
+        <td class="ok">Botón <strong>"Descargar Excel"</strong> en <code>ProjectResultsPage</code> (visible solo si <code>status=completado</code>) y en cada card de <code>ProjectListPage</code> (deshabilitado con tooltip "Disponible al finalizar" si no).</td>
+      </tr>
+      <tr>
+        <td><code>ProjectResultsPage</code> y <code>EvidenceSection</code> renderizan acciones de edición/subida/borrado sin gating por <code>perms.canEditProject</code> / <code>perms.canUploadEvidence</code> en todas las ramas → un consultor ve botones que no debería.</td>
+        <td class="ok">Wrap de acciones con flags de <code>usePermissions</code> (matriz ya existente). Modo <em>read-only</em> visible para consultor: oculta input de upload, btn de borrar evidencia, transiciones de estado.</td>
+      </tr>
+      <tr>
+        <td>No hay mock de un usuario <code>consultor</code> ni de un proyecto <strong>completado</strong> con stamping de auditoría → QA imposible de reproducir local.</td>
+        <td class="ok">Append a <code>21. ods_mocks.sql</code>: usuario <code>consultor@ods.local</code> (rol_id=3) + 1 proyecto <code>completado</code> con <code>auditado_por</code>, <code>auditado_en</code>, <code>observaciones_cierre</code>, indicadores con mediciones, 2 documentos de evidencia.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Pipeline</div>
+  <div class="st">DB → JOOQ → BE → .http → FE (todas las capas aplican)</div>
+  <div class="plf">
+    <div class="pln"><div class="plname">DB</div><div class="plnote">21. ods_mocks.sql (append consultor + proyecto completado)</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">JOOQ</div><div class="plnote">No regen (no hay cambio de schema)</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">BE security</div><div class="plnote">RoleAuthorizationFilter + SecurityConfig</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">BE export</div><div class="plnote">ExportService 3 hojas + DocumentRepository.findBy...</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">.http</div><div class="plnote">postman/consultor_flow.http (200/409/403)</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">FE service</div><div class="plnote">downloadProjectFullReport + handle 409/403</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">FE UI</div><div class="plnote">Botón Excel en lista + detalle, read-only mode</div></div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Gate</th><th>Issue</th><th>Condición para desbloquear lo siguiente</th></tr></thead>
+    <tbody>
+      <tr><td><code>GATE_SQL</code></td><td>ODS-CV-1</td><td>Append a <code>21. ods_mocks.sql</code> con datos del consultor y proyecto completado; pipeline <code>drop_db → setup_db → load_mocks</code> sin error.</td></tr>
+      <tr><td><code>GATE_BE_SEC</code></td><td>ODS-CV-2</td><td><code>RoleAuthorizationFilter</code> registrado en <code>SecurityConfig</code>; <code>mvn compile</code> OK; rechazo manual con curl <code>POST</code> como consultor → 403.</td></tr>
+      <tr><td><code>GATE_BE_EXPORT</code></td><td>ODS-CV-3</td><td><code>ExportService.exportProyecto</code> escribe 3 hojas; campos de auditoría leídos desde <code>Proyectos</code>; documentos desde <code>DocumentRepository</code>.</td></tr>
+      <tr><td><code>GATE_HTTP</code></td><td>ODS-CV-4</td><td><code>consultor_flow.http</code> con 7 escenarios verificados local (200/200/200/409/403/403/403). <strong>Frontend no empieza antes</strong>.</td></tr>
+      <tr><td><code>GATE_FE_SVC</code></td><td>ODS-CV-5</td><td><code>downloadProjectFullReport(id)</code> en <code>exportService.js</code>; manejo de 409 (toast "Proyecto aún no finalizado") y 403 ("Sin permisos").</td></tr>
+      <tr><td><code>GATE_FE_UI</code></td><td>ODS-CV-6/7</td><td>Botones cableados en detalle (visible si completado) y en lista (deshabilitado si no). <code>npm run build</code> exit 0.</td></tr>
+      <tr><td><code>GATE_QA</code></td><td>ODS-CV-8</td><td>Login como consultor: lista OK, detalle de completado OK + Excel descarga; detalle de activo no muestra botón; ningún botón de edición/upload renderizado.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Dependencias</div>
+  <div class="st">Diagrama de blocks — cadena principal + ramas paralelas FE</div>
+  <div class="cb2"><span class="dc">    ODS-CV-1 [DB]</span>
+<span class="dc">       └─ blocks ─►</span> <span class="dk">ODS-CV-2 [BE security]</span>
+<span class="dc">                       └─ blocks ─►</span> <span class="dk">ODS-CV-3 [BE export 3 hojas]</span>
+<span class="dc">                                       └─ blocks ─►</span> <span class="dk">ODS-CV-4 [BE .http]</span>
+<span class="dc">                                                       └─ blocks ─►</span> <span class="dk">ODS-CV-5 [FE service]</span>
+<span class="dc">                                                                       ├─ blocks ─►</span> <span class="da">ODS-CV-6 [FE detail btn]</span>
+<span class="dc">                                                                       └─ blocks ─►</span> <span class="da">ODS-CV-7 [FE list btn]</span>
+<span class="dc">                                                                                       └─ blocks ─►</span> <span class="da">ODS-CV-8 [FE read-only QA]</span>
+<span class="dc">                                                                                                       └─ blocks ─►</span> <span class="da">ODS-CV-9 [orchestrator: resumen]</span></div>
+  <p class="sub"><strong>Paralelismo declarado:</strong> ODS-CV-6 y ODS-CV-7 pueden ir <em>en paralelo</em> (mismo agente FE, archivos distintos: <code>ProjectResultsPage.jsx</code> vs <code>ProjectListPage.jsx</code>), pero <strong>ambos</strong> deben terminar antes que ODS-CV-8 (que cierra QA cross-page). Resto: cadena estricta.</p>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear</div>
+  <div class="st">Issues planificados (9 — todos nacen en Backlog)</div>
+
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-CV-1 · role:database · estimate 2</div>
+      <div class="issue-title">DB · Mock de usuario consultor + proyecto completado con auditoría</div>
+    </div>
+    <div></div>
+  </div>
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-CV-2 · role:backend · estimate 3</div>
+      <div class="issue-title">BE · RoleAuthorizationFilter (JWT → 403 en POST/PUT/DELETE para consultor)</div>
+    </div>
+    <div></div>
+  </div>
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-CV-3 · role:backend · estimate 3</div>
+      <div class="issue-title">BE · ExportService enriquecido — 3 hojas (General+Auditor / Indicadores / Evidencias)</div>
+    </div>
+    <div></div>
+  </div>
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-CV-4 · role:backend · estimate 1</div>
+      <div class="issue-title">BE · postman/consultor_flow.http (200/200/200/409/403/403/403)</div>
+    </div>
+    <div></div>
+  </div>
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-CV-5 · role:frontend · estimate 2</div>
+      <div class="issue-title">FE · exportService.downloadProjectFullReport + manejo 409/403</div>
+    </div>
+    <div></div>
+  </div>
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-CV-6 · role:frontend · estimate 2</div>
+      <div class="issue-title">FE · Botón "Descargar Excel" en ProjectResultsPage (solo si completado)</div>
+    </div>
+    <div></div>
+  </div>
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-CV-7 · role:frontend · estimate 2</div>
+      <div class="issue-title">FE · Botón Descargar en card de ProjectListPage (deshabilitado si no completado)</div>
+    </div>
+    <div></div>
+  </div>
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-CV-8 · role:frontend · estimate 2</div>
+      <div class="issue-title">FE · Read-only mode consultor (ocultar upload/delete en EvidenceSection + acciones edición) + QA cross-page</div>
+    </div>
+    <div></div>
+  </div>
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-CV-9 · role:orchestrator · estimate 1</div>
+      <div class="issue-title">Orchestrator · resumen_sprint_consultor_view_export.html + epic Completed</div>
+    </div>
+    <div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sl">Checklist</div>
+  <div class="st">Por issue — copiar tal cual al <code>.mjs create</code> (con pares cruzados handoff)</div>
+
+  <div class="cb2"><span class="dc">## ODS-CV-1 · DB — Mock consultor + proyecto completado</span>
+<span class="da">- [ ] Append a 0.database/propuesta_actual/21. ods_mocks.sql</span>
+<span class="da">- [ ] Usuario: consultor@ods.local · password Consultor2026! · rol_id=3 · sede_id válida</span>
+<span class="da">- [ ] Proyecto "Proyecto QA Consultor" con usuario_id=gestor, estado='completado'</span>
+<span class="da">- [ ] Stamping auditoría: auditado_por (evaluador), auditado_en, observaciones_cierre</span>
+<span class="da">- [ ] 1+ vínculo en proyecto_ods (es_primario=TRUE) + mediciones en ods0X</span>
+<span class="da">- [ ] 2 filas en proyecto_documentos (1 PDF, 1 XLSX) con contenido pequeño</span>
+<span class="da">- [ ] Pipeline local: drop_db.py → setup_db.py → load_mocks.py sin error</span>
+<span class="da">- [ ] Verificar SELECT * FROM ods_master.vista_resumen_proyectos_ods WHERE estado='completado'</span>
+<span class="da">- [ ] **Handoff:** marcar ODS-CV-2 checklist ítem 1 — señal de inicio para agente BE</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-CV-2 · BE security — RoleAuthorizationFilter</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta que agente ODS-CV-1 marque este ítem (mock cargado)</span>
+<span class="da">- [ ] Crear src/main/java/com/odsProject/odsProject/security/RoleAuthorizationFilter.java</span>
+<span class="da">- [ ] Filtro lee Authorization: Bearer &lt;jwt&gt;, decodifica con jjwt, extrae claim 'rol'</span>
+<span class="da">- [ ] Lista blanca: GET *, POST /api/login/**, OPTIONS — passthrough</span>
+<span class="da">- [ ] Si rol=consultor y método ∈ {POST, PUT, PATCH, DELETE} → 403 + JSON {error:"ROL_CONSULTOR_READONLY"}</span>
+<span class="da">- [ ] SecurityConfig: addFilterBefore(roleFilter, UsernamePasswordAuthenticationFilter.class)</span>
+<span class="da">- [ ] Mantener anyRequest().permitAll() (auth real sigue siendo el JWT custom)</span>
+<span class="da">- [ ] mvn compile sin warnings críticos · mvn spring-boot:run levanta OK</span>
+<span class="da">- [ ] **Handoff:** marcar ODS-CV-3 checklist ítem 1 — señal de inicio para agente BE export</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-CV-3 · BE export — ExportService 3 hojas</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta que agente ODS-CV-2 marque este ítem (filtro funcionando)</span>
+<span class="da">- [ ] Mantener IllegalStateException 409 si estado != completado (ya existe)</span>
+<span class="da">- [ ] Hoja 1 "General": ID, Nombre, Descripción, Fecha inicio/fin, Responsable, Meta general,</span>
+<span class="da">      Sede, ODS vinculados (CSV), ODS primario, Estado, Auditor, Fecha auditoría, Observaciones</span>
+<span class="da">- [ ] Hoja 2 "Indicadores": Código, Indicador, Valor actual, Meta, Unidad, %, Estado (como hoy)</span>
+<span class="da">- [ ] Hoja 3 "Evidencias": Nombre archivo, Tipo MIME, Tamaño KB, Subido por (full_name), Fecha</span>
+<span class="da">- [ ] Reusar IMasterProjectRepository.findById + linkedOds; DocumentRepository.findByProyectoId (verificar/crear)</span>
+<span class="da">- [ ] Estilos: header bold, autoSizeColumn por hoja; freeze pane fila 1 (POI freezePane)</span>
+<span class="da">- [ ] Test manual: GET /api/export/proyecto/{id_completado} → xlsx con 3 hojas abre en LibreOffice/Excel</span>
+<span class="da">- [ ] **Handoff:** marcar ODS-CV-4 checklist ítem 1 — señal de inicio para BE QA</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-CV-4 · BE .http — postman/consultor_flow.http</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta que agente ODS-CV-3 marque este ítem (Excel listo)</span>
+<span class="da">- [ ] Crear 1.backend/odsProject/postman/consultor_flow.http</span>
+<span class="da">- [ ] @login_consultor: POST /api/login/login {consultor@ods.local} → 200 + token</span>
+<span class="da">- [ ] GET /api/proyectos (consultor token) → 200 con array</span>
+<span class="da">- [ ] GET /api/export/proyecto/{id_completado} → 200 + content-type spreadsheetml</span>
+<span class="da">- [ ] GET /api/export/proyecto/{id_activo} → 409</span>
+<span class="da">- [ ] POST /api/proyectos (consultor token) → 403 {error:"ROL_CONSULTOR_READONLY"}</span>
+<span class="da">- [ ] PUT /api/proyectos/{id} (consultor token) → 403</span>
+<span class="da">- [ ] DELETE /api/proyectos/{id} (consultor token) → 403</span>
+<span class="da">- [ ] Todos los 7 escenarios verificados local con IDE REST client o curl + comentario con outputs</span>
+<span class="da">- [ ] **Handoff:** marcar ODS-CV-5 checklist ítem 1 — señal de inicio para agente FE</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-CV-5 · FE service — exportService.downloadProjectFullReport</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta que agente ODS-CV-4 marque este ítem (.http verde)</span>
+<span class="da">- [ ] Extender src/services/exportService.js con downloadProjectFullReport(id)</span>
+<span class="da">- [ ] Alias semántico que llama al mismo /api/export/proyecto/{id} (responseType:blob)</span>
+<span class="da">- [ ] Capturar 409 → return {success:false, error:'Proyecto aún no finalizado', code:409}</span>
+<span class="da">- [ ] Capturar 403 → return {success:false, error:'Sin permiso (rol consultor read-only)', code:403}</span>
+<span class="da">- [ ] Filename Content-Disposition; fallback "proyecto-{id}-resumen-final.xlsx"</span>
+<span class="da">- [ ] npm run dev sin errores en consola</span>
+<span class="da">- [ ] **Handoff doble:** marcar ODS-CV-6 ítem 1 y ODS-CV-7 ítem 1 (ramas paralelas)</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-CV-6 · FE detail — Botón Descargar en ProjectResultsPage</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta que agente ODS-CV-5 marque este ítem (service listo)</span>
+<span class="da">- [ ] Importar exportService + iconos Download de lucide-react</span>
+<span class="da">- [ ] Render condicional: project?.status === 'completado' && perms.canDownloadEvidence</span>
+<span class="da">- [ ] Botón verde en hero, junto a "Volver al dashboard"; label "Descargar Excel resumen"</span>
+<span class="da">- [ ] onClick async → downloadProjectFullReport(id); toast/alertModal según success/error</span>
+<span class="da">- [ ] Estado disabled mientras descarga (spinner inline)</span>
+<span class="da">- [ ] QA visual: proyecto completado muestra botón; proyecto activo no lo muestra</span>
+<span class="da">- [ ] **Handoff:** marcar ODS-CV-8 ítem 1 cuando termine (junto con ODS-CV-7)</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-CV-7 · FE list — Botón Descargar en card de ProjectListPage</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta que agente ODS-CV-5 marque este ítem (service listo)</span>
+<span class="da">- [ ] Importar exportService + iconos FileDown</span>
+<span class="da">- [ ] En .card-footer agregar btn-card-action secundario "Excel" (icono FileDown)</span>
+<span class="da">- [ ] disabled = project.status !== 'completado'; title="Disponible al finalizar el proyecto"</span>
+<span class="da">- [ ] onClick (e) => { e.stopPropagation(); downloadProjectFullReport(project.id) }</span>
+<span class="da">- [ ] Visibilidad: solo si perms.canDownloadEvidence (consultor/gestor/admin/evaluador OK)</span>
+<span class="da">- [ ] QA visual: proyectos activos → btn opaco con tooltip; completados → btn habilitado</span>
+<span class="da">- [ ] **Handoff:** marcar ODS-CV-8 ítem 1 cuando termine (junto con ODS-CV-6)</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-CV-8 · FE read-only consultor + QA cross-page</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta que ODS-CV-6 Y ODS-CV-7 marquen este ítem (ambos botones cableados)</span>
+<span class="da">- [ ] EvidenceSection.jsx: wrap input upload con perms.canUploadEvidenceFor(project)</span>
+<span class="da">- [ ] EvidenceSection.jsx: wrap btn eliminar con perms.canUploadEvidenceFor (subir/eliminar mismo gate)</span>
+<span class="da">- [ ] ProjectResultsPage.jsx: wrap transiciones de estado (Enviar a evaluación / Cerrar) con perms.canEditProject</span>
+<span class="da">- [ ] Verificar que ProtectedRoute ya bloquea /projects/create, /admin/* para consultor (smoke test)</span>
+<span class="da">- [ ] npm run build exit 0 sin warnings nuevos</span>
+<span class="da">- [ ] QA manual login como consultor@ods.local:</span>
+<span class="da">      · /dashboard OK · /projects OK · /projects/create → /forbidden ·</span>
+<span class="da">      · detalle proyecto completado: ve Excel, NO ve upload/delete/editar ·</span>
+<span class="da">      · detalle proyecto activo: NO ve Excel ·</span>
+<span class="da">      · curl POST /api/proyectos con token consultor → 403</span>
+<span class="da">- [ ] **Handoff:** marcar ODS-CV-9 ítem 1 — orchestrator puede cerrar epic</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-CV-9 · Orchestrator — Resumen + Epic Completed</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta que ODS-CV-8 marque este ítem (QA verde)</span>
+<span class="da">- [ ] Verificar node scripts/sprint_consultor_view_export.mjs status → todos Done, checklists 100%</span>
+<span class="da">- [ ] Copiar _plantilla_ods.html → _linear/plans/resumen_sprint_consultor_view_export.html</span>
+<span class="da">- [ ] Cambiar al.pending → al.ok, chip.pending → chip.ok, badge.pending → badge en cada issue</span>
+<span class="da">- [ ] Sección "Archivos modificados" con paths reales y commits</span>
+<span class="da">- [ ] Sección "Comandos usados" (drop_db, setup_db, load_mocks, mvn, npm run dev/build, sprint mjs)</span>
+<span class="da">- [ ] update_project del epic "Consultor — Vista y Exportación" → state=completed</span>
+<span class="da">- [ ] Comentar en el epic con link/ruta al resumen HTML</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Antes / Después</div>
+  <div class="st">Lo que cambia para el consultor</div>
+  <div class="compare">
+    <div class="box bad">
+      <h4>Antes</h4>
+      • Rol consultor existe en BD pero el backend está abierto: <code>curl POST</code> funcionaría.<br>
+      • Excel actual solo lleva info general + indicadores (sin auditor, sin evidencias).<br>
+      • <code>exportService.js</code> definido pero <strong>ningún botón</strong> lo invoca.<br>
+      • <code>EvidenceSection</code> muestra upload/delete a cualquier rol logueado.<br>
+      • No hay mock de consultor → no se puede probar local.
+    </div>
+    <div class="box good">
+      <h4>Después</h4>
+      • <code>RoleAuthorizationFilter</code> rechaza writes del consultor con 403 + JSON.<br>
+      • Excel de <strong>3 hojas</strong>: general+auditor, indicadores, evidencias.<br>
+      • Botón "Descargar Excel" en detalle (si completado) y en cards (deshabilitado si no).<br>
+      • <code>EvidenceSection</code> y acciones de edición ocultas en modo read-only.<br>
+      • Mock <code>consultor@ods.local</code> + 1 proyecto completado para QA reproducible.
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sl">Archivos afectados</div>
+  <div class="st">Inventario por capa</div>
+  <ul class="files">
+    <li><strong>DB:</strong> <code>0.database/propuesta_actual/21. ods_mocks.sql</code> <em>(append — usuario consultor, proyecto completado, mediciones, evidencias)</em></li>
+    <li><strong>BE security:</strong> <code>1.backend/odsProject/src/main/java/com/odsProject/odsProject/security/RoleAuthorizationFilter.java</code> <em>(nuevo)</em>, <code>config/SecurityConfig.java</code> <em>(registrar filtro)</em></li>
+    <li><strong>BE export:</strong> <code>service/ExportService.java</code> <em>(3 hojas)</em>, <code>repository/DocumentRepository.java</code> <em>(método findByProyectoId si no existe)</em></li>
+    <li><strong>BE QA:</strong> <code>1.backend/odsProject/postman/consultor_flow.http</code> <em>(nuevo — 7 escenarios)</em></li>
+    <li><strong>FE service:</strong> <code>2.frontend/odsProject/src/services/exportService.js</code> <em>(downloadProjectFullReport)</em></li>
+    <li><strong>FE UI detalle:</strong> <code>src/pages/ProjectResultsPage/ProjectResultsPage.jsx</code> <em>(botón Descargar)</em></li>
+    <li><strong>FE UI lista:</strong> <code>src/pages/ProjectListPage/ProjectListPage.jsx</code> <em>(botón en card-footer)</em></li>
+    <li><strong>FE read-only:</strong> <code>src/components/projects/EvidenceSection.jsx</code> <em>(gating upload/delete)</em></li>
+    <li><strong>_linear:</strong> <code>_linear/scripts/sprint_consultor_view_export.mjs</code> <em>(Fase 3 — crear tras aprobación)</em>, <code>_linear/plans/resumen_sprint_consultor_view_export.html</code> <em>(Fase 5)</em></li>
+  </ul>
+</section>
+
+<section class="sec">
+  <div class="sl">Paralelismo</div>
+  <div class="st">Qué puede ir en paralelo y qué no</div>
+  <table class="tbl">
+    <thead><tr><th>Tramo</th><th>¿Paralelo?</th><th>Por qué</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-CV-1 → ODS-CV-2 → ODS-CV-3 → ODS-CV-4</td><td>❌ Cadena estricta</td><td>Cada paso lee/depende del anterior (mock → seguridad → export → QA HTTP).</td></tr>
+      <tr><td>ODS-CV-4 → ODS-CV-5</td><td>❌ Estricto</td><td>FE no empieza hasta <code>.http</code> verde (GATE_HTTP — regla del README).</td></tr>
+      <tr><td>ODS-CV-6 y ODS-CV-7</td><td>✅ Sí — mismo agente FE</td><td>Archivos distintos (<code>ProjectResultsPage.jsx</code> vs <code>ProjectListPage.jsx</code>), sin conflicto de merge, comparten GATE_FE_SVC. <strong>Ambos</strong> bloquean ODS-CV-8.</td></tr>
+      <tr><td>ODS-CV-8 → ODS-CV-9</td><td>❌ Estricto</td><td>El resumen requiere QA cerrado.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Aprobación</div>
+  <div class="st">Estado de gate humano</div>
+  <table class="tbl">
+    <thead><tr><th>Campo</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Estado</td><td><span class="badge">APROBADO</span></td></tr>
+      <tr><td>Aprobador</td><td>Kevin (kcamposgo90@gmail.com)</td></tr>
+      <tr><td>Fecha propuesta</td><td>2026-05-25</td></tr>
+      <tr><td>Fecha aprobación</td><td>2026-05-25</td></tr>
+      <tr><td>Siguiente acción tras APROBADO</td><td><code>node scripts/sprint_consultor_view_export.mjs create</code></td></tr>
+      <tr><td>Si RECHAZADO</td><td>Comentario con cambios solicitados → re-edición del HTML → re-aprobación</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="sep">
+
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>plan_sprint_consultor_view_export.html · Fase 1 · APROBADO</div>
+</footer>
+
+</body>
+</html>

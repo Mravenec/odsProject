@@ -5,19 +5,20 @@ export const authService = {
   _mapUser(data) {
     if (!data) return null;
 
-    // El backend retorna los datos directamente en el login o anidados en 'user' en validación
-    const source = data.user || data;
-    
-    // Mapeo exacto de campos del backend
-    const id = source.userId || source.id;
+    const nested = data.user;
+    const source = nested || data;
+
+    const id = source.userId || source.id || data.userId;
     if (!id) return null;
 
     return {
-      id: id,
-      username: source.username || source.email,
-      name: source.fullName || source.nombre || source.username,
-      email: source.email,
-      role: (source.role || source.rol || '').toLowerCase()
+      id,
+      username: source.username || source.email || data.email,
+      name: source.fullName || source.full_name || source.nombre || source.username,
+      fullName: source.fullName || source.full_name || source.nombre || source.username,
+      email: source.email || data.email,
+      role: (source.role || source.rol || data.role || '').toLowerCase(),
+      sedeId: source.sedeId ?? source.sede_id ?? data.sedeId ?? null,
     };
   },
 
@@ -25,7 +26,7 @@ export const authService = {
   async login(credentials) {
     try {
       const response = await api.post('/login/auth/login', {
-        email: credentials.username, // El backend espera 'email'
+        email: credentials.email || credentials.username,
         password: credentials.password,
         ip: "127.0.0.1",
         userAgent: "React Frontend"
@@ -108,7 +109,8 @@ export const authService = {
   async getActiveUsers() {
     try {
       const response = await api.get('/login/admin/active-users');
-      return { success: true, data: response.data };
+      const data = (response.data || []).map(u => this._mapAdminUser(u));
+      return { success: true, data };
     } catch (error) {
       console.error('[AuthService] Error obteniendo usuarios activos:', error);
       return { success: false, error: 'No se pudo cargar la lista de personal académico' };

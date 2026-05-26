@@ -134,6 +134,46 @@
   cursor: not-allowed;
 }
 
+.input-wrapper--password {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper--password input {
+  padding-right: 2.75rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.password-toggle:hover:not(:disabled) {
+  color: var(--utn-azul);
+  background: rgba(1, 33, 105, 0.06);
+}
+
+.password-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.password-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--utn-azul-glow);
+}
+
 .login-button {
   margin-top: 1rem;
   width: 100%;

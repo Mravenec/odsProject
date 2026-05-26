@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
-import { getOdsColor } from '../../utils/formatters';
+import { getOdsColor, getEstadoLabel, getEstadoClass, isProjectCompletado } from '../../utils/formatters';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
   const { user, logout, isAdmin, isGestor } = useAuth();
   const perms = usePermissions();
   const navigate = useNavigate();
+  const location = useLocation();
   const { 
     projects, 
     globalDashboard,
@@ -26,7 +27,7 @@ const DashboardPage = () => {
     if (user) {
       loadDashboardData();
     }
-  }, [user]);
+  }, [user, location.pathname, perms.canViewGlobalDashboard]);
 
   const loadDashboardData = async () => {
     try {
@@ -107,7 +108,7 @@ const DashboardPage = () => {
 
         <section className="welcome-section">
           <div className="welcome-text">
-            <h2>¡Qué bueno verte de nuevo, {user?.fullName?.split(' ')[0] || user?.username || 'Usuario'}!</h2>
+            <h2>¡Qué bueno verte de nuevo, {(user?.name || user?.fullName || user?.username || 'Usuario').split(' ')[0]}!</h2>
             <p>Aquí tienes un resumen del impacto generado hoy.</p>
           </div>
           {perms.canCreateProject && (
@@ -234,10 +235,10 @@ const DashboardPage = () => {
                       const totalInd       = Number(project.totalIndicators) || project.indicators?.length || 0;
                       const achievedInd    = Number(project.indicatorsAchieved) || 0;
                       const progressPct    = Number(project.progressPercentage) || 0;
-                      const isInProgress   = ['active', 'activo', 'planificacion'].includes(project.status);
-                      const statusLabel    = isInProgress ? 'En Curso'
-                                            : project.status === 'completado' ? 'Completado'
-                                            : (project.status || 'Sin estado');
+                      const workflowStatus = project.status;
+                      const statusLabel    = getEstadoLabel(workflowStatus);
+                      const statusClass    = getEstadoClass(workflowStatus);
+                      const isInProgress   = !isProjectCompletado(project);
 
                       return (
                       <div key={project.id} className="project-item-card enriched">
@@ -248,7 +249,7 @@ const DashboardPage = () => {
                         <div className="project-main-info">
                           <div className="title-row">
                             <h4>{project.name || 'Proyecto sin nombre'}</h4>
-                            <span className={`status-pill ${project.status || 'unknown'}`}>
+                            <span className={`status-pill ${statusClass}`}>
                               {statusLabel}
                             </span>
                           </div>

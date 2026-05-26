@@ -1,0 +1,75 @@
+### Consultor flow — Sprint Consultor vista + export
+### Base URL: http://localhost:8080
+### Proyecto QA completado id=6 · activo id=1
+
+@baseUrl = http://localhost:8080
+@emailConsultor = consultor@ods.local
+@passwordConsultor = Consultor2026!
+@idCompletado = 6
+@idActivo = 1
+
+# ── 1. Login consultor → 200 + token ──
+
+### @name login_consultor
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailConsultor}}",
+  "password": "{{passwordConsultor}}"
+}
+
+@consultorToken = {{login_consultor.response.body.token}}
+
+# ── 2. Listar proyectos (consultor) → 200 ──
+
+### GET proyectos — consultor
+GET {{baseUrl}}/api/projects
+Authorization: Bearer {{consultorToken}}
+
+# ── 3. Export proyecto completado → 200 spreadsheet ──
+
+### GET export completado
+GET {{baseUrl}}/api/export/proyecto/{{idCompletado}}
+Authorization: Bearer {{consultorToken}}
+
+# ── 4. Export proyecto activo → 409 ──
+
+### GET export activo (debe fallar)
+GET {{baseUrl}}/api/export/proyecto/{{idActivo}}
+Authorization: Bearer {{consultorToken}}
+
+# ── 5. POST crear proyecto → 403 ROL_CONSULTOR_READONLY ──
+
+### POST proyecto — consultor bloqueado
+POST {{baseUrl}}/api/projects
+Authorization: Bearer {{consultorToken}}
+Content-Type: application/json
+
+{
+  "usuarioId": 2,
+  "sedeId": 2,
+  "nombreProyecto": "Intento consultor",
+  "descripcion": "No debe crearse",
+  "fechaInicio": "2024-01-01",
+  "fechaFin": "2024-12-31",
+  "estado": "planificacion"
+}
+
+# ── 6. PUT proyecto → 403 ──
+
+### PUT proyecto — consultor bloqueado
+PUT {{baseUrl}}/api/projects/{{idActivo}}
+Authorization: Bearer {{consultorToken}}
+Content-Type: application/json
+
+{
+  "id": {{idActivo}},
+  "estado": "activo"
+}
+
+# ── 7. DELETE proyecto → 403 ──
+
+### DELETE proyecto — consultor bloqueado
+DELETE {{baseUrl}}/api/projects/{{idActivo}}
+Authorization: Bearer {{consultorToken}}
