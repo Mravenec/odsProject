@@ -232,7 +232,9 @@ Este es el **orden lógico obligatorio para cualquier trabajo** en el repo — f
 | **2 — Aprobación** | Humano revisa el HTML propuesta | Tú | ✅ explícito en chat o comentario Linear |
 | **3 — MJS** | Script que crea epic, sprint, issues y `blocks` en Linear | IA | Solo **después** de aprobación |
 | **4 — Multi-agente** | Backlog → Doing → Testing → Done; checklist en Doing; pruebas locales en Testing | IA + MCP | Todos los issues del **problema actual** en **Done** + aviso publicado |
-| **5 — HTML resumen** | Documento de cierre: qué se hizo, archivos, issues cerrados | IA (orquestador) | `_linear/plans/resumen_sprint_<nombre>.html` (nombre = problema o sprint) |
+| **5 — HTML resumen** | Documento de cierre: qué se hizo, archivos, issues cerrados | IA (orquestador) | `_linear/plans/resumen_sprint_<nombre>.html` (nombre = problema o sprint) + epic **Completed** |
+
+> **Siguiente sprint:** ver **🔄 Arranque de trabajo nuevo** (cleanup Linear → scripts → epic).
 
 ```
   [Plan IA]  →  [plan_sprint_N.html]  →  [✅ Aprobado]  →  [sprint_N.mjs create]
@@ -316,6 +318,57 @@ DB-merge-A ──┐
 DB-merge-B ──┼──► DB-pipeline-único ──► JOOQ ──► BE-repo ──► BE-svc ──► .http ──► FE
 DB-merge-C ──┘
 ```
+
+### Multi-epic: un epic = un problema; paralelismo entre epics
+
+Cada **Epic** agrupa un problema independiente (su propio `sprint_<nombre>.mjs`, plan HTML y resumen). Los tickets del epic **alimentan el epic en Linear** conforme avanzan: cada issue que pasa a **Done** incrementa el `progress` del proyecto; no hace falta tocar el epic ticket a ticket, pero **sí** al iniciar (descripción/estado) y al cerrar todos (Completed + resumen).
+
+**Regla de oro:** si **N epics no se pisan** (archivos distintos, sin `drop_db` compartido, sin API/schema en disputa), **N agentes pueden trabajar a la vez** — uno (o más) por epic, cada uno con su `claim_issue` / `next` en su propio script.
+
+```
+Epic A (solo FE copy)     ──► agente-FE-A     ──► tickets A en paralelo interno según plan
+Epic B (solo BE login)    ──► agente-BE-B     ──► independiente de A
+Epic C (indicadores UI)   ──► agente-FE-C     ──► independiente de A y B
+         …
+Epic 15                   ──► agente-N        ──► sin espera si no hay choque
+```
+
+| Ámbito | ¿Paralelo multi-agente? | Mecanismo de coordinación |
+|---|---|---|
+| **Dentro de un epic** | Solo si el plan HTML lo declara | `blocks` + checklist cruzado entre issues del **mismo** epic |
+| **Entre epics independientes** | ✅ Sí — cada epic es una unidad | Ninguno; cada `.mjs` orquesta su backlog |
+| **Entre epics que chocan** | ❌ No a ciegas — hay que esperar | Checklist cruzado **entre epics** + declarar choque en plan HTML |
+
+#### Cuándo dos epics «chocan» (hay que organizarse)
+
+Epics **compiten** si comparten recurso exclusivo. Ejemplos típicos en ODS:
+
+| Choque | Por qué | Coordinación |
+|---|---|---|
+| Mismo archivo SQL / schema | Un solo `propuesta_actual/` mergeable | Un epic espera; checklist ítem 1 en issue del epic downstream |
+| `drop_db` / `setup_db` | Pipeline BD único en dev | **Un solo agente** corre el pipeline; otros epics con ítem «⏸ hasta GATE_BD de Epic X» |
+| Regeneración JOOQ | Un `spring-boot:run` introspecta la BD viva | Serializar tras BD; epic BE espera checklist del epic que cerró JOOQ |
+| Mismo controller / `.http` / componente React | Conflicto de merge en git | `blocks` o checklist entre issue de Epic A e issue de Epic B |
+| Contrato API compartido | Epic FE-B depende de `.http` de Epic BE-A | Checklist cruzado: Epic A marca ítem 1 en ticket gateway del Epic B |
+
+Si el plan detecta choque **entre epics**, el HTML propuesta debe:
+
+1. Nombrar el par de epics (o issues puente) que comparten recurso.
+2. Definir **ítem 1 de espera** en el epic downstream: *«No iniciar hasta Epic X issue ODS-N Done + checklist ítem 1 [x]»*.
+3. Definir **ítem de handoff** en el epic upstream: *«Marcar ODS-Y ítem 1 del Epic B — señal cross-epic»*.
+
+Mismo patrón que handoff intra-epic, pero el ticket downstream puede vivir en **otro** `sprint_*.mjs` / otro epic:
+
+```
+Epic DB-Auth (ODS-40)              Epic BE-Login (ODS-55)
+─────────────────────              ───────────────────────
+Done: pipeline BD OK               Ítem 1 [ ] ⏸ hasta ODS-40 handoff
+Handoff: checklist ODS-55 ítem 1 ──► Ítem 1 [x] → agente BE continúa
+```
+
+El orquestador (humano o `role:orchestrator`) usa `get_sprint_health` / `list_projects` para ver progreso de **todos** los epics activos y detectar cuáles están bloqueados por choque cross-epic.
+
+> **Resumen:** el epic **se actualiza solo** con el progreso de sus tickets. **Varios epics en paralelo** es el modo normal cuando no chocan. **Choque entre epics** = misma regla que entre issues: `blocks` donde aplique en Linear + **checklist cruzado** explícito en el plan — no improvisar esperas en chat.
 
 ### Checklist cruzado entre agentes (handoff multi-IA)
 
@@ -491,6 +544,7 @@ Comandos mínimos del script:
 | `state ODS-N "In Progress"` | Pasar a **Doing** (al reclamar / empezar) |
 | `state ODS-N Testing` | Pasar a **Testing** — pruebas locales (checklist ya completo) |
 | `state ODS-N Done` | Cerrar — **bloqueado** si checklist incompleto o Testing omitido |
+| `cleanup` | Elimina **todos los issues** del epic del script (ver sección **🔄 Arranque de trabajo nuevo**) |
 
 Cada issue creado debe tener:
 
@@ -500,9 +554,9 @@ Cada issue creado debe tener:
 - Comandos concretos (`drop_db` solo si aplica)  
 - `blocks` hacia el issue anterior en la cadena lógica  
 
-### Fase 4 — Una tarea a la vez: Backlog → Doing → Testing → Done
+### Fase 4 — Una tarea a la vez **por cadena**; multi-epic en paralelo si no chocan
 
-Tras `node scripts/sprint_<nombre>.mjs create`, los issues nacen en **Backlog**. **No se trabajan varios en paralelo** salvo que el plan HTML lo declare explícitamente. Ciclo **por cada issue**:
+Tras `node scripts/sprint_<nombre>.mjs create`, los issues nacen en **Backlog**. **Dentro de un mismo epic**, no se trabajan varios issues en paralelo salvo que el plan HTML lo declare. **Entre epics independientes**, sí puede haber varios agentes activos a la vez (ver **Multi-epic**). Ciclo **por cada issue**:
 
 ```
 next  →  claim_issue                    ← Backlog → Doing
@@ -518,7 +572,9 @@ next  →  claim_issue                    ← Backlog → Doing
 
 | Regla | Detalle |
 |---|---|
-| **Un issue activo** | Orquestador usa `next`; un agente reclama **solo ese** issue |
+| **Un issue activo por cadena** | Orquestador usa `next` en **su** `.mjs`; un agente reclama **solo ese** issue de la cadena |
+| **Varios epics sin choque** | Varios agentes en paralelo — cada uno con su epic / `sprint_*.mjs` |
+| **Epics que chocan** | Checklist cruzado **entre epics** + ítem «⏸ no iniciar» — igual que entre issues |
 | **Checklist solo en Doing** | `checklist ODS-N 1`, luego `2`, luego `3` — no marcar `all` al inicio |
 | **Gate en ítem 1 ajeno** | Si ítem 1 dice «no iniciar hasta…», verificar `[x]` antes del ítem 2 |
 | **Handoff upstream** | Agente que termina marca `--checklist 1` del ticket **downstream** antes de su Done |
@@ -649,13 +705,143 @@ Copiar desde `_plantilla_ods.html` o `resumen_sprint_evidence_section.html` — 
 - No cerrar **ningún** problema sin el HTML resumen — aplica a features, bugs y mejoras por igual.  
 - El resumen se basa en **hechos verificados**: checklists marcados, artifacts de Linear, código commiteado.  
 - Nombrar en pareja: `plan_sprint_<nombre>.html` (antes) + `resumen_sprint_<nombre>.html` (después).  
-- Opcional: comentario en el epic de Linear con enlace o ruta al archivo resumen.
+- Marcar el epic como **Completed** y comentar con enlace o ruta al resumen (ver **🔄 Arranque de trabajo nuevo → Ciclo de vida del Epic**).
 
 ```bash
 # Verificar que el sprint está listo para Fase 5
 node scripts/sprint_<nombre>.mjs status    # todos Done, checklist completo
 # Luego crear resumen_sprint_<nombre>.html en _linear/plans/
 ```
+
+### 🔄 Arranque de trabajo nuevo — Linear, scripts y Epic
+
+Al pasar de un sprint/problema a otro, el orden importa. **Linear primero, scripts después.** No borres el `.mjs` del sprint anterior hasta haber ejecutado `cleanup` (si aplica): ese comando conoce el `EPIC_NAME` del script.
+
+#### Al iniciar — ¿qué se limpia?
+
+| Qué | ¿Se limpia al iniciar? | Detalle |
+|---|---|---|
+| **Issues en Backlog** (y en cualquier estado) del epic del sprint que cierras | ✅ **Sí** | `cleanup` borra **todos** los issues de ese epic — Backlog, Doing, Testing, Done, etc. |
+| **Backlog del equipo** (issues de *otros* epics o sueltos) | ❌ **No** | `cleanup` solo toca el `EPIC_NAME` del `.mjs` que ejecutas |
+| **Epics** (proyectos en Linear) | ❌ **No se borran** | Se **marcan Completed** al cerrar; al reutilizar el mismo nombre se **actualizan** (descripción, estado). Epic nuevo = nombre nuevo en el `.mjs` |
+| **Cycles / sprints** en Linear | ❌ **No** | Quedan como historial |
+| **`_linear/scripts/` completo** | ❌ **No** | Utilidades compartidas (`linear-lib.mjs`, `linear-comment.mjs`, `linear-update-state.mjs`) **siempre** se conservan |
+| **`sprint_<viejo>.mjs`** del sprint cerrado | ⚠️ **Opcional** | Borrar o archivar **después** de `cleanup` + resumen HTML — no es obligatorio |
+| **`plans/`** (plan y resumen HTML) | ❌ **No** | Historial — se **añade** el trío del nuevo problema |
+
+En una frase: al iniciar **sí** vacías los issues del epic anterior (incluido lo que estaba en Backlog), **no** borras epics ni todo `_linear/scripts`, y creas archivos **nuevos** para el problema nuevo.
+
+```
+Orden al reutilizar el mismo epic:
+  1. Cerrar sprint anterior (Done + resumen + epic Completed)
+  2. cleanup  →  issues del epic fuera (Backlog incluido)
+  3. update_project  →  epic reutilizado al día
+  4. plan HTML → aprobación → sprint_<nuevo>.mjs → create
+  5. (opcional) borrar sprint_<viejo>.mjs
+```
+
+#### Cierre obligatorio del sprint anterior
+
+Antes de limpiar o arrancar otro problema:
+
+1. Todos los issues del sprint en **Done** (checklist completo + Testing OK).
+2. `resumen_sprint_<nombre>.html` creado en `_linear/plans/`.
+3. Epic marcado **Completed** + comentario con ruta al resumen (ver abajo).
+
+> **Regla:** no ejecutar `cleanup` ni `create` de un sprint nuevo si el anterior quedó a medias — se pierde trazabilidad.
+
+#### Comando `cleanup` — qué hace y qué no
+
+Cada `sprint_<nombre>.mjs` expone `cleanup`. Elimina los issues del epic definido en `EPIC_NAME` del script:
+
+```bash
+cd _linear
+node scripts/sprint_<nombre>.mjs cleanup
+```
+
+| Acción | ¿Lo hace `cleanup`? |
+|---|---|
+| Borrar **issues** del epic del script | ✅ Sí |
+| Borrar el **epic** (proyecto) en Linear | ❌ No |
+| Borrar el **cycle/sprint** en Linear | ❌ No |
+| Borrar labels ni estados del workflow | ❌ No |
+
+`getOrCreateEpic` en `create` **reutiliza** un epic existente por nombre; **no** actualiza descripción ni estado. Si reutilizas el mismo `EPIC_NAME`, ejecuta `cleanup` y luego actualiza el epic manualmente (UI o MCP `update_project`) antes de volver a crear issues.
+
+#### Scripts — qué conservar y qué archivar
+
+| Archivo | Al iniciar trabajo nuevo |
+|---|---|
+| `linear-lib.mjs`, `linear-comment.mjs`, `linear-update-state.mjs` | **Conservar** — utilidades compartidas |
+| `scripts/resumen_sprint_*.html` (referencia visual) | **Conservar** — plantilla maestra de estilo |
+| `plans/_plantilla_ods.html` | **Conservar** |
+| `plans/plan_sprint_*.html`, `plans/resumen_sprint_*.html` | **Conservar** — historial del problema |
+| `sprint_<nombre_viejo>.mjs` | **Opcional** — archivar o borrar **después** de `cleanup` + resumen HTML |
+
+Para el **nuevo** problema se crea un trío nuevo (no se reutiliza el `.mjs` de otro sprint salvo que sea continuación explícita del mismo epic):
+
+```
+_linear/plans/plan_sprint_<nuevo>.html      ← Fase 1
+_linear/scripts/sprint_<nuevo>.mjs          ← Fase 3
+_linear/plans/resumen_sprint_<nuevo>.html   ← Fase 5 (al cerrar)
+```
+
+#### Ciclo de vida del Epic
+
+Los issues se agrupan bajo un **Epic** (proyecto en Linear). El `.mjs` lo crea con `getOrCreateEpic`. El epic **evoluciona con sus tickets**:
+
+| Qué cambia en el epic | ¿Cuándo? | ¿Automático? |
+|---|---|---|
+| **Progress** (% issues Done) | Cada ticket pasa a Done | ✅ Linear |
+| **Estado** (Planned → In Progress → Completed) | Inicio / cierre del sprint | ❌ MCP `update_project` o UI |
+| **Descripción**, **targetDate** | Nuevo sprint en epic reutilizado | ❌ Manual al iniciar |
+| **Comentario con resumen HTML** | Todos los tickets Done | ❌ Manual al cerrar (Fase 5) |
+
+| Momento | Acción | Cómo |
+|---|---|---|
+| **Durante** el sprint | Progreso visible según tickets Done | Linear — **no requiere acción por ticket** |
+| **Al iniciar** sprint en epic **reutilizado** | Actualizar **descripción** (objetivo nuevo), **targetDate** si aplica, estado **In Progress** / **Planned** | MCP `update_project` o UI — `create` **no** sobrescribe la descripción |
+| **Al cerrar** sprint (Fase 5) | Estado **Completed**; comentario con ruta al resumen | UI Linear o MCP `update_project` |
+
+Comentario recomendado al cerrar el epic:
+
+```text
+Sprint completado. Resumen: _linear/plans/resumen_sprint_<nombre>.html
+```
+
+Herramientas MCP: `list_projects`, `update_project` (campos: `name`, `description`, `state`, `targetDate`).
+
+#### Dos escenarios al arrancar
+
+**A — Mismo dominio, sprint nuevo** (reutilizar epic, ej. otra iteración de «Evidencia / UX»):
+
+```
+1. Verificar resumen del sprint anterior (Fase 5 completa)
+2. node scripts/sprint_<nombre>.mjs cleanup          ← Linear: borrar issues viejos
+3. update_project: descripción + estado del epic     ← Epic al día
+4. plan_sprint_<nuevo>.html → ✅ aprobación
+5. Actualizar sprint_<nombre>.mjs (SPRINT_NAME, issues) o crear sprint_<nuevo>.mjs
+6. node scripts/sprint_<nombre>.mjs create
+```
+
+**B — Problema distinto** (ej. login, indicadores — epic nuevo):
+
+```
+1. No hace falta cleanup del epic anterior — dejarlo como historial Completed
+2. plan_sprint_<nuevo>.html → ✅ aprobación
+3. sprint_<nuevo>.mjs con EPIC_NAME distinto (ej. "Login / Auth")
+4. node scripts/sprint_<nuevo>.mjs create
+5. Al cerrar: resumen + epic Completed
+```
+
+| Pregunta | Respuesta |
+|---|---|
+| ¿Se limpia el Backlog de Linear al iniciar? | **Sí**, los issues del epic del sprint que cierras (cualquier estado). **No** el backlog de otros epics |
+| ¿Se borran los Epics? | **No** — Completed al cerrar; reutilizar o crear uno nuevo |
+| ¿Se limpia todo `_linear/scripts/`? | **No** — solo opcionalmente el `sprint_*.mjs` viejo; utilidades y referencias HTML se quedan |
+| ¿Limpiar Linear antes de scripts? | **Sí** — `cleanup` del `.mjs` del sprint que cierras |
+| ¿Actualizar el epic? | **Sí** — al iniciar (descripción/estado) y al cerrar (Completed + enlace al resumen) |
+| ¿Epic reutilizado vs epic nuevo? | Mismo dominio → `cleanup` + actualizar epic. Problema distinto → epic nuevo, sin tocar el anterior |
 
 ---
 
