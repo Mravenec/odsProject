@@ -90,6 +90,18 @@ public interface IMasterProjectRepository {
         findAllWithOds();
 
     /**
+     * Resumen enriquecido (vista) de un proyecto por ID.
+     */
+    java.util.Optional<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+        findResumenWithOdsByProyectoId(Integer proyectoId);
+
+    /**
+     * Proyectos en estado completado con datos ODS (exportación / planificación).
+     */
+    java.util.List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+        findCompletedWithOds();
+
+    /**
      * Lista los proyectos de un usuario con su ODS primario y ODS vinculados.
      */
     java.util.List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>

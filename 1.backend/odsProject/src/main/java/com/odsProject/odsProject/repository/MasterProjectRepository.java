@@ -133,6 +133,22 @@ public class MasterProjectRepository implements IMasterProjectRepository {
     }
 
     @Override
+    public Optional<VistaResumenProyectosOds> findResumenWithOdsByProyectoId(Integer proyectoId) {
+        if (proyectoId == null) return Optional.empty();
+        return dsl.selectFrom(VISTA_RESUMEN_PROYECTOS_ODS)
+                .where(VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID.eq(proyectoId))
+                .fetchOptionalInto(VistaResumenProyectosOds.class);
+    }
+
+    @Override
+    public List<VistaResumenProyectosOds> findCompletedWithOds() {
+        return dsl.selectFrom(VISTA_RESUMEN_PROYECTOS_ODS)
+                .where(VISTA_RESUMEN_PROYECTOS_ODS.ESTADO.cast(String.class).equalIgnoreCase("completado"))
+                .orderBy(VISTA_RESUMEN_PROYECTOS_ODS.PROYECTO_ID.desc())
+                .fetchInto(VistaResumenProyectosOds.class);
+    }
+
+    @Override
     public List<VistaResumenProyectosOds> findByUsuarioWithOds(Integer usuarioId) {
         if (usuarioId == null) return java.util.Collections.emptyList();
         // Vista completa (mismo shape que findAllWithOds), filtrada por dueño en proyectos.

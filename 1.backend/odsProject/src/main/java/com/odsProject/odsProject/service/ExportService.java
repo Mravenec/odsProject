@@ -57,9 +57,7 @@ public class ExportService implements IExportService {
 
     @Override
     public byte[] exportPlanificacionConsolidado() {
-        List<VistaResumenProyectosOds> proyectos = masterProjectRepository.findAllWithOds().stream()
-                .filter(p -> p.getEstado() != null && "completado".equals(String.valueOf(p.getEstado())))
-                .collect(Collectors.toList());
+        List<VistaResumenProyectosOds> proyectos = masterProjectRepository.findCompletedWithOds();
 
         Map<String, List<VistaResumenProyectosOds>> bySede = proyectos.stream()
                 .collect(Collectors.groupingBy(
