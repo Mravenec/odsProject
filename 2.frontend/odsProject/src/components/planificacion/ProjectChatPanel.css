@@ -288,8 +288,24 @@
   text-decoration: underline;
 }
 
-.chat-widget-bubble-wrap--mine .chat-widget-edit-link {
-  color: rgba(255, 255, 255, 0.9);
+.chat-widget-meta--mine {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.35rem;
+}
+
+.chat-widget-meta--mine .chat-widget-edit-link {
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(1, 33, 105, 0.08);
+  color: var(--utn-azul);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.chat-widget-meta--mine .chat-widget-edit-link:hover {
+  background: rgba(1, 33, 105, 0.14);
+  text-decoration: underline;
 }
 
 .chat-widget-composer {

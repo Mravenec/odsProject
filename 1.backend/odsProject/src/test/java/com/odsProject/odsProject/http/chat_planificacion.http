@@ -1,6 +1,6 @@
-### Chat planificación — proyecto QA id=7 (planificacion)
+### Chat planificación — @proyectoId = id de un proyecto en planificacion (crear como gestor en la app)
 @baseUrl = http://localhost:8080
-@proyectoId = 7
+@proyectoId = 0
 @gestorUserId = 2
 @evaluadorUserId = 5
 

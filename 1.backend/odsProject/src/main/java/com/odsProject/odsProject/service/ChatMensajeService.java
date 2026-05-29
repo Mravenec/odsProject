@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,8 +63,8 @@ public class ChatMensajeService implements IChatMensajeService {
             throw new IllegalArgumentException("Mensaje no pertenece al proyecto");
         if (m.getEliminado() != null && m.getEliminado() == 1)
             throw new IllegalStateException("Mensaje eliminado");
-        if (!actorUserId.equals(m.getAutorId()))
-            throw new SecurityException("Solo el autor puede editar el mensaje");
+        if (!Objects.equals(actorUserId, m.getAutorId()))
+            throw new SecurityException("Solo el autor del mensaje puede editarlo");
         assertWithinEditWindow(m);
         if (cuerpo == null || cuerpo.isBlank())
             throw new IllegalArgumentException("cuerpo es requerido");

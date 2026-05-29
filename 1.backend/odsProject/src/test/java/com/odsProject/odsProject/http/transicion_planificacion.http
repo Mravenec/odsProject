@@ -1,6 +1,6 @@
-### Transición planificación — proyecto QA id=7
+### Transición planificación — @proyectoId = id de un proyecto en planificacion
 @baseUrl = http://localhost:8080
-@proyectoId = 7
+@proyectoId = 0
 @gestorUserId = 2
 @evaluadorUserId = 5
 

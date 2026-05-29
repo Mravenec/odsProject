@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { MessageCircle, ChevronDown, Send } from 'lucide-react';
-import { useProjectChat } from '../../hooks/useProjectChat';
+import { useProjectChat, isSameChatUser } from '../../hooks/useProjectChat';
 import './ProjectChatPanel.css';
 
 export default function ProjectChatPanel({ projectId, user, projectStatus }) {
@@ -22,7 +22,7 @@ export default function ProjectChatPanel({ projectId, user, projectStatus }) {
   const unread = chat.unreadCount;
   const messageCount = chat.messages.length;
   const statusLabel = chat.isPlanificacion
-    ? 'En planificación — podés escribir'
+    ? 'Puede escribir; solo editar sus propios mensajes (30 min)'
     : 'Solo lectura';
 
   const widget = (
@@ -65,7 +65,7 @@ export default function ProjectChatPanel({ projectId, user, projectStatus }) {
 
           {!chat.isPlanificacion && (
             <p className="chat-widget-readonly">
-              El proyecto ya no está en planificación. Podés leer el historial.
+              El proyecto ya no está en planificación. Puede leer el historial.
             </p>
           )}
 
@@ -79,12 +79,13 @@ export default function ProjectChatPanel({ projectId, user, projectStatus }) {
               <p className="chat-widget-empty">
                 Sin mensajes aún.
                 <br />
-                <span style={{ fontSize: '0.8rem' }}>Escribí el primero abajo.</span>
+                <span style={{ fontSize: '0.8rem' }}>Escriba el primero abajo.</span>
               </p>
             )}
             {!chat.loading &&
               chat.messages.map((m) => {
-                const mine = m.autorId === user.id;
+                const mine = isSameChatUser(m.autorId, user.id);
+                const canEdit = chat.canEditMessage(m);
                 return (
                   <div
                     key={m.id}
@@ -121,10 +122,10 @@ export default function ProjectChatPanel({ projectId, user, projectStatus }) {
                     ) : (
                       <>
                         <div className="chat-widget-bubble">{m.cuerpo}</div>
-                        {(m.editCount > 0 || chat.canEditMessage(m)) && (
-                          <span className="chat-widget-meta">
+                        {(m.editCount > 0 || (mine && canEdit)) && (
+                          <span className={`chat-widget-meta ${mine ? 'chat-widget-meta--mine' : ''}`}>
                             {m.editCount > 0 && 'Editado · '}
-                            {chat.canEditMessage(m) && editingId !== m.id && (
+                            {mine && canEdit && editingId !== m.id && (
                               <button
                                 type="button"
                                 className="chat-widget-edit-link"
@@ -133,7 +134,7 @@ export default function ProjectChatPanel({ projectId, user, projectStatus }) {
                                   setEditText(m.cuerpo);
                                 }}
                               >
-                                Editar
+                                Editar mi mensaje
                               </button>
                             )}
                           </span>

@@ -4,6 +4,31 @@ import { chatService } from '../services/chatService';
 const EDIT_WINDOW_MS = 30 * 60 * 1000;
 const POLL_INTERVAL_MS = 4000;
 
+export function isSameChatUser(a, b) {
+  if (a == null || b == null) return false;
+  return Number(a) === Number(b);
+}
+
+function normalizeMessage(raw) {
+  if (!raw) return raw;
+  return {
+    ...raw,
+    id: raw.id,
+    autorId: raw.autorId ?? raw.autor_id,
+    proyectoId: raw.proyectoId ?? raw.proyecto_id,
+    cuerpo: raw.cuerpo,
+    createdAt: raw.createdAt ?? raw.created_at ?? null,
+    editedAt: raw.editedAt ?? raw.edited_at ?? null,
+    editCount: Number(raw.editCount ?? raw.edit_count ?? 0),
+    eliminado: Boolean(raw.eliminado),
+    autorNombre: raw.autorNombre ?? raw.autor_nombre ?? null,
+  };
+}
+
+function normalizeMessages(list) {
+  return (Array.isArray(list) ? list : []).map(normalizeMessage);
+}
+
 function readStorageKey(projectId, userId) {
   return `ods-chat-read:${projectId}:${userId}`;
 }
@@ -95,7 +120,7 @@ export function useProjectChat(projectId, user, projectStatus, chatOpen = false)
     setError('');
     try {
       const r = await chatService.listMessages(projectId, actorUserId, actorRole);
-      const list = Array.isArray(r.data) ? r.data : [];
+      const list = normalizeMessages(r.data);
       setMessages((prev) => (silent ? mergeMessages(prev, list) : list));
     } catch (e) {
       setError(e.response?.data?.error || e.message || 'Error al cargar chat');
@@ -124,7 +149,7 @@ export function useProjectChat(projectId, user, projectStatus, chatOpen = false)
       const r = await chatService.sendMessage(projectId, actorUserId, actorRole, text);
       setDraft('');
       if (r.data?.id) {
-        setMessages((prev) => mergeMessages(prev, [r.data]));
+        setMessages((prev) => mergeMessages(prev, [normalizeMessage(r.data)]));
       }
       await load({ silent: true });
     } catch (e) {
@@ -139,8 +164,9 @@ export function useProjectChat(projectId, user, projectStatus, chatOpen = false)
     try {
       const r = await chatService.editMessage(projectId, msgId, actorUserId, newBody);
       if (r.data?.id) {
+        const updated = normalizeMessage(r.data);
         setMessages((prev) =>
-          prev.map((m) => (m.id === r.data.id ? { ...m, ...r.data } : m))
+          prev.map((m) => (m.id === updated.id ? { ...m, ...updated } : m))
         );
       }
       await load({ silent: true });
@@ -150,9 +176,10 @@ export function useProjectChat(projectId, user, projectStatus, chatOpen = false)
   };
 
   const canEditMessage = (msg) => {
-    if (!isPlanificacion || msg.autorId !== actorUserId) return false;
+    if (!isPlanificacion || !isSameChatUser(msg.autorId, actorUserId)) return false;
     if (!msg.createdAt) return false;
     const created = new Date(msg.createdAt).getTime();
+    if (!Number.isFinite(created)) return false;
     return Date.now() - created <= EDIT_WINDOW_MS;
   };
 

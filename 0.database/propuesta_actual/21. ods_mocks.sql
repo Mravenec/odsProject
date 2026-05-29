@@ -275,32 +275,6 @@ UPDATE proyectos SET
 WHERE id = 6;
 
 -- ────────────────────────────────────────────────────────────
--- 5.2 SPRINT CHAT PLANIFICACIÓN — proyecto id=7 en planificacion (id=6 intacto para consultor)
--- ────────────────────────────────────────────────────────────
-USE ods_master;
-
-INSERT INTO proyectos (
-  id, usuario_id, sede_id, nombre_proyecto, descripcion,
-  fecha_inicio, fecha_fin, meta_general, estado
-) VALUES (
-  7, 2, 2, 'Proyecto QA Chat Planificación',
-  'Mock para chat y solicitud de transición en fase planificacion',
-  '2025-01-01', '2025-12-31', 'Validar chat y aprobación de salida', 'planificacion'
-);
-
-INSERT INTO proyecto_ods (proyecto_id, ods_id, es_primario) VALUES (7, 1, 1);
-
-INSERT INTO proyecto_chat_mensajes (proyecto_id, autor_id, cuerpo, created_at) VALUES
-  (7, 2, 'Gestor: revisen la fórmula del indicador 1.1.1 antes de activar.', NOW()),
-  (7, 5, 'Evaluador: la meta parece alta; sugiero ajustar a 2.5%.', DATE_SUB(NOW(), INTERVAL 5 MINUTE));
-
-INSERT INTO proyecto_transicion_solicitud (
-  proyecto_id, solicitado_por, estado_destino, motivo, estado_solicitud
-) VALUES (
-  7, 2, 'activo', 'Indicadores y fórmulas revisados; solicito pasar a activo.', 'pendiente'
-);
-
--- ────────────────────────────────────────────────────────────
 -- 6. FINALIZACIÓN
 -- ────────────────────────────────────────────────────────────
 USE ods_login;

@@ -5,7 +5,7 @@ python 0.database/drop_db.py
 python 0.database/setup_db.py; python 0.database/load_mocks.py
 
 #3. Backend para instalar el JOOQ, Creacion de POJOS para Repositorio, Servicio, Controlador y pruebas en .http
-cd 1.backend/odsProject; mvn spring-boot:run
+cd 1.backend/odsProject; mvn clean compile -DskipTests; mvn spring-boot:run
 
 #4. Frontend con Axios para API en Service, uso de hooks y luego uso de hooks en cada page
 cd 2.frontend/odsProject; npm run dev
