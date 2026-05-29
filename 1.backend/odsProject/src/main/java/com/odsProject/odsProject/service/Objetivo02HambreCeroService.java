@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods02.tables.pojos.AuditoriaOds02;
 import com.odsProject.odsProject.repository.Objetivo02HambreCeroRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo02HambreCeroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo02HambreCeroService implements IObjetivo02HambreCeroService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo02HambreCeroService.class);
 
     @Autowired
     private Objetivo02HambreCeroRepository objetivo02HambreCeroRepository;
@@ -146,7 +150,7 @@ public class Objetivo02HambreCeroService implements IObjetivo02HambreCeroService
             indicador.setValorActual(result);
             objetivo02HambreCeroRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS02 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS02 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -157,7 +161,6 @@ public class Objetivo02HambreCeroService implements IObjetivo02HambreCeroService
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds02")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -338,7 +341,7 @@ public class Objetivo02HambreCeroService implements IObjetivo02HambreCeroService
             try {
                 objetivo02HambreCeroRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

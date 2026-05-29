@@ -2,7 +2,6 @@ package com.odsProject.odsProject.controller;
 
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.AuditoriaOds15;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MedicionesHistoricas;
@@ -11,10 +10,6 @@ import com.odsProject.odsProject.controller.interfaces.IObjetivo15VidaEcosistema
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import java.util.Collections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +23,6 @@ import java.util.Optional;
 @RequestMapping("/api/ods/15")
 public class Objetivo15VidaEcosistemasController implements IObjetivo15VidaEcosistemasController {
 
-    private static final Logger log = LoggerFactory.getLogger(Objetivo15VidaEcosistemasController.class);
 
     @Autowired
     private Objetivo15VidaEcosistemasService objetivo15VidaEcosistemasService;

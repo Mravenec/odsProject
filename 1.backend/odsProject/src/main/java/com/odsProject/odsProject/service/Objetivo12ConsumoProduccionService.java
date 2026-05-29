@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods12.tables.pojos.AuditoriaOds12;
 import com.odsProject.odsProject.repository.Objetivo12ConsumoProduccionRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo12ConsumoProduccionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoProduccionService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo12ConsumoProduccionService.class);
 
     @Autowired
     private Objetivo12ConsumoProduccionRepository objetivo12ConsumoProduccionRepository;
@@ -145,7 +149,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
             indicador.setValorActual(result);
             objetivo12ConsumoProduccionRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS12 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS12 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -156,7 +160,6 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds12")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -337,7 +340,7 @@ public class Objetivo12ConsumoProduccionService implements IObjetivo12ConsumoPro
             try {
                 objetivo12ConsumoProduccionRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods08.tables.pojos.AuditoriaOds08;
 import com.odsProject.odsProject.repository.Objetivo08CrecimientoEconomicoRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo08CrecimientoEconomicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo08CrecimientoEconomicoService implements IObjetivo08CrecimientoEconomicoService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo08CrecimientoEconomicoService.class);
 
     @Autowired
     private Objetivo08CrecimientoEconomicoRepository objetivo08CrecimientoEconomicoRepository;
@@ -149,7 +153,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
             indicador.setValorActual(result);
             objetivo08CrecimientoEconomicoRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS08 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS08 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -160,7 +164,6 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds08")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -341,7 +344,7 @@ public class Objetivo08CrecimientoEconomicoService implements IObjetivo08Crecimi
             try {
                 objetivo08CrecimientoEconomicoRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

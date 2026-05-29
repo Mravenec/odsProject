@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods15.tables.pojos.AuditoriaOds15;
 import com.odsProject.odsProject.repository.Objetivo15VidaEcosistemasRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo15VidaEcosistemasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosistemasService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo15VidaEcosistemasService.class);
 
     @Autowired
     private Objetivo15VidaEcosistemasRepository objetivo15VidaEcosistemasRepository;
@@ -146,7 +150,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
             indicador.setValorActual(result);
             objetivo15VidaEcosistemasRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS15 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS15 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -157,7 +161,6 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds15")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -338,7 +341,7 @@ public class Objetivo15VidaEcosistemasService implements IObjetivo15VidaEcosiste
             try {
                 objetivo15VidaEcosistemasRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

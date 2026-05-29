@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods11.tables.pojos.AuditoriaOds11;
 import com.odsProject.odsProject.repository.Objetivo11CiudadesSosteniblesRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo11CiudadesSosteniblesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo11CiudadesSosteniblesService implements IObjetivo11CiudadesSosteniblesService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo11CiudadesSosteniblesService.class);
 
     @Autowired
     private Objetivo11CiudadesSosteniblesRepository objetivo11CiudadesSosteniblesRepository;
@@ -148,7 +152,7 @@ public class Objetivo11CiudadesSosteniblesService implements IObjetivo11Ciudades
             indicador.setValorActual(result);
             objetivo11CiudadesSosteniblesRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS11 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS11 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -159,7 +163,6 @@ public class Objetivo11CiudadesSosteniblesService implements IObjetivo11Ciudades
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds11")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -340,7 +343,7 @@ public class Objetivo11CiudadesSosteniblesService implements IObjetivo11Ciudades
             try {
                 objetivo11CiudadesSosteniblesRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

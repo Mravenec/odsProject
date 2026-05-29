@@ -5,11 +5,13 @@ import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.AuditoriaOds01;
 import com.odsProject.odsProject.repository.Objetivo01PobrezaRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo01PobrezaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo01PobrezaService.class);
 
     @Autowired
     private Objetivo01PobrezaRepository objetivo01PobrezaRepository;
@@ -147,7 +151,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
             objetivo01PobrezaRepository.updateIndicador(indicador);
         } catch (Exception e) {
             // Log error or handle gracefully
-            System.err.println("Error recalculando indicador " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -158,7 +162,6 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds01")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -339,7 +342,7 @@ public class Objetivo01PobrezaService implements IObjetivo01PobrezaService {
             try {
                 objetivo01PobrezaRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

@@ -4,7 +4,6 @@ import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds;
 import com.odsProject.odsProject.repository.interfaces.IMasterProjectRepository;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -76,7 +75,9 @@ public class MasterProjectRepository implements IMasterProjectRepository {
                 .set(dsl.newRecord(PROYECTOS, proyecto))
                 .where(PROYECTOS.ID.eq(proyecto.getId()))
                 .execute();
-        return findById(proyecto.getId()).orElse(null);
+        return findById(proyecto.getId())
+                .orElseThrow(() -> new IllegalStateException(
+                        "Proyecto no encontrado tras actualizar: " + proyecto.getId()));
     }
 
     @Override

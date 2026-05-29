@@ -172,7 +172,6 @@ public class MasterProjectService implements IMasterProjectService {
         org.slf4j.LoggerFactory.getLogger(MasterProjectService.class);
 
     @Override
-    @SuppressWarnings("unchecked")
     public Map<String, Object> createFullProject(Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -192,7 +191,7 @@ public class MasterProjectService implements IMasterProjectService {
             if (!(proyectoRaw instanceof Map)) {
                 throw new IllegalArgumentException("El campo 'proyecto' es requerido y debe ser un objeto");
             }
-            Proyectos proyecto = mapToProyectos((Map<String, Object>) proyectoRaw);
+            Proyectos proyecto = mapToProyectos(asStringObjectMap(proyectoRaw));
             Proyectos saved = masterProjectRepository.save(proyecto);
             if (saved == null || saved.getId() == null) {
                 throw new IllegalStateException("No se obtuvo ID al guardar el proyecto");
@@ -209,8 +208,7 @@ public class MasterProjectService implements IMasterProjectService {
             List<Integer> odsIds       = toIntList(payload.get("odsIds"));
             Integer       primaryOdsId = toInt(payload.get("primaryOdsId"));
             // Si vienen indicadores, inferir ODS automáticamente
-            List<Map<String, Object>> indicadoresRaw =
-                (List<Map<String, Object>>) payload.getOrDefault("indicadores", java.util.Collections.emptyList());
+            List<Map<String, Object>> indicadoresRaw = asMapList(payload.get("indicadores"));
             java.util.Set<Integer> odsSetFromIndicators = new java.util.LinkedHashSet<>();
             for (Map<String, Object> ind : indicadoresRaw) {
                 Integer odsId = toInt(ind.get("odsId"));
@@ -349,9 +347,8 @@ public class MasterProjectService implements IMasterProjectService {
      * cada parámetro explícito. El POJO E varía por ODS pero todos extienden el
      * mismo shape (proyectoId, indicadorMasterId, metaValor, metaUnidad, formulaCustom).
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     private Map<String, Object> createIndicadorViaService(
-            com.odsProject.odsProject.service.interfaces.IOdsBaseService svc,
+            com.odsProject.odsProject.service.interfaces.IOdsBaseService<?, ?, ?, ?, ?, ?> svc,
             Integer proyectoId,
             Map<String, Object> indSpec) throws Exception {
 
@@ -374,7 +371,9 @@ public class MasterProjectService implements IMasterProjectService {
         pojoClass.getMethod("setMetaNombre", String.class).invoke(pojo, metaNombre);
         pojoClass.getMethod("setFormulaCustom", String.class).invoke(pojo, formula);
 
-        Object savedIndicator = svc.saveIndicador(pojo);
+        java.lang.reflect.Method saveIndicadorMethod =
+                svc.getClass().getMethod("saveIndicador", pojoClass);
+        Object savedIndicator = saveIndicadorMethod.invoke(svc, pojo);
         Integer proyectoIndicadorId = (Integer) pojoClass.getMethod("getId").invoke(savedIndicator);
 
         // Parámetros explícitos (si los hay) — refinan los auto-sembrados por Sprint 3
@@ -390,7 +389,7 @@ public class MasterProjectService implements IMasterProjectService {
 
             for (Object p : paramList) {
                 if (!(p instanceof Map)) continue;
-                Map<String, Object> pm = (Map<String, Object>) p;
+                Map<String, Object> pm = asStringObjectMap(p);
                 String nombre   = strOr(pm.get("nombreParametro"), null);
                 if (nombre == null || nombre.isBlank()) continue;
                 String variable = strOr(pm.get("nombreVariable"), nombre);
@@ -400,21 +399,13 @@ public class MasterProjectService implements IMasterProjectService {
                 paramClass.getMethod("setProyectoIndicadorId", Integer.class).invoke(pPojo, proyectoIndicadorId);
                 paramClass.getMethod("setNombreParametro", String.class).invoke(pPojo, nombre);
                 paramClass.getMethod("setNombreVariable", String.class).invoke(pPojo, variable);
-                // El tipo es un enum JOOQ por ODS; usamos Enum.valueOf
-                Object tipoVal;
-                try {
-                    @SuppressWarnings({"rawtypes", "unchecked"})
-                    Object v = Enum.valueOf((Class<Enum>) tipoEnum, tipoStr);
-                    tipoVal = v;
-                } catch (IllegalArgumentException ex) {
-                    @SuppressWarnings({"rawtypes", "unchecked"})
-                    Object v = Enum.valueOf((Class<Enum>) tipoEnum, "Decimal");
-                    tipoVal = v;
-                }
+                Object tipoVal = enumConstant(tipoEnum, tipoStr, "Decimal");
                 paramClass.getMethod("setTipoDato", tipoEnum).invoke(pPojo, tipoVal);
                 paramClass.getMethod("setValorActual", java.math.BigDecimal.class)
                           .invoke(pPojo, java.math.BigDecimal.ZERO);
-                svc.saveMetaProyecto(pPojo);
+                java.lang.reflect.Method saveMetaMethod =
+                        svc.getClass().getMethod("saveMetaProyecto", paramClass);
+                saveMetaMethod.invoke(svc, pPojo);
                 parametrosGuardados++;
             }
         }
@@ -425,6 +416,39 @@ public class MasterProjectService implements IMasterProjectService {
         out.put("proyectoIndicadorId", proyectoIndicadorId);
         out.put("parametros", parametrosGuardados);
         return out;
+    }
+
+    private static Map<String, Object> asStringObjectMap(Object raw) {
+        if (!(raw instanceof Map<?, ?> source)) {
+            throw new IllegalArgumentException("Se esperaba un objeto JSON/map");
+        }
+        Map<String, Object> out = new java.util.LinkedHashMap<>();
+        for (Map.Entry<?, ?> entry : source.entrySet()) {
+            out.put(String.valueOf(entry.getKey()), entry.getValue());
+        }
+        return out;
+    }
+
+    private static List<Map<String, Object>> asMapList(Object raw) {
+        if (raw == null) return java.util.Collections.emptyList();
+        if (!(raw instanceof List<?> list)) return java.util.Collections.emptyList();
+        List<Map<String, Object>> out = new java.util.ArrayList<>();
+        for (Object item : list) {
+            if (item instanceof Map<?, ?>) {
+                out.add(asStringObjectMap(item));
+            }
+        }
+        return out;
+    }
+
+    private static Object enumConstant(Class<?> enumClass, String name, String fallback)
+            throws ReflectiveOperationException {
+        java.lang.reflect.Method valueOf = enumClass.getMethod("valueOf", String.class);
+        try {
+            return valueOf.invoke(null, name);
+        } catch (java.lang.reflect.InvocationTargetException ex) {
+            return valueOf.invoke(null, fallback);
+        }
     }
 
     private Proyectos mapToProyectos(Map<String, Object> m) {
@@ -466,7 +490,6 @@ public class MasterProjectService implements IMasterProjectService {
         catch (NumberFormatException e) { return java.math.BigDecimal.ZERO; }
     }
 
-    @SuppressWarnings("unchecked")
     private static List<Integer> toIntList(Object v) {
         if (v == null) return null;
         if (v instanceof List<?> l) {

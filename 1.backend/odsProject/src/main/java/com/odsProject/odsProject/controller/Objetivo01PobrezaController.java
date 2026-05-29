@@ -5,16 +5,11 @@ import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.AuditoriaOds01;
 import com.odsProject.odsProject.service.Objetivo01PobrezaService;
 import com.odsProject.odsProject.controller.interfaces.IObjetivo01PobrezaController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import java.util.Collections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +23,6 @@ import java.util.Optional;
 @RequestMapping("/api/ods/01")
 public class Objetivo01PobrezaController implements IObjetivo01PobrezaController {
 
-    private static final Logger log = LoggerFactory.getLogger(Objetivo01PobrezaController.class);
 
     @Autowired
     private Objetivo01PobrezaService objetivo01PobrezaService;

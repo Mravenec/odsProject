@@ -2,7 +2,6 @@ package com.odsProject.odsProject.controller;
 
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadores;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.VistaAdminDetalleIndicadores;
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.AuditoriaOds17;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas;
@@ -11,10 +10,6 @@ import com.odsProject.odsProject.controller.interfaces.IObjetivo17AlianzasContro
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import java.util.Collections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +23,6 @@ import java.util.Optional;
 @RequestMapping("/api/ods/17")
 public class Objetivo17AlianzasController implements IObjetivo17AlianzasController {
 
-    private static final Logger log = LoggerFactory.getLogger(Objetivo17AlianzasController.class);
 
     @Autowired
     private Objetivo17AlianzasService objetivo17AlianzasService;

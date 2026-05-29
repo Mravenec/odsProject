@@ -235,10 +235,8 @@ INSERT INTO proyectos (
 ) VALUES (
   6, 2, 2, 'Proyecto QA Consultor',
   'Proyecto mock completado para QA del rol consultor y exportación Excel',
-  '2024-01-01', '2024-12-31', 'Validar exportación Excel consultor', 'completado',
-  5, '2024-12-15 10:00:00',
-  'Proyecto auditado y cerrado correctamente. Indicadores y evidencias verificados.',
-  '2024-11-01 08:00:00'
+  '2024-01-01', '2024-12-31', 'Validar exportación Excel consultor', 'activo',
+  NULL, NULL, NULL, NULL
 );
 
 INSERT INTO proyecto_ods (proyecto_id, ods_id, es_primario) VALUES
@@ -264,6 +262,17 @@ INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, f
 
 INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES
   (5, 7, 3000), (5, 8, 100000);
+
+-- Cerrar auditoría DESPUÉS de indicadores/mediciones (Sprint 18: inmutabilidad post-cierre)
+USE ods_master;
+
+UPDATE proyectos SET
+  estado = 'completado',
+  auditado_por = 5,
+  auditado_en = '2024-12-15 10:00:00',
+  observaciones_cierre = 'Proyecto auditado y cerrado correctamente. Indicadores y evidencias verificados.',
+  fecha_envio_revision = '2024-11-01 08:00:00'
+WHERE id = 6;
 
 -- ────────────────────────────────────────────────────────────
 -- 6. FINALIZACIÓN

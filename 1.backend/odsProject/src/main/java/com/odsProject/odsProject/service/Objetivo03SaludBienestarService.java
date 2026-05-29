@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods03.tables.pojos.AuditoriaOds03;
 import com.odsProject.odsProject.repository.Objetivo03SaludBienestarRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo03SaludBienestarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienestarService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo03SaludBienestarService.class);
 
     @Autowired
     private Objetivo03SaludBienestarRepository objetivo03SaludBienestarRepository;
@@ -161,7 +165,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
             indicador.setValorActual(result);
             objetivo03SaludBienestarRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS03 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS03 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -172,7 +176,6 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds03")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -353,7 +356,7 @@ public class Objetivo03SaludBienestarService implements IObjetivo03SaludBienesta
             try {
                 objetivo03SaludBienestarRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

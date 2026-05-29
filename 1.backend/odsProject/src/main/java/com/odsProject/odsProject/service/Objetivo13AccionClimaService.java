@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods13.tables.pojos.AuditoriaOds13;
 import com.odsProject.odsProject.repository.Objetivo13AccionClimaticaRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo13AccionClimaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo13AccionClimaService.class);
 
     @Autowired
     private Objetivo13AccionClimaticaRepository objetivo13AccionClimaticaRepository;
@@ -143,7 +147,7 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
             indicador.setValorActual(result);
             objetivo13AccionClimaticaRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS13 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS13 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -154,7 +158,6 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds13")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -335,7 +338,7 @@ public class Objetivo13AccionClimaService implements IObjetivo13AccionClimaServi
             try {
                 objetivo13AccionClimaticaRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

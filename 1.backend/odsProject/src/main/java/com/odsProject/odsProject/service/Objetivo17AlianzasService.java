@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods17.tables.pojos.AuditoriaOds17;
 import com.odsProject.odsProject.repository.Objetivo17AlianzasRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo17AlianzasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo17AlianzasService implements IObjetivo17AlianzasService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo17AlianzasService.class);
 
     @Autowired
     private Objetivo17AlianzasRepository objetivo17AlianzasRepository;
@@ -156,7 +160,7 @@ public class Objetivo17AlianzasService implements IObjetivo17AlianzasService {
             indicador.setValorActual(result);
             objetivo17AlianzasRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS17 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS17 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -167,7 +171,6 @@ public class Objetivo17AlianzasService implements IObjetivo17AlianzasService {
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds17")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -348,7 +351,7 @@ public class Objetivo17AlianzasService implements IObjetivo17AlianzasService {
             try {
                 objetivo17AlianzasRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

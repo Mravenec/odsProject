@@ -109,7 +109,6 @@ public class EvaluationController {
 
     // ── Helpers de conversión ──────────────────────────────────────────────
 
-    @SuppressWarnings("unchecked")
     private Map<String, BigDecimal> toBigDecimalMap(Object raw) {
         Map<String, BigDecimal> result = new HashMap<>();
         if (raw instanceof Map<?, ?> m) {
@@ -133,7 +132,6 @@ public class EvaluationController {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private Set<String> toStringSet(Object raw) {
         Set<String> out = new java.util.LinkedHashSet<>();
         if (raw instanceof Iterable<?> it) {

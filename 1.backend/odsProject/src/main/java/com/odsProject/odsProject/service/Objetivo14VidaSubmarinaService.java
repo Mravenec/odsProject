@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods14.tables.pojos.AuditoriaOds14;
 import com.odsProject.odsProject.repository.Objetivo14VidaSubmarinaRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo14VidaSubmarinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo14VidaSubmarinaService implements IObjetivo14VidaSubmarinaService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo14VidaSubmarinaService.class);
 
     @Autowired
     private Objetivo14VidaSubmarinaRepository objetivo14VidaSubmarinaRepository;
@@ -142,7 +146,7 @@ public class Objetivo14VidaSubmarinaService implements IObjetivo14VidaSubmarinaS
             indicador.setValorActual(result);
             objetivo14VidaSubmarinaRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS14 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS14 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -153,7 +157,6 @@ public class Objetivo14VidaSubmarinaService implements IObjetivo14VidaSubmarinaS
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds14")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -334,7 +337,7 @@ public class Objetivo14VidaSubmarinaService implements IObjetivo14VidaSubmarinaS
             try {
                 objetivo14VidaSubmarinaRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }

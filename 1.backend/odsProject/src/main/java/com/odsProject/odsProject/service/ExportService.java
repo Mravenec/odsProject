@@ -12,21 +12,29 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class ExportService implements IExportService {
 
-    @Autowired private IMasterProjectRepository masterProjectRepository;
-    @Autowired private IDocumentRepository documentRepository;
-    @Autowired private LoginRepository loginRepository;
+    private final IMasterProjectRepository masterProjectRepository;
+    private final IDocumentRepository documentRepository;
+    private final LoginRepository loginRepository;
+
+    public ExportService(IMasterProjectRepository masterProjectRepository,
+                         IDocumentRepository documentRepository,
+                         LoginRepository loginRepository) {
+        this.masterProjectRepository = masterProjectRepository;
+        this.documentRepository = documentRepository;
+        this.loginRepository = loginRepository;
+    }
 
     @Override
     public byte[] exportProyecto(Integer proyectoId) {
@@ -57,7 +65,12 @@ public class ExportService implements IExportService {
 
     @Override
     public byte[] exportPlanificacionConsolidado() {
-        List<VistaResumenProyectosOds> proyectos = masterProjectRepository.findCompletedWithOds();
+        return exportPlanificacionConsolidado(null, null);
+    }
+
+    @Override
+    public byte[] exportPlanificacionConsolidado(Integer sedeId, Integer userId) {
+        List<VistaResumenProyectosOds> proyectos = resolveCompletedForExport(sedeId, userId);
 
         Map<String, List<VistaResumenProyectosOds>> bySede = proyectos.stream()
                 .collect(Collectors.groupingBy(
@@ -94,6 +107,29 @@ public class ExportService implements IExportService {
         } catch (Exception e) {
             throw new RuntimeException("Error generando consolidado: " + e.getMessage(), e);
         }
+    }
+
+    private List<VistaResumenProyectosOds> resolveCompletedForExport(Integer sedeId, Integer userId) {
+        List<VistaResumenProyectosOds> base;
+        if (userId != null) {
+            base = masterProjectRepository.findByUsuarioWithOds(userId).stream()
+                    .filter(p -> p.getEstado() != null
+                            && "completado".equalsIgnoreCase(String.valueOf(p.getEstado())))
+                    .toList();
+        } else {
+            base = masterProjectRepository.findCompletedWithOds();
+        }
+
+        if (sedeId == null) {
+            return base;
+        }
+
+        Set<Integer> idsInSede = masterProjectRepository.findBySede(sedeId).stream()
+                .map(Proyectos::getId)
+                .collect(Collectors.toSet());
+        return base.stream()
+                .filter(p -> p.getProyectoId() != null && idsInSede.contains(p.getProyectoId()))
+                .toList();
     }
 
     private void writeGeneralAuditoriaSheet(Workbook wb, Proyectos p, VistaResumenProyectosOds resumen) {

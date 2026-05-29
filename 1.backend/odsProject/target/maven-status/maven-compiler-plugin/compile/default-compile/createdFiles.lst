@@ -334,6 +334,7 @@ com\odsProject\odsProject\controller\Objetivo17AlianzasController.class
 com\odsProject\odsProject\database\jooq\ods10\tables\records\ProyectoIndicadorParametrosRecord.class
 com\odsProject\odsProject\database\jooq\ods02\routines\SpAdminReporteProyecto.class
 com\odsProject\odsProject\database\jooq\ods04\tables\records\ProyectoIndicadoresRecord.class
+com\odsProject\odsProject\service\ExportService.class
 com\odsProject\odsProject\database\jooq\ods_login\tables\records\IndicadorMasterRecord.class
 com\odsProject\odsProject\database\jooq\ods16\Tables.class
 com\odsProject\odsProject\database\jooq\ods03\tables\AuditoriaOds03.class
@@ -474,6 +475,7 @@ com\odsProject\odsProject\database\jooq\ods16\Routines.class
 com\odsProject\odsProject\database\jooq\ods10\tables\pojos\ProyectoIndicadores.class
 com\odsProject\odsProject\database\jooq\ods14\Ods14.class
 com\odsProject\odsProject\database\jooq\ods17\tables\pojos\ProyectoIndicadores.class
+com\odsProject\odsProject\service\FormulaUtils.class
 com\odsProject\odsProject\database\jooq\ods15\tables\pojos\ProyectoIndicadorParametros.class
 com\odsProject\odsProject\controller\interfaces\IExportController.class
 com\odsProject\odsProject\database\jooq\ods12\tables\pojos\ProyectoIndicadores.class
@@ -602,6 +604,7 @@ com\odsProject\odsProject\database\jooq\ods10\tables\records\VistaAdminAuditoria
 com\odsProject\odsProject\database\jooq\ods08\Ods08.class
 com\odsProject\odsProject\database\jooq\ods10\tables\records\MedicionesHistoricasRecord.class
 com\odsProject\odsProject\repository\MasterProjectRepository.class
+com\odsProject\odsProject\service\MasterProjectService.class
 com\odsProject\odsProject\database\jooq\ods02\tables\pojos\VistaAdminAuditoriaReciente.class
 com\odsProject\odsProject\database\jooq\ods11\Tables.class
 com\odsProject\odsProject\controller\interfaces\IObjetivo17AlianzasController.class
@@ -643,6 +646,7 @@ com\odsProject\odsProject\repository\interfaces\IObjetivo17AlianzasRepository.cl
 com\odsProject\odsProject\database\jooq\ods13\tables\pojos\MedicionesHistoricas.class
 com\odsProject\odsProject\repository\Objetivo06AguaSaneamientoRepository.class
 com\odsProject\odsProject\database\jooq\ods09\tables\pojos\ProyectoIndicadorParametros.class
+com\odsProject\odsProject\service\RoleAuthorizationService.class
 com\odsProject\odsProject\database\jooq\ods09\tables\records\ProyectoIndicadorParametrosRecord.class
 com\odsProject\odsProject\database\jooq\ods_login\tables\pojos\Sedes.class
 com\odsProject\odsProject\database\jooq\ods06\tables\pojos\VistaAdminAuditoriaReciente.class

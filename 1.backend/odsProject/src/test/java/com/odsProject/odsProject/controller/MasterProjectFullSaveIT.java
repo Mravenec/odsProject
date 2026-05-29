@@ -3,9 +3,6 @@ package com.odsProject.odsProject.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Sprint 6 — Test de integración del orquestador POST /api/projects/full.
  *

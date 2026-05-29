@@ -14,4 +14,11 @@ public interface IExportService {
 
     /** Consolidado de proyectos completados agrupado por sede. */
     byte[] exportPlanificacionConsolidado();
+
+    /**
+     * Consolidado con filtros opcionales (consultor / planificación).
+     * @param sedeId filtra por sede del proyecto; null = todas
+     * @param userId filtra por gestor (usuario_id); null = todos
+     */
+    byte[] exportPlanificacionConsolidado(Integer sedeId, Integer userId);
 }

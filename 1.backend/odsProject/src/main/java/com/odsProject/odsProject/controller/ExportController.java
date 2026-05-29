@@ -2,7 +2,6 @@ package com.odsProject.odsProject.controller;
 
 import com.odsProject.odsProject.controller.interfaces.IExportController;
 import com.odsProject.odsProject.service.interfaces.IExportService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ExportController implements IExportController {
 
-    @Autowired private IExportService exportService;
+    private final IExportService exportService;
+
+    public ExportController(IExportService exportService) {
+        this.exportService = exportService;
+    }
 
     @Override
     public ResponseEntity<byte[]> exportProyecto(Integer id) {
@@ -43,7 +46,7 @@ public class ExportController implements IExportController {
 
     @Override
     public ResponseEntity<byte[]> exportProjectsExcel(Integer sedeId, Integer userId) {
-        byte[] data = exportService.exportPlanificacionConsolidado();
+        byte[] data = exportService.exportPlanificacionConsolidado(sedeId, userId);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"proyectos-planificacion.xlsx\"")

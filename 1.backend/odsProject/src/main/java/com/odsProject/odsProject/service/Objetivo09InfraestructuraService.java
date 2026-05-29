@@ -5,12 +5,14 @@ import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndica
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.ProyectoIndicadorParametros;
 import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.MedicionesHistoricas;
-import com.odsProject.odsProject.database.jooq.ods09.tables.pojos.AuditoriaOds09;
 import com.odsProject.odsProject.repository.Objetivo09InfraestructuraRepository;
 import com.odsProject.odsProject.repository.MasterProjectRepository;
 import com.odsProject.odsProject.service.interfaces.IObjetivo09InfraestructuraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Optional;
  */
 @Service
 public class Objetivo09InfraestructuraService implements IObjetivo09InfraestructuraService {
+
+    private static final Logger log = LoggerFactory.getLogger(Objetivo09InfraestructuraService.class);
 
     @Autowired
     private Objetivo09InfraestructuraRepository objetivo09InfraestructuraRepository;
@@ -144,7 +148,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
             indicador.setValorActual(result);
             objetivo09InfraestructuraRepository.updateIndicador(indicador);
         } catch (Exception e) {
-            System.err.println("Error recalculando indicador ODS09 " + proyectoIndicadorId + ": " + e.getMessage());
+            log.warn("Error recalculando indicador ODS09 " + proyectoIndicadorId + ": " + e.getMessage());
         }
     }
 
@@ -155,7 +159,6 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
 
     @Override
     @org.springframework.transaction.annotation.Transactional("txManagerOds09")
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> saveMedicionAuditada(java.util.Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -336,7 +339,7 @@ public class Objetivo09InfraestructuraService implements IObjetivo09Infraestruct
             try {
                 objetivo09InfraestructuraRepository.saveMetaProyecto(nuevo);
             } catch (Exception ex) {
-                System.err.println("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
+                log.warn("[seedParametrosFromFormula] Variable '" + v + "': " + ex.getMessage());
             }
         }
     }
