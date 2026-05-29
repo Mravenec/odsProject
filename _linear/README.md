@@ -3,7 +3,7 @@
 Servidor MCP para Linear.app, bloqueado al proyecto **`linear_ods`**.  
 Versión 2.0 implementa la arquitectura de **orquestación multi-agente** con claim atómico, heartbeat, tool gating, manejo de fallos y traspaso de contexto entre agentes.
 
-> **Regla universal:** Todo problema, feature, bug o mejora que se traiga al proyecto — **sin excepción** — sigue el mismo ciclo documentado abajo: plan → HTML propuesta → aprobación → `.mjs` → multi-agente (Backlog → Doing → Testing → Done) → HTML resumen. No importa el dominio (login, indicadores, evidencia, reportes, etc.): el **proceso es siempre el mismo**; solo cambian los issues, archivos y gates que apliquen (BD, BE, FE o una sola capa).
+> **Regla universal:** Todo problema, feature, bug o mejora que se traiga al proyecto — **sin excepción** — sigue el mismo ciclo documentado abajo: **limpieza** → plan → HTML propuesta → aprobación → `.mjs` → multi-agente (Backlog → Doing → Testing → Done) → HTML resumen. **Primero se limpia** (Linear + carpetas `_linear`); **después** se redacta la propuesta. No importa el dominio (login, indicadores, evidencia, reportes, etc.): el **proceso es siempre el mismo**; solo cambian los issues, archivos y gates que apliquen (BD, BE, FE o una sola capa).
 
 ---
 
@@ -13,12 +13,14 @@ Versión 2.0 implementa la arquitectura de **orquestación multi-agente** con cl
 _linear/
 ├── plans/
 │   ├── _plantilla_ods.html           ← Plantilla visual ODS (copiar CSS y estructura)
-│   ├── plan_sprint_<nombre>.html     ← Fase 1 — propuesta (PENDIENTE → APROBADO)
-│   └── resumen_sprint_<nombre>.html  ← Fase 5 — cierre obligatorio (DONE)
+│   ├── plan_sprint_<nombre>.html     ← Fase 2 — propuesta del sprint **activo** (PENDIENTE → APROBADO)
+│   └── resumen_sprint_<nombre>.html  ← Fase 6 — cierre del sprint activo (DONE)
 ├── scripts/
-│   ├── sprint_*.mjs      ← Orquestación Linear (Fase 3 — solo tras aprobación)
-│   ├── linear-lib.mjs    ← Checklist + estados compartidos
-│   └── resumen_*.html    ← Referencia visual maestra (ej. resumen_sprint_evidence_section.html)
+│   ├── sprint_<nombre>.mjs           ← Orquestación Linear del sprint **activo** (Fase 4 — solo tras aprobación)
+│   ├── linear-lib.mjs                ← Checklist + estados compartidos (siempre)
+│   ├── linear-comment.mjs            ← Comentarios Linear (siempre)
+│   ├── linear-update-state.mjs       ← Estados y checklist (siempre)
+│   └── resumen_sprint_evidence_section.html  ← Referencia visual de estilo (siempre; no es sprint activo)
 ├── src/
 │   └── index.ts          ← Fuente TypeScript completa
 ├── dist/
@@ -219,35 +221,82 @@ fail_issue                           ← Si algo falla en Doing/Testing; issue v
 
 ---
 
-## 🎯 Pipeline de orquestación: Plan → HTML → MJS → Multi-agente → Resumen
+## 🎯 Pipeline de orquestación: Limpieza → Plan → HTML → MJS → Multi-agente → Resumen
 
-Este es el **orden lógico obligatorio para cualquier trabajo** en el repo — feature nueva, corrección de bug, cambio de schema, solo frontend, etc. La IA no debe saltarse fases ni crear issues en Linear sin aprobación humana del plan HTML. **Al terminar todas las tareas del problema**, debe generarse un **HTML de resumen** con lo implementado.
+Este es el **orden lógico obligatorio para cualquier trabajo** en el repo — feature nueva, corrección de bug, cambio de schema, solo frontend, etc. La IA **no** debe redactar la propuesta HTML ni crear issues en Linear sin haber **limpiado antes** el sprint anterior. **Al terminar todas las tareas del problema**, debe generarse un **HTML de resumen** con lo implementado.
 
-### Las 6 fases (con gates)
+### Las 7 fases (con gates)
 
 | Fase | Qué | Quién | Gate (no avanzar sin…) |
 |---|---|---|---|
-| **0 — Plan** | Análisis, plan de ataque, dependencias, roles | IA (orquestador) | Entender alcance y orden lógico |
-| **1 — HTML propuesta** | Documento visual: issues, pipeline, archivos, paralelismo | IA | `_linear/plans/plan_sprint_<nombre>.html` |
-| **2 — Aprobación** | Humano revisa el HTML propuesta | Tú | ✅ explícito en chat o comentario Linear |
-| **3 — MJS** | Script que crea epic, sprint, issues y `blocks` en Linear | IA | Solo **después** de aprobación |
-| **4 — Multi-agente** | Backlog → Doing → Testing → Done; checklist en Doing; pruebas locales en Testing | IA + MCP | Todos los issues del **problema actual** en **Done** + aviso publicado |
-| **5 — HTML resumen** | Documento de cierre: qué se hizo, archivos, issues cerrados | IA (orquestador) | `_linear/plans/resumen_sprint_<nombre>.html` (nombre = problema o sprint) + epic **Completed** |
+| **0 — Limpieza** | Vaciar Linear (`cleanup`) + borrar artefactos del sprint anterior en `_linear/` | IA (orquestador) | Sprint anterior cerrado (Done + resumen + epic Completed) **o** confirmación explícita de descarte |
+| **1 — Plan** | Análisis, plan de ataque, dependencias, roles | IA (orquestador) | Limpieza hecha; alcance claro |
+| **2 — HTML propuesta** | Documento visual: issues, pipeline, archivos, paralelismo | IA | `_linear/plans/plan_sprint_<nombre>.html` (único plan activo en `plans/`) |
+| **3 — Aprobación** | Humano revisa el HTML propuesta | Tú | ✅ explícito en chat o comentario Linear |
+| **4 — MJS** | Script que crea epic, sprint, issues y `blocks` en Linear | IA | Solo **después** de aprobación |
+| **5 — Multi-agente** | Backlog → Doing → Testing → Done; checklist en Doing; pruebas locales en Testing | IA + MCP | Todos los issues del **problema actual** en **Done** + aviso publicado |
+| **6 — HTML resumen** | Documento de cierre: qué se hizo, archivos, issues cerrados | IA (orquestador) | `_linear/plans/resumen_sprint_<nombre>.html` + epic **Completed** |
 
-> **Siguiente sprint:** ver **🔄 Arranque de trabajo nuevo** (cleanup Linear → scripts → epic).
+> **Regla de oro:** **limpiar → proponer**. Nunca acumular `plan_sprint_*.html`, `resumen_sprint_*.html` ni `sprint_*.mjs` de sprints pasados. Ver **🧹 Fase 0 — Limpieza obligatoria**.
 
 ```
-  [Plan IA]  →  [plan_sprint_N.html]  →  [✅ Aprobado]  →  [sprint_N.mjs create]
-                                                                    ↓
-                                              Linear issues + dependencias blocks
-                                                                    ↓
-                         database-agent ──► backend-agent ──► frontend-agent
-                         (Backlog → Doing → Testing → Done — tarea por tarea)
-                                                                    ↓
-                                    [resumen_sprint_N.html]  ← OBLIGATORIO al cerrar sprint
+  [🧹 Limpieza]  →  [Plan IA]  →  [plan_sprint_N.html]  →  [✅ Aprobado]  →  [sprint_N.mjs create]
+                                                                                      ↓
+                                                            Linear issues + dependencias blocks
+                                                                                      ↓
+                                   database-agent ──► backend-agent ──► frontend-agent
+                                   (Backlog → Doing → Testing → Done — tarea por tarea)
+                                                                                      ↓
+                                              [resumen_sprint_N.html]  ← OBLIGATORIO al cerrar sprint
+                                                                                      ↓
+                                              [🧹 Limpieza]  ← antes del siguiente plan_sprint_*.html
 ```
 
-**Ejemplo histórico (no es el único caso válido):** Sprint 7 — evidencia en proyectos — demostró este flujo con `scripts/sprint_evidence_section.mjs` y `scripts/resumen_sprint_evidence_section.html`. **Cada problema nuevo** debe tener su propio `plan_sprint_<nombre>.html`, `sprint_<nombre>.mjs` y `resumen_sprint_<nombre>.html`.
+**Cada problema nuevo** tiene su propio trío `plan_sprint_<nombre>.html` + `sprint_<nombre>.mjs` + `resumen_sprint_<nombre>.html` — **solo uno activo a la vez** en `_linear/plans/` y `_linear/scripts/`.
+
+### 🧹 Fase 0 — Limpieza obligatoria (antes de la propuesta)
+
+**Antes** de crear o editar `plan_sprint_<nombre>.html`, la IA debe limpiar el sprint anterior. **No se acumulan** planes, resúmenes ni scripts de problemas ya cerrados.
+
+#### Orden obligatorio
+
+```
+1. Cerrar sprint anterior (si existía): todos Done + resumen HTML + epic Completed en Linear
+2. Linear:  node scripts/sprint_<anterior>.mjs cleanup     ← borra issues del epic
+3. Local:   borrar artefactos del sprint anterior en _linear/  (tabla abajo)
+4. Recién entonces: Fase 1 (plan) → Fase 2 (HTML propuesta)
+```
+
+#### Qué borrar en `_linear/` (sprint anterior)
+
+| Ubicación | Borrar | Conservar siempre |
+|---|---|---|
+| `plans/plan_sprint_<viejo>.html` | ✅ Sí | `plans/_plantilla_ods.html` |
+| `plans/resumen_sprint_<viejo>.html` | ✅ Sí | — |
+| `scripts/sprint_<viejo>.mjs` | ✅ Sí | `linear-lib.mjs`, `linear-comment.mjs`, `linear-update-state.mjs` |
+| `scripts/resumen_sprint_evidence_section.html` | ❌ No | Referencia de estilo (no es sprint activo) |
+| `plans/plan_sprint_<nuevo>.html` del sprint **actual** | ❌ No | Es la propuesta en curso |
+
+> **Un solo sprint activo:** en `plans/` debe quedar como máximo **un** `plan_sprint_*.html` (el del trabajo actual) y, al cerrar, **un** `resumen_sprint_*.html` hasta la siguiente limpieza. En `scripts/` solo **un** `sprint_*.mjs` del sprint activo.
+
+#### Checklist rápido para la IA
+
+```bash
+cd _linear
+
+# 1. Linear — solo si el sprint anterior tenía .mjs y epic activo
+node scripts/sprint_<anterior>.mjs cleanup
+
+# 2. Local — eliminar archivos del sprint anterior (PowerShell ejemplo)
+# Remove-Item plans/plan_sprint_<viejo>.html, plans/resumen_sprint_<viejo>.html -ErrorAction SilentlyContinue
+# Remove-Item scripts/sprint_<viejo>.mjs -ErrorAction SilentlyContinue
+
+# 3. Verificar que solo quedan plantilla + referencia + sprint actual
+# plans/: _plantilla_ods.html + plan_sprint_<actual>.html
+# scripts/: linear-*.mjs + sprint_<actual>.mjs (si ya aprobado) + resumen_sprint_evidence_section.html
+```
+
+> **Regla:** si el humano pide trabajar en un sprint nuevo (p. ej. `chat_planificacion`), la IA **empieza por Fase 0** aunque el sprint anterior no esté documentado en el chat — pregunta o infiere qué archivos borrar.
 
 ### Orden lógico de capas (nunca invertir)
 
@@ -508,10 +557,10 @@ Los archivos `plan_sprint_<nombre>.html` y `resumen_sprint_<nombre>.html` **comp
 **Cómo crear un HTML nuevo:**
 
 ```bash
-# Propuesta (Fase 1)
+# Propuesta (Fase 2)
 copy _linear/plans/_plantilla_ods.html _linear/plans/plan_sprint_<nombre>.html
 
-# Resumen (Fase 5)
+# Resumen (Fase 6)
 copy _linear/plans/_plantilla_ods.html _linear/plans/resumen_sprint_<nombre>.html
 ```
 
@@ -566,7 +615,7 @@ Título con gradiente: `<h1>…<br><em>subtítulo</em></h1>` — el `<em>` lleva
 
 > **Regla para IAs:** al generar HTML, partir de `_plantilla_ods.html` o duplicar `resumen_sprint_evidence_section.html` y **sustituir contenido** — nunca regenerar CSS desde cero.
 
-### Fase 1 — Qué debe incluir el HTML propuesta (`_linear/plans/plan_sprint_<nombre>.html`)
+### Fase 2 — Qué debe incluir el HTML propuesta (`_linear/plans/plan_sprint_<nombre>.html`)
 
 Plantilla mínima de **contenido** (estilo visual: sección **🎨 Estilo visual HTML** y `_plantilla_ods.html`):
 
@@ -580,7 +629,7 @@ Plantilla mínima de **contenido** (estilo visual: sección **🎨 Estilo visual
 
 > **Regla:** ningún `node scripts/sprint_*.mjs create` hasta que el HTML muestre **APROBADO**.
 
-### Fase 3 — Qué debe incluir el `.mjs`
+### Fase 4 — Qué debe incluir el `.mjs`
 
 Ubicación: `_linear/scripts/sprint_<nombre>.mjs` — **un script por problema/sprint** (el `<nombre>` describe el trabajo: `login`, `indicadores`, `evidence_section`, etc.).
 
@@ -596,7 +645,7 @@ Comandos mínimos del script:
 | `state ODS-N "In Progress"` | Pasar a **Doing** (al reclamar / empezar) |
 | `state ODS-N Testing` | Pasar a **Testing** — pruebas locales (checklist ya completo) |
 | `state ODS-N Done` | Cerrar — **bloqueado** si checklist incompleto o Testing omitido |
-| `cleanup` | Elimina **todos los issues** del epic del script (ver sección **🔄 Arranque de trabajo nuevo**) |
+| `cleanup` | Elimina **todos los issues** del epic del script (ver **🧹 Fase 0** y **🔄 Arranque de trabajo nuevo**) |
 
 Cada issue creado debe tener:
 
@@ -607,7 +656,7 @@ Cada issue creado debe tener:
 - Comandos concretos (`drop_db` solo si aplica)  
 - `blocks` hacia el issue anterior en la cadena lógica  
 
-### Fase 4 — Una tarea a la vez **por cadena**; multi-epic en paralelo si no chocan
+### Fase 5 — Una tarea a la vez **por cadena**; multi-epic en paralelo si no chocan
 
 Tras `node scripts/sprint_<nombre>.mjs create`, los issues nacen en **Backlog**. **Dentro de un mismo epic**, no se trabajan varios issues en paralelo salvo que el plan HTML lo declare. **Entre epics independientes**, sí puede haber varios agentes activos a la vez (ver **Multi-epic**). Ciclo **por cada issue**:
 
@@ -679,7 +728,7 @@ node scripts/linear-update-state.mjs ODS-N Done
 
 El agente del **siguiente** issue en la cadena solo verá la tarea disponible cuando ODS-N esté **Done** con **checklist completo** (y, si aplica, ítem 1 de handoff ya marcado en su ticket).
 
-### Fase 4 — Rol del orquestador (`role:orchestrator`)
+### Fase 5 — Rol del orquestador (`role:orchestrator`)
 
 ```
 1. Revisar plan HTML aprobado
@@ -694,7 +743,7 @@ El agente del **siguiente** issue en la cadena solo verá la tarea disponible cu
      comment/artifacts opcional          ← no ordena
      watchdog_check
 4. status — todos Done + checklists completos
-5. Crear resumen_sprint_<nombre>.html en _linear/plans/   ← Fase 5
+5. Crear resumen_sprint_<nombre>.html en _linear/plans/   ← Fase 6
 ```
 
 Handoff entre agentes: **primero checklist** (ítems propios + cruzados en descripción); **después** opcionalmente `outputArtifacts` / comentario para contexto en `get_issue_context`:
@@ -709,9 +758,9 @@ Handoff entre agentes: **primero checklist** (ítems propios + cruzados en descr
 }
 ```
 
-### Alcance por tipo de problema (mismas 6 fases, distintas capas)
+### Alcance por tipo de problema (mismas 7 fases, distintas capas)
 
-No todos los problemas usan DB + BE + FE. **El proceso no cambia**; cambia qué issues incluye el `.mjs`:
+No todos los problemas usan DB + BE + FE. **El proceso no cambia** (incluye Fase 0); cambia qué issues incluye el `.mjs`:
 
 | Tipo de problema | Issues típicos en el `.mjs` | Gates que aplican |
 |---|---|---|
@@ -724,15 +773,16 @@ Si un gate no aplica, **no se crea** el issue correspondiente — pero plan HTML
 
 ### Plantilla de secuencia (cualquier problema)
 
-1. **Plan IA** — analizar alcance, capas afectadas (DB/BE/FE), dependencias.  
-2. **HTML propuesta** — `plan_sprint_<nombre>.html` con issues, pipeline y checklists.  
-3. **Aprobación humana** — ✅ explícita.  
-4. **`sprint_<nombre>.mjs create`** — issues en Backlog + relaciones `blocks` según el problema.  
-5. **Agentes por rol** — `next` → Doing → checklist → Testing → Done + aviso, **uno por uno**.  
-6. **Orquestador** — `status` hasta todos Done.  
-7. **HTML resumen** — `resumen_sprint_<nombre>.html` con lo implementado y probado.
+1. **Fase 0 — Limpieza** — Linear `cleanup` + borrar artefactos del sprint anterior en `_linear/`.  
+2. **Plan IA** — analizar alcance, capas afectadas (DB/BE/FE), dependencias.  
+3. **HTML propuesta** — `plan_sprint_<nombre>.html` con issues, pipeline y checklists.  
+4. **Aprobación humana** — ✅ explícita.  
+5. **`sprint_<nombre>.mjs create`** — issues en Backlog + relaciones `blocks` según el problema.  
+6. **Agentes por rol** — `next` → Doing → checklist → Testing → Done + aviso, **uno por uno**.  
+7. **Orquestador** — `status` hasta todos Done.  
+8. **HTML resumen** — `resumen_sprint_<nombre>.html` con lo implementado y probado.
 
-### Fase 5 — HTML de resumen post-sprint (obligatorio en todo problema)
+### Fase 6 — HTML de resumen post-sprint (obligatorio en todo problema)
 
 Cuando **todas** las tareas del problema actual están en **Done** en Linear, la IA debe crear:
 
@@ -761,14 +811,14 @@ Copiar desde `_plantilla_ods.html` o `resumen_sprint_evidence_section.html` — 
 - Marcar el epic como **Completed** y comentar con enlace o ruta al resumen (ver **🔄 Arranque de trabajo nuevo → Ciclo de vida del Epic**).
 
 ```bash
-# Verificar que el sprint está listo para Fase 5
+# Verificar que el sprint está listo para Fase 6
 node scripts/sprint_<nombre>.mjs status    # todos Done, checklist completo
 # Luego crear resumen_sprint_<nombre>.html en _linear/plans/
 ```
 
-### 🔄 Arranque de trabajo nuevo — Linear, scripts y Epic
+### 🔄 Arranque de trabajo nuevo — Linear, carpetas locales y Epic
 
-Al pasar de un sprint/problema a otro, el orden importa. **Linear primero, scripts después.** No borres el `.mjs` del sprint anterior hasta haber ejecutado `cleanup` (si aplica): ese comando conoce el `EPIC_NAME` del script.
+Al pasar de un sprint/problema a otro, el orden importa: **primero limpiar, luego proponer**. No borres el `.mjs` del sprint anterior hasta haber ejecutado `cleanup` (si aplica): ese comando conoce el `EPIC_NAME` del script.
 
 #### Al iniciar — ¿qué se limpia?
 
@@ -776,21 +826,23 @@ Al pasar de un sprint/problema a otro, el orden importa. **Linear primero, scrip
 |---|---|---|
 | **Issues en Backlog** (y en cualquier estado) del epic del sprint que cierras | ✅ **Sí** | `cleanup` borra **todos** los issues de ese epic — Backlog, Doing, Testing, Done, etc. |
 | **Backlog del equipo** (issues de *otros* epics o sueltos) | ❌ **No** | `cleanup` solo toca el `EPIC_NAME` del `.mjs` que ejecutas |
+| **`plans/plan_sprint_<viejo>.html`** | ✅ **Sí** | Solo queda el plan del sprint **activo** (+ `_plantilla_ods.html`) |
+| **`plans/resumen_sprint_<viejo>.html`** | ✅ **Sí** | Tras Fase 6 del sprint anterior; no acumular historial en repo |
+| **`scripts/sprint_<viejo>.mjs`** | ✅ **Sí** | Tras `cleanup` + resumen; utilidades `linear-*.mjs` se conservan |
 | **Epics** (proyectos en Linear) | ❌ **No se borran** | Se **marcan Completed** al cerrar; al reutilizar el mismo nombre se **actualizan** (descripción, estado). Epic nuevo = nombre nuevo en el `.mjs` |
 | **Cycles / sprints** en Linear | ❌ **No** | Quedan como historial |
-| **`_linear/scripts/` completo** | ❌ **No** | Utilidades compartidas (`linear-lib.mjs`, `linear-comment.mjs`, `linear-update-state.mjs`) **siempre** se conservan |
-| **`sprint_<viejo>.mjs`** del sprint cerrado | ⚠️ **Opcional** | Borrar o archivar **después** de `cleanup` + resumen HTML — no es obligatorio |
-| **`plans/`** (plan y resumen HTML) | ❌ **No** | Historial — se **añade** el trío del nuevo problema |
+| **`linear-lib.mjs`, `linear-comment.mjs`, `linear-update-state.mjs`** | ❌ **No** | Utilidades compartidas — **siempre** |
+| **`scripts/resumen_sprint_evidence_section.html`** | ❌ **No** | Referencia visual de estilo — **siempre** |
+| **`plans/_plantilla_ods.html`** | ❌ **No** | Plantilla — **siempre** |
 
-En una frase: al iniciar **sí** vacías los issues del epic anterior (incluido lo que estaba en Backlog), **no** borras epics ni todo `_linear/scripts`, y creas archivos **nuevos** para el problema nuevo.
+En una frase: al iniciar **limpias Linear y carpetas `_linear`** del sprint anterior; **después** redactas `plan_sprint_<nuevo>.html`.
 
 ```
-Orden al reutilizar el mismo epic:
-  1. Cerrar sprint anterior (Done + resumen + epic Completed)
-  2. cleanup  →  issues del epic fuera (Backlog incluido)
-  3. update_project  →  epic reutilizado al día
-  4. plan HTML → aprobación → sprint_<nuevo>.mjs → create
-  5. (opcional) borrar sprint_<viejo>.mjs
+Orden al arrancar sprint nuevo:
+  1. Cerrar sprint anterior (Done + resumen Fase 6 + epic Completed)
+  2. cleanup  →  issues del epic fuera (Linear)
+  3. Borrar plan/resumen/sprint_*.mjs del sprint anterior (_linear/)
+  4. plan_sprint_<nuevo>.html  →  ✅ aprobación  →  sprint_<nuevo>.mjs  →  create
 ```
 
 #### Cierre obligatorio del sprint anterior
@@ -821,22 +873,22 @@ node scripts/sprint_<nombre>.mjs cleanup
 
 `getOrCreateEpic` en `create` **reutiliza** un epic existente por nombre; **no** actualiza descripción ni estado. Si reutilizas el mismo `EPIC_NAME`, ejecuta `cleanup` y luego actualiza el epic manualmente (UI o MCP `update_project`) antes de volver a crear issues.
 
-#### Scripts — qué conservar y qué archivar
+#### Scripts y plans — qué conservar y qué borrar
 
 | Archivo | Al iniciar trabajo nuevo |
 |---|---|
 | `linear-lib.mjs`, `linear-comment.mjs`, `linear-update-state.mjs` | **Conservar** — utilidades compartidas |
-| `scripts/resumen_sprint_*.html` (referencia visual) | **Conservar** — plantilla maestra de estilo |
+| `scripts/resumen_sprint_evidence_section.html` | **Conservar** — referencia visual de estilo |
 | `plans/_plantilla_ods.html` | **Conservar** |
-| `plans/plan_sprint_*.html`, `plans/resumen_sprint_*.html` | **Conservar** — historial del problema |
-| `sprint_<nombre_viejo>.mjs` | **Opcional** — archivar o borrar **después** de `cleanup` + resumen HTML |
+| `plans/plan_sprint_<viejo>.html`, `plans/resumen_sprint_<viejo>.html` | **Borrar** — tras Fase 6 del sprint anterior |
+| `sprint_<nombre_viejo>.mjs` | **Borrar** — tras `cleanup` + resumen HTML |
 
 Para el **nuevo** problema se crea un trío nuevo (no se reutiliza el `.mjs` de otro sprint salvo que sea continuación explícita del mismo epic):
 
 ```
-_linear/plans/plan_sprint_<nuevo>.html      ← Fase 1
-_linear/scripts/sprint_<nuevo>.mjs          ← Fase 3
-_linear/plans/resumen_sprint_<nuevo>.html   ← Fase 5 (al cerrar)
+_linear/plans/plan_sprint_<nuevo>.html      ← Fase 2 (tras limpieza)
+_linear/scripts/sprint_<nuevo>.mjs          ← Fase 4 (tras aprobación)
+_linear/plans/resumen_sprint_<nuevo>.html   ← Fase 6 (al cerrar)
 ```
 
 #### Ciclo de vida del Epic
@@ -848,13 +900,13 @@ Los issues se agrupan bajo un **Epic** (proyecto en Linear). El `.mjs` lo crea c
 | **Progress** (% issues Done) | Cada ticket pasa a Done | ✅ Linear |
 | **Estado** (Planned → In Progress → Completed) | Inicio / cierre del sprint | ❌ MCP `update_project` o UI |
 | **Descripción**, **targetDate** | Nuevo sprint en epic reutilizado | ❌ Manual al iniciar |
-| **Comentario con resumen HTML** | Todos los tickets Done | ❌ Manual al cerrar (Fase 5) |
+| **Comentario con resumen HTML** | Todos los tickets Done | ❌ Manual al cerrar (Fase 6) |
 
 | Momento | Acción | Cómo |
 |---|---|---|
 | **Durante** el sprint | Progreso visible según tickets Done | Linear — **no requiere acción por ticket** |
 | **Al iniciar** sprint en epic **reutilizado** | Actualizar **descripción** (objetivo nuevo), **targetDate** si aplica, estado **In Progress** / **Planned** | MCP `update_project` o UI — `create` **no** sobrescribe la descripción |
-| **Al cerrar** sprint (Fase 5) | Estado **Completed**; comentario con ruta al resumen | UI Linear o MCP `update_project` |
+| **Al cerrar** sprint (Fase 6) | Estado **Completed**; comentario con ruta al resumen | UI Linear o MCP `update_project` |
 
 Comentario recomendado al cerrar el epic:
 
@@ -869,32 +921,33 @@ Herramientas MCP: `list_projects`, `update_project` (campos: `name`, `descriptio
 **A — Mismo dominio, sprint nuevo** (reutilizar epic, ej. otra iteración de «Evidencia / UX»):
 
 ```
-1. Verificar resumen del sprint anterior (Fase 5 completa)
+1. Verificar resumen del sprint anterior (Fase 6 completa)
 2. node scripts/sprint_<nombre>.mjs cleanup          ← Linear: borrar issues viejos
-3. update_project: descripción + estado del epic     ← Epic al día
-4. plan_sprint_<nuevo>.html → ✅ aprobación
-5. Actualizar sprint_<nombre>.mjs (SPRINT_NAME, issues) o crear sprint_<nuevo>.mjs
-6. node scripts/sprint_<nombre>.mjs create
+3. Borrar plan/resumen/sprint_*.mjs del sprint anterior en _linear/
+4. update_project: descripción + estado del epic     ← Epic al día
+5. plan_sprint_<nuevo>.html → ✅ aprobación
+6. sprint_<nuevo>.mjs → node scripts/sprint_<nuevo>.mjs create
 ```
 
-**B — Problema distinto** (ej. login, indicadores — epic nuevo):
+**B — Problema distinto** (ej. login, chat planificación — epic nuevo):
 
 ```
-1. No hace falta cleanup del epic anterior — dejarlo como historial Completed
+1. Fase 0: cleanup + borrar artefactos _linear/ del sprint anterior (si existían)
 2. plan_sprint_<nuevo>.html → ✅ aprobación
-3. sprint_<nuevo>.mjs con EPIC_NAME distinto (ej. "Login / Auth")
+3. sprint_<nuevo>.mjs con EPIC_NAME distinto (ej. "Chat planificación")
 4. node scripts/sprint_<nuevo>.mjs create
-5. Al cerrar: resumen + epic Completed
+5. Al cerrar: resumen Fase 6 + epic Completed
 ```
 
 | Pregunta | Respuesta |
 |---|---|
 | ¿Se limpia el Backlog de Linear al iniciar? | **Sí**, los issues del epic del sprint que cierras (cualquier estado). **No** el backlog de otros epics |
+| ¿Se borran plan/resumen HTML viejos en `_linear/plans/`? | **Sí** — no acumular; solo sprint activo + plantilla |
 | ¿Se borran los Epics? | **No** — Completed al cerrar; reutilizar o crear uno nuevo |
-| ¿Se limpia todo `_linear/scripts/`? | **No** — solo opcionalmente el `sprint_*.mjs` viejo; utilidades y referencias HTML se quedan |
-| ¿Limpiar Linear antes de scripts? | **Sí** — `cleanup` del `.mjs` del sprint que cierras |
+| ¿Se limpia todo `_linear/scripts/`? | **No** — solo el `sprint_<viejo>.mjs`; utilidades y referencia HTML se quedan |
+| ¿Limpiar antes de la propuesta? | **Sí** — Fase 0 obligatoria: Linear `cleanup` + borrar artefactos locales |
 | ¿Actualizar el epic? | **Sí** — al iniciar (descripción/estado) y al cerrar (Completed + enlace al resumen) |
-| ¿Epic reutilizado vs epic nuevo? | Mismo dominio → `cleanup` + actualizar epic. Problema distinto → epic nuevo, sin tocar el anterior |
+| ¿Epic reutilizado vs epic nuevo? | Mismo dominio → `cleanup` + limpieza local + actualizar epic. Problema distinto → epic nuevo + limpieza local igualmente |
 
 ---
 
@@ -1051,7 +1104,7 @@ Si el issue de BD ya ejecutó el pipeline (`schemaChanged: true`, `jooqRegenerat
 
 ## 💬 Ejemplos con Claude (válidos para cualquier problema)
 
-Al pedir trabajo a la IA, **siempre** debe seguir las 6 fases. Los ejemplos abajo son ilustrativos — sustituye el dominio (login, indicadores, reportes, etc.) manteniendo el mismo proceso.
+Al pedir trabajo a la IA, **siempre** debe seguir las **7 fases** (empezando por **Fase 0 — Limpieza**). Los ejemplos abajo son ilustrativos — sustituye el dominio (login, indicadores, reportes, etc.) manteniendo el mismo proceso.
 
 ### Setup inicial (una sola vez)
 ```
@@ -1061,8 +1114,10 @@ Configura el workflow de Linear para multi-agente
 ### Traer un problema nuevo (flujo completo obligatorio)
 ```
 Tengo este problema: [describe bug, feature o mejora].
-Sigue el README de _linear: plan → plan_sprint_<nombre>.html → espera mi aprobación
-→ sprint_<nombre>.mjs → multi-agente Backlog/Doing/Testing/Done → resumen HTML.
+Sigue el README de _linear:
+  Fase 0 — limpiar sprint anterior (Linear cleanup + borrar plan/resumen/sprint_*.mjs viejos)
+  → plan → plan_sprint_<nombre>.html → espera mi aprobación
+  → sprint_<nombre>.mjs → multi-agente Backlog/Doing/Testing/Done → resumen HTML.
 Determina qué capas aplican (DB, BE, FE) y qué gates no hacen falta.
 ```
 
