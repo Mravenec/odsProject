@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--
   PROPUESTA DE SPRINT — chat_planificacion
-  Fase 1 del pipeline _linear (Plan → HTML propuesta → Aprobación → MJS → Multi-agente → Resumen).
-  Estilo visual: copiado de _linear/plans/_plantilla_ods.html (NO modificar CSS).
+  Fase 2 del pipeline _linear (Fase 0 Limpieza → Plan → HTML propuesta → Aprobación → MJS → Multi-agente → Resumen).
+  Orquestación Linear: cadena serial ODS-1→…→ODS-5 (un agente activo por issue; sin paralelo en archivos compartidos).
   Estado: PENDIENTE de aprobación humana. No ejecutar sprint_chat_planificacion.mjs create hasta APROBADO.
 -->
 <html lang="es">
@@ -75,10 +75,12 @@
     <div class="chip">Capas <span>DB · BE · FE</span></div>
     <div class="chip">Schema <span>2 tablas nuevas</span></div>
     <div class="chip">ENUM estado <span>intacto</span></div>
+    <div class="chip">Linear <span>Epic «Chat Planificación»</span></div>
+    <div class="chip">Orden <span>serial ODS-1→5</span></div>
   </div>
 </header>
 
-<div class="al pending"><div>⏳</div><div><strong>Propuesta pendiente de aprobación.</strong> Revisar reglas, issues, pipeline y checklists. No ejecutar <code>node scripts/sprint_chat_planificacion.mjs create</code> hasta que esta propuesta muestre <strong>APROBADO</strong> (Fase 2 del README de _linear).</div></div>
+<div class="al pending"><div>⏳</div><div><strong>Propuesta pendiente de aprobación.</strong> Revisar reglas, API, cadena <code>blocks</code>, checklists y handoffs. Tras <strong>APROBADO</strong>: Fase 4 → escribir <code>sprint_chat_planificacion.mjs</code> → <code>create</code>. Un issue activo a la vez (<code>next</code> → Doing → Testing → Done).</div></div>
 
 <section class="sec">
   <div class="sl">Objetivo</div>
@@ -125,11 +127,11 @@
     <div class="pla">→</div>
     <div class="pln"><div class="plname">JOOQ</div><div class="plnote">spring-boot:run regenera POJOs</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">BE</div><div class="plnote">Chat + Transición (IREPO→…→.http)</div></div>
+    <div class="pln"><div class="plname">BE</div><div class="plnote">ODS-2 Chat → ODS-3 Transición (serial)</div></div>
     <div class="pla">→</div>
     <div class="pln"><div class="plname">.http</div><div class="plnote">gate frontend (2xx)</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">FE</div><div class="plnote">service → hook → UI → QA</div></div>
+    <div class="pln"><div class="plname">FE</div><div class="plnote">ODS-4 Chat → ODS-5 Transición (serial)</div></div>
   </div>
   <table class="tbl">
     <thead><tr><th>Gate</th><th>Condición para desbloquear</th></tr></thead>
@@ -137,7 +139,7 @@
       <tr><td>GATE_SQL</td><td>SQL mergeado en <code>0.database/propuesta_actual/2. ods_master_database.sql</code> + mocks; script temporal borrado.</td></tr>
       <tr><td>GATE_BD</td><td><code>drop_db.py</code> → <code>setup_db.py</code> → <code>load_mocks.py</code> sin error.</td></tr>
       <tr><td>GATE_JOOQ</td><td><code>mvn spring-boot:run</code> → POJOs de las 2 tablas nuevas; <code>jooqRegenerated: true</code>.</td></tr>
-      <tr><td>GATE_HTTP</td><td><code>chat_planificacion.http</code> con respuestas 2xx — frontend no inicia antes.</td></tr>
+      <tr><td>GATE_HTTP</td><td><code>chat_planificacion.http</code> (ODS-2) y <code>transicion_planificacion.http</code> (ODS-3) con 2xx — FE no inicia antes.</td></tr>
       <tr><td>GATE_FE</td><td><code>npm run dev</code> flujo manual OK + <code>npm run build</code> exit 0.</td></tr>
     </tbody>
   </table>
@@ -184,24 +186,78 @@
 </section>
 
 <section class="sec">
-  <div class="sl">Dependencias</div>
-  <div class="st">Qué bloquea a qué (<code>blocks</code> en Linear)</div>
-  <div class="cb2"><span class="da">ODS-1 (DB)</span> ──blocks──&gt; <span class="dk">ODS-2 (BE Chat)</span> ──blocks──&gt; <span class="da">ODS-4 (FE Chat)</span>
-   │
-   └────────blocks──&gt; <span class="dk">ODS-3 (BE Transición)</span> ──blocks──&gt; <span class="da">ODS-5 (FE Transición)</span>
+  <div class="sl">Integración</div>
+  <div class="st">Ajustes obligatorios vs código actual (evitan bypass multi-agente)</div>
+  <table class="tbl">
+    <thead><tr><th>Hoy en el repo</th><th>Cambio en este sprint (ODS-3)</th></tr></thead>
+    <tbody>
+      <tr><td><code>PATCH /api/projects/{id}/estado</code> permite <code>planificacion → activo</code> con gestor/admin/evaluador</td><td class="ok">Rechazar <code>planificacion → activo|cancelado</code> en <code>transitionState</code>; solo vía <code>TransicionPlanificacionService.aprobar()</code></td></tr>
+      <tr><td><code>PUT /api/projects/{id}</code> sin <code>actorUserId</code> / <code>actorRole</code></td><td class="ok">Extender body (mismo patrón que evaluación): validar dueño vs admin/evaluador según <code>estado</code></td></tr>
+      <tr><td><code>cancelado</code> solo rol <code>admin</code> en <code>ROLES_BY_TARGET</code></td><td class="ok">Añadir <code>evaluador</code> para <code>activo → cancelado</code> (fuerza mayor); mantener admin para el resto</td></tr>
+      <tr><td>Prefijo API mezclado (<code>/api/proyectos</code> en borrador)</td><td class="ok">Todo bajo <code>/api/projects</code> (convención existente)</td></tr>
+    </tbody>
+  </table>
+</section>
 
-<span class="dc"># ODS-2 y ODS-3 comparten GATE_JOOQ (ODS-1). Pueden ir en paralelo</span>
-<span class="dc"># SOLO porque tocan controllers/.http distintos y no el mismo archivo.</span></div>
+<section class="sec">
+  <div class="sl">API REST</div>
+  <div class="st">Contratos nuevos (gate <code>.http</code> antes de FE)</div>
+  <table class="tbl">
+    <thead><tr><th>Método</th><th>Ruta</th><th>Rol</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td>GET</td><td><code>/api/projects/{id}/chat/messages</code></td><td>gestor dueño · admin · evaluador</td><td>Solo lectura fuera de <code>planificacion</code></td></tr>
+      <tr><td>POST</td><td><code>/api/projects/{id}/chat/messages</code></td><td>idem</td><td>Body: <code>{ actorUserId, cuerpo }</code> — solo en <code>planificacion</code></td></tr>
+      <tr><td>PUT</td><td><code>/api/projects/{id}/chat/messages/{msgId}</code></td><td>autor</td><td>≤30 min; 409 si expirado o no planificacion</td></tr>
+      <tr><td>DELETE</td><td><code>/api/projects/{id}/chat/messages/{msgId}</code></td><td>autor</td><td>Borrado lógico; misma ventana 30 min</td></tr>
+      <tr><td>POST</td><td><code>/api/projects/{id}/planificacion/solicitud</code></td><td>gestor dueño</td><td><code>{ actorUserId, estadoDestino, motivo }</code> — 1 pendiente/proyecto</td></tr>
+      <tr><td>GET</td><td><code>/api/projects/{id}/planificacion/solicitud/pendiente</code></td><td>admin · evaluador · gestor dueño</td><td>Estado actual de la solicitud</td></tr>
+      <tr><td>POST</td><td><code>/api/projects/{id}/planificacion/solicitud/aprobar</code></td><td>admin · evaluador</td><td><code>{ actorUserId, actorRole, nota }</code> → cambia <code>proyectos.estado</code></td></tr>
+      <tr><td>POST</td><td><code>/api/projects/{id}/planificacion/solicitud/rechazar</code></td><td>admin · evaluador</td><td><code>{ actorUserId, actorRole, nota }</code> — nota ≥10 chars</td></tr>
+      <tr><td>POST</td><td><code>/api/projects/{id}/planificacion/fuerza-mayor</code></td><td>admin · evaluador</td><td>Solo <code>activo → cancelado</code>; motivo obligatorio</td></tr>
+      <tr><td>PUT</td><td><code>/api/projects/{id}</code></td><td>según estado</td><td>Body incluye <code>actorUserId</code>, <code>actorRole</code>; 403 si admin/evaluador fuera de planificacion</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Dependencias</div>
+  <div class="st">Cadena serial en Linear (<code>blocks</code>) — un agente, un issue</div>
+  <div class="cb2"><span class="da">ODS-1 (DB)</span> ──blocks──&gt; <span class="dk">ODS-2 (BE Chat)</span> ──blocks──&gt; <span class="dk">ODS-3 (BE Transición)</span>
+                                                      ──blocks──&gt; <span class="da">ODS-4 (FE Chat)</span> ──blocks──&gt; <span class="da">ODS-5 (FE Transición)</span>
+
+<span class="dc"># Sin paralelo BE/FE: ODS-3 toca MasterProjectService.java; ODS-4/5 comparten ProjectResultsPage.jsx</span>
+<span class="dc"># Orquestador: solo `next` — claim_issue → checklist → Testing → Done → next</span></div>
 </section>
 
 <section class="sec">
   <div class="sl">Linear</div>
-  <div class="st">Issues planificados (nacen en Backlog)</div>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-1 · role:database</div><div class="issue-title">Schema chat + solicitud de transición + mocks</div></div><div></div></div>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-2 · role:backend</div><div class="issue-title">JOOQ regen + backend del Chat (IREPO→REPO→ISVC→SVC→ICTRL→CTRL→.http)</div></div><div></div></div>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-3 · role:backend</div><div class="issue-title">Backend de Transición (solicitud/aprobación) + bloqueo de edición por estado</div></div><div></div></div>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-4 · role:frontend</div><div class="issue-title">UI del Chat estilo WhatsApp (service → hook → panel → QA)</div></div><div></div></div>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-5 · role:frontend</div><div class="issue-title">UI de Transición (solicitar / aprobar / rechazar) + bloqueo de edición</div></div><div></div></div>
+  <div class="st">Epic, script y issues (Fase 4 <code>.mjs</code> tras aprobación)</div>
+  <table class="tbl">
+    <thead><tr><th>Meta Linear</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Equipo</td><td><code>linear_ods</code></td></tr>
+      <tr><td>Epic (<code>EPIC_NAME</code>)</td><td><code>Chat Planificación</code></td></tr>
+      <tr><td>Sprint (<code>SPRINT_NAME</code>)</td><td><code>Sprint Chat Planificación</code></td></tr>
+      <tr><td>Script</td><td><code>_linear/scripts/sprint_chat_planificacion.mjs</code></td></tr>
+      <tr><td>Estados issue</td><td>Backlog → In Progress (Doing) → Testing → Done</td></tr>
+      <tr><td>Labels</td><td><code>role:database</code> · <code>role:backend</code> · <code>role:frontend</code></td></tr>
+    </tbody>
+  </table>
+  <table class="tbl" style="margin-top:18px">
+    <thead><tr><th>ID</th><th>Rol</th><th>Título</th><th>Est.</th><th>Archivos exclusivos (evitar choque)</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-1</td><td>database</td><td>Schema chat + solicitud + mocks + pipeline BD/JOOQ</td><td>3</td><td><code>2. ods_master_database.sql</code>, <code>21. ods_mocks.sql</code></td></tr>
+      <tr><td>ODS-2</td><td>backend</td><td>Backend Chat (IREPO→…→CTRL) + <code>chat_planificacion.http</code></td><td>5</td><td><code>IChatMensaje*</code>, <code>ChatMensaje*</code></td></tr>
+      <tr><td>ODS-3</td><td>backend</td><td>Backend Transición + <code>MasterProjectService</code> + <code>transicion_planificacion.http</code></td><td>5</td><td><code>ITransicionPlanificacion*</code>, <code>MasterProjectService.java</code>, <code>MasterProjectController.java</code></td></tr>
+      <tr><td>ODS-4</td><td>frontend</td><td>UI Chat (service → hook → <code>ProjectChatPanel.jsx</code>)</td><td>3</td><td><code>chatService.js</code>, <code>useProjectChat.js</code>, <code>ProjectChatPanel.jsx</code></td></tr>
+      <tr><td>ODS-5</td><td>frontend</td><td>UI Transición + integración en <code>ProjectResultsPage.jsx</code></td><td>3</td><td><code>transicionService.js</code>, <code>PlanificacionTransicionBar.jsx</code></td></tr>
+    </tbody>
+  </table>
+  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-1 · role:database · est 3</div><div class="issue-title">Schema chat + solicitud de transición + mocks + GATE_BD/JOOQ</div></div><div></div></div>
+  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-2 · role:backend · est 5</div><div class="issue-title">Backend Chat — IREPO→REPO→ISVC→SVC→ICTRL→CTRL→chat_planificacion.http</div></div><div></div></div>
+  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-3 · role:backend · est 5</div><div class="issue-title">Backend Transición + cerrar bypass PATCH/PUT + transicion_planificacion.http</div></div><div></div></div>
+  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-4 · role:frontend · est 3</div><div class="issue-title">ProjectChatPanel + useProjectChat + chatService.js</div></div><div></div></div>
+  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-5 · role:frontend · est 3</div><div class="issue-title">PlanificacionTransicionBar + transicionService + wiring en ProjectResultsPage</div></div><div></div></div>
 </section>
 
 <section class="sec">
@@ -211,42 +267,48 @@
   <div class="cb2"><span class="dc">## ODS-1 — role:database — Schema chat + solicitud + mocks</span>
 <span class="da">- [ ] Crear tabla proyecto_chat_mensajes en `2. ods_master_database.sql`</span>
 <span class="da">- [ ] Crear tabla proyecto_transicion_solicitud en `2. ods_master_database.sql`</span>
-<span class="da">- [ ] Mocks en `21. ods_mocks.sql`: 1 proyecto en planificacion + 2-3 mensajes + 1 solicitud pendiente</span>
+<span class="da">- [ ] Mocks en `21. ods_mocks.sql`: proyecto id=6 en `planificacion` + 2-3 mensajes + 1 solicitud pendiente</span>
 <span class="da">- [ ] Borrar script temporal de tarea (si se usó)</span>
 <span class="da">- [ ] Pipeline: drop_db → setup_db → load_mocks → mvn spring-boot:run (Testing OK)</span>
-<span class="da">- [ ] Handoff: marcar ODS-2 ítem 1 y ODS-3 ítem 1 — JOOQ regenerado (señal a backend)</span></div>
+<span class="da">- [ ] outputArtifacts en comentario/issue: tablas nuevas + jooqRegenerated: true</span>
+<span class="da">- [ ] Handoff: marcar ODS-2 checklist ítem 1 — señal BD+JOOQ listo (solo ODS-2; cadena serial)</span></div>
 
   <div class="cb2"><span class="dc">## ODS-2 — role:backend — Backend del Chat</span>
-<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta que ODS-1 marque este ítem (BD + JOOQ listo)</span>
+<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta ODS-1 ítem handoff [x] (BD + JOOQ listo)</span>
 <span class="da">- [ ] IChatMensajeRepository + ChatMensajeRepository (JOOQ ods_master)</span>
-<span class="da">- [ ] IChatMensajeService + ChatMensajeService (regla 30 min; solo participantes; solo en planificacion)</span>
-<span class="da">- [ ] IChatMensajeController + ChatMensajeController (GET/POST/PUT/DELETE /api/proyectos/{id}/chat)</span>
-<span class="da">- [ ] chat_planificacion.http — flujos 2xx (enviar, editar &lt;30min, editar &gt;30min = 409, fuera de planificacion = 409)</span>
-<span class="da">- [ ] Verificar que Service/Controller inyectan interfaces, no clases concretas</span>
-<span class="da">- [ ] Handoff: marcar ODS-4 ítem 1 — endpoints de chat 2xx listos</span></div>
+<span class="da">- [ ] IChatMensajeService + ChatMensajeService (30 min; participantes; solo escritura en planificacion)</span>
+<span class="da">- [ ] IChatMensajeController + ChatMensajeController — rutas bajo `/api/projects/{id}/chat/messages`</span>
+<span class="da">- [ ] `chat_planificacion.http` — 2xx: listar, enviar, editar &lt;30min, editar &gt;30min=409, fuera planificacion=409</span>
+<span class="da">- [ ] Service/Controller inyectan interfaces (IREPO, ISVC)</span>
+<span class="da">- [ ] Handoff: marcar ODS-3 checklist ítem 1 — endpoints chat verificados</span></div>
 
-  <div class="cb2"><span class="dc">## ODS-3 — role:backend — Backend de Transición + bloqueo de edición</span>
-<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta que ODS-1 marque este ítem (BD + JOOQ listo)</span>
-<span class="da">- [ ] ITransicionPlanificacionRepository + impl (crear/obtener pendiente/resolver)</span>
-<span class="da">- [ ] ITransicionPlanificacionService + impl (1 pendiente por proyecto; solo gestor solicita; admin|evaluador resuelve)</span>
-<span class="da">- [ ] Bloqueo de edición en MasterProjectService.update: admin/evaluador solo si estado=planificacion</span>
-<span class="da">- [ ] ITransicionPlanificacionController + impl (solicitud / aprobar / rechazar / fuerza mayor)</span>
-<span class="da">- [ ] chat_planificacion.http — flujos 2xx de transición + intento de edición bloqueada (403/409)</span>
-<span class="da">- [ ] Handoff: marcar ODS-5 ítem 1 — endpoints de transición 2xx listos</span></div>
+  <div class="cb2"><span class="dc">## ODS-3 — role:backend — Backend Transición + cerrar bypass estado/edición</span>
+<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta ODS-2 marque este ítem (chat .http OK; evita choque en MasterProject)</span>
+<span class="da">- [ ] ITransicionPlanificacionRepository + TransicionPlanificacionRepository</span>
+<span class="da">- [ ] ITransicionPlanificacionService + impl (1 pendiente/proyecto; gestor solicita; admin|evaluador resuelve)</span>
+<span class="da">- [ ] `transitionState`: bloquear planificacion→activo|cancelado salvo `aprobar()` interno</span>
+<span class="da">- [ ] `ROLES_BY_TARGET`: evaluador puede activo→cancelado (fuerza mayor)</span>
+<span class="da">- [ ] `updateProyecto` + `PUT /api/projects/{id}`: body con actorUserId/actorRole; 403 admin/evaluador fuera de planificacion</span>
+<span class="da">- [ ] ITransicionPlanificacionController + impl — rutas `/api/projects/{id}/planificacion/*`</span>
+<span class="da">- [ ] `transicion_planificacion.http` — solicitud, aprobar, rechazar, fuerza mayor, PUT bloqueado=403</span>
+<span class="da">- [ ] Handoff: marcar ODS-4 checklist ítem 1 — todos los endpoints 2xx listos</span></div>
 
   <div class="cb2"><span class="dc">## ODS-4 — role:frontend — UI del Chat</span>
-<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta que ODS-2 marque este ítem (.http chat 2xx)</span>
-<span class="da">- [ ] chatService.js alineado con la API probada</span>
-<span class="da">- [ ] hook useProjectChat (cargar, enviar, editar, eliminar; ventana 30 min)</span>
-<span class="da">- [ ] Panel de chat estilo WhatsApp en la vista del proyecto (burbujas, "editado", banner solo-lectura)</span>
-<span class="da">- [ ] QA: npm run dev (flujo manual) + npm run build exit 0</span></div>
+<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta ODS-3 marque este ítem (GATE_HTTP completo)</span>
+<span class="da">- [ ] `chatService.js` alineado con `/api/projects/{id}/chat/messages`</span>
+<span class="da">- [ ] `useProjectChat.js` — cargar, enviar, editar, eliminar; ventana 30 min en UI</span>
+<span class="da">- [ ] `ProjectChatPanel.jsx` — burbujas, "editado", banner solo-lectura fuera de planificacion</span>
+<span class="da">- [ ] Montar panel en `ProjectResultsPage.jsx` cuando status=planificacion (solo import mínimo)</span>
+<span class="da">- [ ] Testing: npm run dev (manual) + npm run build exit 0</span>
+<span class="da">- [ ] Handoff: marcar ODS-5 checklist ítem 1 — chat UI integrado</span></div>
 
-  <div class="cb2"><span class="dc">## ODS-5 — role:frontend — UI de Transición + bloqueo de edición</span>
-<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta que ODS-3 marque este ítem (.http transición 2xx)</span>
-<span class="da">- [ ] transicionService.js (solicitar / aprobar / rechazar / pendiente)</span>
-<span class="da">- [ ] Gestor: botones "Solicitar pasar a Activo" / "Solicitar cancelar" (solo en planificacion)</span>
-<span class="da">- [ ] Admin/evaluador: ver solicitud pendiente → Aprobar / Rechazar (con nota); editar proyecto solo en planificacion</span>
-<span class="da">- [ ] QA: npm run dev + npm run build exit 0</span></div>
+  <div class="cb2"><span class="dc">## ODS-5 — role:frontend — UI Transición + edición condicionada</span>
+<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta ODS-4 marque este ítem</span>
+<span class="da">- [ ] `transicionService.js` — solicitar, pendiente, aprobar, rechazar, fuerza mayor</span>
+<span class="da">- [ ] `usePlanificacionTransicion.js` + `PlanificacionTransicionBar.jsx`</span>
+<span class="da">- [ ] Gestor: solicitar activo/cancelar (solo planificacion); admin/evaluador: aprobar/rechazar</span>
+<span class="da">- [ ] `projectService.updateProject` envía actorUserId/actorRole; ocultar edición si 403</span>
+<span class="da">- [ ] Testing: npm run dev + npm run build exit 0</span></div>
 </section>
 
 <section class="sec">
@@ -276,14 +338,19 @@
         <li><code>repository/interfaces/IChatMensajeRepository.java</code> · <code>repository/ChatMensajeRepository.java</code></li>
         <li><code>service/interfaces/IChatMensajeService.java</code> · <code>service/ChatMensajeService.java</code></li>
         <li><code>controller/interfaces/IChatMensajeController.java</code> · <code>controller/ChatMensajeController.java</code></li>
-        <li><code>…/ITransicionPlanificacionRepository.java</code> + impl · <code>…Service</code> + impl · <code>…Controller</code> + impl</li>
-        <li><code>service/MasterProjectService.java</code> — bloqueo de edición por estado</li>
-        <li><code>…/http/chat_planificacion.http</code> — gate FE</li>
+        <li><code>repository/interfaces/ITransicionPlanificacionRepository.java</code> · <code>repository/TransicionPlanificacionRepository.java</code></li>
+        <li><code>service/interfaces/ITransicionPlanificacionService.java</code> · <code>service/TransicionPlanificacionService.java</code></li>
+        <li><code>controller/interfaces/ITransicionPlanificacionController.java</code> · <code>controller/TransicionPlanificacionController.java</code></li>
+        <li><code>service/MasterProjectService.java</code> · <code>controller/MasterProjectController.java</code> — bypass + actor en PUT</li>
+        <li><code>http/chat_planificacion.http</code> · <code>http/transicion_planificacion.http</code></li>
       </ul></td></tr>
       <tr><td class="ok">FE</td><td><ul class="files">
         <li><code>src/services/chatService.js</code> · <code>src/services/transicionService.js</code></li>
         <li><code>src/hooks/useProjectChat.js</code> · <code>src/hooks/usePlanificacionTransicion.js</code></li>
-        <li>Panel de chat + controles de transición en la vista de detalle del proyecto</li>
+        <li><code>src/components/planificacion/ProjectChatPanel.jsx</code></li>
+        <li><code>src/components/planificacion/PlanificacionTransicionBar.jsx</code></li>
+        <li><code>src/pages/ProjectResultsPage/ProjectResultsPage.jsx</code> — wiring (ODS-4 import panel; ODS-5 bar transición)</li>
+        <li><code>src/services/projectService.js</code> — actorUserId/actorRole en update</li>
       </ul></td></tr>
     </tbody>
   </table>
@@ -291,14 +358,43 @@
 
 <section class="sec">
   <div class="sl">Paralelismo</div>
-  <div class="st">Qué puede ir en paralelo y qué no</div>
+  <div class="st">Decisión para Linear multi-agente (README: cadena estricta)</div>
   <table class="tbl">
     <thead><tr><th>Escenario</th><th>¿Paralelo?</th><th>Regla</th></tr></thead>
     <tbody>
-      <tr><td>ODS-1 (BD)</td><td>❌</td><td>Un solo agente corre el pipeline drop/setup/mocks una vez.</td></tr>
-      <tr><td>ODS-2 (BE Chat) vs ODS-3 (BE Transición)</td><td>⚠️ con cuidado</td><td>Tras GATE_JOOQ de ODS-1. Permitido porque tocan controllers/.http distintos; ODS-3 además edita <code>MasterProjectService</code> (ODS-2 no).</td></tr>
-      <tr><td>ODS-4 (FE Chat) vs ODS-5 (FE Transición)</td><td>⚠️ con cuidado</td><td>Cada uno tras su <code>.http</code> (ODS-2 / ODS-3). Coordinar si comparten el mismo componente de la vista del proyecto.</td></tr>
-      <tr><td>FE antes que su <code>.http</code></td><td>❌</td><td>Frontend espera contratos 2xx verificados.</td></tr>
+      <tr><td>ODS-1 (BD + JOOQ)</td><td>❌</td><td>Un agente <code>role:database</code>; pipeline único drop/setup/mocks/spring-boot.</td></tr>
+      <tr><td>ODS-2 ‖ ODS-3 (BE)</td><td>❌</td><td>Serial: ODS-3 modifica <code>MasterProjectService</code>; <code>blocks</code> ODS-2→ODS-3.</td></tr>
+      <tr><td>ODS-4 ‖ ODS-5 (FE)</td><td>❌</td><td>Serial: ambos tocan <code>ProjectResultsPage.jsx</code>; <code>blocks</code> ODS-4→ODS-5.</td></tr>
+      <tr><td>FE antes de GATE_HTTP</td><td>❌</td><td>ODS-4 solo tras ODS-3 Done (ambos .http verificados).</td></tr>
+      <tr><td>Varios epics en el repo</td><td>✅</td><td>Este epic es independiente; no comparte archivos con otros sprints activos.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Orquestación</div>
+  <div class="st">Ciclo por issue (Fase 5 multi-agente)</div>
+  <div class="cb2"><span class="dc"># Desde _linear/ — repetir por cada ODS-N (N=1..5)</span>
+node scripts/sprint_chat_planificacion.mjs next
+<span class="dc"># claim_issue (MCP) o state → In Progress</span>
+node scripts/sprint_chat_planificacion.mjs checklist ODS-N 1
+node scripts/sprint_chat_planificacion.mjs checklist ODS-N 2
+<span class="dc"># … ítem por ítem hasta checklist completo</span>
+node scripts/linear-update-state.mjs ODS-N Testing
+<span class="dc"># pruebas locales según rol (BD/BE/FE)</span>
+node scripts/linear-update-state.mjs ODS-N --checklist N   <span class="dc"># handoff downstream si aplica</span>
+node scripts/sprint_chat_planificacion.mjs state ODS-N Done
+node scripts/sprint_chat_planificacion.mjs next
+
+<span class="dc"># Al cerrar ODS-5 → Fase 6: resumen_sprint_chat_planificacion.html + epic Completed</span></div>
+  <table class="tbl">
+    <thead><tr><th>Issue</th><th>Testing local (estado Testing)</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-1</td><td><code>drop_db</code> → <code>setup_db</code> → <code>load_mocks</code>; tablas + proyecto id=6 en planificacion</td></tr>
+      <tr><td>ODS-2</td><td><code>mvn spring-boot:run</code>; ejecutar <code>chat_planificacion.http</code> 2xx</td></tr>
+      <tr><td>ODS-3</td><td><code>transicion_planificacion.http</code> 2xx; PATCH estado planificacion→activo = 409</td></tr>
+      <tr><td>ODS-4</td><td><code>npm run dev</code> — chat en proyecto 6; <code>npm run build</code></td></tr>
+      <tr><td>ODS-5</td><td>Flujo solicitud/aprobación manual; build OK</td></tr>
     </tbody>
   </table>
 </section>
@@ -306,27 +402,26 @@
 <section class="sec">
   <div class="sl">Aprobación</div>
   <div class="st">Estado: <span style="color:var(--orange)">PENDIENTE</span></div>
-  <p class="sub">Marca esta propuesta como <strong>APROBADO</strong> (en el chat o editando este HTML) para habilitar la Fase 3. Comandos a ejecutar en tu máquina <strong>solo tras aprobación</strong> (desde <code>_linear/</code>, con la API de Linear accesible):</p>
-  <div class="cb2"><span class="dc"># 1. Labels del sistema (una sola vez, si aún no se corrió)</span>
-<span class="dc">#    Vía MCP en Claude Desktop: "Configura el workflow de Linear para multi-agente" (setup_workflow)</span>
+  <p class="sub">Marca <strong>APROBADO</strong> en chat o en este HTML. Secuencia _linear:</p>
+  <div class="cb2"><span class="dc"># Fase 0 — ya hecha: _linear limpio; solo este plan activo</span>
+<span class="dc"># Fase 4 — tras aprobación: generar sprint_chat_planificacion.mjs (5 issues, blocks serial, checklists de arriba)</span>
+<span class="dc"># Requisito: LINEAR_API_KEY en _linear/.env</span>
 
-<span class="dc"># 2. Crear el epic nuevo + sprint + issues + blocks (Fase 3 — tras escribir el .mjs)</span>
-node scripts/sprint_chat_planificacion.mjs create
+cd _linear
+node scripts/sprint_chat_planificacion.mjs create    <span class="dc"># Epic «Chat Planificación» + 5 issues Backlog</span>
+node scripts/sprint_chat_planificacion.mjs status
+node scripts/sprint_chat_planificacion.mjs next        <span class="dc"># bucle multi-agente</span>
 
-<span class="dc"># 3. Multi-agente (Fase 4) — por cada issue:</span>
-node scripts/sprint_chat_planificacion.mjs next
-node scripts/sprint_chat_planificacion.mjs checklist ODS-N 1
-node scripts/linear-update-state.mjs ODS-N Testing
-node scripts/sprint_chat_planificacion.mjs state ODS-N Done
-
-<span class="dc"># Epic nuevo "Chat Planificación" (problema distinto) — NO se limpia el epic anterior:</span>
-<span class="dc"># queda como historial Completed (README → Arranque de trabajo nuevo, escenario B).</span></div>
+<span class="dc"># Epic nuevo (escenario B README) — no cleanup de epics anteriores Completed</span>
+<span class="dc"># Al cerrar: resumen_sprint_chat_planificacion.html + update_project Completed</span></div>
   <table class="tbl">
     <thead><tr><th>Decisión</th><th>Confirmada</th></tr></thead>
     <tbody>
-      <tr><td>Transición planificacion → activo/cancelado</td><td class="ok">Requiere aprobación de admin/evaluador (solicitud + resolución).</td></tr>
-      <tr><td>Edición del proyecto en planificación</td><td class="ok">Admin/evaluador editan directo; se bloquea al salir de planificación.</td></tr>
-      <tr><td>Edición de mensajes</td><td class="ok">Estilo WhatsApp: autor edita/borra ≤30 min; luego bloqueado.</td></tr>
+      <tr><td>Transición planificacion → activo/cancelado</td><td class="ok">Solo vía solicitud + aprobación (PATCH /estado bloqueado).</td></tr>
+      <tr><td>Edición del proyecto</td><td class="ok">Admin/evaluador solo en planificacion; PUT con actor; 403 fuera.</td></tr>
+      <tr><td>Edición de mensajes</td><td class="ok">Autor edita/borra ≤30 min; solo en planificacion.</td></tr>
+      <tr><td>Cadena Linear</td><td class="ok">Serial ODS-1→2→3→4→5; handoff checklist ítem 1 downstream.</td></tr>
+      <tr><td>Mocks QA</td><td class="ok">Proyecto id=6 <code>planificacion</code> + chat + solicitud pendiente.</td></tr>
     </tbody>
   </table>
 </section>
@@ -335,7 +430,7 @@ node scripts/sprint_chat_planificacion.mjs state ODS-N Done
 
 <footer>
   <div class="utn">UTN · ODS Platform</div>
-  <div>plan_sprint_chat_planificacion.html · Fase 1 (propuesta)</div>
+  <div>plan_sprint_chat_planificacion.html · Fase 2 (propuesta) · linear_ods</div>
 </footer>
 
 </body>
