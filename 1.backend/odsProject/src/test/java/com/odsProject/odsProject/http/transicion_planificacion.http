@@ -1,0 +1,59 @@
+### Transición planificación — proyecto QA id=7
+@baseUrl = http://localhost:8080
+@proyectoId = 7
+@gestorUserId = 2
+@evaluadorUserId = 5
+
+### Solicitud pendiente (evaluador)
+GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/solicitud/pendiente?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+### Nueva solicitud (gestor) — omitir si ya hay pendiente en mocks
+# POST {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/solicitud
+# Content-Type: application/json
+#
+# {
+#   "actorUserId": {{gestorUserId}},
+#   "estadoDestino": "activo",
+#   "motivo": "Listo para activar tras revisión"
+# }
+
+### Aprobar solicitud (evaluador)
+POST {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/solicitud/aprobar
+Content-Type: application/json
+
+{
+  "actorUserId": {{evaluadorUserId}},
+  "actorRole": "evaluador",
+  "nota": "Aprobado tras revisión del chat y fórmulas."
+}
+
+### PATCH planificacion→activo debe fallar (409) — usar proyecto en planificacion
+# @proyectoPlan = 7
+# PATCH {{baseUrl}}/api/projects/{{proyectoPlan}}/estado
+# Content-Type: application/json
+#
+# {
+#   "estado": "activo",
+#   "actorUserId": {{gestorUserId}},
+#   "actorRole": "gestor"
+# }
+
+### PUT con actor — admin fuera de planificacion = 403
+# PUT {{baseUrl}}/api/projects/1
+# Content-Type: application/json
+#
+# {
+#   "actorUserId": 5,
+#   "actorRole": "evaluador",
+#   "nombreProyecto": "Intento bloqueado"
+# }
+
+### Fuerza mayor activo→cancelado (proyecto en activo)
+# POST {{baseUrl}}/api/projects/1/planificacion/fuerza-mayor
+# Content-Type: application/json
+#
+# {
+#   "actorUserId": {{evaluadorUserId}},
+#   "actorRole": "evaluador",
+#   "motivo": "Cancelación por fuerza mayor documentada"
+# }

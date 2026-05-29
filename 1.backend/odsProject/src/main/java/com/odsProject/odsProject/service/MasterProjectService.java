@@ -57,6 +57,30 @@ public class MasterProjectService implements IMasterProjectService {
     }
 
     @Override
+    public Proyectos updateProyecto(Integer proyectoId, Proyectos proyecto,
+                                    Integer actorUserId, String actorRole) {
+        Proyectos existing = masterProjectRepository.findById(proyectoId)
+                .orElseThrow(() -> new IllegalArgumentException("Proyecto no encontrado: " + proyectoId));
+        String role = actorRole != null ? actorRole.trim().toLowerCase() : "";
+        String estadoActual = String.valueOf(existing.getEstado()).toLowerCase();
+        if ("admin".equals(role) || "evaluador".equals(role)) {
+            if (!"planificacion".equals(estadoActual)) {
+                throw new SecurityException(
+                        "Admin/evaluador no puede editar el proyecto fuera de planificacion");
+            }
+        } else if ("gestor".equals(role)) {
+            if (actorUserId == null || !actorUserId.equals(existing.getUsuarioId())) {
+                throw new SecurityException("Solo el gestor dueño puede editar el proyecto");
+            }
+        } else {
+            throw new SecurityException("Rol no autorizado para editar: " + role);
+        }
+        proyecto.setId(proyectoId);
+        proyecto.setEstado(existing.getEstado());
+        return masterProjectRepository.update(proyecto);
+    }
+
+    @Override
     public void deleteProyecto(Integer id) {
         masterProjectRepository.delete(id);
     }
@@ -538,7 +562,7 @@ public class MasterProjectService implements IMasterProjectService {
             "activo",      java.util.Set.of("gestor", "admin", "evaluador"),
             "en_revision", java.util.Set.of("gestor"),
             "completado",  java.util.Set.of("admin", "evaluador"),
-            "cancelado",   java.util.Set.of("admin")
+            "cancelado",   java.util.Set.of("admin", "evaluador")
         );
 
     @Override
@@ -555,6 +579,17 @@ public class MasterProjectService implements IMasterProjectService {
 
         String currentEstado = String.valueOf(p.getEstado()).toLowerCase();
         String target        = nuevoEstado.toLowerCase();
+
+        if ("planificacion".equals(currentEstado)) {
+            if ("activo".equals(target) || "cancelado".equals(target)) {
+                throw new IllegalStateException(
+                        "Use POST /api/projects/{id}/planificacion/solicitud/aprobar para salir de planificacion");
+            }
+            if ("en_revision".equals(target)) {
+                throw new IllegalStateException(
+                        "Use POST /api/projects/{id}/enviar-evaluacion para enviar a revisión");
+            }
+        }
 
         // 1. ¿La transición es legal por máquina de estados?
         java.util.Set<String> permitidas = ALLOWED_TRANSITIONS.getOrDefault(currentEstado, java.util.Set.of());
@@ -582,6 +617,62 @@ public class MasterProjectService implements IMasterProjectService {
             throw new IllegalStateException("UPDATE no afectó filas (carrera de concurrencia?)");
 
         // 4. Devolver el proyecto actualizado en formato amigable para el frontend
+        Proyectos updated = masterProjectRepository.findById(proyectoId).orElse(null);
+        Map<String, Object> resp = new java.util.LinkedHashMap<>();
+        resp.put("success", true);
+        resp.put("proyecto", updated);
+        resp.put("estadoAnterior", currentEstado);
+        resp.put("estadoNuevo", target);
+        return resp;
+    }
+
+    @Override
+    public Map<String, Object> transitionStatePlanificacionAprobada(Integer proyectoId,
+                                                                   String nuevoEstado,
+                                                                   Integer actorUserId,
+                                                                   String actorRole,
+                                                                   String observaciones) {
+        Proyectos p = masterProjectRepository.findById(proyectoId)
+            .orElseThrow(() -> new IllegalArgumentException("Proyecto no encontrado: " + proyectoId));
+        String currentEstado = String.valueOf(p.getEstado()).toLowerCase();
+        String target = nuevoEstado.toLowerCase();
+        if (!"planificacion".equals(currentEstado)) {
+            throw new IllegalStateException("La aprobación solo aplica en planificacion");
+        }
+        if (!"activo".equals(target) && !"cancelado".equals(target)) {
+            throw new IllegalArgumentException("Destino inválido tras aprobación: " + target);
+        }
+        String role = actorRole != null ? actorRole.trim().toLowerCase() : "";
+        if (!java.util.Set.of("admin", "evaluador").contains(role)) {
+            throw new SecurityException("Solo admin o evaluador pueden aprobar la solicitud");
+        }
+        return applyTransition(proyectoId, p, currentEstado, target, role, actorUserId, observaciones);
+    }
+
+    private Map<String, Object> applyTransition(Integer proyectoId,
+                                                Proyectos p,
+                                                String currentEstado,
+                                                String target,
+                                                String role,
+                                                Integer actorUserId,
+                                                String observaciones) {
+        java.util.Set<String> permitidas = ALLOWED_TRANSITIONS.getOrDefault(currentEstado, java.util.Set.of());
+        if (!permitidas.contains(target)) {
+            throw new IllegalStateException(
+                "Transición no permitida: " + currentEstado + " → " + target);
+        }
+        java.util.Set<String> rolesAutorizados = ROLES_BY_TARGET.getOrDefault(target, java.util.Set.of());
+        if (!rolesAutorizados.contains(role)) {
+            throw new SecurityException(
+                "Rol '" + role + "' no autorizado para transición → " + target);
+        }
+        boolean stampCierre  = "completado".equals(target);
+        boolean stampEnvio   = "en_revision".equals(target);
+        Integer auditorStamp = stampCierre ? actorUserId : null;
+        int rows = masterProjectRepository.updateEstado(
+            proyectoId, target, auditorStamp, observaciones, stampCierre, stampEnvio);
+        if (rows == 0)
+            throw new IllegalStateException("UPDATE no afectó filas (carrera de concurrencia?)");
         Proyectos updated = masterProjectRepository.findById(proyectoId).orElse(null);
         Map<String, Object> resp = new java.util.LinkedHashMap<>();
         resp.put("success", true);

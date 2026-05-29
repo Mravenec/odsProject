@@ -12,6 +12,8 @@ import {
 import { formatDate, getObjectiveName, getOdsColor, isProjectCompletado } from '../../utils/formatters';
 import EvidenceSection from '../../components/projects/EvidenceSection';
 import AchievementBadge, { deriveEstado } from '../../components/AchievementBadge';
+import ProjectChatPanel from '../../components/planificacion/ProjectChatPanel';
+import PlanificacionTransicionBar from '../../components/planificacion/PlanificacionTransicionBar';
 import './ProjectResultsPage.css';
 
 /**
@@ -232,6 +234,24 @@ const ProjectResultsPage = () => {
           </div>
         </div>
       </header>
+
+      {project && (user?.role === 'admin' || user?.role === 'evaluador'
+        || (user?.role === 'gestor' && project.userId === user?.id)) && (
+        <ProjectChatPanel
+          projectId={Number(projectId)}
+          user={user}
+          projectStatus={project.status}
+        />
+      )}
+
+      {project && (
+        <PlanificacionTransicionBar
+          projectId={Number(projectId)}
+          user={user}
+          projectStatus={project.status}
+          onProjectUpdated={fetchProjectFull}
+        />
+      )}
 
       {/* Sprint 17 — Banner de rechazo visible para el gestor cuando el
          proyecto vuelve a 'activo' con observaciones de cierre (motivo del rechazo). */}

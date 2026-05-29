@@ -4,8 +4,10 @@
 package com.odsProject.odsProject.database.jooq.ods_master;
 
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoChatMensajes;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoDocumentos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoOds;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoTransicionSolicitud;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenProyectosOds;
 
@@ -17,6 +19,11 @@ import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenPro
 public class Tables {
 
     /**
+     * The table <code>ods_master.proyecto_chat_mensajes</code>.
+     */
+    public static final ProyectoChatMensajes PROYECTO_CHAT_MENSAJES = ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES;
+
+    /**
      * The table <code>ods_master.proyecto_documentos</code>.
      */
     public static final ProyectoDocumentos PROYECTO_DOCUMENTOS = ProyectoDocumentos.PROYECTO_DOCUMENTOS;
@@ -25,6 +32,11 @@ public class Tables {
      * The table <code>ods_master.proyecto_ods</code>.
      */
     public static final ProyectoOds PROYECTO_ODS = ProyectoOds.PROYECTO_ODS;
+
+    /**
+     * The table <code>ods_master.proyecto_transicion_solicitud</code>.
+     */
+    public static final ProyectoTransicionSolicitud PROYECTO_TRANSICION_SOLICITUD = ProyectoTransicionSolicitud.PROYECTO_TRANSICION_SOLICITUD;
 
     /**
      * The table <code>ods_master.proyectos</code>.

@@ -140,7 +140,7 @@ export const projectService = {
     }
   },
 
-  async updateProject(projectId, projectData) {
+  async updateProject(projectId, projectData, actorUserId = null, actorRole = null) {
     const backendData = {
       id: projectId,
       usuarioId: projectData.userId,
@@ -149,13 +149,27 @@ export const projectService = {
       descripcion: projectData.description,
       fechaInicio: projectData.startDate,
       fechaFin: projectData.endDate,
-      estado: projectData.status || 'activo'
+      metaGeneral: projectData.metaGeneral,
+      responsableNombre: projectData.responsableNombre,
+      locationProvince: projectData.locationProvince,
+      locationCanton: projectData.locationCanton,
+      locationDistrict: projectData.locationDistrict,
     };
+    if (actorUserId != null && actorRole) {
+      backendData.actorUserId = actorUserId;
+      backendData.actorRole = actorRole;
+    } else if (projectData.status) {
+      backendData.estado = projectData.status;
+    }
     try {
       const response = await api.put(`/projects/${projectId}`, backendData);
       return { success: true, data: this._mapBackendToFrontend(response.data) };
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Error al actualizar el proyecto');
+      const msg = error.response?.data?.error
+        || error.response?.data?.message
+        || error.message
+        || 'Error al actualizar el proyecto';
+      return { success: false, error: msg, status: error.response?.status };
     }
   },
 

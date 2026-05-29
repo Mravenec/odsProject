@@ -3,13 +3,13 @@
   PROPUESTA DE SPRINT — chat_planificacion
   Fase 2 del pipeline _linear (Fase 0 Limpieza → Plan → HTML propuesta → Aprobación → MJS → Multi-agente → Resumen).
   Orquestación Linear: cadena serial ODS-1→…→ODS-5 (un agente activo por issue; sin paralelo en archivos compartidos).
-  Estado: APROBADO (2026-05-28) — enmiendas en sección Aprobación. Fase 4: sprint_chat_planificacion.mjs → create.
+  Resumen Fase 6 — sprint completado 2026-05-28. Linear ODS-139…143 Done.
 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Propuesta — Chat de revisión en planificación · ODS UTN</title>
+<title>Resumen — Chat de revisión en planificación · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
   :root{--bg:#07090F;--surf:#0D1117;--surf2:#131A24;--border:rgba(255,255,255,.07);--text:#E2E8F0;--muted:#64748B;--db:#EAB308;--be:#22C55E;--fe:#0EA5E9;--green:#22C55E;--orange:#F97316}
@@ -66,12 +66,13 @@
 <body>
 
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint Chat Planificación · Propuesta · linear_ods</div>
+  <div class="ey">ODS UTN · Sprint Chat Planificación · Completado · linear_ods</div>
   <h1>Chat de revisión en planificación<br><em>gestor ⇄ evaluador/admin · transición con aprobación</em></h1>
   <p class="sub">Mientras un proyecto está en <code>planificacion</code>, habilitar un chat por proyecto entre el gestor (dueño) y cualquier administrador o evaluador. Admin/evaluador pueden editar el proyecto y señalar errores (p. ej. una fórmula mal); los mensajes se editan estilo WhatsApp (≤30 min). El gestor <strong>solicita</strong> salir de planificación (a <code>activo</code> o <code>cancelado</code>) y un admin/evaluador <strong>aprueba</strong>; al salir, el chat se congela y se bloquea la edición por admin/evaluador.</p>
   <div class="chips">
-    <div class="chip ok">Estado <span>APROBADO</span></div>
-    <div class="chip">Issues <span>5 planificados</span></div>
+    <div class="chip ok">Linear <span>5/5 Done</span></div>
+    <div class="chip ok">BE compile <span>OK</span></div>
+    <div class="chip ok">FE build <span>OK</span></div>
     <div class="chip">Capas <span>DB · BE · FE</span></div>
     <div class="chip">Schema <span>2 tablas nuevas</span></div>
     <div class="chip">ENUM estado <span>intacto</span></div>
@@ -80,13 +81,13 @@
   </div>
 </header>
 
-<div class="al ok"><div>✓</div><div><strong>Propuesta aprobada</strong> tras revisión multi-agente (código + Linear + README). Viable con enmiendas de mocks y bypass PUT. Siguiente: Fase 4 → <code>sprint_chat_planificacion.mjs</code> → <code>create</code>. Cadena serial ODS-1→5; un issue activo por vez.</div></div>
+<div class="al ok"><div>✓</div><div><strong>Sprint completado.</strong> Epic «Chat Planificación» — issues ODS-139…143 en Done, checklists al 100 %, pruebas locales BE/FE. Mock QA proyecto <strong>id=7</strong> en <code>planificacion</code> (id=6 consultor intacto).</div></div>
 
 <section class="sec">
   <div class="sl">Objetivo</div>
-  <div class="st">Qué se busca resolver</div>
+  <div class="st">Qué se entregó</div>
   <table class="tbl">
-    <thead><tr><th>Problema actual</th><th>Solución propuesta</th></tr></thead>
+    <thead><tr><th>Problema</th><th>Solución entregada</th></tr></thead>
     <tbody>
       <tr><td>En <code>planificacion</code> no hay canal de ida y vuelta entre el gestor y los revisores; si hay un error (fórmula, meta, ODS mal vinculado) no hay dónde discutirlo dentro del proyecto.</td><td class="ok">Chat por proyecto (tabla <code>proyecto_chat_mensajes</code>) visible para gestor dueño + admin + evaluador, activo solo en <code>planificacion</code>.</td></tr>
       <tr><td>Cualquier revisor que entre no sabe por dónde iba la conversación previa.</td><td class="ok">Hilo persistente y ordenado por fecha: <strong>cualquier</strong> admin o evaluador continúa donde quedó.</td></tr>
@@ -253,11 +254,11 @@
       <tr><td>ODS-5</td><td>frontend</td><td>UI Transición + integración en <code>ProjectResultsPage.jsx</code></td><td>3</td><td><code>transicionService.js</code>, <code>PlanificacionTransicionBar.jsx</code></td></tr>
     </tbody>
   </table>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-1 · role:database · est 3</div><div class="issue-title">Schema chat + solicitud de transición + mocks + GATE_BD/JOOQ</div></div><div></div></div>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-2 · role:backend · est 5</div><div class="issue-title">Backend Chat — IREPO→REPO→ISVC→SVC→ICTRL→CTRL→chat_planificacion.http</div></div><div></div></div>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-3 · role:backend · est 5</div><div class="issue-title">Backend Transición + cerrar bypass PATCH/PUT + transicion_planificacion.http</div></div><div></div></div>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-4 · role:frontend · est 3</div><div class="issue-title">ProjectChatPanel + useProjectChat + chatService.js</div></div><div></div></div>
-  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-5 · role:frontend · est 3</div><div class="issue-title">PlanificacionTransicionBar + transicionService + wiring en ProjectResultsPage</div></div><div></div></div>
+  <div class="issue"><div class="badge">Done ✓</div><div><div class="issue-id">ODS-139 · role:database · est 3</div><div class="issue-title">Schema chat + solicitud de transición + mocks + GATE_BD/JOOQ</div></div><div></div></div>
+  <div class="issue"><div class="badge">Done ✓</div><div><div class="issue-id">ODS-140 · role:backend · est 5</div><div class="issue-title">Backend Chat — IREPO→REPO→ISVC→SVC→ICTRL→CTRL→chat_planificacion.http</div></div><div></div></div>
+  <div class="issue"><div class="badge">Done ✓</div><div><div class="issue-id">ODS-141 · role:backend · est 5</div><div class="issue-title">Backend Transición + cerrar bypass PATCH/PUT + transicion_planificacion.http</div></div><div></div></div>
+  <div class="issue"><div class="badge">Done ✓</div><div><div class="issue-id">ODS-142 · role:frontend · est 3</div><div class="issue-title">ProjectChatPanel + useProjectChat + chatService.js</div></div><div></div></div>
+  <div class="issue"><div class="badge">Done ✓</div><div><div class="issue-id">ODS-143 · role:frontend · est 3</div><div class="issue-title">PlanificacionTransicionBar + transicionService + wiring en ProjectResultsPage</div></div><div></div></div>
 </section>
 
 <section class="sec">
@@ -439,7 +440,7 @@ node scripts/sprint_chat_planificacion.mjs next        <span class="dc"># bucle 
 
 <footer>
   <div class="utn">UTN · ODS Platform</div>
-  <div>plan_sprint_chat_planificacion.html · Fase 2 (propuesta) · linear_ods</div>
+  <div>resumen_sprint_chat_planificacion.html · Fase 6 · linear_ods · Epic Completed</div>
 </footer>
 
 </body>

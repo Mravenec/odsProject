@@ -17,6 +17,12 @@ public interface IMasterProjectService {
     List<Proyectos> getProyectosByUsuario(Integer usuarioId);
     Proyectos createProyecto(Proyectos proyecto);
     Proyectos updateProyecto(Proyectos proyecto);
+
+    /**
+     * Actualiza proyecto con validación de actor; ignora cambios de estado en el body.
+     */
+    Proyectos updateProyecto(Integer proyectoId, Proyectos proyecto,
+                             Integer actorUserId, String actorRole);
     void deleteProyecto(Integer id);
 
     // Lógica de Evaluación
@@ -110,6 +116,15 @@ public interface IMasterProjectService {
                                         Integer actorUserId,
                                         String actorRole,
                                         String observaciones);
+
+    /**
+     * Transición planificacion → activo|cancelado tras aprobación de solicitud (no vía PATCH público).
+     */
+    Map<String, Object> transitionStatePlanificacionAprobada(Integer proyectoId,
+                                                            String nuevoEstado,
+                                                            Integer actorUserId,
+                                                            String actorRole,
+                                                            String observaciones);
 
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 16 — Cierre del gestor

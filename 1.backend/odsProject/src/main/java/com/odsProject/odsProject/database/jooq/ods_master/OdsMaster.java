@@ -5,8 +5,10 @@ package com.odsProject.odsProject.database.jooq.ods_master;
 
 
 import com.odsProject.odsProject.database.jooq.DefaultCatalog;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoChatMensajes;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoDocumentos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoOds;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoTransicionSolicitud;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenProyectosOds;
 
@@ -32,6 +34,11 @@ public class OdsMaster extends SchemaImpl {
     public static final OdsMaster ODS_MASTER = new OdsMaster();
 
     /**
+     * The table <code>ods_master.proyecto_chat_mensajes</code>.
+     */
+    public final ProyectoChatMensajes PROYECTO_CHAT_MENSAJES = ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES;
+
+    /**
      * The table <code>ods_master.proyecto_documentos</code>.
      */
     public final ProyectoDocumentos PROYECTO_DOCUMENTOS = ProyectoDocumentos.PROYECTO_DOCUMENTOS;
@@ -40,6 +47,11 @@ public class OdsMaster extends SchemaImpl {
      * The table <code>ods_master.proyecto_ods</code>.
      */
     public final ProyectoOds PROYECTO_ODS = ProyectoOds.PROYECTO_ODS;
+
+    /**
+     * The table <code>ods_master.proyecto_transicion_solicitud</code>.
+     */
+    public final ProyectoTransicionSolicitud PROYECTO_TRANSICION_SOLICITUD = ProyectoTransicionSolicitud.PROYECTO_TRANSICION_SOLICITUD;
 
     /**
      * The table <code>ods_master.proyectos</code>.
@@ -67,8 +79,10 @@ public class OdsMaster extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES,
             ProyectoDocumentos.PROYECTO_DOCUMENTOS,
             ProyectoOds.PROYECTO_ODS,
+            ProyectoTransicionSolicitud.PROYECTO_TRANSICION_SOLICITUD,
             Proyectos.PROYECTOS,
             VistaResumenProyectosOds.VISTA_RESUMEN_PROYECTOS_ODS
         );

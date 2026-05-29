@@ -1,0 +1,36 @@
+### Chat planificación — proyecto QA id=7 (planificacion)
+@baseUrl = http://localhost:8080
+@proyectoId = 7
+@gestorUserId = 2
+@evaluadorUserId = 5
+
+### Listar mensajes (gestor dueño)
+GET {{baseUrl}}/api/projects/{{proyectoId}}/chat/messages?actorUserId={{gestorUserId}}&actorRole=gestor
+
+### Listar mensajes (evaluador)
+GET {{baseUrl}}/api/projects/{{proyectoId}}/chat/messages?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+### Enviar mensaje (planificacion)
+POST {{baseUrl}}/api/projects/{{proyectoId}}/chat/messages
+Content-Type: application/json
+
+{
+  "actorUserId": {{gestorUserId}},
+  "actorRole": "gestor",
+  "cuerpo": "Mensaje de prueba desde .http"
+}
+
+> {%
+  client.global.set("msgId", response.body.id);
+%}
+
+### Editar mensaje (< 30 min)
+PUT {{baseUrl}}/api/projects/{{proyectoId}}/chat/messages/{{msgId}}
+Content-Type: application/json
+
+{
+  "actorUserId": {{gestorUserId}},
+  "cuerpo": "Mensaje editado desde .http"
+}
+
+### Eliminar mensajes: no permitido (auditoría del hilo)

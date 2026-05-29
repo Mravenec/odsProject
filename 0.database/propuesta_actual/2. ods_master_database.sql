@@ -127,4 +127,45 @@ CREATE TABLE IF NOT EXISTS proyecto_documentos (
     INDEX idx_subido_at (subido_at)
 ) ENGINE=InnoDB;
 
+-- ────────────────────────────────────────────────────────────
+-- TABLA: proyecto_chat_mensajes (Sprint Chat Planificación)
+-- Hilo gestor ⇄ admin/evaluador mientras estado = planificacion
+-- ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS proyecto_chat_mensajes (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    proyecto_id   INT NOT NULL,
+    autor_id      INT NOT NULL,
+    cuerpo        TEXT NOT NULL,
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    edited_at     TIMESTAMP NULL,
+    edit_count    INT DEFAULT 0,
+    eliminado     BOOLEAN DEFAULT FALSE,
+    eliminado_at  TIMESTAMP NULL,
+    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (autor_id)    REFERENCES ods_login.usuarios(id),
+    INDEX idx_chat_proyecto (proyecto_id, created_at)
+) ENGINE=InnoDB;
+
+-- ────────────────────────────────────────────────────────────
+-- TABLA: proyecto_transicion_solicitud (Sprint Chat Planificación)
+-- Gestor solicita salida; admin/evaluador aprueba o rechaza
+-- ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS proyecto_transicion_solicitud (
+    id               INT AUTO_INCREMENT PRIMARY KEY,
+    proyecto_id      INT NOT NULL,
+    solicitado_por   INT NOT NULL,
+    estado_destino   ENUM('activo','cancelado') NOT NULL,
+    motivo           VARCHAR(1000) NULL,
+    estado_solicitud ENUM('pendiente','aprobada','rechazada') DEFAULT 'pendiente',
+    resuelto_por     INT NULL,
+    resuelto_en      TIMESTAMP NULL,
+    nota_resolucion  VARCHAR(1000) NULL,
+    created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (proyecto_id)    REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (solicitado_por) REFERENCES ods_login.usuarios(id),
+    FOREIGN KEY (resuelto_por)   REFERENCES ods_login.usuarios(id),
+    INDEX idx_sol_proyecto (proyecto_id),
+    INDEX idx_sol_estado (estado_solicitud)
+) ENGINE=InnoDB;
+
 SELECT 'Base de datos ods_master creada exitosamente' AS mensaje;

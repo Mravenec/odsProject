@@ -49,9 +49,36 @@ public class MasterProjectController implements IMasterProjectController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<Proyectos> updateProyecto(@PathVariable Integer id, @RequestBody Proyectos proyecto) {
-        proyecto.setId(id);
-        return ResponseEntity.ok(masterProjectService.updateProyecto(proyecto));
+    public ResponseEntity<Proyectos> updateProyecto(@PathVariable Integer id, @RequestBody Map<String, Object> body) {
+        try {
+            Integer actorUserId = toIntOrNull(body.get("actorUserId"));
+            String actorRole = body.get("actorRole") != null ? String.valueOf(body.get("actorRole")) : "";
+            Proyectos proyecto = mapToProyectos(body);
+            if (actorUserId != null && !actorRole.isBlank()) {
+                return ResponseEntity.ok(
+                        masterProjectService.updateProyecto(id, proyecto, actorUserId, actorRole));
+            }
+            proyecto.setId(id);
+            return ResponseEntity.ok(masterProjectService.updateProyecto(proyecto));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (SecurityException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN).build();
+        }
+    }
+
+    private Proyectos mapToProyectos(Map<String, Object> body) {
+        Proyectos p = new Proyectos();
+        if (body.get("usuarioId") != null) p.setUsuarioId(toIntOrNull(body.get("usuarioId")));
+        if (body.get("sedeId") != null) p.setSedeId(toIntOrNull(body.get("sedeId")));
+        if (body.get("nombreProyecto") != null) p.setNombreProyecto(String.valueOf(body.get("nombreProyecto")));
+        if (body.get("descripcion") != null) p.setDescripcion(String.valueOf(body.get("descripcion")));
+        if (body.get("metaGeneral") != null) p.setMetaGeneral(String.valueOf(body.get("metaGeneral")));
+        if (body.get("responsableNombre") != null) p.setResponsableNombre(String.valueOf(body.get("responsableNombre")));
+        if (body.get("locationProvince") != null) p.setLocationProvince(String.valueOf(body.get("locationProvince")));
+        if (body.get("locationCanton") != null) p.setLocationCanton(String.valueOf(body.get("locationCanton")));
+        if (body.get("locationDistrict") != null) p.setLocationDistrict(String.valueOf(body.get("locationDistrict")));
+        return p;
     }
 
     @Override

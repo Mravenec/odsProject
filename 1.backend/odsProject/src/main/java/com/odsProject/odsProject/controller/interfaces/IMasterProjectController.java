@@ -27,7 +27,7 @@ public interface IMasterProjectController {
     ResponseEntity<Proyectos> createProyecto(@RequestBody Proyectos proyecto);
 
     @PutMapping("/{id}")
-    ResponseEntity<Proyectos> updateProyecto(@PathVariable Integer id, @RequestBody Proyectos proyecto);
+    ResponseEntity<Proyectos> updateProyecto(@PathVariable Integer id, @RequestBody Map<String, Object> body);
 
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteProyecto(@PathVariable Integer id);
