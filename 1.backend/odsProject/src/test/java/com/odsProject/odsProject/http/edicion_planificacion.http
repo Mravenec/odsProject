@@ -1,0 +1,44 @@
+### Edición planificación — proyecto en planificacion
+@baseUrl = http://localhost:8080
+@proyectoId = 7
+@gestorUserId = 2
+@evaluadorUserId = 5
+@adminUserId = 1
+
+### GET editable (evaluador)
+GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+### GET editable (gestor dueño)
+GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId={{gestorUserId}}&actorRole=gestor
+
+### PUT /full — actualizar meta/fórmula (evaluador en planificacion)
+# Ajustar proyectoIndicadorId / indicadorMasterId según GET editable
+PUT {{baseUrl}}/api/projects/{{proyectoId}}/full
+Content-Type: application/json
+
+{
+  "actorUserId": {{evaluadorUserId}},
+  "actorRole": "evaluador",
+  "proyecto": {
+    "nombreProyecto": "Proyecto QA planificación (editado)"
+  },
+  "odsIds": [1],
+  "primaryOdsId": 1,
+  "indicadores": []
+}
+
+### PUT fuera de planificacion = 403 (proyecto activo id=1 si aplica)
+# PUT {{baseUrl}}/api/projects/1/full
+# Content-Type: application/json
+#
+# {
+#   "actorUserId": {{evaluadorUserId}},
+#   "actorRole": "evaluador",
+#   "proyecto": { "nombreProyecto": "Bloqueado" },
+#   "odsIds": [1],
+#   "primaryOdsId": 1,
+#   "indicadores": []
+# }
+
+### Consultor = 403
+# GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId=4&actorRole=consultor

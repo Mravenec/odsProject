@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!--
+  PROPUESTA DE SPRINT — edicion_planificacion
+  Fase 2 del pipeline _linear (Fase 0 Limpieza ✓ → Plan → HTML propuesta → Aprobación → MJS → Multi-agente → Resumen).
+  Epic independiente del sprint Chat Planificación (ya cerrado y limpiado en _linear/).
+  Cadena serial ODS-1→4 — un agente activo por issue; sin paralelo en archivos compartidos.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta — Edición en planificación · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  :root{--bg:#07090F;--surf:#0D1117;--surf2:#131A24;--border:rgba(255,255,255,.07);--text:#E2E8F0;--muted:#64748B;--db:#EAB308;--be:#22C55E;--fe:#0EA5E9;--green:#22C55E;--orange:#F97316}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6}
+  .hero{padding:64px 48px 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;right:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(14,165,233,.12) 0%,transparent 70%);pointer-events:none}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--fe);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .ey::after{content:'';width:32px;height:1px;background:var(--fe);display:block}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,44px);font-weight:800;line-height:1.05;color:#fff}
+  h1 em{font-style:normal;background:linear-gradient(135deg,#22C55E,#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{margin-top:14px;font-size:14px;color:var(--muted);max-width:860px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);padding:4px 12px;border-radius:4px}
+  .chip span{color:#fff}.chip.ok{border-color:rgba(34,197,94,.35);color:var(--green)}
+  .chip.pending{border-color:rgba(249,115,22,.35);color:var(--orange)}
+  .al{margin:32px 48px 0;padding:14px 18px;border-radius:8px;font-size:13px;display:flex;gap:12px}
+  .al.ok{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.25);border-left:3px solid var(--green);color:#86EFAC}
+  .al.pending{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.25);border-left:3px solid var(--orange);color:#FDBA74}
+  .sec{padding:48px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:18px}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace}
+  .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surf2)}
+  .tbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top}
+  .ok{color:var(--green)}.done{color:var(--green)}
+  .issue{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);padding:2px 8px;border-radius:4px}
+  .badge.pending{color:var(--orange);background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.25)}
+  .issue-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .issue-title{font-size:14px;font-weight:500;color:#fff;margin-top:4px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .box{border-radius:8px;padding:14px;font-size:12.5px;line-height:1.55}
+  .box.bad{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);color:#FCA5A5}
+  .box.good{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);color:#BBF7D0}
+  .box h4{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .box.bad h4{color:#FCA5A5}.box.good h4{color:var(--green)}
+  code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.06);color:#CBD5E1;padding:1px 5px;border-radius:3px}
+  .cb2{background:#060912;border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:13px 16px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.75;overflow-x:auto;white-space:pre}
+  .da{color:#86EFAC}.dk{color:#7DD3FC}.dc{color:#64748B}
+  .plf{display:flex;align-items:stretch;flex-wrap:wrap;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin:12px 0 20px}
+  .pln{background:var(--surf2);padding:12px 16px;display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--border)}
+  .pla{display:flex;align-items:center;padding:0 8px;background:var(--surf2);color:var(--muted);font-size:14px;border-right:1px solid var(--border)}
+  .plname{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff}
+  .plnote{font-size:10px;color:var(--muted)}
+  ul.files{margin:0;padding-left:18px;font-size:13px;color:#94A3B8}
+  ul.files li{margin-bottom:6px}
+  hr.sep{border:none;border-top:1px solid var(--border);margin:48px 48px 0}
+  footer{margin-top:64px;border-top:1px solid var(--border);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .utn{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#98BADF}
+  @media(max-width:720px){.compare{grid-template-columns:1fr}.hero,.sec,.al{padding-left:24px;padding-right:24px;margin-left:0;margin-right:0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="ey">ODS UTN · Sprint Edición Planificación · Propuesta · linear_ods</div>
+  <h1>CRUD de planificación<br><em>gestor corrige · revisor edita o verifica · luego activo</em></h1>
+  <p class="sub">Mientras <code>proyectos.estado = planificacion</code>, habilitar una UI de edición (cabecera, ODS, indicadores, fórmulas, metas y parámetros) para el <strong>gestor dueño</strong> y para <strong>admin/evaluador</strong>. El chat y la transición del sprint anterior siguen vigentes: el revisor puede corregir directamente (Modo A) o pedir corrección por chat y verificar en la misma pantalla antes de aprobar (Modo B). <strong>Sin cambio de schema.</strong></p>
+  <div class="chips">
+    <div class="chip ok">Estado <span>APROBADO</span></div>
+    <div class="chip">Issues <span>4 planificados</span></div>
+    <div class="chip">Capas <span>BE · FE</span></div>
+    <div class="chip">Schema <span>sin cambios</span></div>
+    <div class="chip">Epic <span>«Edición Planificación»</span></div>
+    <div class="chip">Orden <span>serial ODS-1→4</span></div>
+    <div class="chip">Multi-agente <span>1 issue activo</span></div>
+  </div>
+</header>
+
+<div class="al ok"><div>✓</div><div><strong>Aprobado.</strong> Backlog creado en Linear: 2 epics (Backend · Frontend), 4 issues, <code>blocks</code> + handoff checklist. Script: <code>sprint_edicion_planificacion.mjs</code>.</div></div>
+
+<section class="sec">
+  <div class="sl">Objetivo</div>
+  <div class="st">Qué se busca resolver</div>
+  <table class="tbl">
+    <thead><tr><th>Problema</th><th>Solución propuesta</th></tr></thead>
+    <tbody>
+      <tr><td>Tras crear el proyecto, el gestor no puede corregir metas/fórmulas/ODS desde la UI si se equivocó.</td><td class="ok">Ruta <code>/projects/:id/planificacion/edit</code> con wizard reutilizado (misma UX que creación) en modo edición.</td></tr>
+      <tr><td>Admin/evaluador pueden chatear y aprobar transición, pero no editar el contenido técnico del proyecto.</td><td class="ok">Misma UI de edición para admin/evaluador <strong>solo en</strong> <code>planificacion</code>; backend valida rol + estado.</td></tr>
+      <tr><td>Revisor quiere decir «corregí la fórmula» o «cambiala vos a X» — hoy no hay dónde verificar el cambio en producto.</td><td class="ok"><strong>Modo A:</strong> revisor guarda en el editor. <strong>Modo B:</strong> instruye por chat → gestor edita → revisor revisa en detalle/editor y aprueba en <code>PlanificacionTransicionBar</code>.</td></tr>
+      <tr><td><code>POST /api/projects/full</code> solo crea; FE no tiene <code>updateIndicator</code> ni flujo PUT atómico.</td><td class="ok"><code>PUT /api/projects/{id}/full</code> orquesta actualización (cabecera + ODS + upsert indicadores/metas) con <code>actorUserId</code>/<code>actorRole</code>.</td></tr>
+      <tr><td>Endpoints ODS sueltos (<code>PUT /ods/NN/indicadores</code>) no validan planificación ni actor.</td><td class="ok">Gate centralizado en <code>PlanificacionEdicionService</code>; mutaciones de planificación pasan por <code>/projects/{id}/full</code> (v1).</td></tr>
+      <tr><td><code>evaluador</code> tiene <code>canEditAnyProject: false</code> en FE aunque BE ya permite edición de cabecera en planificación.</td><td class="ok">Nuevo permiso <code>canEditInPlanificacion(project)</code> alineado con BE.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Reglas de negocio</div>
+  <div class="st">Comportamiento acordado para este sprint</div>
+  <table class="tbl">
+    <thead><tr><th>Regla</th><th>Detalle</th></tr></thead>
+    <tbody>
+      <tr><td>Alcance temporal</td><td>Edición habilitada <strong>solo</strong> si <code>estado = planificacion</code>. Fuera de planificación → UI oculta y API 403.</td></tr>
+      <tr><td>Quién edita</td><td>Gestor <strong>dueño</strong> + <code>admin</code> + <code>evaluador</code>. Consultor: solo lectura (sin cambios).</td></tr>
+      <tr><td>Qué se edita (v1)</td><td>Cabecera, ODS vinculados/primario, indicadores existentes (fórmula, meta, parámetros), alta de indicadores nuevos. <strong>No</strong> borrado de indicadores en v1 (evita pérdida accidental).</td></tr>
+      <tr><td>Solicitud pendiente</td><td>Si hay <code>proyecto_transicion_solicitud</code> en <code>pendiente</code>, se permite editar (el revisor puede corregir antes de aprobar). Banner informativo en UI.</td></tr>
+      <tr><td>Chat + transición</td><td><code>ProjectChatPanel</code> y <code>PlanificacionTransicionBar</code> <strong>sin cambios funcionales</strong>; solo enlaces desde <code>ProjectResultsPage</code>.</td></tr>
+      <tr><td>Estado del proyecto</td><td>La edición <strong>no</strong> cambia <code>estado</code>; sigue en <code>planificacion</code> hasta aprobación vía transición existente.</td></tr>
+      <tr><td>Modo A / Modo B</td><td>A = revisor edita y guarda. B = revisor comenta en chat → gestor edita → revisor verifica en UI → aprueba transición.</td></tr>
+    </tbody>
+  </table>
+  <div class="cb2"><span class="dc"># Flujo UX objetivo (complementa chat + transición ya entregados)</span>
+<span class="da">planificacion</span>
+  ├─ <span class="dk">gestor | admin | evaluador</span> → <span class="da">Editor planificación</span> (PUT /full)
+  ├─ <span class="dk">chat</span> → Modo B (instrucciones / confirmación)
+  └─ <span class="dk">gestor solicita</span> → <span class="dk">revisor aprueba</span> → <span class="da">activo</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Pipeline</div>
+  <div class="st">Capas que aplican — sin cambio de schema ⇒ sin DB ni JOOQ</div>
+  <div class="plf">
+    <div class="pln"><div class="plname">DB</div><div class="plnote">N/A — schema intacto</div></div>
+    <div class="pla">⊘</div>
+    <div class="pln"><div class="plname">BE</div><div class="plnote">ODS-1: guard + PUT /full + .http</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">.http</div><div class="plnote">GATE_HTTP — FE no inicia</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">FE</div><div class="plnote">ODS-2→3→4 serial</div></div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Gate</th><th>Condición para desbloquear</th></tr></thead>
+    <tbody>
+      <tr><td>GATE_SQL / GATE_BD / GATE_JOOQ</td><td class="ok">No aplican — sin <code>role:database</code></td></tr>
+      <tr><td>GATE_HTTP</td><td><code>edicion_planificacion.http</code> — PUT /full 2xx; 403 fuera de planificacion; 403 consultor</td></tr>
+      <tr><td>GATE_FE</td><td><code>npm run dev</code> flujo manual (proyecto mock id=7) + <code>npm run build</code> exit 0</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">API REST</div>
+  <div class="st">Contrato nuevo (gate .http antes de FE)</div>
+  <table class="tbl">
+    <thead><tr><th>Método</th><th>Ruta</th><th>Rol</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td>PUT</td><td><code>/api/projects/{id}/full</code></td><td>gestor dueño · admin · evaluador</td><td>Mismo shape que POST /full + <code>actorUserId</code>, <code>actorRole</code>; cada indicador puede traer <code>proyectoIndicadorId</code> para upsert</td></tr>
+      <tr><td>GET</td><td><code>/api/projects/{id}/planificacion/editable</code></td><td>idem</td><td>Payload agregado listo para el editor (cabecera + ods + indicadores + params). Opcional si el FE arma con GETs existentes; preferible para 1 round-trip</td></tr>
+    </tbody>
+  </table>
+  <div class="cb2"><span class="dc"># Payload PUT /api/projects/{id}/full (extiende POST /full)</span>
+{
+  <span class="dk">"actorUserId"</span>: 2,
+  <span class="dk">"actorRole"</span>: <span class="da">"evaluador"</span>,
+  <span class="dk">"proyecto"</span>: { <span class="dc">/* cabecera — estado ignorado, se preserva */</span> },
+  <span class="dk">"odsIds"</span>: [1, 17],
+  <span class="dk">"primaryOdsId"</span>: 17,
+  <span class="dk">"indicadores"</span>: [{
+    <span class="dk">"proyectoIndicadorId"</span>: 42,   <span class="dc">// upsert si existe; omitir = crear</span>
+    <span class="dk">"odsId"</span>: 1,
+    <span class="dk">"indicadorMasterId"</span>: 5,
+    <span class="dk">"metaValor"</span>: 80,
+    <span class="dk">"metaUnidad"</span>: <span class="da">"Porcentaje"</span>,
+    <span class="dk">"formulaCustom"</span>: <span class="da">"(p1/p2)*100"</span>,
+    <span class="dk">"parametros"</span>: [{ <span class="dk">"nombreParametro"</span>: <span class="da">"Beneficiarios"</span>, <span class="dk">"nombreVariable"</span>: <span class="da">"p1"</span>, <span class="dk">"tipoDato"</span>: <span class="da">"Decimal"</span> }]
+  }]
+}</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Dependencias</div>
+  <div class="st">Cadena serial en Linear (<code>blocks</code>) — multi-agente rotativo</div>
+  <div class="cb2"><span class="da">ODS-1 (BE)</span> ──blocks──&gt; <span class="dk">ODS-2 (FE permisos + service + hook)</span>
+                                      ──blocks──&gt; <span class="dk">ODS-3 (FE editor page + wizard)</span>
+                                      ──blocks──&gt; <span class="da">ODS-4 (FE rutas + ProjectResultsPage)</span>
+
+<span class="dc"># Sin paralelo: ODS-3 puede extraer de ProjectCreationPage; ODS-4 toca App.jsx + Results</span>
+<span class="dc"># Varios agentes rotan issue por issue: claim → Doing → Testing → Done → next</span>
+<span class="dc"># Epic independiente — no comparte archivos con otros sprints activos</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear</div>
+  <div class="st">Epic, script y issues (Fase 4 <code>.mjs</code> tras aprobación)</div>
+  <table class="tbl">
+    <thead><tr><th>Meta Linear</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Equipo</td><td><code>linear_ods</code></td></tr>
+      <tr><td>Epics</td><td><code>Edición Planificación · Backend</code> · <code>Edición Planificación · Frontend</code></td></tr>
+      <tr><td>Sprint (<code>SPRINT_NAME</code>)</td><td><code>Sprint Edición Planificación</code></td></tr>
+      <tr><td>Script (post-aprobación)</td><td><code>_linear/scripts/sprint_edicion_planificacion.mjs</code></td></tr>
+      <tr><td>Estados issue</td><td>Backlog → In Progress → Testing → Done</td></tr>
+      <tr><td>Labels</td><td><code>role:backend</code> · <code>role:frontend</code></td></tr>
+    </tbody>
+  </table>
+  <table class="tbl" style="margin-top:18px">
+    <thead><tr><th>ID</th><th>Rol</th><th>Título</th><th>Est.</th><th>Archivos exclusivos (evitar choque)</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-1</td><td>backend</td><td>PUT /full + PlanificacionEdicionService + GET editable + edicion_planificacion.http</td><td>8</td><td><code>IPlanificacionEdicion*</code>, <code>PlanificacionEdicion*</code>, <code>MasterProjectService.java</code>, <code>MasterProjectController.java</code></td></tr>
+      <tr><td>ODS-2</td><td>frontend</td><td>Permisos + projectService.updateFullProject + usePlanificacionEditor + utils</td><td>3</td><td><code>usePermissions.js</code>, <code>projectService.js</code>, <code>usePlanificacionEditor.js</code>, <code>planificacionEditorUtils.js</code></td></tr>
+      <tr><td>ODS-3</td><td>frontend</td><td>PlanificacionEditorPage + extracción wizard compartido</td><td>5</td><td><code>PlanificacionEditorPage.jsx</code>, <code>ProjectPlanificacionWizard.jsx</code>, <code>ProjectCreationPage.jsx</code> (refactor mínimo)</td></tr>
+      <tr><td>ODS-4</td><td>frontend</td><td>Rutas + CTAs en ProjectResultsPage + banner revisor</td><td>3</td><td><code>App.jsx</code>, <code>ProjectResultsPage.jsx</code></td></tr>
+    </tbody>
+  </table>
+  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-152 · Epic Backend · est 8</div><div class="issue-title">PUT /full + PlanificacionEdicionService + GET editable + edicion_planificacion.http</div></div><div></div></div>
+  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-153 · Epic Frontend · est 3</div><div class="issue-title">FE foundation — permisos + projectService + usePlanificacionEditor + utils</div></div><div></div></div>
+  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-154 · Epic Frontend · est 5</div><div class="issue-title">FE editor — PlanificacionEditorPage + ProjectPlanificacionWizard</div></div><div></div></div>
+  <div class="issue"><div class="badge pending">Backlog</div><div><div class="issue-id">ODS-155 · Epic Frontend · est 3</div><div class="issue-title">FE integración — rutas + ProjectResultsPage + banner revisor</div></div><div></div></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Checklist</div>
+  <div class="st">Por issue (copiar tal cual a Linear) — incluye handoff cruzado</div>
+
+  <div class="cb2"><span class="dc">## ODS-1 — role:backend — PUT /full + guard planificación</span>
+<span class="da">- [ ] IPlanificacionEdicionService + PlanificacionEdicionService</span>
+<span class="da">  - [ ] assertCanEditPlanificacion(proyectoId, actorUserId, actorRole) — gestor dueño | admin | evaluador; solo estado planificacion</span>
+<span class="da">  - [ ] buildEditableSnapshot(proyectoId) — agregado para GET (opcional si FE usa GETs existentes)</span>
+<span class="da">  - [ ] updateFullProject(proyectoId, payload, actorUserId, actorRole) — cabecera + sync ODS + upsert indicadores/parametros</span>
+<span class="da">- [ ] IMasterProjectService + MasterProjectService — delegar updateFull; reutilizar helpers de createFullProject</span>
+<span class="da">- [ ] IMasterProjectController + MasterProjectController — PUT /api/projects/{id}/full; GET /api/projects/{id}/planificacion/editable</span>
+<span class="da">- [ ] edicion_planificacion.http — 2xx gestor/admin/evaluador en planificacion; 403 activo; 403 consultor; upsert formula/meta</span>
+<span class="da">- [ ] Service/Controller inyectan interfaces (ISVC, ICTRL)</span>
+<span class="da">- [ ] Testing: mvn compile + spring-boot:run + .http 2xx</span>
+<span class="da">- [ ] Handoff: marcar ODS-2 checklist ítem 1 — endpoints listos (GATE_HTTP)</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-2 — role:frontend — Permisos + service + hook</span>
+<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta ODS-1 ítem handoff [x] (edicion_planificacion.http OK)</span>
+<span class="da">- [ ] usePermissions: canEditInPlanificacion(project) — gestor dueño + admin + evaluador en planificacion</span>
+<span class="da">- [ ] projectService.updateFullProject + getPlanificacionEditable (si GET editable)</span>
+<span class="da">- [ ] planificacionEditorUtils.js — map backend ↔ formData (mismo shape que ProjectCreationPage)</span>
+<span class="da">- [ ] usePlanificacionEditor.js — load, validate, save, error 403 handling</span>
+<span class="da">- [ ] Handoff: marcar ODS-3 checklist ítem 1 — service/hook alineados con PUT /full</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-3 — role:frontend — Editor page + wizard compartido</span>
+<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta ODS-2 marque ítem 1 [x]</span>
+<span class="da">- [ ] Extraer pasos compartidos de ProjectCreationPage → ProjectPlanificacionWizard.jsx (create + edit modes)</span>
+<span class="da">- [ ] PlanificacionEditorPage.jsx — carga proyecto id; usa usePlanificacionEditor; IndicatorConfigModal reutilizado</span>
+<span class="da">- [ ] ProjectCreationPage.jsx — refactor mínimo: delegar wizard compartido (sin cambiar flujo crear)</span>
+<span class="da">- [ ] Guard UI: si no canEditInPlanificacion → redirect /forbidden</span>
+<span class="da">- [ ] Testing: npm run dev — editar proyecto mock id=7 (fórmula/meta); npm run build exit 0</span>
+<span class="da">- [ ] Handoff: marcar ODS-4 checklist ítem 1 — editor funcional en /planificacion/edit</span></div>
+
+  <div class="cb2"><span class="dc">## ODS-4 — role:frontend — Integración ProjectResultsPage</span>
+<span class="da">- [ ] ⏸ Gate externo: NO iniciar hasta ODS-3 marque ítem 1 [x]</span>
+<span class="da">- [ ] App.jsx — ruta /projects/:projectId/planificacion/edit con ProtectedRoute require canEditInPlanificacion</span>
+<span class="da">- [ ] ProjectResultsPage — botón «Editar planificación» (gestor dueño + admin + evaluador)</span>
+<span class="da">- [ ] Banner revisor: «Verificá cambios antes de aprobar» si solicitud pendiente o tras edición reciente</span>
+<span class="da">- [ ] Enlace coherente con ProjectChatPanel y PlanificacionTransicionBar (sin reimplementar)</span>
+<span class="da">- [ ] Testing: Modo A (evaluador edita) + Modo B (chat → gestor edita → evaluador aprueba); build OK</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Antes / Después</div>
+  <div class="st">Experiencia en planificación</div>
+  <div class="compare">
+    <div class="box bad"><h4>Antes</h4>
+      El gestor crea una vez y no puede corregir metas/fórmulas. El revisor solo chatea y aprueba sin poder editar ni verificar cambios en una pantalla de edición. Errores se arreglan fuera del sistema o no se arreglan.
+    </div>
+    <div class="box good"><h4>Después</h4>
+      Gestor, admin y evaluador abren «Editar planificación» y corrigen cabecera, ODS, fórmulas y metas. Modo A: revisor corrige directo. Modo B: chat + edición del gestor + verificación del revisor + aprobación a <code>activo</code>.
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sl">Archivos afectados</div>
+  <div class="st">Por capa (estimado)</div>
+  <table class="tbl">
+    <thead><tr><th>Capa</th><th>Archivos</th></tr></thead>
+    <tbody>
+      <tr><td class="ok">BE</td><td><ul class="files">
+        <li><code>service/interfaces/IPlanificacionEdicionService.java</code> · <code>service/PlanificacionEdicionService.java</code></li>
+        <li><code>service/MasterProjectService.java</code> · <code>service/interfaces/IMasterProjectService.java</code></li>
+        <li><code>controller/MasterProjectController.java</code> · <code>controller/interfaces/IMasterProjectController.java</code></li>
+        <li><code>http/edicion_planificacion.http</code></li>
+      </ul></td></tr>
+      <tr><td class="ok">FE</td><td><ul class="files">
+        <li><code>src/hooks/usePermissions.js</code> · <code>src/hooks/usePlanificacionEditor.js</code></li>
+        <li><code>src/services/projectService.js</code> · <code>src/utils/planificacionEditorUtils.js</code></li>
+        <li><code>src/pages/PlanificacionEditorPage/PlanificacionEditorPage.jsx</code></li>
+        <li><code>src/components/projects/ProjectPlanificacionWizard.jsx</code></li>
+        <li><code>src/pages/ProjectCreationPage/ProjectCreationPage.jsx</code> (refactor)</li>
+        <li><code>src/pages/ProjectResultsPage/ProjectResultsPage.jsx</code> · <code>src/App.jsx</code></li>
+      </ul></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Paralelismo</div>
+  <div class="st">Decisión multi-agente (README: cadena estricta en este epic)</div>
+  <table class="tbl">
+    <thead><tr><th>Escenario</th><th>¿Paralelo?</th><th>Regla</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-1 (BE)</td><td>❌</td><td>Un agente <code>role:backend</code>; toca <code>MasterProjectService</code>.</td></tr>
+      <tr><td>ODS-2 ‖ ODS-3 (FE)</td><td>❌</td><td>Serial: hook/service antes que wizard; <code>blocks</code> ODS-2→ODS-3.</td></tr>
+      <tr><td>ODS-3 ‖ ODS-4 (FE)</td><td>❌</td><td>Serial: editor antes que rutas/CTAs; <code>blocks</code> ODS-3→ODS-4.</td></tr>
+      <tr><td>FE antes de GATE_HTTP</td><td>❌</td><td>ODS-2 solo tras ODS-1 Done + .http verificado.</td></tr>
+      <tr><td>Otro epic en el repo</td><td>✅</td><td>Sin choque de archivos — agente paralelo en otro <code>sprint_*.mjs</code>.</td></tr>
+      <tr><td>Rotación multi-agente</td><td>✅</td><td>Orquestador <code>next</code> → claim → checklist ítem a ítem → Testing → Done → siguiente issue.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Orquestación</div>
+  <div class="st">Ciclo por issue (Fase 5 multi-agente — tras aprobación)</div>
+  <div class="cb2"><span class="dc"># Desde _linear/ — repetir por cada ODS-N (N=1..4)</span>
+node scripts/sprint_edicion_planificacion.mjs next
+<span class="dc"># claim_issue (MCP) o state → In Progress</span>
+node scripts/sprint_edicion_planificacion.mjs checklist ODS-N 1
+<span class="dc"># … ítem por ítem hasta checklist completo</span>
+node scripts/linear-update-state.mjs ODS-N Testing
+<span class="dc"># pruebas locales según rol (BE/FE)</span>
+node scripts/linear-update-state.mjs ODS-N --checklist N   <span class="dc"># handoff downstream si aplica</span>
+node scripts/sprint_edicion_planificacion.mjs state ODS-N Done
+node scripts/sprint_edicion_planificacion.mjs next
+
+<span class="dc"># Al cerrar ODS-4 → Fase 6: resumen_sprint_edicion_planificacion.html + epic Completed</span></div>
+  <table class="tbl">
+    <thead><tr><th>Issue</th><th>Testing local (estado Testing)</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-1</td><td><code>mvn spring-boot:run</code>; <code>edicion_planificacion.http</code> 2xx en proyecto id=7</td></tr>
+      <tr><td>ODS-2</td><td>Unit manual hook/service contra API levantada</td></tr>
+      <tr><td>ODS-3</td><td><code>npm run dev</code> — /projects/7/planificacion/edit; build OK</td></tr>
+      <tr><td>ODS-4</td><td>Flujo Modo A/B manual desde ProjectResultsPage; build OK</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Aprobación</div>
+  <div class="st">Estado: <span style="color:var(--green)">APROBADO</span> · 2026-06-06</div>
+  <p class="sub">Tras ✅ explícito en chat:</p>
+  <div class="cb2"><span class="dc"># Fase 4 — generar sprint_edicion_planificacion.mjs (4 issues, blocks serial, checklists de arriba)</span>
+cd _linear
+node scripts/sprint_edicion_planificacion.mjs create
+node scripts/sprint_edicion_planificacion.mjs status
+node scripts/sprint_edicion_planificacion.mjs next
+
+<span class="dc"># Epic nuevo (escenario B README) — EPIC_NAME distinto de «Chat Planificación»</span>
+<span class="dc"># Requisito: LINEAR_API_KEY en _linear/.env</span>
+<span class="dc"># QA: proyecto mock id=7 en planificacion (21. ods_mocks.sql)</span></div>
+  <table class="tbl">
+    <thead><tr><th>Decisión</th><th>Propuesta</th></tr></thead>
+    <tbody>
+      <tr><td>Schema</td><td class="ok">Sin cambios — sin issue database.</td></tr>
+      <tr><td>API v1</td><td class="ok">PUT /projects/{id}/full + GET editable; no tocar 17 controllers ODS.</td></tr>
+      <tr><td>UI</td><td class="ok">Reutilizar wizard + IndicatorConfigModal; no duplicar lógica de fórmulas.</td></tr>
+      <tr><td>Chat / transición</td><td class="ok">Sin reimplementar — solo integrar navegación.</td></tr>
+      <tr><td>Cadena Linear</td><td class="ok">Serial ODS-1→2→3→4; handoff checklist ítem 1 downstream.</td></tr>
+      <tr><td>Borrado indicadores</td><td class="ok">Fuera de v1 — evita regresiones; issue futuro si hace falta.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="sep">
+
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>plan_sprint_edicion_planificacion.html · Fase 2 · linear_ods · Esperando aprobación</div>
+</footer>
+
+</body>
+</html>

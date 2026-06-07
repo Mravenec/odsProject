@@ -2,6 +2,7 @@ package com.odsProject.odsProject.controller;
 
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.service.interfaces.IMasterProjectService;
+import com.odsProject.odsProject.service.interfaces.IPlanificacionEdicionService;
 import com.odsProject.odsProject.controller.interfaces.IMasterProjectController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class MasterProjectController implements IMasterProjectController {
 
     @Autowired
     private IMasterProjectService masterProjectService;
+
+    @Autowired
+    private IPlanificacionEdicionService planificacionEdicionService;
 
     @Override
     @GetMapping
@@ -106,6 +110,39 @@ public class MasterProjectController implements IMasterProjectController {
     @PostMapping("/full")
     public ResponseEntity<Map<String, Object>> createFullProject(@RequestBody Map<String, Object> payload) {
         return ResponseEntity.ok(masterProjectService.createFullProject(payload));
+    }
+
+    @Override
+    @PutMapping("/{id}/full")
+    public ResponseEntity<Map<String, Object>> updateFullProject(@PathVariable Integer id,
+                                                                 @RequestBody Map<String, Object> payload) {
+        try {
+            Integer actorUserId = toIntOrNull(payload.get("actorUserId"));
+            String actorRole = payload.get("actorRole") != null ? String.valueOf(payload.get("actorRole")) : "";
+            return ResponseEntity.ok(planificacionEdicionService.updateFullProject(
+                    id, payload, actorUserId, actorRole));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "error", e.getMessage()));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN)
+                    .body(Map.of("success", false, "error", e.getMessage()));
+        }
+    }
+
+    @Override
+    @GetMapping("/{id}/planificacion/editable")
+    public ResponseEntity<Map<String, Object>> getPlanificacionEditable(@PathVariable Integer id,
+                                                                      @RequestParam Integer actorUserId,
+                                                                      @RequestParam String actorRole) {
+        try {
+            return ResponseEntity.ok(planificacionEdicionService.buildEditableSnapshot(
+                    id, actorUserId, actorRole));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "error", e.getMessage()));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN)
+                    .body(Map.of("success", false, "error", e.getMessage()));
+        }
     }
 
     @Override

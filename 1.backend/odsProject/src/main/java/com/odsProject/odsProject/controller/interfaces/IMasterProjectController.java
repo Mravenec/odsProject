@@ -49,6 +49,21 @@ public interface IMasterProjectController {
     ResponseEntity<Map<String, Object>> createFullProject(@RequestBody Map<String, Object> payload);
 
     /**
+     * PUT /api/projects/{id}/full — actualización en planificacion (gestor dueño | admin | evaluador).
+     */
+    @PutMapping("/{id}/full")
+    ResponseEntity<Map<String, Object>> updateFullProject(@PathVariable Integer id,
+                                                        @RequestBody Map<String, Object> payload);
+
+    /**
+     * GET /api/projects/{id}/planificacion/editable — snapshot para editor UI.
+     */
+    @GetMapping("/{id}/planificacion/editable")
+    ResponseEntity<Map<String, Object>> getPlanificacionEditable(@PathVariable Integer id,
+                                                                 @RequestParam Integer actorUserId,
+                                                                 @RequestParam String actorRole);
+
+    /**
      * GET /api/projects/{id}/ods
      * Devuelve los ODS vinculados a un proyecto (con bandera es_primario).
      */

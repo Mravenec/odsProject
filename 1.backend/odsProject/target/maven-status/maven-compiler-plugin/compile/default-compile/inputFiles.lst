@@ -743,6 +743,7 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\interfaces\IObjetivo16PazJusticiaService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\interfaces\IObjetivo17AlianzasService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\interfaces\IOdsBaseService.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\interfaces\IPlanificacionEdicionService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\interfaces\IRoleAuthorizationService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\interfaces\ITransicionPlanificacionService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\LoginService.java
@@ -764,5 +765,6 @@ C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\Objetivo15VidaEcosistemasService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\Objetivo16PazJusticiaService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\Objetivo17AlianzasService.java
+C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\PlanificacionEdicionService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\RoleAuthorizationService.java
 C:\Users\kcamp\CascadeProjects\odsProject\1.backend\odsProject\src\main\java\com\odsProject\odsProject\service\TransicionPlanificacionService.java

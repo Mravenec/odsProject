@@ -218,6 +218,34 @@ USE ods16; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores
 USE ods17; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores; TRUNCATE TABLE mediciones_historicas; TRUNCATE TABLE proyecto_indicador_parametros; TRUNCATE TABLE proyecto_indicadores; TRUNCATE TABLE auditoria_ods17; SET FOREIGN_KEY_CHECKS = 1;
 
 -- ────────────────────────────────────────────────────────────
+-- 5.0 SPRINT EDICIÓN PLANIFICACIÓN — proyecto id=7 en planificacion (QA)
+-- ────────────────────────────────────────────────────────────
+USE ods_master;
+
+INSERT INTO proyectos (
+  id, usuario_id, sede_id, nombre_proyecto, descripcion,
+  fecha_inicio, fecha_fin, meta_general, responsable_nombre,
+  location_province, location_canton, location_district, estado
+) VALUES (
+  7, 2, 2, 'Proyecto QA Planificación',
+  'Mock para edición en planificación y transición',
+  '2024-01-01', '2025-12-31', 'Revisar metas antes de activo',
+  'Ana García López', 'Alajuela', 'Alajuela', 'Alajuela', 'planificacion'
+);
+
+INSERT INTO proyecto_ods (proyecto_id, ods_id, es_primario) VALUES
+  (7, 1, 1);
+
+USE ods01;
+
+INSERT INTO proyecto_indicadores (id, proyecto_id, indicador_master_id, formula_custom, meta_valor, meta_unidad, meta_nombre) VALUES
+  (5, 7, @ind111, '(p1/p2)*100', 5.0, 'Porcentaje', 'Reducir pobreza');
+
+INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_parametro, nombre_variable, tipo_dato, valor_actual) VALUES
+  (9, 5, 'Población Pobre', 'p1', 'Decimal', 0),
+  (10, 5, 'Población Total', 'p2', 'Decimal', 0);
+
+-- ────────────────────────────────────────────────────────────
 -- 5.1 SPRINT CONSULTOR — Usuario QA + proyecto completado auditado
 -- Rol consultor (rol_id=3), export Excel, QA read-only
 -- ────────────────────────────────────────────────────────────

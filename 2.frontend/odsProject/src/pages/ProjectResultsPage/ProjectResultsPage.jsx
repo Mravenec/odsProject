@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
@@ -7,8 +7,9 @@ import { exportService } from '../../services/exportService';
 import { usePermissions } from '../../hooks/usePermissions';
 import {
   FileText, MapPin, Target, Calendar, CheckCircle2,
-  Download, ArrowLeft, Building, ClipboardCheck
+  Download, ArrowLeft, Building, ClipboardCheck, Pencil
 } from 'lucide-react';
+import { usePlanificacionTransicion } from '../../hooks/usePlanificacionTransicion';
 import { formatDate, getObjectiveName, getOdsColor, isProjectCompletado } from '../../utils/formatters';
 import EvidenceSection from '../../components/projects/EvidenceSection';
 import AchievementBadge, { deriveEstado } from '../../components/AchievementBadge';
@@ -37,9 +38,7 @@ const ProjectResultsPage = () => {
   const [alertModal, setAlertModal] = useState({ show: false, message: '', isError: false });
   const [exporting, setExporting] = useState(false);
 
-  useEffect(() => { fetchProjectFull(); }, [projectId]);
-
-  const fetchProjectFull = async () => {
+  const fetchProjectFull = useCallback(async () => {
     setLoading(true);
     try {
       const headerRes = await projectService.getProjectById(projectId);
@@ -128,7 +127,16 @@ const ProjectResultsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [projectId]);
+
+  const transicion = usePlanificacionTransicion(
+    Number(projectId),
+    user,
+    project?.status,
+    fetchProjectFull
+  );
+
+  useEffect(() => { fetchProjectFull(); }, [fetchProjectFull]);
 
   if (loading) return (
     <div className="global-loader-container"><div className="loader"></div>
@@ -179,6 +187,16 @@ const ProjectResultsPage = () => {
             </div>
           </div>
           <div className="nav-right">
+            {project && perms.canEditInPlanificacion(project) && (
+              <button
+                type="button"
+                className="btn-export-excel"
+                onClick={() => navigate(`/projects/${projectId}/planificacion/edit`)}
+              >
+                <Pencil size={16} /> Editar planificación
+              </button>
+            )}
+
             {/* Sprint 16 — Botón "Enviar a auditoría" para el gestor dueño.
                Visible si el proyecto está 'activo' o 'planificacion' y el user es el dueño. */}
             {project && project.userId === user?.id
@@ -242,6 +260,28 @@ const ProjectResultsPage = () => {
           user={user}
           projectStatus={project.status}
         />
+      )}
+
+      {project && transicion.isReviewer && transicion.solicitud?.estadoSolicitud === 'pendiente'
+        && String(project.status || '').toLowerCase() === 'planificacion' && (
+        <div style={{
+          maxWidth: 'var(--container-max, 1200px)', margin: '1rem auto 0',
+          padding: '1rem 1.25rem', background: '#eff6ff',
+          border: '1px solid #bfdbfe', borderLeft: '4px solid #2563eb',
+          borderRadius: 8, color: '#1e3a8a',
+        }}>
+          <div style={{ fontWeight: 800, fontSize: '0.78rem', textTransform: 'uppercase',
+            letterSpacing: '0.1em', marginBottom: 4 }}>
+            Revisión pendiente — verifique los cambios antes de aprobar
+          </div>
+          <div style={{ fontSize: '0.92rem', lineHeight: 1.5 }}>
+            Transición solicitada hacia <strong>{transicion.solicitud.estadoDestino}</strong>.
+            {transicion.solicitud.motivo && (
+              <span> Motivo: {transicion.solicitud.motivo}</span>
+            )}
+            {' '}Use <strong>Editar planificación</strong> para validar fórmulas y metas actualizadas.
+          </div>
+        </div>
       )}
 
       {project && (

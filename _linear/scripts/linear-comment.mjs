@@ -7,7 +7,7 @@
  *   node linear-comment.mjs ODS-110 --checklist-status
  *
  * Flujo recomendado:
- *   1. linear-update-state.mjs ODS-110 --checklist 1,2,3
+ *   1. linear-update-state.mjs ODS-110 --checklist 1  (luego 2, 3… uno por vez)
  *   2. linear-comment.mjs ODS-110 "nota técnica opcional"
  *   3. linear-update-state.mjs ODS-110 Done
  */

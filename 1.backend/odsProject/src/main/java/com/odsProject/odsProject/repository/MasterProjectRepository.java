@@ -240,6 +240,27 @@ public class MasterProjectRepository implements IMasterProjectRepository {
            .execute();
     }
 
+    @Override
+    public java.util.Optional<Integer> findProyectoIndicadorId(Integer odsId, Integer proyectoId,
+                                                                Integer indicadorMasterId) {
+        if (odsId == null || proyectoId == null || indicadorMasterId == null) {
+            return java.util.Optional.empty();
+        }
+        String schema = String.format("ods%02d", odsId);
+        var idField = org.jooq.impl.DSL.field(
+                org.jooq.impl.DSL.name(schema, "proyecto_indicadores", "id"), Integer.class);
+        var proyectoField = org.jooq.impl.DSL.field(
+                org.jooq.impl.DSL.name(schema, "proyecto_indicadores", "proyecto_id"), Integer.class);
+        var masterField = org.jooq.impl.DSL.field(
+                org.jooq.impl.DSL.name(schema, "proyecto_indicadores", "indicador_master_id"), Integer.class);
+        var table = org.jooq.impl.DSL.table(org.jooq.impl.DSL.name(schema, "proyecto_indicadores"));
+        Integer id = dsl.select(idField)
+                .from(table)
+                .where(proyectoField.eq(proyectoId).and(masterField.eq(indicadorMasterId)))
+                .fetchOneInto(Integer.class);
+        return java.util.Optional.ofNullable(id);
+    }
+
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 15 — Transiciones de estado + stamping de auditoría
     //

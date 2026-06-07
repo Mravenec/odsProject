@@ -1,0 +1,47 @@
+---
+description: Orquestación multi-agente vía Linear + _linear MCP. Complementa linear-checklist-secuencial.
+alwaysApply: true
+---
+
+# Multi-agente — coordinación
+
+Fuente: `_linear/README.md` (MCP v2.0) + `AGENTS.md` en la raíz del repo.
+
+## Principio
+
+Linear + checklist = **quién** trabaja, **cuándo** empieza y **cuándo** pasa el testigo. `.cursor/rules` = **cómo** se comporta cada agente.
+
+## Un issue activo por cadena
+
+- Antes de codear: `next` o `list_available_issues` → solo el issue **desbloqueado** (`blocks` resuelto + gate ítem 1 `[x]` si aplica).
+- MCP: `claim_issue` → Doing. **No** tocar otro issue de la misma cadena en paralelo.
+- Issues largos: `ping_issue` cada 2–3 min.
+
+## Roles (`role:*` en Linear)
+
+| Rol | Alcance | Testing local |
+|-----|---------|-----------------|
+| `orchestrator` | `create`, `next`, `status`, Fase 6 resumen; no implementa features | — |
+| `database` | SQL, mocks; **único** agente en `drop_db` | drop → setup → load_mocks |
+| `backend` | IREPO→REPO→ISVC→SVC→ICTRL→CTRL→`.http` | compile, spring-boot, `.http` 2xx |
+| `frontend` | Services, hooks, UI; **espera GATE_HTTP** | `npm run dev`, `npm run build` |
+
+## Paralelo permitido
+
+- **Sí:** epics distintos sin choque (archivos distintos, sin `drop_db` compartido).
+- **No:** mismo archivo, mismo epic serial, o ítem 1 downstream sin `[x]`.
+
+## Handoff entre agentes
+
+1. Upstream termina su gate → checklist propio (ítem a ítem).
+2. `handoff ODS-DOWNSTREAM 1` (marca ítem 1 del **otro** ticket).
+3. `state ODS-N Done` → libera `blocks`.
+4. Downstream: `get_issue_context` + `--checklist-status` → confirma ítem 1 `[x]` → empieza ítem 2.
+
+## Cursor: varios chats
+
+Abrir **un chat Agent por epic/issue** cuando el plan lo permita. Misma regla en todos: no avanzar sin Linear.
+
+## Fallo
+
+`fail_issue` o detener si claim expiró / API falló. No asumir progreso no registrado en Linear.

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!--
+  RESUMEN DE SPRINT — edicion_planificacion
+  Fase 6 del pipeline _linear. Par de plan_sprint_edicion_planificacion.html (APROBADO).
+  CSS: copiado de _plantilla_ods.html — no modificar estilos.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumen — Edición en planificación · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  :root{--bg:#07090F;--surf:#0D1117;--surf2:#131A24;--border:rgba(255,255,255,.07);--text:#E2E8F0;--muted:#64748B;--db:#EAB308;--be:#22C55E;--fe:#0EA5E9;--green:#22C55E;--orange:#F97316}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6}
+  .hero{padding:64px 48px 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;right:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(34,197,94,.12) 0%,transparent 70%);pointer-events:none}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--green);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .ey::after{content:'';width:32px;height:1px;background:var(--green);display:block}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,44px);font-weight:800;line-height:1.05;color:#fff}
+  h1 em{font-style:normal;background:linear-gradient(135deg,#22C55E,#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{margin-top:14px;font-size:14px;color:var(--muted);max-width:860px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);padding:4px 12px;border-radius:4px}
+  .chip span{color:#fff}.chip.ok{border-color:rgba(34,197,94,.35);color:var(--green)}
+  .al{margin:32px 48px 0;padding:14px 18px;border-radius:8px;font-size:13px;display:flex;gap:12px}
+  .al.ok{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.25);border-left:3px solid var(--green);color:#86EFAC}
+  .sec{padding:48px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:18px}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace}
+  .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surf2)}
+  .tbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top}
+  .ok{color:var(--green)}.done{color:var(--green)}
+  .issue{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);padding:2px 8px;border-radius:4px}
+  .issue-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .issue-title{font-size:14px;font-weight:500;color:#fff;margin-top:4px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .box{border-radius:8px;padding:14px;font-size:12.5px;line-height:1.55}
+  .box.bad{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);color:#FCA5A5}
+  .box.good{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);color:#BBF7D0}
+  .box h4{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .box.bad h4{color:#FCA5A5}.box.good h4{color:var(--green)}
+  code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.06);color:#CBD5E1;padding:1px 5px;border-radius:3px}
+  .cb2{background:#060912;border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:13px 16px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.75;overflow-x:auto;white-space:pre}
+  .da{color:#86EFAC}.dk{color:#7DD3FC}.dc{color:#64748B}
+  .plf{display:flex;align-items:stretch;flex-wrap:wrap;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin:12px 0 20px}
+  .pln{background:var(--surf2);padding:12px 16px;display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--border)}
+  .pla{display:flex;align-items:center;padding:0 8px;background:var(--surf2);color:var(--muted);font-size:14px;border-right:1px solid var(--border)}
+  .plname{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff}
+  .plnote{font-size:10px;color:var(--muted)}
+  ul.files{margin:0;padding-left:18px;font-size:13px;color:#94A3B8}
+  ul.files li{margin-bottom:6px}
+  hr.sep{border:none;border-top:1px solid var(--border);margin:48px 48px 0}
+  footer{margin-top:64px;border-top:1px solid var(--border);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .utn{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#98BADF}
+  @media(max-width:720px){.compare{grid-template-columns:1fr}.hero,.sec,.al{padding-left:24px;padding-right:24px;margin-left:0;margin-right:0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="ey">ODS UTN · Sprint Edición Planificación · Completado · linear_ods</div>
+  <h1>CRUD de planificación<br><em>gestor corrige · revisor edita · luego activo</em></h1>
+  <p class="sub">Sprint cerrado 2026-06-07. Mientras <code>proyectos.estado = planificacion</code>, gestor dueño, admin y evaluador editan cabecera, ODS, indicadores, fórmulas y metas vía <code>PUT /full</code> y UI <code>/planificacion/edit</code>. Sin cambio de schema. Chat y transición del sprint anterior intactos.</p>
+  <div class="chips">
+    <div class="chip ok">Linear <span>4/4 Done</span></div>
+    <div class="chip ok">BE <span>GATE_HTTP ✓</span></div>
+    <div class="chip ok">FE <span>build ✓</span></div>
+    <div class="chip ok">QA <span>proyecto #7</span></div>
+    <div class="chip">Epics <span>Backend · Frontend</span></div>
+    <div class="chip">Script <span>sprint_edicion_planificacion.mjs</span></div>
+  </div>
+</header>
+
+<div class="al ok"><div>✓</div><div><strong>Sprint completado.</strong> Issues ODS-152 → ODS-155 en <strong>Done</strong>, checklists 100%, handoffs cross-epic en orden. Documento de cierre: <code>_linear/plans/resumen_sprint_edicion_planificacion.html</code></div></div>
+
+<section class="sec">
+  <div class="sl">Objetivo</div>
+  <div class="st">Qué se resolvió</div>
+  <table class="tbl">
+    <thead><tr><th>Problema</th><th>Solución entregada</th></tr></thead>
+    <tbody>
+      <tr><td>Gestor no podía corregir metas/fórmulas/ODS tras crear el proyecto.</td><td class="ok">Ruta <code>/projects/:id/planificacion/edit</code> + wizard compartido con creación.</td></tr>
+      <tr><td>Admin/evaluador chateaban pero no editaban contenido técnico.</td><td class="ok"><code>canEditInPlanificacion</code> + gate BE <code>assertCanEditPlanificacion</code>.</td></tr>
+      <tr><td>Revisor no tenía dónde verificar cambios antes de aprobar transición.</td><td class="ok">Modo A: editor directo. Modo B: chat + banner revisor en <code>ProjectResultsPage</code>.</td></tr>
+      <tr><td>Solo existía <code>POST /full</code>; FE sin flujo PUT atómico.</td><td class="ok"><code>PUT /api/projects/{id}/full</code> + <code>GET …/planificacion/editable</code>.</td></tr>
+      <tr><td>Mutaciones ODS sueltas sin validar actor/estado.</td><td class="ok">Orquestador <code>PlanificacionEdicionService</code> — ODS 01–17 vía <code>findServiceForOds</code>.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Pipeline</div>
+  <div class="st">Capas ejecutadas</div>
+  <div class="plf">
+    <div class="pln"><div class="plname">DB</div><div class="plnote">N/A — schema intacto</div></div>
+    <div class="pla">⊘</div>
+    <div class="pln"><div class="plname">BE</div><div class="plnote">ODS-152 Done</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">.http</div><div class="plnote">GATE_HTTP ✓</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">FE</div><div class="plnote">ODS-153→155 serial</div></div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Gate</th><th>Verificación</th></tr></thead>
+    <tbody>
+      <tr><td>GATE_HTTP</td><td class="ok"><code>edicion_planificacion.http</code> — GET/PUT 200; consultor 403</td></tr>
+      <tr><td>GATE_FE</td><td class="ok"><code>npm run build</code> exit 0; ruta <code>/projects/7/planificacion/edit</code> cableada</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Antes / después</div>
+  <div class="st">UX visible</div>
+  <div class="compare">
+    <div class="box bad">
+      <h4>Antes</h4>
+      <ul class="files">
+        <li>Solo <code>ProjectCreationPage</code> (crear, gestor).</li>
+        <li><code>ProjectResultsPage</code> lectura + chat/transición.</li>
+        <li>Evaluador sin botón de edición ni permiso FE.</li>
+        <li>Corrección de fórmulas/metas imposible en producto.</li>
+      </ul>
+    </div>
+    <div class="box good">
+      <h4>Después</h4>
+      <ul class="files">
+        <li>Botón <strong>Editar planificación</strong> en detalle (si <code>planificacion</code> + rol).</li>
+        <li>Editor de 2 pasos reutiliza wizard de creación.</li>
+        <li>Evaluador/admin editan y guardan con un PUT orquestado.</li>
+        <li>Banner revisor si hay solicitud de transición pendiente.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear</div>
+  <div class="st">Issues completados (4/4)</div>
+  <div class="issue"><div class="badge">Done ✓</div><div><div class="issue-id">ODS-152 · role:backend</div><div class="issue-title">PUT /full + PlanificacionEdicionService + GET editable + edicion_planificacion.http</div></div><div class="done">9/9</div></div>
+  <div class="issue"><div class="badge">Done ✓</div><div><div class="issue-id">ODS-153 · role:frontend</div><div class="issue-title">FE foundation — permisos + projectService + usePlanificacionEditor + utils</div></div><div class="done">6/6</div></div>
+  <div class="issue"><div class="badge">Done ✓</div><div><div class="issue-id">ODS-154 · role:frontend</div><div class="issue-title">FE editor — PlanificacionEditorPage + ProjectPlanificacionWizard</div></div><div class="done">7/7</div></div>
+  <div class="issue"><div class="badge">Done ✓</div><div><div class="issue-id">ODS-155 · role:frontend</div><div class="issue-title">FE integración — rutas + ProjectResultsPage + banner revisor</div></div><div class="done">6/6</div></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Cambios técnicos</div>
+  <div class="st">Archivos entregados</div>
+  <table class="tbl">
+    <thead><tr><th>Capa</th><th>Archivo</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td>BE</td><td><code>PlanificacionEdicionService.java</code></td><td>assertCanEdit, snapshot, updateFull (reflection ODS 1–17)</td></tr>
+      <tr><td>BE</td><td><code>MasterProjectController.java</code></td><td>PUT <code>/{id}/full</code>, GET <code>/{id}/planificacion/editable</code></td></tr>
+      <tr><td>BE</td><td><code>edicion_planificacion.http</code></td><td>Smoke proyecto id=7</td></tr>
+      <tr><td>DB mock</td><td><code>21. ods_mocks.sql</code></td><td>Proyecto #7 en <code>planificacion</code></td></tr>
+      <tr><td>FE</td><td><code>usePermissions.js</code></td><td><code>canEditInPlanificacion(project)</code></td></tr>
+      <tr><td>FE</td><td><code>projectService.js</code></td><td><code>getPlanificacionEditable</code>, <code>updateFullProject</code></td></tr>
+      <tr><td>FE</td><td><code>planificacionEditorUtils.js</code></td><td>snapshot ↔ formData (shape creación)</td></tr>
+      <tr><td>FE</td><td><code>usePlanificacionEditor.js</code></td><td>load, validate, save, 403</td></tr>
+      <tr><td>FE</td><td><code>ProjectPlanificacionWizard.jsx</code></td><td>Wizard compartido create/edit</td></tr>
+      <tr><td>FE</td><td><code>PlanificacionEditorPage.jsx</code></td><td>Página editor</td></tr>
+      <tr><td>FE</td><td><code>App.jsx</code> · <code>ProjectResultsPage.jsx</code></td><td>Ruta + botón + banner</td></tr>
+    </tbody>
+  </table>
+  <div class="cb2"><span class="dc"># API nueva (verificado)</span>
+<span class="dk">GET</span>  /api/projects/{id}/planificacion/editable?actorUserId=&amp;actorRole=
+<span class="dk">PUT</span>  /api/projects/{id}/full  { actorUserId, actorRole, proyecto, odsIds, primaryOdsId, indicadores[] }
+
+<span class="dc"># Ruta FE</span>
+/projects/:projectId/planificacion/edit</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Pruebas</div>
+  <div class="st">Smoke ejecutado</div>
+  <table class="tbl">
+    <thead><tr><th>Prueba</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td>GET editable evaluador (proyecto 7)</td><td class="ok">200</td></tr>
+      <tr><td>GET editable gestor dueño (user 2)</td><td class="ok">200</td></tr>
+      <tr><td>PUT /full evaluador — renombrar proyecto</td><td class="ok">200</td></tr>
+      <tr><td>GET editable consultor</td><td class="ok">403</td></tr>
+      <tr><td>mvn compile + spring-boot:run</td><td class="ok">OK</td></tr>
+      <tr><td>npm run build</td><td class="ok">exit 0</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Comandos</div>
+  <div class="st">Referencia <code>comandosDelProyecto.txt</code></div>
+  <div class="cb2"><span class="dc"># Entorno (mocks + backend + frontend)</span>
+<span class="da">python 0.database/load_mocks.py</span>          <span class="dc"># proyecto QA id=7</span>
+<span class="da">cd 1.backend/odsProject; mvn spring-boot:run</span>
+<span class="da">cd 2.frontend/odsProject; npm run dev</span>
+
+<span class="dc"># Credenciales mock</span>
+gestor userId=<span class="dk">2</span> · evaluador <span class="dk">5</span> · admin <span class="dk">1</span> · consultor <span class="dk">4</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Scripts Linear</div>
+  <div class="st">Comandos usados en este sprint</div>
+  <div class="cb2"><span class="dc"># Orquestación (_linear/)</span>
+node scripts/sprint_edicion_planificacion.mjs create
+node scripts/sprint_edicion_planificacion.mjs next
+node scripts/sprint_edicion_planificacion.mjs show ODS-152
+node scripts/sprint_edicion_planificacion.mjs checklist ODS-152 1,2,3,4,5,6,7,8,9
+node scripts/sprint_edicion_planificacion.mjs handoff ODS-153 1
+node scripts/sprint_edicion_planificacion.mjs state ODS-152 Done
+<span class="dc"># … ídem ODS-153 → ODS-155</span>
+node scripts/sprint_edicion_planificacion.mjs status
+
+<span class="dc"># Próximo sprint: Fase 0 cleanup antes de nuevo plan</span>
+node scripts/sprint_edicion_planificacion.mjs cleanup</div>
+</section>
+
+<hr class="sep">
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>resumen_sprint_edicion_planificacion.html · par de plan_sprint_edicion_planificacion.html</div>
+</footer>
+</body>
+</html>

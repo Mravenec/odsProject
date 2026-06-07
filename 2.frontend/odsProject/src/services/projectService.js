@@ -387,6 +387,44 @@ export const projectService = {
     }
   },
 
+  /**
+   * Sprint Edición Planificación — snapshot agregado para el editor.
+   * Backend: GET /api/projects/{id}/planificacion/editable
+   */
+  async getPlanificacionEditable(projectId, actorUserId, actorRole) {
+    try {
+      const r = await api.get(`/projects/${projectId}/planificacion/editable`, {
+        params: { actorUserId, actorRole },
+      });
+      return { success: true, data: r.data || {} };
+    } catch (error) {
+      return this._normalizeError(error);
+    }
+  },
+
+  /**
+   * Sprint Edición Planificación — actualización orquestada (cabecera + ODS + indicadores).
+   * Backend: PUT /api/projects/{id}/full
+   */
+  async updateFullProject(projectId, payload) {
+    try {
+      const r = await api.put(`/projects/${projectId}/full`, payload);
+      const data = r.data || {};
+      const errores = data.errores || [];
+      const hasErrors = errores.length > 0;
+      return {
+        success: data.success !== false && !hasErrors,
+        data,
+        errores,
+        error: hasErrors
+          ? errores.map((e) => e.error || JSON.stringify(e)).join('; ')
+          : undefined,
+      };
+    } catch (error) {
+      return this._normalizeError(error);
+    }
+  },
+
   // ═════════════════════════════════════════════════════════════════════
   //  Sprint 15-19 — Flujo de auditoría (transiciones de estado)
   //

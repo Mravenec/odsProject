@@ -5,13 +5,12 @@
  * Uso:
  *   node linear-update-state.mjs ODS-110 "In Progress"
  *   node linear-update-state.mjs ODS-110 Done              # exige checklist completo
- *   node linear-update-state.mjs ODS-110 Done --check-all    # marca checklist y cierra
- *   node linear-update-state.mjs ODS-110 --checklist all
- *   node linear-update-state.mjs ODS-110 --checklist 1,2,3
+ *   node linear-update-state.mjs ODS-110 --checklist 1       # un ítem; siguiente pendiente
+ *   node linear-update-state.mjs ODS-110 --checklist 2       # solo tras marcar 1
  *   node linear-update-state.mjs ODS-110 --checklist-status
  *
  * Flujo recomendado:
- *   1. --checklist 1,2,3  (marcar ítems en la descripción)
+ *   1. --checklist 1 → 2 → 3  (un ítem por comando, en orden)
  *   2. comment opcional     (linear-comment.mjs)
  *   3. Done                 (solo si checklist completo)
  */
@@ -30,8 +29,8 @@ function usage() {
   console.error(`
 Uso:
   node linear-update-state.mjs ODS-110 "In Progress"
-  node linear-update-state.mjs ODS-110 Done [--check-all]
-  node linear-update-state.mjs ODS-110 --checklist all|1,2,3
+  node linear-update-state.mjs ODS-110 Done
+  node linear-update-state.mjs ODS-110 --checklist N    # N = siguiente ítem pendiente
   node linear-update-state.mjs ODS-110 --checklist-status
 `);
   process.exit(1);
@@ -40,7 +39,10 @@ Uso:
 if (!args.length) usage();
 
 const identifier = args[0];
-const checkAll = args.includes("--check-all");
+if (args.includes("--check-all")) {
+  console.error("\n❌ --check-all eliminado. Marque checklist ítem por ítem en orden.\n");
+  process.exit(1);
+}
 const statusIdx = args.indexOf("--checklist-status");
 const checklistIdx = args.indexOf("--checklist");
 
@@ -56,7 +58,7 @@ async function main() {
   if (checklistIdx !== -1) {
     const spec = args[checklistIdx + 1];
     if (!spec) {
-      console.error("Falta spec: all o 1,2,3");
+      console.error("Falta spec: un número (siguiente ítem pendiente)");
       process.exit(1);
     }
     await updateIssueChecklist(issue, spec);
@@ -69,19 +71,13 @@ async function main() {
   const stateName = stateParts.join(" ");
   if (!stateName) usage();
 
-  if (checkAll) {
-    await updateIssueChecklist(issue, "all");
-    issue = await findIssueByIdentifier(team, identifier);
-  }
-
   const isDone = stateName.toLowerCase() === "done";
   if (isDone) {
     const check = await requireChecklistComplete(issue);
     if (!check.ok) {
       console.error(`\n❌ ${identifier}: checklist incompleto (${check.done}/${check.total})\n`);
       check.unchecked.forEach((l) => console.error(l));
-      console.error(`\nMarque ítems: node linear-update-state.mjs ${identifier} --checklist all|1,2,3`);
-      console.error(`O force cierre: node linear-update-state.mjs ${identifier} Done --check-all\n`);
+      console.error(`\nMarque el siguiente ítem: node linear-update-state.mjs ${identifier} --checklist <n>\n`);
       process.exit(1);
     }
   }

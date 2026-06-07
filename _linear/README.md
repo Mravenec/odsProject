@@ -640,7 +640,7 @@ Comandos mínimos del script:
 | `create` | Epic + sprint + issues + labels + relaciones `blocks` |
 | `next` | Próximo issue desbloqueado (orquestador) |
 | `status` | Salud del sprint |
-| `checklist ODS-N 1` / `1,2` / `1,2,3` | Marcar ítems **uno a uno** en la descripción (preferido) |
+| `checklist ODS-N N` | Marcar **un solo ítem** — debe ser el **siguiente pendiente** (el script **rechaza** batch) |
 | `checklist ODS-N all` | Solo al cierre final si todos los ítems ya están verificados |
 | `state ODS-N "In Progress"` | Pasar a **Doing** (al reclamar / empezar) |
 | `state ODS-N Testing` | Pasar a **Testing** — pruebas locales (checklist ya completo) |
@@ -685,6 +685,71 @@ next  →  claim_issue                    ← Backlog → Doing
 | **Comentarios** | Opcionales; **no** definen orden ni sustituyen `- [x]` en descripción |
 | **Handoff = checklist** | Upstream marca `--checklist 1` del downstream; downstream verifica antes del ítem 2 |
 | **Ping en Doing largo** | `ping_issue` cada 2–3 min mientras sigue en Doing |
+
+### Gate LINEAR_API y checklist obligatorio (agentes e IAs)
+
+> **Dos reglas no negociables:** (1) **siempre Linear** — sin API no hay progreso; (2) **checklist secuencial** — un ítem por vez, en orden, **justo después** de completar ese paso (no al final del issue).
+
+El progreso oficial del sprint vive en el **checklist de la descripción** del issue en Linear. Sin API operativa **no se avanza** al siguiente issue ni se implementa código que dependa de un handoff no registrado.
+
+#### Linear siempre obligatorio
+
+| Prohibido | Obligatorio |
+|---|---|
+| Implementar varios ítems del checklist y marcar después en batch | **Hacer el paso → marcar ese ítem en Linear → siguiente paso** |
+| Cerrar trabajo “en local” sin `checklist` / `state` en Linear | Todo avance pasa por `sprint_*.mjs` o `linear-update-state.mjs` |
+| Seguir al siguiente issue si Linear falló | **Detener** y avisar al humano |
+| Usar solo comentarios como progreso | Comentarios son opcionales; el orden lo lleva el **checklist** |
+
+#### Checklist secuencial (enforced en `linear-lib.mjs`)
+
+Los scripts **rechazan** marcado batch. Válido:
+
+```bash
+# Tras terminar ítem 1 del issue:
+node scripts/sprint_<nombre>.mjs checklist ODS-N 1
+# Tras terminar ítem 2:
+node scripts/sprint_<nombre>.mjs checklist ODS-N 2
+```
+
+**Inválido** (exit 1):
+
+```bash
+node scripts/sprint_<nombre>.mjs checklist ODS-N 1,2,3   # batch
+node scripts/linear-update-state.mjs ODS-N --checklist all
+node scripts/linear-update-state.mjs ODS-N Done --check-all
+node scripts/sprint_<nombre>.mjs checklist ODS-N 5      # si el pendiente es 3
+```
+
+Ciclo por ítem del checklist:
+
+```
+1. Leer ítem N en Linear (show / --checklist-status)
+2. Implementar / probar SOLO ese ítem
+3. checklist ODS-N N          ← marcar en Linear (N = siguiente pendiente)
+4. Repetir hasta checklist completo
+5. state ODS-N Testing → pruebas locales → state ODS-N Done
+```
+
+| Situación | Acción obligatoria |
+|---|---|
+| `_linear/.env` ausente o `LINEAR_API_KEY` inválida | **Detener.** Avisar al humano. No implementar ni marcar Done. |
+| `create` / `checklist` / `state Done` / `handoff` falla en Linear | **Detener.** Reportar error. No asumir que el issue avanzó. |
+| Querer marcar varios ítems de una vez | **Prohibido** — el script lo bloquea; marcar uno, continuar trabajo, marcar el siguiente. |
+| Issue downstream con ítem 1 «⏸ Gate» sin `[x]` | **No implementar** ese ticket (aunque `blocks` aún no liberó — el checklist es la señal explícita). |
+| Issue upstream termina GATE_HTTP / GATE_FE | Marcar checklist propio (ítem a ítem) + **`handoff ODS-N 1`** en downstream **antes** de `state Done`. |
+| Retomar tras interrupción | `list` + `show ODS-N` + `--checklist-status` — continuar desde el **primer ítem sin `[x]`**. |
+
+```bash
+# Handoff cross-epic (scripts que lo exponen, ej. sprint_edicion_planificacion.mjs)
+node scripts/sprint_edicion_planificacion.mjs handoff ODS-FE-1 1
+
+# Equivalente
+node scripts/linear-update-state.mjs ODS-N --checklist 1
+node scripts/linear-update-state.mjs ODS-N --checklist-status
+```
+
+> **Regla:** si la API de Linear no responde, el humano debe restaurar `.env` o la red **antes** de continuar. Los comentarios en issues **no sustituyen** checklist marcado.
 
 **Pruebas locales en Testing (según rol):**
 

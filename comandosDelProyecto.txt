@@ -1,11 +1,28 @@
-# 1. Borrar la base de datos completa ya que no se esta usando en produccion aun
-python 0.database/drop_db.py
-
-# 2. Instalar y Cargar Mocks ya que de momento no se esta usando en produccion aun
-python 0.database/setup_db.py; python 0.database/load_mocks.py
-
-#3. Backend para instalar el JOOQ, Creacion de POJOS para Repositorio, Servicio, Controlador y pruebas en .http
-cd 1.backend/odsProject; mvn clean compile -DskipTests; mvn spring-boot:run
-
-#4. Frontend con Axios para API en Service, uso de hooks y luego uso de hooks en cada page
-cd 2.frontend/odsProject; npm run dev
+# 1. Borrar la base de datos completa ya que no se esta usando en produccion aun
+python 0.database/drop_db.py
+
+# 2. Instalar y Cargar Mocks ya que de momento no se esta usando en produccion aun
+python 0.database/setup_db.py; python 0.database/load_mocks.py
+
+#3. Backend para instalar el JOOQ, Creacion de POJOS para Repositorio, Servicio, Controlador y pruebas en .http
+cd 1.backend/odsProject; mvn clean compile -DskipTests; mvn spring-boot:run
+
+#4. Frontend con Axios para API en Service, uso de hooks y luego uso de hooks en cada page
+cd 2.frontend/odsProject; npm run dev
+
+#5. Login desarrollo (tras load_mocks.py) — fuente: 0.database/propuesta_actual/21. ods_mocks.sql
+#    Frontend: http://localhost:5173  ·  API: http://localhost:8080
+#
+#    Rol          | id | Email                      | Contraseña
+#    -------------|----|----------------------------|------------------
+#    admin        |  1 | admin@ods.local            | Admin1234!
+#    gestor       |  2 | ana.garcia@ods.cr          | password123
+#    gestor       |  3 | carlos.rodriguez@ods.cr    | password123
+#    consultor    |  4 | maria.jimenez@ods.cr       | password123
+#    evaluador    |  5 | evaluador@ods.cr           | password123
+#    gestor       |  6 | gestor@ods.com             | password123
+#    consultor    |  7 | consultor@ods.local        | Consultor2026!
+#
+#    QA edición planificación: proyecto id=7 (estado planificacion, dueño gestor id=2)
+#      → evaluador@ods.cr / password123  o  ana.garcia@ods.cr / password123
+

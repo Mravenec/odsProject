@@ -24,6 +24,7 @@ com\odsProject\odsProject\database\jooq\ods02\tables\records\VistaAdminResumenGe
 com\odsProject\odsProject\controller\interfaces\IObjetivo09InfraestructuraController.class
 com\odsProject\odsProject\database\jooq\ods12\tables\VistaAdminResumenGeneral.class
 com\odsProject\odsProject\repository\interfaces\IObjetivo10ReduccionDesigualdadRepository.class
+com\odsProject\odsProject\service\interfaces\IPlanificacionEdicionService.class
 com\odsProject\odsProject\service\Objetivo11CiudadesSosteniblesService.class
 com\odsProject\odsProject\database\jooq\ods16\tables\ProyectoIndicadorParametros.class
 com\odsProject\odsProject\database\jooq\ods09\tables\pojos\VistaAdminAuditoriaReciente.class
@@ -553,6 +554,7 @@ com\odsProject\odsProject\service\ExportService.class
 com\odsProject\odsProject\database\jooq\ods03\tables\AuditoriaOds03.class
 com\odsProject\odsProject\database\jooq\ods16\tables\pojos\AuditoriaOds16.class
 com\odsProject\odsProject\database\jooq\ods05\tables\pojos\VistaAdminDetalleIndicadores.class
+com\odsProject\odsProject\service\PlanificacionEdicionService.class
 com\odsProject\odsProject\service\Objetivo15VidaEcosistemasService.class
 com\odsProject\odsProject\database\jooq\ods03\tables\records\VistaAdminDetalleIndicadoresRecord.class
 com\odsProject\odsProject\database\jooq\ods01\tables\records\AuditoriaOds01Record.class

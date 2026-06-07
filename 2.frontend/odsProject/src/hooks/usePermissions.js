@@ -54,6 +54,15 @@ export function usePermissions() {
   return useMemo(() => {
     const role = (user?.role || '').toLowerCase();
     const caps = ROLE_MATRIX[role] || DENY_ALL;
+    const canEditInPlanificacion = (project) => {
+      if (!project) return false;
+      const estado = String(project.status ?? project.estado ?? '').toLowerCase();
+      if (estado !== 'planificacion') return false;
+      if (role === 'admin' || role === 'evaluador') return true;
+      if (role === 'gestor') return project.userId === user?.id;
+      return false;
+    };
+
     return {
       role,
       roleLabel: capitalize(role),
@@ -61,6 +70,7 @@ export function usePermissions() {
       isOwner: (project) => project?.userId === user?.id,
       canEditProject: (project) =>
         caps.canEditAnyProject || (caps.canEditOwnProject && project?.userId === user?.id),
+      canEditInPlanificacion,
       canUploadEvidenceFor: (project) =>
         caps.canUploadEvidence && project?.userId === user?.id,
     };

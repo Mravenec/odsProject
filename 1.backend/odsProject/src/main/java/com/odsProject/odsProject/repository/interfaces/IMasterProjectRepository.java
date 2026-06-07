@@ -128,6 +128,12 @@ public interface IMasterProjectRepository {
      */
     void unlinkOds(Integer proyectoId, Integer odsId);
 
+    /**
+     * ID físico en odsNN.proyecto_indicadores para proyecto + indicador master.
+     */
+    java.util.Optional<Integer> findProyectoIndicadorId(Integer odsId, Integer proyectoId,
+                                                        Integer indicadorMasterId);
+
     // ─────────────────────────────────────────────────────────────────────
     //  Sprint 15 — Transiciones de estado + stamping de auditoría
     // ─────────────────────────────────────────────────────────────────────

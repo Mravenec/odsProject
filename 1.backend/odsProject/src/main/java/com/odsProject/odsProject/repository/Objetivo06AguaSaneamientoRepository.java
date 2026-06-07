@@ -122,6 +122,7 @@ public class Objetivo06AguaSaneamientoRepository implements IObjetivo06AguaSanea
         .leftJoin(PROYECTO_INDICADORES).on(INDICADOR_MASTER.ID.eq(PROYECTO_INDICADORES.INDICADOR_MASTER_ID).and(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId)))
         .leftJoin(PROYECTOS).on(PROYECTO_INDICADORES.PROYECTO_ID.eq(PROYECTOS.ID))
         .where(INDICADOR_MASTER.ODS_ID.eq(UByte.valueOf(6)))
+        .and(proyectoId != null && proyectoId > 0 ? PROYECTO_INDICADORES.ID.isNotNull() : DSL.noCondition())
         .orderBy(INDICADOR_MASTER.CODIGO.asc())
         .fetchInto(VistaAdminDetalleIndicadores.class);
     }
@@ -158,6 +159,7 @@ public class Objetivo06AguaSaneamientoRepository implements IObjetivo06AguaSanea
         .leftJoin(PROYECTO_INDICADORES).on(INDICADOR_MASTER.ID.eq(PROYECTO_INDICADORES.INDICADOR_MASTER_ID).and(PROYECTO_INDICADORES.PROYECTO_ID.eq(proyectoId)))
         .leftJoin(PROYECTOS).on(PROYECTO_INDICADORES.PROYECTO_ID.eq(PROYECTOS.ID))
         .where(INDICADOR_MASTER.ODS_ID.eq(UByte.valueOf(6)))
+        .and(proyectoId != null && proyectoId > 0 ? PROYECTO_INDICADORES.ID.isNotNull() : DSL.noCondition())
         .and(INDICADOR_MASTER.CODIGO.startsWith(metaPrefix + "."))
         .orderBy(INDICADOR_MASTER.CODIGO.asc())
         .fetchInto(VistaAdminDetalleIndicadores.class);
