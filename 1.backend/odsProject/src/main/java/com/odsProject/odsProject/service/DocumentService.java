@@ -1,6 +1,8 @@
 package com.odsProject.odsProject.service;
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.repository.DocumentRepository;
+import com.odsProject.odsProject.repository.MasterProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +16,9 @@ public class DocumentService {
     @Autowired
     private DocumentRepository documentRepository;
 
+    @Autowired
+    private MasterProjectRepository masterProjectRepository;
+
     public com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoDocumentos uploadDocument(
             Integer proyectoId, Integer usuarioId,
             MultipartFile file, String descripcion) throws Exception {
@@ -21,6 +26,13 @@ public class DocumentService {
             throw new IllegalArgumentException("Archivo vacío");
         if (proyectoId == null || usuarioId == null)
             throw new IllegalArgumentException("proyectoId y usuarioId son requeridos");
+
+        Proyectos proyecto = masterProjectRepository.findById(proyectoId)
+                .orElseThrow(() -> new IllegalArgumentException("Proyecto no encontrado: " + proyectoId));
+        if (!"activo".equalsIgnoreCase(String.valueOf(proyecto.getEstado()))) {
+            throw new IllegalStateException(
+                    "Solo se pueden subir documentos cuando el proyecto está en estado activo");
+        }
         if (file.getSize() > 10L * 1024 * 1024)
             throw new IllegalArgumentException("Archivo supera el límite de 10 MB");
 

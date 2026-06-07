@@ -5,7 +5,7 @@ import { useDocuments } from '../../hooks/useDocuments';
 import { Upload, Download, FileText, Trash2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import './EvidenceSection.css';
 
-export default function EvidenceSection({ project }) {
+export default function EvidenceSection({ project, onDocumentsChange }) {
   const { user } = useAuth();
   const perms = usePermissions();
   const { documents, loading, error, upload, download, remove } = useDocuments(project?.id);
@@ -15,7 +15,10 @@ export default function EvidenceSection({ project }) {
   const [busy, setBusy] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
+  const projectEstado = String(project?.status ?? project?.estado ?? '').toLowerCase();
+  const isOwnerGestor = perms.canUploadEvidence && perms.isOwner(project);
   const canUpload = perms.canUploadEvidenceFor(project);
+  const awaitingActive = isOwnerGestor && projectEstado !== 'activo';
 
   const handleFileChange = () => {
     const file = fileRef.current?.files?.[0];
@@ -42,6 +45,7 @@ export default function EvidenceSection({ project }) {
       return;
     }
     setUploadSuccess('Documento subido correctamente');
+    onDocumentsChange?.();
     setDescripcion('');
     setSelectedName('');
     if (fileRef.current) fileRef.current.value = '';
@@ -58,6 +62,11 @@ export default function EvidenceSection({ project }) {
       <li>Pulse «Subir documento» y espere la confirmación.</li>
       <li>Revise la lista: el evaluador descargará el archivo para ingresar las mediciones.</li>
     </ol>
+  ) : awaitingActive ? (
+    <p className="evidence-intro-text evidence-awaiting-active">
+      Los documentos de evidencia solo pueden subirse cuando el proyecto esté en estado <strong>Activo</strong>.
+      Complete la planificación y espere la aprobación antes de cargar archivos.
+    </p>
   ) : perms.canEnterMeasurements ? (
     <p className="evidence-intro-text">
       Documentos cargados por el gestor. Descárguelos antes de ingresar las mediciones.
@@ -170,8 +179,10 @@ export default function EvidenceSection({ project }) {
                     type="button"
                     className="evidence-delete-btn"
                     onClick={async () => {
-                      if (window.confirm('¿Eliminar este documento?'))
-                        await remove(doc, user.id, perms.canDeleteProject);
+                      if (window.confirm('¿Eliminar este documento?')) {
+                        const removed = await remove(doc, user.id, perms.canDeleteProject);
+                        if (removed?.success) onDocumentsChange?.();
+                      }
                     }}
                     title="Eliminar"
                   >

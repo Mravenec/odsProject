@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { projectService } from '../../services/projectService';
+import { documentService } from '../../services/documentService';
 import { exportService } from '../../services/exportService';
 import { usePermissions } from '../../hooks/usePermissions';
 import {
@@ -37,6 +38,13 @@ const ProjectResultsPage = () => {
   const [confirmModal, setConfirmModal] = useState({ show: false, message: '', onConfirm: null });
   const [alertModal, setAlertModal] = useState({ show: false, message: '', isError: false });
   const [exporting, setExporting] = useState(false);
+  const [hasEvidenceDocs, setHasEvidenceDocs] = useState(false);
+
+  const refreshEvidenceStatus = useCallback(async () => {
+    if (!projectId) return;
+    const r = await documentService.listByProject(projectId);
+    setHasEvidenceDocs((r.data || []).length > 0);
+  }, [projectId]);
 
   const fetchProjectFull = useCallback(async () => {
     setLoading(true);
@@ -112,6 +120,9 @@ const ProjectResultsPage = () => {
       const pctProyecto = auditados.length > 0
         ? auditados.reduce((s, i) => s + i.porcentajeLogro, 0) / auditados.length
         : null;
+
+      const docsRes = await documentService.listByProject(projectId);
+      setHasEvidenceDocs((docsRes.data || []).length > 0);
 
       setProject({
         ...currentProject,
@@ -197,15 +208,28 @@ const ProjectResultsPage = () => {
               </button>
             )}
 
-            {/* Sprint 16 — Botón "Enviar a auditoría" para el gestor dueño.
-               Visible si el proyecto está 'activo' o 'planificacion' y el user es el dueño. */}
+            {/* Sprint 16 — Botón "Enviar a evaluación" para el gestor dueño (solo en activo). */}
             {project && project.userId === user?.id
-              && ['activo', 'planificacion'].includes(String(project.status||'').toLowerCase())
-              && perms.canEditOwnProject && (
+              && String(project.status || '').toLowerCase() === 'activo'
+              && perms.canEditOwnProject && (() => {
+              const hasIndicators = (project.linkedOds || []).some(
+                (o) => (o.indicators || []).length > 0
+              );
+              const canSendToReview = hasEvidenceDocs && hasIndicators;
+              const sendDisabledReason = !hasIndicators
+                ? 'Configure al menos un indicador antes de enviar a evaluación'
+                : !hasEvidenceDocs
+                  ? 'Suba al menos un documento de evidencia antes de enviar a evaluación'
+                  : '';
+              return (
               <button
                 type="button"
                 className="btn-send-for-review"
+                disabled={!canSendToReview}
+                title={sendDisabledReason || undefined}
+                aria-disabled={!canSendToReview}
                 onClick={() => {
+                  if (!canSendToReview) return;
                   setConfirmModal({
                     show: true,
                     message: '¿Enviar este proyecto a evaluación?\n\nDespués de enviar, no podrás modificar indicadores ni subir documentos hasta que el evaluador revise el proyecto.',
@@ -223,7 +247,8 @@ const ProjectResultsPage = () => {
               >
                 📤 Enviar a evaluación
               </button>
-            )}
+              );
+            })()}
 
             {/* Sprint 17: botón AUDITAR para admin/auditor (Sprint 14 original).
                Solo visible si el proyecto está 'en_revision' (no antes, no después). */}
@@ -513,7 +538,7 @@ const ProjectResultsPage = () => {
         </div>
 
         {/* Sprint 12 — Documentos de evidencia */}
-        <EvidenceSection project={project} />
+        <EvidenceSection project={project} onDocumentsChange={refreshEvidenceStatus} />
       </main>
 
       {/* Modales Personalizados */}

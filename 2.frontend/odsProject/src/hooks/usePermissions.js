@@ -71,8 +71,11 @@ export function usePermissions() {
       canEditProject: (project) =>
         caps.canEditAnyProject || (caps.canEditOwnProject && project?.userId === user?.id),
       canEditInPlanificacion,
-      canUploadEvidenceFor: (project) =>
-        caps.canUploadEvidence && project?.userId === user?.id,
+      canUploadEvidenceFor: (project) => {
+        if (!project) return false;
+        const estado = String(project.status ?? project.estado ?? '').toLowerCase();
+        return caps.canUploadEvidence && project.userId === user?.id && estado === 'activo';
+      },
     };
   }, [user]);
 }

@@ -504,8 +504,16 @@
   font-family: inherit;
 }
 
-.btn-send-for-review:hover {
+.btn-send-for-review:hover:not(:disabled) {
   filter: brightness(1.05);
   transform: translateY(-1px);
   box-shadow: 0 10px 18px -4px rgba(220, 68, 5, 0.35);
+}
+
+.btn-send-for-review:disabled {
+  background: #9ca3af;
+  color: #f3f4f6;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.85;
 }
