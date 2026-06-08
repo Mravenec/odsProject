@@ -1,6 +1,6 @@
 # Agentes — ODS UTN Platform
 
-Coordinación multi-agente del repo. Reglas Cursor: `linear-gate-obligatorio.mdc` + `linear-checklist-secuencial.mdc` + `linear-multiagente.mdc`. Pipeline completo: `_linear/README.md`.
+Coordinación multi-agente del repo. Reglas Cursor: `linear-gate-obligatorio.mdc` + `linear-plan-html-obligatorio.mdc` + `linear-checklist-secuencial.mdc` + `linear-multiagente.mdc`. Pipeline completo: `_linear/README.md`.
 
 ## Inicio obligatorio (toda tarea de producto)
 
@@ -12,7 +12,7 @@ node scripts/sprint-next.mjs
 ```
 
 - Si hay issue desbloqueado → trabajar **solo** ese ticket (checklist secuencial).
-- Si no hay `sprint_<activo>.mjs` o `next` vacío → **no codear**: Fase 0–2 (limpieza → plan HTML → aprobación → `create`).
+- Si no hay `sprint_<activo>.mjs` o `next` vacío → **no codear**: Fase 0–2 (limpieza → plan HTML Linear completo → `validate-plan-html.mjs` → aprobación → `create`).
 - Si el issue está **bloqueado** (`blocks`) → esperar; otro agente/epic upstream debe cerrar primero.
 
 Bypass Linear **solo** si el humano lo pide explícito en el mensaje (*sin linear*, *bypass linear*, *solo local*).
@@ -30,7 +30,25 @@ Bypass Linear **solo** si el humano lo pide explícito en el mensaje (*sin linea
 
 ### Orquestador (`role:orchestrator`)
 
-- Ejecuta Fases 0–4 y 6: limpieza, plan HTML, `sprint_<nombre>.mjs create`, cierre con `resumen_sprint_*.html`.
+- Ejecuta Fases 0–4 y 6: limpieza, plan HTML (desde `_plantilla_ods.html`), validación, `sprint_<nombre>.mjs create`, cierre con `resumen_sprint_*.html`.
+
+## Plan HTML — contrato Linear (Fase 2)
+
+Todo `plan_sprint_<nombre>.html` es **casi un ticket de Linear**: no es solo el dominio del producto.
+
+1. Copiar `_linear/plans/_plantilla_ods.html` (tiene esqueleto de secciones `Linear — …`).
+2. Rellenar las 12 secciones listadas en `linear-plan-html-obligatorio.mdc`.
+3. Validar antes de pedir aprobación o hacer `create`:
+
+```bash
+cd _linear
+node scripts/validate-plan-html.mjs plans/plan_sprint_<nombre>.html
+```
+
+4. Humano responde **✅ APROBADO** en chat.
+5. `node scripts/sprint_<nombre>.mjs create`
+
+Referencia de calidad: `plans/plan_sprint_export_sodsi.html`. Gates N/A (sin BD) deben figurar explícitos; si hay `role:database`, incluir `drop_db` → `setup_db` → `load_mocks` en Testing.
 - Bucle: `next` → asignar/reclamar issue → verificar Done + handoffs → `status`.
 - No implementa código de producto salvo fixes mínimos del script `_linear/`.
 - Usa `get_sprint_health` / `watchdog_check` si MCP Linear está activo.
@@ -86,6 +104,8 @@ MCP (si está configurado en Cursor): `claim_issue`, `ping_issue`, `get_issue_co
 
 ## Prohibido
 
+- Plan HTML sin secciones Linear (`validate-plan-html.mjs` falla).
+- `sprint_*.mjs create` sin ✅ APROBADO y sin validación exitosa.
 - Trabajar sin issue reclamado o sin `next` claro.
 - Paralelizar issues de la misma cadena `blocks`.
 - Cerrar trabajo sin Linear (`state Done` + checklist completo).

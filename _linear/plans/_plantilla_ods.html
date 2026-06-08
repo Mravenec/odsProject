@@ -4,10 +4,12 @@
   Referencia visual: scripts/resumen_sprint_evidence_section.html
 
   USO:
-    Copiar este archivo → plan_sprint_<nombre>.html   (Fase 1 — PENDIENTE/APROBADO)
-    Copiar este archivo → resumen_sprint_<nombre>.html (Fase 5 — DONE)
+    Copiar este archivo → plan_sprint_<nombre>.html   (Fase 2 — contrato Linear)
+    Copiar este archivo → resumen_sprint_<nombre>.html (Fase 6 — DONE)
 
   REGLA: No cambiar colores, fuentes ni clases CSS. Solo el contenido.
+  VALIDAR: cd _linear && node scripts/validate-plan-html.mjs plans/plan_sprint_<nombre>.html
+  REGLA CURSOR: .cursor/rules/linear-plan-html-obligatorio.mdc
 -->
 <html lang="es">
 <head>
@@ -81,7 +83,111 @@
 </header>
 
 <!-- Propuesta: al.pending | Resumen: al.ok -->
-<div class="al pending"><div>⏳</div><div><strong>Propuesta pendiente de aprobación.</strong> Revisar issues, pipeline y checklists antes de ejecutar <code>sprint_&lt;nombre&gt;.mjs create</code>.</div></div>
+<div class="al pending"><div>⏳</div><div><strong>Propuesta pendiente de aprobación.</strong> Validar con <code>validate-plan-html.mjs</code> antes de <code>sprint_&lt;nombre&gt;.mjs create</code>.</div></div>
+
+<!-- SECCIONES LINEAR OBLIGATORIAS — no eliminar; rellenar cada una -->
+
+<section class="sec">
+  <div class="sl">Linear — Proceso obligatorio (7 fases)</div>
+  <div class="st">Mismas fases siempre; cambian issues y gates</div>
+  <table class="tbl">
+    <thead><tr><th>Fase</th><th>Qué</th><th>Quién</th><th>Gate</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>0 — Limpieza</td><td>cleanup + borrar artefactos</td><td>orchestrator</td><td>Sprint previo cerrado</td><td><!-- ✓ / pendiente --></td></tr>
+      <tr><td>1–2 — Plan + HTML</td><td>plan_sprint_&lt;nombre&gt;.html</td><td>orchestrator</td><td>validate-plan-html OK</td><td>PENDIENTE</td></tr>
+      <tr><td>3 — Aprobación</td><td>✅ humano</td><td>Tú</td><td>APROBADO</td><td>PENDIENTE</td></tr>
+      <tr><td>4 — MJS</td><td>sprint_&lt;nombre&gt;.mjs create</td><td>orchestrator</td><td>Tras Fase 3</td><td>—</td></tr>
+      <tr><td>5 — Multi-agente</td><td>Doing → Testing → Done</td><td>agents</td><td>GATE_HTTP → FE</td><td>—</td></tr>
+      <tr><td>6 — Resumen</td><td>resumen_sprint_*.html</td><td>orchestrator</td><td>Epic Completed</td><td>—</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Metadatos del sprint</div>
+  <div class="st">EPIC_NAME · script · equipo linear_ods</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>EPIC_NAME</td><td><!-- nombre epic --></td></tr>
+      <tr><td>SPRINT_NAME</td><td><!-- nombre cycle --></td></tr>
+      <tr><td>Script</td><td><code>_linear/scripts/sprint_&lt;nombre&gt;.mjs</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Gates (qué aplica / qué no)</div>
+  <div class="st">GATE_SQL · GATE_BD · GATE_JOOQ · GATE_HTTP · GATE_FE</div>
+  <table class="tbl">
+    <thead><tr><th>Gate</th><th>¿Aplica?</th><th>Issue</th><th>Comandos</th></tr></thead>
+    <tbody>
+      <tr><td>GATE_SQL</td><td><!-- Sí / N/A --></td><td><!-- ODS-N --></td><td><!-- merge SQL --></td></tr>
+      <tr><td>GATE_BD</td><td><!-- Sí / N/A --></td><td><!-- role:database --></td><td><!-- drop_db setup_db load_mocks --></td></tr>
+      <tr><td>GATE_JOOQ</td><td><!-- Sí / N/A --></td><td></td><td><!-- mvn spring-boot:run --></td></tr>
+      <tr><td>GATE_HTTP</td><td><!-- Sí / N/A --></td><td></td><td><!-- .http 2xx --></td></tr>
+      <tr><td>GATE_FE</td><td><!-- Sí / N/A --></td><td></td><td><!-- npm run build --></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Tabla de issues</div>
+  <div class="st">Id · role:backend|database|frontend|orchestrator · pts · blocks · archivos</div>
+  <table class="tbl">
+    <thead><tr><th>Id</th><th>Rol</th><th>Pts</th><th>Título</th><th>blocks</th><th>Archivos</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-N</td><td>role:backend</td><td><!-- --></td><td><!-- --></td><td><!-- --></td><td><!-- --></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Dependencias blocks + handoff</div>
+  <div class="st">Cadena serial · handoff ítem 1 downstream</div>
+  <div class="cb2"><span class="dc">ODS-A</span> blocks <span class="dk">ODS-B</span>
+handoff ODS-B 1</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Ciclo por issue (Fase 5)</div>
+  <div class="st">next → checklist (un ítem) → Testing → handoff → Done</div>
+  <div class="cb2">node scripts/sprint-next.mjs
+checklist ODS-N &lt;n&gt;
+state ODS-N Testing
+state ODS-N Done</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Comandos del script</div>
+  <div class="st">create · next · checklist · handoff · state · cleanup</div>
+  <div class="cb2">node scripts/sprint_&lt;nombre&gt;.mjs create
+node scripts/sprint_&lt;nombre&gt;.mjs cleanup</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Testing local por rol</div>
+  <div class="st">Tabla issue × comandos × criterio Done</div>
+  <table class="tbl">
+    <thead><tr><th>Issue</th><th>Rol</th><th>Comandos Testing</th><th>Done</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-N</td><td>role:backend</td><td><!-- mvn compile / drop_db si BD --></td><td><!-- --></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Descripciones issue (verbatim para create)</div>
+  <div class="st">Checklists - [ ] copiar al .mjs</div>
+  <div class="cb2"><span class="dc">## ODS-N</span>
+<span class="da">- [ ] ítem 1</span>
+<span class="da">- [ ] ⏸ Gate: NO iniciar hasta upstream ítem 1 [x]</span>
+<span class="da">- [ ] Handoff: marcar ODS-M checklist ítem 1</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Fase 6 — Entregable de cierre</div>
+  <div class="st">resumen_sprint_&lt;nombre&gt;.html · Epic Completed · cleanup</div>
+</section>
 
 <section class="sec">
   <div class="sl">Objetivo</div>
@@ -95,14 +201,18 @@
 </section>
 
 <section class="sec">
-  <div class="sl">Pipeline</div>
-  <div class="st"><!-- Capas que aplican a este problema --></div>
+  <div class="sl">Pipeline visual</div>
+  <div class="st">DB → JOOQ → BE → .http → FE (N/A explícito si omitido)</div>
   <div class="plf">
-    <div class="pln"><div class="plname">DB</div><div class="plnote"><!-- … --></div></div>
+    <div class="pln"><div class="plname">DB</div><div class="plnote"><!-- N/A o merge SQL --></div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">BE</div><div class="plnote"><!-- … --></div></div>
+    <div class="pln"><div class="plname">JOOQ</div><div class="plnote"><!-- N/A o spring-boot:run --></div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">FE</div><div class="plnote"><!-- … --></div></div>
+    <div class="pln"><div class="plname">BE</div><div class="plnote"><!-- IREPO→CTRL --></div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">.http</div><div class="plnote"><!-- GATE_HTTP --></div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">FE</div><div class="plnote"><!-- GATE_FE --></div></div>
   </div>
 </section>
 
@@ -114,12 +224,15 @@
 </section>
 
 <section class="sec">
-  <div class="sl">Checklist</div>
-  <div class="st">Por issue (copiar a Linear)</div>
-  <div class="cb2"><span class="dc">## ODS-N — título</span>
-<span class="da">- [ ] ítem 1</span>
-<span class="da">- [ ] ⏸ gate externo (handoff)</span>
-<span class="da">- [ ] ítem 3</span></div>
+  <div class="sl">Aprobación</div>
+  <div class="st">Estado PENDIENTE / APROBADO</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>Estado</td><td>PENDIENTE</td></tr>
+      <tr><td>Validación</td><td><code>node scripts/validate-plan-html.mjs plans/plan_sprint_&lt;nombre&gt;.html</code></td></tr>
+      <tr><td>Para aprobar</td><td>✅ APROBADO en chat → Fase 4 create</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <hr class="sep">

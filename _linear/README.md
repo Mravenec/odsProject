@@ -627,7 +627,18 @@ Plantilla mínima de **contenido** (estilo visual: sección **🎨 Estilo visual
 6. **Checklist por issue** — copiado tal cual irá a Linear, **incluyendo pares cruzados** (ODS-A handoff → ODS-B ítem 1)  
 7. **Estado de aprobación** — `PENDIENTE` / `APROBADO` / `RECHAZADO`
 
-> **Regla:** ningún `node scripts/sprint_*.mjs create` hasta que el HTML muestre **APROBADO**.
+Además, el plan debe incluir secciones **`Linear — …`** (proceso 7 fases, metadatos, gates, tabla issues, handoff, ciclo, comandos `.mjs`, Testing por rol, descripciones verbatim, Fase 6). Plantilla: `plans/_plantilla_ods.html`. Regla Cursor: `.cursor/rules/linear-plan-html-obligatorio.mdc`. Referencia: `plans/plan_sprint_export_sodsi.html`.
+
+**Validación automática** (antes de pedir aprobación o ejecutar `create`):
+
+```bash
+cd _linear
+node scripts/validate-plan-html.mjs plans/plan_sprint_<nombre>.html
+```
+
+Exit 0 = plan cumple contrato Linear. Exit 1 = completar secciones faltantes.
+
+> **Regla:** ningún `node scripts/sprint_*.mjs create` hasta **validate-plan-html OK** + HTML con **APROBADO** explícito del humano.
 
 ### Fase 4 — Qué debe incluir el `.mjs`
 

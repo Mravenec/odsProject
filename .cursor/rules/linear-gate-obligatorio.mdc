@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Gate Linear — antes de tocar código de producto
 
-Fuente: `_linear/README.md` + `AGENTS.md`. Complementa `linear-checklist-secuencial.mdc` y `linear-multiagente.mdc`.
+Fuente: `_linear/README.md` + `AGENTS.md`. Complementa `linear-checklist-secuencial.mdc`, `linear-multiagente.mdc` y `linear-plan-html-obligatorio.mdc`.
 
 ## Cuándo aplica
 
@@ -24,7 +24,7 @@ node scripts/sprint-next.mjs    # localiza el sprint activo y ejecuta next
 | Resultado de `next` | Acción de la IA |
 |---------------------|-----------------|
 | Issue desbloqueado (ODS-N) | **Solo** ese issue; `show ODS-N`; primer ítem pendiente del checklist |
-| «Sin issues» / sin `sprint_*.mjs` | **Parar.** Fase 0→2: limpieza, `plan_sprint_<nombre>.html`, esperar aprobación humana, luego `create` |
+| «Sin issues» / sin `sprint_*.mjs` | **Parar.** Fase 0→2: limpieza, `plan_sprint_<nombre>.html` (contrato Linear completo), `validate-plan-html.mjs`, esperar ✅ APROBADO, luego `create` |
 | Issue bloqueado por `blocks` | **Parar.** Informar blocker y **no** codear en la cadena bloqueada |
 
 ## Multi-agente — esperas obligatorias

@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Linear y checklist — obligatorio
 
-Fuente de verdad: `_linear/README.md` → **Gate LINEAR_API y checklist obligatorio**. Gate previo a codear: `linear-gate-obligatorio.mdc`. Multi-agente: `linear-multiagente.mdc` + `AGENTS.md`.
+Fuente de verdad: `_linear/README.md` → **Gate LINEAR_API y checklist obligatorio**. Gate previo a codear: `linear-gate-obligatorio.mdc`. Plan HTML: `linear-plan-html-obligatorio.mdc` + `validate-plan-html.mjs`. Multi-agente: `linear-multiagente.mdc` + `AGENTS.md`.
 
 ## Linear siempre
 

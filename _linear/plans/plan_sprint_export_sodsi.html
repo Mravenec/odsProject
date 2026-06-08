@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<!--
+  Fase 2 — Propuesta sprint Export SODSI
+  Copiado desde _plantilla_ods.html — CSS sin modificar
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta — Export Excel alineado SODSI · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  :root{--bg:#07090F;--surf:#0D1117;--surf2:#131A24;--border:rgba(255,255,255,.07);--text:#E2E8F0;--muted:#64748B;--db:#EAB308;--be:#22C55E;--fe:#0EA5E9;--green:#22C55E;--orange:#F97316}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6}
+  .hero{padding:64px 48px 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;right:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(34,197,94,.1) 0%,transparent 70%);pointer-events:none}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--green);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .ey::after{content:'';width:32px;height:1px;background:var(--green);display:block}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,44px);font-weight:800;line-height:1.05;color:#fff}
+  h1 em{font-style:normal;background:linear-gradient(135deg,#22C55E,#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{margin-top:14px;font-size:14px;color:var(--muted);max-width:860px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);padding:4px 12px;border-radius:4px}
+  .chip span{color:#fff}.chip.ok{border-color:rgba(34,197,94,.35);color:var(--green)}
+  .chip.pending{border-color:rgba(249,115,22,.35);color:var(--orange)}
+  .al{margin:32px 48px 0;padding:14px 18px;border-radius:8px;font-size:13px;display:flex;gap:12px}
+  .al.ok{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.25);border-left:3px solid var(--green);color:#86EFAC}
+  .al.pending{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.25);border-left:3px solid var(--orange);color:#FDBA74}
+  .sec{padding:48px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:18px}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace}
+  .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surf2)}
+  .tbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top}
+  .ok{color:var(--green)}.done{color:var(--green)}.warn{color:var(--orange)}
+  .issue{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);padding:2px 8px;border-radius:4px}
+  .badge.pending{color:var(--orange);background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.25)}
+  .issue-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .issue-title{font-size:14px;font-weight:500;color:#fff;margin-top:4px}
+  .issue-meta{font-size:11px;color:var(--muted);margin-top:6px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .box{border-radius:8px;padding:14px;font-size:12.5px;line-height:1.55}
+  .box.bad{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);color:#FCA5A5}
+  .box.good{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);color:#BBF7D0}
+  .box h4{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .box.bad h4{color:#FCA5A5}.box.good h4{color:var(--green)}
+  code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.06);color:#CBD5E1;padding:1px 5px;border-radius:3px}
+  .cb2{background:#060912;border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:13px 16px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.75;overflow-x:auto;white-space:pre}
+  .da{color:#86EFAC}.dk{color:#7DD3FC}.dc{color:#64748B}
+  .plf{display:flex;align-items:stretch;flex-wrap:wrap;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin:12px 0 20px}
+  .pln{background:var(--surf2);padding:12px 16px;display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--border)}
+  .pla{display:flex;align-items:center;padding:0 8px;background:var(--surf2);color:var(--muted);font-size:14px;border-right:1px solid var(--border)}
+  .plname{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff}
+  .plnote{font-size:10px;color:var(--muted)}
+  ul.files{margin:0;padding-left:18px;font-size:13px;color:#94A3B8}
+  ul.files li{margin-bottom:6px}
+  hr.sep{border:none;border-top:1px solid var(--border);margin:48px 48px 0}
+  footer{margin-top:64px;border-top:1px solid var(--border);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .utn{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#98BADF}
+  @media(max-width:720px){.compare{grid-template-columns:1fr}.hero,.sec,.al{padding-left:24px;padding-right:24px;margin-left:0;margin-right:0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="ey">ODS UTN · Sprint Export SODSI · Propuesta · linear_ods</div>
+  <h1>Excel consolidado e individual<br><em>alineado al glosario SODSI (Fase A)</em></h1>
+  <p class="sub">
+    Enriquecer los exports Excel existentes con todos los campos que <strong>ya están en BD</strong>
+    (gestor en planificación, evaluador en cierre). Sin cambio de schema en esta fase.
+    El consultor solo descarga; no ingresa datos. Constante institucional UTN en columna dedicada.
+  </p>
+  <div class="chips">
+    <div class="chip pending">Aprobación <span>PENDIENTE</span></div>
+    <div class="chip">Issues <span>4 planificados</span></div>
+    <div class="chip">Capas <span>BE + FE mínimo</span></div>
+    <div class="chip">BD <span>sin cambio</span></div>
+    <div class="chip">QA <span>proyecto #6 · sede 2 · 2024</span></div>
+  </div>
+</header>
+
+<div class="al pending">
+  <div>⏳</div>
+  <div>
+    <strong>Propuesta pendiente de aprobación.</strong>
+    Revisar matriz SODSI, issues y checklists. Tras tu ✅ explícito:
+    <code>node scripts/sprint_export_sodsi.mjs create</code>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECCIONES LINEAR OBLIGATORIAS — _linear/README.md Fase 2
+     ═══════════════════════════════════════════════════════════ -->
+
+<section class="sec">
+  <div class="sl">Linear — Proceso obligatorio (7 fases)</div>
+  <div class="st">Mismas fases siempre; cambian issues y gates</div>
+  <p style="font-size:13px;color:var(--muted);max-width:900px;margin-bottom:16px">
+    Fuente: <code>_linear/README.md</code> · El plan HTML es el contrato del <code>sprint_export_sodsi.mjs</code>.
+    Ningún agente codea producto sin <code>sprint-next.mjs</code> + issue reclamado.
+  </p>
+  <table class="tbl">
+    <thead><tr><th>Fase</th><th>Qué</th><th>Quién</th><th>Gate</th><th>Estado sprint</th></tr></thead>
+    <tbody>
+      <tr><td>0 — Limpieza</td><td><code>cleanup</code> + borrar artefactos sprint anterior</td><td>orchestrator</td><td>Sprint previo cerrado o descarte</td><td class="ok">✓ Hecho (área limpia)</td></tr>
+      <tr><td>1 — Plan</td><td>Análisis SODSI, capas, dependencias</td><td>orchestrator</td><td>Alcance claro</td><td class="ok">✓ Este documento</td></tr>
+      <tr><td>2 — HTML propuesta</td><td><code>plan_sprint_export_sodsi.html</code></td><td>orchestrator</td><td>Contenido Linear completo</td><td class="warn">En revisión</td></tr>
+      <tr><td>3 — Aprobación</td><td>Humano ✅ en chat o Linear</td><td>Tú</td><td>APROBADO explícito</td><td class="warn">PENDIENTE</td></tr>
+      <tr><td>4 — MJS</td><td><code>node scripts/sprint_export_sodsi.mjs create</code></td><td>orchestrator</td><td>Solo tras Fase 3</td><td>—</td></tr>
+      <tr><td>5 — Multi-agente</td><td>Backlog → Doing → Testing → Done + checklist secuencial</td><td>backend / frontend agents</td><td>GATE_HTTP antes de FE</td><td>—</td></tr>
+      <tr><td>6 — Resumen</td><td><code>resumen_sprint_export_sodsi.html</code> + epic Completed</td><td>orchestrator</td><td>Todos Done 100%</td><td>—</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Metadatos del sprint</div>
+  <div class="st">Lo que el .mjs creará en linear_ods</div>
+  <table class="tbl">
+    <thead><tr><th>Campo</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Equipo</td><td><code>linear_ods</code></td></tr>
+      <tr><td>EPIC_NAME</td><td><code>Export SODSI — Excel Fase A</code></td></tr>
+      <tr><td>SPRINT_NAME</td><td><code>Sprint Export SODSI Fase A</code></td></tr>
+      <tr><td>Script</td><td><code>_linear/scripts/sprint_export_sodsi.mjs</code></td></tr>
+      <tr><td>Tipo problema</td><td>API sin schema + FE copy (<code>README</code> § Alcance por tipo)</td></tr>
+      <tr><td>Issues en Linear</td><td>4 (sin issue <code>role:database</code> en Fase A)</td></tr>
+      <tr><td>Estados tablero</td><td>Backlog → Doing (In Progress) → Testing → Done</td></tr>
+      <tr><td>Labels</td><td><code>role:backend</code> · <code>role:frontend</code> · <code>role:orchestrator</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Gates (qué aplica / qué no)</div>
+  <div class="st">Si un gate no aplica, no se crea issue — el proceso igual es obligatorio</div>
+  <table class="tbl">
+    <thead><tr><th>Gate</th><th>¿Fase A?</th><th>Issue</th><th>Comandos si aplica</th><th>Desbloquea</th></tr></thead>
+    <tbody>
+      <tr><td>GATE_SQL</td><td class="warn">No</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>GATE_BD</td><td class="warn">No</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>GATE_JOOQ</td><td class="warn">No</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>GATE_HTTP</td><td class="ok">Sí</td><td>ODS-SODSI-2</td><td><code>.http</code> 2xx</td><td>ODS-SODSI-3 (FE)</td></tr>
+      <tr><td>GATE_FE</td><td class="ok">Sí</td><td>ODS-SODSI-3</td><td><code>npm run build</code></td><td>Cierre epic</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--muted);margin-top:12px">
+    <strong>Si hubiera cambio de BD (Fase B):</strong> issue <code>role:database</code> primero →
+    <code>python 0.database/drop_db.py</code> → <code>setup_db.py</code> → <code>load_mocks.py</code> →
+    <code>mvn spring-boot:run</code> (JOOQ) → luego BE. Ver sección «Fase B — epic futuro» al final.
+  </p>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Tabla de issues (Fase 4 create)</div>
+  <div class="st">Id lógico · rol · estimate · blocks · archivos</div>
+  <table class="tbl">
+    <thead>
+      <tr><th>Id</th><th>Rol</th><th>Pts</th><th>Título</th><th>blocks</th><th>Archivos principales</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ODS-SODSI-1</td><td>backend</td><td>5</td>
+        <td>Export Excel SODSI — Repo + Service + Controller</td>
+        <td>—</td>
+        <td>IMasterProjectRepository, MasterProjectRepository, IExportService, ExportService, IExportController, ExportController</td>
+      </tr>
+      <tr>
+        <td>ODS-SODSI-2</td><td>backend</td><td>2</td>
+        <td>GATE_HTTP — export SODSI</td>
+        <td>ODS-SODSI-1</td>
+        <td>export_sodsi.http, consultor_flow.http</td>
+      </tr>
+      <tr>
+        <td>ODS-SODSI-3</td><td>frontend</td><td>1</td>
+        <td>Panel export — copy SODSI</td>
+        <td>ODS-SODSI-2</td>
+        <td>BulkProjectExportPanel.jsx, exportService.js</td>
+      </tr>
+      <tr>
+        <td>ODS-SODSI-4</td><td>orchestrator</td><td>1</td>
+        <td>Cierre — resumen HTML + cleanup</td>
+        <td>ODS-SODSI-3</td>
+        <td>resumen_sprint_export_sodsi.html, cleanup</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Dependencias blocks + handoff</div>
+  <div class="st">Diagrama + pares checklist cruzado</div>
+  <div class="cb2"><span class="dc">Cadena serial (blocks en Linear):</span>
+ODS-SODSI-1 ──blocks──► ODS-SODSI-2 ──blocks──► ODS-SODSI-3 ──blocks──► ODS-SODSI-4
+
+<span class="dc">Handoff checklist (upstream marca ítem 1 del downstream):</span>
+<span class="dk">ODS-SODSI-1</span> último ítem → <span class="da">handoff ODS-SODSI-2 1</span>
+<span class="dk">ODS-SODSI-2</span> último ítem → <span class="da">handoff ODS-SODSI-3 1</span>
+
+<span class="dc">Paralelismo:</span> <span class="dc">NINGUNO</span> dentro del epic — un issue activo por cadena.
+<span class="dc">Multi-epic:</span> no iniciar otro epic que toque <code>ExportService.java</code> en paralelo.
+
+<span class="dc">Choque de archivos:</span> ExportService.java, MasterProjectRepository.java — un agente.</div>
+  <table class="tbl" style="margin-top:14px">
+    <thead><tr><th>Ticket upstream</th><th>Ítem handoff</th><th>Ticket downstream</th><th>Ítem gate</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-SODSI-1</td><td>«Marcar ODS-SODSI-2 ítem 1»</td><td>ODS-SODSI-2</td><td>Ítem 1: ⏸ NO iniciar hasta upstream</td></tr>
+      <tr><td>ODS-SODSI-2</td><td>«Marcar ODS-SODSI-3 ítem 1»</td><td>ODS-SODSI-3</td><td>Ítem 1: ⏸ GATE_HTTP</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Ciclo por issue (Fase 5)</div>
+  <div class="st">Todo agente sigue esto en cada ticket</div>
+  <div class="cb2"><span class="dc">1.</span> <span class="dk">cd _linear && node scripts/sprint-next.mjs</span>     <span class="dc"># o sprint_export_sodsi.mjs next</span>
+<span class="dc">2.</span> <span class="dk">node scripts/sprint_export_sodsi.mjs show ODS-SODSI-N</span>
+<span class="dc">3.</span> <span class="dk">state ODS-SODSI-N "In Progress"</span>              <span class="dc"># Doing — MCP: claim_issue</span>
+<span class="dc">4.</span> Implementar <span class="da">solo</span> ítem checklist pendiente
+<span class="dc">5.</span> <span class="dk">checklist ODS-SODSI-N &lt;n&gt;</span>                       <span class="dc"># UN número; script rechaza batch</span>
+<span class="dc">6.</span> Repetir 4–5 hasta checklist 100%
+<span class="dc">7.</span> <span class="dk">state ODS-SODSI-N Testing</span> → pruebas locales (tabla abajo)
+<span class="dc">8.</span> <span class="dk">handoff ODS-SODSI-M 1</span>                           <span class="dc"># si aplica, antes de Done</span>
+<span class="dc">9.</span> <span class="dk">state ODS-SODSI-N Done</span>                          <span class="dc"># libera blocks</span>
+<span class="dc">10.</span> <span class="dk">next</span>                                             <span class="dc"># siguiente desbloqueado</span>
+
+<span class="dc">Prohibido:</span> checklist 1,2,3 · --check-all · codear sin issue · FE antes de GATE_HTTP [x]</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Comandos del script</div>
+  <div class="st">Fase 4 y Fase 5 (desde _linear/)</div>
+  <div class="cb2"><span class="dk"># Tras aprobación humana (Fase 4)</span>
+node scripts/sprint_export_sodsi.mjs create
+node scripts/sprint_export_sodsi.mjs status
+
+<span class="dk"># Durante implementación (Fase 5)</span>
+node scripts/sprint-next.mjs
+node scripts/sprint_export_sodsi.mjs next
+node scripts/sprint_export_sodsi.mjs show ODS-SODSI-1
+node scripts/sprint_export_sodsi.mjs checklist ODS-SODSI-1 1
+node scripts/sprint_export_sodsi.mjs handoff ODS-SODSI-2 1
+node scripts/sprint_export_sodsi.mjs state ODS-SODSI-1 Testing
+node scripts/sprint_export_sodsi.mjs state ODS-SODSI-1 Done
+
+<span class="dk"># Cierre (Fase 6 + Fase 0 siguiente sprint)</span>
+node scripts/sprint_export_sodsi.mjs status    <span class="dc"># todos Done</span>
+<span class="dc"># crear resumen_sprint_export_sodsi.html</span>
+node scripts/sprint_export_sodsi.mjs cleanup</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Testing local por rol (estado Testing)</div>
+  <div class="st">Antes de state Done — referencia comandosDelProyecto.txt</div>
+  <table class="tbl">
+    <thead><tr><th>Issue</th><th>Rol</th><th>Comandos Testing</th><th>Criterio Done</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>ODS-SODSI-1</td><td>backend</td>
+        <td><code>cd 1.backend/odsProject && mvn -q compile</code><br><em>sin drop_db</em></td>
+        <td>Compile OK + checklist 8/8 + handoff ODS-SODSI-2 ítem 1</td>
+      </tr>
+      <tr>
+        <td>ODS-SODSI-2</td><td>backend</td>
+        <td><code>mvn spring-boot:run</code> + <code>export_sodsi.http</code> + <code>consultor_flow.http</code></td>
+        <td>2xx consolidado + individual; xlsx 2 hojas; handoff ODS-SODSI-3 ítem 1</td>
+      </tr>
+      <tr>
+        <td>ODS-SODSI-3</td><td>frontend</td>
+        <td><code>cd 2.frontend/odsProject && npm run build</code><br>smoke consultor dashboard</td>
+        <td>build exit 0 + descarga <code>ods_sodsi_*.xlsx</code></td>
+      </tr>
+      <tr>
+        <td>ODS-SODSI-4</td><td>orchestrator</td>
+        <td><code>status</code> todos Done · epic Completed en UI/MCP</td>
+        <td>resumen HTML + cleanup listo para próximo sprint</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Objetivo</div>
+  <div class="st">Qué se busca resolver</div>
+  <table class="tbl">
+    <thead><tr><th>Problema</th><th>Solución propuesta</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Consolidado por sede/año tiene solo 10 columnas; no refleja ficha SODSI ni indicadores</td>
+        <td class="ok">2 hojas: «Proyectos SODSI» (21 cols) + «Indicadores» (aplanado por proyecto)</td>
+      </tr>
+      <tr>
+        <td>Export individual «General» omite provincia/cantón/distrito y descripción</td>
+        <td class="ok">Ampliar hoja General con ubicación CR + descripción + institución</td>
+      </tr>
+      <tr>
+        <td>Campos SODSI inexistentes (aliados, PLANES, género, tel/correo…)</td>
+        <td class="warn">Fuera de alcance Fase A — sprint futuro con columnas BD + wizard</td>
+      </tr>
+      <tr>
+        <td>Consultor no debe escribir datos; solo reportes</td>
+        <td class="ok">Sin cambio de permisos; mismo endpoint <code>GET /api/export/projects/excel</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Matriz SODSI — Fase A</div>
+  <div class="st">Columna Excel ↔ BD ↔ quién la alimenta</div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Variable SODSI</th>
+        <th>Columna consolidado</th>
+        <th>Fuente BD</th>
+        <th>Rol</th>
+        <th>Fase A</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Institución</td><td>Institución</td><td>Constante UTN</td><td>Sistema</td><td class="ok">Sí</td></tr>
+      <tr><td>Año reporte</td><td>Año</td><td>Parámetro <code>anio</code></td><td>Sistema</td><td class="ok">Sí</td></tr>
+      <tr><td>ID acción</td><td>ID</td><td>proyectos.id</td><td>Sistema</td><td class="ok">Sí</td></tr>
+      <tr><td>Acción ODS</td><td>Proyecto</td><td>nombre_proyecto</td><td>Gestor</td><td class="ok">Sí</td></tr>
+      <tr><td>Descripción</td><td>Descripción</td><td>descripcion</td><td>Gestor</td><td class="ok">Sí (nuevo)</td></tr>
+      <tr><td>Usuario / gestor</td><td>Gestor</td><td>vista → full_name</td><td>Login</td><td class="ok">Sí</td></tr>
+      <tr><td>Responsable</td><td>Responsable</td><td>responsable_nombre</td><td>Gestor</td><td class="ok">Sí (nuevo)</td></tr>
+      <tr><td>Campus / sede</td><td>Sede</td><td>sedes.nombre</td><td>Gestor</td><td class="ok">Sí</td></tr>
+      <tr><td>Provincia</td><td>Provincia</td><td>location_province</td><td>Gestor</td><td class="ok">Sí (nuevo)</td></tr>
+      <tr><td>Cantón</td><td>Cantón</td><td>location_canton</td><td>Gestor</td><td class="ok">Sí (nuevo)</td></tr>
+      <tr><td>Distrito</td><td>Distrito</td><td>location_district</td><td>Gestor</td><td class="ok">Sí (nuevo)</td></tr>
+      <tr><td>Fechas</td><td>Inicio / Fin</td><td>fecha_inicio / fin</td><td>Gestor</td><td class="ok">Sí</td></tr>
+      <tr><td>Meta general</td><td>Meta general</td><td>meta_general</td><td>Gestor</td><td class="ok">Sí (nuevo)</td></tr>
+      <tr><td>ODS</td><td>ODS / ODS primario</td><td>vista</td><td>Gestor</td><td class="ok">Sí</td></tr>
+      <tr><td>Estado</td><td>Estado</td><td>estado</td><td>Sistema</td><td class="ok">Sí</td></tr>
+      <tr><td>Cierre</td><td>Evaluado en / Auditor</td><td>auditado_en / auditor</td><td>Evaluador</td><td class="ok">Sí</td></tr>
+      <tr><td>Observaciones</td><td>Observaciones cierre</td><td>observaciones_cierre</td><td>Evaluador</td><td class="ok">Sí (nuevo)</td></tr>
+      <tr><td>Indicadores / metas</td><td>Hoja Indicadores</td><td>vista_admin_detalle + mediciones</td><td>Gestor meta / Evaluador valor</td><td class="ok">Sí (nuevo)</td></tr>
+      <tr><td>Dependencia, aliados, PLANES, género, Mideplan, tel/correo</td><td>—</td><td>No existe</td><td>—</td><td class="warn">Fase B</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Antes / después</div>
+  <div class="st">Comportamiento visible</div>
+  <div class="compare">
+    <div class="box bad">
+      <h4>Hoy</h4>
+      Consolidado: 1 hoja, 10 columnas.<br>
+      General individual: sin ubicación ni descripción.<br>
+      Indicadores solo en export por proyecto.
+    </div>
+    <div class="box good">
+      <h4>Propuesto Fase A</h4>
+      Consolidado: hoja «Proyectos SODSI» (21 cols) + hoja «Indicadores».<br>
+      General individual: +Institución, Descripción, Provincia, Cantón, Distrito.<br>
+      Mismo botón y filtros en dashboard / lista proyectos.
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sl">Pipeline visual</div>
+  <div class="st">DB → JOOQ → BE → .http → FE (capas omitidas marcadas)</div>
+  <div class="plf">
+    <div class="pln"><div class="plname" style="color:var(--muted)">DB</div><div class="plnote">N/A Fase A — sin ALTER</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname" style="color:var(--muted)">JOOQ</div><div class="plnote">N/A — POJOs actuales</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname" style="color:var(--be)">BE</div><div class="plnote">IREPO→REPO→ISVC→SVC→ICTRL→CTRL</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname" style="color:var(--be)">.http</div><div class="plnote">GATE_HTTP ODS-SODSI-2</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname" style="color:var(--fe)">FE</div><div class="plnote">GATE_FE ODS-SODSI-3</div></div>
+  </div>
+  <p style="font-size:13px;color:var(--muted);max-width:860px">
+    <code>vista_resumen_proyectos_ods</code> no expone descripcion/ubicación/meta.
+    <strong>Estrategia BE:</strong> <code>findByIds</code> en repo + merge en <code>ExportService</code> — sin <code>drop_db</code>.
+    Jerarquía backend obligatoria (<code>README</code> § Jerarquía): interfaz antes que implementación en cada capa.
+  </p>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear</div>
+  <div class="st">Issues planificados</div>
+
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-SODSI-1 · role:backend · 5 pts</div>
+      <div class="issue-title">Export Excel SODSI — Repo + Service + Controller</div>
+      <div class="issue-meta">IREPO → REPO → ISVC → SVC → ICTRL → CTRL</div>
+      <ul class="files">
+        <li><code>IMasterProjectRepository</code> — <code>findByIds(Set&lt;Integer&gt;)</code></li>
+        <li><code>MasterProjectRepository</code> — implementación JOOQ</li>
+        <li><code>IExportService</code> — sin cambio de firma pública</li>
+        <li><code>ExportService</code> — consolidado 2 hojas + General enriquecido</li>
+        <li><code>IExportController</code> / <code>ExportController</code> — verificar sin breaking change</li>
+      </ul>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-SODSI-2 · role:backend · 2 pts</div>
+      <div class="issue-title">GATE_HTTP — export SODSI consolidado e individual</div>
+      <div class="issue-meta">Bloqueado por ODS-SODSI-1</div>
+      <ul class="files">
+        <li><code>src/test/.../http/export_sodsi.http</code> — nuevo</li>
+        <li><code>consultor_flow.http</code> — validar columnas en descarga</li>
+        <li>QA: <code>consultor@ods.local</code> · sedeId=2 · anio=2024 · proyecto #6</li>
+      </ul>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-SODSI-3 · role:frontend · 1 pt</div>
+      <div class="issue-title">Panel export — copy SODSI y nombre de archivo</div>
+      <div class="issue-meta">⏸ GATE_HTTP — ítem 1 marcado por ODS-SODSI-2</div>
+      <ul class="files">
+        <li><code>BulkProjectExportPanel.jsx</code> — texto «Reporte SODSI» + columnas incluidas</li>
+        <li><code>exportService.js</code> — nombre archivo <code>ods_sodsi_{sede}_{anio}.xlsx</code></li>
+        <li><code>npm run build</code></li>
+      </ul>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="issue">
+    <div class="badge pending">Backlog</div>
+    <div>
+      <div class="issue-id">ODS-SODSI-4 · role:orchestrator · 1 pt</div>
+      <div class="issue-title">Cierre — resumen HTML + epic Completed</div>
+      <div class="issue-meta">Tras ODS-SODSI-3 Done</div>
+      <ul class="files">
+        <li><code>resumen_sprint_export_sodsi.html</code></li>
+        <li>Fase 0 cleanup del sprint</li>
+      </ul>
+    </div>
+    <div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sl">Checklist</div>
+  <div class="st">Copiar a Linear (secuencial — un ítem por comando)</div>
+
+  <div class="cb2"><span class="dc">## ODS-SODSI-1 — Export Excel SODSI (BE)</span>
+<span class="da">- [ ] IREPO: IMasterProjectRepository.findByIds(Set&lt;Integer&gt; ids)</span>
+<span class="da">- [ ] REPO: MasterProjectRepository — query JOOQ por lista de ids</span>
+<span class="da">- [ ] ISVC: revisar IExportService (sin breaking change en endpoints)</span>
+<span class="da">- [ ] SVC: ExportService — hoja «Proyectos SODSI» 21 columnas + hoja «Indicadores»</span>
+<span class="da">- [ ] SVC: ExportService — writeGeneralAuditoriaSheet + descripcion, ubicación, institución</span>
+<span class="da">- [ ] ICTRL + CTRL: ExportController sin cambio de contrato REST</span>
+<span class="da">- [ ] Compile local: mvn -q compile</span>
+<span class="da">- [ ] **Handoff:** marcar ODS-SODSI-2 checklist ítem 1 — señal GATE_HTTP</span>
+
+<span class="dc">## ODS-SODSI-2 — GATE_HTTP export SODSI</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta ODS-SODSI-1 marque este ítem [x]</span>
+<span class="da">- [ ] Crear export_sodsi.http — GET consolidado sedeId=2 anio=2024 → 200 + Content-Type xlsx</span>
+<span class="da">- [ ] GET export proyecto #6 completado → 200; verificar hoja General ampliada</span>
+<span class="da">- [ ] consultor_flow.http — rol consultor 200; gestor 403 en consolidado</span>
+<span class="da">- [ ] Abrir xlsx generado: 21 cols hoja 1 + indicadores hoja 2</span>
+<span class="da">- [ ] **Handoff:** marcar ODS-SODSI-3 checklist ítem 1 — señal FE</span>
+
+<span class="dc">## ODS-SODSI-3 — FE panel SODSI</span>
+<span class="da">- [ ] ⏸ **Gate externo:** NO iniciar hasta ODS-SODSI-2 marque este ítem [x]</span>
+<span class="da">- [ ] BulkProjectExportPanel — copy «Reporte institucional SODSI» + hint columnas</span>
+<span class="da">- [ ] exportService.js — filename ods_sodsi_{sedeSlug}_{anio}.xlsx</span>
+<span class="da">- [ ] npm run build exit 0</span>
+<span class="da">- [ ] Smoke manual: dashboard consultor descarga xlsx</span>
+
+<span class="dc">## ODS-SODSI-4 — Cierre orquestador</span>
+<span class="da">- [ ] Todos los issues anteriores en Done + checklist 100%</span>
+<span class="da">- [ ] Crear resumen_sprint_export_sodsi.html</span>
+<span class="da">- [ ] Epic «Export SODSI» → Completed + comentario con ruta resumen</span>
+<span class="da">- [ ] Fase 0: cleanup + borrar plan/script del sprint</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Descripciones issue (copiar a Linear en create)</div>
+  <div class="st">Texto verbatim para el .mjs — incluye checklist completo</div>
+  <div class="cb2"><span class="dc">### ODS-SODSI-1 · role:backend</span>
+<span class="dk">Export Excel SODSI — Repo + Service + Controller</span>
+
+<span class="dc">## Archivos</span>
+- repository/interfaces/IMasterProjectRepository.java
+- repository/MasterProjectRepository.java
+- service/interfaces/IExportService.java
+- service/ExportService.java
+- controller/interfaces/IExportController.java
+- controller/ExportController.java
+
+<span class="dc">## Checklist</span>
+<span class="da">- [ ] IREPO: findByIds(Set&lt;Integer&gt; ids)</span>
+<span class="da">- [ ] REPO: MasterProjectRepository JOOQ batch</span>
+<span class="da">- [ ] ISVC: IExportService sin breaking change REST</span>
+<span class="da">- [ ] SVC: hoja «Proyectos SODSI» 21 columnas + hoja «Indicadores»</span>
+<span class="da">- [ ] SVC: writeGeneralAuditoriaSheet + descripcion, ubicación, institución UTN</span>
+<span class="da">- [ ] ICTRL + CTRL: sin cambio contrato GET /api/export/projects/excel</span>
+<span class="da">- [ ] mvn -q compile OK</span>
+<span class="da">- [ ] Handoff: marcar ODS-SODSI-2 checklist ítem 1</span>
+
+<span class="dc">## Testing (sin drop_db)</span>
+cd 1.backend/odsProject && mvn -q compile
+
+<span class="dc">---</span>
+<span class="dc">### ODS-SODSI-2 · role:backend · blocks ODS-SODSI-1</span>
+<span class="dk">GATE_HTTP — export SODSI consolidado e individual</span>
+
+<span class="dc">## Checklist</span>
+<span class="da">- [ ] ⏸ Gate: NO iniciar hasta ODS-SODSI-1 marque este ítem [x]</span>
+<span class="da">- [ ] export_sodsi.http — GET ?sedeId=2&anio=2024 → 200 xlsx</span>
+<span class="da">- [ ] GET export proyecto #6 → 200; General ampliada</span>
+<span class="da">- [ ] consultor_flow — consultor 200; gestor 403 consolidado</span>
+<span class="da">- [ ] Verificar xlsx: 21 cols + hoja Indicadores</span>
+<span class="da">- [ ] Handoff: marcar ODS-SODSI-3 checklist ítem 1</span>
+
+<span class="dc">## Testing</span>
+mvn spring-boot:run + .http 2xx
+
+<span class="dc">---</span>
+<span class="dc">### ODS-SODSI-3 · role:frontend · blocks ODS-SODSI-2</span>
+<span class="da">- [ ] ⏸ Gate GATE_HTTP: ítem 1 [x] por ODS-SODSI-2</span>
+<span class="da">- [ ] BulkProjectExportPanel — copy Reporte SODSI</span>
+<span class="da">- [ ] exportService.js — filename ods_sodsi_{sede}_{anio}.xlsx</span>
+<span class="da">- [ ] npm run build exit 0</span>
+<span class="da">- [ ] Smoke consultor dashboard descarga</span>
+
+<span class="dc">---</span>
+<span class="dc">### ODS-SODSI-4 · role:orchestrator · blocks ODS-SODSI-3</span>
+<span class="da">- [ ] status — todos Done checklist 100%</span>
+<span class="da">- [ ] resumen_sprint_export_sodsi.html</span>
+<span class="da">- [ ] Epic Completed + comentario ruta resumen</span>
+<span class="da">- [ ] cleanup + Fase 0 artefactos</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Fase B — Epic futuro (fuera de este sprint)</div>
+  <div class="st">Mismo proceso Linear; sí incluye role:database</div>
+  <p style="font-size:13px;color:var(--muted);max-width:900px;margin-bottom:12px">
+    Campos SODSI ausentes (aliados, PLANES, género, contacto tel/email, dependencia…) requieren
+    <strong>epic nuevo</strong> <code>Export SODSI — Fase B</code> con su propio
+    <code>plan_sprint_export_sodsi_fase_b.html</code> tras cerrar Fase A.
+  </p>
+  <table class="tbl">
+    <thead><tr><th>Issue tipo</th><th>Gates</th><th>Comandos obligatorios</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>role:database</td>
+        <td>GATE_SQL + GATE_BD</td>
+        <td>
+          Merge <code>2. ods_master_database.sql</code> (columnas + vista)<br>
+          <code>python 0.database/drop_db.py</code><br>
+          <code>python 0.database/setup_db.py</code><br>
+          <code>python 0.database/load_mocks.py</code>
+        </td>
+      </tr>
+      <tr>
+        <td>role:backend JOOQ</td>
+        <td>GATE_JOOQ</td>
+        <td><code>cd 1.backend/odsProject && mvn spring-boot:run</code></td>
+      </tr>
+      <tr>
+        <td>role:backend + FE</td>
+        <td>GATE_HTTP + GATE_FE</td>
+        <td>Wizard gestor + export ampliado + build</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="cb2" style="margin-top:12px"><span class="dc">Pipeline Fase B (referencia comandosDelProyecto.txt):</span>
+python 0.database/drop_db.py
+python 0.database/setup_db.py; python 0.database/load_mocks.py
+cd 1.backend/odsProject; mvn clean compile -DskipTests; mvn spring-boot:run
+cd 2.frontend/odsProject; npm run dev</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Fase 6 — Entregable de cierre</div>
+  <div class="st">Obligatorio al terminar ODS-SODSI-4</div>
+  <ul class="files">
+    <li><code>_linear/plans/resumen_sprint_export_sodsi.html</code> — mismo CSS, chips Done</li>
+    <li>Epic <code>Export SODSI — Excel Fase A</code> → estado <strong>Completed</strong></li>
+    <li>Comentario epic: <code>Sprint completado. Resumen: _linear/plans/resumen_sprint_export_sodsi.html</code></li>
+    <li>Luego Fase 0: <code>cleanup</code> + borrar plan/resumen/script de Fase A antes del próximo plan</li>
+  </ul>
+</section>
+
+<section class="sec">
+  <div class="sl">Aprobación</div>
+  <div class="st">Estado</div>
+  <table class="tbl">
+    <thead><tr><th>Campo</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Estado</td><td class="warn">PENDIENTE</td></tr>
+      <tr><td>Epic Linear</td><td>Export SODSI — Excel Fase A</td></tr>
+      <tr><td>Script</td><td><code>sprint_export_sodsi.mjs</code></td></tr>
+      <tr><td>Fase B (futuro)</td><td>Nuevas columnas proyectos + wizard gestor + export ampliado</td></tr>
+      <tr><td>README cumplido</td><td>Fase 2 § 7 ítems: objetivo, tabla issues, pipeline, dependencias, paralelismo, checklists+handoff, aprobación</td></tr>
+      <tr><td>Para aprobar</td><td>Responder en chat: <strong>✅ APROBADO</strong> → dispara Fase 4 <code>create</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="sep">
+
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>plan_sprint_export_sodsi.html · 2026-06-07</div>
+</footer>
+
+</body>
+</html>
