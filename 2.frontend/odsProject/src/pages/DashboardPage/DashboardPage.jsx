@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
 import { getOdsColor, getEstadoLabel, getEstadoClass, isProjectCompletado } from '../../utils/formatters';
+import BulkProjectExportPanel from '../../components/projects/BulkProjectExportPanel';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
@@ -108,7 +109,9 @@ const DashboardPage = () => {
 
         <section className="welcome-section">
           <div className="welcome-text">
-            <h2>¡Qué bueno verte de nuevo, {(user?.name || user?.fullName || user?.username || 'Usuario').split(' ')[0]}!</h2>
+            <h2>¡Qué bueno verte de nuevo, {(
+              user?.fullName || user?.name || user?.username || 'Usuario'
+            ).split(' ')[0].split('@')[0]}!</h2>
             <p>Aquí tienes un resumen del impacto generado hoy.</p>
           </div>
           {perms.canCreateProject && (
@@ -123,6 +126,12 @@ const DashboardPage = () => {
             </button>
           )}
         </section>
+
+        {perms.canExportBulkProjects && (
+          <div className="dashboard-export-wrap">
+            <BulkProjectExportPanel className="bulk-export-section--dashboard" />
+          </div>
+        )}
 
         {isAdmin() && globalDashboard && (
           <section className="stats-container">

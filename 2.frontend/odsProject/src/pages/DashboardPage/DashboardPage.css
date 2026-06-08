@@ -173,6 +173,10 @@
   flex-wrap: wrap;
 }
 
+.dashboard-export-wrap {
+  margin-bottom: 1.5rem;
+}
+
 .welcome-text { min-width: 0; }
 
 .welcome-text h2 {
