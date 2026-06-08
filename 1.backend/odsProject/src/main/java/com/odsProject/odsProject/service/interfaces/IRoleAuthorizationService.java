@@ -18,4 +18,7 @@ public interface IRoleAuthorizationService {
 
     /** Código JSON de error cuando un consultor intenta escribir. */
     String consultorReadonlyErrorCode();
+
+    /** admin, evaluador y consultor pueden descargar el Excel consolidado por sede/año. */
+    boolean canExportBulkProjects(String role);
 }

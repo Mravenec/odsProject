@@ -1,0 +1,97 @@
+### Export consolidado — proyectos evaluados por sede y año (auditado_en)
+### QA: proyecto id=6 completado, sede_id=2, auditado_en 2024-12-15
+
+@baseUrl = http://localhost:8080
+
+@emailConsultor = consultor@ods.local
+@passwordConsultor = Consultor2026!
+@emailAdmin = admin@ods.local
+@passwordAdmin = Admin1234!
+@emailEvaluador = evaluador@ods.cr
+@passwordEvaluador = password123
+@emailGestor = ana.garcia@ods.cr
+@passwordGestor = password123
+
+@sedeId = 2
+@anio = 2024
+@anioSinDatos = 2020
+
+### @name login_consultor
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailConsultor}}",
+  "password": "{{passwordConsultor}}"
+}
+
+@consultorToken = {{login_consultor.response.body.token}}
+
+### @name login_admin
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailAdmin}}",
+  "password": "{{passwordAdmin}}"
+}
+
+@adminToken = {{login_admin.response.body.token}}
+
+### @name login_evaluador
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailEvaluador}}",
+  "password": "{{passwordEvaluador}}"
+}
+
+@evaluadorToken = {{login_evaluador.response.body.token}}
+
+### @name login_gestor
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailGestor}}",
+  "password": "{{passwordGestor}}"
+}
+
+@gestorToken = {{login_gestor.response.body.token}}
+
+# ── 1. Consultor — sede + año con datos → 200 ──
+
+### GET excel consolidado — consultor OK
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}
+Authorization: Bearer {{consultorToken}}
+
+# ── 2. Admin — mismo filtro → 200 ──
+
+### GET excel consolidado — admin OK
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}
+Authorization: Bearer {{adminToken}}
+
+# ── 3. Evaluador → 200 ──
+
+### GET excel consolidado — evaluador OK
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}
+Authorization: Bearer {{evaluadorToken}}
+
+# ── 4. Gestor → 403 ──
+
+### GET excel consolidado — gestor bloqueado
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}
+Authorization: Bearer {{gestorToken}}
+
+# ── 5. Año sin proyectos evaluados → 200 (hoja vacía) ──
+
+### GET excel consolidado — sin datos
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anioSinDatos}}
+Authorization: Bearer {{consultorToken}}
+
+# ── 6. Parámetros faltantes → 400 ──
+
+### GET sin anio — bad request
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}
+Authorization: Bearer {{consultorToken}}

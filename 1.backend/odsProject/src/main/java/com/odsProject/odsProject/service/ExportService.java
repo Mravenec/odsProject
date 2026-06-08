@@ -69,6 +69,63 @@ public class ExportService implements IExportService {
     }
 
     @Override
+    public byte[] exportProyectosEvaluadosPorSedeYAnio(Integer sedeId, Integer anio) {
+        if (sedeId == null || anio == null) {
+            throw new IllegalArgumentException("sedeId y anio son requeridos");
+        }
+        if (anio < 2000 || anio > 2100) {
+            throw new IllegalArgumentException("anio fuera de rango válido");
+        }
+
+        List<VistaResumenProyectosOds> proyectos = resolveEvaluadosPorSedeYAnio(sedeId, anio);
+        String sedeLabel = proyectos.stream()
+                .map(VistaResumenProyectosOds::getSede)
+                .filter(s -> s != null && !s.isBlank())
+                .findFirst()
+                .orElse("Sede " + sedeId);
+        String sheetName = sedeLabel.length() > 31 ? sedeLabel.substring(0, 31) : sedeLabel;
+
+        try (Workbook wb = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            Sheet sheet = wb.createSheet(sheetName);
+            Row title = sheet.createRow(0);
+            title.createCell(0).setCellValue("Proyectos evaluados — " + sedeLabel + " — " + anio);
+
+            Row header = sheet.createRow(2);
+            String[] cols = {
+                    "ID", "Proyecto", "Gestor", "Sede", "Estado",
+                    "Inicio", "Fin", "Evaluado en", "Auditor", "ODS"
+            };
+            for (int i = 0; i < cols.length; i++) header.createCell(i).setCellValue(cols[i]);
+
+            int rowIdx = 3;
+            for (VistaResumenProyectosOds p : proyectos) {
+                Row r = sheet.createRow(rowIdx++);
+                r.createCell(0).setCellValue(p.getProyectoId() != null ? p.getProyectoId() : 0);
+                r.createCell(1).setCellValue(nullSafe(p.getNombreProyecto()));
+                r.createCell(2).setCellValue(nullSafe(p.getGestor()));
+                r.createCell(3).setCellValue(nullSafe(p.getSede()));
+                r.createCell(4).setCellValue(p.getEstado() != null ? String.valueOf(p.getEstado()) : "");
+                r.createCell(5).setCellValue(p.getFechaInicio() != null ? p.getFechaInicio().toString() : "");
+                r.createCell(6).setCellValue(p.getFechaFin() != null ? p.getFechaFin().toString() : "");
+                r.createCell(7).setCellValue(p.getAuditadoEn() != null ? p.getAuditadoEn().toString() : "");
+                r.createCell(8).setCellValue(nullSafe(p.getAuditorNombre()));
+                r.createCell(9).setCellValue(nullSafe(p.getOdsVinculados()));
+            }
+
+            if (proyectos.isEmpty()) {
+                sheet.createRow(4).createCell(0).setCellValue(
+                        "No hay proyectos evaluados en esta sede para el año " + anio);
+            }
+
+            for (int i = 0; i < cols.length; i++) sheet.autoSizeColumn(i);
+            wb.write(out);
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Error generando exportación por sede/año: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public byte[] exportPlanificacionConsolidado(Integer sedeId, Integer userId) {
         List<VistaResumenProyectosOds> proyectos = resolveCompletedForExport(sedeId, userId);
 
@@ -107,6 +164,17 @@ public class ExportService implements IExportService {
         } catch (Exception e) {
             throw new RuntimeException("Error generando consolidado: " + e.getMessage(), e);
         }
+    }
+
+    private List<VistaResumenProyectosOds> resolveEvaluadosPorSedeYAnio(Integer sedeId, Integer anio) {
+        Set<Integer> idsInSede = masterProjectRepository.findBySede(sedeId).stream()
+                .map(Proyectos::getId)
+                .collect(Collectors.toSet());
+
+        return masterProjectRepository.findCompletedWithOds().stream()
+                .filter(p -> p.getProyectoId() != null && idsInSede.contains(p.getProyectoId()))
+                .filter(p -> p.getAuditadoEn() != null && p.getAuditadoEn().getYear() == anio)
+                .toList();
     }
 
     private List<VistaResumenProyectosOds> resolveCompletedForExport(Integer sedeId, Integer userId) {

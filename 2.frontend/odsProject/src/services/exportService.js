@@ -55,20 +55,30 @@ export const exportService = {
     }
   },
 
-  async downloadProjectsExcel(filters = {}) {
+  async downloadProjectsExcel({ sedeId, anio }) {
     try {
-      const q = new URLSearchParams();
-      if (filters.sedeId != null && filters.sedeId !== '') q.set('sedeId', String(filters.sedeId));
-      if (filters.userId != null && filters.userId !== '') q.set('userId', String(filters.userId));
-      const qs = q.toString();
-      const url = _exportPath(`/projects/excel${qs ? `?${qs}` : ''}`);
+      if (sedeId == null || sedeId === '' || anio == null || anio === '') {
+        return { success: false, error: 'Seleccione sede y año' };
+      }
+      const q = new URLSearchParams({
+        sedeId: String(sedeId),
+        anio: String(anio),
+      });
+      const url = _exportPath(`/projects/excel?${q.toString()}`);
       const r = await api.get(url, { responseType: 'blob' });
       const disposition = r.headers['content-disposition'] || '';
       const match = disposition.match(/filename="?([^";\n]+)"?/);
-      const filename = match?.[1] || 'proyectos-planificacion.xlsx';
+      const filename = match?.[1] || `proyectos-sede-${sedeId}-${anio}.xlsx`;
       _triggerDownload(r.data, filename, r.headers['content-type']);
       return { success: true };
     } catch (error) {
+      const status = error.response?.status;
+      if (status === 403) {
+        return { success: false, error: 'Sin permisos para exportar el consolidado.' };
+      }
+      if (status === 400) {
+        return { success: false, error: 'Parámetros de exportación inválidos.' };
+      }
       const msg = error.userMessage || error.message || 'No se pudo descargar el Excel de proyectos';
       return { success: false, error: msg };
     }

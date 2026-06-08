@@ -3,6 +3,7 @@ package com.odsProject.odsProject.controller.interfaces;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,6 +21,7 @@ public interface IExportController {
 
     @GetMapping("/projects/excel")
     ResponseEntity<byte[]> exportProjectsExcel(
-            @RequestParam(required = false) Integer sedeId,
-            @RequestParam(required = false) Integer userId);
+            @RequestParam Integer sedeId,
+            @RequestParam Integer anio,
+            @RequestHeader(value = "Authorization", required = false) String authorization);
 }

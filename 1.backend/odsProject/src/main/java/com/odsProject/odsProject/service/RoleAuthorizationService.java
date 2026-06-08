@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
 
 @Service
 public class RoleAuthorizationService implements IRoleAuthorizationService {
 
     private static final String CONSULTOR_ROLE = "consultor";
     private static final String ERROR_CODE = "ROL_CONSULTOR_READONLY";
+    private static final Set<String> BULK_EXPORT_ROLES = Set.of("admin", "evaluador", "consultor");
 
     @Value("${app.jwt.secret}")
     private String jwtSecret;
@@ -45,6 +47,11 @@ public class RoleAuthorizationService implements IRoleAuthorizationService {
     @Override
     public String consultorReadonlyErrorCode() {
         return ERROR_CODE;
+    }
+
+    @Override
+    public boolean canExportBulkProjects(String role) {
+        return role != null && BULK_EXPORT_ROLES.contains(role.toLowerCase());
     }
 
     private SecretKey signingKey() {

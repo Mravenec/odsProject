@@ -71,6 +71,7 @@ export function usePermissions() {
       canEditProject: (project) =>
         caps.canEditAnyProject || (caps.canEditOwnProject && project?.userId === user?.id),
       canEditInPlanificacion,
+      canExportBulkProjects: ['admin', 'evaluador', 'consultor'].includes(role),
       canUploadEvidenceFor: (project) => {
         if (!project) return false;
         const estado = String(project.status ?? project.estado ?? '').toLowerCase();

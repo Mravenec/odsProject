@@ -21,4 +21,12 @@ public interface IExportService {
      * @param userId filtra por gestor (usuario_id); null = todos
      */
     byte[] exportPlanificacionConsolidado(Integer sedeId, Integer userId);
+
+    /**
+     * Excel de proyectos evaluados (completados) en una sede y año de cierre.
+     * El año se calcula con {@code YEAR(auditado_en)}.
+     *
+     * @throws IllegalArgumentException sedeId o anio nulos / inválidos
+     */
+    byte[] exportProyectosEvaluadosPorSedeYAnio(Integer sedeId, Integer anio);
 }

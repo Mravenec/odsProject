@@ -33,6 +33,12 @@ Authorization: Bearer {{consultorToken}}
 GET {{baseUrl}}/api/export/proyecto/{{idCompletado}}
 Authorization: Bearer {{consultorToken}}
 
+# ── 3b. Export consolidado sede/año → 200 (proyecto 6, sede 2, auditado 2024) ──
+
+### GET export consolidado por sede y año
+GET {{baseUrl}}/api/export/projects/excel?sedeId=2&anio=2024
+Authorization: Bearer {{consultorToken}}
+
 # ── 4. Export proyecto activo → 409 ──
 
 ### GET export activo (debe fallar)
