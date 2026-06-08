@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Multi-agente — coordinación
 
-Fuente: `_linear/README.md` (MCP v2.0) + `AGENTS.md` en la raíz del repo.
+Fuente: `_linear/README.md` (MCP v2.0) + `AGENTS.md`. Gate previo: `linear-gate-obligatorio.mdc` (`next` antes de codear).
 
 ## Principio
 

@@ -1,6 +1,30 @@
 # Agentes — ODS UTN Platform
 
-Coordinación multi-agente del repo. Reglas Cursor: `.cursor/rules/linear-checklist-secuencial.mdc` + `linear-multiagente.mdc`. Pipeline completo: `_linear/README.md`.
+Coordinación multi-agente del repo. Reglas Cursor: `linear-gate-obligatorio.mdc` + `linear-checklist-secuencial.mdc` + `linear-multiagente.mdc`. Pipeline completo: `_linear/README.md`.
+
+## Inicio obligatorio (toda tarea de producto)
+
+**Antes de editar código**, desde `_linear/`:
+
+```bash
+cd _linear
+node scripts/sprint-next.mjs
+```
+
+- Si hay issue desbloqueado → trabajar **solo** ese ticket (checklist secuencial).
+- Si no hay `sprint_<activo>.mjs` o `next` vacío → **no codear**: Fase 0–2 (limpieza → plan HTML → aprobación → `create`).
+- Si el issue está **bloqueado** (`blocks`) → esperar; otro agente/epic upstream debe cerrar primero.
+
+Bypass Linear **solo** si el humano lo pide explícito en el mensaje (*sin linear*, *bypass linear*, *solo local*).
+
+### Por qué Linear en multi-agente
+
+| Sin Linear | Con Linear |
+|------------|------------|
+| Varios chats pisan el mismo archivo | Un issue activo por cadena; `blocks` fuerza orden |
+| FE arranca antes del `.http` | GATE_HTTP en checklist + handoff |
+| No hay testigo de quién terminó qué | `Done` + handoff desbloquea downstream |
+| Commits sin trazabilidad | Issue ODS-N ↔ checklist ↔ estado |
 
 ## Roles
 
