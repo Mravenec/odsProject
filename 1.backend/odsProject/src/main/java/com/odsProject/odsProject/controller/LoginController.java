@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEvento;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
@@ -16,7 +17,8 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdmin
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Usuarios;
-import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEvento;
+import org.jooq.types.UByte;
+import org.jooq.types.UShort;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -54,14 +56,28 @@ public class LoginController implements ILoginController {
             com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Usuarios usuario = 
                 (com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Usuarios) authData.get("usuario");
 
-            Map<String, Object> response = Map.of(
-                "success", true,
-                "message", "Login successful for " + email,
-                "token", authData.get("token"),
-                "userId", usuario.getId(),
-                "role", authData.get("rol"),
-                "email", email
-            );
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("success", true);
+            response.put("message", "Login successful for " + email);
+            response.put("token", authData.get("token"));
+            response.put("userId", usuario.getId());
+            response.put("role", authData.get("rol"));
+            response.put("email", email);
+            response.put("fullName", usuario.getFullName());
+            response.put("sedeId", authData.get("sedeId"));
+            response.put("sedeNombre", authData.get("sedeNombre"));
+            Object profile = authData.get("profile");
+            if (profile instanceof Map<?, ?> profileMap) {
+                response.put("profile", profileMap);
+                response.put("telefonoContacto", profileMap.get("telefonoContacto"));
+                response.put("areaId", profileMap.get("areaId"));
+                response.put("areaNombre", profileMap.get("areaNombre"));
+                response.put("dependenciaId", profileMap.get("dependenciaId"));
+                response.put("dependenciaNombre", profileMap.get("dependenciaNombre"));
+                response.put("rolDependenciaId", profileMap.get("rolDependenciaId"));
+                response.put("rolDependenciaNombre", profileMap.get("rolDependenciaNombre"));
+                response.put("contacto", profileMap.get("contacto"));
+            }
             return ResponseEntity.ok(response);
         } else {
             Map<String, Object> errorResponse = Map.of(
@@ -92,8 +108,8 @@ public class LoginController implements ILoginController {
         return result.map(user -> {
             Map<String, Object> response = new HashMap<>();
             response.put("user", user);
-            // Incluir el rol explícitamente para el frontend
             loginService.getRolById(user.getRolId()).ifPresent(r -> response.put("role", r.getNombre()));
+            response.put("profile", loginService.buildUsuarioAuthProfile(user));
             return ResponseEntity.ok(response);
         }).orElseGet(() -> ResponseEntity.badRequest().build());
     }
@@ -624,6 +640,21 @@ public class LoginController implements ILoginController {
         u.setFullName(stringField(body, "fullName"));
         u.setRolId(intField(body, "rolId"));
         u.setSedeId(intField(body, "sedeId"));
+        Integer areaId = intField(body, "areaId");
+        if (body.containsKey("areaId")) {
+            u.setAreaId(areaId != null ? UShort.valueOf(areaId.shortValue()) : null);
+        }
+        Integer dependenciaId = intField(body, "dependenciaId");
+        if (body.containsKey("dependenciaId")) {
+            u.setDependenciaId(dependenciaId != null ? UShort.valueOf(dependenciaId.shortValue()) : null);
+        }
+        Integer rolDependenciaId = intField(body, "rolDependenciaId");
+        if (body.containsKey("rolDependenciaId")) {
+            u.setRolDependenciaId(rolDependenciaId != null ? UByte.valueOf(rolDependenciaId.byteValue()) : null);
+        }
+        if (body.containsKey("telefonoContacto")) {
+            u.setTelefonoContacto(stringField(body, "telefonoContacto"));
+        }
         return u;
     }
 
@@ -652,6 +683,10 @@ public class LoginController implements ILoginController {
         m.put("fullName", u.getFullName());
         m.put("rolId", u.getRolId());
         m.put("sedeId", u.getSedeId());
+        m.put("areaId", u.getAreaId() != null ? u.getAreaId().intValue() : null);
+        m.put("dependenciaId", u.getDependenciaId() != null ? u.getDependenciaId().intValue() : null);
+        m.put("rolDependenciaId", u.getRolDependenciaId() != null ? u.getRolDependenciaId().intValue() : null);
+        m.put("telefonoContacto", u.getTelefonoContacto());
         m.put("isActive", u.getIsActive());
         m.put("emailVerificado", u.getEmailVerificado());
         m.put("ultimoLogin", u.getUltimoLogin());

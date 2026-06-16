@@ -34,6 +34,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 import org.jooq.types.UByte;
+import org.jooq.types.UShort;
 
 
 /**
@@ -91,6 +92,30 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
      * The column <code>ods_login.usuarios.sede_id</code>.
      */
     public final TableField<UsuariosRecord, Integer> SEDE_ID = createField(DSL.name("sede_id"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>ods_login.usuarios.area_id</code>. Fuente de información
+     * SODSI (sodsi_area)
+     */
+    public final TableField<UsuariosRecord, UShort> AREA_ID = createField(DSL.name("area_id"), SQLDataType.SMALLINTUNSIGNED.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.SMALLINTUNSIGNED)), this, "Fuente de información SODSI (sodsi_area)");
+
+    /**
+     * The column <code>ods_login.usuarios.dependencia_id</code>. Dependencia
+     * SODSI del usuario
+     */
+    public final TableField<UsuariosRecord, UShort> DEPENDENCIA_ID = createField(DSL.name("dependencia_id"), SQLDataType.SMALLINTUNSIGNED.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.SMALLINTUNSIGNED)), this, "Dependencia SODSI del usuario");
+
+    /**
+     * The column <code>ods_login.usuarios.rol_dependencia_id</code>. Rol de
+     * dependencia SODSI
+     */
+    public final TableField<UsuariosRecord, UByte> ROL_DEPENDENCIA_ID = createField(DSL.name("rol_dependencia_id"), SQLDataType.TINYINTUNSIGNED.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINTUNSIGNED)), this, "Rol de dependencia SODSI");
+
+    /**
+     * The column <code>ods_login.usuarios.telefono_contacto</code>. Teléfono
+     * contacto SODSI export
+     */
+    public final TableField<UsuariosRecord, String> TELEFONO_CONTACTO = createField(DSL.name("telefono_contacto"), SQLDataType.VARCHAR(30).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "Teléfono contacto SODSI export");
 
     /**
      * The column <code>ods_login.usuarios.is_active</code>.
@@ -173,7 +198,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.USUARIOS_IDX_ACTIVO_ROL, Indexes.USUARIOS_IDX_EMAIL, Indexes.USUARIOS_IDX_ROL, Indexes.USUARIOS_IDX_SEDE, Indexes.USUARIOS_IDX_USERNAME);
+        return Arrays.asList(Indexes.USUARIOS_IDX_ACTIVO_ROL, Indexes.USUARIOS_IDX_EMAIL, Indexes.USUARIOS_IDX_ROL, Indexes.USUARIOS_IDX_SEDE, Indexes.USUARIOS_IDX_USERNAME, Indexes.USUARIOS_IDX_USUARIO_SODSI_AREA, Indexes.USUARIOS_IDX_USUARIO_SODSI_DEP);
     }
 
     @Override
@@ -193,7 +218,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
 
     @Override
     public List<ForeignKey<UsuariosRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USUARIOS_IBFK_1, Keys.USUARIOS_IBFK_2);
+        return Arrays.asList(Keys.USUARIOS_IBFK_1, Keys.USUARIOS_IBFK_2, Keys.FK_USUARIOS_SODSI_AREA, Keys.FK_USUARIOS_SODSI_DEPENDENCIA, Keys.FK_USUARIOS_SODSI_ROL_DEPENDENCIA);
     }
 
     @Override

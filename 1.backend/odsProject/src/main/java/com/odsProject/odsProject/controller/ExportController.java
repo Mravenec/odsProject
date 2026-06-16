@@ -57,7 +57,7 @@ public class ExportController implements IExportController {
 
         try {
             byte[] data = exportService.exportProyectosEvaluadosPorSedeYAnio(sedeId, anio);
-            String filename = "proyectos-sede-" + sedeId + "-" + anio + ".xlsx";
+            String filename = "ods_sodsi_" + sedeId + "_" + anio + ".xlsx";
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION,
                             "attachment; filename=\"" + filename + "\"")

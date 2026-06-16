@@ -70,6 +70,10 @@ public interface IMasterProjectController {
     @GetMapping("/{id}/ods")
     ResponseEntity<List<Map<String, Object>>> getOdsByProyecto(@PathVariable Integer id);
 
+    /** GET /api/projects/{id}/sodsi — ficha SODSI (POJOs JOOQ). */
+    @GetMapping("/{id}/sodsi")
+    ResponseEntity<Map<String, Object>> getSodsiFicha(@PathVariable Integer id);
+
     // ── Sprint 8.3: Listados enriquecidos con ODS ────────────────────────
 
     /**

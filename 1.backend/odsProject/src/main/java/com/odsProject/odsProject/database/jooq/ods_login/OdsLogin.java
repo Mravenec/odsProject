@@ -13,6 +13,16 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiAliadoTipo;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiArea;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiBeneficiarioCategoria;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiBeneficiarioValor;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiDependencia;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiEjesPlanes;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiProvincias;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiRegionesMideplan;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiRolDependencia;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiUnidadesProgramaticas;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminAuditoriaLoginReciente;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuariosActivos;
@@ -79,6 +89,56 @@ public class OdsLogin extends SchemaImpl {
     public final Sesiones SESIONES = Sesiones.SESIONES;
 
     /**
+     * The table <code>ods_login.sodsi_aliado_tipo</code>.
+     */
+    public final SodsiAliadoTipo SODSI_ALIADO_TIPO = SodsiAliadoTipo.SODSI_ALIADO_TIPO;
+
+    /**
+     * The table <code>ods_login.sodsi_area</code>.
+     */
+    public final SodsiArea SODSI_AREA = SodsiArea.SODSI_AREA;
+
+    /**
+     * The table <code>ods_login.sodsi_beneficiario_categoria</code>.
+     */
+    public final SodsiBeneficiarioCategoria SODSI_BENEFICIARIO_CATEGORIA = SodsiBeneficiarioCategoria.SODSI_BENEFICIARIO_CATEGORIA;
+
+    /**
+     * The table <code>ods_login.sodsi_beneficiario_valor</code>.
+     */
+    public final SodsiBeneficiarioValor SODSI_BENEFICIARIO_VALOR = SodsiBeneficiarioValor.SODSI_BENEFICIARIO_VALOR;
+
+    /**
+     * The table <code>ods_login.sodsi_dependencia</code>.
+     */
+    public final SodsiDependencia SODSI_DEPENDENCIA = SodsiDependencia.SODSI_DEPENDENCIA;
+
+    /**
+     * The table <code>ods_login.sodsi_ejes_planes</code>.
+     */
+    public final SodsiEjesPlanes SODSI_EJES_PLANES = SodsiEjesPlanes.SODSI_EJES_PLANES;
+
+    /**
+     * The table <code>ods_login.sodsi_provincias</code>.
+     */
+    public final SodsiProvincias SODSI_PROVINCIAS = SodsiProvincias.SODSI_PROVINCIAS;
+
+    /**
+     * The table <code>ods_login.sodsi_regiones_mideplan</code>.
+     */
+    public final SodsiRegionesMideplan SODSI_REGIONES_MIDEPLAN = SodsiRegionesMideplan.SODSI_REGIONES_MIDEPLAN;
+
+    /**
+     * The table <code>ods_login.sodsi_rol_dependencia</code>.
+     */
+    public final SodsiRolDependencia SODSI_ROL_DEPENDENCIA = SodsiRolDependencia.SODSI_ROL_DEPENDENCIA;
+
+    /**
+     * The table <code>ods_login.sodsi_unidades_programaticas</code>.
+     */
+    public final SodsiUnidadesProgramaticas SODSI_UNIDADES_PROGRAMATICAS = SodsiUnidadesProgramaticas.SODSI_UNIDADES_PROGRAMATICAS;
+
+    /**
      * Usuarios centrales; referenciados por todas las bases ods_XX
      */
     public final Usuarios USUARIOS = Usuarios.USUARIOS;
@@ -117,6 +177,16 @@ public class OdsLogin extends SchemaImpl {
             Roles.ROLES,
             Sedes.SEDES,
             Sesiones.SESIONES,
+            SodsiAliadoTipo.SODSI_ALIADO_TIPO,
+            SodsiArea.SODSI_AREA,
+            SodsiBeneficiarioCategoria.SODSI_BENEFICIARIO_CATEGORIA,
+            SodsiBeneficiarioValor.SODSI_BENEFICIARIO_VALOR,
+            SodsiDependencia.SODSI_DEPENDENCIA,
+            SodsiEjesPlanes.SODSI_EJES_PLANES,
+            SodsiProvincias.SODSI_PROVINCIAS,
+            SodsiRegionesMideplan.SODSI_REGIONES_MIDEPLAN,
+            SodsiRolDependencia.SODSI_ROL_DEPENDENCIA,
+            SodsiUnidadesProgramaticas.SODSI_UNIDADES_PROGRAMATICAS,
             Usuarios.USUARIOS,
             VistaAdminAuditoriaLoginReciente.VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE,
             VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS

@@ -10,6 +10,7 @@ import ProjectListPage from './pages/ProjectListPage/ProjectListPage.jsx';
 import AdminProjectOverviewPage from './pages/Admin/Overview/OverviewPage.jsx';
 import AdminResultsReviewPage from './pages/Admin/Results/ResultsPage.jsx';
 import UsersAdminPage from './pages/Admin/Users/UsersAdminPage.jsx';
+import SodsiBeneficiariosAdminPage from './pages/Admin/SodsiBeneficiarios/SodsiBeneficiariosAdminPage.jsx';
 import EvaluationPage from './pages/EvaluationPage/EvaluationPage';
 import EvaluationQueuePage from './pages/EvaluationQueuePage/EvaluationQueuePage.jsx';
 import ForbiddenPage from './pages/ForbiddenPage/ForbiddenPage.jsx';
@@ -106,6 +107,11 @@ function AppContent() {
         <Route path="/admin/users" element={
           <ProtectedRoute require="canManageUsers" redirectTo="/forbidden">
             <UsersAdminPage />
+          </ProtectedRoute>
+        }/>
+        <Route path="/admin/sodsi-beneficiarios" element={
+          <ProtectedRoute require="canManageUsers" redirectTo="/forbidden">
+            <SodsiBeneficiariosAdminPage />
           </ProtectedRoute>
         }/>
 

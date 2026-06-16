@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<!--
+  Resumen consolidado SODSI — todos los sprints cerrados
+  Diseño: _plantilla_ods.html (no modificar CSS)
+  Sprints: matriz · alineación · beneficiarios dropdown · export objetivo/meta
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumen — SODSI consolidado · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  :root{--bg:#07090F;--surf:#0D1117;--surf2:#131A24;--border:rgba(255,255,255,.07);--text:#E2E8F0;--muted:#64748B;--db:#EAB308;--be:#22C55E;--fe:#0EA5E9;--green:#22C55E;--orange:#F97316}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6}
+  .hero{padding:64px 48px 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;right:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(34,197,94,.1) 0%,transparent 70%);pointer-events:none}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--green);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .ey::after{content:'';width:32px;height:1px;background:var(--green);display:block}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,44px);font-weight:800;line-height:1.05;color:#fff}
+  h1 em{font-style:normal;background:linear-gradient(135deg,#22C55E,#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{margin-top:14px;font-size:14px;color:var(--muted);max-width:860px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);padding:4px 12px;border-radius:4px}
+  .chip span{color:#fff}.chip.ok{border-color:rgba(34,197,94,.35);color:var(--green)}
+  .al{margin:32px 48px 0;padding:14px 18px;border-radius:8px;font-size:13px;display:flex;gap:12px}
+  .al.ok{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.25);border-left:3px solid var(--green);color:#86EFAC}
+  .sec{padding:48px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:18px}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace}
+  .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surf2)}
+  .tbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top}
+  .ok{color:var(--green)}.done{color:var(--green)}
+  .issue{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);padding:2px 8px;border-radius:4px}
+  .badge.del{color:#FCA5A5;background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25)}
+  .tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:1px 6px;border-radius:3px;white-space:nowrap}
+  .tag.m{color:#FDE68A;background:rgba(234,179,8,.12)}.tag.a{color:#86EFAC;background:rgba(34,197,94,.12)}.tag.d{color:#FCA5A5;background:rgba(239,68,68,.12)}
+  .tag.s1{color:#7DD3FC}.tag.s2{color:#C4B5FD}.tag.s3{color:#FDBA74}.tag.s4{color:#86EFAC}
+  .muted{color:var(--muted);font-size:12px}
+  .issue-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .issue-title{font-size:14px;font-weight:500;color:#fff;margin-top:4px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .box{border-radius:8px;padding:14px;font-size:12.5px;line-height:1.55}
+  .box.bad{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);color:#FCA5A5}
+  .box.good{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);color:#BBF7D0}
+  .box h4{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .box.bad h4{color:#FCA5A5}.box.good h4{color:var(--green)}
+  code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.06);color:#CBD5E1;padding:1px 5px;border-radius:3px}
+  .cb2{background:#060912;border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:13px 16px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.75;overflow-x:auto;white-space:pre}
+  .da{color:#86EFAC}.dk{color:#7DD3FC}.dc{color:#64748B}
+  .plf{display:flex;align-items:stretch;flex-wrap:wrap;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin:12px 0 20px}
+  .pln{background:var(--surf2);padding:12px 16px;display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--border)}
+  .pla{display:flex;align-items:center;padding:0 8px;background:var(--surf2);color:var(--muted);font-size:14px;border-right:1px solid var(--border)}
+  .plname{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff}
+  .plnote{font-size:10px;color:var(--muted)}
+  ul.files{margin:0;padding-left:18px;font-size:13px;color:#94A3B8}
+  ul.files li{margin-bottom:6px}
+  hr.sep{border:none;border-top:1px solid var(--border);margin:48px 48px 0}
+  footer{margin-top:64px;border-top:1px solid var(--border);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .utn{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#98BADF}
+  @media(max-width:720px){.compare{grid-template-columns:1fr}.hero,.sec,.al{padding-left:24px;padding-right:24px;margin-left:0;margin-right:0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="ey">ODS UTN · SODSI consolidado · Completado · linear_ods</div>
+  <h1>Plataforma SODSI UTN<br><em>Matriz Excel · formularios · export</em></h1>
+  <p class="sub">Resumen único de los cuatro sprints SODSI cerrados: export matriz 21 columnas para consultor, alineación formularios + perfil gestor + beneficiarios CRUD, UX dropdown en paso 1, y corrección columnas Objetivo/Meta multi-ODS en Excel.</p>
+  <div class="chips">
+    <div class="chip ok">Estado <span>4/4 COMPLETADOS</span></div>
+    <div class="chip ok">Issues <span>ODS-174…200 Done</span></div>
+    <div class="chip">Git <span>pendiente commit</span></div>
+  </div>
+</header>
+
+<div class="al ok"><div>✅</div><div><strong>Todos los sprints SODSI cerrados (ODS-174…200).</strong> Este HTML documenta <em>cada archivo</em> del working tree pendiente de commit. <strong>No hay commit aún</strong> — usar esta sección como checklist antes de <code>git add</code>.</div></div>
+
+<section class="sec">
+  <div class="sl">Inventario git</div>
+  <div class="st">Cada cambio pendiente de commit · 2026-06-15</div>
+  <p class="muted" style="margin-bottom:16px">Estado: <code>main</code> up to date con <code>origin/main</code>. Resumen: <strong>4 SQL</strong> modificados + <strong>2 SQL</strong> nuevos · <strong>~24</strong> fuentes BE modificados · <strong>~45</strong> archivos BE nuevos (incl. JOOQ) · <strong>14</strong> FE modificados · <strong>12</strong> FE nuevos · <strong>2</strong> Linear borrados · <strong>2</strong> Linear nuevos. Excluir del commit: <code>target/</code>, <code>dist/</code> (artefactos build).</p>
+  <table class="tbl">
+    <thead><tr><th>Leyenda sprint</th><th>Ámbito</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag s1">S1 matriz</span></td><td>ODS-174…183 — catálogos, matriz 21 cols, admin usuarios, wizard base</td></tr>
+      <tr><td><span class="tag s2">S2 alineación</span></td><td>ODS-184…194 — beneficiarios CRUD, perfil gestor, ficha SODSI, mocks</td></tr>
+      <tr><td><span class="tag s3">S3 dropdown</span></td><td>ODS-195…196 — BeneficiariosField paso 1, wizard 2 pasos</td></tr>
+      <tr><td><span class="tag s4">S4 objetivo/meta</span></td><td>ODS-197…200 — formatObjetivosExport / formatMetasExport + tests</td></tr>
+      <tr><td><span class="tag">S1–S4</span></td><td>Tocado en más de un sprint o transversal (JOOQ, run_all)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">0.database</div>
+  <div class="st">SQL · mocks · pipeline</div>
+  <table class="tbl">
+    <thead><tr><th>Archivo</th><th>Tipo</th><th>Sprint</th><th>Cambio</th></tr></thead>
+    <tbody>
+      <tr><td><code>0.database/00_run_all.sql</code></td><td><span class="tag m">M</span></td><td><span class="tag">S1–S4</span></td><td>Incluye scripts 23 y 24 en orden de ejecución</td></tr>
+      <tr><td><code>propuesta_actual/1. login_system.sql</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span></td><td>FK usuarios → catálogos SODSI (área, dependencia, rol, teléfono)</td></tr>
+      <tr><td><code>propuesta_actual/2. ods_master_database.sql</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>proyectos SODSI; proyecto_beneficiarios; vista resumen matriz</td></tr>
+      <tr><td><code>propuesta_actual/21. ods_mocks.sql</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>Proyecto QA #6 consultor; beneficiarios; mock 901 inactivo; sede 2 / 2024</td></tr>
+      <tr><td><code>propuesta_actual/23. sodsi_catalogos.sql</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>Catálogos glosario: ejes, Mideplan, beneficiarios, aliados, provincias</td></tr>
+      <tr><td><code>propuesta_actual/24. sodsi_usuario_catalogos.sql</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>Área, dependencia, rol dependencia — seeds UTN</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">1.backend — fuente</div>
+  <div class="st">Controllers · Services · Repositories</div>
+  <table class="tbl">
+    <thead><tr><th>Archivo</th><th>Tipo</th><th>Sprint</th><th>Cambio</th></tr></thead>
+    <tbody>
+      <tr><td><code>controller/ExportController.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span></td><td>GET export consolidado sede+año (matriz)</td></tr>
+      <tr><td><code>controller/LoginController.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>Perfil usuario SODSI en admin</td></tr>
+      <tr><td><code>controller/MasterProjectController.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>fichaSodsi en create/full/GET</td></tr>
+      <tr><td><code>controller/interfaces/IMasterProjectController.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>Contrato ficha SODSI</td></tr>
+      <tr><td><code>controller/SodsiCatalogController.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>GET /api/sodsi/catalogos/*</td></tr>
+      <tr><td><code>controller/SodsiBeneficiarioController.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s2">S2</span></td><td>CRUD valores beneficiario (gestor crea / admin desactiva)</td></tr>
+      <tr><td><code>controller/interfaces/ISodsiCatalogController.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>Interfaz catálogos</td></tr>
+      <tr><td><code>controller/interfaces/ISodsiBeneficiarioController.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s2">S2</span></td><td>Interfaz beneficiarios</td></tr>
+      <tr><td><code>repository/LoginRepository.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span></td><td>Usuario + catálogos SODSI; vista indicadores</td></tr>
+      <tr><td><code>repository/MasterProjectRepository.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>Beneficiarios, ficha SODSI, resumen export</td></tr>
+      <tr><td><code>repository/interfaces/IMasterProjectRepository.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>findBeneficiarios, save ficha</td></tr>
+      <tr><td><code>repository/SodsiCatalogRepository.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>Lectura catálogos + beneficiarios por id</td></tr>
+      <tr><td><code>repository/interfaces/ISodsiCatalogRepository.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>Interfaz repo catálogos</td></tr>
+      <tr><td><code>service/ExportService.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s4">S4</span></td><td>Matriz 21 cols; formatObjetivosExport; formatMetasExport</td></tr>
+      <tr><td><code>service/LoginService.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>Admin usuarios con campos SODSI</td></tr>
+      <tr><td><code>service/MasterProjectService.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>Persistir fichaSodsi; validación beneficiarios</td></tr>
+      <tr><td><code>service/PlanificacionEdicionService.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>saveFichaSodsi; beneficiarioValorIds</td></tr>
+      <tr><td><code>service/SodsiCatalogService.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>Servicio catálogos</td></tr>
+      <tr><td><code>service/SodsiBeneficiarioService.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s2">S2</span></td><td>Alta gestor / soft-delete admin / export histórico</td></tr>
+      <tr><td><code>service/interfaces/ILoginService.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>Contrato perfil SODSI</td></tr>
+      <tr><td><code>service/interfaces/IMasterProjectService.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>fichaSodsi en DTOs</td></tr>
+      <tr><td><code>service/interfaces/IPlanificacionEdicionService.java</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>Contrato edición ficha</td></tr>
+      <tr><td><code>service/interfaces/ISodsiCatalogService.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>Interfaz svc catálogos</td></tr>
+      <tr><td><code>service/interfaces/ISodsiBeneficiarioService.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s2">S2</span></td><td>Interfaz svc beneficiarios</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">1.backend — JOOQ generado</div>
+  <div class="st">Regenerado tras GATE_BD (no editar a mano)</div>
+  <table class="tbl">
+    <thead><tr><th>Grupo</th><th>Tipo</th><th>Sprint</th><th>Archivos</th></tr></thead>
+    <tbody>
+      <tr><td><code>ods_login</code> — Usuarios</td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span></td><td>Usuarios.java, pojos/Usuarios.java, records/UsuariosRecord.java, Indexes, Keys, OdsLogin, Tables</td></tr>
+      <tr><td><code>ods_login</code> — catálogos SODSI</td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>SodsiArea, SodsiDependencia, SodsiRolDependencia, SodsiEjesPlanes, SodsiRegionesMideplan, SodsiProvincias, SodsiBeneficiarioCategoria, SodsiBeneficiarioValor, SodsiAliadoTipo, SodsiUnidadesProgramaticas (+ pojos, records, enums)</td></tr>
+      <tr><td><code>ods_master</code> — proyectos / vista</td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span></td><td>Proyectos, VistaResumenProyectosOds (+ pojos, records), Indexes, Keys, OdsMaster, Tables</td></tr>
+      <tr><td><code>ods_master</code> — proyecto_beneficiarios</td><td><span class="tag a">A</span></td><td><span class="tag s2">S2</span></td><td>ProyectoBeneficiarios.java, pojos, records</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="margin-top:10px">Enums nuevos: SodsiAliadoTipoAmbito, SodsiAliadoTipoTipo, SodsiUnidadesProgramaticasTipo.</p>
+</section>
+
+<section class="sec">
+  <div class="sl">1.backend — tests y .http</div>
+  <div class="st">GATE_HTTP · smoke</div>
+  <table class="tbl">
+    <thead><tr><th>Archivo</th><th>Tipo</th><th>Sprint</th><th>Cambio</th></tr></thead>
+    <tbody>
+      <tr><td><code>http/export_sodsi_matriz.http</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span> <span class="tag s4">S4</span></td><td>GET consolidado sede 2 / 2024; comentarios Objetivo/Meta</td></tr>
+      <tr><td><code>http/export_sodsi.http</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>Export individual proyecto SODSI</td></tr>
+      <tr><td><code>http/beneficiarios_sodsi.http</code></td><td><span class="tag a">A</span></td><td><span class="tag s2">S2</span></td><td>CRUD beneficiarios + roles gestor/admin</td></tr>
+      <tr><td><code>service/SodsiMatrizExportSmokeTest.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span> <span class="tag s4">S4</span></td><td>21 columnas; assert Objetivo/Meta fila QA #6</td></tr>
+      <tr><td><code>service/ExportServiceMatrizFormatTest.java</code></td><td><span class="tag a">A</span></td><td><span class="tag s4">S4</span></td><td>Unit tests multi-ODS y multi-indicador</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="margin-top:10px"><span class="tag m">M</span> <code>target/maven-status/.../createdFiles.lst</code> y <code>inputFiles.lst</code> — artefacto local; <strong>no commitear</strong>.</p>
+</section>
+
+<section class="sec">
+  <div class="sl">2.frontend</div>
+  <div class="st">Componentes · páginas · servicios</div>
+  <table class="tbl">
+    <thead><tr><th>Archivo</th><th>Tipo</th><th>Sprint</th><th>Cambio</th></tr></thead>
+    <tbody>
+      <tr><td><code>src/App.jsx</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>Ruta admin SodsiBeneficiarios</td></tr>
+      <tr><td><code>components/projects/BulkProjectExportPanel.jsx</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span></td><td>Copy export matriz SODSI; filename ods_sodsi_*</td></tr>
+      <tr><td><code>components/projects/ProjectPlanificacionWizard.jsx</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s3">S3</span></td><td>Props beneficiarios; BeneficiariosField paso 1</td></tr>
+      <tr><td><code>components/projects/SodsiFichaStep.jsx</code> + <code>.css</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span> <span class="tag s3">S3</span></td><td>Paso eje/aliado; showBeneficiarios=false</td></tr>
+      <tr><td><code>components/projects/BeneficiariosField.jsx</code> + <code>.css</code></td><td><span class="tag a">A</span></td><td><span class="tag s3">S3</span></td><td>Dropdown multiselección + agregar valor</td></tr>
+      <tr><td><code>hooks/usePlanificacionEditor.js</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>Estado fichaSodsi + beneficiarioValorIds</td></tr>
+      <tr><td><code>hooks/useSodsiCatalogs.js</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>Carga catálogos API</td></tr>
+      <tr><td><code>pages/Admin/Users/UsersAdminPage.jsx</code> + <code>.css</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>Área, dependencia, rol, teléfono SODSI</td></tr>
+      <tr><td><code>pages/Admin/SodsiBeneficiarios/SodsiBeneficiariosAdminPage.jsx</code> + <code>.css</code></td><td><span class="tag a">A</span></td><td><span class="tag s2">S2</span></td><td>Admin desactivar valores catálogo</td></tr>
+      <tr><td><code>pages/PlanificacionEditorPage/PlanificacionEditorPage.jsx</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span> <span class="tag s3">S3</span></td><td>Beneficiarios paso 1; SodsiFichaStep paso 3</td></tr>
+      <tr><td><code>pages/ProjectCreationPage/ProjectCreationPage.jsx</code> + <code>.css</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span> <span class="tag s3">S3</span></td><td>2 pasos creación; payload fichaSodsi</td></tr>
+      <tr><td><code>services/authService.js</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>Perfil usuario extendido</td></tr>
+      <tr><td><code>services/exportService.js</code></td><td><span class="tag m">M</span></td><td><span class="tag s1">S1</span></td><td>Download matriz consolidada</td></tr>
+      <tr><td><code>services/projectService.js</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>fichaSodsi en create/full</td></tr>
+      <tr><td><code>services/sodsiCatalogService.js</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span> <span class="tag s2">S2</span></td><td>Cliente API catálogos y beneficiarios</td></tr>
+      <tr><td><code>utils/planificacionEditorUtils.js</code></td><td><span class="tag m">M</span></td><td><span class="tag s2">S2</span></td><td>Merge ficha SODSI en editor</td></tr>
+      <tr><td><code>utils/sodsiFichaUtils.js</code></td><td><span class="tag a">A</span></td><td><span class="tag s2">S2</span></td><td>Helpers payload ficha</td></tr>
+      <tr><td><code>utils/sodsiRegionUtils.js</code></td><td><span class="tag a">A</span></td><td><span class="tag s1">S1</span></td><td>Provincia → región Mideplan (read-only)</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="margin-top:10px"><span class="tag m">M</span> <code>dist/index.html</code> — build; regenerar con <code>npm run build</code>.</p>
+</section>
+
+<section class="sec">
+  <div class="sl">_linear</div>
+  <div class="st">Artefactos sprint · Fase 0/6</div>
+  <table class="tbl">
+    <thead><tr><th>Archivo</th><th>Tipo</th><th>Nota</th></tr></thead>
+    <tbody>
+      <tr><td><code>plans/resumen_sprint_sodsi.html</code></td><td><span class="tag a">A</span></td><td class="ok">Este documento — resumen consolidado único</td></tr>
+      <tr><td><code>scripts/sprint_export_objetivo_meta.mjs</code></td><td><span class="tag a">A</span></td><td>Sprint ODS-197…200 cerrado (opcional borrar en Fase 0)</td></tr>
+      <tr><td><code>plans/plan_sprint_export_sodsi.html</code></td><td><span class="tag d">D</span></td><td>Reemplazado por resumen consolidado</td></tr>
+      <tr><td><code>scripts/sprint_export_sodsi.mjs</code></td><td><span class="tag d">D</span></td><td>Sprint matriz cerrado + cleanup Linear</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Checklist pre-commit</div>
+  <div class="st">Antes del primer commit SODSI</div>
+  <div class="cb2"><span class="da">[ ]</span> python 0.database/drop_db.py && setup_db.py && load_mocks.py
+<span class="da">[ ]</span> mvn compile -DskipTests
+<span class="da">[ ]</span> mvn test -Dtest=SodsiMatrizExportSmokeTest,ExportServiceMatrizFormatTest
+<span class="da">[ ]</span> export_sodsi_matriz.http + beneficiarios_sodsi.http → 2xx
+<span class="da">[ ]</span> npm run build
+<span class="da">[ ]</span> git add — sin target/ ni dist/
+<span class="da">[ ]</span> Mensaje sugerido: feat(sodsi): matriz 21 cols, ficha gestor, beneficiarios, export Objetivo/Meta</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Cronología</div>
+  <div class="st">Cuatro sprints en cadena lógica</div>
+  <div class="plf">
+    <div class="pln"><span class="plname">1 · Matriz</span><span class="plnote">ODS-174…183</span></div>
+    <div class="pla">→</div>
+    <div class="pln"><span class="plname">2 · Alineación</span><span class="plnote">ODS-184…194</span></div>
+    <div class="pla">→</div>
+    <div class="pln"><span class="plname">3 · Dropdown</span><span class="plnote">ODS-195…196</span></div>
+    <div class="pla">→</div>
+    <div class="pln"><span class="plname">4 · Objetivo/Meta</span><span class="plnote">ODS-197…200</span></div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Sprint</th><th>Epic</th><th>Issues</th><th>Capas</th></tr></thead>
+    <tbody>
+      <tr><td>sodsi_matriz</td><td>Export SODSI — Matriz consultor</td><td class="ok">ODS-174…183</td><td>DB + BE + FE</td></tr>
+      <tr><td>sodsi_alineacion</td><td>SODSI — Alineación formularios + perfil usuario</td><td class="ok">ODS-184…194</td><td>DB + BE + FE</td></tr>
+      <tr><td>beneficiarios_dropdown</td><td>Beneficiarios dropdown paso 1</td><td class="ok">ODS-195…196</td><td>FE only</td></tr>
+      <tr><td>export_objetivo_meta</td><td>Export SODSI — Objetivo y Meta multi-ODS</td><td class="ok">ODS-197…200</td><td>BE only</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Mapa de datos</div>
+  <div class="st">Formulario UI ↔ Base de datos ↔ Columna Excel</div>
+  <table class="tbl">
+    <thead><tr><th>Campo UI</th><th>BD / API</th><th>Columna matriz (21 cols)</th></tr></thead>
+    <tbody>
+      <tr><td>Nombre, fechas, geo, descripción</td><td><code>ods_master.proyectos</code></td><td>Acción, Provincia, Cantón, Distrito, Año</td></tr>
+      <tr><td>ODS + indicadores</td><td><code>proyecto_ods</code>, tablas ODS, <code>proyecto_indicadores</code></td><td><strong>Objetivo</strong>, <strong>Meta</strong></td></tr>
+      <tr><td>Eje PNDIP, aliado externo</td><td><code>proyectos.eje_planes_id</code>, <code>aliado_externo</code></td><td>Eje de planes, Aliado externo</td></tr>
+      <tr><td>Beneficiarios (dropdown paso 1)</td><td><code>proyecto_beneficiarios</code> → <code>sodsi_beneficiario_valor</code></td><td>Sector beneficiario</td></tr>
+      <tr><td>Beneficiario nuevo (gestor escribe)</td><td>POST <code>/api/sodsi/beneficiarios/valores</code></td><td>Sector beneficiario (códigos catálogo)</td></tr>
+      <tr><td>Perfil gestor (área, dependencia, rol, tel)</td><td><code>ods_login.usuarios</code> + catálogos SODSI</td><td>Usuario, Contacto, Dependencia, Rol, Sede, Región Mideplan</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Sprint 1 — Matriz consultor</div>
+  <div class="st">Excel 1 hoja · 21 columnas · perfil en admin</div>
+  <table class="tbl">
+    <thead><tr><th>Capa</th><th>Entregable</th></tr></thead>
+    <tbody>
+      <tr><td>BD</td><td class="ok">Catálogos PNDIP, área/dependencia/rol, provincias→Mideplan; usuarios FK SODSI; proyectos simplificados; vista matriz</td></tr>
+      <tr><td>BE</td><td class="ok">ExportService matriz 1 hoja; POJOs JOOQ; <code>export_sodsi_matriz.http</code>; SodsiMatrizExportSmokeTest</td></tr>
+      <tr><td>FE</td><td class="ok">Wizard SODSI simplificado; admin usuarios con área, dependencia, rol y teléfono</td></tr>
+    </tbody>
+  </table>
+  <table class="tbl" style="margin-top:14px">
+    <thead><tr><th>Issue</th><th>Rol</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-174…176</td><td>database</td><td class="done">GATE_BD + JOOQ</td></tr>
+      <tr><td>ODS-177…180</td><td>backend</td><td class="done">Perfil SODSI + export matriz + GATE_HTTP</td></tr>
+      <tr><td>ODS-181…182</td><td>frontend</td><td class="done">Wizard + admin usuarios SODSI</td></tr>
+      <tr><td>ODS-183</td><td>orchestrator</td><td class="done">Cierre sprint matriz</td></tr>
+    </tbody>
+  </table>
+  <div class="compare">
+    <div class="box bad"><h4>Antes</h4>Export 5 hojas ≠ matriz SODSI<br>Perfil gestor en ficha proyecto</div>
+    <div class="box good"><h4>Después</h4>1 hoja <code>Acciones</code>, 21 columnas<br>Perfil gestor en admin usuarios + auto export</div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sl">Sprint 2 — Alineación formularios</div>
+  <div class="st">Perfil gestor · beneficiarios CRUD · ficha SODSI</div>
+  <table class="tbl">
+    <thead><tr><th>Capa</th><th>Entregable</th></tr></thead>
+    <tbody>
+      <tr><td>BD</td><td class="ok"><code>sodsi_beneficiario_valor</code> activo, es_personalizado, creado_por; mock 901 inactivo; provincias en catálogo</td></tr>
+      <tr><td>BE</td><td class="ok">API beneficiarios CRUD soft; export histórico inactivos; validación ≥1 beneficiario; <code>beneficiarios_sodsi.http</code></td></tr>
+      <tr><td>FE</td><td class="ok">SodsiFichaStep crear+POST; wizard perfil RO; creación paso 3 SODSI; admin usuarios; admin catálogo beneficiarios</td></tr>
+    </tbody>
+  </table>
+  <table class="tbl" style="margin-top:14px">
+    <thead><tr><th>Issue</th><th>Rol</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-184…185</td><td>database</td><td class="done">GATE_BD + JOOQ</td></tr>
+      <tr><td>ODS-186…188</td><td>backend</td><td class="done">API + export + GATE_HTTP</td></tr>
+      <tr><td>ODS-189…193</td><td>frontend</td><td class="done">Ficha, wizard, creación, admin</td></tr>
+      <tr><td>ODS-194</td><td>orchestrator</td><td class="done">Cierre sprint alineación</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Sprint 3 — Beneficiarios dropdown</div>
+  <div class="st">UX paso 1 · sin paso 3 dedicado · sin BD/BE</div>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:14px">Corrección UX: el paso 3 solo-beneficiarios era demasiado complejo. Beneficiarios vuelven al paso 1 del wizard (create + edit) con dropdown multiselección + escribir/agregar.</p>
+  <table class="tbl">
+    <thead><tr><th>Issue</th><th>Estado</th><th>Entregable</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-195</td><td class="ok">Done</td><td>BeneficiariosField.jsx integrado en wizard paso 1; creación 2 pasos; SodsiFichaStep sin beneficiarios</td></tr>
+      <tr><td>ODS-196</td><td class="ok">Done</td><td>Cierre sprint dropdown</td></tr>
+    </tbody>
+  </table>
+  <ul class="files">
+    <li><code>BeneficiariosField.jsx</code> + CSS</li>
+    <li><code>ProjectPlanificacionWizard.jsx</code>, <code>ProjectCreationPage.jsx</code></li>
+    <li><code>PlanificacionEditorPage.jsx</code>, <code>SodsiFichaStep.jsx</code></li>
+  </ul>
+</section>
+
+<section class="sec">
+  <div class="sl">Sprint 4 — Export Objetivo + Meta</div>
+  <div class="st">Columnas Excel multi-ODS · multi-indicador</div>
+  <div class="compare">
+    <div class="box bad"><h4>Antes (incorrecto)</h4>Objetivo: solo ODS primario <code>[1] Fin de la pobreza</code><br>Meta: solo primer indicador del ODS primario</div>
+    <div class="box good"><h4>Después (acordado UTN)</h4>Objetivo: <code>[1] Fin…, [6] Agua…, [11] Ciudades…</code><br>Meta: <code>[1.1.1] nombre, [1.2.1] nombre, …</code> todos los indicadores</div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Columna Excel</th><th>Fuente BD</th><th>Formato</th></tr></thead>
+    <tbody>
+      <tr><td>Objetivo</td><td><code>VistaResumenProyectosOds.odsVinculados</code> + ods_catalog</td><td><code>[n] nombre</code>, separados por ", "</td></tr>
+      <tr><td>Meta</td><td><code>vista_admin_detalle_indicadores</code></td><td><code>[codigo] metaNombre|indicadorNombre</code>, ", "</td></tr>
+      <tr><td>Sector beneficiario</td><td><code>proyecto_beneficiarios</code> + catálogo</td><td><code>[catCode]-[valorCode]</code> (sin cambio sprint 4)</td></tr>
+    </tbody>
+  </table>
+  <table class="tbl" style="margin-top:14px">
+    <thead><tr><th>Issue</th><th>Estado</th><th>Entregable</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-197</td><td class="ok">Done</td><td><code>formatObjetivosExport</code> — todos ODS vinculados</td></tr>
+      <tr><td>ODS-198</td><td class="ok">Done</td><td><code>formatMetasExport</code> — todos indicadores</td></tr>
+      <tr><td>ODS-199</td><td class="ok">Done</td><td>GATE_HTTP: ExportServiceMatrizFormatTest + smoke + .http</td></tr>
+      <tr><td>ODS-200</td><td class="ok">Done</td><td>Cierre sprint objetivo/meta</td></tr>
+    </tbody>
+  </table>
+  <ul class="files">
+    <li><code>ExportService.java</code> — formatObjetivosExport, formatMetasExport</li>
+    <li><code>ExportServiceMatrizFormatTest.java</code>, <code>SodsiMatrizExportSmokeTest.java</code></li>
+    <li><code>export_sodsi_matriz.http</code></li>
+  </ul>
+</section>
+
+<section class="sec">
+  <div class="sl">Hoja Acciones — 21 columnas</div>
+  <div class="st">Contrato Excel SODSI (orden exacto)</div>
+  <div class="cb2">Año | Institución | Usuario | Unidad encargada | Acción | Objetivo | Meta |
+Eje de planes | Fuente de información | Contacto | Sede | Dependencia |
+Rol de dependencia | Aliado externo | Sector beneficiario | Región Mideplan |
+Perspectiva de género | Provincia | Cantón | Distrito | Enlace</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Testing consolidado</div>
+  <div class="st">Comandos de verificación por capa</div>
+  <div class="cb2"><span class="dc"># BD (sprints con database)</span>
+<span class="da">python 0.database/drop_db.py</span>
+<span class="da">python 0.database/setup_db.py</span>
+<span class="da">python 0.database/load_mocks.py</span>
+
+<span class="dc"># Backend</span>
+<span class="da">cd 1.backend/odsProject && mvn compile -DskipTests</span>
+<span class="da">mvn test -Dtest=SodsiMatrizExportSmokeTest,ExportServiceMatrizFormatTest</span>
+<span class="da">export_sodsi_matriz.http → GET sede 2 año 2024 → 200</span>
+<span class="da">beneficiarios_sodsi.http → 2xx</span>
+
+<span class="dc"># Frontend</span>
+<span class="da">cd 2.frontend/odsProject && npm run build</span>
+
+<span class="dc"># QA manual</span>
+<span class="da">Gestor: crear beneficiario + proyecto con ficha SODSI (paso 1)</span>
+<span class="da">Admin: desactivar valor 901; export proyecto #6 conserva celda histórica</span>
+<span class="da">Consultor: export matriz sede 2 / 2024 — Objetivo y Meta multi-valor</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Issues completados</div>
+  <div class="st">Vista rápida por sprint</div>
+  <div class="issue"><div class="badge">Done</div><div><div class="issue-id">Sprint matriz · ODS-174…183</div><div class="issue-title">Export matriz 21 cols + admin usuarios SODSI + wizard simplificado</div></div></div>
+  <div class="issue"><div class="badge">Done</div><div><div class="issue-id">Sprint alineación · ODS-184…194</div><div class="issue-title">Perfil gestor automático · API beneficiarios · ficha SODSI completa</div></div></div>
+  <div class="issue"><div class="badge">Done</div><div><div class="issue-id">Sprint dropdown · ODS-195…196</div><div class="issue-title">BeneficiariosField en paso 1 — wizard 2 pasos en creación</div></div></div>
+  <div class="issue"><div class="badge">Done</div><div><div class="issue-id">Sprint objetivo/meta · ODS-197…200</div><div class="issue-title">Excel Objetivo multi-ODS + Meta multi-indicador</div></div></div>
+</section>
+
+<hr class="sep">
+
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>resumen_sprint_sodsi.html · inventario git · 2026-06-15</div>
+</footer>
+
+</body>
+</html>

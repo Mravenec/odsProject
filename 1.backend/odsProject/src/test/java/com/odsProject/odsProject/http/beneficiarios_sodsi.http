@@ -1,0 +1,69 @@
+### API beneficiarios SODSI — gestor crea / admin desactiva
+### QA: gestor ana.garcia@ods.cr · admin admin@ods.local
+
+@baseUrl = http://localhost:8080
+@emailGestor = ana.garcia@ods.cr
+@passwordGestor = password123
+@emailAdmin = admin@ods.local
+@passwordAdmin = Admin1234!
+
+### @name login_gestor
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailGestor}}",
+  "password": "{{passwordGestor}}"
+}
+
+@gestorToken = {{login_gestor.response.body.token}}
+
+### @name login_admin
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailAdmin}}",
+  "password": "{{passwordAdmin}}"
+}
+
+@adminToken = {{login_admin.response.body.token}}
+
+# ── Gestor: listar activos ──
+
+### GET valores activos → 200
+GET {{baseUrl}}/api/sodsi/beneficiarios/valores?activo=true
+Authorization: Bearer {{gestorToken}}
+
+# ── Gestor: crear personalizado ──
+
+### POST crear valor personalizado → 201
+POST {{baseUrl}}/api/sodsi/beneficiarios/valores
+Authorization: Bearer {{gestorToken}}
+Content-Type: application/json
+
+{
+  "categoriaId": 5,
+  "nombre": "Emprendedores locales QA sprint"
+}
+
+# ── Admin: listar todos (incluye codigo 901 inactivo mock) ──
+
+### GET valores all (admin) → 200
+GET {{baseUrl}}/api/sodsi/beneficiarios/valores?activo=all
+Authorization: Bearer {{adminToken}}
+
+# Reemplazar {{valorId}} con el id del valor codigo 901 del listado anterior
+
+### PATCH desactivar/reactivar valor → 200
+PATCH {{baseUrl}}/api/sodsi/beneficiarios/valores/{{valorId}}/activo
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "activo": true
+}
+
+### GET catálogos — beneficiarioValores solo activos
+GET {{baseUrl}}/api/sodsi/catalogos
+Authorization: Bearer {{gestorToken}}

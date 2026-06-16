@@ -1,6 +1,9 @@
 package com.odsProject.odsProject.repository.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoBeneficiarios;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -197,4 +200,12 @@ public interface IMasterProjectRepository {
      *                           en los últimos 30 días (NULL si aún no hay datos)
      */
     java.util.Map<String, Object> auditQueueMetrics();
+
+    // ── Sprint SODSI — relaciones N:M y batch ───────────────────────────
+
+    List<Proyectos> findByIds(Collection<Integer> ids);
+
+    List<ProyectoBeneficiarios> findBeneficiariosByProyecto(Integer proyectoId);
+
+    void replaceBeneficiarios(Integer proyectoId, List<ProyectoBeneficiarios> beneficiarios);
 }

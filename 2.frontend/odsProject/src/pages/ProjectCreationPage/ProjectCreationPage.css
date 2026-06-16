@@ -131,6 +131,50 @@
   grid-column: span 2;
 }
 
+/* Fechas apiladas junto al área responsable */
+.form-dates-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+.form-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.form-date-field label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.form-date-field input,
+.form-date-field select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.form-geo-block {
+  margin-top: 0.25rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.form-geo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
 .form-group label {
   font-size: 0.78rem;
   font-weight: 700;
@@ -140,11 +184,43 @@
 }
 
 .form-group .form-hint {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  line-height: 1.35;
-  text-transform: none;
-  letter-spacing: normal;
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary, #64748b);
+}
+
+.input-readonly {
+  background: #f1f5f9 !important;
+  color: #334155;
+  cursor: default;
+}
+
+.sodsi-gestor-profile {
+  padding: 0.85rem 1rem;
+  background: #f8fafc;
+  border: 1px solid rgba(1, 33, 105, 0.12);
+  border-radius: 8px;
+}
+
+.gestor-profile-dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.65rem 1.25rem;
+  margin: 0;
+}
+
+.gestor-profile-dl dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary, #64748b);
+  margin: 0 0 0.15rem;
+}
+
+.gestor-profile-dl dd {
+  margin: 0;
+  font-size: 0.92rem;
   font-weight: 500;
 }
 
@@ -539,6 +615,7 @@
 @media (max-width: 768px) {
   .form-grid { grid-template-columns: 1fr; gap: 1.25rem; }
   .form-group.full-width { grid-column: span 1; }
+  .form-geo-grid { grid-template-columns: 1fr; }
   .ods-selection-grid {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 0.875rem;

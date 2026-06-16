@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../../services/authService';
+import { sodsiCatalogService } from '../../../services/sodsiCatalogService';
 import { useAuth } from '../../../hooks/useAuth.jsx';
 import { ArrowLeft, Plus, Pencil, UserX, Eye, EyeOff, Check, Circle } from 'lucide-react';
 import './UsersAdminPage.css';
@@ -19,6 +20,16 @@ const EMPTY_FORM = {
   passwordConfirm: '',
   rolId: '',
   sedeId: '',
+  areaId: '',
+  dependenciaId: '',
+  rolDependenciaId: '',
+  telefonoContacto: '',
+};
+
+const EMPTY_SODSI_CATALOGS = {
+  areas: [],
+  dependencias: [],
+  rolesDependencia: [],
 };
 
 const PASSWORD_REQUIREMENTS = [
@@ -37,12 +48,31 @@ const getPasswordRequirements = (password) =>
 const validatePasswordFormat = (password) =>
   getPasswordRequirements(password).every((r) => r.met);
 
+const catalogLabel = (items, id) => {
+  if (id == null || id === '') return '—';
+  const match = (items || []).find((x) => Number(x.id) === Number(id));
+  return match?.nombre || '—';
+};
+
+const isGestorRole = (roles, rolId) => {
+  const rol = roles.find((r) => String(r.id) === String(rolId));
+  const name = (rol?.name || rol?.nombre || '').toLowerCase();
+  return name === 'gestor';
+};
+
+const isGestorProfileIncomplete = (user, roles) => {
+  const rol = String(user.rol || '').toLowerCase();
+  if (rol !== 'gestor') return false;
+  return !user.areaId || !user.dependenciaId || !user.rolDependenciaId || !user.sedeId;
+};
+
 const UsersAdminPage = () => {
   const navigate = useNavigate();
   const { getSedes } = useAuth();
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [sedes, setSedes] = useState([]);
+  const [sodsiCatalogs, setSodsiCatalogs] = useState(EMPTY_SODSI_CATALOGS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [modal, setModal] = useState({ open: false, mode: 'create', user: null });
@@ -62,15 +92,25 @@ const UsersAdminPage = () => {
   const load = async () => {
     setLoading(true);
     setError('');
-    const [usersRes, rolesRes, sedesRes] = await Promise.all([
+    const [usersRes, rolesRes, sedesRes, sodsiRes] = await Promise.all([
       authService.listUsers(),
       authService.getRoles(),
       getSedes(),
+      sodsiCatalogService.getCatalogos(),
     ]);
     if (!usersRes.success) setError(usersRes.error);
     else setUsers(usersRes.data || []);
     if (rolesRes.success) setRoles(rolesRes.data || []);
     if (sedesRes.success) setSedes(sedesRes.data || []);
+    if (sodsiRes.success) {
+      setSodsiCatalogs({
+        areas: sodsiRes.data.areas || [],
+        dependencias: sodsiRes.data.dependencias || [],
+        rolesDependencia: sodsiRes.data.rolesDependencia || [],
+      });
+    } else {
+      setSodsiCatalogs(EMPTY_SODSI_CATALOGS);
+    }
     setLoading(false);
   };
 
@@ -96,6 +136,10 @@ const UsersAdminPage = () => {
       passwordConfirm: '',
       rolId: rolMatch?.id ?? '',
       sedeId: sedeMatch?.id ?? '',
+      areaId: user.areaId != null ? String(user.areaId) : '',
+      dependenciaId: user.dependenciaId != null ? String(user.dependenciaId) : '',
+      rolDependenciaId: user.rolDependenciaId != null ? String(user.rolDependenciaId) : '',
+      telefonoContacto: user.telefonoContacto || '',
     });
     setFormError('');
     resetPasswordVisibility();
@@ -196,6 +240,11 @@ const UsersAdminPage = () => {
     if (!form.fullName.trim()) return 'El nombre completo es obligatorio';
     if (!form.rolId) return 'Seleccioná un rol';
     if (!form.sedeId) return 'Seleccioná una sede';
+    if (isGestorRole(roles, form.rolId)) {
+      if (!form.areaId) return 'Para gestores, el área (fuente de información) es obligatoria';
+      if (!form.dependenciaId) return 'Para gestores, la dependencia es obligatoria';
+      if (!form.rolDependenciaId) return 'Para gestores, el rol de dependencia es obligatorio';
+    }
     return validatePasswordFields();
   };
 
@@ -211,6 +260,10 @@ const UsersAdminPage = () => {
       fullName: form.fullName.trim(),
       rolId: parseInt(form.rolId, 10),
       sedeId: parseInt(form.sedeId, 10),
+      areaId: form.areaId ? parseInt(form.areaId, 10) : null,
+      dependenciaId: form.dependenciaId ? parseInt(form.dependenciaId, 10) : null,
+      rolDependenciaId: form.rolDependenciaId ? parseInt(form.rolDependenciaId, 10) : null,
+      telefonoContacto: form.telefonoContacto.trim() || null,
     };
     if (form.password) {
       payload.password = form.password;
@@ -253,9 +306,14 @@ const UsersAdminPage = () => {
               <p>Gestión de cuentas del sistema ODS · UTN</p>
             </div>
           </div>
-          <button type="button" className="btn-primary-glow" onClick={openCreate}>
-            <Plus size={18} /> Nuevo usuario
-          </button>
+          <div className="users-admin-header-actions">
+            <button type="button" className="btn-secondary-outline" onClick={() => navigate('/admin/sodsi-beneficiarios')}>
+              Catálogo beneficiarios SODSI
+            </button>
+            <button type="button" className="btn-primary-glow" onClick={openCreate}>
+              <Plus size={18} /> Nuevo usuario
+            </button>
+          </div>
         </div>
       </header>
 
@@ -271,21 +329,36 @@ const UsersAdminPage = () => {
                 <th>Correo</th>
                 <th>Rol</th>
                 <th>Sede</th>
+                <th>Área</th>
+                <th>Dependencia</th>
+                <th>Rol dep.</th>
+                <th>Teléfono</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {users.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="users-admin-empty">No hay usuarios registrados.</td>
+                  <td colSpan={10} className="users-admin-empty">No hay usuarios registrados.</td>
                 </tr>
               ) : users.map(u => (
-                <tr key={u.id}>
-                  <td data-label="Usuario">{u.username}</td>
+                <tr key={u.id} className={isGestorProfileIncomplete(u, roles) ? 'users-row-incomplete' : ''}>
+                  <td data-label="Usuario">
+                    {u.username}
+                    {isGestorProfileIncomplete(u, roles) && (
+                      <span className="users-badge-incomplete" title="Perfil SODSI incompleto para export">
+                        Perfil incompleto
+                      </span>
+                    )}
+                  </td>
                   <td data-label="Nombre">{u.fullName}</td>
                   <td data-label="Correo">{u.email}</td>
                   <td data-label="Rol">{roleDisplayName(roles, u.rol)}</td>
                   <td data-label="Sede">{u.sede || '—'}</td>
+                  <td data-label="Área">{catalogLabel(sodsiCatalogs.areas, u.areaId)}</td>
+                  <td data-label="Dependencia">{catalogLabel(sodsiCatalogs.dependencias, u.dependenciaId)}</td>
+                  <td data-label="Rol dep.">{catalogLabel(sodsiCatalogs.rolesDependencia, u.rolDependenciaId)}</td>
+                  <td data-label="Teléfono">{u.telefonoContacto || '—'}</td>
                   <td data-label="Acciones">
                     <div className="users-admin-actions">
                       <button type="button" className="btn-icon" title="Editar" onClick={() => openEdit(u)}>
@@ -442,6 +515,52 @@ const UsersAdminPage = () => {
                   ))}
                 </select>
               </div>
+
+              <div className="users-sodsi-section">
+                <h3>Perfil SODSI (export consultor)</h3>
+                <p className="form-hint">
+                  Fuente de información, dependencia, rol y teléfono se incluyen en la matriz Excel del gestor.
+                </p>
+                <div className="form-row">
+                  <label htmlFor="telefonoContacto">Teléfono de contacto</label>
+                  <input
+                    id="telefonoContacto"
+                    name="telefonoContacto"
+                    type="tel"
+                    value={form.telefonoContacto}
+                    onChange={handleChange}
+                    placeholder="2222-3333"
+                  />
+                </div>
+                <div className="form-row">
+                  <label htmlFor="areaId">Fuente de información (área)</label>
+                  <select id="areaId" name="areaId" value={form.areaId} onChange={handleChange}>
+                    <option value="">Seleccionar área</option>
+                    {sodsiCatalogs.areas.map(a => (
+                      <option key={a.id} value={a.id}>{a.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-row">
+                  <label htmlFor="dependenciaId">Dependencia</label>
+                  <select id="dependenciaId" name="dependenciaId" value={form.dependenciaId} onChange={handleChange}>
+                    <option value="">Seleccionar dependencia</option>
+                    {sodsiCatalogs.dependencias.map(d => (
+                      <option key={d.id} value={d.id}>{d.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-row">
+                  <label htmlFor="rolDependenciaId">Rol de dependencia</label>
+                  <select id="rolDependenciaId" name="rolDependenciaId" value={form.rolDependenciaId} onChange={handleChange}>
+                    <option value="">Seleccionar rol</option>
+                    {sodsiCatalogs.rolesDependencia.map(r => (
+                      <option key={r.id} value={r.id}>{r.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               {formError && <div className="users-form-error">{formError}</div>}
               <div className="users-modal-footer">
                 <button type="button" className="btn-secondary" onClick={closeModal}>Cancelar</button>

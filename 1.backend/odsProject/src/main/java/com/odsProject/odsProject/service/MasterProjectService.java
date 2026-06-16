@@ -1,9 +1,11 @@
 package com.odsProject.odsProject.service;
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoBeneficiarios;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.repository.interfaces.IMasterProjectRepository;
-import com.odsProject.odsProject.service.interfaces.IMasterProjectService;
 import com.odsProject.odsProject.service.interfaces.IEvaluationService;
+import com.odsProject.odsProject.service.interfaces.IMasterProjectService;
+import com.odsProject.odsProject.service.interfaces.IPlanificacionEdicionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,9 @@ public class MasterProjectService implements IMasterProjectService {
 
     @Autowired
     private IEvaluationService evaluationService;
+
+    @Autowired
+    private IPlanificacionEdicionService planificacionEdicionService;
 
     @Autowired
     private List<com.odsProject.odsProject.service.interfaces.IOdsBaseService<?, ?, ?, ?, ?, ?>> odsServices;
@@ -196,6 +201,19 @@ public class MasterProjectService implements IMasterProjectService {
         org.slf4j.LoggerFactory.getLogger(MasterProjectService.class);
 
     @Override
+    public Map<String, Object> getSodsiFichaByProyectoId(Integer proyectoId) {
+        Proyectos p = masterProjectRepository.findById(proyectoId)
+                .orElseThrow(() -> new IllegalArgumentException("Proyecto no encontrado: " + proyectoId));
+        List<ProyectoBeneficiarios> beneficiarios = masterProjectRepository.findBeneficiariosByProyecto(proyectoId);
+        Map<String, Object> m = new java.util.LinkedHashMap<>();
+        m.put("proyectoId", proyectoId);
+        m.put("ejePlanesId", p.getEjePlanesId() != null ? p.getEjePlanesId().intValue() : null);
+        m.put("aliadoExterno", p.getAliadoExterno());
+        m.put("beneficiarios", beneficiarios);
+        return m;
+    }
+
+    @Override
     public Map<String, Object> createFullProject(Map<String, Object> payload) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
 
@@ -227,6 +245,10 @@ public class MasterProjectService implements IMasterProjectService {
                 try { masterProjectRepository.delete(pidForLambda); } catch (Exception ignored) {}
             });
             log.info("[createFullProject] Proyecto {} creado", proyectoId);
+
+            if (payload.get("fichaSodsi") instanceof Map<?, ?> fichaRaw) {
+                planificacionEdicionService.saveFichaSodsi(proyectoId, asStringObjectMap(fichaRaw));
+            }
 
             // ── PASO 2: Vincular ODS ─────────────────────────────────────
             List<Integer> odsIds       = toIntList(payload.get("odsIds"));
@@ -486,7 +508,7 @@ public class MasterProjectService implements IMasterProjectService {
         if (fi != null) p.setFechaInicio(java.time.LocalDate.parse(String.valueOf(fi)));
         if (ff != null) p.setFechaFin(java.time.LocalDate.parse(String.valueOf(ff)));
         p.setMetaGeneral(strOr(m.get("metaGeneral"), null));
-        p.setResponsableNombre(strOr(m.get("responsableNombre"), null));
+        p.setAliadoExterno(strOr(m.get("aliadoExterno"), null));
         p.setLocationProvince(strOr(m.get("locationProvince"), null));
         p.setLocationCanton(strOr(m.get("locationCanton"), null));
         p.setLocationDistrict(strOr(m.get("locationDistrict"), null));

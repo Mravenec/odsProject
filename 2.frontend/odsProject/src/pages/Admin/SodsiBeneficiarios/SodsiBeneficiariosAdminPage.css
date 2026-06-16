@@ -1,0 +1,117 @@
+.sodsi-ben-admin {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.sodsi-ben-admin-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sodsi-ben-admin-header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.35rem;
+}
+
+.sodsi-ben-admin-header p {
+  margin: 0;
+  color: var(--text-secondary, #64748b);
+  font-size: 0.9rem;
+}
+
+.sodsi-ben-admin-header .btn-refresh {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(1, 33, 105, 0.2);
+  background: #fff;
+  cursor: pointer;
+}
+
+.sodsi-ben-admin-error {
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.sodsi-ben-admin-loader {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+}
+
+.sodsi-ben-admin-table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.sodsi-ben-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.sodsi-ben-admin-table th,
+.sodsi-ben-admin-table td {
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sodsi-ben-admin-table th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+.sodsi-ben-admin-table tr.row-inactive {
+  opacity: 0.72;
+  background: #fafafa;
+}
+
+.sodsi-ben-admin-table .empty {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 2rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-active {
+  background: rgba(45, 186, 116, 0.15);
+  color: #15803d;
+}
+
+.badge-inactive {
+  background: rgba(148, 163, 184, 0.2);
+  color: #475569;
+}
+
+.btn-toggle {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid rgba(1, 33, 105, 0.2);
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.btn-toggle:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}

@@ -1,0 +1,66 @@
+### Export SODSI — 5 hojas + ficha proyecto + catálogos
+### QA: proyecto #6 completado sede 2 año 2024 · #7 planificación
+
+@baseUrl = http://localhost:8080
+@emailConsultor = consultor@ods.local
+@passwordConsultor = Consultor2026!
+@emailGestor = ana.garcia@ods.cr
+@passwordGestor = password123
+@sedeId = 2
+@anio = 2024
+@idCompletado = 6
+@idPlanificacion = 7
+
+### @name login_consultor
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailConsultor}}",
+  "password": "{{passwordConsultor}}"
+}
+
+@consultorToken = {{login_consultor.response.body.token}}
+
+### @name login_gestor
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailGestor}}",
+  "password": "{{passwordGestor}}"
+}
+
+@gestorToken = {{login_gestor.response.body.token}}
+
+# ── Catálogos SODSI ──
+
+### GET /api/sodsi/catalogos → 200
+GET {{baseUrl}}/api/sodsi/catalogos
+Authorization: Bearer {{consultorToken}}
+
+# ── Ficha proyecto (POJOs JOOQ) ──
+
+### GET ficha SODSI proyecto #6 → 200
+GET {{baseUrl}}/api/projects/{{idCompletado}}/sodsi
+Authorization: Bearer {{consultorToken}}
+
+### GET ficha SODSI proyecto #7 → 200
+GET {{baseUrl}}/api/projects/{{idPlanificacion}}/sodsi
+Authorization: Bearer {{gestorToken}}
+
+# ── Export consolidado SODSI (5 hojas) ──
+
+### GET consolidado sede+año — consultor 200
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}
+Authorization: Bearer {{consultorToken}}
+
+### GET export individual #6 — 200
+GET {{baseUrl}}/api/export/proyecto/{{idCompletado}}
+Authorization: Bearer {{consultorToken}}
+
+# ── Gestor consolidado → 403 ──
+
+### GET consolidado — gestor 403
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}
+Authorization: Bearer {{gestorToken}}

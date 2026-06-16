@@ -6,15 +6,21 @@ package com.odsProject.odsProject.database.jooq.ods_master;
 
 import com.odsProject.odsProject.database.jooq.ods_login.tables.OdsCatalog;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiBeneficiarioValor;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiEjesPlanes;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.OdsCatalogRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SedesRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SodsiBeneficiarioValorRecord;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.records.SodsiEjesPlanesRecord;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.records.UsuariosRecord;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoBeneficiarios;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoChatMensajes;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoDocumentos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoOds;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoTransicionSolicitud;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.records.ProyectoBeneficiariosRecord;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.records.ProyectoChatMensajesRecord;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.records.ProyectoDocumentosRecord;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.records.ProyectoOdsRecord;
@@ -39,6 +45,8 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<ProyectoBeneficiariosRecord> KEY_PROYECTO_BENEFICIARIOS_PRIMARY = Internal.createUniqueKey(ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS, DSL.name("KEY_proyecto_beneficiarios_PRIMARY"), new TableField[] { ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS.ID }, true);
+    public static final UniqueKey<ProyectoBeneficiariosRecord> KEY_PROYECTO_BENEFICIARIOS_UK_PROYECTO_BENEFICIARIO = Internal.createUniqueKey(ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS, DSL.name("KEY_proyecto_beneficiarios_uk_proyecto_beneficiario"), new TableField[] { ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS.PROYECTO_ID, ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS.VALOR_ID }, true);
     public static final UniqueKey<ProyectoChatMensajesRecord> KEY_PROYECTO_CHAT_MENSAJES_PRIMARY = Internal.createUniqueKey(ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES, DSL.name("KEY_proyecto_chat_mensajes_PRIMARY"), new TableField[] { ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES.ID }, true);
     public static final UniqueKey<ProyectoDocumentosRecord> KEY_PROYECTO_DOCUMENTOS_PRIMARY = Internal.createUniqueKey(ProyectoDocumentos.PROYECTO_DOCUMENTOS, DSL.name("KEY_proyecto_documentos_PRIMARY"), new TableField[] { ProyectoDocumentos.PROYECTO_DOCUMENTOS.ID }, true);
     public static final UniqueKey<ProyectoOdsRecord> KEY_PROYECTO_ODS_PRIMARY = Internal.createUniqueKey(ProyectoOds.PROYECTO_ODS, DSL.name("KEY_proyecto_ods_PRIMARY"), new TableField[] { ProyectoOds.PROYECTO_ODS.ID }, true);
@@ -50,6 +58,8 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<ProyectoBeneficiariosRecord, ProyectosRecord> PROYECTO_BENEFICIARIOS_IBFK_1 = Internal.createForeignKey(ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS, DSL.name("proyecto_beneficiarios_ibfk_1"), new TableField[] { ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS.PROYECTO_ID }, Keys.KEY_PROYECTOS_PRIMARY, new TableField[] { Proyectos.PROYECTOS.ID }, true);
+    public static final ForeignKey<ProyectoBeneficiariosRecord, SodsiBeneficiarioValorRecord> PROYECTO_BENEFICIARIOS_IBFK_2 = Internal.createForeignKey(ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS, DSL.name("proyecto_beneficiarios_ibfk_2"), new TableField[] { ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS.VALOR_ID }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_SODSI_BENEFICIARIO_VALOR_PRIMARY, new TableField[] { SodsiBeneficiarioValor.SODSI_BENEFICIARIO_VALOR.ID }, true);
     public static final ForeignKey<ProyectoChatMensajesRecord, ProyectosRecord> PROYECTO_CHAT_MENSAJES_IBFK_1 = Internal.createForeignKey(ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES, DSL.name("proyecto_chat_mensajes_ibfk_1"), new TableField[] { ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES.PROYECTO_ID }, Keys.KEY_PROYECTOS_PRIMARY, new TableField[] { Proyectos.PROYECTOS.ID }, true);
     public static final ForeignKey<ProyectoChatMensajesRecord, UsuariosRecord> PROYECTO_CHAT_MENSAJES_IBFK_2 = Internal.createForeignKey(ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES, DSL.name("proyecto_chat_mensajes_ibfk_2"), new TableField[] { ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES.AUTOR_ID }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
     public static final ForeignKey<ProyectoDocumentosRecord, ProyectosRecord> PROYECTO_DOCUMENTOS_IBFK_1 = Internal.createForeignKey(ProyectoDocumentos.PROYECTO_DOCUMENTOS, DSL.name("proyecto_documentos_ibfk_1"), new TableField[] { ProyectoDocumentos.PROYECTO_DOCUMENTOS.PROYECTO_ID }, Keys.KEY_PROYECTOS_PRIMARY, new TableField[] { Proyectos.PROYECTOS.ID }, true);
@@ -62,4 +72,5 @@ public class Keys {
     public static final ForeignKey<ProyectosRecord, UsuariosRecord> PROYECTOS_IBFK_1 = Internal.createForeignKey(Proyectos.PROYECTOS, DSL.name("proyectos_ibfk_1"), new TableField[] { Proyectos.PROYECTOS.USUARIO_ID }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
     public static final ForeignKey<ProyectosRecord, SedesRecord> PROYECTOS_IBFK_2 = Internal.createForeignKey(Proyectos.PROYECTOS, DSL.name("proyectos_ibfk_2"), new TableField[] { Proyectos.PROYECTOS.SEDE_ID }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_SEDES_PRIMARY, new TableField[] { Sedes.SEDES.ID }, true);
     public static final ForeignKey<ProyectosRecord, UsuariosRecord> PROYECTOS_IBFK_3 = Internal.createForeignKey(Proyectos.PROYECTOS, DSL.name("proyectos_ibfk_3"), new TableField[] { Proyectos.PROYECTOS.AUDITADO_POR }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_USUARIOS_PRIMARY, new TableField[] { Usuarios.USUARIOS.ID }, true);
+    public static final ForeignKey<ProyectosRecord, SodsiEjesPlanesRecord> PROYECTOS_IBFK_4 = Internal.createForeignKey(Proyectos.PROYECTOS, DSL.name("proyectos_ibfk_4"), new TableField[] { Proyectos.PROYECTOS.EJE_PLANES_ID }, com.odsProject.odsProject.database.jooq.ods_login.Keys.KEY_SODSI_EJES_PLANES_PRIMARY, new TableField[] { SodsiEjesPlanes.SODSI_EJES_PLANES.ID }, true);
 }

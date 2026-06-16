@@ -124,6 +124,18 @@ public class LoginRepository implements ILoginRepository {
         if (usuario.getPasswordHash() != null) {
             update.set(USUARIOS.PASSWORD_HASH, usuario.getPasswordHash());
         }
+        if (usuario.getAreaId() != null) {
+            update.set(USUARIOS.AREA_ID, usuario.getAreaId());
+        }
+        if (usuario.getDependenciaId() != null) {
+            update.set(USUARIOS.DEPENDENCIA_ID, usuario.getDependenciaId());
+        }
+        if (usuario.getRolDependenciaId() != null) {
+            update.set(USUARIOS.ROL_DEPENDENCIA_ID, usuario.getRolDependenciaId());
+        }
+        if (usuario.getTelefonoContacto() != null) {
+            update.set(USUARIOS.TELEFONO_CONTACTO, usuario.getTelefonoContacto());
+        }
 
         update.where(USUARIOS.ID.eq(usuario.getId())).execute();
         return findUsuarioById(usuario.getId())
@@ -155,6 +167,10 @@ public class LoginRepository implements ILoginRepository {
                         ROLES.NOMBRE.as("rol"),
                         USUARIOS.SEDE_ID.as("sedeId"),
                         SEDES.NOMBRE.as("sede"),
+                        USUARIOS.AREA_ID.as("areaId"),
+                        USUARIOS.DEPENDENCIA_ID.as("dependenciaId"),
+                        USUARIOS.ROL_DEPENDENCIA_ID.as("rolDependenciaId"),
+                        USUARIOS.TELEFONO_CONTACTO.as("telefonoContacto"),
                         USUARIOS.IS_ACTIVE.as("isActive"),
                         USUARIOS.ULTIMO_LOGIN.as("ultimoLogin"),
                         USUARIOS.CREATED_AT.as("createdAt"))

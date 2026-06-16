@@ -79,6 +79,9 @@ public interface IMasterProjectService {
      */
     Map<String, Object> createFullProject(Map<String, Object> payload);
 
+    /** Ficha SODSI: escalares en Proyectos + listas POJO JOOQ de relaciones. */
+    Map<String, Object> getSodsiFichaByProyectoId(Integer proyectoId);
+
     /**
      * Devuelve la lista de ODS vinculados a un proyecto.
      */

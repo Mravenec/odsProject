@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
+import org.jooq.types.UByte;
 
 
 /**
@@ -143,25 +144,42 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     }
 
     /**
-     * Setter for <code>ods_master.proyectos.responsable_nombre</code>.
+     * Setter for <code>ods_master.proyectos.eje_planes_id</code>.
      */
-    public ProyectosRecord setResponsableNombre(String value) {
+    public ProyectosRecord setEjePlanesId(UByte value) {
         set(8, value);
         return this;
     }
 
     /**
-     * Getter for <code>ods_master.proyectos.responsable_nombre</code>.
+     * Getter for <code>ods_master.proyectos.eje_planes_id</code>.
      */
-    public String getResponsableNombre() {
-        return (String) get(8);
+    public UByte getEjePlanesId() {
+        return (UByte) get(8);
+    }
+
+    /**
+     * Setter for <code>ods_master.proyectos.aliado_externo</code>. Aliado
+     * externo texto libre SODSI
+     */
+    public ProyectosRecord setAliadoExterno(String value) {
+        set(9, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_master.proyectos.aliado_externo</code>. Aliado
+     * externo texto libre SODSI
+     */
+    public String getAliadoExterno() {
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.location_province</code>.
      */
     public ProyectosRecord setLocationProvince(String value) {
-        set(9, value);
+        set(10, value);
         return this;
     }
 
@@ -169,14 +187,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.location_province</code>.
      */
     public String getLocationProvince() {
-        return (String) get(9);
+        return (String) get(10);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.location_canton</code>.
      */
     public ProyectosRecord setLocationCanton(String value) {
-        set(10, value);
+        set(11, value);
         return this;
     }
 
@@ -184,14 +202,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.location_canton</code>.
      */
     public String getLocationCanton() {
-        return (String) get(10);
+        return (String) get(11);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.location_district</code>.
      */
     public ProyectosRecord setLocationDistrict(String value) {
-        set(11, value);
+        set(12, value);
         return this;
     }
 
@@ -199,14 +217,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.location_district</code>.
      */
     public String getLocationDistrict() {
-        return (String) get(11);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.estado</code>.
      */
     public ProyectosRecord setEstado(ProyectosEstado value) {
-        set(12, value);
+        set(13, value);
         return this;
     }
 
@@ -214,14 +232,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.estado</code>.
      */
     public ProyectosEstado getEstado() {
-        return (ProyectosEstado) get(12);
+        return (ProyectosEstado) get(13);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.auditado_por</code>.
      */
     public ProyectosRecord setAuditadoPor(Integer value) {
-        set(13, value);
+        set(14, value);
         return this;
     }
 
@@ -229,14 +247,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.auditado_por</code>.
      */
     public Integer getAuditadoPor() {
-        return (Integer) get(13);
+        return (Integer) get(14);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.auditado_en</code>.
      */
     public ProyectosRecord setAuditadoEn(LocalDateTime value) {
-        set(14, value);
+        set(15, value);
         return this;
     }
 
@@ -244,14 +262,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.auditado_en</code>.
      */
     public LocalDateTime getAuditadoEn() {
-        return (LocalDateTime) get(14);
+        return (LocalDateTime) get(15);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.observaciones_cierre</code>.
      */
     public ProyectosRecord setObservacionesCierre(String value) {
-        set(15, value);
+        set(16, value);
         return this;
     }
 
@@ -259,14 +277,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.observaciones_cierre</code>.
      */
     public String getObservacionesCierre() {
-        return (String) get(15);
+        return (String) get(16);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.fecha_envio_revision</code>.
      */
     public ProyectosRecord setFechaEnvioRevision(LocalDateTime value) {
-        set(16, value);
+        set(17, value);
         return this;
     }
 
@@ -274,14 +292,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.fecha_envio_revision</code>.
      */
     public LocalDateTime getFechaEnvioRevision() {
-        return (LocalDateTime) get(16);
+        return (LocalDateTime) get(17);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.created_at</code>.
      */
     public ProyectosRecord setCreatedAt(LocalDateTime value) {
-        set(17, value);
+        set(18, value);
         return this;
     }
 
@@ -289,14 +307,14 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(17);
+        return (LocalDateTime) get(18);
     }
 
     /**
      * Setter for <code>ods_master.proyectos.updated_at</code>.
      */
     public ProyectosRecord setUpdatedAt(LocalDateTime value) {
-        set(18, value);
+        set(19, value);
         return this;
     }
 
@@ -304,7 +322,7 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
      * Getter for <code>ods_master.proyectos.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(18);
+        return (LocalDateTime) get(19);
     }
 
     // -------------------------------------------------------------------------
@@ -330,7 +348,7 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
     /**
      * Create a detached, initialised ProyectosRecord
      */
-    public ProyectosRecord(Integer id, Integer usuarioId, Integer sedeId, String nombreProyecto, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, String metaGeneral, String responsableNombre, String locationProvince, String locationCanton, String locationDistrict, ProyectosEstado estado, Integer auditadoPor, LocalDateTime auditadoEn, String observacionesCierre, LocalDateTime fechaEnvioRevision, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProyectosRecord(Integer id, Integer usuarioId, Integer sedeId, String nombreProyecto, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, String metaGeneral, UByte ejePlanesId, String aliadoExterno, String locationProvince, String locationCanton, String locationDistrict, ProyectosEstado estado, Integer auditadoPor, LocalDateTime auditadoEn, String observacionesCierre, LocalDateTime fechaEnvioRevision, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(Proyectos.PROYECTOS);
 
         setId(id);
@@ -341,7 +359,8 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
         setFechaInicio(fechaInicio);
         setFechaFin(fechaFin);
         setMetaGeneral(metaGeneral);
-        setResponsableNombre(responsableNombre);
+        setEjePlanesId(ejePlanesId);
+        setAliadoExterno(aliadoExterno);
         setLocationProvince(locationProvince);
         setLocationCanton(locationCanton);
         setLocationDistrict(locationDistrict);
@@ -370,7 +389,8 @@ public class ProyectosRecord extends UpdatableRecordImpl<ProyectosRecord> {
             setFechaInicio(value.getFechaInicio());
             setFechaFin(value.getFechaFin());
             setMetaGeneral(value.getMetaGeneral());
-            setResponsableNombre(value.getResponsableNombre());
+            setEjePlanesId(value.getEjePlanesId());
+            setAliadoExterno(value.getAliadoExterno());
             setLocationProvince(value.getLocationProvince());
             setLocationCanton(value.getLocationCanton());
             setLocationDistrict(value.getLocationDistrict());

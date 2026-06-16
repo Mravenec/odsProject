@@ -58,6 +58,10 @@ CREATE TABLE usuarios (
     full_name           VARCHAR(150) NOT NULL,
     rol_id              INT          NOT NULL DEFAULT 2, -- 'gestor' por defecto
     sede_id             INT          NULL,               -- Sede a la que pertenece
+    area_id             SMALLINT UNSIGNED NULL COMMENT 'Fuente de información SODSI (sodsi_area)',
+    dependencia_id      SMALLINT UNSIGNED NULL COMMENT 'Dependencia SODSI del usuario',
+    rol_dependencia_id  TINYINT UNSIGNED NULL COMMENT 'Rol de dependencia SODSI',
+    telefono_contacto   VARCHAR(30)  NULL COMMENT 'Teléfono contacto SODSI export',
     is_active           BOOLEAN      NOT NULL DEFAULT TRUE,
     email_verificado    BOOLEAN      NOT NULL DEFAULT FALSE,
     ultimo_login        TIMESTAMP    NULL,
@@ -73,6 +77,8 @@ CREATE TABLE usuarios (
     INDEX idx_username   (username),
     INDEX idx_rol        (rol_id),
     INDEX idx_sede       (sede_id),
+    INDEX idx_usuario_sodsi_area (area_id),
+    INDEX idx_usuario_sodsi_dep  (dependencia_id),
     INDEX idx_activo_rol (is_active, rol_id)
 );
 

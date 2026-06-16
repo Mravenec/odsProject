@@ -19,6 +19,18 @@ SET SQL_MODE = '';
 SOURCE propuesta_actual/1. login_system.sql;
 
 -- ─────────────────────────────────────────────────────────────────
+-- PASO 1b: Catálogos SODSI (glosario Conare / UTN)
+--         Depende de: ods_login
+-- ─────────────────────────────────────────────────────────────────
+SOURCE propuesta_actual/23. sodsi_catalogos.sql;
+
+-- ─────────────────────────────────────────────────────────────────
+-- PASO 1c: Catálogos SODSI — perfil usuario (área, dependencia, rol, provincias)
+--         Depende de: ods_login, sodsi_regiones_mideplan (23)
+-- ─────────────────────────────────────────────────────────────────
+SOURCE propuesta_actual/24. sodsi_usuario_catalogos.sql;
+
+-- ─────────────────────────────────────────────────────────────────
 -- PASO 2: ods_master (proyectos centralizados)
 --         Depende de: ods_login.usuarios, ods_login.sedes
 -- ─────────────────────────────────────────────────────────────────

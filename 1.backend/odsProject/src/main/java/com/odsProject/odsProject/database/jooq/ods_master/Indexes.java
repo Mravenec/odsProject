@@ -4,6 +4,7 @@
 package com.odsProject.odsProject.database.jooq.ods_master;
 
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoBeneficiarios;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoChatMensajes;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoDocumentos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoOds;
@@ -29,7 +30,9 @@ public class Indexes {
     public static final Index PROYECTO_CHAT_MENSAJES_AUTOR_ID = Internal.createIndex(DSL.name("autor_id"), ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES, new OrderField[] { ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES.AUTOR_ID }, false);
     public static final Index PROYECTOS_IDX_AUDITADO_EN = Internal.createIndex(DSL.name("idx_auditado_en"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.AUDITADO_EN }, false);
     public static final Index PROYECTOS_IDX_AUDITOR = Internal.createIndex(DSL.name("idx_auditor"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.AUDITADO_POR }, false);
+    public static final Index PROYECTO_BENEFICIARIOS_IDX_BEN_PROYECTO = Internal.createIndex(DSL.name("idx_ben_proyecto"), ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS, new OrderField[] { ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS.PROYECTO_ID }, false);
     public static final Index PROYECTO_CHAT_MENSAJES_IDX_CHAT_PROYECTO = Internal.createIndex(DSL.name("idx_chat_proyecto"), ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES, new OrderField[] { ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES.PROYECTO_ID, ProyectoChatMensajes.PROYECTO_CHAT_MENSAJES.CREATED_AT }, false);
+    public static final Index PROYECTOS_IDX_EJE_PLANES = Internal.createIndex(DSL.name("idx_eje_planes"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.EJE_PLANES_ID }, false);
     public static final Index PROYECTOS_IDX_ESTADO = Internal.createIndex(DSL.name("idx_estado"), Proyectos.PROYECTOS, new OrderField[] { Proyectos.PROYECTOS.ESTADO }, false);
     public static final Index PROYECTO_ODS_IDX_ODS = Internal.createIndex(DSL.name("idx_ods"), ProyectoOds.PROYECTO_ODS, new OrderField[] { ProyectoOds.PROYECTO_ODS.ODS_ID }, false);
     public static final Index PROYECTO_DOCUMENTOS_IDX_PROYECTO = Internal.createIndex(DSL.name("idx_proyecto"), ProyectoDocumentos.PROYECTO_DOCUMENTOS, new OrderField[] { ProyectoDocumentos.PROYECTO_DOCUMENTOS.PROYECTO_ID }, false);
@@ -41,4 +44,5 @@ public class Indexes {
     public static final Index PROYECTO_TRANSICION_SOLICITUD_RESUELTO_POR = Internal.createIndex(DSL.name("resuelto_por"), ProyectoTransicionSolicitud.PROYECTO_TRANSICION_SOLICITUD, new OrderField[] { ProyectoTransicionSolicitud.PROYECTO_TRANSICION_SOLICITUD.RESUELTO_POR }, false);
     public static final Index PROYECTO_TRANSICION_SOLICITUD_SOLICITADO_POR = Internal.createIndex(DSL.name("solicitado_por"), ProyectoTransicionSolicitud.PROYECTO_TRANSICION_SOLICITUD, new OrderField[] { ProyectoTransicionSolicitud.PROYECTO_TRANSICION_SOLICITUD.SOLICITADO_POR }, false);
     public static final Index PROYECTO_DOCUMENTOS_SUBIDO_POR = Internal.createIndex(DSL.name("subido_por"), ProyectoDocumentos.PROYECTO_DOCUMENTOS, new OrderField[] { ProyectoDocumentos.PROYECTO_DOCUMENTOS.SUBIDO_POR }, false);
+    public static final Index PROYECTO_BENEFICIARIOS_VALOR_ID = Internal.createIndex(DSL.name("valor_id"), ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS, new OrderField[] { ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS.VALOR_ID }, false);
 }

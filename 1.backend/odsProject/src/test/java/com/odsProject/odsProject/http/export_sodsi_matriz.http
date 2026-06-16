@@ -1,0 +1,35 @@
+### Export SODSI matriz — 1 hoja, 21 columnas (Acciones por revisar SODSI.xlsx)
+### QA: sede 2 (Central), año 2024, proyecto mock #6 auditado
+
+@baseUrl = http://localhost:8080
+@emailConsultor = consultor@ods.local
+@passwordConsultor = Consultor2026!
+@sedeId = 2
+@anio = 2024
+
+### @name login_consultor
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailConsultor}}",
+  "password": "{{passwordConsultor}}"
+}
+
+@consultorToken = {{login_consultor.response.body.token}}
+
+# ── Matriz SODSI consultor (21 cols, hoja "Acciones") ──
+
+### GET consolidado sede+año → 200 + xlsx (matriz 21 columnas)
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}
+Authorization: Bearer {{consultorToken}}
+
+# Smoke esperado:
+# - Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+# - 1 hoja "Acciones"
+# - Fila 1: Año | Institución | Usuario | Unidad encargada | Acción | Objetivo | Meta | ...
+# - Proyecto QA #6: Objetivo = "[1] <nombre ODS>" (todos ODS vinculados, separados por ", ")
+# - Meta = "[1.1.1] <nombre meta|indicador>" (todos indicadores del proyecto, separados por ", ")
+
+### GET consolidado sin token → 401/403
+GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}

@@ -4,6 +4,7 @@
 package com.odsProject.odsProject.database.jooq.ods_master;
 
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoBeneficiarios;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoChatMensajes;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoDocumentos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.ProyectoOds;
@@ -17,6 +18,11 @@ import com.odsProject.odsProject.database.jooq.ods_master.tables.VistaResumenPro
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Tables {
+
+    /**
+     * The table <code>ods_master.proyecto_beneficiarios</code>.
+     */
+    public static final ProyectoBeneficiarios PROYECTO_BENEFICIARIOS = ProyectoBeneficiarios.PROYECTO_BENEFICIARIOS;
 
     /**
      * The table <code>ods_master.proyecto_chat_mensajes</code>.

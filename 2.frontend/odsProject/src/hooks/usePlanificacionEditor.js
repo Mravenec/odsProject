@@ -9,6 +9,7 @@ import {
   validateEditorBeforeSave,
   resolveSedeIdFromArea,
 } from '../utils/planificacionEditorUtils';
+import { emptyFichaSodsi } from '../utils/sodsiFichaUtils';
 
 const emptyFormData = () => ({
   name: '',
@@ -48,6 +49,7 @@ export function usePlanificacionEditor(projectId) {
   const [sedeId, setSedeId] = useState(1);
   const [ownerUserId, setOwnerUserId] = useState(null);
   const [proyectoBaseline, setProyectoBaseline] = useState(null);
+  const [fichaSodsi, setFichaSodsi] = useState(emptyFichaSodsi);
 
   const hasMetadataForOds = useCallback(
     (odsId) => availableIndicators[odsId] && availableIndicators[odsId].length > 0,
@@ -114,6 +116,7 @@ export function usePlanificacionEditor(projectId) {
       if (state.sedeId) setSedeId(state.sedeId);
       setOwnerUserId(state.userId ?? null);
       setProyectoBaseline(state.proyecto ?? null);
+      setFichaSodsi(state.fichaSodsi ?? emptyFichaSodsi());
     } catch (e) {
       setError(e.message || 'Error de carga');
     } finally {
@@ -150,7 +153,7 @@ export function usePlanificacionEditor(projectId) {
       await Promise.allSettled(odsNoLoaded.map((id) => loadOdsMetadata(id)));
     }
 
-    const validation = validateEditorBeforeSave(formData, indicatorMetadata);
+    const validation = validateEditorBeforeSave(formData, indicatorMetadata, fichaSodsi);
     if (!validation.ok) {
       return { success: false, error: validation.message };
     }
@@ -169,6 +172,7 @@ export function usePlanificacionEditor(projectId) {
         indicatorMetadata,
         sedeId: effectiveSedeId,
         proyectoBaseline,
+        fichaSodsi,
       });
       const result = await projectService.updateFullProject(projectId, payload);
       if (!result.success) {
@@ -186,7 +190,7 @@ export function usePlanificacionEditor(projectId) {
       setSaving(false);
     }
   }, [
-    user, formData, indicatorConfigs, indicatorMetadata, sedeId, proyectoBaseline,
+    user, formData, indicatorConfigs, indicatorMetadata, sedeId, proyectoBaseline, fichaSodsi,
     projectId, hasMetadataForOds, loadOdsMetadata, load,
   ]);
 
@@ -214,6 +218,8 @@ export function usePlanificacionEditor(projectId) {
     ownerUserId,
     sedeId,
     setSedeId,
+    fichaSodsi,
+    setFichaSodsi,
   };
 }
 

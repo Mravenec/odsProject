@@ -1,5 +1,6 @@
 import api from './api';
 import { normalizeWorkflowStatus } from '../utils/formatters';
+import { fichaSodsiToPayload } from '../utils/sodsiFichaUtils';
 
 /**
  * Servicio de Proyectos — Alineado con MasterProjectController.java
@@ -339,16 +340,20 @@ export const projectService = {
           fechaInicio:       projectData.startDate,
           fechaFin:          projectData.endDate,
           metaGeneral:       projectData.description?.substring(0, 100),
-          responsableNombre: projectData.responsableNombre || null,
-          locationProvince:  projectData.locationProvince  || null,
-          locationCanton:    projectData.locationCanton    || null,
-          locationDistrict:  projectData.locationDistrict  || null,
+          responsableNombre: projectData.responsable || projectData.responsableNombre || null,
+          locationProvince:  projectData.provinciaNombre || projectData.locationProvince || null,
+          locationCanton:    projectData.cantonNombre || projectData.locationCanton || null,
+          locationDistrict:  projectData.distritoNombre || projectData.locationDistrict || null,
           estado:            'planificacion'
         },
         odsIds:       Array.from(odsSet),
         primaryOdsId: projectData.primaryOds || projectData.objective || Array.from(odsSet)[0] || null,
-        indicadores:  indicadoresPayload
+        indicadores:  indicadoresPayload,
       };
+
+      if (projectData.fichaSodsi) {
+        payload.fichaSodsi = fichaSodsiToPayload(projectData.fichaSodsi);
+      }
 
       console.info('[createFullProject] Enviando árbol completo:', payload);
       const response = await api.post('/projects/full', payload);

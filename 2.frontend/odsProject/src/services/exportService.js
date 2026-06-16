@@ -68,7 +68,7 @@ export const exportService = {
       const r = await api.get(url, { responseType: 'blob' });
       const disposition = r.headers['content-disposition'] || '';
       const match = disposition.match(/filename="?([^";\n]+)"?/);
-      const filename = match?.[1] || `proyectos-sede-${sedeId}-${anio}.xlsx`;
+      const filename = match?.[1] || `ods_sodsi_${sedeId}_${anio}.xlsx`;
       _triggerDownload(r.data, filename, r.headers['content-type']);
       return { success: true };
     } catch (error) {

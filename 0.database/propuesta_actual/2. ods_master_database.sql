@@ -20,7 +20,8 @@ CREATE TABLE proyectos (
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
     meta_general VARCHAR(500),
-    responsable_nombre      VARCHAR(150)  NULL,
+    eje_planes_id           TINYINT UNSIGNED NULL,
+    aliado_externo          VARCHAR(500) NULL COMMENT 'Aliado externo texto libre SODSI',
     location_province       VARCHAR(80)   NULL,
     location_canton         VARCHAR(80)   NULL,
     location_district       VARCHAR(80)   NULL,
@@ -39,14 +40,30 @@ CREATE TABLE proyectos (
                                                --   se usa para calcular tiempo de respuesta
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id)   REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (sede_id)      REFERENCES ods_login.sedes(id)    ON DELETE SET NULL,
-    FOREIGN KEY (auditado_por) REFERENCES ods_login.usuarios(id) ON DELETE SET NULL,
+    FOREIGN KEY (usuario_id)          REFERENCES ods_login.usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (sede_id)             REFERENCES ods_login.sedes(id)    ON DELETE SET NULL,
+    FOREIGN KEY (auditado_por)        REFERENCES ods_login.usuarios(id) ON DELETE SET NULL,
+    FOREIGN KEY (eje_planes_id)       REFERENCES ods_login.sodsi_ejes_planes(id) ON DELETE SET NULL,
     INDEX idx_usuario     (usuario_id),
     INDEX idx_sede        (sede_id),
     INDEX idx_estado      (estado),
     INDEX idx_auditado_en (auditado_en),
-    INDEX idx_auditor     (auditado_por)
+    INDEX idx_auditor     (auditado_por),
+    INDEX idx_eje_planes  (eje_planes_id)
+) ENGINE=InnoDB;
+
+-- ────────────────────────────────────────────────────────────
+-- SODSI — Sectores beneficiarios (multi-select)
+-- ────────────────────────────────────────────────────────────
+
+CREATE TABLE proyecto_beneficiarios (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    proyecto_id INT NOT NULL,
+    valor_id    SMALLINT UNSIGNED NOT NULL,
+    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
+    FOREIGN KEY (valor_id)    REFERENCES ods_login.sodsi_beneficiario_valor(id),
+    UNIQUE KEY uk_proyecto_beneficiario (proyecto_id, valor_id),
+    INDEX idx_ben_proyecto (proyecto_id)
 ) ENGINE=InnoDB;
 
 -- ────────────────────────────────────────────────────────────
@@ -86,26 +103,55 @@ SELECT
     p.id AS proyecto_id,
     p.nombre_proyecto,
     u.full_name AS gestor,
+    u.email AS gestor_email,
+    u.telefono_contacto AS gestor_telefono,
+    us.nombre AS sede_usuario,
+    sa.codigo AS area_codigo,
+    sa.nombre AS area_nombre,
+    sd.codigo AS dependencia_codigo,
+    sd.nombre AS dependencia_nombre,
+    srd.codigo AS rol_dependencia_codigo,
+    srd.nombre AS rol_dependencia_nombre,
     s.nombre AS sede,
     p.estado,
     p.fecha_inicio,
     p.fecha_fin,
-    -- Sprint 15 & 20: campos de auditoría expuestos al frontend
     p.auditado_por,
     auditor.full_name AS auditor_nombre,
     p.auditado_en,
     p.observaciones_cierre,
     p.fecha_envio_revision,
+    p.aliado_externo,
+    ep.nombre AS eje_planes,
+    ep.codigo AS eje_planes_codigo,
+    p.location_province,
+    p.location_canton,
+    p.location_district,
+    prov.region_mideplan_id,
+    rm.nombre AS region_mideplan,
+    rm.codigo AS region_mideplan_codigo,
     GROUP_CONCAT(DISTINCT po.ods_id ORDER BY po.ods_id) AS ods_vinculados,
     MAX(CASE WHEN po.es_primario = TRUE THEN po.ods_id END) AS ods_primario
 FROM proyectos p
 JOIN ods_login.usuarios u ON p.usuario_id = u.id
 LEFT JOIN ods_login.sedes s ON p.sede_id = s.id
+LEFT JOIN ods_login.sedes us ON u.sede_id = us.id
+LEFT JOIN ods_login.sodsi_area sa ON u.area_id = sa.id
+LEFT JOIN ods_login.sodsi_dependencia sd ON u.dependencia_id = sd.id
+LEFT JOIN ods_login.sodsi_rol_dependencia srd ON u.rol_dependencia_id = srd.id
 LEFT JOIN ods_login.usuarios auditor ON p.auditado_por = auditor.id
+LEFT JOIN ods_login.sodsi_ejes_planes ep ON p.eje_planes_id = ep.id
+LEFT JOIN ods_login.sodsi_provincias prov ON prov.nombre = p.location_province
+LEFT JOIN ods_login.sodsi_regiones_mideplan rm ON prov.region_mideplan_id = rm.id
 LEFT JOIN proyecto_ods po ON po.proyecto_id = p.id
-GROUP BY p.id, p.nombre_proyecto, u.full_name, s.nombre, p.estado,
+GROUP BY p.id, p.nombre_proyecto, u.full_name, u.email, u.telefono_contacto,
+         us.nombre, sa.codigo, sa.nombre, sd.codigo, sd.nombre,
+         srd.codigo, srd.nombre, s.nombre, p.estado,
          p.fecha_inicio, p.fecha_fin, p.auditado_por, auditor.full_name,
-         p.auditado_en, p.observaciones_cierre, p.fecha_envio_revision;
+         p.auditado_en, p.observaciones_cierre, p.fecha_envio_revision,
+         p.aliado_externo, ep.nombre, ep.codigo,
+         p.location_province, p.location_canton, p.location_district,
+         prov.region_mideplan_id, rm.nombre, rm.codigo;
 
 -- ────────────────────────────────────────────────────────────
 -- TABLA: proyecto_documentos (Sprint 11 — evidencia de cierre)

@@ -1,18 +1,11 @@
 #!/usr/bin/env node
 /**
- * Sprint Export SODSI — Glosario PDF completo · Multi-agente
+ * Sprint Admin usuarios — listado SODSI en GET /login/users
  * Equipo: linear_ods
  *
- * Cadena: DB×3 → BE×4 → GATE_HTTP → (FE wizard ∥ FE export) → ORCH
- *
- * Comandos: create | status | list | next | show ODS-N
- *   checklist ODS-N <n>   (un ítem, secuencial)
- *   handoff ODS-N <n>
- *   state ODS-N Testing|Done|"In Progress"
- *   cleanup | help
+ * Cadena: BE-1 → BE-2(GATE_HTTP) → FE-1 → ORCH
  */
 import { spawnSync } from "child_process";
-import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import {
@@ -29,12 +22,12 @@ import {
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 const _linearRoot = join(__dir, "..");
-const PLAN_FILE = join(_linearRoot, "plans", "plan_sprint_export_sodsi.html");
+const PLAN_FILE = join(_linearRoot, "plans", "plan_sprint_admin_users_sodsi.html");
 
-const EPIC_NAME = "Export SODSI — Glosario completo";
-const SPRINT_NAME = "Sprint SODSI — BD + captura + Excel";
+const EPIC_NAME = "Admin usuarios — listado SODSI";
+const SPRINT_NAME = "Sprint admin users SODSI list";
 const EPIC_DESC =
-  "Implementar variables del glosario SODSI (Conare/UTN): catálogos BD, ficha gestor, export multi-hoja. Multi-agente: database → backend → GATE_HTTP → frontend (paralelo) → cierre.";
+  "GET /login/users debe devolver areaId, dependenciaId, rolDependenciaId y telefonoContacto para alinear Admin Usuarios con login y creación de proyecto.";
 
 function validatePlanHtml() {
   console.log("\n📋 Validando plan HTML...");
@@ -161,172 +154,59 @@ async function getUnblockedIssues(issues) {
 }
 
 const ISSUES = {
-  db1: {
-    title: "DB · Catálogos SODSI (glosario PDF)",
-    role: "database",
-    estimate: 5,
-    description: `## Objetivo
-Crear catálogos alineados al glosario SODSI (UTN).
-
-## Archivos
-- \`0.database/propuesta_actual/22. sodsi_catalogos.sql\` (nuevo)
-- Actualizar \`0.database/00_run_all.sql\`
-
-## Checklist
-- [ ] sodsi_unidades_programaticas (seed UTN — mín. sedes + placeholder unidades)
-- [ ] sodsi_regiones_mideplan (6 regiones + N/A)
-- [ ] sodsi_ejes_planes (Docencia, Investigación, Extensión, Vida Estudiantil, Gestión)
-- [ ] sodsi_aliado_tipo (Nacional/Internacional × Academia, Empresa, Gobierno, Sociedad)
-- [ ] sodsi_beneficiario_categoria + sodsi_beneficiario_valor (árbol PDF)
-- [ ] GATE_SQL: merge en propuesta_actual (CREATE TABLE en SQL definitivo — **sin ALTER** ni scripts sueltos)
-- [ ] **Handoff:** marcar checklist ítem 1 del issue DB schema (downstream)`,
-  },
-  db2: {
-    title: "DB · Schema proyecto SODSI + relaciones",
-    role: "database",
-    estimate: 5,
-    description: `## Objetivo
-Columnas y tablas N:M en ods_master.proyectos — **editar** \`2. ods_master_database.sql\` (CREATE TABLE completo). Prohibido ALTER incremental; ver _linear/README.md GATE_SQL.
-
-## Archivos
-- \`0.database/propuesta_actual/2. ods_master_database.sql\` (definición CREATE, no migración)
-- \`0.database/propuesta_actual/21. ods_mocks.sql\` (proyecto #6/#7 con ficha SODSI QA)
-
-## Checklist
-- [ ] ⏸ Gate: ítem 1 [x] marcado por DB catálogos upstream
-- [ ] Editar CREATE TABLE proyectos: contacto_telefono, contacto_correo, dependencia_id, region_mideplan_id, eje_planes_id, perspectiva_genero
-- [ ] proyecto_aliados (nombre, ambito, tipo_id)
-- [ ] proyecto_beneficiarios (valor_id)
-- [ ] proyecto_dependencias_participantes (unidad_id, rol coordinadora|participante)
-- [ ] Vista resumen ampliada o documentar merge en export
-- [ ] **Handoff:** marcar checklist ítem 1 del issue GATE_BD pipeline`,
-  },
-  db3: {
-    title: "DB · GATE_BD — drop_db + setup + mocks + JOOQ",
-    role: "database",
-    estimate: 3,
-    description: `## Objetivo
-Pipeline BD único — un solo agente.
-
-## Checklist
-- [ ] ⏸ Gate: ítem 1 [x] por DB schema upstream
-- [ ] python 0.database/drop_db.py
-- [ ] python 0.database/setup_db.py
-- [ ] python 0.database/load_mocks.py
-- [ ] cd 1.backend/odsProject && mvn -q compile (JOOQ POJOs OK)
-- [ ] outputArtifacts: schemaChanged, jooqRegenerated
-- [ ] **Handoff:** marcar checklist ítem 1 del issue BE repos`,
-  },
   be1: {
-    title: "BE · Repos catálogos SODSI + proyecto extendido",
+    title: "BE · findAllUsuariosAdmin campos SODSI",
     role: "backend",
-    estimate: 4,
-    description: `## Archivos
-IREPO→REPO: ISodsiCatalogRepository, SodsiCatalogRepository; IMasterProjectRepository extendido
-
-## Checklist
-- [ ] ⏸ Gate GATE_BD: ítem 1 [x]
-- [ ] ISodsiCatalogRepository + SodsiCatalogRepository (lectura catálogos)
-- [ ] IMasterProjectRepository: findByIds, saveSodsiRelations
-- [ ] MasterProjectRepository: JOOQ implementación
-- [ ] mvn -q compile
-- [ ] **Handoff:** marcar checklist ítem 1 del issue BE service proyecto`,
-  },
-  be2: {
-    title: "BE · Service + API proyecto con ficha SODSI",
-    role: "backend",
-    estimate: 5,
-    description: `## Archivos
-I*Service, *Service, I*Controller, *Controller — projects/full PUT planificación
-
-## Checklist
-- [ ] ⏸ Gate: ítem 1 [x] por BE repos
-- [ ] DTOs SODSI (contacto, dependencia, aliados[], beneficiarios[], participantes[])
-- [ ] MasterProjectService: persistir ficha SODSI en planificación
-- [ ] GET proyecto devuelve ficha SODSI
-- [ ] ISodsiCatalogController GET /api/sodsi/catalogos/*
-- [ ] mvn -q compile
-- [ ] **Handoff:** marcar checklist ítem 1 del issue BE export`,
-  },
-  be3: {
-    title: "BE · ExportService Excel multi-hoja SODSI",
-    role: "backend",
-    estimate: 5,
-    description: `## Archivos
-ExportService.java — 5 hojas: Ficha, Indicadores, Aliados, Beneficiarios, Dependencias
-
-## Checklist
-- [ ] ⏸ Gate: ítem 1 [x] por BE service proyecto
-- [ ] Consolidado sede+año: hoja Ficha SODSI (todas variables escalares + Institución UTN)
-- [ ] Hojas Aliados, Beneficiarios, Dependencias (aplanado)
-- [ ] Export individual: General ampliado
-- [ ] Sin breaking change GET /api/export/projects/excel
-- [ ] mvn -q compile
-- [ ] **Handoff:** marcar checklist ítem 1 del issue GATE_HTTP`,
-  },
-  be4: {
-    title: "BE · GATE_HTTP — export_sodsi.http + catálogos",
-    role: "backend",
-    estimate: 3,
-    description: `## Archivos
-export_sodsi.http, consultor_flow.http, sodsi_catalogos.http
-
-## Checklist
-- [ ] ⏸ Gate: ítem 1 [x] por BE export
-- [ ] GET catalogos → 200
-- [ ] GET consolidado sedeId=2 anio=2024 → 200 xlsx 5 hojas
-- [ ] GET export proyecto #6 → 200
-- [ ] consultor 200; gestor 403 consolidado
-- [ ] **Handoff:** marcar ítem 1 en issue FE wizard Y en issue FE export (paralelo)`,
-  },
-  fe1: {
-    title: "FE · Wizard ficha SODSI (gestor planificación)",
-    role: "frontend",
-    estimate: 6,
-    description: `## Archivos
-SodsiFichaStep, useSodsiCatalogs, projectService, ProjectPlanificacionWizard, usePlanificacionEditor
-
-## Checklist
-- [ ] ⏸ Gate GATE_HTTP: ítem 1 [x]
-- [ ] sodsiCatalogService.js + hook catálogos
-- [ ] Paso wizard: dependencia, contacto tel/email, Mideplan, PLANES, género
-- [ ] Aliados dinámicos (lista)
-- [ ] Beneficiarios multi-select por categoría
-- [ ] Dependencias participantes (coordinadora + participantes)
-- [ ] PUT /full persiste ficha; proyecto #7 QA
-- [ ] npm run build exit 0`,
-  },
-  fe2: {
-    title: "FE · Panel export SODSI + filename",
-    role: "frontend",
     estimate: 2,
     description: `## Archivos
-BulkProjectExportPanel.jsx, exportService.js
+LoginRepository.java
 
 ## Checklist
-- [ ] ⏸ Gate GATE_HTTP: ítem 1 [x] (paralelo con FE wizard — otro agente)
-- [ ] Copy «Reporte institucional SODSI»
-- [ ] Filename ods_sodsi_{sede}_{anio}.xlsx
-- [ ] npm run build exit 0
-- [ ] Smoke consultor descarga dashboard`,
+- [ ] findAllUsuariosAdmin: añadir areaId, dependenciaId, rolDependenciaId, telefonoContacto al SELECT
+- [ ] mvn -q compile
+- [ ] **Handoff:** marcar checklist ítem 1 del issue BE-2`,
+  },
+  be2: {
+    title: "BE · GATE_HTTP — admin_users_sodsi.http",
+    role: "backend",
+    estimate: 2,
+    description: `## Archivos
+admin_users_sodsi.http
+
+## Checklist
+- [ ] ⏸ Gate: ítem 1 [x] por BE-1 upstream (handoff)
+- [ ] admin_users_sodsi.http — GET /login/users como admin; gestor_pobreza con areaId/dependenciaId
+- [ ] .http 2xx con backend levantado
+- [ ] **Handoff:** marcar checklist ítem 1 del issue FE-1 (GATE_HTTP)`,
+  },
+  fe1: {
+    title: "FE · verificar UsersAdminPage sin badge falso",
+    role: "frontend",
+    estimate: 1,
+    description: `## Archivos
+UsersAdminPage.jsx (solo si ajuste necesario)
+
+## Checklist
+- [ ] ⏸ GATE_HTTP: NO iniciar hasta handoff BE-2 ítem 1 [x]
+- [ ] Verificar gestor_pobreza sin badge «Perfil incompleto» y columnas SODSI pobladas
+- [ ] npm run build`,
   },
   orch: {
-    title: "Orquestador · Resumen HTML + epic Completed + cleanup",
+    title: "Orquestador · resumen + Epic Completed",
     role: "orchestrator",
     estimate: 1,
     description: `## Checklist
-- [ ] ⏸ Gate: FE wizard Y FE export en Done
+- [ ] ⏸ Gate: FE-1 en Done
 - [ ] status — todos Done checklist 100%
-- [ ] resumen_sprint_export_sodsi.html
-- [ ] Epic Completed + comentario ruta resumen
-- [ ] cleanup (opcional tras commit)`,
+- [ ] resumen_sprint_admin_users_sodsi.html
+- [ ] Epic Completed`,
   },
 };
 
 async function cmdCreate() {
   validatePlanHtml();
 
-  console.log("\n🔷  Sprint SODSI — Glosario completo · Multi-agente");
+  console.log("\n🔷  Sprint admin users SODSI list");
   console.log("━".repeat(58));
 
   const team = await getTeam();
@@ -334,7 +214,6 @@ async function cmdCreate() {
 
   const ST = { backlog: await getOrCreateState(teamId, "Backlog", "backlog", "#94A3B8") };
   const L = {
-    db: await getOrCreateLabel(teamId, "role:database", "#EAB308"),
     be: await getOrCreateLabel(teamId, "role:backend", "#22C55E"),
     fe: await getOrCreateLabel(teamId, "role:frontend", "#0EA5E9"),
     orch: await getOrCreateLabel(teamId, "role:orchestrator", "#EF4444"),
@@ -347,20 +226,20 @@ async function cmdCreate() {
     teamId,
     SPRINT_NAME,
     NOW,
-    new Date(NOW.getTime() + 21 * 24 * 60 * 60 * 1000)
+    new Date(NOW.getTime() + 14 * 24 * 60 * 60 * 1000)
   );
 
   const base = { teamId, projectId: epicId, cycleId: sprintId, stateId: ST.backlog };
-  const roleLabel = { database: L.db, backend: L.be, frontend: L.fe, orchestrator: L.orch };
+  const roleLabel = { backend: L.be, frontend: L.fe, orchestrator: L.orch };
 
-  console.log("\n📝 Issues (10)...");
+  console.log("\n📝 Issues (4)...");
   const created = {};
   for (const [key, spec] of Object.entries(ISSUES)) {
     created[key] = await createIssue({
       ...base,
       title: spec.title,
       description: spec.description,
-      priority: spec.role === "database" ? 1 : spec.role === "backend" ? 1 : 2,
+      priority: 1,
       labelIds: [roleLabel[spec.role], L.feat],
       estimate: spec.estimate,
     });
@@ -368,16 +247,9 @@ async function cmdCreate() {
 
   console.log("\n🔗 Blocks...");
   const chain = [
-    ["db2", "db1"],
-    ["db3", "db2"],
-    ["be1", "db3"],
     ["be2", "be1"],
-    ["be3", "be2"],
-    ["be4", "be3"],
-    ["fe1", "be4"],
-    ["fe2", "be4"],
+    ["fe1", "be2"],
     ["orch", "fe1"],
-    ["orch", "fe2"],
   ];
   for (const [blocked, blocker] of chain) {
     await addBlocksRelation(created[blocked], created[blocker]);
@@ -387,14 +259,11 @@ async function cmdCreate() {
 
   console.log("\n" + "━".repeat(58));
   console.log("🎉  Sprint creado\n");
-  console.log(`  Issues: 10 · Puntos: ${points}`);
-  console.log("\n  Asignación multi-agente:");
-  console.log("    database  → " + created.db1.identifier + " … " + created.db3.identifier);
-  console.log("    backend   → " + created.be1.identifier + " … " + created.be4.identifier);
-  console.log("    frontend  → " + created.fe1.identifier + " ∥ " + created.fe2.identifier + " (paralelo tras HTTP)");
-  console.log("    orchestrator → " + created.orch.identifier);
-  console.log("\n  Paralelo FE: tras " + created.be4.identifier + " Done + handoff ítem 1 en ambos FE");
-  console.log("\n  Siguiente: node scripts/sprint-next.mjs  →  " + created.db1.identifier + "\n");
+  console.log(`  Issues: 4 · Puntos: ${points}`);
+  console.log(
+    `  Cadena: ${created.be1.identifier} → ${created.be2.identifier} → ${created.fe1.identifier} → ${created.orch.identifier}`
+  );
+  console.log(`\n  Siguiente: node scripts/sprint-next.mjs  →  ${created.be1.identifier}\n`);
 }
 
 async function cmdStatus() {
@@ -429,8 +298,7 @@ async function cmdNext() {
     console.log("\n✅ Sin issues desbloqueados.\n");
     return;
   }
-  const parallel = available.length > 1;
-  console.log(`\n⏭️  ${available.length} issue(s)${parallel ? " — paralelo permitido" : ""}:\n`);
+  console.log(`\n⏭️  ${available.length} issue(s):\n`);
   for (const i of available) {
     const st = await i.state;
     const labels = await i.labels();
@@ -513,10 +381,9 @@ async function cmdCleanup() {
 
 function cmdHelp() {
   console.log(`
-🔷 sprint_export_sodsi.mjs — SODSI glosario completo
+🔷 sprint_admin_users_sodsi.mjs — Admin listado SODSI
 
-Pipeline multi-agente:
-  DB1→DB2→DB3 → BE1→BE2→BE3→BE4(.http) → FE1∥FE2 → ORCH
+Pipeline: BE-1 → BE-2(.http) → FE-1 → ORCH
 
 LEER show → HACER un ítem → checklist ODS-N <n> → repetir
 
@@ -536,7 +403,7 @@ const handlers = {
   state: () => {
     const flags = rest.filter((a) => a.startsWith("--"));
     const pos = rest.filter((a) => !a.startsWith("--"));
-    cmdState(pos[0], pos.slice(1).join(" "), flags);
+    return cmdState(pos[0], pos.slice(1).join(" "), flags);
   },
   comment: () => cmdComment(rest[0], rest.slice(1).join(" ")),
   cleanup: cmdCleanup,

@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository;
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoBeneficiarios;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds;
 import com.odsProject.odsProject.repository.interfaces.IMasterProjectRepository;
@@ -8,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.odsProject.odsProject.database.jooq.ods_master.Tables.PROYECTO_BENEFICIARIOS;
 import static com.odsProject.odsProject.database.jooq.ods_master.Tables.PROYECTOS;
 import static com.odsProject.odsProject.database.jooq.ods_master.Tables.VISTA_RESUMEN_PROYECTOS_ODS;
 import static com.odsProject.odsProject.database.jooq.ods_login.Tables.USUARIOS;
@@ -436,5 +440,44 @@ public class MasterProjectRepository implements IMasterProjectRepository {
         m.put("auditadosMes",  auditadosMes != null ? auditadosMes : 0);
         m.put("tiempoPromedioHoras", promedio);
         return m;
+    }
+
+    @Override
+    public List<Proyectos> findByIds(Collection<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return dsl.selectFrom(PROYECTOS)
+                .where(PROYECTOS.ID.in(ids))
+                .fetchInto(Proyectos.class);
+    }
+
+    @Override
+    public List<ProyectoBeneficiarios> findBeneficiariosByProyecto(Integer proyectoId) {
+        if (proyectoId == null) {
+            return Collections.emptyList();
+        }
+        return dsl.selectFrom(PROYECTO_BENEFICIARIOS)
+                .where(PROYECTO_BENEFICIARIOS.PROYECTO_ID.eq(proyectoId))
+                .fetchInto(ProyectoBeneficiarios.class);
+    }
+
+    @Override
+    public void replaceBeneficiarios(Integer proyectoId, List<ProyectoBeneficiarios> beneficiarios) {
+        if (proyectoId == null) {
+            throw new IllegalArgumentException("proyectoId es requerido");
+        }
+        dsl.deleteFrom(PROYECTO_BENEFICIARIOS).where(PROYECTO_BENEFICIARIOS.PROYECTO_ID.eq(proyectoId)).execute();
+        if (beneficiarios == null) {
+            return;
+        }
+        for (ProyectoBeneficiarios b : beneficiarios) {
+            if (b == null || b.getValorId() == null) continue;
+            dsl.insertInto(PROYECTO_BENEFICIARIOS)
+                    .set(PROYECTO_BENEFICIARIOS.PROYECTO_ID, proyectoId)
+                    .set(PROYECTO_BENEFICIARIOS.VALOR_ID, b.getValorId())
+                    .onDuplicateKeyIgnore()
+                    .execute();
+        }
     }
 }

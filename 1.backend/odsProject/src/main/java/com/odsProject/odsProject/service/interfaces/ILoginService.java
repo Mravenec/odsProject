@@ -36,6 +36,11 @@ public interface ILoginService {
     Optional<Map<String, Object>> authenticate(String email, String password, String ip, String userAgent);
     
     /**
+     * Perfil SODSI enriquecido del usuario (sede, área, dependencia, rol, contacto).
+     */
+    Map<String, Object> buildUsuarioAuthProfile(Usuarios usuario);
+    
+    /**
      * Cierra la sesión de un usuario
      * 
      * @param token Token de sesión a revocar

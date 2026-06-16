@@ -11,6 +11,7 @@ import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminResu
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sedes;
 import com.odsProject.odsProject.repository.LoginRepository;
+import com.odsProject.odsProject.repository.interfaces.ISodsiCatalogRepository;
 import com.odsProject.odsProject.service.interfaces.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,6 +43,9 @@ public class LoginService implements ILoginService {
 
     @Autowired
     private LoginRepository loginRepository;
+
+    @Autowired
+    private ISodsiCatalogRepository sodsiCatalogRepository;
     
     @Value("${app.jwt.secret}")
     private String jwtSecret;
@@ -134,6 +139,7 @@ public class LoginService implements ILoginService {
             result.put("rol", rolName); // Rol real desde DB
             result.put("sedeId", usuario.getSedeId());
             result.put("sedeNombre", sedeName);
+            result.put("profile", buildUsuarioAuthProfile(usuario));
             result.put("permisos", List.of("READ", "WRITE"));
             result.put("loginStatus", "success");
             
@@ -369,6 +375,18 @@ public class LoginService implements ILoginService {
         }
         if (usuario.getEmailVerificado() == null) {
             usuario.setEmailVerificado(existente.getEmailVerificado());
+        }
+        if (usuario.getAreaId() == null) {
+            usuario.setAreaId(existente.getAreaId());
+        }
+        if (usuario.getDependenciaId() == null) {
+            usuario.setDependenciaId(existente.getDependenciaId());
+        }
+        if (usuario.getRolDependenciaId() == null) {
+            usuario.setRolDependenciaId(existente.getRolDependenciaId());
+        }
+        if (usuario.getTelefonoContacto() == null) {
+            usuario.setTelefonoContacto(existente.getTelefonoContacto());
         }
 
         return loginRepository.updateUsuario(usuario);
@@ -774,6 +792,50 @@ public class LoginService implements ILoginService {
     @Override
     public List<VistaAdminDetalleIndicadores> getVistaDetalleIndicadores(Integer proyectoId) {
         return loginRepository.findVistaDetalleIndicadores(proyectoId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Object> buildUsuarioAuthProfile(Usuarios usuario) {
+        Map<String, Object> profile = new LinkedHashMap<>();
+        if (usuario == null) {
+            return profile;
+        }
+        profile.put("userId", usuario.getId());
+        profile.put("fullName", usuario.getFullName());
+        profile.put("email", usuario.getEmail());
+        profile.put("telefonoContacto", usuario.getTelefonoContacto());
+        profile.put("sedeId", usuario.getSedeId());
+        loginRepository.findSedeById(usuario.getSedeId())
+                .ifPresent(s -> profile.put("sedeNombre", s.getNombre()));
+        profile.put("areaId", usuario.getAreaId() != null ? usuario.getAreaId().intValue() : null);
+        sodsiCatalogRepository.findAreaById(usuario.getAreaId()).ifPresent(a -> {
+            profile.put("areaCodigo", a.getCodigo());
+            profile.put("areaNombre", a.getNombre());
+        });
+        profile.put("dependenciaId", usuario.getDependenciaId() != null ? usuario.getDependenciaId().intValue() : null);
+        sodsiCatalogRepository.findDependenciaById(usuario.getDependenciaId()).ifPresent(d -> {
+            profile.put("dependenciaCodigo", d.getCodigo());
+            profile.put("dependenciaNombre", d.getNombre());
+        });
+        profile.put("rolDependenciaId", usuario.getRolDependenciaId() != null ? usuario.getRolDependenciaId().intValue() : null);
+        sodsiCatalogRepository.findRolDependenciaById(usuario.getRolDependenciaId()).ifPresent(r -> {
+            profile.put("rolDependenciaCodigo", r.getCodigo());
+            profile.put("rolDependenciaNombre", r.getNombre());
+        });
+        profile.put("contacto", formatContactoExport(
+                usuario.getFullName(), usuario.getEmail(), usuario.getTelefonoContacto()));
+        return profile;
+    }
+
+    private static String formatContactoExport(String nombre, String email, String telefono) {
+        String n = nombre != null ? nombre : "";
+        String e = email != null ? email : "";
+        String t = telefono != null ? telefono : "";
+        if (n.isBlank() && e.isBlank() && t.isBlank()) return "";
+        return n + " - " + e + " - " + t;
     }
 
     /**

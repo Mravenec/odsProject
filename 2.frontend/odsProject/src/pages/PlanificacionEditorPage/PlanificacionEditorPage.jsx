@@ -6,6 +6,7 @@ import { useCatalog } from '../../hooks/useCatalog';
 import { useGeo } from '../../hooks/useGeo.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
 import usePlanificacionEditor from '../../hooks/usePlanificacionEditor';
+import useSodsiCatalogs from '../../hooks/useSodsiCatalogs';
 import ProjectPlanificacionWizard from '../../components/projects/ProjectPlanificacionWizard';
 import IndicatorConfigModal from '../../components/projects/IndicatorConfigModal/IndicatorConfigModal';
 import {
@@ -14,6 +15,7 @@ import {
   resolveSedeIdFromArea,
   canAdvanceToIndicatorsStep,
 } from '../../utils/planificacionEditorUtils';
+import { resolveRegionMideplan } from '../../utils/sodsiRegionUtils';
 import '../ProjectCreationPage/ProjectCreationPage.css';
 
 const PlanificacionEditorPage = () => {
@@ -23,6 +25,7 @@ const PlanificacionEditorPage = () => {
   const perms = usePermissions();
   const { odsList } = useCatalog();
   const editor = usePlanificacionEditor(projectId);
+  const sodsiCatalogs = useSodsiCatalogs({ enabled: !editor.loading });
   const geoHydratedRef = useRef(false);
 
   const {
@@ -150,8 +153,28 @@ const PlanificacionEditorPage = () => {
     fetchDistritos,
   ]);
 
-  const lockGestorInstitutionalFields = isGestorOwner
-    && Boolean(editor.formData.area && editor.formData.responsable);
+  const gestorProfile = useMemo(() => {
+    if (!isGestorOwner || !user) return null;
+    const sedeNombre = user.sedeNombre
+      || catalogSedes.find((s) => Number(s.id) === Number(user.sedeId))?.nombre
+      || '';
+    return {
+      fullName: user.fullName || user.name,
+      contacto: user.contacto
+        || [user.fullName, user.email, user.telefonoContacto].filter(Boolean).join(' - '),
+      sedeNombre,
+      areaNombre: user.areaNombre || '',
+      dependenciaNombre: user.dependenciaNombre || '',
+      rolDependenciaNombre: user.rolDependenciaNombre || '',
+    };
+  }, [isGestorOwner, user, catalogSedes]);
+
+  const lockGestorInstitutionalFields = Boolean(isGestorOwner && gestorProfile);
+
+  const regionMideplanNombre = useMemo(
+    () => resolveRegionMideplan(editor.formData.provinciaNombre, sodsiCatalogs.catalogs),
+    [editor.formData.provinciaNombre, sodsiCatalogs.catalogs],
+  );
 
   const canGoToStep2 = !editor.loading && canAdvanceToIndicatorsStep(editor.formData);
 
@@ -250,7 +273,11 @@ const PlanificacionEditorPage = () => {
     e.preventDefault();
     if (editor.currentStep === 1) {
       if (!canAdvanceToIndicatorsStep(editor.formData)) {
-        alert('Espere a que cargue el proyecto o vincule al menos un ODS.');
+        alert('Espere a que cargue el proyecto o complete el nombre.');
+        return;
+      }
+      if (!(editor.fichaSodsi.beneficiarioValorIds || []).length) {
+        alert('Seleccioná al menos un beneficiario en el paso 1.');
         return;
       }
       editor.setCurrentStep(2);
@@ -314,12 +341,18 @@ const PlanificacionEditorPage = () => {
         <div className="header-left">
           <button
             type="button"
-            onClick={() => (currentStep === 1 ? navigate(`/projects/${projectId}/results`) : setCurrentStep(1))}
+            onClick={() => {
+              if (currentStep === 1) navigate(`/projects/${projectId}/results`);
+              else setCurrentStep(currentStep - 1);
+            }}
             className="btn-back"
           >
             <ArrowLeft size={20} />
           </button>
-          <h1>{currentStep === 1 ? 'Editar planificación' : 'Indicadores y metas'}</h1>
+          <h1>
+            {currentStep === 1 && 'Editar planificación'}
+            {currentStep === 2 && 'Indicadores y metas'}
+          </h1>
         </div>
 
         <div className="stepper">
@@ -333,38 +366,50 @@ const PlanificacionEditorPage = () => {
       <main className="form-card">
         <form onSubmit={handleSubmit} noValidate>
           <ProjectPlanificacionWizard
-            mode="edit"
-            currentStep={currentStep}
-            formData={formData}
-            onInputChange={handleInputChange}
-            onGeoChange={handleGeoChange}
-            onResponsableChange={handleResponsableChange}
-            provincias={provincias}
-            cantones={cantones}
-            distritos={distritos}
-            catalogSedes={catalogSedes}
-            filteredPersonnel={filteredPersonnel}
-            loadingResources={loadingResources}
-            lockGestorInstitutionalFields={lockGestorInstitutionalFields}
-            odsList={odsList}
-            selectedOds={formData.selectedOds}
-            onToggleOds={toggleOds}
-            indicators={formData.indicators}
-            onToggleIndicator={toggleIndicator}
-            indicatorMetadata={editor.indicatorMetadata}
-            indicatorConfigs={editor.indicatorConfigs}
-            onConfigureIndicator={setConfiguringIndicator}
-            availableIndicators={editor.availableIndicators}
-            loadingMetadata={editor.loadingMetadata}
-            expandedOds={editor.expandedOds}
-            onToggleExpandedOds={(odsId) => editor.setExpandedOds(editor.expandedOds === odsId ? null : odsId)}
-          />
+              mode="edit"
+              currentStep={currentStep}
+              formData={formData}
+              onInputChange={handleInputChange}
+              onGeoChange={handleGeoChange}
+              onResponsableChange={handleResponsableChange}
+              provincias={provincias}
+              cantones={cantones}
+              distritos={distritos}
+              catalogSedes={catalogSedes}
+              filteredPersonnel={filteredPersonnel}
+              loadingResources={loadingResources}
+              lockGestorInstitutionalFields={lockGestorInstitutionalFields}
+              gestorProfile={gestorProfile}
+              regionMideplanNombre={regionMideplanNombre}
+              beneficiarioValorIds={editor.fichaSodsi.beneficiarioValorIds}
+              onBeneficiariosChange={(ids) => editor.setFichaSodsi((prev) => ({ ...prev, beneficiarioValorIds: ids }))}
+              fichaSodsi={editor.fichaSodsi}
+              onFichaSodsiChange={(patch) => editor.setFichaSodsi((prev) => ({ ...prev, ...patch }))}
+              sodsiCatalogs={sodsiCatalogs.catalogs}
+              sodsiCatalogsLoading={sodsiCatalogs.loading}
+              onSodsiCatalogRefresh={sodsiCatalogs.reload}
+              odsList={odsList}
+              selectedOds={formData.selectedOds}
+              onToggleOds={toggleOds}
+              indicators={formData.indicators}
+              onToggleIndicator={toggleIndicator}
+              indicatorMetadata={editor.indicatorMetadata}
+              indicatorConfigs={editor.indicatorConfigs}
+              onConfigureIndicator={setConfiguringIndicator}
+              availableIndicators={editor.availableIndicators}
+              loadingMetadata={editor.loadingMetadata}
+              expandedOds={editor.expandedOds}
+              onToggleExpandedOds={(odsId) => editor.setExpandedOds(editor.expandedOds === odsId ? null : odsId)}
+            />
 
           <div className="form-actions">
             <button
               type="button"
               className="btn-premium btn-secondary"
-              onClick={() => (currentStep === 1 ? navigate(`/projects/${projectId}/results`) : setCurrentStep(1))}
+              onClick={() => {
+              if (currentStep === 1) navigate(`/projects/${projectId}/results`);
+              else setCurrentStep(currentStep - 1);
+            }}
             >
               {currentStep === 1 ? 'Cancelar' : 'Anterior'}
             </button>

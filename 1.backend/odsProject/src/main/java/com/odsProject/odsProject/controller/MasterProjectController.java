@@ -78,7 +78,7 @@ public class MasterProjectController implements IMasterProjectController {
         if (body.get("nombreProyecto") != null) p.setNombreProyecto(String.valueOf(body.get("nombreProyecto")));
         if (body.get("descripcion") != null) p.setDescripcion(String.valueOf(body.get("descripcion")));
         if (body.get("metaGeneral") != null) p.setMetaGeneral(String.valueOf(body.get("metaGeneral")));
-        if (body.get("responsableNombre") != null) p.setResponsableNombre(String.valueOf(body.get("responsableNombre")));
+        if (body.get("aliadoExterno") != null) p.setAliadoExterno(String.valueOf(body.get("aliadoExterno")));
         if (body.get("locationProvince") != null) p.setLocationProvince(String.valueOf(body.get("locationProvince")));
         if (body.get("locationCanton") != null) p.setLocationCanton(String.valueOf(body.get("locationCanton")));
         if (body.get("locationDistrict") != null) p.setLocationDistrict(String.valueOf(body.get("locationDistrict")));
@@ -149,6 +149,16 @@ public class MasterProjectController implements IMasterProjectController {
     @GetMapping("/{id}/ods")
     public ResponseEntity<List<Map<String, Object>>> getOdsByProyecto(@PathVariable Integer id) {
         return ResponseEntity.ok(masterProjectService.getOdsByProyecto(id));
+    }
+
+    @Override
+    @GetMapping("/{id}/sodsi")
+    public ResponseEntity<Map<String, Object>> getSodsiFicha(@PathVariable Integer id) {
+        try {
+            return ResponseEntity.ok(masterProjectService.getSodsiFichaByProyectoId(id));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // ── Sprint 8.3 ───────────────────────────────────────────────────────

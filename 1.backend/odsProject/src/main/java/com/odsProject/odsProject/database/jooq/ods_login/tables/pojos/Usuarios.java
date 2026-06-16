@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import org.jooq.types.UByte;
+import org.jooq.types.UShort;
 
 
 /**
@@ -25,6 +26,10 @@ public class Usuarios implements Serializable {
     private String fullName;
     private Integer rolId;
     private Integer sedeId;
+    private UShort areaId;
+    private UShort dependenciaId;
+    private UByte rolDependenciaId;
+    private String telefonoContacto;
     private Byte isActive;
     private Byte emailVerificado;
     private LocalDateTime ultimoLogin;
@@ -45,6 +50,10 @@ public class Usuarios implements Serializable {
         this.fullName = value.fullName;
         this.rolId = value.rolId;
         this.sedeId = value.sedeId;
+        this.areaId = value.areaId;
+        this.dependenciaId = value.dependenciaId;
+        this.rolDependenciaId = value.rolDependenciaId;
+        this.telefonoContacto = value.telefonoContacto;
         this.isActive = value.isActive;
         this.emailVerificado = value.emailVerificado;
         this.ultimoLogin = value.ultimoLogin;
@@ -64,6 +73,10 @@ public class Usuarios implements Serializable {
         String fullName,
         Integer rolId,
         Integer sedeId,
+        UShort areaId,
+        UShort dependenciaId,
+        UByte rolDependenciaId,
+        String telefonoContacto,
         Byte isActive,
         Byte emailVerificado,
         LocalDateTime ultimoLogin,
@@ -81,6 +94,10 @@ public class Usuarios implements Serializable {
         this.fullName = fullName;
         this.rolId = rolId;
         this.sedeId = sedeId;
+        this.areaId = areaId;
+        this.dependenciaId = dependenciaId;
+        this.rolDependenciaId = rolDependenciaId;
+        this.telefonoContacto = telefonoContacto;
         this.isActive = isActive;
         this.emailVerificado = emailVerificado;
         this.ultimoLogin = ultimoLogin;
@@ -194,6 +211,74 @@ public class Usuarios implements Serializable {
      */
     public Usuarios setSedeId(Integer sedeId) {
         this.sedeId = sedeId;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.area_id</code>. Fuente de información
+     * SODSI (sodsi_area)
+     */
+    public UShort getAreaId() {
+        return this.areaId;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.area_id</code>. Fuente de información
+     * SODSI (sodsi_area)
+     */
+    public Usuarios setAreaId(UShort areaId) {
+        this.areaId = areaId;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.dependencia_id</code>. Dependencia
+     * SODSI del usuario
+     */
+    public UShort getDependenciaId() {
+        return this.dependenciaId;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.dependencia_id</code>. Dependencia
+     * SODSI del usuario
+     */
+    public Usuarios setDependenciaId(UShort dependenciaId) {
+        this.dependenciaId = dependenciaId;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.rol_dependencia_id</code>. Rol de
+     * dependencia SODSI
+     */
+    public UByte getRolDependenciaId() {
+        return this.rolDependenciaId;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.rol_dependencia_id</code>. Rol de
+     * dependencia SODSI
+     */
+    public Usuarios setRolDependenciaId(UByte rolDependenciaId) {
+        this.rolDependenciaId = rolDependenciaId;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.telefono_contacto</code>. Teléfono
+     * contacto SODSI export
+     */
+    public String getTelefonoContacto() {
+        return this.telefonoContacto;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.telefono_contacto</code>. Teléfono
+     * contacto SODSI export
+     */
+    public Usuarios setTelefonoContacto(String telefonoContacto) {
+        this.telefonoContacto = telefonoContacto;
         return this;
     }
 
@@ -383,6 +468,30 @@ public class Usuarios implements Serializable {
         }
         else if (!this.sedeId.equals(other.sedeId))
             return false;
+        if (this.areaId == null) {
+            if (other.areaId != null)
+                return false;
+        }
+        else if (!this.areaId.equals(other.areaId))
+            return false;
+        if (this.dependenciaId == null) {
+            if (other.dependenciaId != null)
+                return false;
+        }
+        else if (!this.dependenciaId.equals(other.dependenciaId))
+            return false;
+        if (this.rolDependenciaId == null) {
+            if (other.rolDependenciaId != null)
+                return false;
+        }
+        else if (!this.rolDependenciaId.equals(other.rolDependenciaId))
+            return false;
+        if (this.telefonoContacto == null) {
+            if (other.telefonoContacto != null)
+                return false;
+        }
+        else if (!this.telefonoContacto.equals(other.telefonoContacto))
+            return false;
         if (this.isActive == null) {
             if (other.isActive != null)
                 return false;
@@ -451,6 +560,10 @@ public class Usuarios implements Serializable {
         result = prime * result + ((this.fullName == null) ? 0 : this.fullName.hashCode());
         result = prime * result + ((this.rolId == null) ? 0 : this.rolId.hashCode());
         result = prime * result + ((this.sedeId == null) ? 0 : this.sedeId.hashCode());
+        result = prime * result + ((this.areaId == null) ? 0 : this.areaId.hashCode());
+        result = prime * result + ((this.dependenciaId == null) ? 0 : this.dependenciaId.hashCode());
+        result = prime * result + ((this.rolDependenciaId == null) ? 0 : this.rolDependenciaId.hashCode());
+        result = prime * result + ((this.telefonoContacto == null) ? 0 : this.telefonoContacto.hashCode());
         result = prime * result + ((this.isActive == null) ? 0 : this.isActive.hashCode());
         result = prime * result + ((this.emailVerificado == null) ? 0 : this.emailVerificado.hashCode());
         result = prime * result + ((this.ultimoLogin == null) ? 0 : this.ultimoLogin.hashCode());
@@ -474,6 +587,10 @@ public class Usuarios implements Serializable {
         sb.append(", ").append(fullName);
         sb.append(", ").append(rolId);
         sb.append(", ").append(sedeId);
+        sb.append(", ").append(areaId);
+        sb.append(", ").append(dependenciaId);
+        sb.append(", ").append(rolDependenciaId);
+        sb.append(", ").append(telefonoContacto);
         sb.append(", ").append(isActive);
         sb.append(", ").append(emailVerificado);
         sb.append(", ").append(ultimoLogin);

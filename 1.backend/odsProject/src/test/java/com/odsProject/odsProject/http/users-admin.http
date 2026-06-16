@@ -31,7 +31,7 @@ Authorization: Bearer {{authToken}}
 
 # ── 2. Listar usuarios admin ──
 
-### GET /api/login/users — join roles + sedes, sin passwordHash
+### GET /api/login/users — join roles + sedes + campos SODSI (areaId, dependenciaId, rolDependenciaId, telefonoContacto)
 GET {{baseUrl}}/api/login/users
 Authorization: Bearer {{authToken}}
 

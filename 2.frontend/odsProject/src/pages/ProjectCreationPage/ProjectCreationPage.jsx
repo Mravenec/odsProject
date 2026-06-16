@@ -12,7 +12,10 @@ import { usePermissions } from '../../hooks/usePermissions';
 
 import IndicatorConfigModal from '../../components/projects/IndicatorConfigModal/IndicatorConfigModal';
 import ProjectPlanificacionWizard from '../../components/projects/ProjectPlanificacionWizard';
+import { useSodsiCatalogs } from '../../hooks/useSodsiCatalogs';
 import { SERVICES_MAP, SDG_INDICATORS_CATALOG } from '../../utils/planificacionEditorUtils';
+import { emptyFichaSodsi } from '../../utils/sodsiFichaUtils';
+import { resolveRegionMideplan } from '../../utils/sodsiRegionUtils';
 import './ProjectCreationPage.css';
 
 const ProjectCreationPage = () => {
@@ -61,6 +64,8 @@ const ProjectCreationPage = () => {
   const [indicatorConfigs, setIndicatorConfigs] = useState({});
   const [configuringIndicator, setConfiguringIndicator] = useState(null);
   const [expandedOds, setExpandedOds] = useState(null);
+  const [fichaSodsi, setFichaSodsi] = useState(emptyFichaSodsi);
+  const sodsiCatalogs = useSodsiCatalogs();
   
   // Nuevo estado para metadatos reales de la BD
   const [indicatorMetadata, setIndicatorMetadata] = useState({});
@@ -102,20 +107,38 @@ const ProjectCreationPage = () => {
 
   const isGestor = perms.role === 'gestor';
 
-  // Gestor: área y responsable = usuario autenticado
+  const gestorProfile = useMemo(() => {
+    if (!isGestor || !user) return null;
+    const sedeNombre = user.sedeNombre
+      || catalogSedes.find((s) => Number(s.id) === Number(user.sedeId))?.nombre
+      || '';
+    return {
+      fullName: user.fullName || user.name,
+      contacto: user.contacto
+        || [user.fullName, user.email, user.telefonoContacto].filter(Boolean).join(' - '),
+      sedeNombre,
+      areaNombre: user.areaNombre || '',
+      dependenciaNombre: user.dependenciaNombre || '',
+      rolDependenciaNombre: user.rolDependenciaNombre || '',
+    };
+  }, [isGestor, user, catalogSedes]);
+
+  const lockGestorInstitutionalFields = Boolean(isGestor && gestorProfile);
+
+  const regionMideplanNombre = useMemo(
+    () => resolveRegionMideplan(formData.provinciaNombre, sodsiCatalogs.catalogs),
+    [formData.provinciaNombre, sodsiCatalogs.catalogs],
+  );
+
+  // Gestor: área y responsable desde perfil autenticado
   useEffect(() => {
-    if (loadingResources || !isGestor || !user?.id) return;
+    if (!isGestor || !user?.id) return;
 
-    const selfInCatalog = academicPersonnel.find(
-      (p) => p.id === user.id
-        || (user.email && String(p.email || '').toLowerCase() === user.email.toLowerCase())
-    );
-
-    const area = selfInCatalog?.sede
-      || catalogSedes.find((s) => s.id === user.sedeId)?.nombre
+    const area = gestorProfile?.sedeNombre
+      || catalogSedes.find((s) => Number(s.id) === Number(user.sedeId))?.nombre
       || '';
 
-    const responsable = selfInCatalog?.fullName || user.fullName || user.name || '';
+    const responsable = user.fullName || user.name || '';
 
     if (!area && !responsable) return;
 
@@ -125,9 +148,7 @@ const ProjectCreationPage = () => {
       if (nextArea === prev.area && nextResponsable === prev.responsable) return prev;
       return { ...prev, area: nextArea, responsable: nextResponsable };
     });
-  }, [loadingResources, isGestor, user, academicPersonnel, catalogSedes]);
-
-  const lockGestorInstitutionalFields = isGestor && Boolean(formData.area && formData.responsable);
+  }, [isGestor, user, gestorProfile, catalogSedes]);
 
   // Carga inicial de geografía
   useEffect(() => {
@@ -280,6 +301,10 @@ const ProjectCreationPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentStep === 1) {
+      if (!(fichaSodsi.beneficiarioValorIds || []).length) {
+        alert('Seleccioná al menos un beneficiario en el paso 1.');
+        return;
+      }
       setCurrentStep(2);
       window.scrollTo(0, 0);
       return;
@@ -310,12 +335,19 @@ ${sinMasterId.join(', ')}
         return;
       }
 
+      if (!(fichaSodsi.beneficiarioValorIds || []).length) {
+        alert('Seleccioná al menos un sector beneficiario en el paso 1.');
+        return;
+      }
+
       const finalData = {
         ...formData,
         objective: formData.primaryOds,
         indicatorConfigs,
         indicatorMetadata,
-        userId: user.id
+        userId: user.id,
+        sedeId: user.sedeId,
+        fichaSodsi,
       };
       
       const result = await createFullProject(finalData, SERVICES_MAP);
@@ -396,6 +428,15 @@ ${sinMasterId.join(', ')}
             filteredPersonnel={filteredPersonnel}
             loadingResources={loadingResources}
             lockGestorInstitutionalFields={lockGestorInstitutionalFields}
+            gestorProfile={gestorProfile}
+            regionMideplanNombre={regionMideplanNombre}
+            beneficiarioValorIds={fichaSodsi.beneficiarioValorIds}
+            onBeneficiariosChange={(ids) => setFichaSodsi((prev) => ({ ...prev, beneficiarioValorIds: ids }))}
+            fichaSodsi={fichaSodsi}
+            onFichaSodsiChange={(patch) => setFichaSodsi((prev) => ({ ...prev, ...patch }))}
+            sodsiCatalogs={sodsiCatalogs.catalogs}
+            sodsiCatalogsLoading={sodsiCatalogs.loading}
+            onSodsiCatalogRefresh={sodsiCatalogs.reload}
             odsList={odsList}
             selectedOds={formData.selectedOds}
             onToggleOds={toggleOds}
@@ -414,7 +455,7 @@ ${sinMasterId.join(', ')}
             <button 
               type="button" 
               className="btn-premium btn-secondary" 
-              onClick={() => currentStep === 1 ? navigate('/dashboard') : setCurrentStep(1)}
+              onClick={() => (currentStep === 1 ? navigate('/dashboard') : setCurrentStep(1))}
             >
               {currentStep === 1 ? 'Cancelar' : 'Anterior'}
             </button>

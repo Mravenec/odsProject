@@ -1,0 +1,33 @@
+### Admin usuarios — listado SODSI (GET /login/users)
+### Fix ODS-201: areaId, dependenciaId, rolDependenciaId, telefonoContacto en JSON
+
+@baseUrl = http://localhost:8080
+@adminEmail = admin@ods.local
+@adminPassword = Admin1234!
+
+### @name login_admin
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+@adminToken = {{login_admin.response.body.token}}
+
+# ── Listado admin con campos SODSI ──
+
+### GET /api/login/users — gestor_pobreza debe incluir areaId=6, dependenciaId=1, rolDependenciaId=1, telefonoContacto
+# Smoke esperado (usuario mock id=2):
+# - username: gestor_pobreza
+# - areaId: 6 (no null)
+# - dependenciaId: 1
+# - rolDependenciaId: 1
+# - telefonoContacto: 8888-9999
+# - sedeId: 2, sede: Sede Central (o nombre mock equivalente)
+GET {{baseUrl}}/api/login/users
+Authorization: Bearer {{adminToken}}
+
+### GET /api/login/users sin token → 401/403
+GET {{baseUrl}}/api/login/users

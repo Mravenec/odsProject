@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
 import org.jooq.types.UByte;
+import org.jooq.types.UShort;
 
 
 /**
@@ -127,10 +128,78 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     }
 
     /**
+     * Setter for <code>ods_login.usuarios.area_id</code>. Fuente de información
+     * SODSI (sodsi_area)
+     */
+    public UsuariosRecord setAreaId(UShort value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.area_id</code>. Fuente de información
+     * SODSI (sodsi_area)
+     */
+    public UShort getAreaId() {
+        return (UShort) get(7);
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.dependencia_id</code>. Dependencia
+     * SODSI del usuario
+     */
+    public UsuariosRecord setDependenciaId(UShort value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.dependencia_id</code>. Dependencia
+     * SODSI del usuario
+     */
+    public UShort getDependenciaId() {
+        return (UShort) get(8);
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.rol_dependencia_id</code>. Rol de
+     * dependencia SODSI
+     */
+    public UsuariosRecord setRolDependenciaId(UByte value) {
+        set(9, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.rol_dependencia_id</code>. Rol de
+     * dependencia SODSI
+     */
+    public UByte getRolDependenciaId() {
+        return (UByte) get(9);
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.telefono_contacto</code>. Teléfono
+     * contacto SODSI export
+     */
+    public UsuariosRecord setTelefonoContacto(String value) {
+        set(10, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.telefono_contacto</code>. Teléfono
+     * contacto SODSI export
+     */
+    public String getTelefonoContacto() {
+        return (String) get(10);
+    }
+
+    /**
      * Setter for <code>ods_login.usuarios.is_active</code>.
      */
     public UsuariosRecord setIsActive(Byte value) {
-        set(7, value);
+        set(11, value);
         return this;
     }
 
@@ -138,14 +207,14 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
      * Getter for <code>ods_login.usuarios.is_active</code>.
      */
     public Byte getIsActive() {
-        return (Byte) get(7);
+        return (Byte) get(11);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.email_verificado</code>.
      */
     public UsuariosRecord setEmailVerificado(Byte value) {
-        set(8, value);
+        set(12, value);
         return this;
     }
 
@@ -153,14 +222,14 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
      * Getter for <code>ods_login.usuarios.email_verificado</code>.
      */
     public Byte getEmailVerificado() {
-        return (Byte) get(8);
+        return (Byte) get(12);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.ultimo_login</code>.
      */
     public UsuariosRecord setUltimoLogin(LocalDateTime value) {
-        set(9, value);
+        set(13, value);
         return this;
     }
 
@@ -168,14 +237,14 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
      * Getter for <code>ods_login.usuarios.ultimo_login</code>.
      */
     public LocalDateTime getUltimoLogin() {
-        return (LocalDateTime) get(9);
+        return (LocalDateTime) get(13);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.intentos_fallidos</code>.
      */
     public UsuariosRecord setIntentosFallidos(UByte value) {
-        set(10, value);
+        set(14, value);
         return this;
     }
 
@@ -183,14 +252,14 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
      * Getter for <code>ods_login.usuarios.intentos_fallidos</code>.
      */
     public UByte getIntentosFallidos() {
-        return (UByte) get(10);
+        return (UByte) get(14);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.bloqueado_hasta</code>.
      */
     public UsuariosRecord setBloqueadoHasta(LocalDateTime value) {
-        set(11, value);
+        set(15, value);
         return this;
     }
 
@@ -198,14 +267,14 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
      * Getter for <code>ods_login.usuarios.bloqueado_hasta</code>.
      */
     public LocalDateTime getBloqueadoHasta() {
-        return (LocalDateTime) get(11);
+        return (LocalDateTime) get(15);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.token_recuperacion</code>.
      */
     public UsuariosRecord setTokenRecuperacion(String value) {
-        set(12, value);
+        set(16, value);
         return this;
     }
 
@@ -213,14 +282,14 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
      * Getter for <code>ods_login.usuarios.token_recuperacion</code>.
      */
     public String getTokenRecuperacion() {
-        return (String) get(12);
+        return (String) get(16);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.token_expira</code>.
      */
     public UsuariosRecord setTokenExpira(LocalDateTime value) {
-        set(13, value);
+        set(17, value);
         return this;
     }
 
@@ -228,14 +297,14 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
      * Getter for <code>ods_login.usuarios.token_expira</code>.
      */
     public LocalDateTime getTokenExpira() {
-        return (LocalDateTime) get(13);
+        return (LocalDateTime) get(17);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.created_at</code>.
      */
     public UsuariosRecord setCreatedAt(LocalDateTime value) {
-        set(14, value);
+        set(18, value);
         return this;
     }
 
@@ -243,14 +312,14 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
      * Getter for <code>ods_login.usuarios.created_at</code>.
      */
     public LocalDateTime getCreatedAt() {
-        return (LocalDateTime) get(14);
+        return (LocalDateTime) get(18);
     }
 
     /**
      * Setter for <code>ods_login.usuarios.updated_at</code>.
      */
     public UsuariosRecord setUpdatedAt(LocalDateTime value) {
-        set(15, value);
+        set(19, value);
         return this;
     }
 
@@ -258,7 +327,7 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
      * Getter for <code>ods_login.usuarios.updated_at</code>.
      */
     public LocalDateTime getUpdatedAt() {
-        return (LocalDateTime) get(15);
+        return (LocalDateTime) get(19);
     }
 
     // -------------------------------------------------------------------------
@@ -284,7 +353,7 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
     /**
      * Create a detached, initialised UsuariosRecord
      */
-    public UsuariosRecord(Integer id, String username, String email, String passwordHash, String fullName, Integer rolId, Integer sedeId, Byte isActive, Byte emailVerificado, LocalDateTime ultimoLogin, UByte intentosFallidos, LocalDateTime bloqueadoHasta, String tokenRecuperacion, LocalDateTime tokenExpira, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UsuariosRecord(Integer id, String username, String email, String passwordHash, String fullName, Integer rolId, Integer sedeId, UShort areaId, UShort dependenciaId, UByte rolDependenciaId, String telefonoContacto, Byte isActive, Byte emailVerificado, LocalDateTime ultimoLogin, UByte intentosFallidos, LocalDateTime bloqueadoHasta, String tokenRecuperacion, LocalDateTime tokenExpira, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(Usuarios.USUARIOS);
 
         setId(id);
@@ -294,6 +363,10 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
         setFullName(fullName);
         setRolId(rolId);
         setSedeId(sedeId);
+        setAreaId(areaId);
+        setDependenciaId(dependenciaId);
+        setRolDependenciaId(rolDependenciaId);
+        setTelefonoContacto(telefonoContacto);
         setIsActive(isActive);
         setEmailVerificado(emailVerificado);
         setUltimoLogin(ultimoLogin);
@@ -320,6 +393,10 @@ public class UsuariosRecord extends UpdatableRecordImpl<UsuariosRecord> {
             setFullName(value.getFullName());
             setRolId(value.getRolId());
             setSedeId(value.getSedeId());
+            setAreaId(value.getAreaId());
+            setDependenciaId(value.getDependenciaId());
+            setRolDependenciaId(value.getRolDependenciaId());
+            setTelefonoContacto(value.getTelefonoContacto());
             setIsActive(value.getIsActive());
             setEmailVerificado(value.getEmailVerificado());
             setUltimoLogin(value.getUltimoLogin());

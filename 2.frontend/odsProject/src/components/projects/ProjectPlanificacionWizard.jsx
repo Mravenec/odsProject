@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import {
   Check, Settings, Target, Calendar, MapPin, Users, Info,
-  Layers, LayoutGrid, FileText, ChevronRight,
+  Layers, LayoutGrid, FileText, ChevronRight, Handshake, Building2,
 } from 'lucide-react';
 import { getObjectiveName, odsColors } from '../../utils/formatters';
+import BeneficiariosField from './BeneficiariosField';
 
 export const OdsSelectionCard = ({ ods, selected, onToggle }) => {
   const [imgFailed, setImgFailed] = useState(false);
@@ -66,6 +67,15 @@ export default function ProjectPlanificacionWizard({
   filteredPersonnel = [],
   loadingResources = false,
   lockGestorInstitutionalFields = false,
+  gestorProfile = null,
+  regionMideplanNombre = '',
+  beneficiarioValorIds = [],
+  onBeneficiariosChange,
+  fichaSodsi = {},
+  onFichaSodsiChange,
+  sodsiCatalogs = {},
+  sodsiCatalogsLoading = false,
+  onSodsiCatalogRefresh,
   odsList = [],
   selectedOds = [],
   onToggleOds,
@@ -107,37 +117,55 @@ export default function ProjectPlanificacionWizard({
 
           <div className="form-group">
             <label><Layers size={14} /> Área Responsable</label>
-            <select
-              name="area"
-              value={formData.area}
-              onChange={onInputChange}
-              required={mode !== 'edit'}
-              disabled={(loadingResources && !formData.area) || lockGestorInstitutionalFields}
-            >
-              <option value="">
-                {loadingResources ? 'Cargando áreas...' : 'Seleccione área institucional'}
-              </option>
-              {catalogSedes.map((sede) => (
-                <option key={sede.id} value={sede.nombre}>{sede.nombre}</option>
-              ))}
-            </select>
-            {lockGestorInstitutionalFields && (
-              <span className="form-hint">
-                {mode === 'edit'
-                  ? 'Asignación institucional del proyecto (solo lectura para gestor).'
-                  : 'Asignado automáticamente según su perfil.'}
-              </span>
+            {lockGestorInstitutionalFields && gestorProfile ? (
+              <div className="sodsi-gestor-profile">
+                <dl className="gestor-profile-dl">
+                  <div><dt>Contacto</dt><dd>{gestorProfile.contacto || gestorProfile.fullName || '—'}</dd></div>
+                  <div><dt>Sede</dt><dd>{gestorProfile.sedeNombre || '—'}</dd></div>
+                  <div><dt>Área (fuente)</dt><dd>{gestorProfile.areaNombre || '—'}</dd></div>
+                  <div><dt>Dependencia</dt><dd>{gestorProfile.dependenciaNombre || '—'}</dd></div>
+                  <div><dt>Rol dependencia</dt><dd>{gestorProfile.rolDependenciaNombre || '—'}</dd></div>
+                </dl>
+                <span className="form-hint">Asignado desde su perfil de usuario (administración).</span>
+              </div>
+            ) : (
+              <select
+                name="area"
+                value={formData.area}
+                onChange={onInputChange}
+                required={mode !== 'edit'}
+                disabled={loadingResources && !formData.area}
+              >
+                <option value="">
+                  {loadingResources ? 'Cargando áreas...' : 'Seleccione área institucional'}
+                </option>
+                {catalogSedes.map((sede) => (
+                  <option key={sede.id} value={sede.nombre}>{sede.nombre}</option>
+                ))}
+              </select>
             )}
           </div>
 
-          <div className="form-group">
+          <div className="form-group form-dates-stack">
+            <div className="form-date-field">
+              <label><Calendar size={14} /> Inicio Estimado</label>
+              <input type="date" name="startDate" value={formData.startDate} onChange={onInputChange} required />
+            </div>
+            <div className="form-date-field">
+              <label><Calendar size={14} /> Finalización Impacto</label>
+              <input type="date" name="endDate" value={formData.endDate} onChange={onInputChange} required />
+            </div>
+          </div>
+
+          {!(lockGestorInstitutionalFields && gestorProfile) && (
+          <div className="form-group full-width">
             <label><Users size={14} /> Responsable Técnico</label>
             <select
               name="responsable"
               value={formData.responsable}
               onChange={onResponsableChange}
               required={mode !== 'edit'}
-              disabled={(loadingResources && !formData.responsable) || lockGestorInstitutionalFields}
+              disabled={loadingResources && !formData.responsable}
             >
               <option value="">
                 {loadingResources
@@ -149,56 +177,105 @@ export default function ProjectPlanificacionWizard({
               ))}
             </select>
           </div>
+          )}
 
-          <div className="form-group">
-            <label><Calendar size={14} /> Inicio Estimado</label>
-            <input type="date" name="startDate" value={formData.startDate} onChange={onInputChange} required />
+          <div className="form-group full-width form-geo-block">
+            <div className="form-geo-grid">
+              {formData.provinciaNombre && (
+                <div className="form-date-field">
+                  <label><MapPin size={14} /> Región Mideplan</label>
+                  <input
+                    type="text"
+                    readOnly
+                    className="input-readonly"
+                    value={regionMideplanNombre || '—'}
+                  />
+                  <span className="form-hint">Derivada automáticamente de la provincia del proyecto.</span>
+                </div>
+              )}
+              <div className="form-date-field">
+                <label><MapPin size={14} /> Provincia</label>
+                <select
+                  name="provinciaId"
+                  value={formData.provinciaId || ''}
+                  onChange={onGeoChange}
+                  required={mode !== 'edit'}
+                >
+                  <option value="">Seleccione Provincia</option>
+                  {provincias.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+                </select>
+              </div>
+              <div className="form-date-field">
+                <label><MapPin size={14} /> Cantón</label>
+                <select
+                  name="cantonId"
+                  value={formData.cantonId || ''}
+                  onChange={onGeoChange}
+                  required={mode !== 'edit'}
+                  disabled={!formData.provinciaId}
+                >
+                  <option value="">Seleccione Cantón</option>
+                  {cantones.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+                </select>
+              </div>
+              <div className="form-date-field">
+                <label><MapPin size={14} /> Distrito</label>
+                <select
+                  name="distritoId"
+                  value={formData.distritoId || ''}
+                  onChange={onGeoChange}
+                  required={mode !== 'edit'}
+                  disabled={!formData.cantonId}
+                >
+                  <option value="">Seleccione Distrito</option>
+                  {distritos.map((d) => <option key={d.id} value={d.id}>{d.nombre}</option>)}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="form-group full-width">
+            <BeneficiariosField
+              selectedIds={beneficiarioValorIds}
+              onChange={onBeneficiariosChange}
+              catalogs={sodsiCatalogs}
+              loading={sodsiCatalogsLoading}
+              onCatalogRefresh={onSodsiCatalogRefresh}
+            />
+          </div>
+
+          <div className="form-group full-width section-sodsi-divider">
+            <div className="section-intro" style={{ marginBottom: '0.75rem' }}>
+              <Building2 size={18} />
+              <p>
+                Eje PNDIP y aliado externo del proyecto. Contacto, dependencia y región Mideplan
+                se toman del perfil del gestor en administración de usuarios.
+              </p>
+            </div>
           </div>
 
           <div className="form-group">
-            <label><Calendar size={14} /> Finalización Impacto</label>
-            <input type="date" name="endDate" value={formData.endDate} onChange={onInputChange} required />
-          </div>
-
-          <div className="form-group">
-            <label><MapPin size={14} /> Provincia</label>
+            <label><Layers size={14} /> Eje de planes (PNDIP 2023–2026)</label>
             <select
-              name="provinciaId"
-              value={formData.provinciaId || ''}
-              onChange={onGeoChange}
-              required={mode !== 'edit'}
+              value={fichaSodsi.ejePlanesId || ''}
+              onChange={(e) => onFichaSodsiChange?.({ ejePlanesId: e.target.value })}
+              disabled={sodsiCatalogsLoading}
             >
-              <option value="">Seleccione Provincia</option>
-              {provincias.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+              <option value="">Seleccione eje</option>
+              {(sodsiCatalogs.ejesPlanes || []).map((e) => (
+                <option key={e.id} value={e.id}>{e.nombre}</option>
+              ))}
             </select>
           </div>
 
-          <div className="form-group">
-            <label><MapPin size={14} /> Cantón</label>
-            <select
-              name="cantonId"
-              value={formData.cantonId || ''}
-              onChange={onGeoChange}
-              required={mode !== 'edit'}
-              disabled={!formData.provinciaId}
-            >
-              <option value="">Seleccione Cantón</option>
-              {cantones.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label><MapPin size={14} /> Distrito</label>
-            <select
-              name="distritoId"
-              value={formData.distritoId || ''}
-              onChange={onGeoChange}
-              required={mode !== 'edit'}
-              disabled={!formData.cantonId}
-            >
-              <option value="">Seleccione Distrito</option>
-              {distritos.map((d) => <option key={d.id} value={d.id}>{d.nombre}</option>)}
-            </select>
+          <div className="form-group full-width">
+            <label><Handshake size={14} /> Aliado externo (opcional)</label>
+            <input
+              type="text"
+              value={fichaSodsi.aliadoExterno || ''}
+              onChange={(e) => onFichaSodsiChange?.({ aliadoExterno: e.target.value })}
+              placeholder="Nombre del aliado externo, si aplica"
+            />
           </div>
 
           <div className="form-group full-width">

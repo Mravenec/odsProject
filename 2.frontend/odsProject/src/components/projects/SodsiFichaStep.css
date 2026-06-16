@@ -1,0 +1,176 @@
+.sodsi-ficha-step .section-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary, #5a6478);
+}
+
+.sodsi-ficha-loader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  justify-content: center;
+}
+
+.sodsi-block {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(1, 33, 105, 0.08);
+}
+
+.sodsi-block-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.sodsi-block-header h3 {
+  margin: 0;
+  flex: 1;
+  font-size: 1rem;
+  color: var(--primary, #012169);
+}
+
+.btn-sodsi-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px dashed rgba(1, 33, 105, 0.35);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--primary, #012169);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.btn-sodsi-add:hover {
+  background: rgba(1, 33, 105, 0.05);
+}
+
+.sodsi-row {
+  display: grid;
+  grid-template-columns: 1fr 180px auto;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.sodsi-row input,
+.sodsi-row select {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid rgba(1, 33, 105, 0.15);
+  border-radius: 6px;
+}
+
+.btn-sodsi-remove {
+  border: none;
+  background: transparent;
+  color: #c0392b;
+  cursor: pointer;
+  padding: 0.35rem;
+}
+
+.sodsi-hint {
+  font-size: 0.9rem;
+  color: var(--text-secondary, #5a6478);
+  margin: 0 0 0.5rem;
+}
+
+.sodsi-benef-cat {
+  margin-bottom: 1rem;
+}
+
+.sodsi-benef-cat h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--primary, #012169);
+}
+
+.sodsi-benef-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sodsi-benef-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgba(1, 33, 105, 0.15);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sodsi-benef-chip.selected {
+  background: rgba(45, 186, 116, 0.12);
+  border-color: #2dba74;
+}
+
+.sodsi-benef-chip input {
+  margin: 0;
+}
+
+.sodsi-rol-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary, #012169);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .sodsi-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sodsi-hint {
+  font-size: 0.88rem;
+  color: var(--text-secondary, #5a6478);
+  margin-bottom: 1rem;
+}
+
+.sodsi-add-error {
+  color: #c0392b;
+  font-size: 0.88rem;
+  margin-bottom: 0.75rem;
+}
+
+.sodsi-benef-add {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sodsi-benef-add input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(1, 33, 105, 0.2);
+  border-radius: 6px;
+}
+
+.btn-sodsi-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(1, 33, 105, 0.25);
+  border-radius: 6px;
+  background: #f4f7fb;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-sodsi-add:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}

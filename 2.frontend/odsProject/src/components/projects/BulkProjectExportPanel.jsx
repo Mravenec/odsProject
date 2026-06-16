@@ -48,8 +48,8 @@ export default function BulkProjectExportPanel({ className = '' }) {
       <div className="bulk-export-header">
         <FileDown size={18} />
         <div>
-          <h2>Exportar proyectos evaluados</h2>
-          <p>Excel consolidado de proyectos cerrados en el año y sede seleccionados.</p>
+          <h2>Reporte institucional SODSI</h2>
+          <p>Excel consolidado (5 hojas) de proyectos evaluados por sede y año — glosario Conare/UTN.</p>
         </div>
       </div>
       <div className="bulk-export-controls">
@@ -85,7 +85,7 @@ export default function BulkProjectExportPanel({ className = '' }) {
           disabled={bulkExporting || !bulkSedeId || !bulkAnio}
         >
           <FileDown size={16} />
-          {bulkExporting ? 'Generando…' : 'Descargar Excel consolidado'}
+          {bulkExporting ? 'Generando…' : 'Descargar reporte SODSI'}
         </button>
       </div>
     </section>

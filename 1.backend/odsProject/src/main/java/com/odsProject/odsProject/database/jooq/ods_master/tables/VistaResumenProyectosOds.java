@@ -27,6 +27,7 @@ import org.jooq.TableOptions;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.UByte;
 import org.jooq.types.ULong;
 
 
@@ -68,6 +69,64 @@ public class VistaResumenProyectosOds extends TableImpl<VistaResumenProyectosOds
      * The column <code>ods_master.vista_resumen_proyectos_ods.gestor</code>.
      */
     public final TableField<VistaResumenProyectosOdsRecord, String> GESTOR = createField(DSL.name("gestor"), SQLDataType.VARCHAR(150).nullable(false), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.gestor_email</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> GESTOR_EMAIL = createField(DSL.name("gestor_email"), SQLDataType.VARCHAR(150).nullable(false), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.gestor_telefono</code>.
+     * Teléfono contacto SODSI export
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> GESTOR_TELEFONO = createField(DSL.name("gestor_telefono"), SQLDataType.VARCHAR(30).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "Teléfono contacto SODSI export");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.sede_usuario</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> SEDE_USUARIO = createField(DSL.name("sede_usuario"), SQLDataType.VARCHAR(100), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.area_codigo</code>. Código
+     * institucional opcional
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> AREA_CODIGO = createField(DSL.name("area_codigo"), SQLDataType.VARCHAR(20).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "Código institucional opcional");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.area_nombre</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> AREA_NOMBRE = createField(DSL.name("area_nombre"), SQLDataType.VARCHAR(150), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.dependencia_codigo</code>.
+     * Código SODSI/OPSI opcional
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> DEPENDENCIA_CODIGO = createField(DSL.name("dependencia_codigo"), SQLDataType.VARCHAR(20).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "Código SODSI/OPSI opcional");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.dependencia_nombre</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> DEPENDENCIA_NOMBRE = createField(DSL.name("dependencia_nombre"), SQLDataType.VARCHAR(150), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.rol_dependencia_codigo</code>.
+     * Código SODSI/OPSI opcional
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> ROL_DEPENDENCIA_CODIGO = createField(DSL.name("rol_dependencia_codigo"), SQLDataType.VARCHAR(10).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "Código SODSI/OPSI opcional");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.rol_dependencia_nombre</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> ROL_DEPENDENCIA_NOMBRE = createField(DSL.name("rol_dependencia_nombre"), SQLDataType.VARCHAR(80), this, "");
 
     /**
      * The column <code>ods_master.vista_resumen_proyectos_ods.sede</code>.
@@ -122,6 +181,61 @@ public class VistaResumenProyectosOds extends TableImpl<VistaResumenProyectosOds
 
     /**
      * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.aliado_externo</code>.
+     * Aliado externo texto libre SODSI
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> ALIADO_EXTERNO = createField(DSL.name("aliado_externo"), SQLDataType.VARCHAR(500).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "Aliado externo texto libre SODSI");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.eje_planes</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> EJE_PLANES = createField(DSL.name("eje_planes"), SQLDataType.VARCHAR(120), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.eje_planes_codigo</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> EJE_PLANES_CODIGO = createField(DSL.name("eje_planes_codigo"), SQLDataType.VARCHAR(30), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.location_province</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> LOCATION_PROVINCE = createField(DSL.name("location_province"), SQLDataType.VARCHAR(80).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.location_canton</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> LOCATION_CANTON = createField(DSL.name("location_canton"), SQLDataType.VARCHAR(80).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.location_district</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> LOCATION_DISTRICT = createField(DSL.name("location_district"), SQLDataType.VARCHAR(80).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.region_mideplan_id</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, UByte> REGION_MIDEPLAN_ID = createField(DSL.name("region_mideplan_id"), SQLDataType.TINYINTUNSIGNED, this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.region_mideplan</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> REGION_MIDEPLAN = createField(DSL.name("region_mideplan"), SQLDataType.VARCHAR(80), this, "");
+
+    /**
+     * The column
+     * <code>ods_master.vista_resumen_proyectos_ods.region_mideplan_codigo</code>.
+     */
+    public final TableField<VistaResumenProyectosOdsRecord, String> REGION_MIDEPLAN_CODIGO = createField(DSL.name("region_mideplan_codigo"), SQLDataType.VARCHAR(30).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column
      * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
      */
     public final TableField<VistaResumenProyectosOdsRecord, String> ODS_VINCULADOS = createField(DSL.name("ods_vinculados"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)), this, "");
@@ -137,7 +251,7 @@ public class VistaResumenProyectosOds extends TableImpl<VistaResumenProyectosOds
     }
 
     private VistaResumenProyectosOds(Name alias, Table<VistaResumenProyectosOdsRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("VIEW"), TableOptions.view("create view `vista_resumen_proyectos_ods` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`full_name` AS `gestor`,`s`.`nombre` AS `sede`,`p`.`estado` AS `estado`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin`,`p`.`auditado_por` AS `auditado_por`,`auditor`.`full_name` AS `auditor_nombre`,`p`.`auditado_en` AS `auditado_en`,`p`.`observaciones_cierre` AS `observaciones_cierre`,`p`.`fecha_envio_revision` AS `fecha_envio_revision`,group_concat(distinct `po`.`ods_id` order by `po`.`ods_id` ASC separator ',') AS `ods_vinculados`,max(case when `po`.`es_primario` = 1 then `po`.`ods_id` end) AS `ods_primario` from ((((`ods_master`.`proyectos` `p` join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods_login`.`sedes` `s` on(`p`.`sede_id` = `s`.`id`)) left join `ods_login`.`usuarios` `auditor` on(`p`.`auditado_por` = `auditor`.`id`)) left join `ods_master`.`proyecto_ods` `po` on(`po`.`proyecto_id` = `p`.`id`)) group by `p`.`id`,`p`.`nombre_proyecto`,`u`.`full_name`,`s`.`nombre`,`p`.`estado`,`p`.`fecha_inicio`,`p`.`fecha_fin`,`p`.`auditado_por`,`auditor`.`full_name`,`p`.`auditado_en`,`p`.`observaciones_cierre`,`p`.`fecha_envio_revision`"), where);
+        super(alias, null, aliased, parameters, DSL.comment("VIEW"), TableOptions.view("create view `vista_resumen_proyectos_ods` as select `p`.`id` AS `proyecto_id`,`p`.`nombre_proyecto` AS `nombre_proyecto`,`u`.`full_name` AS `gestor`,`u`.`email` AS `gestor_email`,`u`.`telefono_contacto` AS `gestor_telefono`,`us`.`nombre` AS `sede_usuario`,`sa`.`codigo` AS `area_codigo`,`sa`.`nombre` AS `area_nombre`,`sd`.`codigo` AS `dependencia_codigo`,`sd`.`nombre` AS `dependencia_nombre`,`srd`.`codigo` AS `rol_dependencia_codigo`,`srd`.`nombre` AS `rol_dependencia_nombre`,`s`.`nombre` AS `sede`,`p`.`estado` AS `estado`,`p`.`fecha_inicio` AS `fecha_inicio`,`p`.`fecha_fin` AS `fecha_fin`,`p`.`auditado_por` AS `auditado_por`,`auditor`.`full_name` AS `auditor_nombre`,`p`.`auditado_en` AS `auditado_en`,`p`.`observaciones_cierre` AS `observaciones_cierre`,`p`.`fecha_envio_revision` AS `fecha_envio_revision`,`p`.`aliado_externo` AS `aliado_externo`,`ep`.`nombre` AS `eje_planes`,`ep`.`codigo` AS `eje_planes_codigo`,`p`.`location_province` AS `location_province`,`p`.`location_canton` AS `location_canton`,`p`.`location_district` AS `location_district`,`prov`.`region_mideplan_id` AS `region_mideplan_id`,`rm`.`nombre` AS `region_mideplan`,`rm`.`codigo` AS `region_mideplan_codigo`,group_concat(distinct `po`.`ods_id` order by `po`.`ods_id` ASC separator ',') AS `ods_vinculados`,max(case when `po`.`es_primario` = 1 then `po`.`ods_id` end) AS `ods_primario` from (((((((((((`ods_master`.`proyectos` `p` join `ods_login`.`usuarios` `u` on(`p`.`usuario_id` = `u`.`id`)) left join `ods_login`.`sedes` `s` on(`p`.`sede_id` = `s`.`id`)) left join `ods_login`.`sedes` `us` on(`u`.`sede_id` = `us`.`id`)) left join `ods_login`.`sodsi_area` `sa` on(`u`.`area_id` = `sa`.`id`)) left join `ods_login`.`sodsi_dependencia` `sd` on(`u`.`dependencia_id` = `sd`.`id`)) left join `ods_login`.`sodsi_rol_dependencia` `srd` on(`u`.`rol_dependencia_id` = `srd`.`id`)) left join `ods_login`.`usuarios` `auditor` on(`p`.`auditado_por` = `auditor`.`id`)) left join `ods_login`.`sodsi_ejes_planes` `ep` on(`p`.`eje_planes_id` = `ep`.`id`)) left join `ods_login`.`sodsi_provincias` `prov` on(`prov`.`nombre` = `p`.`location_province`)) left join `ods_login`.`sodsi_regiones_mideplan` `rm` on(`prov`.`region_mideplan_id` = `rm`.`id`)) left join `ods_master`.`proyecto_ods` `po` on(`po`.`proyecto_id` = `p`.`id`)) group by `p`.`id`,`p`.`nombre_proyecto`,`u`.`full_name`,`u`.`email`,`u`.`telefono_contacto`,`us`.`nombre`,`sa`.`codigo`,`sa`.`nombre`,`sd`.`codigo`,`sd`.`nombre`,`srd`.`codigo`,`srd`.`nombre`,`s`.`nombre`,`p`.`estado`,`p`.`fecha_inicio`,`p`.`fecha_fin`,`p`.`auditado_por`,`auditor`.`full_name`,`p`.`auditado_en`,`p`.`observaciones_cierre`,`p`.`fecha_envio_revision`,`p`.`aliado_externo`,`ep`.`nombre`,`ep`.`codigo`,`p`.`location_province`,`p`.`location_canton`,`p`.`location_district`,`prov`.`region_mideplan_id`,`rm`.`nombre`,`rm`.`codigo`"), where);
     }
 
     /**

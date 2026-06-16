@@ -8,6 +8,9 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.IndicadorMaster;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiBeneficiarioValor;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiProvincias;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiUnidadesProgramaticas;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 
 import org.jooq.Index;
@@ -36,9 +39,16 @@ public class Indexes {
     public static final Index USUARIOS_IDX_ROL = Internal.createIndex(DSL.name("idx_rol"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.ROL_ID }, false);
     public static final Index USUARIOS_IDX_SEDE = Internal.createIndex(DSL.name("idx_sede"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.SEDE_ID }, false);
     public static final Index SESIONES_IDX_SESIONES_EXPIRA_REVOCADA = Internal.createIndex(DSL.name("idx_sesiones_expira_revocada"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.EXPIRA_EN, Sesiones.SESIONES.REVOCADA }, false);
+    public static final Index SODSI_BENEFICIARIO_VALOR_IDX_SODSI_BEN_VALOR_ACTIVO = Internal.createIndex(DSL.name("idx_sodsi_ben_valor_activo"), SodsiBeneficiarioValor.SODSI_BENEFICIARIO_VALOR, new OrderField[] { SodsiBeneficiarioValor.SODSI_BENEFICIARIO_VALOR.ACTIVO }, false);
+    public static final Index SODSI_BENEFICIARIO_VALOR_IDX_SODSI_BEN_VALOR_CAT = Internal.createIndex(DSL.name("idx_sodsi_ben_valor_cat"), SodsiBeneficiarioValor.SODSI_BENEFICIARIO_VALOR, new OrderField[] { SodsiBeneficiarioValor.SODSI_BENEFICIARIO_VALOR.CATEGORIA_ID }, false);
+    public static final Index SODSI_PROVINCIAS_IDX_SODSI_PROVINCIA_REGION = Internal.createIndex(DSL.name("idx_sodsi_provincia_region"), SodsiProvincias.SODSI_PROVINCIAS, new OrderField[] { SodsiProvincias.SODSI_PROVINCIAS.REGION_MIDEPLAN_ID }, false);
+    public static final Index SODSI_UNIDADES_PROGRAMATICAS_IDX_SODSI_UNIDAD_SEDE = Internal.createIndex(DSL.name("idx_sodsi_unidad_sede"), SodsiUnidadesProgramaticas.SODSI_UNIDADES_PROGRAMATICAS, new OrderField[] { SodsiUnidadesProgramaticas.SODSI_UNIDADES_PROGRAMATICAS.SEDE_REF }, false);
+    public static final Index SODSI_UNIDADES_PROGRAMATICAS_IDX_SODSI_UNIDAD_TIPO = Internal.createIndex(DSL.name("idx_sodsi_unidad_tipo"), SodsiUnidadesProgramaticas.SODSI_UNIDADES_PROGRAMATICAS, new OrderField[] { SodsiUnidadesProgramaticas.SODSI_UNIDADES_PROGRAMATICAS.TIPO }, false);
     public static final Index SESIONES_IDX_TOKEN = Internal.createIndex(DSL.name("idx_token"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.TOKEN_HASH }, false);
     public static final Index USUARIOS_IDX_USERNAME = Internal.createIndex(DSL.name("idx_username"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.USERNAME }, false);
     public static final Index SESIONES_IDX_USUARIO = Internal.createIndex(DSL.name("idx_usuario"), Sesiones.SESIONES, new OrderField[] { Sesiones.SESIONES.USUARIO_ID }, false);
     public static final Index AUDITORIA_LOGIN_IDX_USUARIO_EVENTO = Internal.createIndex(DSL.name("idx_usuario_evento"), AuditoriaLogin.AUDITORIA_LOGIN, new OrderField[] { AuditoriaLogin.AUDITORIA_LOGIN.USUARIO_ID, AuditoriaLogin.AUDITORIA_LOGIN.EVENTO }, false);
+    public static final Index USUARIOS_IDX_USUARIO_SODSI_AREA = Internal.createIndex(DSL.name("idx_usuario_sodsi_area"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.AREA_ID }, false);
+    public static final Index USUARIOS_IDX_USUARIO_SODSI_DEP = Internal.createIndex(DSL.name("idx_usuario_sodsi_dep"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.DEPENDENCIA_ID }, false);
     public static final Index INDICADOR_MASTER_ODS_ID = Internal.createIndex(DSL.name("ods_id"), IndicadorMaster.INDICADOR_MASTER, new OrderField[] { IndicadorMaster.INDICADOR_MASTER.ODS_ID }, false);
 }

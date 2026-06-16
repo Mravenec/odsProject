@@ -35,6 +35,7 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.UByte;
 
 
 /**
@@ -99,9 +100,15 @@ public class Proyectos extends TableImpl<ProyectosRecord> {
     public final TableField<ProyectosRecord, String> META_GENERAL = createField(DSL.name("meta_general"), SQLDataType.VARCHAR(500).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>ods_master.proyectos.responsable_nombre</code>.
+     * The column <code>ods_master.proyectos.eje_planes_id</code>.
      */
-    public final TableField<ProyectosRecord, String> RESPONSABLE_NOMBRE = createField(DSL.name("responsable_nombre"), SQLDataType.VARCHAR(150).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+    public final TableField<ProyectosRecord, UByte> EJE_PLANES_ID = createField(DSL.name("eje_planes_id"), SQLDataType.TINYINTUNSIGNED.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINTUNSIGNED)), this, "");
+
+    /**
+     * The column <code>ods_master.proyectos.aliado_externo</code>. Aliado
+     * externo texto libre SODSI
+     */
+    public final TableField<ProyectosRecord, String> ALIADO_EXTERNO = createField(DSL.name("aliado_externo"), SQLDataType.VARCHAR(500).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "Aliado externo texto libre SODSI");
 
     /**
      * The column <code>ods_master.proyectos.location_province</code>.
@@ -189,7 +196,7 @@ public class Proyectos extends TableImpl<ProyectosRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PROYECTOS_IDX_AUDITADO_EN, Indexes.PROYECTOS_IDX_AUDITOR, Indexes.PROYECTOS_IDX_ESTADO, Indexes.PROYECTOS_IDX_SEDE, Indexes.PROYECTOS_IDX_USUARIO);
+        return Arrays.asList(Indexes.PROYECTOS_IDX_AUDITADO_EN, Indexes.PROYECTOS_IDX_AUDITOR, Indexes.PROYECTOS_IDX_EJE_PLANES, Indexes.PROYECTOS_IDX_ESTADO, Indexes.PROYECTOS_IDX_SEDE, Indexes.PROYECTOS_IDX_USUARIO);
     }
 
     @Override
@@ -204,7 +211,7 @@ public class Proyectos extends TableImpl<ProyectosRecord> {
 
     @Override
     public List<ForeignKey<ProyectosRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.PROYECTOS_IBFK_1, Keys.PROYECTOS_IBFK_2, Keys.PROYECTOS_IBFK_3);
+        return Arrays.asList(Keys.PROYECTOS_IBFK_1, Keys.PROYECTOS_IBFK_2, Keys.PROYECTOS_IBFK_4, Keys.PROYECTOS_IBFK_3);
     }
 
     @Override

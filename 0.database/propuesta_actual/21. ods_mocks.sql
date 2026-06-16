@@ -29,21 +29,21 @@ INSERT INTO sedes (id, nombre, descripcion) VALUES
   (3, 'Sede Guanacaste', 'Sede en la región Chorotega'),
   (4, 'Sede Puntarenas', 'Sede en la región Pacífico Central'),
   (5, 'Sede San Carlos', 'Sede en la región Huetar Norte'),
-  (6, 'CFP', 'Centro de Formación Pedagógica y Tecnología Educativa');
+  (6, 'CFP', 'Centro de Formación Pedagógica y Tecnología Educativa'),
+  (7, 'Sede Limón', 'Sede Regional Limón — UTN (7ª sede SODSI)');
 
 -- Credenciales de desarrollo (contraseña en texto → hash bcrypt cost 12 en password_hash):
 --   password123    → usuarios id 2–6 y consultor_general maria.jimenez@ods.cr
 --   Consultor2026! → consultor@ods.local (id 7)
 --   Admin1234!     → admin@ods.local (login_system.sql + UPDATE arriba)
 
-INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sede_id, is_active, email_verificado) VALUES
-  (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Ana García López', 2, 2, TRUE, TRUE),
-  (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Carlos Rodríguez Mora', 2, 5, TRUE, TRUE),
-  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'María Jiménez Solano', 3, 2, TRUE, TRUE),
-  -- Sprint 3: usuario evaluador (rol_id=4)
-  (5, 'evaluador_general', 'evaluador@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Luis Vargas Castro', 4, 2, TRUE, TRUE),
-  -- Gestor General para pruebas del Payload
-  (6, 'gestor_general', 'gestor@ods.com', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Gestor General ODS', 2, 2, TRUE, TRUE);
+INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sede_id,
+  area_id, dependencia_id, rol_dependencia_id, telefono_contacto, is_active, email_verificado) VALUES
+  (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Ana García López', 2, 2, 6, 1, 1, '8888-9999', TRUE, TRUE),
+  (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Carlos Rodríguez Mora', 2, 5, 2, 3, 2, '7777-8888', TRUE, TRUE),
+  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'María Jiménez Solano', 3, 2, NULL, NULL, NULL, NULL, TRUE, TRUE),
+  (5, 'evaluador_general', 'evaluador@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Luis Vargas Castro', 4, 2, NULL, NULL, NULL, NULL, TRUE, TRUE),
+  (6, 'gestor_general', 'gestor@ods.com', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Gestor General ODS', 2, 2, 5, 4, 4, '6666-7777', TRUE, TRUE);
 
 INSERT INTO permisos_ods (usuario_id, ods_num, puede_crear, puede_editar, puede_ver) VALUES
   (2, 1, TRUE, TRUE, TRUE), 
@@ -55,12 +55,14 @@ INSERT INTO permisos_ods (usuario_id, ods_num, puede_crear, puede_editar, puede_
 -- ────────────────────────────────────────────────────────────
 USE ods_master;
 SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE proyecto_beneficiarios;
 TRUNCATE TABLE proyecto_documentos;
 TRUNCATE TABLE proyecto_ods;
 TRUNCATE TABLE proyectos;
 ALTER TABLE proyectos AUTO_INCREMENT = 1;
 ALTER TABLE proyecto_ods AUTO_INCREMENT = 1;
 ALTER TABLE proyecto_documentos AUTO_INCREMENT = 1;
+ALTER TABLE proyecto_beneficiarios AUTO_INCREMENT = 1;
 SET FOREIGN_KEY_CHECKS = 1;
 
 INSERT INTO proyectos (id, usuario_id, sede_id, nombre_proyecto, descripcion, fecha_inicio, fecha_fin, meta_general, estado) VALUES
@@ -218,20 +220,37 @@ USE ods16; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores
 USE ods17; SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE medicion_parametro_valores; TRUNCATE TABLE mediciones_historicas; TRUNCATE TABLE proyecto_indicador_parametros; TRUNCATE TABLE proyecto_indicadores; TRUNCATE TABLE auditoria_ods17; SET FOREIGN_KEY_CHECKS = 1;
 
 -- ────────────────────────────────────────────────────────────
+-- 5.0b Beneficiario personalizado inactivo (QA export histórico soft-delete)
+-- ────────────────────────────────────────────────────────────
+USE ods_login;
+
+INSERT INTO sodsi_beneficiario_valor (categoria_id, codigo, nombre, orden, activo, es_personalizado, creado_por) VALUES
+  (5, 901, 'Emprendedores de la zona (QA inactivo)', 99, FALSE, TRUE, 2)
+ON DUPLICATE KEY UPDATE
+  activo = FALSE,
+  es_personalizado = TRUE,
+  creado_por = 2;
+
+-- ────────────────────────────────────────────────────────────
 -- 5.0 SPRINT EDICIÓN PLANIFICACIÓN — proyecto id=7 en planificacion (QA)
 -- ────────────────────────────────────────────────────────────
 USE ods_master;
 
 INSERT INTO proyectos (
   id, usuario_id, sede_id, nombre_proyecto, descripcion,
-  fecha_inicio, fecha_fin, meta_general, responsable_nombre,
+  fecha_inicio, fecha_fin, meta_general, eje_planes_id, aliado_externo,
   location_province, location_canton, location_district, estado
 ) VALUES (
   7, 2, 2, 'Proyecto QA Planificación',
-  'Mock para edición en planificación y transición',
+  'Mock para edición en planificación y wizard ficha SODSI simplificado',
   '2024-01-01', '2025-12-31', 'Revisar metas antes de activo',
-  'Ana García López', 'Alajuela', 'Alajuela', 'Alajuela', 'planificacion'
+  1, 'Municipalidad de Alajuela',
+  'Alajuela', 'Alajuela', 'Alajuela', 'planificacion'
 );
+
+INSERT INTO proyecto_beneficiarios (proyecto_id, valor_id)
+SELECT 7, id FROM ods_login.sodsi_beneficiario_valor
+WHERE codigo = 203 LIMIT 1;
 
 INSERT INTO proyecto_ods (proyecto_id, ods_id, es_primario) VALUES
   (7, 1, 1);
@@ -258,14 +277,25 @@ USE ods_master;
 
 INSERT INTO proyectos (
   id, usuario_id, sede_id, nombre_proyecto, descripcion,
-  fecha_inicio, fecha_fin, meta_general, estado,
-  auditado_por, auditado_en, observaciones_cierre, fecha_envio_revision
+  fecha_inicio, fecha_fin, meta_general, eje_planes_id, aliado_externo,
+  location_province, location_canton, location_district,
+  estado, auditado_por, auditado_en, observaciones_cierre, fecha_envio_revision
 ) VALUES (
-  6, 2, 2, 'Proyecto QA Consultor',
-  'Proyecto mock completado para QA del rol consultor y exportación Excel',
-  '2024-01-01', '2024-12-31', 'Validar exportación Excel consultor', 'activo',
-  NULL, NULL, NULL, NULL
+  6, 2, 2, 'Proyecto QA Consultor SODSI',
+  'Proyecto mock completado para QA export matriz SODSI (sede 2, año 2024)',
+  '2024-01-01', '2024-12-31', 'Validar exportación matriz SODSI consultor',
+  3, 'Universidad Nacional — Facultad Educación; Cámara de Comercio Alajuela',
+  'Alajuela', 'Alajuela', 'Alajuela',
+  'activo', NULL, NULL, NULL, NULL
 );
+
+INSERT INTO proyecto_beneficiarios (proyecto_id, valor_id)
+SELECT 6, id FROM ods_login.sodsi_beneficiario_valor
+WHERE codigo IN (404, 510);
+
+INSERT INTO proyecto_beneficiarios (proyecto_id, valor_id)
+SELECT 6, id FROM ods_login.sodsi_beneficiario_valor
+WHERE codigo = 901 LIMIT 1;
 
 INSERT INTO proyecto_ods (proyecto_id, ods_id, es_primario) VALUES
   (6, 1, 1);

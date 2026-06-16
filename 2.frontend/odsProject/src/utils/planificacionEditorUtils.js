@@ -1,3 +1,4 @@
+import { fichaSodsiToPayload, normalizeFichaSodsiFromSnapshot } from './sodsiFichaUtils';
 import { objetivo01Service } from '../services/objetivo01Service';
 import { objetivo02Service } from '../services/objetivo02Service';
 import { objetivo03Service } from '../services/objetivo03Service';
@@ -219,6 +220,7 @@ export function snapshotToEditorState(snapshot) {
     indicatorConfigs,
     indicatorMetadata,
     availableIndicators,
+    fichaSodsi: normalizeFichaSodsiFromSnapshot(snapshot?.fichaSodsi),
     proyecto: p,
     userId: p.usuarioId,
     sedeId: p.sedeId,
@@ -238,6 +240,7 @@ export function editorStateToUpdatePayload({
   indicatorMetadata,
   sedeId,
   proyectoBaseline = null,
+  fichaSodsi = null,
 }) {
   const b = proyectoBaseline || {};
   const odsSet = new Set();
@@ -292,11 +295,12 @@ export function editorStateToUpdatePayload({
     odsIds: Array.from(odsSet),
     primaryOdsId: formData.primaryOds || formData.selectedOds?.[0] || Array.from(odsSet)[0] || null,
     indicadores: indicadoresPayload,
+    fichaSodsi: fichaSodsiToPayload(fichaSodsi),
     _projectId: projectId,
   };
 }
 
-export function validateEditorBeforeSave(formData, indicatorMetadata) {
+export function validateEditorBeforeSave(formData, indicatorMetadata, fichaSodsi) {
   const missing = (formData.indicators || []).filter((code) => {
     const meta = indicatorMetadata?.[code];
     return !meta?.masterId;
@@ -309,6 +313,10 @@ export function validateEditorBeforeSave(formData, indicatorMetadata) {
   }
   if (!formData.selectedOds?.length) {
     return { ok: false, message: 'Seleccione al menos un ODS.' };
+  }
+  const benefIds = fichaSodsi?.beneficiarioValorIds || [];
+  if (!benefIds.length) {
+    return { ok: false, message: 'Seleccioná al menos un sector beneficiario en el paso 1.' };
   }
   return { ok: true };
 }

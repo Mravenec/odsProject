@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.jooq.types.UByte;
 import org.jooq.types.ULong;
 
 
@@ -24,6 +25,15 @@ public class VistaResumenProyectosOds implements Serializable {
     private Integer proyectoId;
     private String nombreProyecto;
     private String gestor;
+    private String gestorEmail;
+    private String gestorTelefono;
+    private String sedeUsuario;
+    private String areaCodigo;
+    private String areaNombre;
+    private String dependenciaCodigo;
+    private String dependenciaNombre;
+    private String rolDependenciaCodigo;
+    private String rolDependenciaNombre;
     private String sede;
     private VistaResumenProyectosOdsEstado estado;
     private LocalDate fechaInicio;
@@ -33,6 +43,15 @@ public class VistaResumenProyectosOds implements Serializable {
     private LocalDateTime auditadoEn;
     private String observacionesCierre;
     private LocalDateTime fechaEnvioRevision;
+    private String aliadoExterno;
+    private String ejePlanes;
+    private String ejePlanesCodigo;
+    private String locationProvince;
+    private String locationCanton;
+    private String locationDistrict;
+    private UByte regionMideplanId;
+    private String regionMideplan;
+    private String regionMideplanCodigo;
     private String odsVinculados;
     private ULong odsPrimario;
 
@@ -42,6 +61,15 @@ public class VistaResumenProyectosOds implements Serializable {
         this.proyectoId = value.proyectoId;
         this.nombreProyecto = value.nombreProyecto;
         this.gestor = value.gestor;
+        this.gestorEmail = value.gestorEmail;
+        this.gestorTelefono = value.gestorTelefono;
+        this.sedeUsuario = value.sedeUsuario;
+        this.areaCodigo = value.areaCodigo;
+        this.areaNombre = value.areaNombre;
+        this.dependenciaCodigo = value.dependenciaCodigo;
+        this.dependenciaNombre = value.dependenciaNombre;
+        this.rolDependenciaCodigo = value.rolDependenciaCodigo;
+        this.rolDependenciaNombre = value.rolDependenciaNombre;
         this.sede = value.sede;
         this.estado = value.estado;
         this.fechaInicio = value.fechaInicio;
@@ -51,6 +79,15 @@ public class VistaResumenProyectosOds implements Serializable {
         this.auditadoEn = value.auditadoEn;
         this.observacionesCierre = value.observacionesCierre;
         this.fechaEnvioRevision = value.fechaEnvioRevision;
+        this.aliadoExterno = value.aliadoExterno;
+        this.ejePlanes = value.ejePlanes;
+        this.ejePlanesCodigo = value.ejePlanesCodigo;
+        this.locationProvince = value.locationProvince;
+        this.locationCanton = value.locationCanton;
+        this.locationDistrict = value.locationDistrict;
+        this.regionMideplanId = value.regionMideplanId;
+        this.regionMideplan = value.regionMideplan;
+        this.regionMideplanCodigo = value.regionMideplanCodigo;
         this.odsVinculados = value.odsVinculados;
         this.odsPrimario = value.odsPrimario;
     }
@@ -59,6 +96,15 @@ public class VistaResumenProyectosOds implements Serializable {
         Integer proyectoId,
         String nombreProyecto,
         String gestor,
+        String gestorEmail,
+        String gestorTelefono,
+        String sedeUsuario,
+        String areaCodigo,
+        String areaNombre,
+        String dependenciaCodigo,
+        String dependenciaNombre,
+        String rolDependenciaCodigo,
+        String rolDependenciaNombre,
         String sede,
         VistaResumenProyectosOdsEstado estado,
         LocalDate fechaInicio,
@@ -68,12 +114,30 @@ public class VistaResumenProyectosOds implements Serializable {
         LocalDateTime auditadoEn,
         String observacionesCierre,
         LocalDateTime fechaEnvioRevision,
+        String aliadoExterno,
+        String ejePlanes,
+        String ejePlanesCodigo,
+        String locationProvince,
+        String locationCanton,
+        String locationDistrict,
+        UByte regionMideplanId,
+        String regionMideplan,
+        String regionMideplanCodigo,
         String odsVinculados,
         ULong odsPrimario
     ) {
         this.proyectoId = proyectoId;
         this.nombreProyecto = nombreProyecto;
         this.gestor = gestor;
+        this.gestorEmail = gestorEmail;
+        this.gestorTelefono = gestorTelefono;
+        this.sedeUsuario = sedeUsuario;
+        this.areaCodigo = areaCodigo;
+        this.areaNombre = areaNombre;
+        this.dependenciaCodigo = dependenciaCodigo;
+        this.dependenciaNombre = dependenciaNombre;
+        this.rolDependenciaCodigo = rolDependenciaCodigo;
+        this.rolDependenciaNombre = rolDependenciaNombre;
         this.sede = sede;
         this.estado = estado;
         this.fechaInicio = fechaInicio;
@@ -83,6 +147,15 @@ public class VistaResumenProyectosOds implements Serializable {
         this.auditadoEn = auditadoEn;
         this.observacionesCierre = observacionesCierre;
         this.fechaEnvioRevision = fechaEnvioRevision;
+        this.aliadoExterno = aliadoExterno;
+        this.ejePlanes = ejePlanes;
+        this.ejePlanesCodigo = ejePlanesCodigo;
+        this.locationProvince = locationProvince;
+        this.locationCanton = locationCanton;
+        this.locationDistrict = locationDistrict;
+        this.regionMideplanId = regionMideplanId;
+        this.regionMideplan = regionMideplan;
+        this.regionMideplanCodigo = regionMideplanCodigo;
         this.odsVinculados = odsVinculados;
         this.odsPrimario = odsPrimario;
     }
@@ -133,6 +206,167 @@ public class VistaResumenProyectosOds implements Serializable {
      */
     public VistaResumenProyectosOds setGestor(String gestor) {
         this.gestor = gestor;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.gestor_email</code>.
+     */
+    public String getGestorEmail() {
+        return this.gestorEmail;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.gestor_email</code>.
+     */
+    public VistaResumenProyectosOds setGestorEmail(String gestorEmail) {
+        this.gestorEmail = gestorEmail;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.gestor_telefono</code>.
+     * Teléfono contacto SODSI export
+     */
+    public String getGestorTelefono() {
+        return this.gestorTelefono;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.gestor_telefono</code>.
+     * Teléfono contacto SODSI export
+     */
+    public VistaResumenProyectosOds setGestorTelefono(String gestorTelefono) {
+        this.gestorTelefono = gestorTelefono;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.sede_usuario</code>.
+     */
+    public String getSedeUsuario() {
+        return this.sedeUsuario;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.sede_usuario</code>.
+     */
+    public VistaResumenProyectosOds setSedeUsuario(String sedeUsuario) {
+        this.sedeUsuario = sedeUsuario;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.area_codigo</code>. Código
+     * institucional opcional
+     */
+    public String getAreaCodigo() {
+        return this.areaCodigo;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.area_codigo</code>. Código
+     * institucional opcional
+     */
+    public VistaResumenProyectosOds setAreaCodigo(String areaCodigo) {
+        this.areaCodigo = areaCodigo;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.area_nombre</code>.
+     */
+    public String getAreaNombre() {
+        return this.areaNombre;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.area_nombre</code>.
+     */
+    public VistaResumenProyectosOds setAreaNombre(String areaNombre) {
+        this.areaNombre = areaNombre;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.dependencia_codigo</code>.
+     * Código SODSI/OPSI opcional
+     */
+    public String getDependenciaCodigo() {
+        return this.dependenciaCodigo;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.dependencia_codigo</code>.
+     * Código SODSI/OPSI opcional
+     */
+    public VistaResumenProyectosOds setDependenciaCodigo(String dependenciaCodigo) {
+        this.dependenciaCodigo = dependenciaCodigo;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.dependencia_nombre</code>.
+     */
+    public String getDependenciaNombre() {
+        return this.dependenciaNombre;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.dependencia_nombre</code>.
+     */
+    public VistaResumenProyectosOds setDependenciaNombre(String dependenciaNombre) {
+        this.dependenciaNombre = dependenciaNombre;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.rol_dependencia_codigo</code>.
+     * Código SODSI/OPSI opcional
+     */
+    public String getRolDependenciaCodigo() {
+        return this.rolDependenciaCodigo;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.rol_dependencia_codigo</code>.
+     * Código SODSI/OPSI opcional
+     */
+    public VistaResumenProyectosOds setRolDependenciaCodigo(String rolDependenciaCodigo) {
+        this.rolDependenciaCodigo = rolDependenciaCodigo;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.rol_dependencia_nombre</code>.
+     */
+    public String getRolDependenciaNombre() {
+        return this.rolDependenciaNombre;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.rol_dependencia_nombre</code>.
+     */
+    public VistaResumenProyectosOds setRolDependenciaNombre(String rolDependenciaNombre) {
+        this.rolDependenciaNombre = rolDependenciaNombre;
         return this;
     }
 
@@ -285,6 +519,161 @@ public class VistaResumenProyectosOds implements Serializable {
 
     /**
      * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.aliado_externo</code>.
+     * Aliado externo texto libre SODSI
+     */
+    public String getAliadoExterno() {
+        return this.aliadoExterno;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.aliado_externo</code>.
+     * Aliado externo texto libre SODSI
+     */
+    public VistaResumenProyectosOds setAliadoExterno(String aliadoExterno) {
+        this.aliadoExterno = aliadoExterno;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.eje_planes</code>.
+     */
+    public String getEjePlanes() {
+        return this.ejePlanes;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.eje_planes</code>.
+     */
+    public VistaResumenProyectosOds setEjePlanes(String ejePlanes) {
+        this.ejePlanes = ejePlanes;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.eje_planes_codigo</code>.
+     */
+    public String getEjePlanesCodigo() {
+        return this.ejePlanesCodigo;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.eje_planes_codigo</code>.
+     */
+    public VistaResumenProyectosOds setEjePlanesCodigo(String ejePlanesCodigo) {
+        this.ejePlanesCodigo = ejePlanesCodigo;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.location_province</code>.
+     */
+    public String getLocationProvince() {
+        return this.locationProvince;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.location_province</code>.
+     */
+    public VistaResumenProyectosOds setLocationProvince(String locationProvince) {
+        this.locationProvince = locationProvince;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.location_canton</code>.
+     */
+    public String getLocationCanton() {
+        return this.locationCanton;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.location_canton</code>.
+     */
+    public VistaResumenProyectosOds setLocationCanton(String locationCanton) {
+        this.locationCanton = locationCanton;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.location_district</code>.
+     */
+    public String getLocationDistrict() {
+        return this.locationDistrict;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.location_district</code>.
+     */
+    public VistaResumenProyectosOds setLocationDistrict(String locationDistrict) {
+        this.locationDistrict = locationDistrict;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.region_mideplan_id</code>.
+     */
+    public UByte getRegionMideplanId() {
+        return this.regionMideplanId;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.region_mideplan_id</code>.
+     */
+    public VistaResumenProyectosOds setRegionMideplanId(UByte regionMideplanId) {
+        this.regionMideplanId = regionMideplanId;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.region_mideplan</code>.
+     */
+    public String getRegionMideplan() {
+        return this.regionMideplan;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.region_mideplan</code>.
+     */
+    public VistaResumenProyectosOds setRegionMideplan(String regionMideplan) {
+        this.regionMideplan = regionMideplan;
+        return this;
+    }
+
+    /**
+     * Getter for
+     * <code>ods_master.vista_resumen_proyectos_ods.region_mideplan_codigo</code>.
+     */
+    public String getRegionMideplanCodigo() {
+        return this.regionMideplanCodigo;
+    }
+
+    /**
+     * Setter for
+     * <code>ods_master.vista_resumen_proyectos_ods.region_mideplan_codigo</code>.
+     */
+    public VistaResumenProyectosOds setRegionMideplanCodigo(String regionMideplanCodigo) {
+        this.regionMideplanCodigo = regionMideplanCodigo;
+        return this;
+    }
+
+    /**
+     * Getter for
      * <code>ods_master.vista_resumen_proyectos_ods.ods_vinculados</code>.
      */
     public String getOdsVinculados() {
@@ -344,6 +733,60 @@ public class VistaResumenProyectosOds implements Serializable {
         }
         else if (!this.gestor.equals(other.gestor))
             return false;
+        if (this.gestorEmail == null) {
+            if (other.gestorEmail != null)
+                return false;
+        }
+        else if (!this.gestorEmail.equals(other.gestorEmail))
+            return false;
+        if (this.gestorTelefono == null) {
+            if (other.gestorTelefono != null)
+                return false;
+        }
+        else if (!this.gestorTelefono.equals(other.gestorTelefono))
+            return false;
+        if (this.sedeUsuario == null) {
+            if (other.sedeUsuario != null)
+                return false;
+        }
+        else if (!this.sedeUsuario.equals(other.sedeUsuario))
+            return false;
+        if (this.areaCodigo == null) {
+            if (other.areaCodigo != null)
+                return false;
+        }
+        else if (!this.areaCodigo.equals(other.areaCodigo))
+            return false;
+        if (this.areaNombre == null) {
+            if (other.areaNombre != null)
+                return false;
+        }
+        else if (!this.areaNombre.equals(other.areaNombre))
+            return false;
+        if (this.dependenciaCodigo == null) {
+            if (other.dependenciaCodigo != null)
+                return false;
+        }
+        else if (!this.dependenciaCodigo.equals(other.dependenciaCodigo))
+            return false;
+        if (this.dependenciaNombre == null) {
+            if (other.dependenciaNombre != null)
+                return false;
+        }
+        else if (!this.dependenciaNombre.equals(other.dependenciaNombre))
+            return false;
+        if (this.rolDependenciaCodigo == null) {
+            if (other.rolDependenciaCodigo != null)
+                return false;
+        }
+        else if (!this.rolDependenciaCodigo.equals(other.rolDependenciaCodigo))
+            return false;
+        if (this.rolDependenciaNombre == null) {
+            if (other.rolDependenciaNombre != null)
+                return false;
+        }
+        else if (!this.rolDependenciaNombre.equals(other.rolDependenciaNombre))
+            return false;
         if (this.sede == null) {
             if (other.sede != null)
                 return false;
@@ -398,6 +841,60 @@ public class VistaResumenProyectosOds implements Serializable {
         }
         else if (!this.fechaEnvioRevision.equals(other.fechaEnvioRevision))
             return false;
+        if (this.aliadoExterno == null) {
+            if (other.aliadoExterno != null)
+                return false;
+        }
+        else if (!this.aliadoExterno.equals(other.aliadoExterno))
+            return false;
+        if (this.ejePlanes == null) {
+            if (other.ejePlanes != null)
+                return false;
+        }
+        else if (!this.ejePlanes.equals(other.ejePlanes))
+            return false;
+        if (this.ejePlanesCodigo == null) {
+            if (other.ejePlanesCodigo != null)
+                return false;
+        }
+        else if (!this.ejePlanesCodigo.equals(other.ejePlanesCodigo))
+            return false;
+        if (this.locationProvince == null) {
+            if (other.locationProvince != null)
+                return false;
+        }
+        else if (!this.locationProvince.equals(other.locationProvince))
+            return false;
+        if (this.locationCanton == null) {
+            if (other.locationCanton != null)
+                return false;
+        }
+        else if (!this.locationCanton.equals(other.locationCanton))
+            return false;
+        if (this.locationDistrict == null) {
+            if (other.locationDistrict != null)
+                return false;
+        }
+        else if (!this.locationDistrict.equals(other.locationDistrict))
+            return false;
+        if (this.regionMideplanId == null) {
+            if (other.regionMideplanId != null)
+                return false;
+        }
+        else if (!this.regionMideplanId.equals(other.regionMideplanId))
+            return false;
+        if (this.regionMideplan == null) {
+            if (other.regionMideplan != null)
+                return false;
+        }
+        else if (!this.regionMideplan.equals(other.regionMideplan))
+            return false;
+        if (this.regionMideplanCodigo == null) {
+            if (other.regionMideplanCodigo != null)
+                return false;
+        }
+        else if (!this.regionMideplanCodigo.equals(other.regionMideplanCodigo))
+            return false;
         if (this.odsVinculados == null) {
             if (other.odsVinculados != null)
                 return false;
@@ -420,6 +917,15 @@ public class VistaResumenProyectosOds implements Serializable {
         result = prime * result + ((this.proyectoId == null) ? 0 : this.proyectoId.hashCode());
         result = prime * result + ((this.nombreProyecto == null) ? 0 : this.nombreProyecto.hashCode());
         result = prime * result + ((this.gestor == null) ? 0 : this.gestor.hashCode());
+        result = prime * result + ((this.gestorEmail == null) ? 0 : this.gestorEmail.hashCode());
+        result = prime * result + ((this.gestorTelefono == null) ? 0 : this.gestorTelefono.hashCode());
+        result = prime * result + ((this.sedeUsuario == null) ? 0 : this.sedeUsuario.hashCode());
+        result = prime * result + ((this.areaCodigo == null) ? 0 : this.areaCodigo.hashCode());
+        result = prime * result + ((this.areaNombre == null) ? 0 : this.areaNombre.hashCode());
+        result = prime * result + ((this.dependenciaCodigo == null) ? 0 : this.dependenciaCodigo.hashCode());
+        result = prime * result + ((this.dependenciaNombre == null) ? 0 : this.dependenciaNombre.hashCode());
+        result = prime * result + ((this.rolDependenciaCodigo == null) ? 0 : this.rolDependenciaCodigo.hashCode());
+        result = prime * result + ((this.rolDependenciaNombre == null) ? 0 : this.rolDependenciaNombre.hashCode());
         result = prime * result + ((this.sede == null) ? 0 : this.sede.hashCode());
         result = prime * result + ((this.estado == null) ? 0 : this.estado.hashCode());
         result = prime * result + ((this.fechaInicio == null) ? 0 : this.fechaInicio.hashCode());
@@ -429,6 +935,15 @@ public class VistaResumenProyectosOds implements Serializable {
         result = prime * result + ((this.auditadoEn == null) ? 0 : this.auditadoEn.hashCode());
         result = prime * result + ((this.observacionesCierre == null) ? 0 : this.observacionesCierre.hashCode());
         result = prime * result + ((this.fechaEnvioRevision == null) ? 0 : this.fechaEnvioRevision.hashCode());
+        result = prime * result + ((this.aliadoExterno == null) ? 0 : this.aliadoExterno.hashCode());
+        result = prime * result + ((this.ejePlanes == null) ? 0 : this.ejePlanes.hashCode());
+        result = prime * result + ((this.ejePlanesCodigo == null) ? 0 : this.ejePlanesCodigo.hashCode());
+        result = prime * result + ((this.locationProvince == null) ? 0 : this.locationProvince.hashCode());
+        result = prime * result + ((this.locationCanton == null) ? 0 : this.locationCanton.hashCode());
+        result = prime * result + ((this.locationDistrict == null) ? 0 : this.locationDistrict.hashCode());
+        result = prime * result + ((this.regionMideplanId == null) ? 0 : this.regionMideplanId.hashCode());
+        result = prime * result + ((this.regionMideplan == null) ? 0 : this.regionMideplan.hashCode());
+        result = prime * result + ((this.regionMideplanCodigo == null) ? 0 : this.regionMideplanCodigo.hashCode());
         result = prime * result + ((this.odsVinculados == null) ? 0 : this.odsVinculados.hashCode());
         result = prime * result + ((this.odsPrimario == null) ? 0 : this.odsPrimario.hashCode());
         return result;
@@ -441,6 +956,15 @@ public class VistaResumenProyectosOds implements Serializable {
         sb.append(proyectoId);
         sb.append(", ").append(nombreProyecto);
         sb.append(", ").append(gestor);
+        sb.append(", ").append(gestorEmail);
+        sb.append(", ").append(gestorTelefono);
+        sb.append(", ").append(sedeUsuario);
+        sb.append(", ").append(areaCodigo);
+        sb.append(", ").append(areaNombre);
+        sb.append(", ").append(dependenciaCodigo);
+        sb.append(", ").append(dependenciaNombre);
+        sb.append(", ").append(rolDependenciaCodigo);
+        sb.append(", ").append(rolDependenciaNombre);
         sb.append(", ").append(sede);
         sb.append(", ").append(estado);
         sb.append(", ").append(fechaInicio);
@@ -450,6 +974,15 @@ public class VistaResumenProyectosOds implements Serializable {
         sb.append(", ").append(auditadoEn);
         sb.append(", ").append(observacionesCierre);
         sb.append(", ").append(fechaEnvioRevision);
+        sb.append(", ").append(aliadoExterno);
+        sb.append(", ").append(ejePlanes);
+        sb.append(", ").append(ejePlanesCodigo);
+        sb.append(", ").append(locationProvince);
+        sb.append(", ").append(locationCanton);
+        sb.append(", ").append(locationDistrict);
+        sb.append(", ").append(regionMideplanId);
+        sb.append(", ").append(regionMideplan);
+        sb.append(", ").append(regionMideplanCodigo);
         sb.append(", ").append(odsVinculados);
         sb.append(", ").append(odsPrimario);
 

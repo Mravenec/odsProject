@@ -7,6 +7,7 @@ export const authService = {
 
     const nested = data.user;
     const source = nested || data;
+    const profile = data.profile || source.profile || {};
 
     const id = source.userId || source.id || data.userId;
     if (!id) return null;
@@ -18,7 +19,16 @@ export const authService = {
       fullName: source.fullName || source.full_name || source.nombre || source.username,
       email: source.email || data.email,
       role: (source.role || source.rol || data.role || '').toLowerCase(),
-      sedeId: source.sedeId ?? source.sede_id ?? data.sedeId ?? null,
+      sedeId: source.sedeId ?? source.sede_id ?? data.sedeId ?? profile.sedeId ?? null,
+      sedeNombre: source.sedeNombre || data.sedeNombre || profile.sedeNombre || null,
+      telefonoContacto: source.telefonoContacto || data.telefonoContacto || profile.telefonoContacto || '',
+      areaId: source.areaId ?? source.area_id ?? data.areaId ?? profile.areaId ?? null,
+      areaNombre: source.areaNombre || data.areaNombre || profile.areaNombre || null,
+      dependenciaId: source.dependenciaId ?? source.dependencia_id ?? data.dependenciaId ?? profile.dependenciaId ?? null,
+      dependenciaNombre: source.dependenciaNombre || data.dependenciaNombre || profile.dependenciaNombre || null,
+      rolDependenciaId: source.rolDependenciaId ?? source.rol_dependencia_id ?? data.rolDependenciaId ?? profile.rolDependenciaId ?? null,
+      rolDependenciaNombre: source.rolDependenciaNombre || data.rolDependenciaNombre || profile.rolDependenciaNombre || null,
+      contacto: source.contacto || data.contacto || profile.contacto || null,
     };
   },
 
@@ -130,6 +140,10 @@ export const authService = {
       rol: u.rol || u.role,
       sedeId: u.sedeId ?? u.sede_id,
       sede: u.sede,
+      areaId: u.areaId ?? u.area_id ?? null,
+      dependenciaId: u.dependenciaId ?? u.dependencia_id ?? null,
+      rolDependenciaId: u.rolDependenciaId ?? u.rol_dependencia_id ?? null,
+      telefonoContacto: u.telefonoContacto ?? u.telefono_contacto ?? '',
       isActive: u.isActive ?? u.is_active,
       ultimoLogin: u.ultimoLogin || u.ultimo_login,
       createdAt: u.createdAt || u.created_at,

@@ -1,7 +1,10 @@
 package com.odsProject.odsProject.service;
 
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoBeneficiarios;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.repository.interfaces.IMasterProjectRepository;
+import org.jooq.types.UByte;
+import org.jooq.types.UShort;
 import com.odsProject.odsProject.service.interfaces.IPlanificacionEdicionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,15 +87,19 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
         proyecto.put("fechaInicio", p.getFechaInicio() != null ? p.getFechaInicio().toString() : null);
         proyecto.put("fechaFin", p.getFechaFin() != null ? p.getFechaFin().toString() : null);
         proyecto.put("metaGeneral", p.getMetaGeneral());
-        proyecto.put("responsableNombre", p.getResponsableNombre());
+        proyecto.put("aliadoExterno", p.getAliadoExterno());
         proyecto.put("locationProvince", p.getLocationProvince());
         proyecto.put("locationCanton", p.getLocationCanton());
         proyecto.put("locationDistrict", p.getLocationDistrict());
         proyecto.put("estado", String.valueOf(p.getEstado()));
+        proyecto.put("ejePlanesId", p.getEjePlanesId() != null ? p.getEjePlanesId().intValue() : null);
+
+        List<ProyectoBeneficiarios> beneficiarios = masterProjectRepository.findBeneficiariosByProyecto(proyectoId);
 
         Map<String, Object> out = new LinkedHashMap<>();
         out.put("proyectoId", proyectoId);
         out.put("proyecto", proyecto);
+        out.put("fichaSodsi", buildFichaSodsiMap(p, beneficiarios));
         out.put("odsIds", odsIds);
         out.put("primaryOdsId", primaryOdsId);
         out.put("indicadores", indicadores);
@@ -120,12 +127,17 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
             if (patch.getFechaInicio() != null) existing.setFechaInicio(patch.getFechaInicio());
             if (patch.getFechaFin() != null) existing.setFechaFin(patch.getFechaFin());
             if (patch.getMetaGeneral() != null) existing.setMetaGeneral(patch.getMetaGeneral());
-            if (patch.getResponsableNombre() != null) existing.setResponsableNombre(patch.getResponsableNombre());
+            if (patch.getAliadoExterno() != null) existing.setAliadoExterno(patch.getAliadoExterno());
+            if (patch.getEjePlanesId() != null) existing.setEjePlanesId(patch.getEjePlanesId());
             if (patch.getLocationProvince() != null) existing.setLocationProvince(patch.getLocationProvince());
             if (patch.getLocationCanton() != null) existing.setLocationCanton(patch.getLocationCanton());
             if (patch.getLocationDistrict() != null) existing.setLocationDistrict(patch.getLocationDistrict());
             if (patch.getSedeId() != null) existing.setSedeId(patch.getSedeId());
             masterProjectRepository.update(existing);
+        }
+
+        if (payload.get("fichaSodsi") instanceof Map<?, ?>) {
+            saveFichaSodsi(proyectoId, asStringObjectMap(payload.get("fichaSodsi")));
         }
 
         List<Integer> odsIds = toIntList(payload.get("odsIds"));
@@ -428,6 +440,56 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
         }
     }
 
+    private Map<String, Object> buildFichaSodsiMap(Proyectos p, List<ProyectoBeneficiarios> beneficiarios) {
+        Map<String, Object> m = new LinkedHashMap<>();
+        m.put("ejePlanesId", p.getEjePlanesId() != null ? p.getEjePlanesId().intValue() : null);
+        m.put("aliadoExterno", p.getAliadoExterno());
+        m.put("beneficiarios", beneficiarios != null ? beneficiarios : Collections.emptyList());
+        return m;
+    }
+
+    @Override
+    public void saveFichaSodsi(Integer proyectoId, Map<String, Object> ficha) {
+        Proyectos existing = masterProjectRepository.findById(proyectoId).orElseThrow();
+        applySodsiScalarsFromMap(existing, ficha);
+        List<ProyectoBeneficiarios> beneficiarios = mapToBeneficiarioPojos(ficha);
+        if (beneficiarios.isEmpty()) {
+            throw new IllegalArgumentException("Debe seleccionar al menos un sector beneficiario");
+        }
+        masterProjectRepository.update(existing);
+        masterProjectRepository.replaceBeneficiarios(proyectoId, beneficiarios);
+    }
+
+    private static void applySodsiScalarsFromMap(Proyectos p, Map<String, Object> m) {
+        Integer ejeId = toInt(m.get("ejePlanesId"));
+        if (m.containsKey("ejePlanesId")) {
+            p.setEjePlanesId(ejeId != null ? UByte.valueOf(ejeId.byteValue()) : null);
+        }
+        if (m.containsKey("aliadoExterno")) {
+            p.setAliadoExterno(strOr(m.get("aliadoExterno"), null));
+        }
+    }
+
+    private static List<ProyectoBeneficiarios> mapToBeneficiarioPojos(Map<String, Object> ficha) {
+        List<ProyectoBeneficiarios> beneficiarios = new ArrayList<>();
+        for (Map<String, Object> bm : asMapList(ficha.get("beneficiarios"))) {
+            Integer valorId = toInt(bm.get("valorId"));
+            if (valorId == null) continue;
+            ProyectoBeneficiarios row = new ProyectoBeneficiarios();
+            row.setValorId(org.jooq.types.UShort.valueOf(valorId.shortValue()));
+            beneficiarios.add(row);
+        }
+        if (beneficiarios.isEmpty()) {
+            for (Integer valorId : toIntList(ficha.get("beneficiarioValorIds"))) {
+                if (valorId == null) continue;
+                ProyectoBeneficiarios row = new ProyectoBeneficiarios();
+                row.setValorId(org.jooq.types.UShort.valueOf(valorId.shortValue()));
+                beneficiarios.add(row);
+            }
+        }
+        return beneficiarios;
+    }
+
     private static Proyectos mapToProyectos(Map<String, Object> m) {
         Proyectos p = new Proyectos();
         p.setUsuarioId(toInt(m.get("usuarioId")));
@@ -443,7 +505,7 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
             p.setFechaFin(java.time.LocalDate.parse(String.valueOf(ff)));
         }
         p.setMetaGeneral(strOr(m.get("metaGeneral"), null));
-        p.setResponsableNombre(strOr(m.get("responsableNombre"), null));
+        p.setAliadoExterno(strOr(m.get("aliadoExterno"), null));
         p.setLocationProvince(strOr(m.get("locationProvince"), null));
         p.setLocationCanton(strOr(m.get("locationCanton"), null));
         p.setLocationDistrict(strOr(m.get("locationDistrict"), null));

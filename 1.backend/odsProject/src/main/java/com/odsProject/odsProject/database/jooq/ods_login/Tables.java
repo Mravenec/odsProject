@@ -12,6 +12,16 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiAliadoTipo;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiArea;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiBeneficiarioCategoria;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiBeneficiarioValor;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiDependencia;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiEjesPlanes;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiProvincias;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiRegionesMideplan;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiRolDependencia;
+import com.odsProject.odsProject.database.jooq.ods_login.tables.SodsiUnidadesProgramaticas;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.Usuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminAuditoriaLoginReciente;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuariosActivos;
@@ -62,6 +72,56 @@ public class Tables {
      * Control de sesiones activas por token
      */
     public static final Sesiones SESIONES = Sesiones.SESIONES;
+
+    /**
+     * The table <code>ods_login.sodsi_aliado_tipo</code>.
+     */
+    public static final SodsiAliadoTipo SODSI_ALIADO_TIPO = SodsiAliadoTipo.SODSI_ALIADO_TIPO;
+
+    /**
+     * The table <code>ods_login.sodsi_area</code>.
+     */
+    public static final SodsiArea SODSI_AREA = SodsiArea.SODSI_AREA;
+
+    /**
+     * The table <code>ods_login.sodsi_beneficiario_categoria</code>.
+     */
+    public static final SodsiBeneficiarioCategoria SODSI_BENEFICIARIO_CATEGORIA = SodsiBeneficiarioCategoria.SODSI_BENEFICIARIO_CATEGORIA;
+
+    /**
+     * The table <code>ods_login.sodsi_beneficiario_valor</code>.
+     */
+    public static final SodsiBeneficiarioValor SODSI_BENEFICIARIO_VALOR = SodsiBeneficiarioValor.SODSI_BENEFICIARIO_VALOR;
+
+    /**
+     * The table <code>ods_login.sodsi_dependencia</code>.
+     */
+    public static final SodsiDependencia SODSI_DEPENDENCIA = SodsiDependencia.SODSI_DEPENDENCIA;
+
+    /**
+     * The table <code>ods_login.sodsi_ejes_planes</code>.
+     */
+    public static final SodsiEjesPlanes SODSI_EJES_PLANES = SodsiEjesPlanes.SODSI_EJES_PLANES;
+
+    /**
+     * The table <code>ods_login.sodsi_provincias</code>.
+     */
+    public static final SodsiProvincias SODSI_PROVINCIAS = SodsiProvincias.SODSI_PROVINCIAS;
+
+    /**
+     * The table <code>ods_login.sodsi_regiones_mideplan</code>.
+     */
+    public static final SodsiRegionesMideplan SODSI_REGIONES_MIDEPLAN = SodsiRegionesMideplan.SODSI_REGIONES_MIDEPLAN;
+
+    /**
+     * The table <code>ods_login.sodsi_rol_dependencia</code>.
+     */
+    public static final SodsiRolDependencia SODSI_ROL_DEPENDENCIA = SodsiRolDependencia.SODSI_ROL_DEPENDENCIA;
+
+    /**
+     * The table <code>ods_login.sodsi_unidades_programaticas</code>.
+     */
+    public static final SodsiUnidadesProgramaticas SODSI_UNIDADES_PROGRAMATICAS = SodsiUnidadesProgramaticas.SODSI_UNIDADES_PROGRAMATICAS;
 
     /**
      * Usuarios centrales; referenciados por todas las bases ods_XX
