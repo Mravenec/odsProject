@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../../../services/authService';
-import { sodsiCatalogService } from '../../../services/sodsiCatalogService';
-import { useAuth } from '../../../hooks/useAuth.jsx';
+import { useUsersAdmin } from '../../../hooks/useUsersAdmin';
 import { ArrowLeft, Plus, Pencil, UserX, Eye, EyeOff, Check, Circle } from 'lucide-react';
 import './UsersAdminPage.css';
 
@@ -68,16 +66,21 @@ const isGestorProfileIncomplete = (user, roles) => {
 
 const UsersAdminPage = () => {
   const navigate = useNavigate();
-  const { getSedes } = useAuth();
-  const [users, setUsers] = useState([]);
-  const [roles, setRoles] = useState([]);
-  const [sedes, setSedes] = useState([]);
-  const [sodsiCatalogs, setSodsiCatalogs] = useState(EMPTY_SODSI_CATALOGS);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const {
+    users,
+    roles,
+    sedes,
+    sodsiCatalogs,
+    loading,
+    error,
+    saving,
+    setError,
+    createUser,
+    updateUser,
+    deactivateUser,
+  } = useUsersAdmin();
   const [modal, setModal] = useState({ open: false, mode: 'create', user: null });
   const [form, setForm] = useState(EMPTY_FORM);
-  const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
@@ -85,33 +88,6 @@ const UsersAdminPage = () => {
   const resetPasswordVisibility = () => {
     setShowPassword(false);
     setShowPasswordConfirm(false);
-  };
-
-  useEffect(() => { load(); }, []);
-
-  const load = async () => {
-    setLoading(true);
-    setError('');
-    const [usersRes, rolesRes, sedesRes, sodsiRes] = await Promise.all([
-      authService.listUsers(),
-      authService.getRoles(),
-      getSedes(),
-      sodsiCatalogService.getCatalogos(),
-    ]);
-    if (!usersRes.success) setError(usersRes.error);
-    else setUsers(usersRes.data || []);
-    if (rolesRes.success) setRoles(rolesRes.data || []);
-    if (sedesRes.success) setSedes(sedesRes.data || []);
-    if (sodsiRes.success) {
-      setSodsiCatalogs({
-        areas: sodsiRes.data.areas || [],
-        dependencias: sodsiRes.data.dependencias || [],
-        rolesDependencia: sodsiRes.data.rolesDependencia || [],
-      });
-    } else {
-      setSodsiCatalogs(EMPTY_SODSI_CATALOGS);
-    }
-    setLoading(false);
   };
 
   const openCreate = () => {
@@ -252,7 +228,6 @@ const UsersAdminPage = () => {
     e.preventDefault();
     const v = validate();
     if (v) { setFormError(v); return; }
-    setSaving(true);
     setFormError('');
     const payload = {
       username: form.username.trim(),
@@ -269,19 +244,16 @@ const UsersAdminPage = () => {
       payload.password = form.password;
     }
     const r = modal.mode === 'create'
-      ? await authService.createUser(payload)
-      : await authService.updateUser(modal.user.id, payload);
-    setSaving(false);
+      ? await createUser(payload)
+      : await updateUser(modal.user.id, payload);
     if (!r.success) { setFormError(r.error); return; }
     closeModal();
-    load();
   };
 
   const handleDeactivate = async (user) => {
     if (!window.confirm(`¿Desactivar al usuario "${user.username}"?`)) return;
-    const r = await authService.deactivateUser(user.id);
+    const r = await deactivateUser(user.id);
     if (!r.success) setError(r.error);
-    else load();
   };
 
   if (loading) {

@@ -5,7 +5,7 @@ import { useProjects } from '../../hooks/useProjects.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
 import AchievementBadge from '../../components/AchievementBadge';
 import { formatDate, getOdsColor, getEstadoLabel, getEstadoClass, matchesProjectStatusFilter, isProjectCompletado } from '../../utils/formatters';
-import { exportService } from '../../services/exportService';
+import { useExport } from '../../hooks/useExport';
 import BulkProjectExportPanel from '../../components/projects/BulkProjectExportPanel';
 import { 
   ArrowLeft, 
@@ -35,6 +35,7 @@ const ProjectListPage = () => {
   const [projects, setProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const { downloadProjectFullReport } = useExport();
   const [exportingId, setExportingId] = useState(null);
 
   // Sprint 10: gestor ve solo sus proyectos; otros roles ven todos
@@ -74,7 +75,7 @@ const ProjectListPage = () => {
     e.stopPropagation();
     if (!isProjectCompletado(project)) return;
     setExportingId(project.id);
-    const r = await exportService.downloadProjectFullReport(project.id);
+    const r = await downloadProjectFullReport(project.id);
     setExportingId(null);
     if (!r.success) {
       window.alert(r.error || 'No se pudo descargar el Excel');

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
-import { projectService } from '../../services/projectService';
-import { documentService } from '../../services/documentService';
+import { useEvaluationQueue } from '../../hooks/useEvaluationQueue';
 import { ClipboardCheck, ArrowLeft, FileText, AlertCircle,
          Clock, CheckCircle2, Hourglass, TrendingUp } from 'lucide-react';
 import { formatDate, getOdsColor, getObjectiveName,
@@ -19,34 +18,8 @@ const EvaluationQueuePage = () => {
   const perms = usePermissions();
   const navigate = useNavigate();
 
-  const [rows, setRows]         = useState([]);
-  const [metrics, setMetrics]   = useState({});
-  const [loading, setLoading]   = useState(true);
-  const [filter, setFilter]     = useState('pendientes');
-
-  useEffect(() => { load(); }, []);
-
-  const load = async () => {
-    setLoading(true);
-    try {
-      const [projRes, metricsRes] = await Promise.all([
-        projectService.getAllProjects(),
-        projectService.getEvaluationMetrics()
-      ]);
-
-      const projects = projRes.data || [];
-      const enriched = await Promise.all(projects.map(async p => {
-        let docs = [];
-        try {
-          const d = await documentService.listByProject(p.id);
-          docs = d.success ? d.data : [];
-        } catch {}
-        return { ...p, docCount: docs.length, hasDocs: docs.length > 0 };
-      }));
-      setRows(enriched);
-      setMetrics(metricsRes.data || {});
-    } finally { setLoading(false); }
-  };
+  const { rows, metrics, loading, reload: load } = useEvaluationQueue();
+  const [filter, setFilter] = useState('pendientes');
 
   const counts = {
     all:        rows.length,

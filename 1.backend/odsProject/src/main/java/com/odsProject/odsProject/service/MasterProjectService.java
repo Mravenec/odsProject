@@ -629,23 +629,7 @@ public class MasterProjectService implements IMasterProjectService {
         }
 
         // 3. Stamping condicional según destino
-        boolean stampCierre  = "completado".equals(target);
-        boolean stampEnvio   = "en_revision".equals(target);
-        Integer auditorStamp = stampCierre ? actorUserId : null;
-
-        int rows = masterProjectRepository.updateEstado(
-            proyectoId, target, auditorStamp, observaciones, stampCierre, stampEnvio);
-        if (rows == 0)
-            throw new IllegalStateException("UPDATE no afectó filas (carrera de concurrencia?)");
-
-        // 4. Devolver el proyecto actualizado en formato amigable para el frontend
-        Proyectos updated = masterProjectRepository.findById(proyectoId).orElse(null);
-        Map<String, Object> resp = new java.util.LinkedHashMap<>();
-        resp.put("success", true);
-        resp.put("proyecto", updated);
-        resp.put("estadoAnterior", currentEstado);
-        resp.put("estadoNuevo", target);
-        return resp;
+        return executeTransitionUpdate(proyectoId, currentEstado, target, role, actorUserId, observaciones);
     }
 
     @Override
@@ -668,7 +652,7 @@ public class MasterProjectService implements IMasterProjectService {
         if (!java.util.Set.of("admin", "evaluador").contains(role)) {
             throw new SecurityException("Solo admin o evaluador pueden aprobar la solicitud");
         }
-        return applyTransition(proyectoId, p, currentEstado, target, role, actorUserId, observaciones);
+        return applyTransition(proyectoId, p, currentEstado, target, role, actorUserId, null);
     }
 
     private Map<String, Object> applyTransition(Integer proyectoId,
@@ -688,13 +672,54 @@ public class MasterProjectService implements IMasterProjectService {
             throw new SecurityException(
                 "Rol '" + role + "' no autorizado para transición → " + target);
         }
-        boolean stampCierre  = "completado".equals(target);
-        boolean stampEnvio   = "en_revision".equals(target);
+        return executeTransitionUpdate(proyectoId, currentEstado, target, role, actorUserId, observaciones);
+    }
+
+    /**
+     * observaciones_cierre solo se escribe al cerrar evaluación (→ completado)
+     * o al rechazar evaluación (en_revision → activo). La nota de aprobación
+     * de planificación vive en proyecto_transicion_solicitud.nota_resolucion.
+     * Al reenviar a evaluación (activo → en_revision) se limpia el motivo previo.
+     */
+    private ObservacionesWrite resolveObservacionesWrite(
+            String currentEstado, String target, String observaciones) {
+        if ("completado".equals(target)) {
+            return ObservacionesWrite.set(observaciones);
+        }
+        if ("activo".equals(target) && "en_revision".equals(currentEstado)) {
+            return ObservacionesWrite.set(observaciones);
+        }
+        if ("en_revision".equals(target) && "activo".equals(currentEstado)) {
+            return ObservacionesWrite.clear();
+        }
+        if ("cancelado".equals(target) && observaciones != null && !observaciones.isBlank()) {
+            return ObservacionesWrite.set(observaciones.trim());
+        }
+        return ObservacionesWrite.skip();
+    }
+
+    private Map<String, Object> executeTransitionUpdate(Integer proyectoId,
+                                                        String currentEstado,
+                                                        String target,
+                                                        String role,
+                                                        Integer actorUserId,
+                                                        String observaciones) {
+        boolean stampCierre = "completado".equals(target);
+        boolean stampEnvio = "en_revision".equals(target);
         Integer auditorStamp = stampCierre ? actorUserId : null;
+        ObservacionesWrite obsWrite = resolveObservacionesWrite(currentEstado, target, observaciones);
+
         int rows = masterProjectRepository.updateEstado(
-            proyectoId, target, auditorStamp, observaciones, stampCierre, stampEnvio);
+            proyectoId,
+            target,
+            auditorStamp,
+            obsWrite.value,
+            stampCierre,
+            stampEnvio,
+            obsWrite.clear);
         if (rows == 0)
             throw new IllegalStateException("UPDATE no afectó filas (carrera de concurrencia?)");
+
         Proyectos updated = masterProjectRepository.findById(proyectoId).orElse(null);
         Map<String, Object> resp = new java.util.LinkedHashMap<>();
         resp.put("success", true);
@@ -702,6 +727,28 @@ public class MasterProjectService implements IMasterProjectService {
         resp.put("estadoAnterior", currentEstado);
         resp.put("estadoNuevo", target);
         return resp;
+    }
+
+    private static final class ObservacionesWrite {
+        final String value;
+        final boolean clear;
+
+        private ObservacionesWrite(String value, boolean clear) {
+            this.value = value;
+            this.clear = clear;
+        }
+
+        static ObservacionesWrite skip() {
+            return new ObservacionesWrite(null, false);
+        }
+
+        static ObservacionesWrite set(String value) {
+            return new ObservacionesWrite(value, false);
+        }
+
+        static ObservacionesWrite clear() {
+            return new ObservacionesWrite(null, true);
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════════════

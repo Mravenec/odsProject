@@ -150,6 +150,7 @@ public interface IMasterProjectRepository {
      * @param observaciones        Texto libre o motivo de rechazo (NULL si no aplica).
      * @param stampAuditadoEn      Si true, setea auditado_en = NOW(). Si false, lo deja como esté.
      * @param stampEnvioRevision   Si true, setea fecha_envio_revision = NOW().
+     * @param clearObservacionesCierre Si true, pone observaciones_cierre = NULL.
      * @return Número de filas afectadas (1 = OK, 0 = proyecto no existe).
      */
     int updateEstado(Integer proyectoId,
@@ -157,7 +158,8 @@ public interface IMasterProjectRepository {
                      Integer auditadoPor,
                      String observaciones,
                      boolean stampAuditadoEn,
-                     boolean stampEnvioRevision);
+                     boolean stampEnvioRevision,
+                     boolean clearObservacionesCierre);
 
     // ─────────────────────────────────────────────────────────────────────
     //  Sprint 16/17 — Validaciones de transición (defensa en BD)

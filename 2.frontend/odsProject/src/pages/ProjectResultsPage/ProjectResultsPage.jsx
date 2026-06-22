@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
-import { projectService } from '../../services/projectService';
-import { documentService } from '../../services/documentService';
-import { exportService } from '../../services/exportService';
+import { useProjectResultsDetail } from '../../hooks/useProjectResultsDetail';
+import { useExport } from '../../hooks/useExport';
 import { usePermissions } from '../../hooks/usePermissions';
 import {
   FileText, MapPin, Target, Calendar, CheckCircle2,
   Download, ArrowLeft, Building, ClipboardCheck, Pencil
 } from 'lucide-react';
 import { usePlanificacionTransicion } from '../../hooks/usePlanificacionTransicion';
-import { formatDate, getObjectiveName, getOdsColor, isProjectCompletado } from '../../utils/formatters';
+import { formatDate, getObjectiveName, getOdsColor, isProjectCompletado, isEvaluationRejection } from '../../utils/formatters';
 import EvidenceSection from '../../components/projects/EvidenceSection';
-import AchievementBadge, { deriveEstado } from '../../components/AchievementBadge';
+import AchievementBadge from '../../components/AchievementBadge';
 import ProjectChatPanel from '../../components/planificacion/ProjectChatPanel';
 import PlanificacionTransicionBar from '../../components/planificacion/PlanificacionTransicionBar';
 import './ProjectResultsPage.css';
@@ -31,120 +30,26 @@ const ProjectResultsPage = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
 
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState('');
+  const {
+    project,
+    loading,
+    error,
+    hasEvidenceDocs,
+    fetchProjectFull,
+    sendForEvaluation,
+    refreshEvidenceStatus,
+  } = useProjectResultsDetail(projectId);
+
+  const { exporting, downloadProjectFullReport } = useExport();
 
   const [confirmModal, setConfirmModal] = useState({ show: false, message: '', onConfirm: null });
   const [alertModal, setAlertModal] = useState({ show: false, message: '', isError: false });
-  const [exporting, setExporting] = useState(false);
-  const [hasEvidenceDocs, setHasEvidenceDocs] = useState(false);
-
-  const refreshEvidenceStatus = useCallback(async () => {
-    if (!projectId) return;
-    const r = await documentService.listByProject(projectId);
-    setHasEvidenceDocs((r.data || []).length > 0);
-  }, [projectId]);
-
-  const fetchProjectFull = useCallback(async () => {
-    setLoading(true);
-    try {
-      const headerRes = await projectService.getProjectById(projectId);
-      if (!headerRes.success || !headerRes.data) {
-        setError('Proyecto no encontrado'); return;
-      }
-      const currentProject = headerRes.data;
-
-      const odsRes = await projectService.getOdsByProyecto(projectId);
-      const linkedOdsRaw = odsRes.success ? odsRes.data : [];
-
-      const linkedOds = (await Promise.all(
-        linkedOdsRaw.map(async odsLink => {
-          const odsId = parseInt(odsLink.ods_id ?? odsLink.odsId);
-          if (!odsId || Number.isNaN(odsId)) return null;
-          const padded = String(odsId).padStart(2, '0');
-          let svc;
-          try {
-            const mod = await import(`../../services/objetivo${padded}Service.js`);
-            svc = mod.default || mod[`objetivo${padded}Service`];
-          } catch { return null; }
-          if (!svc?.getIndicators) return null;
-
-          const indicatorsMap = await svc.getIndicators(parseInt(projectId));
-          // El service ya mapea pero NO preserva proyectoId del view. Filtramos
-          // por evidencia de pertenencia: tiene fórmula, meta > 0, o currentValue.
-          const indicators = Object.values(indicatorsMap)
-            .filter(ind => ind && (
-              (ind.formula && ind.formula.trim().length > 0) ||
-              (typeof ind.targetValue === 'number' && ind.targetValue > 0) ||
-              ind.currentValue != null || ind.hasData
-            ))
-            .map(ind => ({
-              ...ind,
-              // % de logro: si tenemos currentValue y targetValue
-              porcentajeLogro: (ind.currentValue != null && ind.targetValue > 0)
-                ? Math.min((Number(ind.currentValue) / Number(ind.targetValue)) * 100, 200)
-                : null,
-              estado: ind.estadoIndicador ||
-                (ind.currentValue != null && ind.targetValue > 0
-                  ? deriveEstado((Number(ind.currentValue) / Number(ind.targetValue)) * 100)
-                  : 'SIN DATOS')
-            }))
-            .sort((a, b) => String(a.code).localeCompare(String(b.code)));
-
-          let parameters = [];
-          if (svc.getMetasProyecto) {
-            try {
-              const mp = await svc.getMetasProyecto(parseInt(projectId));
-              parameters = mp?.data || mp || [];
-            } catch {}
-          }
-
-          return {
-            odsId,
-            esPrimario: !!(odsLink.es_primario ?? odsLink.esPrimario),
-            indicators, parameters
-          };
-        })
-      )).filter(Boolean);
-
-      linkedOds.sort((a, b) => {
-        if (a.esPrimario && !b.esPrimario) return -1;
-        if (!a.esPrimario && b.esPrimario) return 1;
-        return a.odsId - b.odsId;
-      });
-
-      // ── Agregado de logro del proyecto: promedio de % de los indicadores con dato
-      const allInds  = linkedOds.flatMap(o => o.indicators);
-      const auditados = allInds.filter(i => i.porcentajeLogro != null);
-      const pctProyecto = auditados.length > 0
-        ? auditados.reduce((s, i) => s + i.porcentajeLogro, 0) / auditados.length
-        : null;
-
-      const docsRes = await documentService.listByProject(projectId);
-      setHasEvidenceDocs((docsRes.data || []).length > 0);
-
-      setProject({
-        ...currentProject,
-        linkedOds,
-        objective: linkedOds.find(o => o.esPrimario)?.odsId ?? linkedOds[0]?.odsId ?? currentProject.objective,
-        pctProyecto,
-        totalIndicadores: allInds.length,
-        auditados: auditados.length
-      });
-    } catch (err) {
-      console.error('[ProjectResultsPage]', err);
-      setError(err.message || 'Error cargando proyecto');
-    } finally {
-      setLoading(false);
-    }
-  }, [projectId]);
 
   const transicion = usePlanificacionTransicion(
     Number(projectId),
     user,
     project?.status,
-    fetchProjectFull
+    (opts) => fetchProjectFull(opts)
   );
 
   useEffect(() => { fetchProjectFull(); }, [fetchProjectFull]);
@@ -173,13 +78,43 @@ const ProjectResultsPage = () => {
   };
 
   const handleDownloadExcel = async () => {
-    setExporting(true);
-    const r = await exportService.downloadProjectFullReport(projectId);
-    setExporting(false);
+    const r = await downloadProjectFullReport(projectId);
     if (!r.success) {
       setAlertModal({ show: true, message: r.error || 'No se pudo descargar', isError: true });
     }
   };
+
+  const hasIndicators = (project?.linkedOds || []).some((o) => (o.indicators || []).length > 0);
+  const canSendToReview = hasIndicators && hasEvidenceDocs;
+  const sendDisabledReason = !hasIndicators
+    ? 'Configure al menos un indicador antes de enviar a evaluación'
+    : !hasEvidenceDocs
+      ? 'Suba al menos un documento de evidencia antes de enviar a evaluación'
+      : '';
+
+  const openSendForEvaluationConfirm = () => {
+    if (!canSendToReview) return;
+    setConfirmModal({
+      show: true,
+      message: '¿Enviar este proyecto a evaluación?\n\nDespués de enviar, no podrás modificar indicadores ni subir documentos hasta que el evaluador revise el proyecto.',
+      onConfirm: async () => {
+        const r = await sendForEvaluation(user.id);
+        if (!r.success) {
+          setAlertModal({ show: true, message: 'No se pudo enviar:\n' + r.error, isError: true });
+          return;
+        }
+        setAlertModal({ show: true, message: 'Proyecto enviado a evaluación exitosamente.', isError: false });
+        await fetchProjectFull({ silent: true });
+      },
+    });
+  };
+
+  const showSendForReviewButton = project
+    && project.userId === user?.id
+    && String(project.status || '').toLowerCase() === 'activo'
+    && perms.canEditOwnProject;
+
+  const showEvaluationRejectionBanner = showSendForReviewButton && isEvaluationRejection(project);
 
   return (
     <div className="project-results-page premium-view fade-in">
@@ -208,47 +143,18 @@ const ProjectResultsPage = () => {
               </button>
             )}
 
-            {/* Sprint 16 — Botón "Enviar a evaluación" para el gestor dueño (solo en activo). */}
-            {project && project.userId === user?.id
-              && String(project.status || '').toLowerCase() === 'activo'
-              && perms.canEditOwnProject && (() => {
-              const hasIndicators = (project.linkedOds || []).some(
-                (o) => (o.indicators || []).length > 0
-              );
-              const canSendToReview = hasEvidenceDocs && hasIndicators;
-              const sendDisabledReason = !hasIndicators
-                ? 'Configure al menos un indicador antes de enviar a evaluación'
-                : !hasEvidenceDocs
-                  ? 'Suba al menos un documento de evidencia antes de enviar a evaluación'
-                  : '';
-              return (
+            {showSendForReviewButton && (
               <button
                 type="button"
                 className="btn-send-for-review"
                 disabled={!canSendToReview}
                 title={sendDisabledReason || undefined}
                 aria-disabled={!canSendToReview}
-                onClick={() => {
-                  if (!canSendToReview) return;
-                  setConfirmModal({
-                    show: true,
-                    message: '¿Enviar este proyecto a evaluación?\n\nDespués de enviar, no podrás modificar indicadores ni subir documentos hasta que el evaluador revise el proyecto.',
-                    onConfirm: async () => {
-                      const r = await projectService.sendForEvaluation(projectId, user.id);
-                      if (!r.success) {
-                        setAlertModal({ show: true, message: 'No se pudo enviar:\n' + r.error, isError: true });
-                        return;
-                      }
-                      setAlertModal({ show: true, message: 'Proyecto enviado a evaluación exitosamente.', isError: false });
-                      setTimeout(() => window.location.reload(), 1500);
-                    }
-                  });
-                }}
+                onClick={openSendForEvaluationConfirm}
               >
                 📤 Enviar a evaluación
               </button>
-              );
-            })()}
+            )}
 
             {/* Sprint 17: botón AUDITAR para admin/auditor (Sprint 14 original).
                Solo visible si el proyecto está 'en_revision' (no antes, no después). */}
@@ -284,6 +190,7 @@ const ProjectResultsPage = () => {
           projectId={Number(projectId)}
           user={user}
           projectStatus={project.status}
+          projectOwnerUserId={project.userId}
         />
       )}
 
@@ -311,18 +218,12 @@ const ProjectResultsPage = () => {
 
       {project && (
         <PlanificacionTransicionBar
-          projectId={Number(projectId)}
           user={user}
-          projectStatus={project.status}
-          onProjectUpdated={fetchProjectFull}
+          transicion={transicion}
         />
       )}
 
-      {/* Sprint 17 — Banner de rechazo visible para el gestor cuando el
-         proyecto vuelve a 'activo' con observaciones de cierre (motivo del rechazo). */}
-      {project && project.userId === user?.id
-        && String(project.status||'').toLowerCase() === 'activo'
-        && project.closureObservations && (
+      {showEvaluationRejectionBanner && (
         <div style={{
           maxWidth:'var(--container-max, 1200px)',margin:'1rem auto 0',
           padding:'1rem 1.25rem',background:'#fffbeb',
@@ -336,9 +237,24 @@ const ProjectResultsPage = () => {
           <div style={{fontSize:'0.92rem',lineHeight:1.5}}>
             <strong>Motivo:</strong> {project.closureObservations}
           </div>
-          <div style={{fontSize:'0.8rem',marginTop:6,color:'#92400e'}}>
+          <div style={{fontSize:'0.85rem',marginTop:8,color:'#92400e',lineHeight:1.5}}>
             Corregí lo indicado y volvé a enviar el proyecto a evaluación.
           </div>
+          <button
+            type="button"
+            className="btn-send-for-review"
+            disabled={!canSendToReview}
+            title={sendDisabledReason || 'Reenviar a evaluación'}
+            onClick={openSendForEvaluationConfirm}
+            style={{ marginTop: '0.75rem' }}
+          >
+            📤 Reenviar a evaluación
+          </button>
+          {!canSendToReview && sendDisabledReason && (
+            <p style={{ fontSize: '0.78rem', marginTop: '0.5rem', color: '#b45309' }}>
+              {sendDisabledReason}
+            </p>
+          )}
         </div>
       )}
 

@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { MessageCircle, ChevronDown, Send } from 'lucide-react';
-import { useProjectChat, isSameChatUser } from '../../hooks/useProjectChat';
+import {
+  useProjectChat,
+  isSameChatUser,
+  isStaffSideMessage,
+  chatAuthorRoleLabel,
+} from '../../hooks/useProjectChat';
 import './ProjectChatPanel.css';
 
-export default function ProjectChatPanel({ projectId, user, projectStatus }) {
+export default function ProjectChatPanel({ projectId, user, projectStatus, projectOwnerUserId }) {
   const [open, setOpen] = useState(false);
   const chat = useProjectChat(projectId, user, projectStatus, open);
   const [editingId, setEditingId] = useState(null);
@@ -84,18 +89,23 @@ export default function ProjectChatPanel({ projectId, user, projectStatus }) {
             )}
             {!chat.loading &&
               chat.messages.map((m) => {
-                const mine = isSameChatUser(m.autorId, user.id);
+                const staffSide = isStaffSideMessage(m, projectOwnerUserId);
+                const ownMessage = isSameChatUser(m.autorId, user.id);
                 const canEdit = chat.canEditMessage(m);
+                const roleLabel = chatAuthorRoleLabel(m, projectOwnerUserId);
                 return (
                   <div
                     key={m.id}
-                    className={`chat-widget-bubble-wrap ${mine ? 'chat-widget-bubble-wrap--mine' : 'chat-widget-bubble-wrap--theirs'}`}
+                    className={`chat-widget-bubble-wrap ${staffSide ? 'chat-widget-bubble-wrap--staff' : 'chat-widget-bubble-wrap--gestor'}`}
                   >
-                    {!mine && (
-                      <span className="chat-widget-author">
+                    <span
+                      className={`chat-widget-author ${staffSide ? 'chat-widget-author--staff' : 'chat-widget-author--gestor'}`}
+                    >
+                      <span className="chat-widget-author-name">
                         {m.autorNombre || `Usuario ${m.autorId}`}
                       </span>
-                    )}
+                      <span className="chat-widget-author-role">{roleLabel}</span>
+                    </span>
                     {editingId === m.id ? (
                       <div className="chat-widget-edit">
                         <textarea
@@ -122,10 +132,10 @@ export default function ProjectChatPanel({ projectId, user, projectStatus }) {
                     ) : (
                       <>
                         <div className="chat-widget-bubble">{m.cuerpo}</div>
-                        {(m.editCount > 0 || (mine && canEdit)) && (
-                          <span className={`chat-widget-meta ${mine ? 'chat-widget-meta--mine' : ''}`}>
+                        {(m.editCount > 0 || (ownMessage && canEdit)) && (
+                          <span className={`chat-widget-meta ${staffSide ? 'chat-widget-meta--staff' : ''}`}>
                             {m.editCount > 0 && 'Editado · '}
-                            {mine && canEdit && editingId !== m.id && (
+                            {ownMessage && canEdit && editingId !== m.id && (
                               <button
                                 type="button"
                                 className="chat-widget-edit-link"

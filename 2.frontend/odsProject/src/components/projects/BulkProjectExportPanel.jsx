@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FileDown } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
-import { exportService } from '../../services/exportService';
+import { useExport } from '../../hooks/useExport';
 import './BulkProjectExportPanel.css';
 
 const buildYearOptions = () => {
@@ -16,7 +16,7 @@ export default function BulkProjectExportPanel({ className = '' }) {
   const [sedes, setSedes] = useState([]);
   const [bulkSedeId, setBulkSedeId] = useState('');
   const [bulkAnio, setBulkAnio] = useState(String(new Date().getFullYear()));
-  const [bulkExporting, setBulkExporting] = useState(false);
+  const { exporting: bulkExporting, downloadProjectsExcel } = useExport();
   const yearOptions = buildYearOptions();
 
   useEffect(() => {
@@ -34,12 +34,10 @@ export default function BulkProjectExportPanel({ className = '' }) {
       window.alert('Seleccione sede y año');
       return;
     }
-    setBulkExporting(true);
-    const r = await exportService.downloadProjectsExcel({
+    const r = await downloadProjectsExcel({
       sedeId: bulkSedeId,
       anio: bulkAnio,
     });
-    setBulkExporting(false);
     if (!r.success) window.alert(r.error || 'No se pudo descargar el Excel consolidado');
   };
 

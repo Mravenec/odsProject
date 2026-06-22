@@ -34,8 +34,10 @@ CREATE TABLE proyectos (
     -- institucional (firma del auditor responsable).
     auditado_por        INT          NULL,
     auditado_en         TIMESTAMP    NULL,
-    observaciones_cierre VARCHAR(1000) NULL,   -- texto libre del auditor al cerrar
-                                               --   o motivo de rechazo (vuelve a activo)
+    observaciones_cierre VARCHAR(1000) NULL,   -- firma al cerrar evaluación (→ completado)
+                                               --   o motivo si en_revision→activo (rechazo)
+                                               --   se limpia al reenviar a evaluación (activo→en_revision)
+                                               --   NO usar en planificación→activo (nota va en solicitud)
     fecha_envio_revision TIMESTAMP    NULL,    -- momento en que el gestor envió a auditar
                                                --   se usa para calcular tiempo de respuesta
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

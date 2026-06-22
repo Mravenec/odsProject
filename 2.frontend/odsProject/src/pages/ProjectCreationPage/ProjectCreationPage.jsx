@@ -13,7 +13,8 @@ import { usePermissions } from '../../hooks/usePermissions';
 import IndicatorConfigModal from '../../components/projects/IndicatorConfigModal/IndicatorConfigModal';
 import ProjectPlanificacionWizard from '../../components/projects/ProjectPlanificacionWizard';
 import { useSodsiCatalogs } from '../../hooks/useSodsiCatalogs';
-import { SERVICES_MAP, SDG_INDICATORS_CATALOG } from '../../utils/planificacionEditorUtils';
+import { useOdsMetadata } from '../../hooks/useOdsMetadata';
+import { OBJETIVO_SERVICES_MAP } from '../../hooks/objetivoServicesMap';
 import { emptyFichaSodsi } from '../../utils/sodsiFichaUtils';
 import { resolveRegionMideplan } from '../../utils/sodsiRegionUtils';
 import './ProjectCreationPage.css';
@@ -66,11 +67,15 @@ const ProjectCreationPage = () => {
   const [expandedOds, setExpandedOds] = useState(null);
   const [fichaSodsi, setFichaSodsi] = useState(emptyFichaSodsi);
   const sodsiCatalogs = useSodsiCatalogs();
-  
-  // Nuevo estado para metadatos reales de la BD
-  const [indicatorMetadata, setIndicatorMetadata] = useState({});
-  const [availableIndicators, setAvailableIndicators] = useState({}); // Mapeo odsId -> [codes]
-  const [loadingMetadata, setLoadingMetadata] = useState({});
+
+  const {
+    availableIndicators,
+    indicatorMetadata,
+    setIndicatorMetadata,
+    loadingMetadata,
+    hasMetadataForOds,
+    loadOdsMetadata,
+  } = useOdsMetadata();
 
   // Catálogos reales
   const [catalogSedes, setCatalogSedes] = useState([]);
@@ -163,53 +168,11 @@ const ProjectCreationPage = () => {
     if (formData.cantonId) fetchDistritos(formData.cantonId);
   }, [formData.cantonId, fetchDistritos]);
 
-  // Cargar metadatos cuando se expande un ODS
   useEffect(() => {
     if (expandedOds && !loadingMetadata[expandedOds] && !hasMetadataForOds(expandedOds)) {
       loadOdsMetadata(expandedOds);
     }
-  }, [expandedOds]);
-
-  const hasMetadataForOds = (odsId) => {
-    return availableIndicators[odsId] && availableIndicators[odsId].length > 0;
-  };
-
-  const loadOdsMetadata = async (odsId) => {
-    const service = SERVICES_MAP[odsId];
-    if (!service) return;
-
-    setLoadingMetadata(prev => ({ ...prev, [odsId]: true }));
-    
-    try {
-      // Usamos el nuevo método estandarizado para obtener todos los indicadores del ODS
-      // Pasamos 0 o null como proyectoId para obtener la lista del Master (vía LEFT JOIN)
-      const indicatorsData = await service.getIndicators(0);
-      
-      const newMetadata = {};
-      const codes = Object.keys(indicatorsData);
-      
-      codes.forEach(code => {
-        const ind = indicatorsData[code];
-        // Merge con catálogo estático para tener descripciones de respaldo si la BD es escueta
-        const fallbackDescription = SDG_INDICATORS_CATALOG[code];
-        
-        newMetadata[code] = {
-          masterId: ind.masterId,
-          description: (ind.name && ind.name.length > 5 && !ind.name.includes('Indicador')) 
-            ? ind.name 
-            : (fallbackDescription || `Seguimiento de metas técnicas para indicador ${code}`),
-          unit: ind.unit || 'unidad'
-        };
-      });
-
-      setAvailableIndicators(prev => ({ ...prev, [odsId]: codes }));
-      setIndicatorMetadata(prev => ({ ...prev, ...newMetadata }));
-    } catch (error) {
-      console.error(`[ProjectCreation] Error loading indicators for ODS ${odsId}:`, error);
-    } finally {
-      setLoadingMetadata(prev => ({ ...prev, [odsId]: false }));
-    }
-  };
+  }, [expandedOds, loadingMetadata, hasMetadataForOds, loadOdsMetadata]);
 
   // Filtrado de personal académico según el área seleccionada
   const filteredPersonnel = useMemo(() => {
@@ -350,7 +313,7 @@ ${sinMasterId.join(', ')}
         fichaSodsi,
       };
       
-      const result = await createFullProject(finalData, SERVICES_MAP);
+      const result = await createFullProject(finalData, OBJETIVO_SERVICES_MAP);
       
       if (result.success) {
         // ── S5: feedback granular si hay errores parciales ──
@@ -437,6 +400,7 @@ ${sinMasterId.join(', ')}
             sodsiCatalogs={sodsiCatalogs.catalogs}
             sodsiCatalogsLoading={sodsiCatalogs.loading}
             onSodsiCatalogRefresh={sodsiCatalogs.reload}
+            createBeneficiarioValor={sodsiCatalogs.createBeneficiarioValor}
             odsList={odsList}
             selectedOds={formData.selectedOds}
             onToggleOds={toggleOds}

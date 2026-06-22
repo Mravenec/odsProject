@@ -1,15 +1,9 @@
 import React from 'react';
-import { usePlanificacionTransicion } from '../../hooks/usePlanificacionTransicion';
 
-export default function PlanificacionTransicionBar({
-  projectId,
-  user,
-  projectStatus,
-  onProjectUpdated,
-}) {
-  const t = usePlanificacionTransicion(projectId, user, projectStatus, onProjectUpdated);
+export default function PlanificacionTransicionBar({ user, transicion }) {
+  const t = transicion;
 
-  if (!projectId || !user) return null;
+  if (!user || !t) return null;
 
   const showBar =
     (t.inPlanificacion && (t.isGestor || t.isReviewer)) ||

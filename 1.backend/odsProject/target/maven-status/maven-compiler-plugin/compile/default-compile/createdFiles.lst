@@ -227,6 +227,7 @@ com\odsProject\odsProject\repository\interfaces\IObjetivo03SaludBienestarReposit
 com\odsProject\odsProject\repository\interfaces\IOdsBaseRepository.class
 com\odsProject\odsProject\database\jooq\ods16\tables\pojos\VistaAdminResumenGeneral.class
 com\odsProject\odsProject\database\jooq\ods16\tables\AuditoriaOds16.class
+com\odsProject\odsProject\service\MasterProjectService$ObservacionesWrite.class
 com\odsProject\odsProject\database\jooq\ods08\routines\SpAdminReporteProyecto.class
 com\odsProject\odsProject\database\jooq\ods11\Keys.class
 com\odsProject\odsProject\database\jooq\ods01\tables\AuditoriaOds01.class

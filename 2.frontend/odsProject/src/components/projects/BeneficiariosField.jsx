@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Users, Plus, X } from 'lucide-react';
-import { sodsiCatalogService } from '../../services/sodsiCatalogService';
 import './BeneficiariosField.css';
 
 /**
@@ -13,6 +12,7 @@ export default function BeneficiariosField({
   catalogs = {},
   loading = false,
   onCatalogRefresh,
+  createBeneficiarioValor,
 }) {
   const [draft, setDraft] = useState('');
   const [adding, setAdding] = useState(false);
@@ -57,7 +57,7 @@ export default function BeneficiariosField({
     }
     setAdding(true);
     setError('');
-    const res = await sodsiCatalogService.createBeneficiarioValor({
+    const res = await createBeneficiarioValor({
       categoriaId: Number(defaultCatId),
       nombre,
     });

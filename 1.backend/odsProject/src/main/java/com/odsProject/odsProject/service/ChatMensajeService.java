@@ -116,10 +116,14 @@ public class ChatMensajeService implements IChatMensajeService {
         dto.put("editedAt", m.getEditedAt() != null ? m.getEditedAt().toString() : null);
         dto.put("editCount", m.getEditCount() != null ? m.getEditCount() : 0);
         dto.put("eliminado", m.getEliminado() != null && m.getEliminado() == 1);
-        String autorNombre = loginRepository.findUsuarioById(m.getAutorId())
-                .map(u -> u.getFullName())
-                .orElse(null);
-        dto.put("autorNombre", autorNombre);
+        loginRepository.findUsuarioById(m.getAutorId()).ifPresent(u -> {
+            dto.put("autorNombre", u.getFullName());
+            if (u.getRolId() != null) {
+                loginRepository.findRolById(u.getRolId())
+                        .map(r -> r.getNombre())
+                        .ifPresent(rol -> dto.put("autorRol", rol));
+            }
+        });
         return dto;
     }
 }

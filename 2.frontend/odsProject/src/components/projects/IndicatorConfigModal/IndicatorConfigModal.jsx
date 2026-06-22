@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './IndicatorConfigModal.css';
-import { evaluacionService } from '../../../services/evaluacionService';
+import { useEvaluacion } from '../../../hooks/useEvaluacion';
 
 /**
  * IndicatorConfigModal — Sprint 4
@@ -17,6 +17,7 @@ import { evaluacionService } from '../../../services/evaluacionService';
  */
 const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) => {
   const formulaRef = useRef(null);
+  const { validarFormula } = useEvaluacion();
 
   const [paramCount, setParamCount] = useState(
     existingConfig?.parameters?.length || 1
@@ -118,7 +119,7 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     const handle = setTimeout(async () => {
       setValidating(true);
       try {
-        const res = await evaluacionService.validarFormula(formula, declaradas);
+        const res = await validarFormula(formula, declaradas);
         setValidation(res);
       } catch (e) {
         // Sin backend: validación visual se omite, no bloqueamos el flujo
@@ -128,7 +129,7 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
       }
     }, 350);
     return () => clearTimeout(handle);
-  }, [formula, parameters]);
+  }, [formula, parameters, validarFormula]);
 
   const handleSave = () => {
     if (!formula.trim()) {

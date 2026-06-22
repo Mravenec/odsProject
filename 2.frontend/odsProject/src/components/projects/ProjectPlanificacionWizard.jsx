@@ -76,6 +76,7 @@ export default function ProjectPlanificacionWizard({
   sodsiCatalogs = {},
   sodsiCatalogsLoading = false,
   onSodsiCatalogRefresh,
+  createBeneficiarioValor,
   odsList = [],
   selectedOds = [],
   onToggleOds,
@@ -241,6 +242,7 @@ export default function ProjectPlanificacionWizard({
               catalogs={sodsiCatalogs}
               loading={sodsiCatalogsLoading}
               onCatalogRefresh={onSodsiCatalogRefresh}
+              createBeneficiarioValor={createBeneficiarioValor}
             />
           </div>
 

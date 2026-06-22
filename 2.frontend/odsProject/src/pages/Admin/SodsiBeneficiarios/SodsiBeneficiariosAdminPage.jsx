@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RefreshCw } from 'lucide-react';
-import { sodsiCatalogService } from '../../../services/sodsiCatalogService';
+import { useSodsiBeneficiariosAdmin } from '../../../hooks/useSodsiBeneficiariosAdmin';
 import './SodsiBeneficiariosAdminPage.css';
 
 const categoriaLabel = (categorias, categoriaId) => {
@@ -13,38 +13,18 @@ const EMPTY_CONFIRM = { open: false, row: null, nextActivo: null };
 
 export default function SodsiBeneficiariosAdminPage() {
   const navigate = useNavigate();
-  const [valores, setValores] = useState([]);
-  const [categorias, setCategorias] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const {
+    valores,
+    categorias,
+    loading,
+    error,
+    setError,
+    busyId,
+    reload: load,
+    setBeneficiarioActivo,
+  } = useSodsiBeneficiariosAdmin();
   const [success, setSuccess] = useState('');
-  const [busyId, setBusyId] = useState(null);
   const [confirm, setConfirm] = useState(EMPTY_CONFIRM);
-
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError('');
-    const [catRes, valRes] = await Promise.all([
-      sodsiCatalogService.getCatalogos(),
-      sodsiCatalogService.listBeneficiarioValores({ adminAll: true }),
-    ]);
-    if (!catRes.success) {
-      setError(catRes.error);
-      setValores([]);
-      setCategorias([]);
-    } else {
-      setCategorias(catRes.data.beneficiarioCategorias || []);
-    }
-    if (!valRes.success) {
-      setError(valRes.error || 'No se pudieron cargar los valores');
-      setValores([]);
-    } else {
-      setValores(valRes.data);
-    }
-    setLoading(false);
-  }, []);
-
-  useEffect(() => { load(); }, [load]);
 
   useEffect(() => {
     if (!success) return undefined;
@@ -66,10 +46,8 @@ export default function SodsiBeneficiariosAdminPage() {
     const { row, nextActivo } = confirm;
     if (!row) return;
 
-    setBusyId(row.id);
     setError('');
-    const res = await sodsiCatalogService.setBeneficiarioActivo(row.id, nextActivo);
-    setBusyId(null);
+    const res = await setBeneficiarioActivo(row.id, nextActivo);
 
     if (!res.success) {
       setError(res.error);
@@ -82,7 +60,6 @@ export default function SodsiBeneficiariosAdminPage() {
         ? `«${row.nombre}» reactivado en el catálogo.`
         : `«${row.nombre}» desactivado. Los proyectos existentes conservan el valor en export.`,
     );
-    await load();
   };
 
   const confirmTitle = confirm.nextActivo ? 'Reactivar beneficiario' : 'Desactivar beneficiario';

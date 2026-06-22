@@ -9,6 +9,31 @@ export function isSameChatUser(a, b) {
   return Number(a) === Number(b);
 }
 
+const STAFF_ROLES = new Set(['admin', 'evaluador']);
+
+/** Gestor del proyecto → burbuja izquierda; admin/evaluador → derecha (vista fija para todos). */
+export function isGestorSideMessage(msg, projectOwnerUserId) {
+  if (projectOwnerUserId != null && msg?.autorId != null) {
+    return Number(msg.autorId) === Number(projectOwnerUserId);
+  }
+  const rol = String(msg?.autorRol || '').toLowerCase();
+  if (rol === 'gestor') return true;
+  if (STAFF_ROLES.has(rol)) return false;
+  return true;
+}
+
+export function isStaffSideMessage(msg, projectOwnerUserId) {
+  return !isGestorSideMessage(msg, projectOwnerUserId);
+}
+
+export function chatAuthorRoleLabel(msg, projectOwnerUserId) {
+  if (isGestorSideMessage(msg, projectOwnerUserId)) return 'Gestor';
+  const rol = String(msg?.autorRol || '').toLowerCase();
+  if (rol === 'admin') return 'Administrador';
+  if (rol === 'evaluador') return 'Evaluador';
+  return 'UTN';
+}
+
 function normalizeMessage(raw) {
   if (!raw) return raw;
   return {
@@ -22,6 +47,7 @@ function normalizeMessage(raw) {
     editCount: Number(raw.editCount ?? raw.edit_count ?? 0),
     eliminado: Boolean(raw.eliminado),
     autorNombre: raw.autorNombre ?? raw.autor_nombre ?? null,
+    autorRol: raw.autorRol ?? raw.autor_rol ?? null,
   };
 }
 

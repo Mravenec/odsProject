@@ -140,6 +140,18 @@ export const isProjectInReview = (project) =>
   getProjectWorkflowStatus(project) === 'en_revision';
 
 /**
+ * Rechazo de evaluación: volvió a activo con motivo tras haber estado en_revision.
+ * No confundir con aprobación de planificación→activo (sin fecha_envio_revision).
+ */
+export const isEvaluationRejection = (project) => {
+  if (!project) return false;
+  if (getProjectWorkflowStatus(project) !== 'activo') return false;
+  const motivo = project.closureObservations ?? project.observaciones_cierre;
+  if (!motivo || !String(motivo).trim()) return false;
+  return Boolean(project.sentForReviewAt ?? project.fecha_envio_revision);
+};
+
+/**
  * Filtro UI (valores en inglés del select) contra ENUM español de BD.
  */
 export const matchesProjectStatusFilter = (project, filterStatus) => {

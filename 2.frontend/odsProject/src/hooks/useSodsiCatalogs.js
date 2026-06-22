@@ -34,7 +34,12 @@ export function useSodsiCatalogs({ enabled = true } = {}) {
     reload();
   }, [reload]);
 
-  return { catalogs, loading, error, reload };
+  const createBeneficiarioValor = useCallback(
+    (payload) => sodsiCatalogService.createBeneficiarioValor(payload),
+    []
+  );
+
+  return { catalogs, loading, error, reload, createBeneficiarioValor };
 }
 
 export default useSodsiCatalogs;

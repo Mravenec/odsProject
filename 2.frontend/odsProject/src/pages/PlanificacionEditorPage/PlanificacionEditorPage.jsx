@@ -388,6 +388,7 @@ const PlanificacionEditorPage = () => {
               sodsiCatalogs={sodsiCatalogs.catalogs}
               sodsiCatalogsLoading={sodsiCatalogs.loading}
               onSodsiCatalogRefresh={sodsiCatalogs.reload}
+              createBeneficiarioValor={sodsiCatalogs.createBeneficiarioValor}
               odsList={odsList}
               selectedOds={formData.selectedOds}
               onToggleOds={toggleOds}

@@ -36,6 +36,13 @@ export function usePlanificacionTransicion(projectId, user, projectStatus, onPro
 
   useEffect(() => { load(); }, [load]);
 
+  const refreshAfterAction = async () => {
+    if (onProjectUpdated) {
+      await onProjectUpdated({ silent: true });
+    }
+    await load();
+  };
+
   const solicitar = async () => {
     if (!motivo.trim()) {
       setError('Indique el motivo de la solicitud');
@@ -48,8 +55,7 @@ export function usePlanificacionTransicion(projectId, user, projectStatus, onPro
         projectId, actorUserId, destino, motivo.trim());
       if (r.data?.solicitud) setSolicitud(r.data.solicitud);
       setMotivo('');
-      await load();
-      onProjectUpdated?.();
+      await refreshAfterAction();
     } catch (e) {
       setError(e.response?.data?.error || 'No se pudo crear la solicitud');
     } finally {
@@ -63,8 +69,7 @@ export function usePlanificacionTransicion(projectId, user, projectStatus, onPro
     try {
       await transicionService.aprobar(projectId, actorUserId, role, nota);
       setNota('');
-      onProjectUpdated?.();
-      window.location.reload();
+      await refreshAfterAction();
     } catch (e) {
       setError(e.response?.data?.error || 'No se pudo aprobar');
     } finally {
@@ -82,8 +87,7 @@ export function usePlanificacionTransicion(projectId, user, projectStatus, onPro
     try {
       await transicionService.rechazar(projectId, actorUserId, role, nota.trim());
       setNota('');
-      await load();
-      onProjectUpdated?.();
+      await refreshAfterAction();
     } catch (e) {
       setError(e.response?.data?.error || 'No se pudo rechazar');
     } finally {
@@ -101,8 +105,7 @@ export function usePlanificacionTransicion(projectId, user, projectStatus, onPro
     try {
       await transicionService.fuerzaMayor(projectId, actorUserId, role, motivo.trim());
       setMotivo('');
-      onProjectUpdated?.();
-      window.location.reload();
+      await refreshAfterAction();
     } catch (e) {
       setError(e.response?.data?.error || 'No se pudo cancelar');
     } finally {

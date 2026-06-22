@@ -3,30 +3,8 @@ import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { usePermissions } from '../../hooks/usePermissions';
-import { projectService } from '../../services/projectService';
+import { useProjectEvaluation } from '../../hooks/useProjectEvaluation';
 import { evaluationEngine } from '../../utils/evaluationEngine';
-
-/**
- * EvaluationPage — Sprint 4 / 5
- *
- * Cambios vs. la versión anterior:
- *   1. Se envía proyecto_indicadores.id (ind.id) y NO el indicadorMasterId
- *      al guardar la medición.
- *   2. Usa el endpoint /mediciones/auditada que recalcula server-side y persiste
- *      medicion_parametro_valores en una sola transacción.
- *   3. Agrega tab "Auditoría" para ver la traza de mediciones por indicador.
- *   4. El cálculo local sigue mostrándose como preview (UX inmediata) pero el
- *      valor que queda guardado es el que devuelve el backend.
- */
-
-// Resolver dinámico de servicios por ODS
-const getService = async (odsNum) => {
-  const n = String(odsNum).padStart(2, '0');
-  try {
-    const mod = await import(`../../services/objetivo${n}Service.js`);
-    return mod.default || mod[`objetivo${n}Service`];
-  } catch { return null; }
-};
 
 const estadoColors = {
   'LOGRADO':    '#2dba74', 'CERCA META': '#012169',
@@ -43,24 +21,31 @@ const EvaluationPage = () => {
   const { user } = useAuth();
   const perms = usePermissions();
   const readOnly = !perms.canEnterMeasurements;
-  const [project, setProject]           = useState(null);
+
+  const {
+    project,
+    allIndicators,
+    setAllIndicators,
+    loadingPage,
+    auditClosing,
+    auditError,
+    setAuditError,
+    load,
+    getService,
+    approveEvaluation,
+    rejectEvaluation,
+  } = useProjectEvaluation(projectId);
 
   // ── Sprint 17 — Modales de aprobar / rechazar ─────────────────────
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [showRejectModal, setShowRejectModal]   = useState(false);
   const [approveObs, setApproveObs] = useState('');
   const [rejectMotivo, setRejectMotivo] = useState('');
-  const [auditClosing, setAuditClosing] = useState(false);
-  const [auditError, setAuditError] = useState(null);
   const [alertModal, setAlertModal] = useState({ show: false, message: '', isError: false, onClose: null });
 
   const handleApprove = async () => {
-    setAuditClosing(true); setAuditError(null);
-    const r = await projectService.approveEvaluation(
-      parseInt(projectId), user.id, user.role, approveObs.trim() || null
-    );
-    setAuditClosing(false);
-    if (!r.success) { setAuditError(r.error); return; }
+    const r = await approveEvaluation(user.id, user.role, approveObs.trim() || null);
+    if (!r.success) return;
     setShowApproveModal(false);
     setAlertModal({ 
       show: true, 
@@ -74,12 +59,8 @@ const EvaluationPage = () => {
     if (rejectMotivo.trim().length < 10) {
       setAuditError('El motivo debe tener al menos 10 caracteres'); return;
     }
-    setAuditClosing(true); setAuditError(null);
-    const r = await projectService.rejectEvaluation(
-      parseInt(projectId), user.id, user.role, rejectMotivo.trim()
-    );
-    setAuditClosing(false);
-    if (!r.success) { setAuditError(r.error); return; }
+    const r = await rejectEvaluation(user.id, user.role, rejectMotivo.trim());
+    if (!r.success) return;
     setShowRejectModal(false);
     setAlertModal({ 
       show: true, 
@@ -88,108 +69,23 @@ const EvaluationPage = () => {
       onClose: () => navigate('/evaluacion') 
     });
   };
-  const [allIndicators, setAllIndicators] = useState({});
   const [paramInputs, setParamInputs]   = useState({});
   const [calcResults, setCalcResults]   = useState({});
   const [activeTab, setActiveTab]       = useState('ingreso');
   const [openOds, setOpenOds]           = useState({});
   const [saving, setSaving]             = useState({});
-  const [loadingPage, setLoadingPage]   = useState(true);
-  const [auditTrail, setAuditTrail]     = useState({});       // codigo -> [auditoria]
+  const [auditTrail, setAuditTrail]     = useState({});
   const [loadingAudit, setLoadingAudit] = useState({});
 
-  const loadAllIndicators = useCallback(async (pid, odsIds = []) => {
-    const result = {};
-    const targets = (Array.isArray(odsIds) && odsIds.length > 0) 
-      ? odsIds 
-      : Array.from({length: 17}, (_, i) => i + 1);
-
-    for (const n of targets) {
-      try {
-        const svc = await getService(n);
-        if (!svc) continue;
-        const data = await (svc.getIndicators ? svc.getIndicators(pid) : svc.getAllIndicators?.(pid));
-        if (!data || Object.keys(data).length === 0) continue;
-
-        const metasRes = svc.getMetasProyecto ? await svc.getMetasProyecto(pid) : { data: [] };
-        const metas = metasRes.data || [];
-
-        // Sprint 15: filtramos por proyectoId (ahora preservado en el mapping)
-        const list = Object.values(data).filter(i => i && i.proyectoId);
-
-        // Sprint 15: matchear parámetros a indicadores por nombre de variable
-        // (el backend no expone proyecto_indicador_id en la vista, por eso no
-        // podemos hacer match por id). Extraemos variables de cada fórmula.
-        const RESERVED = new Set(['sqrt','sin','cos','tan','log','exp','round','floor','ceil','abs','pi','e','valor','count']);
-        const extractVars = (formula) => {
-          if (!formula) return new Set();
-          return new Set((String(formula).match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [])
-            .filter(v => !RESERVED.has(v.toLowerCase())));
-        };
-
-        const enriched = list.map(ind => {
-          const vars = extractVars(ind.formula || ind.formulaCustom);
-          const matchingParams = metas.filter(m => {
-            const varName = m.nombreVariable || m.nombre_variable || m.nombreParametro || m.nombre_parametro;
-            return vars.has(varName);
-          });
-          // Sprint 17 Fix: Recuperar el ID perdido del indicador desde los parámetros
-          const pId = matchingParams.length > 0 ? (matchingParams[0].proyectoIndicadorId ?? matchingParams[0].proyecto_indicador_id) : undefined;
-          return {
-            ...ind,
-            id: pId,
-            indicadorCodigo: ind.indicadorCodigo || ind.codigo || ind.code,
-            indicadorNombre: ind.indicadorNombre || ind.nombre || ind.name,
-            indicadorMasterId: ind.indicadorMasterId || ind.masterId,
-            formulaCustom: ind.formulaCustom || ind.formula,
-            formulaDefault: ind.formulaDefault || 'valor',
-            metaValor: ind.metaValor || ind.targetValue || 0,
-            metaUnidad: ind.metaUnidad || ind.unit || 'Porcentaje',
-            metaNombre: ind.metaNombre || '',
-            estadoIndicador: ind.estadoIndicador || 'SIN DATOS',
-            porcentajeLogro: ind.porcentajeLogro || 0,
-            // Normalizar params: usar las claves camelCase consistentes
-            parametros: matchingParams.map(p => ({
-              id: p.id ?? p.ID,
-              nombreParametro: p.nombreParametro ?? p.nombre_parametro,
-              nombreVariable:  p.nombreVariable  ?? p.nombre_variable,
-              tipoDato:        p.tipoDato        ?? p.tipo_dato,
-              valorActual:     p.valorActual     ?? p.valor_actual
-            }))
-          };
-        });
-
-        if (enriched.length > 0) result[n] = enriched;
-      } catch (e) { console.error('ODS', n, e); }
-    }
-    return result;
-  }, []);
-
   useEffect(() => {
-    const load = async () => {
-      setLoadingPage(true);
-      try {
-        const projRes = await projectService.getProjectById(parseInt(projectId));
-        const pData = projRes.data || projRes;
-        setProject(pData);
-        
-        // Sprint UTN: obtener ODS vinculados explícitamente para evitar escaneo de 1-17
-        let odsToLoad = pData.odsVinculados || [];
-        if (odsToLoad.length === 0) {
-          const links = await projectService.getOdsByProyecto(parseInt(projectId));
-          odsToLoad = (links.data || []).map(l => l.odsId || l.ods_id);
-        }
-        
-        const indicators = await loadAllIndicators(parseInt(projectId), odsToLoad);
-        setAllIndicators(indicators);
-        const opened = {};
-        Object.keys(indicators).forEach(k => { opened[k] = true; });
-        setOpenOds(opened);
-      } catch (e) { console.error(e); }
-      setLoadingPage(false);
-    };
-    if (projectId) load();
-  }, [projectId, loadAllIndicators]);
+    if (!projectId) return;
+    load().then((indicators) => {
+      if (!indicators) return;
+      const opened = {};
+      Object.keys(indicators).forEach((k) => { opened[k] = true; });
+      setOpenOds(opened);
+    });
+  }, [projectId, load]);
 
   const handleParamChange = (codigo, paramVar, value) => {
     setParamInputs(prev => ({
@@ -220,7 +116,7 @@ const EvaluationPage = () => {
 
     setSaving(prev => ({ ...prev, [codigo]: true }));
     try {
-      const svc = await getService(odsNum);
+      const svc = getService(odsNum);
 
       // ── Sprint 15: resolver proyecto_indicador.id ──────────────────────
       // El backend no expone pi.id en la vista. Hacemos UPSERT idempotente
@@ -336,7 +232,7 @@ const EvaluationPage = () => {
     const codigo = indicator.indicadorCodigo;
     setLoadingAudit(prev => ({ ...prev, [codigo]: true }));
     try {
-      const svc = await getService(odsNum);
+      const svc = getService(odsNum);
       if (!svc?.getMediciones) return;
       const res = await svc.getMediciones(indicator.id);
       const mediciones = res.data || [];

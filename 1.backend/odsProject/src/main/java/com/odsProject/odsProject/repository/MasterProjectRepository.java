@@ -290,7 +290,8 @@ public class MasterProjectRepository implements IMasterProjectRepository {
                             Integer auditadoPor,
                             String observaciones,
                             boolean stampAuditadoEn,
-                            boolean stampEnvioRevision) {
+                            boolean stampEnvioRevision,
+                            boolean clearObservacionesCierre) {
         if (proyectoId == null || nuevoEstado == null)
             throw new IllegalArgumentException("proyectoId y nuevoEstado son requeridos");
 
@@ -306,8 +307,9 @@ public class MasterProjectRepository implements IMasterProjectRepository {
         if (stampEnvioRevision) {
             update = update.set(FLD_ENVIO_REVISION, java.time.LocalDateTime.now());
         }
-        // Observaciones — pueden ser de cierre o motivo de rechazo
-        if (observaciones != null) {
+        if (clearObservacionesCierre) {
+            update = update.set(FLD_OBSERVACIONES, (String) null);
+        } else if (observaciones != null) {
             update = update.set(FLD_OBSERVACIONES, observaciones);
         }
         return update.where(PROYECTOS.ID.eq(proyectoId)).execute();

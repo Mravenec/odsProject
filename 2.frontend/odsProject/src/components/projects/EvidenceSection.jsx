@@ -59,7 +59,7 @@ export default function EvidenceSection({ project, onDocumentsChange }) {
       <li>Seleccione el archivo (Word, Excel, PDF o texto plano (.txt)) con los resultados del proyecto.</li>
       <li>Verifique que el nombre del archivo aparezca correctamente debajo del botón.</li>
       <li>Si lo desea, escriba una descripción breve para el evaluador (opcional).</li>
-      <li>Pulse «Subir documento» y espere la confirmación.</li>
+      <li>Pulse «Enviar Documento» y espere la confirmación.</li>
       <li>Revise la lista: el evaluador descargará el archivo para ingresar las mediciones.</li>
     </ol>
   ) : awaitingActive ? (
@@ -135,7 +135,7 @@ export default function EvidenceSection({ project, onDocumentsChange }) {
             onClick={handleUpload}
             disabled={busy}
           >
-            <Upload size={14} /> {busy ? 'Subiendo…' : 'Subir documento'}
+            <Upload size={14} /> {busy ? 'Enviando…' : 'Enviar Documento'}
           </button>
         </div>
       )}

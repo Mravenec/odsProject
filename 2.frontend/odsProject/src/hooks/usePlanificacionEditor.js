@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useAuth } from './useAuth.jsx';
 import { projectService } from '../services/projectService';
+import { getObjetivoService } from './objetivoServicesMap';
 import {
-  SERVICES_MAP,
   SDG_INDICATORS_CATALOG,
   snapshotToEditorState,
   editorStateToUpdatePayload,
@@ -57,7 +57,7 @@ export function usePlanificacionEditor(projectId) {
   );
 
   const loadOdsMetadata = useCallback(async (odsId) => {
-    const service = SERVICES_MAP[odsId];
+    const service = getObjetivoService(odsId);
     if (!service) return;
 
     setLoadingMetadata((prev) => ({ ...prev, [odsId]: true }));
