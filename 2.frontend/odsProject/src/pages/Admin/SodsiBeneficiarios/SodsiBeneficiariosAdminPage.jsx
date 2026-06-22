@@ -9,13 +9,17 @@ const categoriaLabel = (categorias, categoriaId) => {
   return match?.nombre || `Cat. ${categoriaId}`;
 };
 
+const EMPTY_CONFIRM = { open: false, row: null, nextActivo: null };
+
 export default function SodsiBeneficiariosAdminPage() {
   const navigate = useNavigate();
   const [valores, setValores] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [busyId, setBusyId] = useState(null);
+  const [confirm, setConfirm] = useState(EMPTY_CONFIRM);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -42,22 +46,51 @@ export default function SodsiBeneficiariosAdminPage() {
 
   useEffect(() => { load(); }, [load]);
 
-  const toggleActivo = async (row) => {
-    const next = !row.activo;
-    const msg = next
-      ? `¿Reactivar «${row.nombre}» en el catálogo?`
-      : `¿Desactivar «${row.nombre}»? Los proyectos que ya lo usan conservan el valor en export.`;
-    if (!window.confirm(msg)) return;
+  useEffect(() => {
+    if (!success) return undefined;
+    const t = setTimeout(() => setSuccess(''), 4000);
+    return () => clearTimeout(t);
+  }, [success]);
+
+  const openToggleConfirm = (row) => {
+    const nextActivo = !row.activo;
+    setConfirm({ open: true, row, nextActivo });
+  };
+
+  const closeConfirm = () => {
+    if (busyId) return;
+    setConfirm(EMPTY_CONFIRM);
+  };
+
+  const confirmToggle = async () => {
+    const { row, nextActivo } = confirm;
+    if (!row) return;
 
     setBusyId(row.id);
-    const res = await sodsiCatalogService.setBeneficiarioActivo(row.id, next);
+    setError('');
+    const res = await sodsiCatalogService.setBeneficiarioActivo(row.id, nextActivo);
     setBusyId(null);
+
     if (!res.success) {
       setError(res.error);
       return;
     }
+
+    setConfirm(EMPTY_CONFIRM);
+    setSuccess(
+      nextActivo
+        ? `«${row.nombre}» reactivado en el catálogo.`
+        : `«${row.nombre}» desactivado. Los proyectos existentes conservan el valor en export.`,
+    );
     await load();
   };
+
+  const confirmTitle = confirm.nextActivo ? 'Reactivar beneficiario' : 'Desactivar beneficiario';
+  const confirmBody = confirm.row
+    ? (confirm.nextActivo
+      ? `¿Reactivar «${confirm.row.nombre}»? Volverá a aparecer en los formularios de gestores.`
+      : `¿Desactivar «${confirm.row.nombre}»? Los proyectos que ya lo usan conservan el valor en export.`)
+    : '';
 
   return (
     <div className="sodsi-ben-admin fade-in">
@@ -67,7 +100,7 @@ export default function SodsiBeneficiariosAdminPage() {
         </button>
         <div>
           <h1>Catálogo beneficiarios SODSI</h1>
-          <p>Valores del glosario OPSI. Desactivar no borra referencias en proyectos existentes.</p>
+          <p>Valores del glosario OPSI. Desactivar o reactivar sin borrar referencias en proyectos existentes.</p>
         </div>
         <button type="button" className="btn-refresh" onClick={load} disabled={loading}>
           <RefreshCw size={16} /> Actualizar
@@ -75,6 +108,7 @@ export default function SodsiBeneficiariosAdminPage() {
       </header>
 
       {error && <div className="sodsi-ben-admin-error">{error}</div>}
+      {success && <div className="sodsi-ben-admin-success">{success}</div>}
 
       {loading ? (
         <div className="sodsi-ben-admin-loader">Cargando catálogo…</div>
@@ -110,9 +144,9 @@ export default function SodsiBeneficiariosAdminPage() {
                   <td>
                     <button
                       type="button"
-                      className="btn-toggle"
+                      className={`btn-toggle ${v.activo ? 'btn-toggle--danger' : 'btn-toggle--success'}`}
                       disabled={busyId === v.id}
-                      onClick={() => toggleActivo(v)}
+                      onClick={() => openToggleConfirm(v)}
                     >
                       {v.activo ? 'Desactivar' : 'Reactivar'}
                     </button>
@@ -121,6 +155,34 @@ export default function SodsiBeneficiariosAdminPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {confirm.open && (
+        <div
+          className="sodsi-ben-confirm-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="sodsi-ben-confirm-title"
+          onClick={closeConfirm}
+        >
+          <div className="sodsi-ben-confirm-modal" onClick={(e) => e.stopPropagation()}>
+            <h2 id="sodsi-ben-confirm-title">{confirmTitle}</h2>
+            <p>{confirmBody}</p>
+            <div className="sodsi-ben-confirm-actions">
+              <button type="button" className="btn-secondary" onClick={closeConfirm} disabled={Boolean(busyId)}>
+                Cancelar
+              </button>
+              <button
+                type="button"
+                className={confirm.nextActivo ? 'btn-primary' : 'btn-danger'}
+                onClick={confirmToggle}
+                disabled={Boolean(busyId)}
+              >
+                {busyId ? 'Guardando…' : confirm.nextActivo ? 'Reactivar' : 'Desactivar'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

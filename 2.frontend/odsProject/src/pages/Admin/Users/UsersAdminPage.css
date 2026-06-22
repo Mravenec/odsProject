@@ -61,6 +61,82 @@
   padding: 1.5rem;
 }
 
+/* Tabla ancha (10 cols SODSI): 100% en pantallas grandes; scroll solo si no cabe */
+.users-admin-page .table-container {
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  background: #fff;
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid var(--border-soft, #e5e7eb);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.08));
+  max-width: 100%;
+}
+
+.users-admin-page .admin-table {
+  width: 100%;
+  min-width: 0;
+  border-collapse: collapse;
+  text-align: left;
+  table-layout: auto;
+}
+
+.users-admin-page .admin-table th {
+  background: var(--bg-subtle, #f4f6f9);
+  padding: 0.95rem 1rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--text-muted, #64748b);
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border-color, #d1d5db);
+  white-space: nowrap;
+}
+
+.users-admin-page .admin-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-soft, #e5e7eb);
+  font-size: 0.9rem;
+  color: var(--text-main, #1e293b);
+  vertical-align: middle;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Viewport estrecho: ancho mínimo por contenido → barra horizontal */
+@media (max-width: 1100px) {
+  .users-admin-page .admin-table {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .users-admin-page .admin-table td {
+    white-space: nowrap;
+    max-width: 14rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Pantalla amplia: más ancho útil para la tabla */
+@media (min-width: 1280px) {
+  .users-admin-main.container {
+    max-width: min(100%, 90rem);
+  }
+}
+
+.users-admin-page .admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.users-admin-page .admin-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.users-admin-page .admin-table tbody tr:hover {
+  background: var(--bg-subtle, #f4f6f9);
+}
+
 .users-admin-error {
   background: #fef2f2;
   color: #b91c1c;
@@ -322,6 +398,14 @@
 }
 
 @media (max-width: 768px) {
+  .users-admin-page .table-container {
+    overflow-x: visible;
+  }
+
+  .users-admin-page .admin-table {
+    min-width: 0;
+  }
+
   .admin-table thead { display: none; }
   .admin-table tr {
     display: block;

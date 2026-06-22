@@ -37,7 +37,10 @@ export const sodsiCatalogService = {
       const response = await api.patch(`/sodsi/beneficiarios/valores/${valorId}/activo`, { activo });
       return { success: true, data: response.data };
     } catch (error) {
-      const msg = error.userMessage || error.message || 'No se pudo actualizar el beneficiario';
+      const msg = error.response?.data?.error
+        || error.userMessage
+        || error.message
+        || 'No se pudo actualizar el beneficiario';
       return { success: false, error: msg };
     }
   },
