@@ -1,0 +1,46 @@
+---
+description: Al terminar — consultar si listo, línea git en bloque ```; la IA nunca ejecuta git
+alwaysApply: true
+---
+
+# Git — consultar, bloque copiable; el usuario ejecuta
+
+## Regla de oro
+
+**Al terminar** trabajo con cambios:
+
+1. **Consultar** si ya probó en local o está listo para publicar (pregunta corta; no asumir que ya hizo push).
+2. **Después** de la consulta, dar **una sola línea** dentro de un bloque de código fenced (triple backtick), **sin** `bash` ni numeración — para copiar y pegar directo:
+
+````
+```
+git add . && git commit -m "mensaje conciso" && git push origin main
+```
+````
+
+**Nunca** usar `git` en terminal para publicar (`add`, `commit`, `push`, `reset`, etc.).
+
+## Prohibido (salvo orden explícita en el mensaje actual)
+
+- `git add`, `git commit`, `git push`, `git pull --rebase`, `git merge`, `git reset`, `git stash` por entregar cambios
+- Smart Mode para commitear o pushear
+- La línea de git **inline** con backticks sueltos — siempre bloque ``` completo
+
+**Excepción:** el usuario pide explícitamente que la IA ejecute git (*haz tú el commit*, *ejecuta el push*).
+
+## Detalles del mensaje y exclusiones
+
+- Mensaje de commit según el diff real.
+- Si hay exclusiones (`.tmp_xlsx/`, `.env`), una frase aparte **antes** del bloque; `git add` selectivo si hace falta.
+
+## Si aún no probó
+
+Indicar cómo levantar backend/frontend; consulta + bloque git **después**.
+
+## Ejemplo de cierre
+
+¿Ya probaste en local y está OK para publicar en `main`? Si sí, ejecutá:
+
+```
+git add . && git commit -m "fix(export): columna Usuario SODSI desde JWT" && git push origin main
+```

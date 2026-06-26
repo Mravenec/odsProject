@@ -6,6 +6,9 @@
 .env.*
 !.env.example
 
+# Artefactos temporales (p. ej. xlsx descomprimido para inspección)
+.tmp_xlsx/
+
 # Build / IDE
 dist/
 target/
