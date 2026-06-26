@@ -14,9 +14,22 @@ import com.odsProject.odsProject.repository.interfaces.IDocumentRepository;
 import com.odsProject.odsProject.repository.interfaces.IMasterProjectRepository;
 import com.odsProject.odsProject.repository.interfaces.ISodsiCatalogRepository;
 import com.odsProject.odsProject.service.interfaces.IExportService;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +56,17 @@ public class ExportService implements IExportService {
     };
 
     private static final String SODSI_MATRIZ_SHEET = "Acciones";
+
+    /** UTN #00689D — cabecera matriz SODSI */
+    private static final byte[] COLOR_UTN_BLUE = {0, 104, (byte) 157};
+    private static final byte[] COLOR_ROW_EVEN = {(byte) 248, (byte) 250, (byte) 252};
+    private static final byte[] COLOR_ROW_ODD = {(byte) 255, (byte) 255, (byte) 255};
+    private static final byte[] COLOR_ODS_HIGHLIGHT = {(byte) 220, (byte) 252, (byte) 231};
+    private static final byte[] COLOR_ACCION_HIGHLIGHT = {(byte) 254, (byte) 243, (byte) 199};
+
+    private static final int COL_ACCION = 4;
+    private static final int COL_OBJETIVO = 5;
+    private static final int COL_META = 6;
 
     private static final String INSTITUCION_UTN = "Universidad Técnica Nacional (UTN)";
 
@@ -340,10 +364,13 @@ public class ExportService implements IExportService {
     private void writeSodsiMatrizSheet(Workbook wb, List<VistaResumenProyectosOds> proyectos,
                                        String actorNombre, String actorInstitucion) {
         Sheet sheet = wb.createSheet(SODSI_MATRIZ_SHEET);
+        SodsiMatrizTheme theme = createSodsiMatrizTheme(wb);
+
         Row header = sheet.createRow(0);
         for (int i = 0; i < SODSI_MATRIZ_COLUMNS.length; i++) {
             header.createCell(i).setCellValue(SODSI_MATRIZ_COLUMNS[i]);
         }
+        applyMatrizRowStyles(header, theme, true, 0);
 
         Map<Integer, String> odsNames = sodsiCatalogRepository.findOdsCatalog().stream()
                 .collect(Collectors.toMap(o -> o.getId().intValue(), o -> nullSafe(o.getNombre()), (a, b) -> a));
@@ -365,15 +392,210 @@ public class ExportService implements IExportService {
                     masterProjectRepository.findBeneficiariosByProyecto(v.getProyectoId());
             List<VistaAdminDetalleIndicadores> indicadores =
                     masterProjectRepository.findDetalleIndicadoresProyecto(v.getProyectoId());
-            writeSodsiMatrizRow(sheet.createRow(rowIdx++), v, beneficiarios, indicadores, odsNames, valorById, catById,
+            writeSodsiMatrizRow(sheet.createRow(rowIdx), v, beneficiarios, indicadores, odsNames, valorById, catById,
                     actorNombre, actorInstitucion);
+            applyMatrizRowStyles(sheet.getRow(rowIdx), theme, false, rowIdx);
+            rowIdx++;
         }
         if (proyectos.isEmpty()) {
             writeSodsiMatrizRow(sheet.createRow(1), null, List.of(), List.of(), odsNames, valorById, catById,
                     actorNombre, actorInstitucion);
+            applyMatrizRowStyles(sheet.getRow(1), theme, false, 1);
         }
+        int lastRow = sheet.getLastRowNum();
+        sheet.createFreezePane(0, 1);
+        if (lastRow >= 0) {
+            sheet.setAutoFilter(new CellRangeAddress(0, lastRow, 0, SODSI_MATRIZ_COLUMNS.length - 1));
+        }
+        autosizeMatrizLayout(sheet);
+    }
+
+    /** Ancho de columnas + alto de cabecera y filas con texto largo (evita títulos recortados). */
+    private static void autosizeMatrizLayout(Sheet sheet) {
         for (int i = 0; i < SODSI_MATRIZ_COLUMNS.length; i++) {
             sheet.autoSizeColumn(i);
+            int auto = sheet.getColumnWidth(i);
+            int min = minColumnWidthForHeader(SODSI_MATRIZ_COLUMNS[i]);
+            sheet.setColumnWidth(i, Math.min(Math.max(auto, min), 20000));
+        }
+        fitMatrizHeaderRowHeight(sheet);
+        fitMatrizDataRowHeights(sheet);
+    }
+
+    private static int minColumnWidthForHeader(String title) {
+        int len = title != null ? title.length() : 0;
+        return Math.min(Math.max(3400, len * 340 + 600), 12000);
+    }
+
+    private static void fitMatrizHeaderRowHeight(Sheet sheet) {
+        Row header = sheet.getRow(0);
+        if (header == null) {
+            return;
+        }
+        float lineHeight = 16f;
+        float maxLines = 1f;
+        for (int i = 0; i < SODSI_MATRIZ_COLUMNS.length; i++) {
+            maxLines = Math.max(maxLines, estimateWrappedLines(SODSI_MATRIZ_COLUMNS[i], sheet.getColumnWidth(i), 11));
+        }
+        header.setHeightInPoints(maxLines * lineHeight + 10f);
+    }
+
+    private static void fitMatrizDataRowHeights(Sheet sheet) {
+        int last = sheet.getLastRowNum();
+        for (int r = 1; r <= last; r++) {
+            Row row = sheet.getRow(r);
+            if (row == null) {
+                continue;
+            }
+            float maxLines = 1f;
+            for (int c = 0; c < SODSI_MATRIZ_COLUMNS.length; c++) {
+                Cell cell = row.getCell(c);
+                if (cell == null) {
+                    continue;
+                }
+                String text = matrizCellText(cell);
+                if (!text.isBlank()) {
+                    maxLines = Math.max(maxLines, estimateWrappedLines(text, sheet.getColumnWidth(c), 10));
+                }
+            }
+            row.setHeightInPoints(Math.min(maxLines * 15f + 6f, 180f));
+        }
+    }
+
+    private static float estimateWrappedLines(String text, int columnWidth, int fontSizePt) {
+        if (text == null || text.isBlank()) {
+            return 1f;
+        }
+        int charsPerLine = Math.max(4, columnWidth / (fontSizePt * 28));
+        float lines = 0f;
+        for (String segment : text.split("\n")) {
+            int len = segment.length();
+            lines += Math.max(1f, (float) Math.ceil(len / (double) charsPerLine));
+        }
+        return Math.max(1f, lines);
+    }
+
+    private static String matrizCellText(Cell cell) {
+        return switch (cell.getCellType()) {
+            case STRING -> cell.getStringCellValue();
+            case NUMERIC -> String.valueOf((int) cell.getNumericCellValue());
+            case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
+            case FORMULA -> {
+                yield switch (cell.getCachedFormulaResultType()) {
+                    case STRING -> cell.getStringCellValue();
+                    case NUMERIC -> String.valueOf((int) cell.getNumericCellValue());
+                    case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
+                    default -> "";
+                };
+            }
+            default -> "";
+        };
+    }
+
+    private static final class SodsiMatrizTheme {
+        final CellStyle header;
+        final CellStyle dataEven;
+        final CellStyle dataOdd;
+        final CellStyle dataEvenOds;
+        final CellStyle dataOddOds;
+        final CellStyle dataEvenAccion;
+        final CellStyle dataOddAccion;
+
+        SodsiMatrizTheme(CellStyle header, CellStyle dataEven, CellStyle dataOdd,
+                         CellStyle dataEvenOds, CellStyle dataOddOds,
+                         CellStyle dataEvenAccion, CellStyle dataOddAccion) {
+            this.header = header;
+            this.dataEven = dataEven;
+            this.dataOdd = dataOdd;
+            this.dataEvenOds = dataEvenOds;
+            this.dataOddOds = dataOddOds;
+            this.dataEvenAccion = dataEvenAccion;
+            this.dataOddAccion = dataOddAccion;
+        }
+    }
+
+    private SodsiMatrizTheme createSodsiMatrizTheme(Workbook wb) {
+        Font headerFont = wb.createFont();
+        headerFont.setBold(true);
+        headerFont.setColor(IndexedColors.WHITE.getIndex());
+        headerFont.setFontHeightInPoints((short) 11);
+
+        CellStyle header = wb.createCellStyle();
+        applySolidFill(header, wb, COLOR_UTN_BLUE);
+        header.setFont(headerFont);
+        header.setAlignment(HorizontalAlignment.CENTER);
+        header.setVerticalAlignment(VerticalAlignment.CENTER);
+        header.setWrapText(true);
+        applyThinBorders(header, IndexedColors.WHITE);
+
+        CellStyle dataEven = createDataStyle(wb, COLOR_ROW_EVEN, false);
+        CellStyle dataOdd = createDataStyle(wb, COLOR_ROW_ODD, false);
+        CellStyle dataEvenOds = createDataStyle(wb, COLOR_ODS_HIGHLIGHT, false);
+        CellStyle dataOddOds = createDataStyle(wb, COLOR_ODS_HIGHLIGHT, false);
+        CellStyle dataEvenAccion = createDataStyle(wb, COLOR_ACCION_HIGHLIGHT, true);
+        CellStyle dataOddAccion = createDataStyle(wb, COLOR_ACCION_HIGHLIGHT, true);
+
+        return new SodsiMatrizTheme(header, dataEven, dataOdd, dataEvenOds, dataOddOds,
+                dataEvenAccion, dataOddAccion);
+    }
+
+    private static CellStyle createDataStyle(Workbook wb, byte[] fillRgb, boolean bold) {
+        Font font = wb.createFont();
+        font.setFontHeightInPoints((short) 10);
+        if (bold) {
+            font.setBold(true);
+        }
+        CellStyle style = wb.createCellStyle();
+        applySolidFill(style, wb, fillRgb);
+        style.setFont(font);
+        style.setVerticalAlignment(VerticalAlignment.TOP);
+        style.setWrapText(true);
+        applyThinBorders(style, IndexedColors.GREY_40_PERCENT);
+        return style;
+    }
+
+    private static void applySolidFill(CellStyle style, Workbook wb, byte[] rgb) {
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        if (style instanceof XSSFCellStyle xssf && wb instanceof XSSFWorkbook) {
+            xssf.setFillForegroundColor(new XSSFColor(rgb, new DefaultIndexedColorMap()));
+        } else {
+            style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        }
+    }
+
+    private static void applyThinBorders(CellStyle style, IndexedColors color) {
+        short c = color.getIndex();
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setTopBorderColor(c);
+        style.setBottomBorderColor(c);
+        style.setLeftBorderColor(c);
+        style.setRightBorderColor(c);
+    }
+
+    private static void applyMatrizRowStyles(Row row, SodsiMatrizTheme theme, boolean headerRow, int rowIndex) {
+        if (row == null) {
+            return;
+        }
+        boolean even = rowIndex % 2 == 0;
+        for (int col = 0; col < SODSI_MATRIZ_COLUMNS.length; col++) {
+            Cell cell = row.getCell(col);
+            if (cell == null) {
+                cell = row.createCell(col);
+            }
+            if (headerRow) {
+                cell.setCellStyle(theme.header);
+                continue;
+            }
+            if (col == COL_ACCION) {
+                cell.setCellStyle(even ? theme.dataEvenAccion : theme.dataOddAccion);
+            } else if (col == COL_OBJETIVO || col == COL_META) {
+                cell.setCellStyle(even ? theme.dataEvenOds : theme.dataOddOds);
+            } else {
+                cell.setCellStyle(even ? theme.dataEven : theme.dataOdd);
+            }
         }
     }
 
