@@ -112,11 +112,12 @@ public class ExportService implements IExportService {
         String actorNombre = loginRepository.findUsuarioById(actorUserId)
                 .map(u -> u.getFullName())
                 .orElse("");
+        String actorInstitucion = resolveInstitucionForActor(actorUserId);
 
         List<VistaResumenProyectosOds> proyectos = resolveEvaluadosPorSedeYAnio(sedeId, anio);
 
         try (Workbook wb = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            writeSodsiMatrizSheet(wb, proyectos, actorNombre);
+            writeSodsiMatrizSheet(wb, proyectos, actorNombre, actorInstitucion);
             wb.write(out);
             return out.toByteArray();
         } catch (Exception e) {
@@ -337,7 +338,7 @@ public class ExportService implements IExportService {
     }
 
     private void writeSodsiMatrizSheet(Workbook wb, List<VistaResumenProyectosOds> proyectos,
-                                       String actorNombre) {
+                                       String actorNombre, String actorInstitucion) {
         Sheet sheet = wb.createSheet(SODSI_MATRIZ_SHEET);
         Row header = sheet.createRow(0);
         for (int i = 0; i < SODSI_MATRIZ_COLUMNS.length; i++) {
@@ -364,10 +365,12 @@ public class ExportService implements IExportService {
                     masterProjectRepository.findBeneficiariosByProyecto(v.getProyectoId());
             List<VistaAdminDetalleIndicadores> indicadores =
                     masterProjectRepository.findDetalleIndicadoresProyecto(v.getProyectoId());
-            writeSodsiMatrizRow(sheet.createRow(rowIdx++), v, beneficiarios, indicadores, odsNames, valorById, catById, actorNombre);
+            writeSodsiMatrizRow(sheet.createRow(rowIdx++), v, beneficiarios, indicadores, odsNames, valorById, catById,
+                    actorNombre, actorInstitucion);
         }
         if (proyectos.isEmpty()) {
-            writeSodsiMatrizRow(sheet.createRow(1), null, List.of(), List.of(), odsNames, valorById, catById, actorNombre);
+            writeSodsiMatrizRow(sheet.createRow(1), null, List.of(), List.of(), odsNames, valorById, catById,
+                    actorNombre, actorInstitucion);
         }
         for (int i = 0; i < SODSI_MATRIZ_COLUMNS.length; i++) {
             sheet.autoSizeColumn(i);
@@ -380,10 +383,10 @@ public class ExportService implements IExportService {
                                      Map<Integer, String> odsNames,
                                      Map<Integer, SodsiBeneficiarioValor> valorById,
                                      Map<Integer, SodsiBeneficiarioCategoria> catById,
-                                     String actorNombre) {
+                                     String actorNombre, String actorInstitucion) {
         int c = 0;
-        row.createCell(c++).setCellValue(resolveAnioExport(v));
-        row.createCell(c++).setCellValue("");
+        setAnioCell(row.createCell(c++), resolveAnioExport(v));
+        row.createCell(c++).setCellValue(nullSafe(actorInstitucion));
         row.createCell(c++).setCellValue(nullSafe(actorNombre));
         row.createCell(c++).setCellValue("");
         row.createCell(c++).setCellValue(v != null ? nullSafe(v.getNombreProyecto()) : "Sin proyectos evaluados");
@@ -404,6 +407,22 @@ public class ExportService implements IExportService {
         row.createCell(c++).setCellValue(v != null ? nullSafe(v.getLocationCanton()) : "");
         row.createCell(c++).setCellValue(v != null ? nullSafe(v.getLocationDistrict()) : "");
         row.createCell(c).setCellValue("");
+    }
+
+    private static void setAnioCell(org.apache.poi.ss.usermodel.Cell cell, int anio) {
+        if (anio > 0) {
+            cell.setCellValue(anio);
+        } else {
+            cell.setCellValue("");
+        }
+    }
+
+    /**
+     * Institución del consultor que descarga el reporte. La plataforma ODS actual es UTN;
+     * extensible si se agrega catálogo multi-institución en {@code ods_login}.
+     */
+    private String resolveInstitucionForActor(Integer actorUserId) {
+        return INSTITUCION_UTN;
     }
 
     private static int resolveAnioExport(VistaResumenProyectosOds v) {
@@ -460,7 +479,7 @@ public class ExportService implements IExportService {
         return String.join(", ", parts);
     }
 
-    private static String formatBeneficiariosExport(List<ProyectoBeneficiarios> rows,
+    static String formatBeneficiariosExport(List<ProyectoBeneficiarios> rows,
                                                      Map<Integer, SodsiBeneficiarioValor> valorById,
                                                      Map<Integer, SodsiBeneficiarioCategoria> catById) {
         if (rows == null || rows.isEmpty()) return "";
@@ -473,7 +492,13 @@ public class ExportService implements IExportService {
                     ? catById.get(val.getCategoriaId().intValue()) : null;
             String catCode = cat != null ? nullSafe(cat.getCodigo()) : "";
             if (catCode.isBlank()) continue;
-            parts.add("[" + catCode + "]-[" + val.getCodigo().intValue() + "]");
+            String codes = "[" + catCode + "]-[" + val.getCodigo().intValue() + "]";
+            String valNombre = nullSafe(val.getNombre());
+            String catNombre = cat != null ? nullSafe(cat.getNombre()) : "";
+            String legible = valNombre.isBlank()
+                    ? (catNombre.isBlank() ? codes : codes + " " + catNombre)
+                    : codes + " " + valNombre;
+            parts.add(legible);
         }
         return String.join(" / ", parts);
     }

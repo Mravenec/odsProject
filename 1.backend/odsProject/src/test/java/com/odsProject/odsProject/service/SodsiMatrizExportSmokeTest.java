@@ -42,10 +42,13 @@ class SodsiMatrizExportSmokeTest {
 
             Row dataRow = findRowByAccion(sheet, "Proyecto QA Consultor SODSI");
             if (dataRow != null) {
+                String institucion = dataRow.getCell(1).getStringCellValue();
                 String usuario = dataRow.getCell(2).getStringCellValue();
                 String contacto = dataRow.getCell(9).getStringCellValue();
                 String objetivo = dataRow.getCell(5).getStringCellValue();
                 String meta = dataRow.getCell(6).getStringCellValue();
+                String sector = dataRow.getCell(14).getStringCellValue();
+                Assertions.assertEquals("Universidad Técnica Nacional (UTN)", institucion);
                 Assertions.assertFalse(usuario.isBlank(), "Usuario (descargante) no debe estar vacío");
                 Assertions.assertTrue(
                         usuario.contains("María") || usuario.contains("Maria"),
@@ -57,6 +60,10 @@ class SodsiMatrizExportSmokeTest {
                 Assertions.assertTrue(objetivo.startsWith("[1]"), "Objetivo debe incluir ODS vinculado [n]");
                 Assertions.assertFalse(meta.isBlank(), "Meta no debe estar vacía");
                 Assertions.assertTrue(meta.startsWith("[1."), "Meta debe incluir código indicador [n.n.n]");
+                Assertions.assertTrue(sector.contains("Estudiantes universitarios"),
+                        "Sector beneficiario debe incluir nombre legible del valor");
+                Assertions.assertTrue(sector.contains("[400]-[404]"),
+                        "Sector beneficiario debe conservar códigos SODSI");
             }
         }
     }
