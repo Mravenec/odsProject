@@ -23,17 +23,33 @@ public class RoleAuthorizationService implements IRoleAuthorizationService {
 
     @Override
     public String extractRoleFromAuthorizationHeader(String authorizationHeader) {
+        Claims claims = parseClaims(authorizationHeader);
+        if (claims == null) return null;
+        Object rol = claims.get("rol");
+        return rol != null ? rol.toString() : null;
+    }
+
+    @Override
+    public Integer extractUserIdFromAuthorizationHeader(String authorizationHeader) {
+        Claims claims = parseClaims(authorizationHeader);
+        if (claims == null) return null;
+        try {
+            return Integer.parseInt(claims.getSubject());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private Claims parseClaims(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return null;
         }
         try {
-            Claims claims = Jwts.parser()
+            return Jwts.parser()
                     .verifyWith(signingKey())
                     .build()
                     .parseSignedClaims(authorizationHeader.substring(7))
                     .getPayload();
-            Object rol = claims.get("rol");
-            return rol != null ? rol.toString() : null;
         } catch (Exception ignored) {
             return null;
         }

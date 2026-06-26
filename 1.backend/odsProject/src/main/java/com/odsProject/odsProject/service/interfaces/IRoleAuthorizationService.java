@@ -12,6 +12,12 @@ public interface IRoleAuthorizationService {
     String extractRoleFromAuthorizationHeader(String authorizationHeader);
 
     /**
+     * @param authorizationHeader valor de {@code Authorization}
+     * @return ID del usuario (JWT subject), o null si no hay token válido
+     */
+    Integer extractUserIdFromAuthorizationHeader(String authorizationHeader);
+
+    /**
      * @return true si el rol no puede ejecutar métodos de escritura HTTP
      */
     boolean isWriteForbiddenForRole(String role);

@@ -26,7 +26,8 @@ class SodsiMatrizExportSmokeTest {
 
     @Test
     void exportMatrizTieneUnaHojaY21Columnas() throws Exception {
-        byte[] data = exportService.exportProyectosEvaluadosPorSedeYAnio(2, 2024);
+        // id 4 = maria.jimenez@ods.cr (consultor); gestor del proyecto QA es Ana García (id 2)
+        byte[] data = exportService.exportProyectosEvaluadosPorSedeYAnio(2, 2024, 4);
         try (Workbook wb = new XSSFWorkbook(new ByteArrayInputStream(data))) {
             Assertions.assertEquals(1, wb.getNumberOfSheets());
             Sheet sheet = wb.getSheet("Acciones");
@@ -41,8 +42,17 @@ class SodsiMatrizExportSmokeTest {
 
             Row dataRow = findRowByAccion(sheet, "Proyecto QA Consultor SODSI");
             if (dataRow != null) {
+                String usuario = dataRow.getCell(2).getStringCellValue();
+                String contacto = dataRow.getCell(9).getStringCellValue();
                 String objetivo = dataRow.getCell(5).getStringCellValue();
                 String meta = dataRow.getCell(6).getStringCellValue();
+                Assertions.assertFalse(usuario.isBlank(), "Usuario (descargante) no debe estar vacío");
+                Assertions.assertTrue(
+                        usuario.contains("María") || usuario.contains("Maria"),
+                        "Usuario debe ser quien descarga el reporte, no el gestor");
+                Assertions.assertFalse(contacto.isBlank(), "Contacto (gestor) no debe estar vacío");
+                Assertions.assertTrue(contacto.contains("Ana García") || contacto.contains("ana.garcia"),
+                        "Contacto debe ser del gestor del proyecto");
                 Assertions.assertFalse(objetivo.isBlank(), "Objetivo no debe estar vacío");
                 Assertions.assertTrue(objetivo.startsWith("[1]"), "Objetivo debe incluir ODS vinculado [n]");
                 Assertions.assertFalse(meta.isBlank(), "Meta no debe estar vacía");

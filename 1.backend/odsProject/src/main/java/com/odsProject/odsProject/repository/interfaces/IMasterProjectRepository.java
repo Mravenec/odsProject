@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository.interfaces;
 
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoBeneficiarios;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 
@@ -179,6 +180,12 @@ public interface IMasterProjectRepository {
      * todos los indicadores tienen al menos una medición antes de aprobar.
      */
     int countIndicadoresByProyecto(Integer proyectoId);
+
+    /**
+     * Detalle de indicadores para export/API: lee vista_admin_detalle_indicadores
+     * en cada schema ODS vinculado al proyecto (o en ods01..ods17 si no hay vínculos).
+     */
+    List<VistaAdminDetalleIndicadores> findDetalleIndicadoresProyecto(Integer proyectoId);
 
     /**
      * Verifica que TODO indicador del proyecto tiene al menos una medición

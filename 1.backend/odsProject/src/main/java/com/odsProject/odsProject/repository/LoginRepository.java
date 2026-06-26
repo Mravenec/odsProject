@@ -32,7 +32,6 @@ import static com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosO
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminAuditoriaLoginReciente.VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE;
 import static com.odsProject.odsProject.database.jooq.ods01.tables.VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS;
-import static com.odsProject.odsProject.database.jooq.ods01.tables.VistaAdminDetalleIndicadores.VISTA_ADMIN_DETALLE_INDICADORES;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes.SEDES;
 
 /**
@@ -474,14 +473,35 @@ public class LoginRepository implements ILoginRepository {
      */
     @Override
     public List<VistaAdminDetalleIndicadores> findVistaDetalleIndicadores(Integer proyectoId) {
-        if (proyectoId != null) {
-            return dsl.selectFrom(VISTA_ADMIN_DETALLE_INDICADORES)
-                    .where(VISTA_ADMIN_DETALLE_INDICADORES.PROYECTO_ID.eq(proyectoId))
-                    .fetchInto(VistaAdminDetalleIndicadores.class);
-        } else {
-            return dsl.selectFrom(VISTA_ADMIN_DETALLE_INDICADORES)
-                    .fetchInto(VistaAdminDetalleIndicadores.class);
+        if (proyectoId == null) {
+            return aggregateVistaDetalleIndicadores(null);
         }
+        return aggregateVistaDetalleIndicadores(proyectoId);
+    }
+
+    /** Indicadores viven en ods01..ods17; no solo en ods01. */
+    private List<VistaAdminDetalleIndicadores> aggregateVistaDetalleIndicadores(Integer proyectoId) {
+        List<VistaAdminDetalleIndicadores> out = new java.util.ArrayList<>();
+        for (int i = 1; i <= 17; i++) {
+            String schema = String.format("ods%02d", i);
+            try {
+                var view = org.jooq.impl.DSL.table(org.jooq.impl.DSL.name(schema, "vista_admin_detalle_indicadores"));
+                var proyectoField = org.jooq.impl.DSL.field(
+                        org.jooq.impl.DSL.name(schema, "vista_admin_detalle_indicadores", "proyecto_id"),
+                        Integer.class);
+                if (proyectoId != null) {
+                    out.addAll(dsl.selectFrom(view)
+                            .where(proyectoField.eq(proyectoId))
+                            .fetchInto(VistaAdminDetalleIndicadores.class));
+                } else {
+                    out.addAll(dsl.selectFrom(view)
+                            .fetchInto(VistaAdminDetalleIndicadores.class));
+                }
+            } catch (Exception ignore) {
+                // schema no disponible
+            }
+        }
+        return out;
     }
 
     // ─── Stored Procedures ───

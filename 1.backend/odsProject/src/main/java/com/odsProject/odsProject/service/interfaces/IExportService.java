@@ -28,5 +28,5 @@ public interface IExportService {
      *
      * @throws IllegalArgumentException sedeId o anio nulos / inválidos
      */
-    byte[] exportProyectosEvaluadosPorSedeYAnio(Integer sedeId, Integer anio);
+    byte[] exportProyectosEvaluadosPorSedeYAnio(Integer sedeId, Integer anio, Integer actorUserId);
 }

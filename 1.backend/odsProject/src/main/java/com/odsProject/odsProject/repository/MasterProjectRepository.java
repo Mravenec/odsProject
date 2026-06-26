@@ -1,5 +1,6 @@
 package com.odsProject.odsProject.repository;
 
+import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoBeneficiarios;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds;
@@ -9,10 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.odsProject.odsProject.database.jooq.ods_master.Tables.PROYECTO_BENEFICIARIOS;
 import static com.odsProject.odsProject.database.jooq.ods_master.Tables.PROYECTOS;
@@ -354,6 +359,39 @@ public class MasterProjectRepository implements IMasterProjectRepository {
             } catch (Exception ignore) { /* schema no listo aún */ }
         }
         return total;
+    }
+
+    @Override
+    public List<VistaAdminDetalleIndicadores> findDetalleIndicadoresProyecto(Integer proyectoId) {
+        if (proyectoId == null) return List.of();
+        Set<Integer> odsIds = new LinkedHashSet<>();
+        for (Map<String, Object> link : findOdsByProyecto(proyectoId)) {
+            Object raw = link.get("ods_id");
+            if (raw == null) raw = link.get("odsId");
+            if (raw instanceof Number n) odsIds.add(n.intValue());
+        }
+        if (odsIds.isEmpty()) {
+            for (int i = 1; i <= 17; i++) odsIds.add(i);
+        }
+        List<VistaAdminDetalleIndicadores> out = new ArrayList<>();
+        for (Integer odsId : odsIds) {
+            out.addAll(fetchVistaDetalleIndicadores(proyectoId, odsId));
+        }
+        return out;
+    }
+
+    private List<VistaAdminDetalleIndicadores> fetchVistaDetalleIndicadores(Integer proyectoId, int odsId) {
+        String schema = String.format("ods%02d", odsId);
+        try {
+            var view = DSL.table(DSL.name(schema, "vista_admin_detalle_indicadores"));
+            var proyectoField = DSL.field(
+                    DSL.name(schema, "vista_admin_detalle_indicadores", "proyecto_id"), Integer.class);
+            return dsl.selectFrom(view)
+                    .where(proyectoField.eq(proyectoId))
+                    .fetchInto(VistaAdminDetalleIndicadores.class);
+        } catch (Exception ignore) {
+            return List.of();
+        }
     }
 
     /**

@@ -74,7 +74,7 @@ public class ExportService implements IExportService {
                 .findResumenWithOdsByProyectoId(proyectoId)
                 .orElse(null);
         List<VistaAdminDetalleIndicadores> indicadores =
-                loginRepository.findVistaDetalleIndicadores(proyectoId);
+                masterProjectRepository.findDetalleIndicadoresProyecto(proyectoId);
         List<ProyectoDocumentos> documentos = documentRepository.findByProyecto(proyectoId);
 
         List<ProyectoBeneficiarios> beneficiarios = masterProjectRepository.findBeneficiariosByProyecto(proyectoId);
@@ -98,18 +98,25 @@ public class ExportService implements IExportService {
     }
 
     @Override
-    public byte[] exportProyectosEvaluadosPorSedeYAnio(Integer sedeId, Integer anio) {
+    public byte[] exportProyectosEvaluadosPorSedeYAnio(Integer sedeId, Integer anio, Integer actorUserId) {
         if (sedeId == null || anio == null) {
             throw new IllegalArgumentException("sedeId y anio son requeridos");
+        }
+        if (actorUserId == null) {
+            throw new IllegalArgumentException("actorUserId es requerido");
         }
         if (anio < 2000 || anio > 2100) {
             throw new IllegalArgumentException("anio fuera de rango válido");
         }
 
+        String actorNombre = loginRepository.findUsuarioById(actorUserId)
+                .map(u -> u.getFullName())
+                .orElse("");
+
         List<VistaResumenProyectosOds> proyectos = resolveEvaluadosPorSedeYAnio(sedeId, anio);
 
         try (Workbook wb = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            writeSodsiMatrizSheet(wb, proyectos);
+            writeSodsiMatrizSheet(wb, proyectos, actorNombre);
             wb.write(out);
             return out.toByteArray();
         } catch (Exception e) {
@@ -329,7 +336,8 @@ public class ExportService implements IExportService {
         return n + " - " + e + " - " + t;
     }
 
-    private void writeSodsiMatrizSheet(Workbook wb, List<VistaResumenProyectosOds> proyectos) {
+    private void writeSodsiMatrizSheet(Workbook wb, List<VistaResumenProyectosOds> proyectos,
+                                       String actorNombre) {
         Sheet sheet = wb.createSheet(SODSI_MATRIZ_SHEET);
         Row header = sheet.createRow(0);
         for (int i = 0; i < SODSI_MATRIZ_COLUMNS.length; i++) {
@@ -355,11 +363,11 @@ public class ExportService implements IExportService {
             List<ProyectoBeneficiarios> beneficiarios =
                     masterProjectRepository.findBeneficiariosByProyecto(v.getProyectoId());
             List<VistaAdminDetalleIndicadores> indicadores =
-                    loginRepository.findVistaDetalleIndicadores(v.getProyectoId());
-            writeSodsiMatrizRow(sheet.createRow(rowIdx++), v, beneficiarios, indicadores, odsNames, valorById, catById);
+                    masterProjectRepository.findDetalleIndicadoresProyecto(v.getProyectoId());
+            writeSodsiMatrizRow(sheet.createRow(rowIdx++), v, beneficiarios, indicadores, odsNames, valorById, catById, actorNombre);
         }
         if (proyectos.isEmpty()) {
-            writeSodsiMatrizRow(sheet.createRow(1), null, List.of(), List.of(), odsNames, valorById, catById);
+            writeSodsiMatrizRow(sheet.createRow(1), null, List.of(), List.of(), odsNames, valorById, catById, actorNombre);
         }
         for (int i = 0; i < SODSI_MATRIZ_COLUMNS.length; i++) {
             sheet.autoSizeColumn(i);
@@ -371,11 +379,12 @@ public class ExportService implements IExportService {
                                      List<VistaAdminDetalleIndicadores> indicadores,
                                      Map<Integer, String> odsNames,
                                      Map<Integer, SodsiBeneficiarioValor> valorById,
-                                     Map<Integer, SodsiBeneficiarioCategoria> catById) {
+                                     Map<Integer, SodsiBeneficiarioCategoria> catById,
+                                     String actorNombre) {
         int c = 0;
         row.createCell(c++).setCellValue(resolveAnioExport(v));
         row.createCell(c++).setCellValue("");
-        row.createCell(c++).setCellValue(v != null ? nullSafe(v.getGestor()) : "");
+        row.createCell(c++).setCellValue(nullSafe(actorNombre));
         row.createCell(c++).setCellValue("");
         row.createCell(c++).setCellValue(v != null ? nullSafe(v.getNombreProyecto()) : "Sin proyectos evaluados");
         row.createCell(c++).setCellValue(v != null ? formatObjetivosExport(v, odsNames) : "");

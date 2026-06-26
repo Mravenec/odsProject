@@ -54,9 +54,13 @@ public class ExportController implements IExportController {
         if (!roleAuthorizationService.canExportBulkProjects(role)) {
             return ResponseEntity.status(403).build();
         }
+        Integer actorUserId = roleAuthorizationService.extractUserIdFromAuthorizationHeader(authorization);
+        if (actorUserId == null) {
+            return ResponseEntity.status(403).build();
+        }
 
         try {
-            byte[] data = exportService.exportProyectosEvaluadosPorSedeYAnio(sedeId, anio);
+            byte[] data = exportService.exportProyectosEvaluadosPorSedeYAnio(sedeId, anio, actorUserId);
             String filename = "ods_sodsi_" + sedeId + "_" + anio + ".xlsx";
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION,
