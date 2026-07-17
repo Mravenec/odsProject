@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
+import UtnMark from '../../components/UtnMark';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -41,13 +42,7 @@ const LoginPage = () => {
       <div className="login-container fade-in">
         <div className="login-card">
           <div className="login-header">
-            <div className="utn-mark utn-mark--stacked" aria-label="Universidad Técnica Nacional">
-              <span className="utn-mark__logo">UTN</span>
-              <span className="utn-mark__text">
-                <strong>Universidad Técnica Nacional</strong>
-                <span>Costa Rica</span>
-              </span>
-            </div>
+            <UtnMark stacked />
             <h1>Plataforma ODS</h1>
             <p className="subtitle">Sistema institucional de seguimiento a la Agenda 2030 de Desarrollo Sostenible.</p>
           </div>

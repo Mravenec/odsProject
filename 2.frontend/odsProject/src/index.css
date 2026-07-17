@@ -281,7 +281,7 @@ textarea:focus-visible,
 }
 
 /* ─────────────────────────────────────────────────────────────────
- *  Componente: marca UTN (logotipo + firma tipográfica)
+ *  Componente: marca UTN (logo oficial + subtítulo de producto)
  * ────────────────────────────────────────────────────────────────*/
 .utn-mark {
   display: inline-flex;
@@ -293,38 +293,41 @@ textarea:focus-visible,
 }
 
 .utn-mark__logo {
-  position: relative;
+  display: block;
+  width: auto;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  /* Integra el logo con el fondo de la card (sin recuadro blanco). */
+  mix-blend-mode: multiply;
+}
+
+/* Header: chip azul + monograma oficial (compacto). */
+.utn-mark--compact {
+  gap: 0.85rem;
+}
+
+.utn-mark__chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 52px;
+  height: 52px;
+  padding: 0.35rem;
+  border-radius: 12px;
   background: var(--utn-azul);
-  color: #fff;
-  width: 46px;
-  height: 46px;
-  border-radius: 10px;
-  font-family: var(--font-sign);
-  font-weight: 800;
-  font-size: 0.95rem;
-  letter-spacing: 0.04em;
   box-shadow: 0 6px 14px var(--utn-azul-glow);
   flex-shrink: 0;
 }
 
-/* Los 6 puntos del logotipo UTN representan las 6 instituciones
- * parauniversitarias que se unieron para formar la Universidad. */
-.utn-mark__logo::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: -12px;
-  width: 6px;
-  height: 6px;
-  background: var(--utn-celeste);
-  border-radius: 50%;
-  box-shadow:
-     5px  -4px 0 -1px var(--utn-celeste),
-     9px   1px 0 -2px var(--utn-celeste);
-  transform: translateY(-50%);
+.utn-mark__logo--chip {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  mix-blend-mode: normal;
 }
 
 .utn-mark__text {

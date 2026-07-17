@@ -5,6 +5,7 @@ import { useProjects } from '../../hooks/useProjects.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
 import { getOdsColor, getEstadoLabel, getEstadoClass, isProjectCompletado } from '../../utils/formatters';
 import BulkProjectExportPanel from '../../components/projects/BulkProjectExportPanel';
+import UtnMark from '../../components/UtnMark';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
@@ -77,13 +78,7 @@ const DashboardPage = () => {
     <div className="dashboard-page fade-in">
       <header className="dashboard-header">
         <div className="header-container">
-          <div className="utn-mark" aria-label="Universidad Técnica Nacional">
-            <span className="utn-mark__logo">UTN</span>
-            <span className="utn-mark__text">
-              <strong>Universidad Técnica Nacional</strong>
-              <span>Plataforma ODS · Agenda 2030</span>
-            </span>
-          </div>
+          <UtnMark compact subtitle="Plataforma ODS · Agenda 2030" />
           <div className="header-actions">
             <div className="user-profile">
               <div className="avatar">{user?.name?.charAt(0)}</div>

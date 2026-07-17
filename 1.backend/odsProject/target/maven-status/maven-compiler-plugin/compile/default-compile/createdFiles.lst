@@ -128,6 +128,7 @@ com\odsProject\odsProject\database\jooq\ods16\tables\MedicionParametroValores.cl
 com\odsProject\odsProject\database\jooq\ods13\enums\VistaAdminResumenGeneralEstado.class
 com\odsProject\odsProject\database\jooq\ods10\Indexes.class
 com\odsProject\odsProject\database\jooq\ods02\tables\records\MedicionParametroValoresRecord.class
+com\odsProject\odsProject\service\ExportService$1.class
 com\odsProject\odsProject\controller\DocumentController.class
 com\odsProject\odsProject\database\jooq\ods06\tables\MedicionesHistoricas.class
 com\odsProject\odsProject\database\jooq\ods11\tables\records\ProyectoIndicadorParametrosRecord.class
@@ -286,6 +287,7 @@ com\odsProject\odsProject\database\jooq\ods07\tables\pojos\VistaAdminDetalleIndi
 com\odsProject\odsProject\database\jooq\ods12\tables\pojos\VistaAdminDetalleIndicadores.class
 com\odsProject\odsProject\database\jooq\ods_master\tables\pojos\ProyectoDocumentos.class
 com\odsProject\odsProject\database\jooq\ods04\tables\records\AuditoriaOds04Record.class
+com\odsProject\odsProject\service\ExportService$SodsiMatrizTheme.class
 com\odsProject\odsProject\controller\ChatMensajeController.class
 com\odsProject\odsProject\database\jooq\ods_master\tables\ProyectoOds.class
 com\odsProject\odsProject\database\jooq\ods02\tables\records\AuditoriaOds02Record.class

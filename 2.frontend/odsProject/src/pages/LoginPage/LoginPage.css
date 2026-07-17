@@ -50,28 +50,19 @@
   margin-bottom: 2.25rem;
 }
 
-/* Marca UTN apilada en login (logo arriba, texto centrado debajo). */
+/* Marca UTN apilada en login (logo oficial centrado). */
 .utn-mark--stacked {
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0;
   margin: 0 auto 1.5rem;
 }
 
 .utn-mark--stacked .utn-mark__logo {
-  width: 64px;
-  height: 64px;
-  font-size: 1.1rem;
-  border-radius: 14px;
+  height: 88px;
+  width: auto;
+  max-width: min(280px, 80vw);
 }
-
-.utn-mark--stacked .utn-mark__text {
-  align-items: center;
-  text-align: center;
-}
-
-.utn-mark--stacked .utn-mark__text strong { font-size: 0.95rem; }
-.utn-mark--stacked .utn-mark__text span   { font-size: 0.7rem;  }
 
 .login-header h1 {
   font-family: var(--font-display);
