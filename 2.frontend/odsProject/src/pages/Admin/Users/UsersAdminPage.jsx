@@ -279,6 +279,9 @@ const UsersAdminPage = () => {
             </div>
           </div>
           <div className="users-admin-header-actions">
+            <button type="button" className="btn-secondary-outline" onClick={() => navigate('/admin/bitacora')}>
+              Bitácora de ingresos
+            </button>
             <button type="button" className="btn-secondary-outline" onClick={() => navigate('/admin/sodsi-beneficiarios')}>
               Catálogo beneficiarios SODSI
             </button>

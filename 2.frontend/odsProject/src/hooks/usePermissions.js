@@ -12,7 +12,7 @@ const ROLE_MATRIX = {
   admin: {
     canViewAllProjects: true, canViewGlobalDashboard: true,
     canViewAdminPanel:  true, canViewAuditQueue: true,
-    canManageUsers:     true,
+    canManageUsers:     true, canViewLoginAudit: true,
     canCreateProject:   false, canEditAnyProject: true, canEditOwnProject: false,
     canUploadEvidence:  false, canDownloadEvidence: true,
     canEnterMeasurements: true, canViewMeasurements: true,
@@ -21,6 +21,7 @@ const ROLE_MATRIX = {
   evaluador: {
     canViewAllProjects: true, canViewGlobalDashboard: true,
     canViewAdminPanel:  false, canManageUsers:     false, canViewAuditQueue: true,
+    canViewLoginAudit:  false,
     canCreateProject:   false, canEditAnyProject: false, canEditOwnProject: false,
     canUploadEvidence:  false, canDownloadEvidence: true,
     canEnterMeasurements: true, canViewMeasurements: true,
@@ -29,6 +30,7 @@ const ROLE_MATRIX = {
   gestor: {
     canViewAllProjects: false, canViewGlobalDashboard: false,
     canViewAdminPanel:  false, canManageUsers:     false, canViewAuditQueue: false,
+    canViewLoginAudit:  false,
     canCreateProject:   true, canEditAnyProject: false, canEditOwnProject: true,
     canUploadEvidence:  true, canDownloadEvidence: true,
     canEnterMeasurements: false, canViewMeasurements: true,
@@ -37,6 +39,7 @@ const ROLE_MATRIX = {
   consultor: {
     canViewAllProjects: true, canViewGlobalDashboard: true,
     canViewAdminPanel:  false, canManageUsers:     false, canViewAuditQueue: false,
+    canViewLoginAudit:  false,
     canCreateProject:   false, canEditAnyProject: false, canEditOwnProject: false,
     canUploadEvidence:  false, canDownloadEvidence: true,
     canEnterMeasurements: false, canViewMeasurements: true,

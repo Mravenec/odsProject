@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
-import UtnMark from '../../components/UtnMark';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -42,7 +41,15 @@ const LoginPage = () => {
       <div className="login-container fade-in">
         <div className="login-card">
           <div className="login-header">
-            <UtnMark stacked />
+            {/* Placeholder: replace public/assets/utn-logo.png with the official UTN logo when provided by the professor. */}
+            <img
+              src="/assets/utn-logo.png"
+              alt="Universidad Técnica Nacional"
+              className="login-logo"
+              width={280}
+              height={112}
+              decoding="async"
+            />
             <h1>Plataforma ODS</h1>
             <p className="subtitle">Sistema institucional de seguimiento a la Agenda 2030 de Desarrollo Sostenible.</p>
           </div>

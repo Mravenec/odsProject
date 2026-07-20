@@ -65,6 +65,29 @@ export const getAchievementClass = (percentage) => {
   return 'danger';
 };
 
+/** Etiquetas ES para unidades preset almacenadas en inglés (p. ej. Percentage). */
+const UNIT_LABELS_ES = {
+  Percentage: 'Porcentaje',
+  Number: 'Número',
+  Decimal: 'Decimal',
+  Hectareas: 'Hectáreas',
+  Personas: 'Personas',
+  USD: 'USD',
+};
+
+/**
+ * Muestra la unidad de meta en español (presets) o el texto libre tal cual (nm, NTU, ₡…).
+ * Valores custom persistidos en metaUnidad se muestran sin transformar.
+ * @param {string} unit
+ * @returns {string}
+ */
+export const formatUnitLabel = (unit) => {
+  if (!unit) return '';
+  const trimmed = String(unit).trim();
+  if (!trimmed || trimmed === 'Otro') return '';
+  return UNIT_LABELS_ES[trimmed] || trimmed;
+};
+
 /**
  * Colores oficiales de los Objetivos de Desarrollo Sostenible.
  */

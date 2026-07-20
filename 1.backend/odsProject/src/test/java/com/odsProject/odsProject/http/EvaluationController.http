@@ -1,0 +1,128 @@
+### EvaluationController — motor fórmulas (+ − * /)
+### GATE_HTTP ODS-225 — preview / validar-formula con asserts numéricos
+@baseUrl = http://localhost:8080
+
+### Preview (100+100)/1 → 200
+# @name previewSumaEntreUno
+POST {{baseUrl}}/api/evaluacion/preview
+Content-Type: application/json
+
+{
+  "formula": "(100+100)/1",
+  "parametros": {},
+  "metaValor": 200
+}
+
+> {%
+  client.test("preview (100+100)/1 = 200", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.ok === true, "ok");
+    client.assert(Number(response.body.valor) === 200, "valor=200 got " + response.body.valor);
+    client.assert(response.body.metaAlcanzada === true, "meta alcanzada");
+  });
+%}
+
+### Preview (100+100)/400 → 0.5
+# @name previewSumaEntreCuatrocientos
+POST {{baseUrl}}/api/evaluacion/preview
+Content-Type: application/json
+
+{
+  "formula": "(100+100)/400",
+  "parametros": {},
+  "metaValor": 1
+}
+
+> {%
+  client.test("preview (100+100)/400 = 0.5", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.ok === true, "ok");
+    client.assert(Number(response.body.valor) === 0.5, "valor=0.5 got " + response.body.valor);
+    client.assert(response.body.metaAlcanzada === false, "meta no alcanzada");
+  });
+%}
+
+### Preview A+B/Z por nombreVariable → 15 (A=10, B=20, Z=4)
+# @name previewNombreVariable
+POST {{baseUrl}}/api/evaluacion/preview
+Content-Type: application/json
+
+{
+  "formula": "A+B/Z",
+  "parametros": { "A": 10, "B": 20, "Z": 4 },
+  "metaValor": 15
+}
+
+> {%
+  client.test("preview A+B/Z nombreVariable = 15", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.ok === true, "ok");
+    client.assert(Number(response.body.valor) === 15, "valor=15 got " + response.body.valor);
+  });
+%}
+
+### Preview división por cero → ZERO (comportamiento documentado)
+# @name previewDivisionCero
+POST {{baseUrl}}/api/evaluacion/preview
+Content-Type: application/json
+
+{
+  "formula": "p1/p2",
+  "parametros": { "p1": 10, "p2": 0 }
+}
+
+> {%
+  client.test("preview p1/p2=0 → ZERO", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.ok === true, "ok");
+    client.assert(Number(response.body.valor) === 0, "valor=0 got " + response.body.valor);
+  });
+%}
+
+### Validar fórmula coherente
+# @name validarFormulaOk
+POST {{baseUrl}}/api/evaluacion/validar-formula
+Content-Type: application/json
+
+{
+  "formula": "A+B/Z",
+  "variablesDeclaradas": ["A", "B", "Z"]
+}
+
+> {%
+  client.test("validar A+B/Z con A,B,Z", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.valida === true, "valida");
+    client.assert(response.body.sintaxisValida === true, "sintaxis");
+    client.assert(response.body.faltantes.length === 0, "sin faltantes");
+  });
+%}
+
+### Validar fórmula con variable faltante
+# @name validarFormulaFaltante
+POST {{baseUrl}}/api/evaluacion/validar-formula
+Content-Type: application/json
+
+{
+  "formula": "A+B/Z",
+  "variablesDeclaradas": ["A", "B"]
+}
+
+> {%
+  client.test("validar A+B/Z sin Z → invalida", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.valida === false, "no valida");
+    client.assert(response.body.faltantes.indexOf("Z") >= 0, "faltante Z");
+  });
+%}
+
+### Extraer variables
+GET {{baseUrl}}/api/evaluacion/variables?formula=A+B/Z
+
+> {%
+  client.test("variables de A+B/Z", function() {
+    client.assert(response.status === 200, "status 200");
+    const vars = response.body.variables;
+    client.assert(vars.indexOf("A") >= 0 && vars.indexOf("B") >= 0 && vars.indexOf("Z") >= 0, "A,B,Z");
+  });
+%}

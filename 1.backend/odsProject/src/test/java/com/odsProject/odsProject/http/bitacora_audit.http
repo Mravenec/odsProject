@@ -1,0 +1,52 @@
+### GATE_HTTP — Bitácora ingresos (ODS-235)
+### Epic: Ingreso formal + marca UTN + bitácora de accesos
+### Endpoints: GET /api/login/admin/audit-recent , GET /api/login/users/{id}/login-history
+### Eventos esperados: LOGIN_OK | LOGIN_FALLIDO | LOGOUT (sin telemetría de proyecto)
+
+@baseUrl = http://localhost:8080
+@adminEmail = admin@ods.local
+@password = Admin1234!
+
+### Login admin
+# @name loginAdmin
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{password}}"
+}
+
+### Logout (genera LOGOUT en auditoria_login / sesiones)
+POST {{baseUrl}}/api/login/auth/logout
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+### Re-login admin tras logout
+# @name loginAdmin2
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{password}}"
+}
+
+@adminToken = {{loginAdmin2.response.body.token}}
+@adminUserId = {{loginAdmin2.response.body.user.id}}
+
+### Audit reciente (admin) — usuario, fecha, ip, evento
+GET {{baseUrl}}/api/login/admin/audit-recent?dias=30
+Authorization: Bearer {{adminToken}}
+
+### Historial login de un usuario
+GET {{baseUrl}}/api/login/users/{{adminUserId}}/login-history?dias=30
+Authorization: Bearer {{adminToken}}
+
+### Login fallido (para dejar LOGIN_FALLIDO en bitácora)
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "wrongpassword"
+}

@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.jooq.types.UShort;
+
 import static com.odsProject.odsProject.database.jooq.ods_master.Tables.PROYECTO_BENEFICIARIOS;
 import static com.odsProject.odsProject.database.jooq.ods_master.Tables.PROYECTOS;
 import static com.odsProject.odsProject.database.jooq.ods_master.Tables.VISTA_RESUMEN_PROYECTOS_ODS;
@@ -507,15 +509,33 @@ public class MasterProjectRepository implements IMasterProjectRepository {
         if (proyectoId == null) {
             throw new IllegalArgumentException("proyectoId es requerido");
         }
-        dsl.deleteFrom(PROYECTO_BENEFICIARIOS).where(PROYECTO_BENEFICIARIOS.PROYECTO_ID.eq(proyectoId)).execute();
-        if (beneficiarios == null) {
-            return;
+        // Sync por diferencia (no DELETE masivo): evita MariaDB 1020
+        // "Record has changed since last read" al reescribir la misma ficha SODSI
+        // en PUT /full cuando solo cambian indicadores.
+        Set<Integer> desired = new LinkedHashSet<>();
+        if (beneficiarios != null) {
+            for (ProyectoBeneficiarios b : beneficiarios) {
+                if (b == null || b.getValorId() == null) continue;
+                desired.add(b.getValorId().intValue());
+            }
         }
-        for (ProyectoBeneficiarios b : beneficiarios) {
-            if (b == null || b.getValorId() == null) continue;
+        List<ProyectoBeneficiarios> current = findBeneficiariosByProyecto(proyectoId);
+        Set<Integer> currentIds = new LinkedHashSet<>();
+        for (ProyectoBeneficiarios row : current) {
+            if (row.getValorId() == null) continue;
+            int valorId = row.getValorId().intValue();
+            currentIds.add(valorId);
+            if (!desired.contains(valorId) && row.getId() != null) {
+                dsl.deleteFrom(PROYECTO_BENEFICIARIOS)
+                        .where(PROYECTO_BENEFICIARIOS.ID.eq(row.getId()))
+                        .execute();
+            }
+        }
+        for (Integer valorId : desired) {
+            if (currentIds.contains(valorId)) continue;
             dsl.insertInto(PROYECTO_BENEFICIARIOS)
                     .set(PROYECTO_BENEFICIARIOS.PROYECTO_ID, proyectoId)
-                    .set(PROYECTO_BENEFICIARIOS.VALOR_ID, b.getValorId())
+                    .set(PROYECTO_BENEFICIARIOS.VALOR_ID, UShort.valueOf(valorId))
                     .onDuplicateKeyIgnore()
                     .execute();
         }

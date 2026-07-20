@@ -50,18 +50,16 @@
   margin-bottom: 2.25rem;
 }
 
-/* Marca UTN apilada en login (logo oficial centrado). */
-.utn-mark--stacked {
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  margin: 0 auto 1.5rem;
-}
-
-.utn-mark--stacked .utn-mark__logo {
-  height: 88px;
+/* Logo UTN en login (asset público centrado; móvil: max-width 80vw). */
+.login-logo {
+  display: block;
+  height: auto;
   width: auto;
+  max-height: 88px;
   max-width: min(280px, 80vw);
+  margin: 0 auto 1.5rem;
+  object-fit: contain;
+  mix-blend-mode: multiply;
 }
 
 .login-header h1 {
@@ -227,11 +225,16 @@
 @media (max-width: 480px) {
   .login-card { padding: 1.75rem 1.25rem; }
   .login-header { margin-bottom: 1.75rem; }
+  .login-logo {
+    max-height: 72px;
+    max-width: min(220px, 78vw);
+    margin-bottom: 1.25rem;
+  }
 }
 
 /* Pantallas muy bajas (móviles en horizontal): compactar. */
 @media (max-height: 640px) and (max-width: 900px) {
   .login-page { align-items: flex-start; padding-top: 1.25rem; }
   .login-header { margin-bottom: 1.25rem; }
-  .utn-mark--stacked { margin-bottom: 1rem; }
+  .login-logo { max-height: 56px; margin-bottom: 1rem; }
 }

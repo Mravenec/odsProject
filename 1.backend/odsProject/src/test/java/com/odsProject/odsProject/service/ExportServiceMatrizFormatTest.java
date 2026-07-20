@@ -49,17 +49,32 @@ class ExportServiceMatrizFormatTest {
         VistaAdminDetalleIndicadores a = new VistaAdminDetalleIndicadores();
         a.setIndicadorCodigo("1.1.1");
         a.setIndicadorNombre("Indicador pobreza extrema");
-        a.setMetaNombre("Reducir pobreza extrema");
+        a.setMetaNombre("Reducir pobreza extrema"); // nickname — must be ignored
 
         VistaAdminDetalleIndicadores b = new VistaAdminDetalleIndicadores();
         b.setIndicadorCodigo("1.2.1");
         b.setIndicadorNombre("Indicador pobreza relativa");
+        b.setMetaNombre("Apodo formula custom");
 
         String result = ExportService.formatMetasExport(List.of(a, b));
 
         Assertions.assertEquals(
-                "[1.1.1] Reducir pobreza extrema, [1.2.1] Indicador pobreza relativa",
+                "[1.1.1] Indicador pobreza extrema, [1.2.1] Indicador pobreza relativa",
                 result);
+        Assertions.assertFalse(result.toLowerCase().contains("logrado"));
+        Assertions.assertFalse(result.contains("Reducir pobreza extrema"));
+        Assertions.assertFalse(result.contains("Apodo formula custom"));
+    }
+
+    @Test
+    void formatMetasExport_soloCodigoSiNombreVacio() {
+        VistaAdminDetalleIndicadores a = new VistaAdminDetalleIndicadores();
+        a.setIndicadorCodigo("3.1.1");
+        a.setMetaNombre("Solo apodo formula");
+
+        String result = ExportService.formatMetasExport(List.of(a));
+
+        Assertions.assertEquals("[3.1.1]", result);
     }
 
     @Test

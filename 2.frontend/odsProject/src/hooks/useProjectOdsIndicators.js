@@ -1,13 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { getObjetivoService } from './objetivoServicesMap';
-
-const RESERVED = new Set(['sqrt', 'sin', 'cos', 'tan', 'log', 'exp', 'round', 'floor', 'ceil', 'abs', 'pi', 'e', 'valor', 'count']);
-
-const extractVars = (formula) => {
-  if (!formula) return new Set();
-  return new Set((String(formula).match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [])
-    .filter((v) => !RESERVED.has(v.toLowerCase())));
-};
+import { extractFormulaVarOrder } from '../utils/formulaParamOrder';
 
 const enrichIndicatorsForProject = async (odsNum, pid) => {
   const svc = getObjetivoService(odsNum);
@@ -21,7 +14,7 @@ const enrichIndicatorsForProject = async (odsNum, pid) => {
   const list = Object.values(data).filter((i) => i && i.proyectoId);
 
   const enriched = list.map((ind) => {
-    const vars = extractVars(ind.formula || ind.formulaCustom);
+    const vars = new Set(extractFormulaVarOrder(ind.formula || ind.formulaCustom));
     const matchingParams = metas.filter((m) => {
       const varName = m.nombreVariable || m.nombre_variable || m.nombreParametro || m.nombre_parametro;
       return vars.has(varName);

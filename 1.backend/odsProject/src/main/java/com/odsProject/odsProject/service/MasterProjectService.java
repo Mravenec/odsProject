@@ -375,6 +375,12 @@ public class MasterProjectService implements IMasterProjectService {
         return masterProjectRepository.findByUsuarioWithOds(usuarioId);
     }
 
+    @Override
+    public java.util.Optional<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+            getProyectoWithOdsById(Integer proyectoId) {
+        return masterProjectRepository.findResumenWithOdsByProyectoId(proyectoId);
+    }
+
     // ── Helpers internos ─────────────────────────────────────────────────
 
     private com.odsProject.odsProject.service.interfaces.IOdsBaseService<?, ?, ?, ?, ?, ?>

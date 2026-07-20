@@ -1,4 +1,5 @@
 ### Edición planificación — proyecto en planificacion
+### GATE_HTTP ODS-223 — rename parámetro nombreVariable Z→G (persistencia)
 @baseUrl = http://localhost:8080
 @proyectoId = 7
 @gestorUserId = 2
@@ -6,10 +7,107 @@
 @adminUserId = 1
 
 ### GET editable (evaluador)
+# @name getEditableEval
 GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+> {%
+  client.test("GET editable 200", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.success === true, "success");
+    client.assert(Array.isArray(response.body.indicadores), "indicadores array");
+  });
+  const inds = response.body.indicadores || [];
+  const withParams = inds.find(i => Array.isArray(i.parametros) && i.parametros.length > 0);
+  if (withParams) {
+    client.global.set("piId", String(withParams.proyectoIndicadorId));
+    client.global.set("odsId", String(withParams.odsId));
+    client.global.set("masterId", String(withParams.indicadorMasterId));
+    client.global.set("metaValor", String(withParams.metaValor != null ? withParams.metaValor : 80));
+    client.global.set("metaUnidad", withParams.metaUnidad || "Porcentaje");
+    client.global.set("metaNombre", withParams.metaNombre || "Meta QA");
+    const params = withParams.parametros;
+    // Prefer param named Z (demo); else last param
+    const target = params.find(p => (p.nombreVariable || p.nombreParametro) === "Z") || params[params.length - 1];
+    client.global.set("paramId", String(target.id));
+    client.global.set("oldVar", target.nombreVariable || target.nombreParametro || "Z");
+    // Keep sibling params unchanged
+    client.global.set("paramsJson", JSON.stringify(params.map(p => {
+      const isTarget = String(p.id) === String(target.id);
+      const varName = isTarget ? "G" : (p.nombreVariable || p.nombreParametro);
+      return {
+        id: p.id,
+        nombreParametro: varName,
+        nombreVariable: varName,
+        tipoDato: p.tipoDato || "Decimal"
+      };
+    })));
+    let formula = withParams.formulaCustom || "G";
+    const oldVar = target.nombreVariable || target.nombreParametro || "Z";
+    if (oldVar && oldVar !== "G") {
+      formula = formula.replace(new RegExp("\\b" + oldVar.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "g"), "G");
+    }
+    client.global.set("formulaG", formula);
+  }
+%}
 
 ### GET editable (gestor dueño)
 GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId={{gestorUserId}}&actorRole=gestor
+
+### PUT /full — rename param → nombreVariable G + formula (ODS-223)
+# Requiere variables de getEditableEval (piId, paramsJson, formulaG)
+# @name putRenameParamG
+PUT {{baseUrl}}/api/projects/{{proyectoId}}/full
+Content-Type: application/json
+
+{
+  "actorUserId": {{evaluadorUserId}},
+  "actorRole": "evaluador",
+  "proyecto": {
+    "nombreProyecto": "Proyecto QA planificación (editado)"
+  },
+  "odsIds": [{{odsId}}],
+  "primaryOdsId": {{odsId}},
+  "indicadores": [
+    {
+      "proyectoIndicadorId": {{piId}},
+      "odsId": {{odsId}},
+      "indicadorMasterId": {{masterId}},
+      "metaValor": {{metaValor}},
+      "metaUnidad": "{{metaUnidad}}",
+      "metaNombre": "{{metaNombre}}",
+      "formulaCustom": "{{formulaG}}",
+      "parametros": {{paramsJson}}
+    }
+  ]
+}
+
+> {%
+  client.test("PUT rename param 200", function() {
+    client.assert(response.status === 200, "status 200 got " + response.status);
+    client.assert(response.body.success === true, "success; errores=" + JSON.stringify(response.body.errores || []));
+  });
+%}
+
+### GET editable — assert nombreVariable G persistió (ODS-223)
+# @name getEditableAfterRename
+GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+> {%
+  client.test("nombreVariable G persistió tras refresh", function() {
+    client.assert(response.status === 200, "status 200");
+    const piId = Number(client.global.get("piId"));
+    const paramId = Number(client.global.get("paramId"));
+    const inds = response.body.indicadores || [];
+    const ind = inds.find(i => Number(i.proyectoIndicadorId) === piId);
+    client.assert(!!ind, "indicador encontrado piId=" + piId);
+    const param = (ind.parametros || []).find(p => Number(p.id) === paramId);
+    client.assert(!!param, "param encontrado id=" + paramId);
+    client.assert(param.nombreVariable === "G", "nombreVariable=G got " + param.nombreVariable);
+    client.assert(param.nombreParametro === "G", "nombreParametro=G got " + param.nombreParametro);
+    const formula = ind.formulaCustom || "";
+    client.assert(/\bG\b/.test(formula), "formula_custom contiene G: " + formula);
+  });
+%}
 
 ### PUT /full — actualizar meta/fórmula (evaluador en planificacion)
 # Ajustar proyectoIndicadorId / indicadorMasterId según GET editable
@@ -42,3 +140,129 @@ Content-Type: application/json
 
 ### Consultor = 403
 # GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId=4&actorRole=consultor
+
+### ─── GATE_HTTP ODS-238 — meta_unidad texto libre (nm / NTU / colones) ───
+
+### GET editable — seed vars para unidad custom
+# @name getEditableMetaUnidad
+GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+> {%
+  client.test("GET editable 200 (meta_unidad)", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.success === true, "success");
+  });
+  const inds = response.body.indicadores || [];
+  client.assert(inds.length > 0, "hay al menos un indicador");
+  const ind = inds[0];
+  client.global.set("muPiId", String(ind.proyectoIndicadorId));
+  client.global.set("muOdsId", String(ind.odsId));
+  client.global.set("muMasterId", String(ind.indicadorMasterId));
+  client.global.set("muMetaValor", String(ind.metaValor != null ? ind.metaValor : 80));
+  client.global.set("muMetaNombre", ind.metaNombre || "Meta QA unidad");
+  client.global.set("muFormula", ind.formulaCustom || "A");
+  client.global.set("muParamsJson", JSON.stringify((ind.parametros || []).map(p => ({
+    id: p.id,
+    nombreParametro: p.nombreParametro || p.nombreVariable,
+    nombreVariable: p.nombreVariable || p.nombreParametro,
+    tipoDato: p.tipoDato || "Decimal"
+  }))));
+  // Free-text units (not Percentage|USD|Otro)
+  client.global.set("muCustom", "NTU");
+%}
+
+### PUT /full — persist metaUnidad custom NTU
+# @name putMetaUnidadCustom
+PUT {{baseUrl}}/api/projects/{{proyectoId}}/full
+Content-Type: application/json
+
+{
+  "actorUserId": {{evaluadorUserId}},
+  "actorRole": "evaluador",
+  "proyecto": {
+    "nombreProyecto": "Proyecto QA planificación (editado)"
+  },
+  "odsIds": [{{muOdsId}}],
+  "primaryOdsId": {{muOdsId}},
+  "indicadores": [
+    {
+      "proyectoIndicadorId": {{muPiId}},
+      "odsId": {{muOdsId}},
+      "indicadorMasterId": {{muMasterId}},
+      "metaValor": {{muMetaValor}},
+      "metaUnidad": "{{muCustom}}",
+      "metaNombre": "{{muMetaNombre}}",
+      "formulaCustom": "{{muFormula}}",
+      "parametros": {{muParamsJson}}
+    }
+  ]
+}
+
+> {%
+  client.test("PUT meta_unidad custom 200", function() {
+    client.assert(response.status === 200, "status 200 got " + response.status);
+    client.assert(response.body.success === true, "success; errores=" + JSON.stringify(response.body.errores || []));
+  });
+%}
+
+### GET editable — assert metaUnidad NTU persistió
+# @name getEditableAfterMetaUnidad
+GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+> {%
+  client.test("metaUnidad NTU persistió (texto libre)", function() {
+    client.assert(response.status === 200, "status 200");
+    const piId = Number(client.global.get("muPiId"));
+    const expected = client.global.get("muCustom");
+    const ind = (response.body.indicadores || []).find(i => Number(i.proyectoIndicadorId) === piId);
+    client.assert(!!ind, "indicador encontrado piId=" + piId);
+    client.assert(ind.metaUnidad === expected, "metaUnidad=" + expected + " got " + ind.metaUnidad);
+  });
+%}
+
+### PUT /full — otra unidad libre (nm) + assert
+# @name putMetaUnidadNm
+PUT {{baseUrl}}/api/projects/{{proyectoId}}/full
+Content-Type: application/json
+
+{
+  "actorUserId": {{evaluadorUserId}},
+  "actorRole": "evaluador",
+  "proyecto": {
+    "nombreProyecto": "Proyecto QA planificación (editado)"
+  },
+  "odsIds": [{{muOdsId}}],
+  "primaryOdsId": {{muOdsId}},
+  "indicadores": [
+    {
+      "proyectoIndicadorId": {{muPiId}},
+      "odsId": {{muOdsId}},
+      "indicadorMasterId": {{muMasterId}},
+      "metaValor": {{muMetaValor}},
+      "metaUnidad": "nm",
+      "metaNombre": "{{muMetaNombre}}",
+      "formulaCustom": "{{muFormula}}",
+      "parametros": {{muParamsJson}}
+    }
+  ]
+}
+
+> {%
+  client.test("PUT meta_unidad nm 200", function() {
+    client.assert(response.status === 200, "status 200 got " + response.status);
+    client.assert(response.body.success === true, "success; errores=" + JSON.stringify(response.body.errores || []));
+  });
+%}
+
+### GET — assert nm
+GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/editable?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+> {%
+  client.test("metaUnidad nm persistió", function() {
+    client.assert(response.status === 200, "status 200");
+    const piId = Number(client.global.get("muPiId"));
+    const ind = (response.body.indicadores || []).find(i => Number(i.proyectoIndicadorId) === piId);
+    client.assert(!!ind, "indicador encontrado");
+    client.assert(ind.metaUnidad === "nm", "metaUnidad=nm got " + ind.metaUnidad);
+  });
+%}

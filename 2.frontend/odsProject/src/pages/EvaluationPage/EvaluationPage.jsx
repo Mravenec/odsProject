@@ -5,6 +5,8 @@ import { useAuth } from '../../hooks/useAuth';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useProjectEvaluation } from '../../hooks/useProjectEvaluation';
 import { evaluationEngine } from '../../utils/evaluationEngine';
+import { formatUnitLabel } from '../../utils/formatters';
+import { sortParamsByFormulaOrder } from '../../utils/formulaParamOrder';
 
 const estadoColors = {
   'LOGRADO':    '#2dba74', 'CERCA META': '#012169',
@@ -398,7 +400,7 @@ const EvaluationPage = () => {
                       <div style={{background:'#f0fdf4',borderRadius:8,padding:'10px 14px'}}>
                         <div style={{fontSize:10,color:'#22c55e',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:4}}>Meta</div>
                         <div style={{fontSize:13,fontWeight:500,color:'#166534'}}>
-                          {ind.metaValor} {ind.metaUnidad}
+                          {ind.metaValor} {formatUnitLabel(ind.metaUnidad)}
                           {ind.metaNombre && <div style={{fontSize:11,color:'#1B2440',marginTop:2,fontWeight:400}}>{ind.metaNombre}</div>}
                         </div>
                       </div>
@@ -409,7 +411,7 @@ const EvaluationPage = () => {
                         <div style={{flex:1}}>
                           <div style={{fontSize:10,color:'#5A6478',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:2}}>Resultado calculado</div>
                           <div style={{fontSize:18,fontWeight:700,color: calc.status==='Cumplido'?'#2dba74':'#e05555'}}>
-                            {calc.result} <span style={{fontSize:13,fontWeight:400}}>{ind.metaUnidad}</span>
+                            {calc.result} <span style={{fontSize:13,fontWeight:400}}>{formatUnitLabel(ind.metaUnidad)}</span>
                           </div>
                         </div>
                         <div style={{textAlign:'center'}}>
@@ -420,13 +422,15 @@ const EvaluationPage = () => {
                     )}
 
                     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:10,marginBottom:14}}>
-                      {(ind.parametros || []).map((param, idx) => (
-                        <div key={idx}>
+                      {sortParamsByFormulaOrder(ind.formulaCustom || ind.formula, ind.parametros || []).map((param, idx) => {
+                        const varName = param.nombreVariable || param.nombreParametro;
+                        return (
+                        <div key={varName || idx}>
                           <label style={{fontSize:12,color:'#1B2440',display:'block',marginBottom:4}}>
                             <code style={{
                               fontFamily:'monospace',color:'#012169',marginRight:6,
                               background:'#d6e4f3',padding:'1px 5px',borderRadius:3
-                            }}>{param.nombreVariable || param.nombreParametro}</code>
+                            }}>{varName}</code>
                             {param.nombreParametro && param.nombreParametro !== param.nombreVariable && (
                               <span style={{color:'#5A6478',fontSize:11}}>{param.nombreParametro}</span>
                             )}
@@ -434,8 +438,8 @@ const EvaluationPage = () => {
                           <input
                             type="number"
                             disabled={readOnly}
-                            value={paramInputs[codigo]?.[param.nombreVariable || param.nombreParametro] ?? ''}
-                            onChange={e => handleParamChange(codigo, param.nombreVariable || param.nombreParametro, e.target.value)}
+                            value={paramInputs[codigo]?.[varName] ?? ''}
+                            onChange={e => handleParamChange(codigo, varName, e.target.value)}
                             placeholder={readOnly ? `Solo lectura · actual: ${param.valorActual ?? 0}` : `Valor actual: ${param.valorActual ?? 0}`}
                             style={{
                               width:'100%',border:'1px solid #ddd',borderRadius:8,
@@ -446,7 +450,8 @@ const EvaluationPage = () => {
                             }}
                           />
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     {(ind.parametros || []).length === 0 && (
@@ -512,7 +517,7 @@ const EvaluationPage = () => {
                     }} />
                   </div>
                   <div style={{textAlign:'right',fontSize:11,color:'#5A6478',marginTop:4}}>
-                    {pct.toFixed(1)}% de {ind.metaValor} {ind.metaUnidad}
+                    {pct.toFixed(1)}% de {ind.metaValor} {formatUnitLabel(ind.metaUnidad)}
                   </div>
                 </div>
               );
@@ -577,7 +582,7 @@ const EvaluationPage = () => {
                               </div>
                               <div>
                                 <span style={{fontWeight:700,marginRight:10}}>
-                                  {m.valorCalculado ?? '—'} {ind.metaUnidad}
+                                  {m.valorCalculado ?? '—'} {formatUnitLabel(ind.metaUnidad)}
                                 </span>
                                 {ok != null && (
                                   <span style={{

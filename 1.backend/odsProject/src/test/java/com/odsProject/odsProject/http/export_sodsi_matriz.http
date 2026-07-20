@@ -1,11 +1,45 @@
 ### Export SODSI matriz — 1 hoja, 21 columnas (Acciones por revisar SODSI.xlsx)
 ### QA: sede 2 (Central), año 2024, proyecto mock #6 auditado
+### ODS-230: Unidad encargada = dependenciaNombre del actor (perfil SODSI)
 
 @baseUrl = http://localhost:8080
+@emailAdmin = admin@ods.local
+@passwordAdmin = Admin1234!
 @emailConsultor = consultor@ods.local
 @passwordConsultor = Consultor2026!
+@consultorUserId = 7
 @sedeId = 2
 @anio = 2024
+### dependenciaId=1 → "Gestión Ambiental y Salud Ocupacional" (sodsi_dependencia)
+@dependenciaId = 1
+@unidadEsperada = Gestión Ambiental y Salud Ocupacional
+
+### @name login_admin
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{emailAdmin}}",
+  "password": "{{passwordAdmin}}"
+}
+
+@adminToken = {{login_admin.response.body.token}}
+
+# ── Asegurar perfil SODSI del consultor QA (id 7) con dependencia poblada ──
+
+### PUT consultor → dependenciaId poblado (prerreq Unidad encargada)
+PUT {{baseUrl}}/api/login/users/{{consultorUserId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "username": "consultor_qa",
+  "email": "consultor@ods.local",
+  "fullName": "Consultor QA Local",
+  "rolId": 3,
+  "sedeId": 2,
+  "dependenciaId": {{dependenciaId}}
+}
 
 ### @name login_consultor
 POST {{baseUrl}}/api/login/auth/login
@@ -20,7 +54,7 @@ Content-Type: application/json
 
 # ── Matriz SODSI consultor (21 cols, hoja "Acciones") ──
 
-### GET consolidado sede+año → 200 + xlsx (matriz 21 columnas)
+### GET consolidado sede+año → 200 + xlsx (matriz 21 columnas; Unidad desde perfil)
 GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}
 Authorization: Bearer {{consultorToken}}
 
@@ -28,8 +62,10 @@ Authorization: Bearer {{consultorToken}}
 # - Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 # - 1 hoja "Acciones"
 # - Fila 1: Año | Institución | Usuario | Unidad encargada | Acción | Objetivo | Meta | ...
+# - Usuario = "Consultor QA Local" (quién descarga)
+# - Unidad encargada = "{{unidadEsperada}}" (dependenciaNombre del actor; vacío si sin perfil)
 # - Proyecto QA #6: Objetivo = "[1] <nombre ODS>" (todos ODS vinculados, separados por ", ")
-# - Meta = "[1.1.1] <nombre meta|indicador>" (todos indicadores del proyecto, separados por ", ")
+# - Meta = "[1.1.1] <indicadorNombre>" (todos indicadores del proyecto, separados por ", ")
 
 ### GET consolidado sin token → 401/403
 GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}

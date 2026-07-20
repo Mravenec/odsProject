@@ -183,12 +183,16 @@ export function snapshotToEditorState(snapshot) {
         unit: ind.metaUnidad || 'unidad',
         name: ind.metaNombre || '',
       },
-      parameters: (ind.parametros || []).map((param) => ({
-        id: param.id,
-        name: param.nombreParametro || '',
-        variable: param.nombreVariable || param.nombreParametro || '',
-        type: param.tipoDato || 'Decimal',
-      })),
+      parameters: (ind.parametros || []).map((param) => {
+        // Formula binding uses nombreVariable; keep name/variable in sync for the modal.
+        const formulaVar = param.nombreVariable || param.nombreParametro || '';
+        return {
+          id: param.id,
+          name: formulaVar,
+          variable: formulaVar,
+          type: param.tipoDato || 'Decimal',
+        };
+      }),
     };
   }
 
@@ -220,6 +224,7 @@ export function editorStateToUpdatePayload({
   fichaSodsi = null,
 }) {
   const b = proyectoBaseline || {};
+  // odsIds = solo selectedOds; no re-agregar ODS desde indicadores residuales
   const odsSet = new Set();
   if (Array.isArray(formData.selectedOds)) {
     for (const odsId of formData.selectedOds) {
@@ -234,7 +239,7 @@ export function editorStateToUpdatePayload({
     const config = indicatorConfigs?.[code] || {};
     if (!meta.masterId) continue;
     const odsNum = parseInt(String(code).split('.')[0], 10);
-    odsSet.add(odsNum);
+    if (Number.isNaN(odsNum) || !odsSet.has(odsNum)) continue;
     indicadoresPayload.push({
       proyectoIndicadorId: meta.proyectoIndicadorId ?? null,
       odsId: odsNum,
@@ -245,12 +250,16 @@ export function editorStateToUpdatePayload({
       formulaCustom: config.formula || null,
       parametros: (Array.isArray(config.parameters) ? config.parameters : [])
         .filter((p) => p?.name?.trim())
-        .map((p) => ({
-          id: p.id ?? undefined,
-          nombreParametro: p.name.trim(),
-          nombreVariable: (p.variable || p.name).trim(),
-          tipoDato: p.type || 'Decimal',
-        })),
+        .map((p) => {
+          // Prefer edited `name` (modal field) over stale `variable` — Z→G bug.
+          const formulaVar = (p.name || p.variable || '').trim();
+          return {
+            id: p.id ?? undefined,
+            nombreParametro: formulaVar,
+            nombreVariable: formulaVar,
+            tipoDato: p.type || 'Decimal',
+          };
+        }),
     });
   }
 

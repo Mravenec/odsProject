@@ -151,6 +151,14 @@ const EvaluationQueuePage = () => {
             {filtered.map(p => {
               const odsNumber = p.objective ?? p.odsPrimario;
               const isEvaluated = p.status === 'completado';
+              // Progreso real (summary / resultados) — nunca LOGRADO solo por completado
+              const rawPct = p.progressPercentage ?? p.pctProyecto ?? p.porcentajeLogro;
+              const hasPct = rawPct != null && !Number.isNaN(Number(rawPct));
+              const badgeProps = !isEvaluated
+                ? { estado: 'SIN DATOS', showPct: false }
+                : hasPct
+                  ? { porcentaje: Number(rawPct), showPct: true }
+                  : { estado: 'EVALUADO', showPct: false };
               return (
                 <article
                   key={p.id}
@@ -214,10 +222,8 @@ const EvaluationQueuePage = () => {
                       </span>
                     )}
                     <AchievementBadge
-                      estado={isEvaluated ? 'LOGRADO' : 'SIN DATOS'}
-                      porcentaje={null}
+                      {...badgeProps}
                       size="sm"
-                      showPct={false}
                     />
                   </div>
                 </article>

@@ -225,16 +225,43 @@ const ProjectCreationPage = () => {
   };
 
   const toggleOds = (odsId) => {
-    setFormData(prev => {
+    const prefix = `${odsId}.`;
+    const isCurrentlySelected = formData.selectedOds.includes(odsId);
+
+    if (isCurrentlySelected) {
+      const removedCodes = (formData.indicators || []).filter((code) =>
+        String(code).startsWith(prefix)
+      );
+      if (removedCodes.length > 0) {
+        setIndicatorConfigs((prev) => {
+          const next = { ...prev };
+          removedCodes.forEach((code) => { delete next[code]; });
+          return next;
+        });
+        setIndicatorMetadata((prev) => {
+          const next = { ...prev };
+          removedCodes.forEach((code) => { delete next[code]; });
+          return next;
+        });
+      }
+    }
+
+    setFormData((prev) => {
       const isSelected = prev.selectedOds.includes(odsId);
-      const newSelected = isSelected 
-        ? prev.selectedOds.filter(id => id !== odsId)
+      const newSelected = isSelected
+        ? prev.selectedOds.filter((id) => id !== odsId)
         : [...prev.selectedOds, odsId];
-      
+      const newIndicators = isSelected
+        ? (prev.indicators || []).filter((code) => !String(code).startsWith(prefix))
+        : prev.indicators;
+
       return {
         ...prev,
         selectedOds: newSelected,
-        primaryOds: newSelected.length > 0 ? newSelected[0] : null
+        indicators: newIndicators,
+        primaryOds: newSelected.length > 0
+          ? (prev.primaryOds && newSelected.includes(prev.primaryOds) ? prev.primaryOds : newSelected[0])
+          : null,
       };
     });
   };

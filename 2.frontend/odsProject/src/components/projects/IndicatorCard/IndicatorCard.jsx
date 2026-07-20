@@ -1,5 +1,11 @@
-import { formatIndicatorName, getAchievementClass } from '../../../utils/formatters';
+import { formatIndicatorName, formatUnitLabel, getAchievementClass } from '../../../utils/formatters';
 import './IndicatorCard.css';
+
+const unitSuffix = (unit) => {
+  if (!unit) return '';
+  if (unit === 'Percentage') return '%';
+  return formatUnitLabel(unit);
+};
 
 const IndicatorCard = ({ 
   index,
@@ -45,12 +51,12 @@ const IndicatorCard = ({
             <div className="main-stats-grid">
               <div className="stat-box">
                 <span className="stat-label">Meta Establecida</span>
-                <span className="stat-value secondary">{displayTarget} {config?.goal?.unit === 'Percentage' ? '%' : ''}</span>
+                <span className="stat-value secondary">{displayTarget} {unitSuffix(config?.goal?.unit)}</span>
               </div>
               <div className="stat-box">
                 <span className="stat-label">Valor Alcanzado</span>
                 <span className={`stat-value highlight ${statusClass}`}>
-                  {displayValue} {config?.goal?.unit === 'Percentage' ? '%' : ''}
+                  {displayValue} {unitSuffix(config?.goal?.unit)}
                 </span>
               </div>
             </div>
@@ -94,7 +100,7 @@ const IndicatorCard = ({
         ) : (
           <div className="indicator-input-group">
             <div className="input-meta-info">
-              <span>Meta establecida: <strong>{targetValue} {config?.goal?.unit === 'Percentage' ? '%' : ''}</strong></span>
+              <span>Meta establecida: <strong>{targetValue} {unitSuffix(config?.goal?.unit)}</strong></span>
               {config && <div className="formula-display">Fórmula: <code>{config.formula}</code></div>}
             </div>
             

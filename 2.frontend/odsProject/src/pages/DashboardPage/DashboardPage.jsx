@@ -24,6 +24,7 @@ const DashboardPage = () => {
   } = useProjects();
   
   const [loading, setLoading] = useState(true);
+  const [loginAt] = useState(() => new Date());
 
   useEffect(() => {
     if (user) {
@@ -62,6 +63,24 @@ const DashboardPage = () => {
       });
     } catch (e) {
       return 'Fecha inválida';
+    }
+  };
+
+  const displayFullName =
+    user?.fullName || user?.name || user?.username || 'Usuario';
+
+  const formatLoginDateTime = (date) => {
+    try {
+      return date.toLocaleString('es-CR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch (e) {
+      return date.toLocaleString();
     }
   };
 
@@ -104,10 +123,12 @@ const DashboardPage = () => {
 
         <section className="welcome-section">
           <div className="welcome-text">
-            <h2>¡Qué bueno verte de nuevo, {(
-              user?.fullName || user?.name || user?.username || 'Usuario'
-            ).split(' ')[0].split('@')[0]}!</h2>
-            <p>Aquí tienes un resumen del impacto generado hoy.</p>
+            <h2>
+              {displayFullName}, usted ha ingresado exitosamente a la plataforma ODS Agenda 2030
+            </h2>
+            <p className="welcome-login-at">
+              Fecha y hora de ingreso: {formatLoginDateTime(loginAt)}
+            </p>
           </div>
           {perms.canCreateProject && (
             <button className="btn-create-header" onClick={() => navigate('/projects/create')}>
@@ -205,6 +226,14 @@ const DashboardPage = () => {
                     <h4>Administración de usuarios</h4>
                     <p>Crear, editar y desactivar cuentas por sede y rol.</p>
                     <span className="action-link">Gestionar usuarios →</span>
+                  </div>
+                )}
+                {perms.canViewLoginAudit && (
+                  <div className="action-card" onClick={() => navigate('/admin/bitacora')}>
+                    <div className="action-icon">📋</div>
+                    <h4>Bitácora de ingresos</h4>
+                    <p>Auditoría de login, logout e intentos fallidos.</p>
+                    <span className="action-link">Ver bitácora →</span>
                   </div>
                 )}
                 <div className="action-card" onClick={() => navigate('/projects')}>

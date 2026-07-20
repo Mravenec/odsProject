@@ -1,0 +1,234 @@
+.bitacora-admin {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.bitacora-admin-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.bitacora-admin-header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.35rem;
+  color: var(--utn-azul, #012169);
+}
+
+.bitacora-admin-header p {
+  margin: 0;
+  color: var(--text-secondary, #64748b);
+  font-size: 0.9rem;
+}
+
+.bitacora-admin-header .btn-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  border: 1px solid rgba(1, 33, 105, 0.15);
+  background: #fff;
+  cursor: pointer;
+  color: var(--utn-azul, #012169);
+  flex-shrink: 0;
+}
+
+.bitacora-admin-header .btn-refresh {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(1, 33, 105, 0.2);
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.88rem;
+}
+
+.bitacora-admin-header .btn-refresh:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bitacora-filters {
+  background: #fff;
+  border: 1px solid var(--border-soft, #e5e7eb);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.bitacora-filters-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted, #64748b);
+  margin-bottom: 0.75rem;
+}
+
+.bitacora-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.bitacora-filters-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted, #64748b);
+}
+
+.bitacora-filters-grid input,
+.bitacora-filters-grid select {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-main, #1e293b);
+  background: #fff;
+}
+
+.btn-clear-filters {
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(1, 33, 105, 0.2);
+  background: #f8fafc;
+  cursor: pointer;
+  font-size: 0.88rem;
+  height: fit-content;
+}
+
+.bitacora-admin-error {
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.bitacora-admin-loader {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary, #64748b);
+}
+
+.bitacora-count {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted, #64748b);
+}
+
+.bitacora-table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-soft, #e5e7eb);
+}
+
+.bitacora-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.bitacora-table th,
+.bitacora-table td {
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.bitacora-table th {
+  background: #f8fafc;
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted, #64748b);
+}
+
+.bitacora-table .empty {
+  text-align: center;
+  color: var(--text-secondary, #64748b);
+  padding: 2rem;
+}
+
+.bitacora-table .mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+}
+
+.user-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.user-main {
+  font-weight: 600;
+  color: var(--text-main, #1e293b);
+}
+
+.user-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted, #64748b);
+}
+
+.bitacora-table .badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-ok {
+  background: rgba(45, 186, 116, 0.15);
+  color: #15803d;
+}
+
+.badge-fail {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
+.badge-logout {
+  background: rgba(1, 33, 105, 0.1);
+  color: #012169;
+}
+
+.badge-neutral {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+@media (max-width: 640px) {
+  .bitacora-admin {
+    padding: 1rem;
+  }
+
+  .bitacora-admin-header {
+    flex-wrap: wrap;
+  }
+
+  .bitacora-admin-header .btn-refresh {
+    margin-left: 0;
+  }
+}

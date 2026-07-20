@@ -103,6 +103,12 @@ public interface IMasterProjectService {
     List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
         getProyectosWithOdsByUsuario(Integer usuarioId);
 
+    /**
+     * Detalle enriquecido (vista): incluye auditorNombre del evaluador.
+     */
+    java.util.Optional<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+        getProyectoWithOdsById(Integer proyectoId);
+
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 15 — State Machine de transiciones del proyecto
     // ═════════════════════════════════════════════════════════════════════

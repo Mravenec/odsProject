@@ -93,6 +93,14 @@ public interface IMasterProjectController {
     ResponseEntity<List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>>
         getProyectosWithOdsByUsuario(@PathVariable Integer userId);
 
+    /**
+     * GET /api/projects/{id}/with-ods
+     * Un proyecto desde la vista (incluye auditorNombre).
+     */
+    @GetMapping("/{id}/with-ods")
+    ResponseEntity<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+        getProyectoWithOdsById(@PathVariable Integer id);
+
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 15 — Transición genérica de estado (admin-only fallback)
     // ═════════════════════════════════════════════════════════════════════

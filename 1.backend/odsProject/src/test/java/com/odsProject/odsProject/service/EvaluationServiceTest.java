@@ -35,6 +35,51 @@ class EvaluationServiceTest {
             "25/100*100 debería ser 25.0000");
     }
 
+    /** Hotfix walkthrough: (100+100)/1 = 200 */
+    @Test
+    void evaluateSumaEntreUnoEsDoscientos() {
+        BigDecimal result = svc.evaluateFormula("(100+100)/1", Map.of());
+        assertEquals(0, result.compareTo(new BigDecimal("200.0000")),
+            "(100+100)/1 debe ser 200.0000");
+    }
+
+    /** Hotfix walkthrough: (100+100)/400 = 0.5 */
+    @Test
+    void evaluateSumaEntreCuatrocientosEsMedio() {
+        BigDecimal result = svc.evaluateFormula("(100+100)/400", Map.of());
+        assertEquals(0, result.compareTo(new BigDecimal("0.5000")),
+            "(100+100)/400 debe ser 0.5000");
+    }
+
+    /**
+     * Hotfix walkthrough: A+B/Z con binding por nombreVariable
+     * (misma clave que usa Objetivo*Service al armar formulaParams).
+     * Precedencia: A + (B/Z) → 10 + 20/4 = 15.
+     */
+    @Test
+    void evaluatePorNombreVariable_A_mas_B_sobre_Z() {
+        Map<String, BigDecimal> params = Map.of(
+            "A", new BigDecimal("10"),
+            "B", new BigDecimal("20"),
+            "Z", new BigDecimal("4")
+        );
+        BigDecimal result = svc.evaluateFormula("A+B/Z", params);
+        assertEquals(0, result.compareTo(new BigDecimal("15.0000")),
+            "A+B/Z con nombreVariable A,B,Z debe ser 15.0000");
+    }
+
+    @Test
+    void evaluateOperadoresBasicosMasMenosPorDividir() {
+        Map<String, BigDecimal> params = Map.of(
+            "x", new BigDecimal("10"),
+            "y", new BigDecimal("3"),
+            "z", new BigDecimal("2")
+        );
+        // (x + y) * z - y / z  →  (10+3)*2 - 3/2 = 26 - 1.5 = 24.5
+        BigDecimal result = svc.evaluateFormula("(x+y)*z - y/z", params);
+        assertEquals(0, result.compareTo(new BigDecimal("24.5000")));
+    }
+
     @Test
     void evaluateNestedExpressionDelEnunciado() {
         // Caso del enunciado: ((a+b)*z)/2  con a=10, b=20, z=2  →  30
@@ -60,6 +105,10 @@ class EvaluationServiceTest {
         assertEquals(0, result.compareTo(new BigDecimal("20.0000")));
     }
 
+    /**
+     * Comportamiento documentado: división por cero → BigDecimal.ZERO
+     * (NaN/Infinity de exp4j se normalizan; no se propaga excepción).
+     */
     @Test
     void evaluateDivisionByZeroReturnsZero() {
         Map<String, BigDecimal> params = Map.of(
@@ -68,7 +117,7 @@ class EvaluationServiceTest {
         );
         BigDecimal result = svc.evaluateFormula("p1/p2", params);
         assertEquals(0, result.compareTo(BigDecimal.ZERO),
-            "División entre cero debe devolver 0, no romper el flujo");
+            "División entre cero debe devolver ZERO (comportamiento existente)");
     }
 
     @Test

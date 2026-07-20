@@ -177,6 +177,15 @@ public class MasterProjectController implements IMasterProjectController {
         return ResponseEntity.ok(masterProjectService.getProyectosWithOdsByUsuario(userId));
     }
 
+    @Override
+    @GetMapping("/{id}/with-ods")
+    public ResponseEntity<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
+            getProyectoWithOdsById(@PathVariable Integer id) {
+        return masterProjectService.getProyectoWithOdsById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 15 — Transición genérica de estado
     //  Sprint 16/17 — Endpoints semánticos para el flujo de auditoría

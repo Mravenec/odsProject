@@ -3,38 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resumen — Admin usuarios listado SODSI · ODS UTN</title>
+<title>Resumen — Bienvenida + bitácora · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
   :root{--bg:#07090F;--surf:#0D1117;--border:rgba(255,255,255,.07);--text:#E2E8F0;--muted:#64748B;--green:#22C55E}
   body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6}
   .hero{padding:48px;border-bottom:1px solid var(--border)}
   h1{font-family:'Syne',sans-serif;font-size:32px;color:#fff}
+  .ok{color:var(--green)}
   .sec{padding:32px 48px}
   .tbl{width:100%;border-collapse:collapse;font-size:12px;font-family:'IBM Plex Mono',monospace}
   .tbl th,.tbl td{padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
-  .ok{color:var(--green)}
   code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.06);padding:2px 5px;border-radius:3px}
 </style>
 </head>
 <body>
 <header class="hero">
-  <h1>Sprint admin users SODSI list — <span class="ok">DONE</span></h1>
-  <p>Issues ODS-201…204 · Epic Completed</p>
+  <h1>Sprint bienvenida bitácora — <span class="ok">DONE</span></h1>
+  <p>ODS-233…237 · Epic Completed</p>
 </header>
 <section class="sec">
   <h2>Entregable</h2>
-  <p><code>GET /api/login/users</code> devuelve <code>areaId</code>, <code>dependenciaId</code>, <code>rolDependenciaId</code> y <code>telefonoContacto</code>. Admin Usuarios deja de marcar gestores mock como perfil incompleto.</p>
   <table class="tbl">
-    <thead><tr><th>Archivo</th><th>Cambio</th></tr></thead>
+    <thead><tr><th>Issue</th><th>Entrega</th></tr></thead>
     <tbody>
-      <tr><td>LoginRepository.java</td><td class="ok">SELECT ampliado en findAllUsuariosAdmin</td></tr>
-      <tr><td>admin_users_sodsi.http</td><td class="ok">GATE_HTTP smoke</td></tr>
-      <tr><td>AdminUsersSodsiListSmokeTest.java</td><td class="ok">Test repositorio (requiere suite tests OK)</td></tr>
-      <tr><td>UsersAdminPage.jsx</td><td class="ok">Sin cambios — ya mapeaba campos</td></tr>
+      <tr><td>ODS-233</td><td class="ok">Dashboard: saludo formal + fecha/hora ingreso</td></tr>
+      <tr><td>ODS-234</td><td class="ok">Login: logo UTN (asset / placeholder)</td></tr>
+      <tr><td>ODS-235</td><td class="ok">GATE_HTTP <code>bitacora_audit.http</code> audit-recent</td></tr>
+      <tr><td>ODS-236</td><td class="ok">Admin <code>/admin/bitacora</code> filtros fecha/usuario/evento</td></tr>
+      <tr><td>ODS-237</td><td class="ok">ORCH cierre</td></tr>
     </tbody>
   </table>
-  <p style="margin-top:16px"><strong>Nota:</strong> reiniciar backend local para ver el fix en runtime si el servidor corría código anterior.</p>
+  <p style="margin-top:16px;color:var(--muted)">Sin email SMTP. Sin telemetría «proyecto tocado» (backlog).</p>
 </section>
 </body>
 </html>

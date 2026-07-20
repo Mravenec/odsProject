@@ -7,8 +7,10 @@ import org.jooq.types.UByte;
 import org.jooq.types.UShort;
 import com.odsProject.odsProject.service.interfaces.IPlanificacionEdicionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -21,6 +23,15 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
 
     @Autowired
     private List<com.odsProject.odsProject.service.interfaces.IOdsBaseService<?, ?, ?, ?, ?, ?>> odsServices;
+
+    /** Solo ods_master: debe cerrarse antes de INSERT/UPDATE en esquemas ODS (FK a proyectos). */
+    private final TransactionTemplate masterTx;
+
+    @Autowired
+    public PlanificacionEdicionService(
+            @Qualifier("txManagerMaster") PlatformTransactionManager txManagerMaster) {
+        this.masterTx = new TransactionTemplate(txManagerMaster);
+    }
 
     @Override
     public void assertCanEditPlanificacion(Integer proyectoId, Integer actorUserId, String actorRole) {
@@ -108,7 +119,6 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
     }
 
     @Override
-    @Transactional("txManagerMaster")
     public Map<String, Object> updateFullProject(Integer proyectoId, Map<String, Object> payload,
                                                  Integer actorUserId, String actorRole) {
         if (payload == null) throw new IllegalArgumentException("payload requerido");
@@ -117,28 +127,6 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
         List<Map<String, Object>> errores = new ArrayList<>();
         List<Map<String, Object>> indicadoresActualizados = new ArrayList<>();
         List<Integer> odsVinculados = new ArrayList<>();
-
-        Object proyectoRaw = payload.get("proyecto");
-        if (proyectoRaw instanceof Map<?, ?> pm) {
-            Proyectos patch = mapToProyectos(asStringObjectMap(pm));
-            Proyectos existing = masterProjectRepository.findById(proyectoId).orElseThrow();
-            if (patch.getNombreProyecto() != null) existing.setNombreProyecto(patch.getNombreProyecto());
-            if (patch.getDescripcion() != null) existing.setDescripcion(patch.getDescripcion());
-            if (patch.getFechaInicio() != null) existing.setFechaInicio(patch.getFechaInicio());
-            if (patch.getFechaFin() != null) existing.setFechaFin(patch.getFechaFin());
-            if (patch.getMetaGeneral() != null) existing.setMetaGeneral(patch.getMetaGeneral());
-            if (patch.getAliadoExterno() != null) existing.setAliadoExterno(patch.getAliadoExterno());
-            if (patch.getEjePlanesId() != null) existing.setEjePlanesId(patch.getEjePlanesId());
-            if (patch.getLocationProvince() != null) existing.setLocationProvince(patch.getLocationProvince());
-            if (patch.getLocationCanton() != null) existing.setLocationCanton(patch.getLocationCanton());
-            if (patch.getLocationDistrict() != null) existing.setLocationDistrict(patch.getLocationDistrict());
-            if (patch.getSedeId() != null) existing.setSedeId(patch.getSedeId());
-            masterProjectRepository.update(existing);
-        }
-
-        if (payload.get("fichaSodsi") instanceof Map<?, ?>) {
-            saveFichaSodsi(proyectoId, asStringObjectMap(payload.get("fichaSodsi")));
-        }
 
         List<Integer> odsIds = toIntList(payload.get("odsIds"));
         Integer primaryOdsId = toInt(payload.get("primaryOdsId"));
@@ -150,23 +138,49 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
             if (odsId != null) odsSet.add(odsId);
         }
 
-        List<Map<String, Object>> currentOds = masterProjectRepository.findOdsByProyecto(proyectoId);
-        Set<Integer> currentIds = new HashSet<>();
-        for (Map<String, Object> link : currentOds) {
-            Integer oid = toInt(link.get("ods_id"));
-            if (oid == null) oid = toInt(link.get("odsId"));
-            if (oid != null) currentIds.add(oid);
-        }
-        for (Integer cur : currentIds) {
-            if (!odsSet.contains(cur)) {
-                masterProjectRepository.unlinkOds(proyectoId, cur);
+        // Commit master ANTES de mutar odsNN: un UPDATE abierto en proyectos
+        // bloquea el FK check del INSERT en proyecto_indicadores (Lock wait timeout).
+        masterTx.executeWithoutResult(status -> {
+            Object proyectoRaw = payload.get("proyecto");
+            if (proyectoRaw instanceof Map<?, ?> pm) {
+                Proyectos patch = mapToProyectos(asStringObjectMap(pm));
+                Proyectos existing = masterProjectRepository.findById(proyectoId).orElseThrow();
+                if (patch.getNombreProyecto() != null) existing.setNombreProyecto(patch.getNombreProyecto());
+                if (patch.getDescripcion() != null) existing.setDescripcion(patch.getDescripcion());
+                if (patch.getFechaInicio() != null) existing.setFechaInicio(patch.getFechaInicio());
+                if (patch.getFechaFin() != null) existing.setFechaFin(patch.getFechaFin());
+                if (patch.getMetaGeneral() != null) existing.setMetaGeneral(patch.getMetaGeneral());
+                if (patch.getAliadoExterno() != null) existing.setAliadoExterno(patch.getAliadoExterno());
+                if (patch.getEjePlanesId() != null) existing.setEjePlanesId(patch.getEjePlanesId());
+                if (patch.getLocationProvince() != null) existing.setLocationProvince(patch.getLocationProvince());
+                if (patch.getLocationCanton() != null) existing.setLocationCanton(patch.getLocationCanton());
+                if (patch.getLocationDistrict() != null) existing.setLocationDistrict(patch.getLocationDistrict());
+                if (patch.getSedeId() != null) existing.setSedeId(patch.getSedeId());
+                masterProjectRepository.update(existing);
             }
-        }
-        for (Integer odsId : odsSet) {
-            boolean esPrimario = odsId.equals(primaryOdsId);
-            masterProjectRepository.linkOds(proyectoId, odsId, esPrimario);
-            odsVinculados.add(odsId);
-        }
+
+            if (payload.get("fichaSodsi") instanceof Map<?, ?>) {
+                saveFichaSodsi(proyectoId, asStringObjectMap(payload.get("fichaSodsi")));
+            }
+
+            List<Map<String, Object>> currentOds = masterProjectRepository.findOdsByProyecto(proyectoId);
+            Set<Integer> currentIds = new HashSet<>();
+            for (Map<String, Object> link : currentOds) {
+                Integer oid = toInt(link.get("ods_id"));
+                if (oid == null) oid = toInt(link.get("odsId"));
+                if (oid != null) currentIds.add(oid);
+            }
+            for (Integer cur : currentIds) {
+                if (!odsSet.contains(cur)) {
+                    masterProjectRepository.unlinkOds(proyectoId, cur);
+                }
+            }
+            for (Integer odsId : odsSet) {
+                boolean esPrimario = primaryOdsId != null && odsId.equals(primaryOdsId);
+                masterProjectRepository.linkOds(proyectoId, odsId, esPrimario);
+                odsVinculados.add(odsId);
+            }
+        });
 
         Set<String> payloadIndicadorKeys = new LinkedHashSet<>();
         for (Map<String, Object> ind : indicadoresRaw) {
@@ -319,10 +333,11 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
         pojoClass.getMethod("setProyectoId", Integer.class).invoke(pojo, proyectoId);
         pojoClass.getMethod("setIndicadorMasterId", Integer.class)
                 .invoke(pojo, toInt(indSpec.get("indicadorMasterId")));
+        String metaUnidad = normalizeMetaUnidad(indSpec.get("metaUnidad"));
         pojoClass.getMethod("setMetaValor", BigDecimal.class)
                 .invoke(pojo, toBigDecimal(indSpec.get("metaValor")));
         pojoClass.getMethod("setMetaUnidad", String.class)
-                .invoke(pojo, strOr(indSpec.get("metaUnidad"), "unidad"));
+                .invoke(pojo, metaUnidad);
         pojoClass.getMethod("setMetaNombre", String.class)
                 .invoke(pojo, strOr(indSpec.get("metaNombre"), null));
         pojoClass.getMethod("setFormulaCustom", String.class)
@@ -337,6 +352,7 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
         Map<String, Object> out = new LinkedHashMap<>();
         out.put("odsId", odsId);
         out.put("proyectoIndicadorId", proyectoIndicadorId);
+        out.put("metaUnidad", metaUnidad);
         out.put("parametros", parametrosGuardados);
         out.put("updated", true);
         return out;
@@ -354,10 +370,11 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
         Object pojo = pojoClass.getDeclaredConstructor().newInstance();
         pojoClass.getMethod("setProyectoId", Integer.class).invoke(pojo, proyectoId);
         pojoClass.getMethod("setIndicadorMasterId", Integer.class).invoke(pojo, indicadorMasterId);
+        String metaUnidad = normalizeMetaUnidad(indSpec.get("metaUnidad"));
         pojoClass.getMethod("setMetaValor", BigDecimal.class)
                 .invoke(pojo, toBigDecimal(indSpec.get("metaValor")));
         pojoClass.getMethod("setMetaUnidad", String.class)
-                .invoke(pojo, strOr(indSpec.get("metaUnidad"), "unidad"));
+                .invoke(pojo, metaUnidad);
         pojoClass.getMethod("setMetaNombre", String.class)
                 .invoke(pojo, strOr(indSpec.get("metaNombre"), null));
         pojoClass.getMethod("setFormulaCustom", String.class)
@@ -373,6 +390,7 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
         out.put("odsId", odsId);
         out.put("indicadorMasterId", indicadorMasterId);
         out.put("proyectoIndicadorId", proyectoIndicadorId);
+        out.put("metaUnidad", metaUnidad);
         out.put("parametros", parametrosGuardados);
         out.put("created", true);
         return out;
@@ -394,6 +412,7 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
             Map<String, Object> pm = asStringObjectMap(p);
             String nombre = strOr(pm.get("nombreParametro"), null);
             if (nombre == null || nombre.isBlank()) continue;
+            // nombreVariable binds formulas; fall back to nombreParametro when omitted.
             String variable = strOr(pm.get("nombreVariable"), nombre);
             String tipoStr = strOr(pm.get("tipoDato"), "Decimal");
             Integer paramId = toInt(pm.get("id"));
@@ -407,8 +426,26 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
             paramClass.getMethod("setNombreVariable", String.class).invoke(pPojo, variable);
             Object tipoVal = enumConstant(tipoEnum, tipoStr, "Decimal");
             paramClass.getMethod("setTipoDato", tipoEnum).invoke(pPojo, tipoVal);
-            paramClass.getMethod("setValorActual", BigDecimal.class)
-                    .invoke(pPojo, BigDecimal.ZERO);
+
+            // Preserve existing valor_actual on update so rename does not wipe mediciones.
+            BigDecimal valorActual = BigDecimal.ZERO;
+            if (paramId != null) {
+                try {
+                    java.lang.reflect.Method findById =
+                            svc.getClass().getMethod("findMetaProyectoById", Integer.class);
+                    Object opt = findById.invoke(svc, paramId);
+                    if (opt instanceof java.util.Optional<?> optional && optional.isPresent()) {
+                        Object existing = optional.get();
+                        Object va = invokeGetter(existing, existing.getClass(), "getValorActual");
+                        if (va instanceof BigDecimal bd) {
+                            valorActual = bd;
+                        }
+                    }
+                } catch (NoSuchMethodException ignored) {
+                    // fall through with ZERO
+                }
+            }
+            paramClass.getMethod("setValorActual", BigDecimal.class).invoke(pPojo, valorActual);
 
             if (paramId != null) {
                 java.lang.reflect.Method upd = svc.getClass().getMethod("updateMetaProyecto", paramClass);
@@ -575,5 +612,17 @@ public class PlanificacionEdicionService implements IPlanificacionEdicionService
         if (v == null) return fallback;
         String s = String.valueOf(v).trim();
         return s.isEmpty() ? fallback : s;
+    }
+
+    /**
+     * meta_unidad is free text (nm, NTU, colones…) — not limited to Percentage|USD|Otro.
+     * Column is VARCHAR(50); blank falls back to "unidad".
+     */
+    private static String normalizeMetaUnidad(Object v) {
+        String s = strOr(v, "unidad");
+        if (s.length() > 50) {
+            throw new IllegalArgumentException("metaUnidad supera 50 caracteres");
+        }
+        return s;
     }
 }

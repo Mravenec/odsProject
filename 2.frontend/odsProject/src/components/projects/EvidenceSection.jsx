@@ -58,7 +58,7 @@ export default function EvidenceSection({ project, onDocumentsChange }) {
     <ol className="evidence-steps">
       <li>Seleccione el archivo (Word, Excel, PDF o texto plano (.txt)) con los resultados del proyecto.</li>
       <li>Verifique que el nombre del archivo aparezca correctamente debajo del botón.</li>
-      <li>Si lo desea, escriba una descripción breve para el evaluador (opcional).</li>
+      <li>De forma opcional puede escribir una breve descripción para el evaluador.</li>
       <li>Pulse «Enviar Documento» y espere la confirmación.</li>
       <li>Revise la lista: el evaluador descargará el archivo para ingresar las mediciones.</li>
     </ol>
@@ -107,13 +107,13 @@ export default function EvidenceSection({ project, onDocumentsChange }) {
             </span>
           </div>
           <label className="evidence-desc-label" htmlFor="evidence-desc">
-            Descripción (opcional)
+            Descripción para el evaluador (opcional)
           </label>
           <input
             id="evidence-desc"
             type="text"
             className="evidence-desc-input"
-            placeholder="Nota breve para el evaluador"
+            placeholder="De forma opcional puede escribir una breve descripción para el evaluador"
             value={descripcion}
             onChange={e => setDescripcion(e.target.value)}
             maxLength={500}

@@ -103,7 +103,23 @@ export const projectService = {
   async getProjectById(projectId) {
     try {
       const response = await api.get(`/projects/${projectId}`);
-      return { success: true, data: this._mapBackendToFrontend(response.data) };
+      const data = this._mapBackendToFrontend(response.data);
+      // GET /projects/{id} es la tabla (solo auditadoPor). El nombre del
+      // evaluador vive en la vista → /projects/{id}/with-ods.
+      if (data.auditedBy && !data.auditedByName) {
+        try {
+          const viewRes = await api.get(`/projects/${projectId}/with-ods`);
+          const view = this._mapBackendToFrontend(viewRes.data || {});
+          if (view.auditedByName) data.auditedByName = view.auditedByName;
+          if (view.auditedAt && !data.auditedAt) data.auditedAt = view.auditedAt;
+          if (view.closureObservations && !data.closureObservations) {
+            data.closureObservations = view.closureObservations;
+          }
+        } catch {
+          /* vista opcional: se mantiene fallback Usuario #id */
+        }
+      }
+      return { success: true, data };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -413,7 +429,8 @@ export const projectService = {
    */
   async updateFullProject(projectId, payload) {
     try {
-      const r = await api.put(`/projects/${projectId}/full`, payload);
+      // Orquesta master + varios esquemas ODS; dar margen sobre el default 30s.
+      const r = await api.put(`/projects/${projectId}/full`, payload, { timeout: 90000 });
       const data = r.data || {};
       const errores = data.errores || [];
       const hasErrors = errores.length > 0;

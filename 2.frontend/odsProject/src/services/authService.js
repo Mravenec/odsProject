@@ -216,4 +216,37 @@ export const authService = {
       return { success: false, error: this._apiError(error, 'No se pudo desactivar el usuario') };
     }
   },
+
+  // ── Bitácora de ingresos (admin) ──
+
+  _mapAuditEntry(row) {
+    if (!row) return null;
+    return {
+      id: row.id,
+      fecha: row.fechaEvento || row.fecha_evento || row.fecha,
+      evento: row.evento || '',
+      usuario: row.username || row.usuario || row.fullName || row.full_name || row.emailIntento || '—',
+      fullName: row.fullName || row.full_name || '',
+      ip: row.ipAddress || row.ip_address || row.ip || '—',
+      userAgent: row.userAgent || row.user_agent || '',
+      detalle: row.detalle || '',
+    };
+  },
+
+  /**
+   * GET /login/admin/audit-recent — Bearer admin.
+   * Campos: usuario, fecha, ip, evento (LOGIN_OK | LOGIN_FALLIDO | LOGOUT).
+   */
+  async getAuditRecent(dias = 30) {
+    try {
+      const res = await api.get('/login/admin/audit-recent', {
+        params: { dias },
+      });
+      const data = (res.data || []).map((row) => this._mapAuditEntry(row));
+      return { success: true, data };
+    } catch (error) {
+      console.error('[AuthService] getAuditRecent:', error);
+      return { success: false, error: this._apiError(error, 'No se pudo cargar la bitácora de ingresos') };
+    }
+  },
 };

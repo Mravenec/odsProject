@@ -5,16 +5,18 @@ import { CheckCircle2, Clock, TrendingDown, XCircle, HelpCircle } from 'lucide-r
  * Sprint 14 — Badge que muestra si un indicador / proyecto alcanzó la meta.
  *
  * Lee uno de:
- *   - estado: string "LOGRADO" | "CERCA META" | "PROGRESO" | "BAJO" | "SIN DATOS"
+ *   - estado: string "LOGRADO" | "CERCA META" | "PROGRESO" | "BAJO" | "EVALUADO" | "SIN DATOS"
  *   - porcentaje: number (0-200)
  *
  * Si recibe solo porcentaje, deriva el estado.
+ * EVALUADO = cerrado/auditado sin forzar LOGRADO (cola de evaluación).
  */
 const ESTADO_CONFIG = {
   'LOGRADO':    { label: '✅ Logrado',        color: '#166534', bg: '#dcfce7', border: '#86efac', icon: CheckCircle2 },
   'CERCA META': { label: '🔵 Cerca de meta',  color: '#1e40af', bg: '#dbeafe', border: '#93c5fd', icon: Clock },
   'PROGRESO':   { label: '🟡 En progreso',    color: '#92400e', bg: '#fef3c7', border: '#fde68a', icon: TrendingDown },
   'BAJO':       { label: '🔴 No alcanzó',     color: '#991b1b', bg: '#fee2e2', border: '#fca5a5', icon: XCircle },
+  'EVALUADO':   { label: '✓ Evaluado',        color: '#1e3a5f', bg: '#e8eef5', border: '#94a3b8', icon: CheckCircle2 },
   'SIN DATOS':  { label: '⚪ Sin auditar',    color: '#6b7280', bg: '#f3f4f6', border: '#d1d5db', icon: HelpCircle },
 };
 

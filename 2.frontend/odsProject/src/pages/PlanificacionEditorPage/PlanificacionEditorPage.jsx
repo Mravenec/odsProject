@@ -231,14 +231,39 @@ const PlanificacionEditorPage = () => {
   };
 
   const toggleOds = (odsId) => {
+    const prefix = `${odsId}.`;
+    const isCurrentlySelected = editor.formData.selectedOds.includes(odsId);
+
+    if (isCurrentlySelected) {
+      const removedCodes = (editor.formData.indicators || []).filter((code) =>
+        String(code).startsWith(prefix)
+      );
+      if (removedCodes.length > 0) {
+        editor.setIndicatorConfigs((prev) => {
+          const next = { ...prev };
+          removedCodes.forEach((code) => { delete next[code]; });
+          return next;
+        });
+        editor.setIndicatorMetadata((prev) => {
+          const next = { ...prev };
+          removedCodes.forEach((code) => { delete next[code]; });
+          return next;
+        });
+      }
+    }
+
     editor.setFormData((prev) => {
       const isSelected = prev.selectedOds.includes(odsId);
       const newSelected = isSelected
         ? prev.selectedOds.filter((id) => id !== odsId)
         : [...prev.selectedOds, odsId];
+      const newIndicators = isSelected
+        ? (prev.indicators || []).filter((code) => !String(code).startsWith(prefix))
+        : prev.indicators;
       return {
         ...prev,
         selectedOds: newSelected,
+        indicators: newIndicators,
         primaryOds: newSelected.length > 0 ? (prev.primaryOds && newSelected.includes(prev.primaryOds) ? prev.primaryOds : newSelected[0]) : null,
       };
     });

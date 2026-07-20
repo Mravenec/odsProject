@@ -14,7 +14,22 @@ import { useEvaluacion } from '../../../hooks/useEvaluacion';
  *
  * Además: validación en vivo contra el backend usando POST /api/evaluacion/validar-formula
  * y muestra al usuario qué variables están en la fórmula y cuáles le faltan o sobran.
+ *
+ * Unidades: presets fijos + "Otro" con texto libre (nm, NTU, ₡…) persistido en metaUnidad.
  */
+const PRESET_UNITS = ['Percentage', 'Number', 'Decimal', 'Hectareas', 'Personas', 'USD'];
+
+const resolveUnitUi = (unit) => {
+  const raw = (unit || 'Percentage').trim();
+  if (!raw || raw === 'Otro') {
+    return { selectValue: 'Otro', customUnit: '' };
+  }
+  if (PRESET_UNITS.includes(raw)) {
+    return { selectValue: raw, customUnit: '' };
+  }
+  return { selectValue: 'Otro', customUnit: raw };
+};
+
 const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) => {
   const formulaRef = useRef(null);
   const { validarFormula } = useEvaluacion();
@@ -26,9 +41,16 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     existingConfig?.parameters?.map(p => ({ ...p })) || [{ name: '', type: 'Integer' }]
   );
   const [formula, setFormula] = useState(existingConfig?.formula || '');
-  const [goal, setGoal] = useState(
-    existingConfig?.goal || { name: '', value: '', unit: 'Percentage' }
-  );
+  const [goal, setGoal] = useState(() => {
+    const base = existingConfig?.goal || { name: '', value: '', unit: 'Percentage' };
+    const { selectValue, customUnit } = resolveUnitUi(base.unit);
+    return {
+      ...base,
+      unit: selectValue === 'Otro' ? (customUnit || 'Otro') : selectValue,
+      _unitSelect: selectValue,
+      _customUnit: customUnit,
+    };
+  });
 
   // Estado de validación live
   const [validation, setValidation] = useState({
@@ -96,15 +118,35 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     insertAtCursor(op);
   }, [insertAtCursor]);
 
+  /** Rewrite formula identifiers on word boundaries (Z→G without touching ZA). */
+  const rewriteFormulaIdentifier = (formulaText, oldName, newName) => {
+    if (!formulaText || !oldName || !newName || oldName === newName) return formulaText;
+    const escaped = oldName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return formulaText.replace(new RegExp(`\\b${escaped}\\b`, 'g'), newName);
+  };
+
   const handleParamChange = (index, field, value) => {
+    if (field === 'name') {
+      const newName = value.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '');
+      const oldName = parameters[index]?.name || '';
+      setParameters(prev => {
+        const updated = [...prev];
+        updated[index] = {
+          ...updated[index],
+          name: newName,
+          // Keep variable in sync — payload used to prefer stale `variable` over `name`.
+          variable: newName,
+        };
+        return updated;
+      });
+      if (oldName && newName && oldName !== newName) {
+        setFormula(prev => rewriteFormulaIdentifier(prev, oldName, newName));
+      }
+      return;
+    }
     setParameters(prev => {
       const updated = [...prev];
-      updated[index] = {
-        ...updated[index],
-        [field]: field === 'name'
-          ? value.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '')
-          : value
-      };
+      updated[index] = { ...updated[index], [field]: value };
       return updated;
     });
   };
@@ -131,6 +173,31 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     return () => clearTimeout(handle);
   }, [formula, parameters, validarFormula]);
 
+  const handleUnitSelectChange = (selectValue) => {
+    if (selectValue === 'Otro') {
+      setGoal(prev => ({
+        ...prev,
+        _unitSelect: 'Otro',
+        unit: (prev._customUnit || '').trim() || 'Otro',
+      }));
+      return;
+    }
+    setGoal(prev => ({
+      ...prev,
+      _unitSelect: selectValue,
+      unit: selectValue,
+    }));
+  };
+
+  const handleCustomUnitChange = (text) => {
+    setGoal(prev => ({
+      ...prev,
+      _unitSelect: 'Otro',
+      _customUnit: text,
+      unit: text.trim() || 'Otro',
+    }));
+  };
+
   const handleSave = () => {
     if (!formula.trim()) {
       alert('Por favor, ingrese una fórmula de cálculo.');
@@ -138,6 +205,12 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     }
     if (!goal.value) {
       alert('Por favor, ingrese un valor objetivo para la meta.');
+      return;
+    }
+    const unitSelect = goal._unitSelect || resolveUnitUi(goal.unit).selectValue;
+    const customUnit = (goal._customUnit || '').trim();
+    if (unitSelect === 'Otro' && !customUnit) {
+      alert('Indique la unidad personalizada (ej: nm, NTU, ₡).');
       return;
     }
     const unnamed = parameters.filter(p => !p.name.trim());
@@ -152,7 +225,17 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
       );
       if (!ok) return;
     }
-    onSave({ parameters, formula, goal });
+    const persistedUnit = unitSelect === 'Otro' ? customUnit : unitSelect;
+    const { _unitSelect, _customUnit, ...goalRest } = goal;
+    onSave({
+      parameters: parameters.map(p => ({
+        ...p,
+        name: (p.name || '').trim(),
+        variable: (p.name || '').trim(),
+      })),
+      formula,
+      goal: { ...goalRest, unit: persistedUnit },
+    });
   };
 
   // Nombre visible del indicador
@@ -348,8 +431,8 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
                 <div className="form-group">
                   <label>Unidad</label>
                   <select
-                    value={goal.unit}
-                    onChange={e => setGoal({ ...goal, unit: e.target.value })}
+                    value={goal._unitSelect || resolveUnitUi(goal.unit).selectValue}
+                    onChange={e => handleUnitSelectChange(e.target.value)}
                   >
                     <option value="Percentage">Porcentaje (%)</option>
                     <option value="Number">Número absoluto</option>
@@ -357,10 +440,26 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
                     <option value="Hectareas">Hectáreas (ha)</option>
                     <option value="Personas">Personas</option>
                     <option value="USD">USD</option>
-                    <option value="Otro">Otro</option>
+                    <option value="Otro">Otro / Personalizada</option>
                   </select>
                 </div>
               </div>
+              {(goal._unitSelect || resolveUnitUi(goal.unit).selectValue) === 'Otro' && (
+                <div className="form-group" style={{ marginTop: 12 }}>
+                  <label>Unidad personalizada</label>
+                  <input
+                    type="text"
+                    value={goal._customUnit ?? ''}
+                    onChange={e => handleCustomUnitChange(e.target.value)}
+                    placeholder="Ej: nm, NTU, ₡, kg/m³"
+                    maxLength={64}
+                    autoFocus={!goal._customUnit}
+                  />
+                  <span className="input-hint" style={{ display: 'block', marginTop: 6 }}>
+                    Se guarda como texto libre en la meta (metaUnidad).
+                  </span>
+                </div>
+              )}
             </div>
           </section>
         </div>

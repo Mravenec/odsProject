@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { usePlanificacionTransicion } from '../../hooks/usePlanificacionTransicion';
 import { formatDate, getObjectiveName, getOdsColor, isProjectCompletado, isEvaluationRejection } from '../../utils/formatters';
+import { extractFormulaVarOrder, sortParamsByFormulaOrder } from '../../utils/formulaParamOrder';
 import EvidenceSection from '../../components/projects/EvidenceSection';
 import AchievementBadge from '../../components/AchievementBadge';
 import ProjectChatPanel from '../../components/planificacion/ProjectChatPanel';
@@ -68,13 +69,12 @@ const ProjectResultsPage = () => {
     </div>
   );
 
-  // Helper: parámetros agrupados por indicador (matching por variable de la fórmula)
+  // Helper: parámetros del indicador en orden de aparición en la fórmula
   const matchParamsToIndicator = (indicator, allParams) => {
     if (!indicator.formula) return [];
-    const RESERVED = new Set(['sqrt','sin','cos','tan','log','exp','round','floor','ceil','abs','pi','e','valor','count']);
-    const vars = new Set((indicator.formula.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [])
-      .filter(v => !RESERVED.has(v.toLowerCase())));
-    return (allParams || []).filter(p => vars.has(p.nombreVariable || p.nombreParametro));
+    const vars = new Set(extractFormulaVarOrder(indicator.formula));
+    const matched = (allParams || []).filter(p => vars.has(p.nombreVariable || p.nombreParametro));
+    return sortParamsByFormulaOrder(indicator.formula, matched);
   };
 
   const handleDownloadExcel = async () => {
@@ -184,7 +184,8 @@ const ProjectResultsPage = () => {
         </div>
       </header>
 
-      {project && (user?.role === 'admin' || user?.role === 'evaluador'
+      {project && String(project.status || '').toLowerCase() === 'planificacion'
+        && (user?.role === 'admin' || user?.role === 'evaluador'
         || (user?.role === 'gestor' && project.userId === user?.id)) && (
         <ProjectChatPanel
           projectId={Number(projectId)}
