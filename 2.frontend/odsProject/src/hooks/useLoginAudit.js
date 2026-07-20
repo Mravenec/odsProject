@@ -2,6 +2,15 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { authService } from '../services/authService';
 
 const EVENTOS = ['LOGIN_OK', 'LOGIN_FALLIDO', 'LOGOUT'];
+const PAGE_SIZE = 50;
+
+const todayIso = () => {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
 
 const daysBetween = (from, to) => {
   if (!from) return 30;
@@ -14,15 +23,16 @@ const daysBetween = (from, to) => {
 
 /**
  * Bitácora de ingresos — Service → Hook → BitacoraAdminPage.
- * Carga audit-recent y filtra en cliente por rango de fechas / usuario / evento.
+ * Carga audit-recent y filtra en cliente; pagina de a 50.
  */
 export function useLoginAudit(initialFilters = {}) {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [page, setPage] = useState(0);
   const [filters, setFilters] = useState({
-    fechaDesde: initialFilters.fechaDesde || '',
-    fechaHasta: initialFilters.fechaHasta || '',
+    fechaDesde: initialFilters.fechaDesde ?? todayIso(),
+    fechaHasta: initialFilters.fechaHasta ?? todayIso(),
     usuario: initialFilters.usuario || '',
     evento: initialFilters.evento || '',
   });
@@ -38,6 +48,7 @@ export function useLoginAudit(initialFilters = {}) {
     } else {
       setEntries(res.data);
     }
+    setPage(0);
     setLoading(false);
   }, [filters.fechaDesde, filters.fechaHasta]);
 
@@ -70,17 +81,31 @@ export function useLoginAudit(initialFilters = {}) {
     });
   }, [entries, filters]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages - 1);
+  const pageEntries = useMemo(() => {
+    const start = safePage * PAGE_SIZE;
+    return filtered.slice(start, start + PAGE_SIZE);
+  }, [filtered, safePage]);
+
   const updateFilter = useCallback((name, value) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
+    setPage(0);
   }, []);
 
   const clearFilters = useCallback(() => {
     setFilters({ fechaDesde: '', fechaHasta: '', usuario: '', evento: '' });
+    setPage(0);
   }, []);
 
   return {
-    entries: filtered,
+    entries: pageEntries,
+    totalFiltered: filtered.length,
     totalLoaded: entries.length,
+    page: safePage,
+    pageSize: PAGE_SIZE,
+    totalPages,
+    setPage,
     loading,
     error,
     setError,

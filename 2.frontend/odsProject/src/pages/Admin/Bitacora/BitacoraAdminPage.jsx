@@ -36,7 +36,12 @@ export default function BitacoraAdminPage() {
   const navigate = useNavigate();
   const {
     entries,
+    totalFiltered,
     totalLoaded,
+    page,
+    pageSize,
+    totalPages,
+    setPage,
     loading,
     error,
     filters,
@@ -50,6 +55,9 @@ export default function BitacoraAdminPage() {
     const { name, value } = e.target;
     updateFilter(name, value);
   };
+
+  const fromIdx = totalFiltered === 0 ? 0 : page * pageSize + 1;
+  const toIdx = Math.min((page + 1) * pageSize, totalFiltered);
 
   return (
     <div className="bitacora-admin fade-in">
@@ -124,7 +132,9 @@ export default function BitacoraAdminPage() {
       ) : (
         <>
           <p className="bitacora-count">
-            Mostrando {entries.length} de {totalLoaded} eventos
+            {totalFiltered === 0
+              ? `Sin eventos (cargados ${totalLoaded} del servidor). Cerrá sesión e ingresá de nuevo para generar LOGIN_OK.`
+              : `Mostrando ${fromIdx}–${toIdx} de ${totalFiltered} eventos (página ${page + 1}/${totalPages}, ${pageSize} por página)`}
           </p>
           <div className="bitacora-table-wrap">
             <table className="bitacora-table">
@@ -167,6 +177,27 @@ export default function BitacoraAdminPage() {
               </tbody>
             </table>
           </div>
+          {totalFiltered > pageSize && (
+            <div className="bitacora-pagination">
+              <button
+                type="button"
+                disabled={page <= 0}
+                onClick={() => setPage((p) => Math.max(0, p - 1))}
+              >
+                Anterior
+              </button>
+              <span>
+                Página {page + 1} de {totalPages}
+              </span>
+              <button
+                type="button"
+                disabled={page >= totalPages - 1}
+                onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>

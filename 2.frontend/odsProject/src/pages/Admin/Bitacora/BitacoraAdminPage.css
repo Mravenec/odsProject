@@ -219,6 +219,35 @@
   color: #475569;
 }
 
+.bitacora-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0.5rem 0 1rem;
+}
+
+.bitacora-pagination button {
+  border: 1px solid #d9dee7;
+  background: #fff;
+  color: #012169;
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.bitacora-pagination button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.bitacora-pagination span {
+  font-size: 0.875rem;
+  color: #5a6478;
+}
+
 @media (max-width: 640px) {
   .bitacora-admin {
     padding: 1rem;

@@ -4,6 +4,7 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Usuarios;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
+import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEvento;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
@@ -86,7 +87,8 @@ public class LoginService implements ILoginService {
             
             if (usuarioOpt.isEmpty()) {
                 // Usuario no encontrado - registrar intento fallido
-                // loginRepository.executeSpLogin(email, "", ip, userAgent);
+                registerLoginAudit(null, email, AuditoriaLoginEvento.LOGIN_FALLIDO, ip, userAgent,
+                        "Usuario no encontrado");
                 return Optional.empty();
             }
             
@@ -106,24 +108,22 @@ public class LoginService implements ILoginService {
             
             if (!passwordValid) {
                 // Contraseña incorrecta - registrar intento fallido
-                loginRepository.executeSpLogin(email, "", ip, userAgent);
+                registerLoginAudit(usuario.getId(), email, AuditoriaLoginEvento.LOGIN_FALLIDO, ip, userAgent,
+                        "Contraseña incorrecta");
                 return Optional.empty();
             }
             
             // Verificar si el usuario está activo
             if (usuario.getIsActive() == null || usuario.getIsActive() != (byte) 1) {
                 // Usuario inactivo - registrar intento fallido
-                loginRepository.executeSpLogin(email, "", ip, userAgent);
+                registerLoginAudit(usuario.getId(), email, AuditoriaLoginEvento.LOGIN_FALLIDO, ip, userAgent,
+                        "Usuario inactivo");
                 return Optional.empty();
             }
 
-            // Ejecutar stored procedure de login exitoso (con el hash almacenado)
-            // loginRepository.executeSpLogin(email, usuario.getPasswordHash(), ip, userAgent);
-            
-            // Actualizar último login
-            // loginRepository.updateUltimoLogin(usuario.getId());
-            
-            // Obtener rol
+            registerLoginAudit(usuario.getId(), email, AuditoriaLoginEvento.LOGIN_OK, ip, userAgent, null);
+            loginRepository.updateUltimoLogin(usuario.getId());
+
             // Obtener rol
             Optional<Roles> rolOpt = loginRepository.findRolById(usuario.getRolId());
             String rolName = rolOpt.isPresent() ? rolOpt.get().getNombre() : "USER";
@@ -552,6 +552,24 @@ public class LoginService implements ILoginService {
     @Override
     public List<VistaAdminAuditoriaLoginReciente> getVistaAuditoriaReciente(Integer dias) {
         return loginRepository.findVistaAuditoriaReciente(dias);
+    }
+
+    /** Persiste evento en auditoria_login (bitácora admin). No lanza: el login no debe fallar por auditoría. */
+    private void registerLoginAudit(Integer usuarioId, String email, AuditoriaLoginEvento evento,
+                                    String ip, String userAgent, String detalle) {
+        try {
+            AuditoriaLogin row = new AuditoriaLogin();
+            row.setUsuarioId(usuarioId);
+            row.setEmailIntento(email);
+            row.setEvento(evento);
+            row.setIpAddress(ip != null && ip.length() > 45 ? ip.substring(0, 45) : ip);
+            row.setUserAgent(userAgent != null && userAgent.length() > 512 ? userAgent.substring(0, 512) : userAgent);
+            row.setDetalle(detalle);
+            row.setFechaEvento(LocalDateTime.now());
+            loginRepository.saveAuditoriaLogin(row);
+        } catch (Exception ignored) {
+            // bitácora best-effort
+        }
     }
 
     /**

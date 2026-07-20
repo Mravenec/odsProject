@@ -483,7 +483,7 @@ public class LoginController implements ILoginController {
             Map<String, Object> map = new HashMap<>();
             map.put("id", item.getId());
             map.put("fechaEvento", item.getFechaEvento());
-            map.put("evento", item.getEvento());
+            map.put("evento", item.getEvento() != null ? item.getEvento().getLiteral() : null);
             map.put("username", item.getUsername());
             map.put("fullName", item.getFullName());
             map.put("emailIntento", item.getEmailIntento());

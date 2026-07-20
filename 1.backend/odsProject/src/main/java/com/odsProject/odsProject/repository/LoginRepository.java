@@ -443,10 +443,40 @@ public class LoginRepository implements ILoginRepository {
      */
     @Override
     public List<VistaAdminAuditoriaLoginReciente> findVistaAuditoriaReciente(Integer dias) {
-        return dsl.selectFrom(VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE)
-                .where(VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE.FECHA_EVENTO.ge(LocalDateTime.now().minusDays(dias)))
-                .orderBy(VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE.FECHA_EVENTO.desc())
-                .fetchInto(VistaAdminAuditoriaLoginReciente.class);
+        int d = (dias == null || dias < 1) ? 30 : Math.min(dias, 365);
+        // Tabla directa (no la vista con WHERE fijo 30d): el admin ve el rango pedido.
+        return dsl.select(
+                        AUDITORIA_LOGIN.ID,
+                        AUDITORIA_LOGIN.FECHA_EVENTO,
+                        AUDITORIA_LOGIN.EVENTO,
+                        USUARIOS.USERNAME,
+                        USUARIOS.FULL_NAME,
+                        AUDITORIA_LOGIN.EMAIL_INTENTO,
+                        AUDITORIA_LOGIN.IP_ADDRESS,
+                        AUDITORIA_LOGIN.USER_AGENT,
+                        AUDITORIA_LOGIN.DETALLE)
+                .from(AUDITORIA_LOGIN)
+                .leftJoin(USUARIOS).on(AUDITORIA_LOGIN.USUARIO_ID.eq(USUARIOS.ID))
+                .where(AUDITORIA_LOGIN.FECHA_EVENTO.ge(LocalDateTime.now().minusDays(d)))
+                .orderBy(AUDITORIA_LOGIN.FECHA_EVENTO.desc())
+                .limit(500)
+                .fetch(r -> {
+                    VistaAdminAuditoriaLoginReciente row = new VistaAdminAuditoriaLoginReciente();
+                    row.setId(r.get(AUDITORIA_LOGIN.ID));
+                    row.setFechaEvento(r.get(AUDITORIA_LOGIN.FECHA_EVENTO));
+                    var ev = r.get(AUDITORIA_LOGIN.EVENTO);
+                    if (ev != null) {
+                        row.setEvento(com.odsProject.odsProject.database.jooq.ods_login.enums
+                                .VistaAdminAuditoriaLoginRecienteEvento.lookupLiteral(ev.getLiteral()));
+                    }
+                    row.setUsername(r.get(USUARIOS.USERNAME));
+                    row.setFullName(r.get(USUARIOS.FULL_NAME));
+                    row.setEmailIntento(r.get(AUDITORIA_LOGIN.EMAIL_INTENTO));
+                    row.setIpAddress(r.get(AUDITORIA_LOGIN.IP_ADDRESS));
+                    row.setUserAgent(r.get(AUDITORIA_LOGIN.USER_AGENT));
+                    row.setDetalle(r.get(AUDITORIA_LOGIN.DETALLE));
+                    return row;
+                });
     }
 
     /**
