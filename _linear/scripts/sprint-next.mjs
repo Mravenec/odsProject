@@ -10,6 +10,8 @@
  *       → solo ese sprint_<nombre>.mjs next
  *   node scripts/sprint-next.mjs list
  *       → lista sprint_*.mjs activos
+ *
+ * Antes del next corre validate-linear-hygiene (exit 1 si hay sprints Done acumulados).
  */
 import { readdirSync } from "fs";
 import { dirname, join } from "path";
@@ -19,6 +21,7 @@ import { spawnSync } from "child_process";
 const here = dirname(fileURLToPath(import.meta.url));
 const scriptsDir = here;
 const arg = process.argv[2];
+const skipHygiene = process.argv.includes("--skip-hygiene");
 
 const sprints = readdirSync(scriptsDir)
   .filter((f) => f.startsWith("sprint_") && f.endsWith(".mjs") && !f.includes("sprint-next"))
@@ -26,6 +29,15 @@ const sprints = readdirSync(scriptsDir)
 
 function sprintName(file) {
   return file.replace(/^sprint_/, "").replace(/\.mjs$/, "");
+}
+
+function runHygiene() {
+  if (skipHygiene) return 0;
+  const r = spawnSync(process.execPath, [join(scriptsDir, "validate-linear-hygiene.mjs")], {
+    stdio: "inherit",
+    cwd: join(here, ".."),
+  });
+  return r.status ?? 1;
 }
 
 function runNext(file) {
@@ -38,12 +50,6 @@ function runNext(file) {
   return r.status ?? 1;
 }
 
-if (sprints.length === 0) {
-  console.error("\n❌ No hay sprint activo (scripts/sprint_<nombre>.mjs).\n");
-  console.error("   Orden: Fase 0 → plan_sprint_*.html → ✅ APROBADO → sprint_*.mjs create\n");
-  process.exit(1);
-}
-
 if (arg === "list") {
   console.log("\n📋 Sprints activos (multi-epic):\n");
   for (const f of sprints) console.log(`  · ${sprintName(f)}  →  scripts/${f}`);
@@ -52,7 +58,19 @@ if (arg === "list") {
   process.exit(0);
 }
 
-if (arg) {
+if (sprints.length === 0) {
+  console.error("\n❌ No hay sprint activo (scripts/sprint_<nombre>.mjs).\n");
+  console.error("   Orden: Fase 0 → plan_sprint_*.html → ✅ APROBADO → sprint_*.mjs create\n");
+  process.exit(1);
+}
+
+const hygieneStatus = runHygiene();
+if (hygieneStatus !== 0) {
+  console.error("\n⛔ sprint-next detenido por higiene. Fase 0 antes de codear o de create.\n");
+  process.exit(hygieneStatus);
+}
+
+if (arg && arg !== "--skip-hygiene") {
   const match = sprints.find((f) => sprintName(f) === arg || f === `sprint_${arg}.mjs`);
   if (!match) {
     console.error(`\n❌ No existe sprint_${arg}.mjs\n`);

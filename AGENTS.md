@@ -1,6 +1,6 @@
 # Agentes — ODS UTN Platform
 
-Coordinación multi-agente del repo. Reglas Cursor: `linear-gate-obligatorio.mdc` + `linear-plan-html-obligatorio.mdc` + `linear-checklist-secuencial.mdc` + `linear-multiagente.mdc`. Pipeline completo: `_linear/README.md`.
+Coordinación multi-agente del repo. Reglas Cursor: `linear-gate-obligatorio.mdc` + `linear-plan-html-obligatorio.mdc` + `linear-checklist-secuencial.mdc` + `linear-multiagente.mdc`. Skill: `.cursor/skills/linear-orchestrator/SKILL.md`. Pipeline: `_linear/README.md`.
 
 ## Inicio obligatorio (toda tarea de producto)
 
@@ -8,14 +8,18 @@ Coordinación multi-agente del repo. Reglas Cursor: `linear-gate-obligatorio.mdc
 
 ```bash
 cd _linear
+node scripts/validate-linear-hygiene.mjs
 node scripts/sprint-next.mjs
 ```
 
+- Si **higiene exit 1** → **Fase 0** (`cleanup` + borrar plan/resumen/script del sprint cerrado). **No codear.**
 - Si hay issue desbloqueado → trabajar **solo** ese ticket (checklist secuencial — ver sección siguiente).
-- Si no hay `sprint_<activo>.mjs` o `next` vacío → **no codear**: Fase 0–2 (limpieza → plan HTML Linear completo → `validate-plan-html.mjs` → aprobación → `create`).
+- Si no hay `sprint_<activo>.mjs` o `next` vacío → **no codear**: Fase 0 (si hace falta) → plan HTML Linear completo → `validate-plan-html.mjs` → preguntar **¿✅ APROBADO?** → solo entonces `create`.
 - Si el issue está **bloqueado** (`blocks`) → esperar; otro agente/epic upstream debe cerrar primero.
 
-Bypass Linear **solo** si el humano lo pide explícito en el mensaje (*sin linear*, *bypass linear*, *solo local*).
+Bypass Linear **solo** si el humano lo pide explícito en el mensaje (*sin linear*, *bypass linear*, *solo local*). **Prohibido** inventar «hotfix» como bypass.
+
+«Hazlo» / «arranca» **no** reemplazan ✅ APROBADO del `plan_sprint_*.html`.
 
 ### Por qué Linear en multi-agente
 

@@ -1,5 +1,5 @@
 ---
-description: Gate obligatorio Linear antes de codear; coordinación multi-agente y esperas entre epics. Ver _linear/README.md
+description: Gate obligatorio Linear antes de codear; stop-hard si next vacío o higiene rota; sin hotfixes inventados.
 alwaysApply: true
 ---
 
@@ -11,21 +11,35 @@ Fuente: `_linear/README.md` + `AGENTS.md`. Complementa `linear-checklist-secuenc
 
 Cualquier cambio en `0.database/`, `1.backend/`, `2.frontend/` o `.http` de producto.
 
-**Excepción única:** el usuario escribe explícitamente *bypass linear*, *sin linear* o *solo local* en el mensaje actual.
+**Excepción única:** el usuario escribe explícitamente *bypass linear*, *sin linear* o *solo local* en el **mensaje actual**.
+
+**Prohibido inventar bypass:** no existe «hotfix post-epic», «solo local implícito», «demo urgente» ni «next vacío = codear». Sin la frase exacta del humano → **no codear producto**.
 
 ## Arranque obligatorio (antes de implementar)
 
 ```bash
 cd _linear
-node scripts/sprint-next.mjs    # localiza el sprint activo y ejecuta next
-# o: node scripts/sprint_<nombre>.mjs next
+node scripts/validate-linear-hygiene.mjs
+node scripts/sprint-next.mjs
 ```
 
-| Resultado de `next` | Acción de la IA |
-|---------------------|-----------------|
+| Resultado | Acción de la IA |
+|---|-----|
+| Higiene **exit 1** (sprints Done acumulados, >1 plan activo sin justificación, etc.) | **PARAR.** Ofrecer Fase 0: `cleanup` + borrar `plan_`/`resumen_`/`sprint_*.mjs` del sprint cerrado. **No** codear. |
 | Issue desbloqueado (ODS-N) | **Solo** ese issue; `show ODS-N`; primer ítem pendiente del checklist |
-| «Sin issues» / sin `sprint_*.mjs` | **Parar.** Fase 0→2: limpieza, `plan_sprint_<nombre>.html` (contrato Linear completo), `validate-plan-html.mjs`, esperar ✅ APROBADO, luego `create` |
-| Issue bloqueado por `blocks` | **Parar.** Informar blocker y **no** codear en la cadena bloqueada |
+| «Sin issues» / todos los epics vacíos / sin `sprint_*.mjs` | **PARAR.** No implementar. Decir al humano: (1) Fase 0 si quedan artefactos viejos, (2) redactar `plan_sprint_<nombre>.html`, (3) `validate-plan-html.mjs`, (4) preguntar **¿✅ APROBADO?**, (5) solo tras APROBADO → `create`. |
+| Issue bloqueado por `blocks` | **PARAR.** Informar blocker; no codear esa cadena |
+
+### Stop-hard — propuesta y aprobación
+
+Antes de **cualquier** feature/bug/mejora de producto sin issue Linear activo:
+
+1. **No** abrir archivos de `0.`/`1.`/`2.` para implementar.
+2. Generar o actualizar `plan_sprint_<nombre>.html` (contrato Linear completo).
+3. Preguntar en chat: **¿Aprobás el plan? Respondé ✅ APROBADO para crear issues.**
+4. Esperar la respuesta. Sin ✅ APROBADO → no `create`, no código.
+
+«Hazlo», «arranca», «fixea eso» **no** sustituyen ✅ APROBADO del plan HTML.
 
 ## Multi-agente — esperas obligatorias
 
@@ -44,11 +58,18 @@ node scripts/sprint-next.mjs    # localiza el sprint activo y ejecuta next
 
 **Prohibido:** varios ítems de código y marcar checklist al final; `checklist 1,2,3` o `--check-all`.
 
-## Cierre de sprint
+## Cierre de sprint (Fase 6 → Fase 0)
 
-1. Todos los issues del epic en **Done** (checklist 100%).
-2. `resumen_sprint_<nombre>.html` en `_linear/plans/`.
-3. Fase 0: `cleanup` + borrar plan/resumen/script del sprint cerrado.
+Cuando **todos** los issues del epic están en **Done** (o `next` queda vacío con issues Done):
+
+1. Crear `resumen_sprint_<nombre>.html` si aún no existe.
+2. Epic → Completed en Linear (UI/MCP).
+3. **Inmediato — Fase 0:**  
+   `node scripts/sprint_<nombre>.mjs cleanup`  
+   Luego **borrar** del repo: `plans/plan_sprint_<nombre>.html`, `plans/resumen_sprint_<nombre>.html`, `scripts/sprint_<nombre>.mjs`.
+4. Informar al humano: «Sprint cerrado y limpio. ¿Cuál es el próximo problema para el plan?»
+
+**Prohibido** dejar varios `sprint_*.mjs` / `plan_sprint_*.html` de epics ya Done «por si acaso».
 
 ## Si LINEAR_API_KEY falla
 
