@@ -77,3 +77,9 @@
   font-size: 0.85rem;
   margin-top: 0.35rem;
 }
+
+.beneficiarios-select.is-invalid,
+.beneficiarios-field.is-invalid-field .beneficiarios-select {
+  border-color: #b91c1c !important;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.18);
+}

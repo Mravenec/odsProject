@@ -13,6 +13,7 @@ export default function BeneficiariosField({
   loading = false,
   onCatalogRefresh,
   createBeneficiarioValor,
+  invalid = false,
 }) {
   const [draft, setDraft] = useState('');
   const [adding, setAdding] = useState(false);
@@ -88,7 +89,7 @@ export default function BeneficiariosField({
   }
 
   return (
-    <div className="form-group form-group-full beneficiarios-field">
+    <div className={`form-group form-group-full beneficiarios-field${invalid ? ' is-invalid-field' : ''}`}>
       <label><Users size={14} /> Beneficiarios *</label>
 
       {selectedItems.length > 0 && (
@@ -104,7 +105,12 @@ export default function BeneficiariosField({
         </div>
       )}
 
-      <select className="beneficiarios-select" defaultValue="" onChange={handleSelect}>
+      <select
+        className={`beneficiarios-select${invalid ? ' is-invalid' : ''}`}
+        defaultValue=""
+        onChange={handleSelect}
+        aria-invalid={invalid}
+      >
         <option value="">Seleccionar beneficiario…</option>
         {categorias.map((cat) => {
           const opts = available.filter(

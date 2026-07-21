@@ -341,3 +341,13 @@
   .param-inputs { grid-template-columns: 1fr; }
   .input-grid-2 { grid-template-columns: 1fr; }
 }
+
+/* Campos incompletos — borde rojo */
+.param-inputs input.is-invalid,
+.goal-inputs input.is-invalid,
+.goal-inputs select.is-invalid,
+.formula-textarea.is-invalid,
+.input-sm.is-invalid {
+  border-color: #b91c1c !important;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.18);
+}

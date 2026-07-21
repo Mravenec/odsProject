@@ -17,6 +17,12 @@ import { useOdsMetadata } from '../../hooks/useOdsMetadata';
 import { OBJETIVO_SERVICES_MAP } from '../../hooks/objetivoServicesMap';
 import { emptyFichaSodsi } from '../../utils/sodsiFichaUtils';
 import { resolveRegionMideplan } from '../../utils/sodsiRegionUtils';
+import {
+  collectStep1FieldErrors,
+  collectStep2FieldErrors,
+  hasFieldErrors,
+  step2ValidationMessage,
+} from '../../utils/planificacionValidation';
 import './ProjectCreationPage.css';
 
 const ProjectCreationPage = () => {
@@ -66,6 +72,7 @@ const ProjectCreationPage = () => {
   const [configuringIndicator, setConfiguringIndicator] = useState(null);
   const [expandedOds, setExpandedOds] = useState(null);
   const [fichaSodsi, setFichaSodsi] = useState(emptyFichaSodsi);
+  const [validationErrors, setValidationErrors] = useState({});
   const sodsiCatalogs = useSodsiCatalogs();
 
   const {
@@ -180,8 +187,20 @@ const ProjectCreationPage = () => {
     return academicPersonnel.filter(p => p.sede === formData.area);
   }, [academicPersonnel, formData.area]);
 
+  const clearValidationKey = (key) => {
+    setValidationErrors((prev) => {
+      if (!prev[key] && !(key === 'indicators' && prev.odsWithoutIndicators)) return prev;
+      const next = { ...prev };
+      delete next[key];
+      if (key === 'indicatorConfigs') delete next.missingIndicatorCodes;
+      if (key === 'indicators') delete next.odsWithoutIndicators;
+      return next;
+    });
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    clearValidationKey(name);
     setFormData(prev => {
       const newState = { ...prev, [name]: value };
       
@@ -189,6 +208,7 @@ const ProjectCreationPage = () => {
       // para que el filtro surta efecto y no queden datos inconsistentes
       if (name === 'area') {
         newState.responsable = '';
+        clearValidationKey('responsable');
       }
       
       return newState;
@@ -197,11 +217,15 @@ const ProjectCreationPage = () => {
 
   const handleGeoChange = (e) => {
     const { name, value } = e.target;
+    clearValidationKey(name);
     let nombre = '';
     if (name === 'provinciaId') {
+      clearValidationKey('cantonId');
+      clearValidationKey('distritoId');
       nombre = provincias.find(p => p.id === value)?.nombre || '';
       setFormData(prev => ({ ...prev, provinciaId: value, provinciaNombre: nombre, cantonId: '', distritoId: '' }));
     } else if (name === 'cantonId') {
+      clearValidationKey('distritoId');
       nombre = cantones.find(c => c.id === value)?.nombre || '';
       setFormData(prev => ({ ...prev, cantonId: value, cantonNombre: nombre, distritoId: '' }));
     } else if (name === 'distritoId') {
@@ -211,6 +235,7 @@ const ProjectCreationPage = () => {
   };
 
   const handleResponsableChange = (e) => {
+    clearValidationKey('responsable');
     const selectedValue = e.target.value;
     
     // Buscar los datos del personal seleccionado para auto-asignar la sede
@@ -291,12 +316,23 @@ const ProjectCreationPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentStep === 1) {
-      if (!(fichaSodsi.beneficiarioValorIds || []).length) {
-        alert('Seleccioná al menos un beneficiario en el paso 1.');
+      const step1Errors = collectStep1FieldErrors(formData, fichaSodsi, {
+        lockGestorInstitutionalFields: lockGestorInstitutionalFields,
+      });
+      setValidationErrors(step1Errors);
+      if (hasFieldErrors(step1Errors)) {
+        alert('Complete los campos marcados en rojo antes de continuar.');
         return;
       }
       setCurrentStep(2);
       window.scrollTo(0, 0);
+      return;
+    }
+
+    const step2Errors = collectStep2FieldErrors(formData, indicatorConfigs);
+    setValidationErrors(step2Errors);
+    if (hasFieldErrors(step2Errors)) {
+      alert(step2ValidationMessage(step2Errors));
       return;
     }
 
@@ -322,11 +358,6 @@ ${sinMasterId.join(', ')}
 ` +
           'Verifique la conexión con el servidor y vuelva a intentarlo.'
         );
-        return;
-      }
-
-      if (!(fichaSodsi.beneficiarioValorIds || []).length) {
-        alert('Seleccioná al menos un sector beneficiario en el paso 1.');
         return;
       }
 
@@ -403,7 +434,7 @@ ${sinMasterId.join(', ')}
       </header>
 
       <main className="form-card">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <ProjectPlanificacionWizard
             mode="create"
             currentStep={currentStep}
@@ -421,7 +452,10 @@ ${sinMasterId.join(', ')}
             gestorProfile={gestorProfile}
             regionMideplanNombre={regionMideplanNombre}
             beneficiarioValorIds={fichaSodsi.beneficiarioValorIds}
-            onBeneficiariosChange={(ids) => setFichaSodsi((prev) => ({ ...prev, beneficiarioValorIds: ids }))}
+            onBeneficiariosChange={(ids) => {
+              clearValidationKey('beneficiarios');
+              setFichaSodsi((prev) => ({ ...prev, beneficiarioValorIds: ids }));
+            }}
             fichaSodsi={fichaSodsi}
             onFichaSodsiChange={(patch) => setFichaSodsi((prev) => ({ ...prev, ...patch }))}
             sodsiCatalogs={sodsiCatalogs.catalogs}
@@ -430,9 +464,18 @@ ${sinMasterId.join(', ')}
             createBeneficiarioValor={sodsiCatalogs.createBeneficiarioValor}
             odsList={odsList}
             selectedOds={formData.selectedOds}
-            onToggleOds={toggleOds}
+            onToggleOds={(id) => {
+              clearValidationKey('ods');
+              clearValidationKey('indicators');
+              clearValidationKey('indicatorConfigs');
+              toggleOds(id);
+            }}
             indicators={formData.indicators}
-            onToggleIndicator={toggleIndicator}
+            onToggleIndicator={(code) => {
+              clearValidationKey('indicators');
+              clearValidationKey('indicatorConfigs');
+              toggleIndicator(code);
+            }}
             indicatorMetadata={indicatorMetadata}
             indicatorConfigs={indicatorConfigs}
             onConfigureIndicator={setConfiguringIndicator}
@@ -440,6 +483,7 @@ ${sinMasterId.join(', ')}
             loadingMetadata={loadingMetadata}
             expandedOds={expandedOds}
             onToggleExpandedOds={(odsId) => setExpandedOds(expandedOds === odsId ? null : odsId)}
+            validationErrors={validationErrors}
           />
 
           <div className="form-actions">
@@ -453,7 +497,7 @@ ${sinMasterId.join(', ')}
             <button 
               type="submit" 
               className="btn-premium btn-primary" 
-              disabled={projectsLoading || (currentStep === 2 && formData.selectedOds.length === 0)}
+              disabled={projectsLoading}
             >
               {currentStep === 1 ? (
                 <>Siguiente <ChevronRight size={18} /></>
@@ -477,6 +521,8 @@ ${sinMasterId.join(', ')}
           indicator={_ind}
           existingConfig={indicatorConfigs[configuringIndicator]}
           onSave={(config) => {
+            clearValidationKey('indicatorConfigs');
+            clearValidationKey('indicators');
             setIndicatorConfigs(prev => ({ ...prev, [configuringIndicator]: config }));
             setConfiguringIndicator(null);
           }}

@@ -15,6 +15,12 @@ import {
   resolveSedeIdFromArea,
   canAdvanceToIndicatorsStep,
 } from '../../utils/planificacionEditorUtils';
+import {
+  collectStep1FieldErrors,
+  collectStep2FieldErrors,
+  hasFieldErrors,
+  step2ValidationMessage,
+} from '../../utils/planificacionValidation';
 import { resolveRegionMideplan } from '../../utils/sodsiRegionUtils';
 import '../ProjectCreationPage/ProjectCreationPage.css';
 
@@ -36,6 +42,18 @@ const PlanificacionEditorPage = () => {
   const [catalogSedes, setCatalogSedes] = useState([]);
   const [academicPersonnel, setAcademicPersonnel] = useState([]);
   const [loadingResources, setLoadingResources] = useState(true);
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const clearValidationKey = (key) => {
+    setValidationErrors((prev) => {
+      if (!prev[key] && !(key === 'indicators' && prev.odsWithoutIndicators)) return prev;
+      const next = { ...prev };
+      delete next[key];
+      if (key === 'indicatorConfigs') delete next.missingIndicatorCodes;
+      if (key === 'indicators') delete next.odsWithoutIndicators;
+      return next;
+    });
+  };
 
   useEffect(() => {
     const loadCatalogs = async () => {
@@ -191,9 +209,13 @@ const PlanificacionEditorPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    clearValidationKey(name);
     editor.setFormData((prev) => {
       const next = { ...prev, [name]: value };
-      if (name === 'area' && !lockGestorInstitutionalFields) next.responsable = '';
+      if (name === 'area' && !lockGestorInstitutionalFields) {
+        next.responsable = '';
+        clearValidationKey('responsable');
+      }
       return next;
     });
     if (name === 'area') {
@@ -204,12 +226,16 @@ const PlanificacionEditorPage = () => {
 
   const handleGeoChange = (e) => {
     const { name, value } = e.target;
+    clearValidationKey(name);
     if (name === 'provinciaId') {
+      clearValidationKey('cantonId');
+      clearValidationKey('distritoId');
       const nombre = provincias.find((p) => p.id === value)?.nombre || '';
       editor.setFormData((prev) => ({
         ...prev, provinciaId: value, provinciaNombre: nombre, cantonId: '', distritoId: '',
       }));
     } else if (name === 'cantonId') {
+      clearValidationKey('distritoId');
       const nombre = cantones.find((c) => c.id === value)?.nombre || '';
       editor.setFormData((prev) => ({
         ...prev, cantonId: value, cantonNombre: nombre, distritoId: '',
@@ -221,6 +247,7 @@ const PlanificacionEditorPage = () => {
   };
 
   const handleResponsableChange = (e) => {
+    clearValidationKey('responsable');
     const selectedValue = e.target.value;
     const staffMember = academicPersonnel.find((p) => p.fullName === selectedValue);
     editor.setFormData((prev) => ({
@@ -301,12 +328,22 @@ const PlanificacionEditorPage = () => {
         alert('Espere a que cargue el proyecto o complete el nombre.');
         return;
       }
-      if (!(editor.fichaSodsi.beneficiarioValorIds || []).length) {
-        alert('Seleccioná al menos un beneficiario en el paso 1.');
+      const step1Errors = collectStep1FieldErrors(editor.formData, editor.fichaSodsi, {
+        lockGestorInstitutionalFields,
+      });
+      setValidationErrors(step1Errors);
+      if (hasFieldErrors(step1Errors)) {
+        alert('Complete los campos marcados en rojo antes de continuar.');
         return;
       }
       editor.setCurrentStep(2);
       window.scrollTo(0, 0);
+      return;
+    }
+    const step2Errors = collectStep2FieldErrors(editor.formData, editor.indicatorConfigs);
+    setValidationErrors(step2Errors);
+    if (hasFieldErrors(step2Errors)) {
+      alert(step2ValidationMessage(step2Errors));
       return;
     }
     const result = await editor.save({ catalogSedes });
@@ -407,7 +444,10 @@ const PlanificacionEditorPage = () => {
               gestorProfile={gestorProfile}
               regionMideplanNombre={regionMideplanNombre}
               beneficiarioValorIds={editor.fichaSodsi.beneficiarioValorIds}
-              onBeneficiariosChange={(ids) => editor.setFichaSodsi((prev) => ({ ...prev, beneficiarioValorIds: ids }))}
+              onBeneficiariosChange={(ids) => {
+                clearValidationKey('beneficiarios');
+                editor.setFichaSodsi((prev) => ({ ...prev, beneficiarioValorIds: ids }));
+              }}
               fichaSodsi={editor.fichaSodsi}
               onFichaSodsiChange={(patch) => editor.setFichaSodsi((prev) => ({ ...prev, ...patch }))}
               sodsiCatalogs={sodsiCatalogs.catalogs}
@@ -416,9 +456,18 @@ const PlanificacionEditorPage = () => {
               createBeneficiarioValor={sodsiCatalogs.createBeneficiarioValor}
               odsList={odsList}
               selectedOds={formData.selectedOds}
-              onToggleOds={toggleOds}
+              onToggleOds={(id) => {
+                clearValidationKey('ods');
+                clearValidationKey('indicators');
+                clearValidationKey('indicatorConfigs');
+                toggleOds(id);
+              }}
               indicators={formData.indicators}
-              onToggleIndicator={toggleIndicator}
+              onToggleIndicator={(code) => {
+                clearValidationKey('indicators');
+                clearValidationKey('indicatorConfigs');
+                toggleIndicator(code);
+              }}
               indicatorMetadata={editor.indicatorMetadata}
               indicatorConfigs={editor.indicatorConfigs}
               onConfigureIndicator={setConfiguringIndicator}
@@ -426,6 +475,7 @@ const PlanificacionEditorPage = () => {
               loadingMetadata={editor.loadingMetadata}
               expandedOds={editor.expandedOds}
               onToggleExpandedOds={(odsId) => editor.setExpandedOds(editor.expandedOds === odsId ? null : odsId)}
+              validationErrors={validationErrors}
             />
 
           <div className="form-actions">
@@ -442,11 +492,7 @@ const PlanificacionEditorPage = () => {
             <button
               type="submit"
               className="btn-premium btn-primary"
-              disabled={
-                saving
-                || (currentStep === 1 && !canGoToStep2)
-                || (currentStep === 2 && formData.selectedOds.length === 0)
-              }
+              disabled={saving || (currentStep === 1 && !canGoToStep2)}
             >
               {currentStep === 1 ? (
                 <>Siguiente <ChevronRight size={18} /></>
@@ -470,6 +516,8 @@ const PlanificacionEditorPage = () => {
             indicator={_ind}
             existingConfig={editor.indicatorConfigs[configuringIndicator]}
             onSave={(config) => {
+              clearValidationKey('indicatorConfigs');
+              clearValidationKey('indicators');
               editor.setIndicatorConfigs((prev) => ({ ...prev, [configuringIndicator]: config }));
               setConfiguringIndicator(null);
             }}

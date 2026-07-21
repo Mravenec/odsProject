@@ -153,7 +153,7 @@ export function usePlanificacionEditor(projectId) {
       await Promise.allSettled(odsNoLoaded.map((id) => loadOdsMetadata(id)));
     }
 
-    const validation = validateEditorBeforeSave(formData, indicatorMetadata, fichaSodsi);
+    const validation = validateEditorBeforeSave(formData, indicatorMetadata, fichaSodsi, indicatorConfigs);
     if (!validation.ok) {
       return { success: false, error: validation.message };
     }

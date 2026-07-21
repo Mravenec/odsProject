@@ -80,6 +80,7 @@ export default function SodsiFichaStep({
           <select
             value={fichaSodsi.ejePlanesId || ''}
             onChange={(e) => update({ ejePlanesId: e.target.value })}
+            required
           >
             <option value="">Seleccione eje</option>
             {(catalogs.ejesPlanes || []).map((e) => (

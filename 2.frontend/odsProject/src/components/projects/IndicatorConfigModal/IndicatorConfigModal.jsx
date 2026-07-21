@@ -61,6 +61,16 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     sobrantes: []
   });
   const [validating, setValidating] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  const clearFieldError = (key) => {
+    setFieldErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  };
 
   // Sincroniza el array de parámetros cuando el usuario cambia la cantidad
   useEffect(() => {
@@ -127,6 +137,8 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
 
   const handleParamChange = (index, field, value) => {
     if (field === 'name') {
+      clearFieldError(`param_${index}`);
+      clearFieldError('params');
       const newName = value.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '');
       const oldName = parameters[index]?.name || '';
       setParameters(prev => {
@@ -174,6 +186,7 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
   }, [formula, parameters, validarFormula]);
 
   const handleUnitSelectChange = (selectValue) => {
+    clearFieldError('customUnit');
     if (selectValue === 'Otro') {
       setGoal(prev => ({
         ...prev,
@@ -190,6 +203,7 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
   };
 
   const handleCustomUnitChange = (text) => {
+    clearFieldError('customUnit');
     setGoal(prev => ({
       ...prev,
       _unitSelect: 'Otro',
@@ -199,32 +213,39 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
   };
 
   const handleSave = () => {
-    if (!formula.trim()) {
-      alert('Por favor, ingrese una fórmula de cálculo.');
-      return;
-    }
-    if (!goal.value) {
-      alert('Por favor, ingrese un valor objetivo para la meta.');
-      return;
-    }
+    const errors = {};
+    if (!formula.trim()) errors.formula = true;
+    if (goal.value === '' || goal.value === null || goal.value === undefined) errors.goalValue = true;
     const unitSelect = goal._unitSelect || resolveUnitUi(goal.unit).selectValue;
     const customUnit = (goal._customUnit || '').trim();
-    if (unitSelect === 'Otro' && !customUnit) {
-      alert('Indique la unidad personalizada (ej: nm, NTU, ₡).');
+    if (unitSelect === 'Otro' && !customUnit) errors.customUnit = true;
+    parameters.forEach((p, i) => {
+      if (!String(p.name || '').trim()) errors[`param_${i}`] = true;
+    });
+    if (Object.keys(errors).some((k) => k.startsWith('param_'))) errors.params = true;
+    if (validation.faltantes && validation.faltantes.length > 0) errors.faltantes = true;
+    if (validation.sintaxisValida === false) errors.formula = true;
+
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      if (errors.faltantes) {
+        alert(
+          `Complete las variables faltantes en la fórmula: ${validation.faltantes.join(', ')}`
+        );
+      } else if (errors.formula && !formula.trim()) {
+        alert('Por favor, ingrese una fórmula de cálculo.');
+      } else if (errors.goalValue) {
+        alert('Por favor, ingrese un valor objetivo para la meta.');
+      } else if (errors.customUnit) {
+        alert('Indique la unidad personalizada (ej: nm, NTU, ₡).');
+      } else if (errors.params) {
+        alert('Asigne un nombre a todos los parámetros antes de guardar.');
+      } else if (errors.formula) {
+        alert('Corrija la fórmula antes de guardar.');
+      }
       return;
     }
-    const unnamed = parameters.filter(p => !p.name.trim());
-    if (unnamed.length > 0) {
-      alert('Asigne un nombre a todos los parámetros antes de guardar.');
-      return;
-    }
-    if (validation.faltantes && validation.faltantes.length > 0) {
-      const ok = window.confirm(
-        `La fórmula usa variables no declaradas: ${validation.faltantes.join(', ')}\n\n` +
-        '¿Desea guardar de todas formas? Estas variables se sembrarán automáticamente con tipo Decimal.'
-      );
-      if (!ok) return;
-    }
+
     const persistedUnit = unitSelect === 'Otro' ? customUnit : unitSelect;
     const { _unitSelect, _customUnit, ...goalRest } = goal;
     onSave({
@@ -306,6 +327,8 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
                       placeholder="Nombre (ej: total_personas, ingresos_y)"
                       value={p.name}
                       onChange={e => handleParamChange(i, 'name', e.target.value)}
+                      className={fieldErrors[`param_${i}`] ? 'is-invalid' : undefined}
+                      aria-invalid={!!fieldErrors[`param_${i}`]}
                     />
                     <select
                       value={p.type}
@@ -329,10 +352,15 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
             <textarea
               ref={formulaRef}
               value={formula}
-              onChange={e => setFormula(e.target.value)}
-              className="formula-textarea"
+              onChange={e => {
+                clearFieldError('formula');
+                clearFieldError('faltantes');
+                setFormula(e.target.value);
+              }}
+              className={`formula-textarea${fieldErrors.formula || fieldErrors.faltantes ? ' is-invalid' : ''}`}
               placeholder="Ej: (total_becados / total_estudiantes) * 100"
               spellCheck={false}
+              aria-invalid={!!(fieldErrors.formula || fieldErrors.faltantes)}
             />
 
             {/* Chips de inserción rápida — variables */}
@@ -424,8 +452,13 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
                   <input
                     type="number"
                     value={goal.value}
-                    onChange={e => setGoal({ ...goal, value: e.target.value })}
+                    onChange={e => {
+                      clearFieldError('goalValue');
+                      setGoal({ ...goal, value: e.target.value });
+                    }}
                     placeholder="Ej: 80"
+                    className={fieldErrors.goalValue ? 'is-invalid' : undefined}
+                    aria-invalid={!!fieldErrors.goalValue}
                   />
                 </div>
                 <div className="form-group">
@@ -454,6 +487,8 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
                     placeholder="Ej: nm, NTU, ₡, kg/m³"
                     maxLength={64}
                     autoFocus={!goal._customUnit}
+                    className={fieldErrors.customUnit ? 'is-invalid' : undefined}
+                    aria-invalid={!!fieldErrors.customUnit}
                   />
                   <span className="input-hint" style={{ display: 'block', marginTop: 6 }}>
                     Se guarda como texto libre en la meta (metaUnidad).

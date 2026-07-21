@@ -1,5 +1,10 @@
 import { fichaSodsiToPayload, normalizeFichaSodsiFromSnapshot } from './sodsiFichaUtils';
 import { OBJETIVO_SERVICES_MAP as SERVICES_MAP } from '../hooks/objetivoServicesMap';
+import {
+  collectStep2FieldErrors,
+  hasFieldErrors,
+  step2ValidationMessage,
+} from './planificacionValidation';
 
 export { SERVICES_MAP };
 
@@ -286,7 +291,7 @@ export function editorStateToUpdatePayload({
   };
 }
 
-export function validateEditorBeforeSave(formData, indicatorMetadata, fichaSodsi) {
+export function validateEditorBeforeSave(formData, indicatorMetadata, fichaSodsi, indicatorConfigs = {}) {
   const missing = (formData.indicators || []).filter((code) => {
     const meta = indicatorMetadata?.[code];
     return !meta?.masterId;
@@ -297,12 +302,22 @@ export function validateEditorBeforeSave(formData, indicatorMetadata, fichaSodsi
   if (!formData.name?.trim()) {
     return { ok: false, message: 'El nombre del proyecto es obligatorio.' };
   }
+  if (!formData.description?.trim()) {
+    return { ok: false, message: 'La justificación y descripción es obligatoria.' };
+  }
+  if (!fichaSodsi?.ejePlanesId) {
+    return { ok: false, message: 'Seleccione el eje de planes (PNDIP).' };
+  }
   if (!formData.selectedOds?.length) {
     return { ok: false, message: 'Seleccione al menos un ODS.' };
   }
   const benefIds = fichaSodsi?.beneficiarioValorIds || [];
   if (!benefIds.length) {
     return { ok: false, message: 'Seleccioná al menos un sector beneficiario en el paso 1.' };
+  }
+  const step2 = collectStep2FieldErrors(formData, indicatorConfigs);
+  if (hasFieldErrors(step2)) {
+    return { ok: false, message: step2ValidationMessage(step2) };
   }
   return { ok: true };
 }

@@ -10,7 +10,7 @@ import {
   Download, ArrowLeft, Building, ClipboardCheck, Pencil
 } from 'lucide-react';
 import { usePlanificacionTransicion } from '../../hooks/usePlanificacionTransicion';
-import { formatDate, getObjectiveName, getOdsColor, isProjectCompletado, isEvaluationRejection } from '../../utils/formatters';
+import { formatDate, formatUnitLabel, getObjectiveName, getOdsColor, isProjectCompletado, isEvaluationRejection } from '../../utils/formatters';
 import { extractFormulaVarOrder, sortParamsByFormulaOrder } from '../../utils/formulaParamOrder';
 import EvidenceSection from '../../components/projects/EvidenceSection';
 import AchievementBadge from '../../components/AchievementBadge';
@@ -399,13 +399,13 @@ const ProjectResultsPage = () => {
                             {typeof ind.targetValue === 'number' && ind.targetValue > 0 && (
                               <div style={{padding:'4px 10px',borderRadius:6,background:'#eef2ff',
                                            color:'#012169',fontSize:12,fontWeight:600}}>
-                                Meta: {ind.targetValue} {ind.unit || ''}
+                                Meta: {ind.targetValue} {formatUnitLabel(ind.unit)}
                               </div>
                             )}
                             {ind.currentValue != null && (
                               <div style={{padding:'4px 10px',borderRadius:6,background:'#f0fdf4',
                                            color:'#166534',fontSize:12,fontWeight:600}}>
-                                Actual: {Number(ind.currentValue).toFixed(2)} {ind.unit || ''}
+                                Valor actual: {Number(ind.currentValue).toFixed(2)} {formatUnitLabel(ind.unit)}
                               </div>
                             )}
                           </div>
@@ -423,7 +423,7 @@ const ProjectResultsPage = () => {
                             <div style={{marginTop:10}}>
                               <div style={{fontSize:11,color:'#666',textTransform:'uppercase',
                                            letterSpacing:'0.06em',marginBottom:6}}>
-                                Variables ({params.length})
+                                Parámetros ({params.length})
                               </div>
                               <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
                                 {params.map(p => (

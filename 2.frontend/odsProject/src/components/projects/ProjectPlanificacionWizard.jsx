@@ -4,6 +4,7 @@ import {
   Layers, LayoutGrid, FileText, ChevronRight, Handshake, Building2,
 } from 'lucide-react';
 import { getObjectiveName, odsColors } from '../../utils/formatters';
+import { hasFieldErrors } from '../../utils/planificacionValidation';
 import BeneficiariosField from './BeneficiariosField';
 
 export const OdsSelectionCard = ({ ods, selected, onToggle }) => {
@@ -89,12 +90,20 @@ export default function ProjectPlanificacionWizard({
   loadingMetadata = {},
   expandedOds,
   onToggleExpandedOds,
+  validationErrors = {},
 }) {
   const getIndicatorsForOds = (odsId) => availableIndicators[odsId] || [];
+  const missingCodes = new Set(validationErrors.missingIndicatorCodes || []);
+  const inv = (key) => (validationErrors[key] ? ' is-invalid' : '');
 
   if (currentStep === 1) {
     return (
       <div className="step-content">
+        {hasFieldErrors(validationErrors) && (
+          <div className="validation-banner" role="alert">
+            Complete los campos marcados en rojo antes de continuar.
+          </div>
+        )}
         <div className="section-intro">
           <Info size={18} />
           <p>
@@ -112,6 +121,8 @@ export default function ProjectPlanificacionWizard({
               value={formData.name}
               onChange={onInputChange}
               required
+              className={inv('name').trim() || undefined}
+              aria-invalid={!!validationErrors.name}
               placeholder="Ej: Fortalecimiento de la Economía Circular en Región Huetar"
             />
           </div>
@@ -136,6 +147,8 @@ export default function ProjectPlanificacionWizard({
                 onChange={onInputChange}
                 required={mode !== 'edit'}
                 disabled={loadingResources && !formData.area}
+                className={inv('area').trim() || undefined}
+                aria-invalid={!!validationErrors.area}
               >
                 <option value="">
                   {loadingResources ? 'Cargando áreas...' : 'Seleccione área institucional'}
@@ -150,11 +163,27 @@ export default function ProjectPlanificacionWizard({
           <div className="form-group form-dates-stack">
             <div className="form-date-field">
               <label><Calendar size={14} /> Inicio Estimado</label>
-              <input type="date" name="startDate" value={formData.startDate} onChange={onInputChange} required />
+              <input
+                type="date"
+                name="startDate"
+                value={formData.startDate}
+                onChange={onInputChange}
+                required
+                className={inv('startDate').trim() || undefined}
+                aria-invalid={!!validationErrors.startDate}
+              />
             </div>
             <div className="form-date-field">
               <label><Calendar size={14} /> Finalización Impacto</label>
-              <input type="date" name="endDate" value={formData.endDate} onChange={onInputChange} required />
+              <input
+                type="date"
+                name="endDate"
+                value={formData.endDate}
+                onChange={onInputChange}
+                required
+                className={inv('endDate').trim() || undefined}
+                aria-invalid={!!validationErrors.endDate}
+              />
             </div>
           </div>
 
@@ -167,6 +196,8 @@ export default function ProjectPlanificacionWizard({
               onChange={onResponsableChange}
               required={mode !== 'edit'}
               disabled={loadingResources && !formData.responsable}
+              className={inv('responsable').trim() || undefined}
+              aria-invalid={!!validationErrors.responsable}
             >
               <option value="">
                 {loadingResources
@@ -182,25 +213,25 @@ export default function ProjectPlanificacionWizard({
 
           <div className="form-group full-width form-geo-block">
             <div className="form-geo-grid">
-              {formData.provinciaNombre && (
-                <div className="form-date-field">
-                  <label><MapPin size={14} /> Región Mideplan</label>
-                  <input
-                    type="text"
-                    readOnly
-                    className="input-readonly"
-                    value={regionMideplanNombre || '—'}
-                  />
-                  <span className="form-hint">Derivada automáticamente de la provincia del proyecto.</span>
-                </div>
-              )}
-              <div className="form-date-field">
+              <div className="form-date-field form-geo-pair-left">
+                <label><MapPin size={14} /> Región Mideplan</label>
+                <input
+                  type="text"
+                  readOnly
+                  className="input-readonly"
+                  value={formData.provinciaNombre ? (regionMideplanNombre || '—') : '—'}
+                />
+                <span className="form-hint">Derivada automáticamente de la provincia del proyecto.</span>
+              </div>
+              <div className="form-date-field form-geo-pair-right">
                 <label><MapPin size={14} /> Provincia</label>
                 <select
                   name="provinciaId"
                   value={formData.provinciaId || ''}
                   onChange={onGeoChange}
                   required={mode !== 'edit'}
+                  className={inv('provinciaId').trim() || undefined}
+                  aria-invalid={!!validationErrors.provinciaId}
                 >
                   <option value="">Seleccione Provincia</option>
                   {provincias.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
@@ -214,6 +245,8 @@ export default function ProjectPlanificacionWizard({
                   onChange={onGeoChange}
                   required={mode !== 'edit'}
                   disabled={!formData.provinciaId}
+                  className={inv('cantonId').trim() || undefined}
+                  aria-invalid={!!validationErrors.cantonId}
                 >
                   <option value="">Seleccione Cantón</option>
                   {cantones.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
@@ -227,6 +260,8 @@ export default function ProjectPlanificacionWizard({
                   onChange={onGeoChange}
                   required={mode !== 'edit'}
                   disabled={!formData.cantonId}
+                  className={inv('distritoId').trim() || undefined}
+                  aria-invalid={!!validationErrors.distritoId}
                 >
                   <option value="">Seleccione Distrito</option>
                   {distritos.map((d) => <option key={d.id} value={d.id}>{d.nombre}</option>)}
@@ -235,7 +270,7 @@ export default function ProjectPlanificacionWizard({
             </div>
           </div>
 
-          <div className="form-group full-width">
+          <div className={`form-group full-width${validationErrors.beneficiarios ? ' has-invalid' : ''}`}>
             <BeneficiariosField
               selectedIds={beneficiarioValorIds}
               onChange={onBeneficiariosChange}
@@ -243,6 +278,7 @@ export default function ProjectPlanificacionWizard({
               loading={sodsiCatalogsLoading}
               onCatalogRefresh={onSodsiCatalogRefresh}
               createBeneficiarioValor={createBeneficiarioValor}
+              invalid={!!validationErrors.beneficiarios}
             />
           </div>
 
@@ -262,6 +298,9 @@ export default function ProjectPlanificacionWizard({
               value={fichaSodsi.ejePlanesId || ''}
               onChange={(e) => onFichaSodsiChange?.({ ejePlanesId: e.target.value })}
               disabled={sodsiCatalogsLoading}
+              required
+              className={inv('ejePlanesId').trim() || undefined}
+              aria-invalid={!!validationErrors.ejePlanesId}
             >
               <option value="">Seleccione eje</option>
               {(sodsiCatalogs.ejesPlanes || []).map((e) => (
@@ -287,6 +326,9 @@ export default function ProjectPlanificacionWizard({
               value={formData.description}
               onChange={onInputChange}
               rows="4"
+              required
+              className={inv('description').trim() || undefined}
+              aria-invalid={!!validationErrors.description}
               placeholder="Describa cómo este proyecto soluciona una problemática específica..."
             />
           </div>
@@ -297,12 +339,24 @@ export default function ProjectPlanificacionWizard({
 
   return (
     <div className="step-content">
+      {(validationErrors.ods || validationErrors.indicators || validationErrors.indicatorConfigs) && (
+        <div className="validation-banner" role="alert">
+          {validationErrors.ods && 'Seleccione al menos un ODS. '}
+          {validationErrors.odsWithoutIndicators?.length
+            ? `Cada ODS debe tener indicadores. Faltan en ODS: ${validationErrors.odsWithoutIndicators.join(', ')}. `
+            : validationErrors.indicators
+              ? 'Seleccione al menos un indicador por cada ODS. '
+              : null}
+          {validationErrors.indicatorConfigs &&
+            `Configure fórmula, parámetros, meta y unidad (${(validationErrors.missingIndicatorCodes || []).join(', ')}).`}
+        </div>
+      )}
       <div className="ods-grid-header">
         <LayoutGrid size={18} />
         <h3>Selección de Impacto ODS</h3>
       </div>
 
-      <div className="ods-selection-grid">
+      <div className={`ods-selection-grid${validationErrors.ods ? ' is-invalid-block' : ''}`}>
         {odsList.map((ods) => (
           <OdsSelectionCard
             key={ods.id}
@@ -314,7 +368,7 @@ export default function ProjectPlanificacionWizard({
       </div>
 
       {selectedOds.length > 0 && (
-        <div className="indicators-panel fade-in">
+        <div className={`indicators-panel fade-in${validationErrors.indicators || validationErrors.indicatorConfigs ? ' is-invalid-block' : ''}`}>
           <div className="section-header">
             <Settings size={18} />
             <h3>Configuración de Indicadores</h3>
@@ -323,8 +377,14 @@ export default function ProjectPlanificacionWizard({
           {selectedOds.map((odsId) => {
             const odsIndicators = getIndicatorsForOds(odsId);
             const isLoaded = !loadingMetadata[odsId];
+            const odsMissingIndicators = (validationErrors.odsWithoutIndicators || [])
+              .map(Number)
+              .includes(Number(odsId));
             return (
-              <div key={odsId} className={`ods-accordion ${expandedOds === odsId ? 'open' : ''}`}>
+              <div
+                key={odsId}
+                className={`ods-accordion ${expandedOds === odsId ? 'open' : ''}${odsMissingIndicators ? ' is-invalid-ods' : ''}`}
+              >
                 <div
                   className="accordion-header"
                   onClick={() => onToggleExpandedOds(odsId)}
@@ -353,10 +413,11 @@ export default function ProjectPlanificacionWizard({
                       <div className="indicators-selection-list">
                         {odsIndicators.map((code) => {
                           const meta = indicatorMetadata[code];
+                          const needsConfig = indicators.includes(code) && missingCodes.has(code);
                           return (
                             <div
                               key={code}
-                              className={`indicator-li ${indicators.includes(code) ? 'selected' : ''}`}
+                              className={`indicator-li ${indicators.includes(code) ? 'selected' : ''}${needsConfig ? ' needs-config' : ''}`}
                             >
                               <div className="indicator-main" onClick={() => onToggleIndicator(code)}>
                                 <div className="checkbox">
@@ -376,7 +437,7 @@ export default function ProjectPlanificacionWizard({
                               {indicators.includes(code) && (
                                 <button
                                   type="button"
-                                  className={`btn-config ${indicatorConfigs[code] ? 'active' : ''}`}
+                                  className={`btn-config ${indicatorConfigs[code] ? 'active' : ''}${needsConfig ? ' is-invalid' : ''}`}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     onConfigureIndicator(code);
