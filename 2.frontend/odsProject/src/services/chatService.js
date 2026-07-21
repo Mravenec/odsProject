@@ -4,6 +4,13 @@ import api from './api';
  * Chat de planificación — alineado con ChatMensajeController
  */
 export const chatService = {
+  async listInbox(actorUserId, actorRole) {
+    const r = await api.get('/projects/chat/inbox', {
+      params: { actorUserId, actorRole },
+    });
+    return { success: true, data: r.data };
+  },
+
   async listMessages(projectId, actorUserId, actorRole) {
     const r = await api.get(`/projects/${projectId}/chat/messages`, {
       params: { actorUserId, actorRole },

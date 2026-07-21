@@ -61,8 +61,12 @@ public class Objetivo06AguaSaneamientoService implements IObjetivo06AguaSaneamie
     @Override public Double calculateProjectProgress(Integer proyectoId) {
         List<VistaAdminDetalleIndicadores> indicadores = objetivo06AguaSaneamientoRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
-        long withData = indicadores.stream().filter(ind -> ind.getValorActual() != null).count();
-        return (double) withData / indicadores.size() * 100.0;
+        // Promedio de % de logro (valor_actual / meta), alineado con resultados del proyecto.
+        return indicadores.stream()
+                .filter(ind -> ind.getPorcentajeLogro() != null)
+                .mapToDouble(ind -> ind.getPorcentajeLogro().doubleValue())
+                .average()
+                .orElse(0.0);
     }
 
     @Override public Map<String, Object> getOds06Statistics() {

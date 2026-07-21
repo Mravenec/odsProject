@@ -9,6 +9,8 @@ import java.util.Map;
 
 public interface IChatMensajeController {
 
+    ResponseEntity<List<Map<String, Object>>> listInbox(Integer actorUserId, String actorRole);
+
     ResponseEntity<List<Map<String, Object>>> listMessages(
             @PathVariable Integer id,
             Integer actorUserId,

@@ -185,8 +185,7 @@ const ProjectResultsPage = () => {
       </header>
 
       {project && String(project.status || '').toLowerCase() === 'planificacion'
-        && (user?.role === 'admin' || user?.role === 'evaluador'
-        || (user?.role === 'gestor' && project.userId === user?.id)) && (
+        && user?.role === 'gestor' && project.userId === user?.id && (
         <ProjectChatPanel
           projectId={Number(projectId)}
           user={user}

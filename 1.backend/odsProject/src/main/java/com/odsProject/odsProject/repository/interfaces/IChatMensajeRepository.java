@@ -3,6 +3,7 @@ package com.odsProject.odsProject.repository.interfaces;
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoChatMensajes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IChatMensajeRepository {
@@ -14,4 +15,7 @@ public interface IChatMensajeRepository {
     ProyectoChatMensajes insert(Integer proyectoId, Integer autorId, String cuerpo);
 
     ProyectoChatMensajes updateCuerpo(Integer id, String cuerpo, int editCount);
+
+    /** Hilos activos: proyectos en planificación con al menos un mensaje (último mensaje primero). */
+    List<Map<String, Object>> findInboxThreadsPlanificacion();
 }

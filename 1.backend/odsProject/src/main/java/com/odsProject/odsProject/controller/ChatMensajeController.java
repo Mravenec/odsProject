@@ -17,6 +17,20 @@ public class ChatMensajeController implements IChatMensajeController {
     private IChatMensajeService chatMensajeService;
 
     @Override
+    @GetMapping("/chat/inbox")
+    public ResponseEntity<List<Map<String, Object>>> listInbox(
+            @RequestParam Integer actorUserId,
+            @RequestParam String actorRole) {
+        try {
+            return ResponseEntity.ok(chatMensajeService.listInbox(actorUserId, actorRole));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (SecurityException e) {
+            return ResponseEntity.status(403).build();
+        }
+    }
+
+    @Override
     @GetMapping("/{id}/chat/messages")
     public ResponseEntity<List<Map<String, Object>>> listMessages(
             @PathVariable Integer id,

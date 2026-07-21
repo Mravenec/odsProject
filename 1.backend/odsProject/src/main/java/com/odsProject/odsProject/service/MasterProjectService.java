@@ -103,24 +103,24 @@ public class MasterProjectService implements IMasterProjectService {
         }
 
         int totalIndicators = 0;
-        double totalProgress = 0.0;
+        double weightedProgressSum = 0.0;
         int odsCount = 0;
 
         for (com.odsProject.odsProject.service.interfaces.IOdsBaseService<?, ?, ?, ?, ?, ?> service : odsServices) {
             try {
-                // Verificamos si este ODS tiene indicadores para este proyecto
                 List<?> indicators = service.findAllIndicadoresByProyecto(proyectoId);
-                if (!indicators.isEmpty()) {
-                    totalIndicators += indicators.size();
-                    totalProgress += service.calculateProjectProgress(proyectoId);
-                    odsCount++;
-                }
+                if (indicators.isEmpty()) continue;
+                int n = indicators.size();
+                totalIndicators += n;
+                odsCount++;
+                // Promedio real de % logro (valor/meta), no "% con dato cargado".
+                weightedProgressSum += service.calculateProjectProgress(proyectoId) * n;
             } catch (Exception e) {
                 // Silently skip if an ODS schema isn't fully ready or doesn't have the project
             }
         }
 
-        double averageProgress = odsCount > 0 ? totalProgress / odsCount : 0.0;
+        double averageProgress = totalIndicators > 0 ? weightedProgressSum / totalIndicators : 0.0;
 
         summary.put("totalIndicators", totalIndicators);
         summary.put("odsLinkedCount", odsCount);

@@ -4,6 +4,9 @@
 @gestorUserId = 2
 @evaluadorUserId = 5
 
+### Bandeja global (admin / evaluador)
+GET {{baseUrl}}/api/projects/chat/inbox?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
 ### Listar mensajes (gestor dueño)
 GET {{baseUrl}}/api/projects/{{proyectoId}}/chat/messages?actorUserId={{gestorUserId}}&actorRole=gestor
 

@@ -73,6 +73,34 @@ public class ChatMensajeService implements IChatMensajeService {
         return toDto(updated);
     }
 
+    @Override
+    public List<Map<String, Object>> listInbox(Integer actorUserId, String actorRole) {
+        if (actorUserId == null)
+            throw new IllegalArgumentException("actorUserId es requerido");
+        String role = normalizeRole(actorRole);
+        if (!REVIEWER_ROLES.contains(role))
+            throw new SecurityException("Solo admin o evaluador pueden ver la bandeja de chat");
+        return chatMensajeRepository.findInboxThreadsPlanificacion().stream()
+                .map(this::enrichInboxThread)
+                .collect(Collectors.toList());
+    }
+
+    private Map<String, Object> enrichInboxThread(Map<String, Object> thread) {
+        Map<String, Object> dto = new LinkedHashMap<>(thread);
+        Object autorId = thread.get("lastAutorId");
+        if (autorId instanceof Number n) {
+            loginRepository.findUsuarioById(n.intValue()).ifPresent(u -> {
+                dto.put("lastAutorNombre", u.getFullName());
+                if (u.getRolId() != null) {
+                    loginRepository.findRolById(u.getRolId())
+                            .map(r -> r.getNombre())
+                            .ifPresent(rol -> dto.put("lastAutorRol", rol));
+                }
+            });
+        }
+        return dto;
+    }
+
     private Proyectos requireProyecto(Integer proyectoId) {
         return masterProjectRepository.findById(proyectoId)
                 .orElseThrow(() -> new IllegalArgumentException("Proyecto no encontrado: " + proyectoId));

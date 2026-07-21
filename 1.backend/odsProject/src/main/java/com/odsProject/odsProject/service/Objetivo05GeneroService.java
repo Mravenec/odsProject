@@ -64,8 +64,12 @@ public class Objetivo05GeneroService implements IObjetivo05GeneroService {
     @Override public Double calculateProjectProgress(Integer proyectoId) {
         List<VistaAdminDetalleIndicadores> indicadores = objetivo05GeneroRepository.findIndicadoresByProyecto(proyectoId);
         if (indicadores.isEmpty()) return 0.0;
-        long withData = indicadores.stream().filter(ind -> ind.getValorActual() != null).count();
-        return (double) withData / indicadores.size() * 100.0;
+        // Promedio de % de logro (valor_actual / meta), alineado con resultados del proyecto.
+        return indicadores.stream()
+                .filter(ind -> ind.getPorcentajeLogro() != null)
+                .mapToDouble(ind -> ind.getPorcentajeLogro().doubleValue())
+                .average()
+                .orElse(0.0);
     }
 
     @Override public Map<String, Object> getOds05Statistics() {

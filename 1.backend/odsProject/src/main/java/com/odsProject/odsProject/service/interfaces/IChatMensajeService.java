@@ -10,4 +10,7 @@ public interface IChatMensajeService {
     Map<String, Object> sendMessage(Integer proyectoId, Integer actorUserId, String actorRole, String cuerpo);
 
     Map<String, Object> editMessage(Integer proyectoId, Integer msgId, Integer actorUserId, String cuerpo);
+
+    /** Bandeja global para admin/evaluador (proyectos en planificación con chat). */
+    List<Map<String, Object>> listInbox(Integer actorUserId, String actorRole);
 }

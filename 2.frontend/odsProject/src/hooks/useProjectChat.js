@@ -59,7 +59,7 @@ function readStorageKey(projectId, userId) {
   return `ods-chat-read:${projectId}:${userId}`;
 }
 
-function loadLastReadId(projectId, userId) {
+export function getChatLastReadId(projectId, userId) {
   if (!projectId || !userId) return 0;
   try {
     const raw = sessionStorage.getItem(readStorageKey(projectId, userId));
@@ -70,13 +70,21 @@ function loadLastReadId(projectId, userId) {
   }
 }
 
-function saveLastReadId(projectId, userId, messageId) {
+export function setChatLastReadId(projectId, userId, messageId) {
   if (!projectId || !userId || !messageId) return;
   try {
     sessionStorage.setItem(readStorageKey(projectId, userId), String(messageId));
   } catch {
     /* ignore */
   }
+}
+
+function loadLastReadId(projectId, userId) {
+  return getChatLastReadId(projectId, userId);
+}
+
+function saveLastReadId(projectId, userId, messageId) {
+  setChatLastReadId(projectId, userId, messageId);
 }
 
 function maxMessageId(list) {
