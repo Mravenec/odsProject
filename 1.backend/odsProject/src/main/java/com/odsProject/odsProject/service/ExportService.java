@@ -649,18 +649,28 @@ public class ExportService implements IExportService {
     }
 
     /**
-     * Unidad encargada = nombre de {@code sodsi_dependencia} del perfil SODSI del actor que descarga.
-     * Sin {@code dependenciaId} o dependencia inexistente → cadena vacía (no inventar).
+     * Unidad encargada = catálogo {@code sodsi_unidades_programaticas} del actor que descarga.
+     * Formato {@code [codigo] nombre} si hay código; solo nombre si no; vacío si sin FK.
      */
     String resolveUnidadEncargadaForActor(Integer actorUserId) {
         if (actorUserId == null) {
             return "";
         }
         return loginRepository.findUsuarioById(actorUserId)
-                .map(u -> u.getDependenciaId())
-                .flatMap(sodsiCatalogRepository::findDependenciaById)
-                .map(d -> d.getNombre() != null ? d.getNombre() : "")
+                .map(u -> u.getUnidadProgramaticaId())
+                .flatMap(sodsiCatalogRepository::findUnidadProgramaticaById)
+                .map(ExportService::formatUnidadEncargada)
                 .orElse("");
+    }
+
+    static String formatUnidadEncargada(SodsiUnidadesProgramaticas u) {
+        if (u == null) return "";
+        String nombre = u.getNombre() != null ? u.getNombre() : "";
+        String codigo = u.getCodigo();
+        if (codigo == null || codigo.isBlank()) {
+            return nombre;
+        }
+        return "[" + codigo + "] " + nombre;
     }
 
     private static int resolveAnioExport(VistaResumenProyectosOds v) {

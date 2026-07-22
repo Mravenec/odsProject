@@ -21,6 +21,7 @@ const EMPTY_FORM = {
   areaId: '',
   dependenciaId: '',
   rolDependenciaId: '',
+  unidadProgramaticaId: '',
   telefonoContacto: '',
 };
 
@@ -28,6 +29,7 @@ const EMPTY_SODSI_CATALOGS = {
   areas: [],
   dependencias: [],
   rolesDependencia: [],
+  unidades: [],
 };
 
 const PASSWORD_REQUIREMENTS = [
@@ -115,6 +117,7 @@ const UsersAdminPage = () => {
       areaId: user.areaId != null ? String(user.areaId) : '',
       dependenciaId: user.dependenciaId != null ? String(user.dependenciaId) : '',
       rolDependenciaId: user.rolDependenciaId != null ? String(user.rolDependenciaId) : '',
+      unidadProgramaticaId: user.unidadProgramaticaId != null ? String(user.unidadProgramaticaId) : '',
       telefonoContacto: user.telefonoContacto || '',
     });
     setFormError('');
@@ -238,6 +241,7 @@ const UsersAdminPage = () => {
       areaId: form.areaId ? parseInt(form.areaId, 10) : null,
       dependenciaId: form.dependenciaId ? parseInt(form.dependenciaId, 10) : null,
       rolDependenciaId: form.rolDependenciaId ? parseInt(form.rolDependenciaId, 10) : null,
+      unidadProgramaticaId: form.unidadProgramaticaId ? parseInt(form.unidadProgramaticaId, 10) : null,
       telefonoContacto: form.telefonoContacto.trim() || null,
     };
     if (form.password) {
@@ -304,6 +308,7 @@ const UsersAdminPage = () => {
                 <th>Correo</th>
                 <th>Rol</th>
                 <th>Sede</th>
+                <th>Unidad encargada</th>
                 <th>Área</th>
                 <th>Dependencia</th>
                 <th>Rol dep.</th>
@@ -314,7 +319,7 @@ const UsersAdminPage = () => {
             <tbody>
               {users.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="users-admin-empty">No hay usuarios registrados.</td>
+                  <td colSpan={11} className="users-admin-empty">No hay usuarios registrados.</td>
                 </tr>
               ) : users.map(u => (
                 <tr key={u.id} className={isGestorProfileIncomplete(u, roles) ? 'users-row-incomplete' : ''}>
@@ -330,6 +335,7 @@ const UsersAdminPage = () => {
                   <td data-label="Correo">{u.email}</td>
                   <td data-label="Rol">{roleDisplayName(roles, u.rol)}</td>
                   <td data-label="Sede">{u.sede || '—'}</td>
+                  <td data-label="Unidad encargada">{catalogLabel(sodsiCatalogs.unidades, u.unidadProgramaticaId)}</td>
                   <td data-label="Área">{catalogLabel(sodsiCatalogs.areas, u.areaId)}</td>
                   <td data-label="Dependencia">{catalogLabel(sodsiCatalogs.dependencias, u.dependenciaId)}</td>
                   <td data-label="Rol dep.">{catalogLabel(sodsiCatalogs.rolesDependencia, u.rolDependenciaId)}</td>
@@ -494,8 +500,24 @@ const UsersAdminPage = () => {
               <div className="users-sodsi-section">
                 <h3>Perfil SODSI (export consultor)</h3>
                 <p className="form-hint">
-                  Fuente de información, dependencia, rol y teléfono se incluyen en la matriz Excel del gestor.
+                  Unidad encargada, fuente de información, dependencia, rol y teléfono se incluyen en la matriz Excel al descargar.
                 </p>
+                <div className="form-row">
+                  <label htmlFor="unidadProgramaticaId">Unidad encargada</label>
+                  <select
+                    id="unidadProgramaticaId"
+                    name="unidadProgramaticaId"
+                    value={form.unidadProgramaticaId}
+                    onChange={handleChange}
+                  >
+                    <option value="">Seleccionar unidad</option>
+                    {(sodsiCatalogs.unidades || []).map(u => (
+                      <option key={u.id} value={u.id}>
+                        {u.codigo ? `[${u.codigo}] ${u.nombre}` : u.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div className="form-row">
                   <label htmlFor="telefonoContacto">Teléfono de contacto</label>
                   <input

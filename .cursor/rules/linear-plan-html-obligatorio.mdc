@@ -34,7 +34,7 @@ El HTML debe incluir **todas** estas secciones (títulos `Linear — …` en pro
 | 7 | **Comandos script** | `create`, `next`, `checklist`, `handoff`, `state`, `cleanup` |
 | 8 | **Testing por rol** | Tabla issue × comandos locales × criterio Done |
 | 9 | **Descripciones Linear** | Checklists verbatim para copiar al `.mjs create` |
-| 10 | **Fase 6 cierre** | `resumen_sprint_*.html` + epic Completed + Fase 0 siguiente |
+| 10 | **Fase 6 cierre** | `resumen_sprint_*.html` + epic Completed (dejar legible; Fase 0 solo al próximo trabajo) |
 | 11 | **Objetivo producto** | Problema ↔ solución (dominio del sprint) |
 | 12 | **Aprobación** | PENDIENTE / APROBADO — sin `create` hasta APROBADO |
 

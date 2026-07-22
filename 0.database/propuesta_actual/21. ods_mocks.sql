@@ -38,12 +38,12 @@ INSERT INTO sedes (id, nombre, descripcion) VALUES
 --   Admin1234!     → admin@ods.local (login_system.sql + UPDATE arriba)
 
 INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sede_id,
-  area_id, dependencia_id, rol_dependencia_id, telefono_contacto, is_active, email_verificado) VALUES
-  (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Ana García López', 2, 2, 6, 1, 1, '8888-9999', TRUE, TRUE),
-  (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Carlos Rodríguez Mora', 2, 5, 2, 3, 2, '7777-8888', TRUE, TRUE),
-  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'María Jiménez Solano', 3, 2, NULL, NULL, NULL, NULL, TRUE, TRUE),
-  (5, 'evaluador_general', 'evaluador@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Luis Vargas Castro', 4, 2, NULL, NULL, NULL, NULL, TRUE, TRUE),
-  (6, 'gestor_general', 'gestor@ods.com', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Gestor General ODS', 2, 2, 5, 4, 4, '6666-7777', TRUE, TRUE);
+  area_id, dependencia_id, rol_dependencia_id, unidad_programatica_id, telefono_contacto, is_active, email_verificado) VALUES
+  (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Ana García López', 2, 2, 6, 1, 1, 10, '8888-9999', TRUE, TRUE),
+  (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Carlos Rodríguez Mora', 2, 5, 2, 3, 2, 14, '7777-8888', TRUE, TRUE),
+  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'María Jiménez Solano', 3, 2, NULL, NULL, NULL, 10, NULL, TRUE, TRUE),
+  (5, 'evaluador_general', 'evaluador@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Luis Vargas Castro', 4, 2, NULL, NULL, NULL, 10, NULL, TRUE, TRUE),
+  (6, 'gestor_general', 'gestor@ods.com', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Gestor General ODS', 2, 2, 5, 4, 4, 13, '6666-7777', TRUE, TRUE);
 
 INSERT INTO permisos_ods (usuario_id, ods_num, puede_crear, puede_editar, puede_ver) VALUES
   (2, 1, TRUE, TRUE, TRUE), 

@@ -76,6 +76,8 @@ public class LoginController implements ILoginController {
                 response.put("dependenciaNombre", profileMap.get("dependenciaNombre"));
                 response.put("rolDependenciaId", profileMap.get("rolDependenciaId"));
                 response.put("rolDependenciaNombre", profileMap.get("rolDependenciaNombre"));
+                response.put("unidadProgramaticaId", profileMap.get("unidadProgramaticaId"));
+                response.put("unidadProgramaticaNombre", profileMap.get("unidadProgramaticaNombre"));
                 response.put("contacto", profileMap.get("contacto"));
             }
             return ResponseEntity.ok(response);
@@ -652,6 +654,10 @@ public class LoginController implements ILoginController {
         if (body.containsKey("rolDependenciaId")) {
             u.setRolDependenciaId(rolDependenciaId != null ? UByte.valueOf(rolDependenciaId.byteValue()) : null);
         }
+        Integer unidadProgramaticaId = intField(body, "unidadProgramaticaId");
+        if (body.containsKey("unidadProgramaticaId")) {
+            u.setUnidadProgramaticaId(unidadProgramaticaId);
+        }
         if (body.containsKey("telefonoContacto")) {
             u.setTelefonoContacto(stringField(body, "telefonoContacto"));
         }
@@ -686,6 +692,7 @@ public class LoginController implements ILoginController {
         m.put("areaId", u.getAreaId() != null ? u.getAreaId().intValue() : null);
         m.put("dependenciaId", u.getDependenciaId() != null ? u.getDependenciaId().intValue() : null);
         m.put("rolDependenciaId", u.getRolDependenciaId() != null ? u.getRolDependenciaId().intValue() : null);
+        m.put("unidadProgramaticaId", u.getUnidadProgramaticaId());
         m.put("telefonoContacto", u.getTelefonoContacto());
         m.put("isActive", u.getIsActive());
         m.put("emailVerificado", u.getEmailVerificado());

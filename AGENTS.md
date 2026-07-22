@@ -12,9 +12,10 @@ node scripts/validate-linear-hygiene.mjs
 node scripts/sprint-next.mjs
 ```
 
-- Si **higiene exit 1** → **Fase 0** (`cleanup` + borrar plan/resumen/script del sprint cerrado). **No codear.**
+- Si **higiene exit 1** → corregir (Fase 6 incompleta o multi-plan). **No codear.**
 - Si hay issue desbloqueado → trabajar **solo** ese ticket (checklist secuencial — ver sección siguiente).
-- Si no hay `sprint_<activo>.mjs` o `next` vacío → **no codear**: Fase 0 (si hace falta) → plan HTML Linear completo → `validate-plan-html.mjs` → preguntar **¿✅ APROBADO?** → solo entonces `create`.
+- Si el sprint está **cerrado con resumen** (higiene OK) → **dejar legible**; no borrar. Fase 0 solo cuando el humano pida **trabajo nuevo**.
+- Si no hay `sprint_<activo>.mjs` o `next` vacío **y** el humano pide feature → **no codear**: Fase 0 si hay artefactos/epic del cerrado (`cleanup` borra issues **+ epic**) → plan HTML → `validate-plan-html.mjs` → **¿✅ APROBADO?** → `create`.
 - Si el issue está **bloqueado** (`blocks`) → esperar; otro agente/epic upstream debe cerrar primero.
 
 Bypass Linear **solo** si el humano lo pide explícito en el mensaje (*sin linear*, *bypass linear*, *solo local*). **Prohibido** inventar «hotfix» como bypass.
@@ -100,7 +101,7 @@ Referencia de calidad: `plans/plan_sprint_export_sodsi.html`. Gates N/A (sin BD)
 
 ### Orquestador (`role:orchestrator`)
 
-- Ejecuta Fases 0–4 y 6: limpieza, plan HTML (desde `_plantilla_ods.html`), validación, `sprint_<nombre>.mjs create`, cierre con `resumen_sprint_*.html`.
+- Ejecuta Fases 0–4 y 6: limpieza **al trabajo nuevo** (issues+epic+artefactos), plan HTML, validación, `create`, cierre con `resumen_sprint_*.html` **legible** (sin cleanup al cerrar).
 - Bucle: `next` → asignar/reclamar issue → verificar Done + handoffs → `status`.
 - No implementa código de producto salvo fixes mínimos del script `_linear/`.
 - Usa `get_sprint_health` / `watchdog_check` si MCP Linear está activo.

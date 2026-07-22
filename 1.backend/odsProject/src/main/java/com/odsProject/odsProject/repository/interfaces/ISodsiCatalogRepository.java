@@ -68,4 +68,6 @@ public interface ISodsiCatalogRepository {
     Optional<SodsiDependencia> findDependenciaById(UShort id);
 
     Optional<SodsiRolDependencia> findRolDependenciaById(UByte id);
+
+    Optional<SodsiUnidadesProgramaticas> findUnidadProgramaticaById(Integer id);
 }

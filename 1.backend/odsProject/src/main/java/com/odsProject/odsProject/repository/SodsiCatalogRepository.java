@@ -218,4 +218,12 @@ public class SodsiCatalogRepository implements ISodsiCatalogRepository {
         if (id == null) return Optional.empty();
         return dsl.selectFrom(SODSI_ROL_DEPENDENCIA).where(SODSI_ROL_DEPENDENCIA.ID.eq(id)).fetchOptionalInto(SodsiRolDependencia.class);
     }
+
+    @Override
+    public Optional<SodsiUnidadesProgramaticas> findUnidadProgramaticaById(Integer id) {
+        if (id == null) return Optional.empty();
+        return dsl.selectFrom(SODSI_UNIDADES_PROGRAMATICAS)
+                .where(SODSI_UNIDADES_PROGRAMATICAS.ID.eq(id))
+                .fetchOptionalInto(SodsiUnidadesProgramaticas.class);
+    }
 }

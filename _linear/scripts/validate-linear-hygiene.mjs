@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 /**
- * Higiene _linear — falla si hay basura de sprints cerrados o multi-plan sin control.
+ * Higiene _linear — falla si hay basura que impide trabajo nuevo o Fase 6 incompleta.
  *
  * Uso:
  *   node scripts/validate-linear-hygiene.mjs
  *   node scripts/validate-linear-hygiene.mjs --json
  *
- * Exit 0 = OK para continuar (o solo plantillas).
- * Exit 1 = hay que hacer Fase 0 / no codear producto todavía.
+ * Exit 0 = OK (puede haber sprint cerrado CON resumen legible — Fase 0 al próximo trabajo).
+ * Exit 1 = hay que corregir (Fase 6 incompleta, multi-plan, etc.) antes de codear.
+ *
+ * Regla de timing:
+ *   - Fase 6 deja plan + resumen + script + epic Completed para que el humano lea.
+ *   - Fase 0 (cleanup issues+epic + borrar artefactos) solo al INICIAR un trabajo nuevo.
  */
 import { readdirSync, existsSync } from "fs";
 import { dirname, join } from "path";
@@ -19,16 +23,6 @@ const root = join(here, "..");
 const scriptsDir = here;
 const plansDir = join(root, "plans");
 const jsonMode = process.argv.includes("--json");
-
-const KEEP_SCRIPTS = new Set([
-  "sprint-next.mjs",
-  "sprint-epic-kit.mjs",
-  "validate-plan-html.mjs",
-  "validate-linear-hygiene.mjs",
-  "linear-lib.mjs",
-  "linear-comment.mjs",
-  "linear-update-state.mjs",
-]);
 
 function listSprintScripts() {
   return readdirSync(scriptsDir)
@@ -53,11 +47,11 @@ function epicHasOpenIssues(sprintFile) {
     cwd: root,
   });
   const out = `${r.stdout || ""}${r.stderr || ""}`;
-  // "Sin issues desbloqueados" o "Sin issues. create" = no hay trabajo activo
   const empty =
     /Sin issues desbloqueados/i.test(out) ||
     /Sin issues\. create/i.test(out) ||
-    /Epic vacío/i.test(out);
+    /Epic vacío/i.test(out) ||
+    /Epic no encontrado/i.test(out);
   const hasWork = /\bODS-\d+\b/.test(out) && /desbloqueado/i.test(out);
   return { empty, hasWork, out, status: r.status ?? 1 };
 }
@@ -67,7 +61,8 @@ const plans = listPlans("plan_sprint_");
 const resumenes = listPlans("resumen_sprint_");
 
 const problems = [];
-const stale = []; // Done / vacíos → candidatos a Fase 0
+const staleNeedsResumen = []; // Done sin resumen → incompleto
+const closedReadable = []; // Done + resumen → legible; Fase 0 en próximo trabajo
 const active = [];
 
 for (const f of sprintScripts) {
@@ -81,27 +76,31 @@ for (const f of sprintScripts) {
   if (hasWork) {
     active.push({ name, file: f, hasPlan, hasResumen });
   } else if (empty) {
-    stale.push({ name, file: f, hasPlan, hasResumen });
-    problems.push({
-      code: "STALE_SPRINT",
-      message: `Sprint «${name}» sin issues abiertos — ejecutar Fase 0: cleanup + borrar plan/resumen/script`,
-      name,
-    });
+    if (hasResumen) {
+      closedReadable.push({ name, file: f, hasPlan, hasResumen });
+    } else {
+      staleNeedsResumen.push({ name, file: f, hasPlan, hasResumen });
+      problems.push({
+        code: "FASE6_INCOMPLETA",
+        message: `Sprint «${name}» sin issues abiertos y sin resumen_sprint_${name}.html — completar Fase 6 (resumen + epic Completed). No borrar aún.`,
+        name,
+      });
+    }
   }
 }
 
 if (plans.length > 1 && active.length <= 1) {
-  // Varios planes con a lo sumo un activo = acumulación
   problems.push({
     code: "MULTI_PLAN",
-    message: `Hay ${plans.length} plan_sprint_*.html (máx. 1 activo recomendado). Limpiar cerrados.`,
+    message: `Hay ${plans.length} plan_sprint_*.html (máx. 1). Al iniciar trabajo nuevo: Fase 0 del cerrado, luego un solo plan.`,
   });
 }
 
-if (resumenes.length > 0 && stale.length > 0) {
+// Varios resúmenes = acumulación (varios sprints sin Fase 0)
+if (resumenes.length > 1) {
   problems.push({
-    code: "RESUMEN_SIN_CLEANUP",
-    message: `${resumenes.length} resumen(es) presentes con sprint(s) vacío(s): cerrar con cleanup y borrar artefactos.`,
+    code: "MULTI_RESUMEN",
+    message: `Hay ${resumenes.length} resumen_sprint_*.html. Al iniciar el próximo trabajo: Fase 0 (cleanup+epic+borrar artefactos) de los cerrados.`,
   });
 }
 
@@ -112,7 +111,9 @@ const report = {
   plans,
   resumenes,
   active,
-  stale,
+  closedReadable,
+  staleNeedsResumen,
+  pendingFase0OnNextWork: closedReadable.map((c) => c.name),
   problems,
 };
 
@@ -126,23 +127,32 @@ console.log(`  sprint_*.mjs : ${sprintScripts.length || "(ninguno)"}`);
 console.log(`  plan_sprint_ : ${plans.length}`);
 console.log(`  resumen_     : ${resumenes.length}`);
 console.log(`  activos      : ${active.map((a) => a.name).join(", ") || "—"}`);
-console.log(`  candidatos Fase 0: ${stale.map((s) => s.name).join(", ") || "—"}`);
+console.log(
+  `  cerrados legibles (Fase 0 al próximo trabajo): ${closedReadable.map((s) => s.name).join(", ") || "—"}`
+);
+console.log(
+  `  Fase 6 incompleta: ${staleNeedsResumen.map((s) => s.name).join(", ") || "—"}`
+);
 
 if (ok) {
-  console.log("\n✅ Higiene OK — podés continuar con next / plan nuevo.\n");
+  if (closedReadable.length) {
+    console.log(
+      "\n✅ Higiene OK — resumen(es) legible(s). No borrar hasta la próxima instrucción de trabajo nuevo (Fase 0: cleanup issues+epic + borrar plan/resumen/script).\n"
+    );
+  } else {
+    console.log("\n✅ Higiene OK — podés continuar con next / plan nuevo.\n");
+  }
   process.exit(0);
 }
 
-console.log("\n❌ Higiene rota — NO codear producto. Fase 0 primero:\n");
+console.log("\n❌ Higiene rota — NO codear producto todavía:\n");
 for (const p of problems) {
   console.log(`  · [${p.code}] ${p.message}`);
 }
 console.log(`
-Comandos típicos (por cada sprint cerrado):
-  node scripts/sprint_<nombre>.mjs cleanup
-  # luego borrar:
-  #   plans/plan_sprint_<nombre>.html
-  #   plans/resumen_sprint_<nombre>.html
-  #   scripts/sprint_<nombre>.mjs
+Fase 6 (al terminar sprint): resumen HTML + epic Completed — DEJAR archivos para lectura.
+Fase 0 (al INICIAR trabajo nuevo):
+  node scripts/sprint_<nombre>.mjs cleanup   # borra issues + epic Linear
+  # luego borrar: plan_ / resumen_ / sprint_*.mjs
 `);
 process.exit(1);

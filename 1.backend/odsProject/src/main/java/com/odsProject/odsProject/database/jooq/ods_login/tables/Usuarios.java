@@ -112,6 +112,12 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
     public final TableField<UsuariosRecord, UByte> ROL_DEPENDENCIA_ID = createField(DSL.name("rol_dependencia_id"), SQLDataType.TINYINTUNSIGNED.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.TINYINTUNSIGNED)), this, "Rol de dependencia SODSI");
 
     /**
+     * The column <code>ods_login.usuarios.unidad_programatica_id</code>. Unidad
+     * encargada SODSI export (sodsi_unidades_programaticas)
+     */
+    public final TableField<UsuariosRecord, Integer> UNIDAD_PROGRAMATICA_ID = createField(DSL.name("unidad_programatica_id"), SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "Unidad encargada SODSI export (sodsi_unidades_programaticas)");
+
+    /**
      * The column <code>ods_login.usuarios.telefono_contacto</code>. Teléfono
      * contacto SODSI export
      */
@@ -198,7 +204,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.USUARIOS_IDX_ACTIVO_ROL, Indexes.USUARIOS_IDX_EMAIL, Indexes.USUARIOS_IDX_ROL, Indexes.USUARIOS_IDX_SEDE, Indexes.USUARIOS_IDX_USERNAME, Indexes.USUARIOS_IDX_USUARIO_SODSI_AREA, Indexes.USUARIOS_IDX_USUARIO_SODSI_DEP);
+        return Arrays.asList(Indexes.USUARIOS_IDX_ACTIVO_ROL, Indexes.USUARIOS_IDX_EMAIL, Indexes.USUARIOS_IDX_ROL, Indexes.USUARIOS_IDX_SEDE, Indexes.USUARIOS_IDX_USERNAME, Indexes.USUARIOS_IDX_USUARIO_SODSI_AREA, Indexes.USUARIOS_IDX_USUARIO_SODSI_DEP, Indexes.USUARIOS_IDX_USUARIO_SODSI_UNIDAD);
     }
 
     @Override
@@ -218,7 +224,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
 
     @Override
     public List<ForeignKey<UsuariosRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.USUARIOS_IBFK_1, Keys.USUARIOS_IBFK_2, Keys.FK_USUARIOS_SODSI_AREA, Keys.FK_USUARIOS_SODSI_DEPENDENCIA, Keys.FK_USUARIOS_SODSI_ROL_DEPENDENCIA);
+        return Arrays.asList(Keys.USUARIOS_IBFK_1, Keys.USUARIOS_IBFK_2, Keys.FK_USUARIOS_SODSI_AREA, Keys.FK_USUARIOS_SODSI_DEPENDENCIA, Keys.FK_USUARIOS_SODSI_ROL_DEPENDENCIA, Keys.FK_USUARIOS_SODSI_UNIDAD_PROGRAMATICA);
     }
 
     @Override

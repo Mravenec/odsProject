@@ -50,5 +50,6 @@ public class Indexes {
     public static final Index AUDITORIA_LOGIN_IDX_USUARIO_EVENTO = Internal.createIndex(DSL.name("idx_usuario_evento"), AuditoriaLogin.AUDITORIA_LOGIN, new OrderField[] { AuditoriaLogin.AUDITORIA_LOGIN.USUARIO_ID, AuditoriaLogin.AUDITORIA_LOGIN.EVENTO }, false);
     public static final Index USUARIOS_IDX_USUARIO_SODSI_AREA = Internal.createIndex(DSL.name("idx_usuario_sodsi_area"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.AREA_ID }, false);
     public static final Index USUARIOS_IDX_USUARIO_SODSI_DEP = Internal.createIndex(DSL.name("idx_usuario_sodsi_dep"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.DEPENDENCIA_ID }, false);
+    public static final Index USUARIOS_IDX_USUARIO_SODSI_UNIDAD = Internal.createIndex(DSL.name("idx_usuario_sodsi_unidad"), Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.UNIDAD_PROGRAMATICA_ID }, false);
     public static final Index INDICADOR_MASTER_ODS_ID = Internal.createIndex(DSL.name("ods_id"), IndicadorMaster.INDICADOR_MASTER, new OrderField[] { IndicadorMaster.INDICADOR_MASTER.ODS_ID }, false);
 }

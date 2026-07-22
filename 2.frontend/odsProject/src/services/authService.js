@@ -28,6 +28,8 @@ export const authService = {
       dependenciaNombre: source.dependenciaNombre || data.dependenciaNombre || profile.dependenciaNombre || null,
       rolDependenciaId: source.rolDependenciaId ?? source.rol_dependencia_id ?? data.rolDependenciaId ?? profile.rolDependenciaId ?? null,
       rolDependenciaNombre: source.rolDependenciaNombre || data.rolDependenciaNombre || profile.rolDependenciaNombre || null,
+      unidadProgramaticaId: source.unidadProgramaticaId ?? source.unidad_programatica_id ?? data.unidadProgramaticaId ?? profile.unidadProgramaticaId ?? null,
+      unidadProgramaticaNombre: source.unidadProgramaticaNombre || data.unidadProgramaticaNombre || profile.unidadProgramaticaNombre || null,
       contacto: source.contacto || data.contacto || profile.contacto || null,
     };
   },
@@ -143,6 +145,7 @@ export const authService = {
       areaId: u.areaId ?? u.area_id ?? null,
       dependenciaId: u.dependenciaId ?? u.dependencia_id ?? null,
       rolDependenciaId: u.rolDependenciaId ?? u.rol_dependencia_id ?? null,
+      unidadProgramaticaId: u.unidadProgramaticaId ?? u.unidad_programatica_id ?? null,
       telefonoContacto: u.telefonoContacto ?? u.telefono_contacto ?? '',
       isActive: u.isActive ?? u.is_active,
       ultimoLogin: u.ultimoLogin || u.ultimo_login,

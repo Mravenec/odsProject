@@ -1,18 +1,18 @@
 ### Export SODSI matriz — 1 hoja, 21 columnas (Acciones por revisar SODSI.xlsx)
 ### QA: sede 2 (Central), año 2024, proyecto mock #6 auditado
-### ODS-230: Unidad encargada = dependenciaNombre del actor (perfil SODSI)
+### ODS-242: Unidad encargada = sodsi_unidades_programaticas del actor ([codigo] nombre)
 
 @baseUrl = http://localhost:8080
 @emailAdmin = admin@ods.local
 @passwordAdmin = Admin1234!
-@emailConsultor = consultor@ods.local
-@passwordConsultor = Consultor2026!
-@consultorUserId = 7
+@emailEvaluador = evaluador@ods.cr
+@passwordEvaluador = password123
+@evaluadorUserId = 5
 @sedeId = 2
 @anio = 2024
-### dependenciaId=1 → "Gestión Ambiental y Salud Ocupacional" (sodsi_dependencia)
-@dependenciaId = 1
-@unidadEsperada = Gestión Ambiental y Salud Ocupacional
+### unidad_programatica_id=10 → "[UTN-U-010] Dirección Académica — Sede Central"
+@unidadProgramaticaId = 10
+@unidadEsperada = [UTN-U-010] Dirección Académica — Sede Central
 
 ### @name login_admin
 POST {{baseUrl}}/api/login/auth/login
@@ -25,47 +25,46 @@ Content-Type: application/json
 
 @adminToken = {{login_admin.response.body.token}}
 
-# ── Asegurar perfil SODSI del consultor QA (id 7) con dependencia poblada ──
+# ── Asegurar perfil del evaluador QA (id 5) con unidad programática ──
 
-### PUT consultor → dependenciaId poblado (prerreq Unidad encargada)
-PUT {{baseUrl}}/api/login/users/{{consultorUserId}}
+### PUT evaluador → unidadProgramaticaId (prerreq Unidad encargada)
+PUT {{baseUrl}}/api/login/users/{{evaluadorUserId}}
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
-  "username": "consultor_qa",
-  "email": "consultor@ods.local",
-  "fullName": "Consultor QA Local",
-  "rolId": 3,
+  "username": "evaluador_general",
+  "email": "evaluador@ods.cr",
+  "fullName": "Luis Vargas Castro",
+  "rolId": 4,
   "sedeId": 2,
-  "dependenciaId": {{dependenciaId}}
+  "unidadProgramaticaId": {{unidadProgramaticaId}}
 }
 
-### @name login_consultor
+### @name login_evaluador
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "{{emailConsultor}}",
-  "password": "{{passwordConsultor}}"
+  "email": "{{emailEvaluador}}",
+  "password": "{{passwordEvaluador}}"
 }
 
-@consultorToken = {{login_consultor.response.body.token}}
+@evaluadorToken = {{login_evaluador.response.body.token}}
 
-# ── Matriz SODSI consultor (21 cols, hoja "Acciones") ──
+# ── Matriz SODSI evaluador (21 cols, hoja "Acciones") ──
 
-### GET consolidado sede+año → 200 + xlsx (matriz 21 columnas; Unidad desde perfil)
+### GET consolidado sede+año → 200 + xlsx (Unidad desde perfil actor)
 GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}
-Authorization: Bearer {{consultorToken}}
+Authorization: Bearer {{evaluadorToken}}
 
 # Smoke esperado:
 # - Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 # - 1 hoja "Acciones"
 # - Fila 1: Año | Institución | Usuario | Unidad encargada | Acción | Objetivo | Meta | ...
-# - Usuario = "Consultor QA Local" (quién descarga)
-# - Unidad encargada = "{{unidadEsperada}}" (dependenciaNombre del actor; vacío si sin perfil)
-# - Proyecto QA #6: Objetivo = "[1] <nombre ODS>" (todos ODS vinculados, separados por ", ")
-# - Meta = "[1.1.1] <indicadorNombre>" (todos indicadores del proyecto, separados por ", ")
+# - Usuario = "Luis Vargas Castro" (quién descarga)
+# - Unidad encargada = "{{unidadEsperada}}" (vacío si sin unidadProgramaticaId)
+# - Resto de columnas sin cambio de contrato
 
 ### GET consolidado sin token → 401/403
 GET {{baseUrl}}/api/export/projects/excel?sedeId={{sedeId}}&anio={{anio}}

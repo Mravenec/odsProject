@@ -29,6 +29,7 @@ public class Usuarios implements Serializable {
     private UShort areaId;
     private UShort dependenciaId;
     private UByte rolDependenciaId;
+    private Integer unidadProgramaticaId;
     private String telefonoContacto;
     private Byte isActive;
     private Byte emailVerificado;
@@ -53,6 +54,7 @@ public class Usuarios implements Serializable {
         this.areaId = value.areaId;
         this.dependenciaId = value.dependenciaId;
         this.rolDependenciaId = value.rolDependenciaId;
+        this.unidadProgramaticaId = value.unidadProgramaticaId;
         this.telefonoContacto = value.telefonoContacto;
         this.isActive = value.isActive;
         this.emailVerificado = value.emailVerificado;
@@ -76,6 +78,7 @@ public class Usuarios implements Serializable {
         UShort areaId,
         UShort dependenciaId,
         UByte rolDependenciaId,
+        Integer unidadProgramaticaId,
         String telefonoContacto,
         Byte isActive,
         Byte emailVerificado,
@@ -97,6 +100,7 @@ public class Usuarios implements Serializable {
         this.areaId = areaId;
         this.dependenciaId = dependenciaId;
         this.rolDependenciaId = rolDependenciaId;
+        this.unidadProgramaticaId = unidadProgramaticaId;
         this.telefonoContacto = telefonoContacto;
         this.isActive = isActive;
         this.emailVerificado = emailVerificado;
@@ -262,6 +266,23 @@ public class Usuarios implements Serializable {
      */
     public Usuarios setRolDependenciaId(UByte rolDependenciaId) {
         this.rolDependenciaId = rolDependenciaId;
+        return this;
+    }
+
+    /**
+     * Getter for <code>ods_login.usuarios.unidad_programatica_id</code>. Unidad
+     * encargada SODSI export (sodsi_unidades_programaticas)
+     */
+    public Integer getUnidadProgramaticaId() {
+        return this.unidadProgramaticaId;
+    }
+
+    /**
+     * Setter for <code>ods_login.usuarios.unidad_programatica_id</code>. Unidad
+     * encargada SODSI export (sodsi_unidades_programaticas)
+     */
+    public Usuarios setUnidadProgramaticaId(Integer unidadProgramaticaId) {
+        this.unidadProgramaticaId = unidadProgramaticaId;
         return this;
     }
 
@@ -486,6 +507,12 @@ public class Usuarios implements Serializable {
         }
         else if (!this.rolDependenciaId.equals(other.rolDependenciaId))
             return false;
+        if (this.unidadProgramaticaId == null) {
+            if (other.unidadProgramaticaId != null)
+                return false;
+        }
+        else if (!this.unidadProgramaticaId.equals(other.unidadProgramaticaId))
+            return false;
         if (this.telefonoContacto == null) {
             if (other.telefonoContacto != null)
                 return false;
@@ -563,6 +590,7 @@ public class Usuarios implements Serializable {
         result = prime * result + ((this.areaId == null) ? 0 : this.areaId.hashCode());
         result = prime * result + ((this.dependenciaId == null) ? 0 : this.dependenciaId.hashCode());
         result = prime * result + ((this.rolDependenciaId == null) ? 0 : this.rolDependenciaId.hashCode());
+        result = prime * result + ((this.unidadProgramaticaId == null) ? 0 : this.unidadProgramaticaId.hashCode());
         result = prime * result + ((this.telefonoContacto == null) ? 0 : this.telefonoContacto.hashCode());
         result = prime * result + ((this.isActive == null) ? 0 : this.isActive.hashCode());
         result = prime * result + ((this.emailVerificado == null) ? 0 : this.emailVerificado.hashCode());
@@ -590,6 +618,7 @@ public class Usuarios implements Serializable {
         sb.append(", ").append(areaId);
         sb.append(", ").append(dependenciaId);
         sb.append(", ").append(rolDependenciaId);
+        sb.append(", ").append(unidadProgramaticaId);
         sb.append(", ").append(telefonoContacto);
         sb.append(", ").append(isActive);
         sb.append(", ").append(emailVerificado);

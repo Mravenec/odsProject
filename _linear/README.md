@@ -229,15 +229,15 @@ Este es el **orden lógico obligatorio para cualquier trabajo** en el repo — f
 
 | Fase | Qué | Quién | Gate (no avanzar sin…) |
 |---|---|---|---|
-| **0 — Limpieza** | Vaciar Linear (`cleanup`) + borrar artefactos del sprint anterior en `_linear/` | IA (orquestador) | Sprint anterior cerrado (Done + resumen + epic Completed) **o** confirmación explícita de descarte |
+| **0 — Limpieza** | Vaciar Linear (`cleanup` issues+epic) + borrar artefactos del sprint anterior | IA (orquestador) | **Nueva** instrucción de trabajo + sprint anterior cerrado (Done + resumen legible) **o** descarte explícito |
 | **1 — Plan** | Análisis, plan de ataque, dependencias, roles | IA (orquestador) | Limpieza hecha; alcance claro |
 | **2 — HTML propuesta** | Documento visual: issues, pipeline, archivos, paralelismo | IA | `_linear/plans/plan_sprint_<nombre>.html` (único plan activo en `plans/`) |
 | **3 — Aprobación** | Humano revisa el HTML propuesta | Tú | ✅ explícito en chat o comentario Linear |
 | **4 — MJS** | Script que crea epic, sprint, issues y `blocks` en Linear | IA | Solo **después** de aprobación |
 | **5 — Multi-agente** | Backlog → Doing → Testing → Done; checklist en Doing; pruebas locales en Testing | IA + MCP | Todos los issues del **problema actual** en **Done** + aviso publicado |
-| **6 — HTML resumen** | Documento de cierre: qué se hizo, archivos, issues cerrados | IA (orquestador) | `_linear/plans/resumen_sprint_<nombre>.html` + epic **Completed** |
+| **6 — HTML resumen** | Documento de cierre legible (sin cleanup) | IA (orquestador) | `_linear/plans/resumen_sprint_<nombre>.html` + epic **Completed** |
 
-> **Regla de oro:** **limpiar → proponer**. Nunca acumular `plan_sprint_*.html`, `resumen_sprint_*.html` ni `sprint_*.mjs` de sprints pasados. Ver **🧹 Fase 0 — Limpieza obligatoria**.
+> **Regla de oro:** **al trabajo nuevo → limpiar → proponer**. Tras Fase 6 el resumen queda legible; no borrar hasta la próxima instrucción. Ver **🧹 Fase 0**.
 
 ```
   [🧹 Limpieza]  →  [Plan IA]  →  [plan_sprint_N.html]  →  [✅ Aprobado]  →  [sprint_N.mjs create]
@@ -254,49 +254,52 @@ Este es el **orden lógico obligatorio para cualquier trabajo** en el repo — f
 
 **Cada problema nuevo** tiene su propio trío `plan_sprint_<nombre>.html` + `sprint_<nombre>.mjs` + `resumen_sprint_<nombre>.html` — **solo uno activo a la vez** en `_linear/plans/` y `_linear/scripts/`.
 
-### 🧹 Fase 0 — Limpieza obligatoria (antes de la propuesta)
+### 🧹 Fase 0 — Limpieza obligatoria (al iniciar trabajo nuevo, no al cerrar)
 
-**Antes** de crear o editar `plan_sprint_<nombre>.html`, la IA debe limpiar el sprint anterior. **No se acumulan** planes, resúmenes ni scripts de problemas ya cerrados.
+**Cuándo:** el humano pide un **nuevo** problema/feature y todavía existen artefactos o el epic del sprint anterior.
+
+**Cuándo no:** al terminar el sprint (Fase 6) — ahí se deja `resumen_sprint_*.html` (y plan/script) **legibles** hasta la próxima instrucción.
+
+**Antes** de crear o editar el `plan_sprint_<nuevo>.html`, la IA debe limpiar el sprint anterior. **No se acumulan** planes, resúmenes, scripts ni epics Completed.
 
 #### Orden obligatorio
 
 ```
-1. Cerrar sprint anterior (si existía): todos Done + resumen HTML + epic Completed en Linear
-2. Linear:  node scripts/sprint_<anterior>.mjs cleanup     ← borra issues del epic
-3. Local:   borrar artefactos del sprint anterior en _linear/  (tabla abajo)
-4. Recién entonces: Fase 1 (plan) → Fase 2 (HTML propuesta)
+1. Sprint anterior ya cerrado: todos Done + resumen HTML + epic Completed (Fase 6 — legible)
+2. Nueva instrucción del humano → Fase 0:
+   Linear:  node scripts/sprint_<anterior>.mjs cleanup  ← borra issues + epic
+   Local:   borrar plan_ / resumen_ / sprint_*.mjs del anterior
+3. Recién entonces: Fase 1 (plan) → Fase 2 (HTML propuesta)
 ```
 
-#### Qué borrar en `_linear/` (sprint anterior)
+#### Qué borrar en `_linear/` y Linear (sprint anterior) — solo en Fase 0
 
 | Ubicación | Borrar | Conservar siempre |
 |---|---|---|
+| Issues del epic | ✅ Sí (`cleanup`) | — |
+| Epic / project Linear | ✅ Sí (`cleanup` borra o archiva el epic) | — |
 | `plans/plan_sprint_<viejo>.html` | ✅ Sí | `plans/_plantilla_ods.html` |
 | `plans/resumen_sprint_<viejo>.html` | ✅ Sí | — |
 | `scripts/sprint_<viejo>.mjs` | ✅ Sí | `linear-lib.mjs`, `linear-comment.mjs`, `linear-update-state.mjs` |
 | `scripts/resumen_sprint_evidence_section.html` | ❌ No | Referencia de estilo (no es sprint activo) |
 | `plans/plan_sprint_<nuevo>.html` del sprint **actual** | ❌ No | Es la propuesta en curso |
 
-> **Un solo sprint activo:** en `plans/` debe quedar como máximo **un** `plan_sprint_*.html` (el del trabajo actual) y, al cerrar, **un** `resumen_sprint_*.html` hasta la siguiente limpieza. En `scripts/` solo **un** `sprint_*.mjs` del sprint activo.
+> **Un solo sprint activo:** en `plans/` como máximo **un** `plan_sprint_*.html` en curso y, tras Fase 6, **un** `resumen_sprint_*.html` legible hasta la siguiente Fase 0. En `scripts/` solo **un** `sprint_*.mjs` del sprint activo (o del cerrado pendiente de lectura).
 
 #### Checklist rápido para la IA
 
 ```bash
 cd _linear
 
-# 1. Linear — solo si el sprint anterior tenía .mjs y epic activo
+# Solo cuando el humano pide el PRÓXIMO trabajo (no al cerrar):
 node scripts/sprint_<anterior>.mjs cleanup
 
-# 2. Local — eliminar archivos del sprint anterior (PowerShell ejemplo)
+# Local — eliminar archivos del sprint anterior (PowerShell ejemplo)
 # Remove-Item plans/plan_sprint_<viejo>.html, plans/resumen_sprint_<viejo>.html -ErrorAction SilentlyContinue
 # Remove-Item scripts/sprint_<viejo>.mjs -ErrorAction SilentlyContinue
-
-# 3. Verificar que solo quedan plantilla + referencia + sprint actual
-# plans/: _plantilla_ods.html + plan_sprint_<actual>.html
-# scripts/: linear-*.mjs + sprint_<actual>.mjs (si ya aprobado) + resumen_sprint_evidence_section.html
 ```
 
-> **Regla:** si el humano pide trabajar en un sprint nuevo (p. ej. `chat_planificacion`), la IA **empieza por Fase 0** aunque el sprint anterior no esté documentado en el chat — pregunta o infiere qué archivos borrar.
+> **Regla:** si el humano pide trabajar en un sprint nuevo, la IA **empieza por Fase 0** (aunque el resumen del anterior siga en el repo a propósito para lectura).
 
 ### Orden lógico de capas (nunca invertir)
 
@@ -656,7 +659,7 @@ Comandos mínimos del script:
 | `state ODS-N "In Progress"` | Pasar a **Doing** (al reclamar / empezar) |
 | `state ODS-N Testing` | Pasar a **Testing** — pruebas locales (checklist ya completo) |
 | `state ODS-N Done` | Cerrar — **bloqueado** si checklist incompleto o Testing omitido |
-| `cleanup` | Elimina **todos los issues** del epic del script (ver **🧹 Fase 0** y **🔄 Arranque de trabajo nuevo**) |
+| `cleanup` | Elimina **issues + epic** del script (Fase 0 — al iniciar trabajo nuevo; ver **🧹 Fase 0**) |
 
 Cada issue creado debe tener:
 
@@ -885,6 +888,7 @@ Copiar desde `_plantilla_ods.html` o `resumen_sprint_evidence_section.html` — 
 - El resumen se basa en **hechos verificados**: checklists marcados, artifacts de Linear, código commiteado.  
 - Nombrar en pareja: `plan_sprint_<nombre>.html` (antes) + `resumen_sprint_<nombre>.html` (después).  
 - Marcar el epic como **Completed** y comentar con enlace o ruta al resumen (ver **🔄 Arranque de trabajo nuevo → Ciclo de vida del Epic**).
+- **No** ejecutar \cleanup\ ni borrar plan/resumen/script al cerrar — el resumen debe quedar **legible** hasta la próxima instrucción (Fase 0).
 
 ```bash
 # Verificar que el sprint está listo para Fase 6
@@ -903,9 +907,9 @@ Al pasar de un sprint/problema a otro, el orden importa: **primero limpiar, lueg
 | **Issues en Backlog** (y en cualquier estado) del epic del sprint que cierras | ✅ **Sí** | `cleanup` borra **todos** los issues de ese epic — Backlog, Doing, Testing, Done, etc. |
 | **Backlog del equipo** (issues de *otros* epics o sueltos) | ❌ **No** | `cleanup` solo toca el `EPIC_NAME` del `.mjs` que ejecutas |
 | **`plans/plan_sprint_<viejo>.html`** | ✅ **Sí** | Solo queda el plan del sprint **activo** (+ `_plantilla_ods.html`) |
-| **`plans/resumen_sprint_<viejo>.html`** | ✅ **Sí** | Tras Fase 6 del sprint anterior; no acumular historial en repo |
-| **`scripts/sprint_<viejo>.mjs`** | ✅ **Sí** | Tras `cleanup` + resumen; utilidades `linear-*.mjs` se conservan |
-| **Epics** (proyectos en Linear) | ❌ **No se borran** | Se **marcan Completed** al cerrar; al reutilizar el mismo nombre se **actualizan** (descripción, estado). Epic nuevo = nombre nuevo en el `.mjs` |
+| **`plans/resumen_sprint_<viejo>.html`** | ✅ **Sí** | En Fase 0 (próximo trabajo), **después** de que el humano pudo leerlo |
+| **`scripts/sprint_<viejo>.mjs`** | ✅ **Sí** | Tras `cleanup` |
+| **Epics** (proyectos en Linear) | ✅ **Sí** | `cleanup` **borra** el epic (fallback: archivar). Completed solo en Fase 6 para lectura |
 | **Cycles / sprints** en Linear | ❌ **No** | Quedan como historial |
 | **`linear-lib.mjs`, `linear-comment.mjs`, `linear-update-state.mjs`** | ❌ **No** | Utilidades compartidas — **siempre** |
 | **`scripts/resumen_sprint_evidence_section.html`** | ❌ **No** | Referencia visual de estilo — **siempre** |
@@ -943,7 +947,7 @@ node scripts/sprint_<nombre>.mjs cleanup
 | Acción | ¿Lo hace `cleanup`? |
 |---|---|
 | Borrar **issues** del epic del script | ✅ Sí |
-| Borrar el **epic** (proyecto) en Linear | ❌ No |
+| Borrar el **epic** (proyecto) en Linear | ✅ Sí (fallback: archivar) |
 | Borrar el **cycle/sprint** en Linear | ❌ No |
 | Borrar labels ni estados del workflow | ❌ No |
 
@@ -956,7 +960,7 @@ node scripts/sprint_<nombre>.mjs cleanup
 | `linear-lib.mjs`, `linear-comment.mjs`, `linear-update-state.mjs` | **Conservar** — utilidades compartidas |
 | `scripts/resumen_sprint_evidence_section.html` | **Conservar** — referencia visual de estilo |
 | `plans/_plantilla_ods.html` | **Conservar** |
-| `plans/plan_sprint_<viejo>.html`, `plans/resumen_sprint_<viejo>.html` | **Borrar** — tras Fase 6 del sprint anterior |
+| `plans/plan_sprint_<viejo>.html`, `plans/resumen_sprint_<viejo>.html` | **Borrar** — en Fase 0 (próximo trabajo), tras lectura |
 | `sprint_<nombre_viejo>.mjs` | **Borrar** — tras `cleanup` + resumen HTML |
 
 Para el **nuevo** problema se crea un trío nuevo (no se reutiliza el `.mjs` de otro sprint salvo que sea continuación explícita del mismo epic):
@@ -998,32 +1002,31 @@ Herramientas MCP: `list_projects`, `update_project` (campos: `name`, `descriptio
 
 ```
 1. Verificar resumen del sprint anterior (Fase 6 completa)
-2. node scripts/sprint_<nombre>.mjs cleanup          ← Linear: borrar issues viejos
+2. node scripts/sprint_<nombre>.mjs cleanup          ← Linear: borrar issues + epic
 3. Borrar plan/resumen/sprint_*.mjs del sprint anterior en _linear/
-4. update_project: descripción + estado del epic     ← Epic al día
-5. plan_sprint_<nuevo>.html → ✅ aprobación
-6. sprint_<nuevo>.mjs → node scripts/sprint_<nuevo>.mjs create
+4. plan_sprint_<nuevo>.html → ✅ aprobación
+5. sprint_<nuevo>.mjs → node scripts/sprint_<nuevo>.mjs create
 ```
 
 **B — Problema distinto** (ej. login, chat planificación — epic nuevo):
 
 ```
-1. Fase 0: cleanup + borrar artefactos _linear/ del sprint anterior (si existían)
+1. Fase 0: cleanup (issues+epic) + borrar artefactos _linear/ del sprint anterior (si existían)
 2. plan_sprint_<nuevo>.html → ✅ aprobación
 3. sprint_<nuevo>.mjs con EPIC_NAME distinto (ej. "Chat planificación")
 4. node scripts/sprint_<nuevo>.mjs create
-5. Al cerrar: resumen Fase 6 + epic Completed
+5. Al cerrar: resumen Fase 6 + epic Completed (dejar legible; sin cleanup)
 ```
 
 | Pregunta | Respuesta |
 |---|---|
 | ¿Se limpia el Backlog de Linear al iniciar? | **Sí**, los issues del epic del sprint que cierras (cualquier estado). **No** el backlog de otros epics |
-| ¿Se borran plan/resumen HTML viejos en `_linear/plans/`? | **Sí** — no acumular; solo sprint activo + plantilla |
-| ¿Se borran los Epics? | **No** — Completed al cerrar; reutilizar o crear uno nuevo |
+| ¿Se borran plan/resumen HTML viejos en `_linear/plans/`? | **Sí** — en Fase 0 del próximo trabajo (después de leer el resumen) |
+| ¿Se borran los Epics? | **Sí**, en Fase 0 (`cleanup`). En Fase 6 solo Completed (legible) |
 | ¿Se limpia todo `_linear/scripts/`? | **No** — solo el `sprint_<viejo>.mjs`; utilidades y referencia HTML se quedan |
-| ¿Limpiar antes de la propuesta? | **Sí** — Fase 0 obligatoria: Linear `cleanup` + borrar artefactos locales |
-| ¿Actualizar el epic? | **Sí** — al iniciar (descripción/estado) y al cerrar (Completed + enlace al resumen) |
-| ¿Epic reutilizado vs epic nuevo? | Mismo dominio → `cleanup` + limpieza local + actualizar epic. Problema distinto → epic nuevo + limpieza local igualmente |
+| ¿Limpiar antes de la propuesta? | **Sí** — Fase 0 al recibir la nueva instrucción |
+| ¿Actualizar el epic? | Completed en Fase 6; **borrar** en Fase 0 |
+| ¿Epic reutilizado vs epic nuevo? | Preferir epic nuevo tras Fase 0 (el anterior ya se borró) |
 
 ---
 

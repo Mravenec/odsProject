@@ -7,6 +7,7 @@ const EMPTY_SODSI_CATALOGS = {
   areas: [],
   dependencias: [],
   rolesDependencia: [],
+  unidades: [],
 };
 
 /**
@@ -41,6 +42,7 @@ export function useUsersAdmin() {
           areas: sodsiRes.data?.areas || [],
           dependencias: sodsiRes.data?.dependencias || [],
           rolesDependencia: sodsiRes.data?.rolesDependencia || [],
+          unidades: sodsiRes.data?.unidades || [],
         });
       }
     } catch (e) {

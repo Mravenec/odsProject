@@ -105,4 +105,6 @@ ALTER TABLE usuarios
     ADD CONSTRAINT fk_usuarios_sodsi_dependencia
         FOREIGN KEY (dependencia_id) REFERENCES sodsi_dependencia(id) ON DELETE SET NULL,
     ADD CONSTRAINT fk_usuarios_sodsi_rol_dependencia
-        FOREIGN KEY (rol_dependencia_id) REFERENCES sodsi_rol_dependencia(id) ON DELETE SET NULL;
+        FOREIGN KEY (rol_dependencia_id) REFERENCES sodsi_rol_dependencia(id) ON DELETE SET NULL,
+    ADD CONSTRAINT fk_usuarios_sodsi_unidad_programatica
+        FOREIGN KEY (unidad_programatica_id) REFERENCES sodsi_unidades_programaticas(id) ON DELETE SET NULL;

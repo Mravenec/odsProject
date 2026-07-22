@@ -843,6 +843,11 @@ public class LoginService implements ILoginService {
             profile.put("rolDependenciaCodigo", r.getCodigo());
             profile.put("rolDependenciaNombre", r.getNombre());
         });
+        profile.put("unidadProgramaticaId", usuario.getUnidadProgramaticaId());
+        sodsiCatalogRepository.findUnidadProgramaticaById(usuario.getUnidadProgramaticaId()).ifPresent(u -> {
+            profile.put("unidadProgramaticaCodigo", u.getCodigo());
+            profile.put("unidadProgramaticaNombre", u.getNombre());
+        });
         profile.put("contacto", formatContactoExport(
                 usuario.getFullName(), usuario.getEmail(), usuario.getTelefonoContacto()));
         return profile;

@@ -82,9 +82,29 @@ async function getOrCreateSprint(teamId, name, startsAt, endsAt) {
     console.log(`  ♻️  Sprint: ${name}`);
     return r.nodes[0].id;
   }
-  const res = await linear.createCycle({ teamId, name, startsAt, endsAt });
-  console.log(`  ✅ Sprint: ${name}`);
-  return (await res.cycle).id;
+  try {
+    const res = await linear.createCycle({ teamId, name, startsAt, endsAt });
+    console.log(`  ✅ Sprint: ${name}`);
+    return (await res.cycle).id;
+  } catch (e) {
+    const msg = e?.message || String(e);
+    if (!/overlap/i.test(msg)) throw e;
+    // Linear no permite cycles con fechas solapadas: reusar el activo (o el más reciente).
+    const active = await linear.cycles({
+      filter: { team: { id: { eq: teamId } }, isActive: { eq: true } },
+    });
+    if (active.nodes.length) {
+      console.log(`  ♻️  Cycle activo (evita overlap): ${active.nodes[0].name}`);
+      return active.nodes[0].id;
+    }
+    const all = await linear.cycles({ filter: { team: { id: { eq: teamId } } }, first: 10 });
+    const sorted = [...all.nodes].sort((a, b) => new Date(b.endsAt) - new Date(a.endsAt));
+    if (sorted[0]) {
+      console.log(`  ♻️  Cycle reciente (evita overlap): ${sorted[0].name}`);
+      return sorted[0].id;
+    }
+    throw e;
+  }
 }
 
 async function createIssue(params) {
@@ -328,15 +348,33 @@ export function registerSprint(cfg) {
   async function cmdCleanup() {
     const team = await getTeam();
     const { epic, issues } = await getEpicIssues(EPIC_NAME);
-    if (!epic || !issues.length) {
-      console.log("\n✅ Epic vacío.\n");
+    if (!epic) {
+      console.log("\n✅ Epic no encontrado (ya limpio).\n");
       return;
     }
     for (const i of issues) {
       await linear.deleteIssue(i.id);
-      console.log(`  ✓ ${i.identifier}`);
+      console.log(`  ✓ issue ${i.identifier}`);
     }
-    console.log(`\n✅ ${issues.length} issues eliminados.\n`);
+    if (issues.length) {
+      console.log(`\n  ${issues.length} issue(s) eliminados.`);
+    } else {
+      console.log("\n  (sin issues en el epic)");
+    }
+    // Borrar el proyecto/epic en Linear — no dejar epics Completed acumulados
+    try {
+      await linear.deleteProject(epic.id);
+      console.log(`  ✓ epic eliminado: ${EPIC_NAME}\n`);
+    } catch (e) {
+      // Fallback: archivar si la API no permite delete
+      try {
+        await linear.archiveProject(epic.id);
+        console.log(`  ✓ epic archivado (delete no disponible): ${EPIC_NAME}\n`);
+      } catch (e2) {
+        console.error(`\n❌ No se pudo borrar/archivar epic «${EPIC_NAME}»: ${e2.message || e2}\n`);
+        process.exit(1);
+      }
+    }
   }
 
   function cmdHelp() {

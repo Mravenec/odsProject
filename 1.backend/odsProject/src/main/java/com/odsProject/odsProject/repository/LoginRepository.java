@@ -132,6 +132,9 @@ public class LoginRepository implements ILoginRepository {
         if (usuario.getRolDependenciaId() != null) {
             update.set(USUARIOS.ROL_DEPENDENCIA_ID, usuario.getRolDependenciaId());
         }
+        if (usuario.getUnidadProgramaticaId() != null) {
+            update.set(USUARIOS.UNIDAD_PROGRAMATICA_ID, usuario.getUnidadProgramaticaId());
+        }
         if (usuario.getTelefonoContacto() != null) {
             update.set(USUARIOS.TELEFONO_CONTACTO, usuario.getTelefonoContacto());
         }
@@ -169,6 +172,7 @@ public class LoginRepository implements ILoginRepository {
                         USUARIOS.AREA_ID.as("areaId"),
                         USUARIOS.DEPENDENCIA_ID.as("dependenciaId"),
                         USUARIOS.ROL_DEPENDENCIA_ID.as("rolDependenciaId"),
+                        USUARIOS.UNIDAD_PROGRAMATICA_ID.as("unidadProgramaticaId"),
                         USUARIOS.TELEFONO_CONTACTO.as("telefonoContacto"),
                         USUARIOS.IS_ACTIVE.as("isActive"),
                         USUARIOS.ULTIMO_LOGIN.as("ultimoLogin"),
