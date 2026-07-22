@@ -5,7 +5,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
@@ -276,7 +275,11 @@ public interface ILoginRepository {
      * @param dias Número de días a consultar
      * @return Lista de auditorías recientes
      */
-    List<VistaAdminAuditoriaLoginReciente> findVistaAuditoriaReciente(Integer dias);
+    /**
+     * Auditoría reciente con rol del usuario (admin|gestor|consultor|evaluador).
+     * Cada map: id, fechaEvento, evento, username, fullName, rol, emailIntento, ipAddress, userAgent, detalle.
+     */
+    List<Map<String, Object>> findVistaAuditoriaReciente(Integer dias);
     
     /**
      * Obtiene el resumen general administrativo

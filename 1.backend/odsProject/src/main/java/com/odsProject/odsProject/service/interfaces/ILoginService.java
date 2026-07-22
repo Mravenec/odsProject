@@ -5,7 +5,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
@@ -322,12 +321,12 @@ public interface ILoginService {
     // ── Administración ──
     
     /**
-     * Obtiene la vista de auditoría de login reciente
-     * 
+     * Obtiene la vista de auditoría de login reciente (incluye rol del usuario).
+     *
      * @param dias Número de días a consultar
-     * @return Lista de auditorías recientes
+     * @return Lista de mapas (id, fechaEvento, evento, username, fullName, rol, …)
      */
-    List<VistaAdminAuditoriaLoginReciente> getVistaAuditoriaReciente(Integer dias);
+    List<Map<String, Object>> getVistaAuditoriaReciente(Integer dias);
     
     /**
      * Obtiene el resumen general administrativo

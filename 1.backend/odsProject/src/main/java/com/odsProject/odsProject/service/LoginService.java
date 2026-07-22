@@ -6,7 +6,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEvento;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
@@ -15,8 +14,11 @@ import com.odsProject.odsProject.repository.LoginRepository;
 import com.odsProject.odsProject.repository.interfaces.ISodsiCatalogRepository;
 import com.odsProject.odsProject.service.interfaces.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -27,7 +29,6 @@ import java.util.Optional;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -41,6 +42,10 @@ import java.util.UUID;
  */
 @Service
 public class LoginService implements ILoginService {
+
+    private static final Logger log = LoggerFactory.getLogger(LoginService.class);
+    /** Coincide con auditoria_login.user_agent VARCHAR(300). */
+    private static final int USER_AGENT_MAX = 300;
 
     @Autowired
     private LoginRepository loginRepository;
@@ -174,16 +179,18 @@ public class LoginService implements ILoginService {
             if (token == null || token.trim().isEmpty()) {
                 return false;
             }
-            
-            // Ejecutar stored procedure de logout
-            loginRepository.executeSpLogout(token);
-            
+            String actualToken = token.startsWith("Bearer ") ? token.substring(7).trim() : token.trim();
+
+            // Ejecutar stored procedure de logout (token sin prefijo Bearer)
+            loginRepository.executeSpLogout(actualToken);
+
             // Revocar sesión
-            loginRepository.revocarSesion(token);
-            
+            loginRepository.revocarSesion(actualToken);
+
             return true;
-            
+
         } catch (Exception e) {
+            log.warn("Logout falló: {}", e.getMessage());
             return false;
         }
     }
@@ -550,7 +557,7 @@ public class LoginService implements ILoginService {
      * {@inheritDoc}
      */
     @Override
-    public List<VistaAdminAuditoriaLoginReciente> getVistaAuditoriaReciente(Integer dias) {
+    public List<Map<String, Object>> getVistaAuditoriaReciente(Integer dias) {
         return loginRepository.findVistaAuditoriaReciente(dias);
     }
 
@@ -563,12 +570,14 @@ public class LoginService implements ILoginService {
             row.setEmailIntento(email);
             row.setEvento(evento);
             row.setIpAddress(ip != null && ip.length() > 45 ? ip.substring(0, 45) : ip);
-            row.setUserAgent(userAgent != null && userAgent.length() > 512 ? userAgent.substring(0, 512) : userAgent);
+            row.setUserAgent(userAgent != null && userAgent.length() > USER_AGENT_MAX
+                    ? userAgent.substring(0, USER_AGENT_MAX) : userAgent);
             row.setDetalle(detalle);
             row.setFechaEvento(LocalDateTime.now());
             loginRepository.saveAuditoriaLogin(row);
-        } catch (Exception ignored) {
-            // bitácora best-effort
+        } catch (Exception e) {
+            log.warn("Bitácora: no se pudo registrar {} para email={}: {}",
+                    evento, email, e.getMessage());
         }
     }
 

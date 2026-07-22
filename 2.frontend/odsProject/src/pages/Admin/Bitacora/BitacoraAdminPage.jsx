@@ -99,11 +99,11 @@ export default function BitacoraAdminPage() {
             />
           </label>
           <label>
-            Usuario
+            Usuario / rol
             <input
               type="search"
               name="usuario"
-              placeholder="Nombre o username…"
+              placeholder="Rol o nombre…"
               value={filters.usuario}
               onChange={onFilterChange}
             />
@@ -133,14 +133,16 @@ export default function BitacoraAdminPage() {
         <>
           <p className="bitacora-count">
             {totalFiltered === 0
-              ? `Sin eventos (cargados ${totalLoaded} del servidor). Cerrá sesión e ingresá de nuevo para generar LOGIN_OK.`
+              ? totalLoaded > 0
+                ? `Sin coincidencias con los filtros (hay ${totalLoaded} eventos cargados). Probá «Limpiar» o ampliá el rango de fechas.`
+                : `Sin eventos (cargados 0 del servidor). Cerrá sesión e ingresá de nuevo para generar LOGIN_OK.`
               : `Mostrando ${fromIdx}–${toIdx} de ${totalFiltered} eventos (página ${page + 1}/${totalPages}, ${pageSize} por página)`}
           </p>
           <div className="bitacora-table-wrap">
             <table className="bitacora-table">
               <thead>
                 <tr>
-                  <th>Usuario</th>
+                  <th>Rol</th>
                   <th>Fecha</th>
                   <th>IP</th>
                   <th>Evento</th>
@@ -150,7 +152,9 @@ export default function BitacoraAdminPage() {
                 {entries.length === 0 ? (
                   <tr>
                     <td colSpan={4} className="empty">
-                      No hay eventos con los filtros actuales.
+                      {totalLoaded > 0
+                        ? 'No hay eventos con los filtros actuales. Usá Limpiar para ver todos los cargados.'
+                        : 'No hay eventos con los filtros actuales.'}
                     </td>
                   </tr>
                 ) : (
@@ -158,8 +162,8 @@ export default function BitacoraAdminPage() {
                     <tr key={row.id}>
                       <td>
                         <div className="user-cell">
-                          <span className="user-main">{row.usuario}</span>
-                          {row.fullName && row.fullName !== row.usuario && (
+                          <span className="user-main">{row.rol || row.usuario}</span>
+                          {row.fullName && (
                             <span className="user-sub">{row.fullName}</span>
                           )}
                         </div>

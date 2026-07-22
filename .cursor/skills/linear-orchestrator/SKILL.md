@@ -46,9 +46,10 @@ description: >-
 
 ## Fase 0 — al iniciar el próximo trabajo (no al cerrar)
 
-1. `sprint_<anterior>.mjs cleanup` → borra issues **y** el epic en Linear
-2. Borrar `plan_sprint_` / `resumen_sprint_` / `sprint_*.mjs` del cerrado
-3. Recién entonces proponer el plan nuevo
+1. `sprint_<anterior>.mjs cleanup` → borra issues **y** el epic en Linear (`projectDelete`; **no** solo archive — archive sigue en [Projects/all](https://linear.app))
+2. Si quedan epics Completed/100% huérfanos: `node scripts/purge-completed-projects.mjs` (primero `--dry-run`)
+3. Borrar `plan_sprint_` / `resumen_sprint_` / `sprint_*.mjs` del cerrado
+4. Verificar en Linear Projects que el epic ya no aparece → recién entonces proponer el plan nuevo
 
 ## Comandos útiles
 

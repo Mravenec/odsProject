@@ -75,11 +75,13 @@ Cuando **todos** los issues del epic estén en **Done** (o `next` vacío con iss
 
 Cuando el humano da una **nueva instrucción** de producto (nuevo feature/bug/plan) y aún hay artefactos del sprint cerrado:
 
-1. `node scripts/sprint_<anterior>.mjs cleanup` — borra **issues + epic** en Linear.
-2. Borrar del repo: `plans/plan_sprint_<anterior>.html`, `plans/resumen_sprint_<anterior>.html`, `scripts/sprint_<anterior>.mjs`.
-3. Recién entonces: redactar el nuevo `plan_sprint_*.html` → validar → ¿✅ APROBADO? → `create`.
+1. `node scripts/sprint_<anterior>.mjs cleanup` — borra **issues + epic** en Linear (`projectDelete`). **No** usar solo `archive`: en Linear quedan en Projects (a veces como archivados).
+2. Si hay epics Completed/100% huérfanos de sprints viejos: `node scripts/purge-completed-projects.mjs` (probar antes con `--dry-run`). Criterio OK: `projects` **activos** del equipo = 0 Completed.
+3. Borrar del repo: `plans/plan_sprint_<anterior>.html`, `plans/resumen_sprint_<anterior>.html`, `scripts/sprint_<anterior>.mjs`.
+4. Recién entonces: redactar el nuevo `plan_sprint_*.html` → validar → ¿✅ APROBADO? → `create`.
 
 **Prohibido** acumular varios `sprint_*.mjs` / `plan_sprint_*.html` / `resumen_sprint_*.html` al arrancar un sprint nuevo sin Fase 0.
+**Prohibido** dar por limpio un cleanup que solo archivó el proyecto.
 
 ## Si LINEAR_API_KEY falla
 

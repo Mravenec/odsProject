@@ -439,12 +439,14 @@ SELECT
     a.evento,
     u.username,
     u.full_name,
+    r.nombre        AS rol,
     a.email_intento,
     a.ip_address,
     a.user_agent,
     a.detalle
 FROM  auditoria_login a
 LEFT  JOIN usuarios u ON a.usuario_id = u.id
+LEFT  JOIN roles r    ON u.rol_id = r.id
 WHERE a.fecha_evento >= DATE_SUB(NOW(), INTERVAL 30 DAY)
 ORDER BY a.fecha_evento DESC;
 

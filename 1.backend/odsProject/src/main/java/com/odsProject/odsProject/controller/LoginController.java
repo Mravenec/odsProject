@@ -10,7 +10,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.enums.AuditoriaLoginEve
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
@@ -480,20 +479,7 @@ public class LoginController implements ILoginController {
     @Override
     @GetMapping("/admin/audit-recent")
     public ResponseEntity<List<Map<String, Object>>> getVistaAuditoriaReciente(@RequestParam(defaultValue = "7") Integer dias) {
-        List<VistaAdminAuditoriaLoginReciente> result = loginService.getVistaAuditoriaReciente(dias);
-        return ResponseEntity.ok(result.stream().map(item -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", item.getId());
-            map.put("fechaEvento", item.getFechaEvento());
-            map.put("evento", item.getEvento() != null ? item.getEvento().getLiteral() : null);
-            map.put("username", item.getUsername());
-            map.put("fullName", item.getFullName());
-            map.put("emailIntento", item.getEmailIntento());
-            map.put("ipAddress", item.getIpAddress());
-            map.put("userAgent", item.getUserAgent());
-            map.put("detalle", item.getDetalle());
-            return map;
-        }).collect(java.util.stream.Collectors.toList()));
+        return ResponseEntity.ok(loginService.getVistaAuditoriaReciente(dias));
     }
 
     /**

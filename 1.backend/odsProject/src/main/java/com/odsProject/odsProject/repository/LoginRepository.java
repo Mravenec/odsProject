@@ -5,7 +5,6 @@ import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Roles;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.Sesiones;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.AuditoriaLogin;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.PermisosOds;
-import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminAuditoriaLoginReciente;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminDetalleIndicadores;
 import com.odsProject.odsProject.database.jooq.ods01.tables.pojos.VistaAdminResumenGeneral;
 import com.odsProject.odsProject.database.jooq.ods_login.tables.pojos.VistaAdminUsuariosActivos;
@@ -29,7 +28,6 @@ import static com.odsProject.odsProject.database.jooq.ods_login.tables.Roles.ROL
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.Sesiones.SESIONES;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.AuditoriaLogin.AUDITORIA_LOGIN;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.PermisosOds.PERMISOS_ODS;
-import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminAuditoriaLoginReciente.VISTA_ADMIN_AUDITORIA_LOGIN_RECIENTE;
 import static com.odsProject.odsProject.database.jooq.ods01.tables.VistaAdminResumenGeneral.VISTA_ADMIN_RESUMEN_GENERAL;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.VistaAdminUsuariosActivos.VISTA_ADMIN_USUARIOS_ACTIVOS;
 import static com.odsProject.odsProject.database.jooq.ods_login.tables.Sedes.SEDES;
@@ -410,10 +408,21 @@ public class LoginRepository implements ILoginRepository {
      */
     @Override
     public AuditoriaLogin saveAuditoriaLogin(AuditoriaLogin auditoriaLogin) {
-        return dsl.insertInto(AUDITORIA_LOGIN)
-                .set(dsl.newRecord(AUDITORIA_LOGIN, auditoriaLogin))
-                .returning()
-                .fetchOneInto(AuditoriaLogin.class);
+        try {
+            return dsl.insertInto(AUDITORIA_LOGIN)
+                    .set(dsl.newRecord(AUDITORIA_LOGIN, auditoriaLogin))
+                    .returning()
+                    .fetchOneInto(AuditoriaLogin.class);
+        } catch (Exception returningFailed) {
+            // MariaDB a veces no soporta RETURNING de forma fiable con JOOQ
+            int rows = dsl.insertInto(AUDITORIA_LOGIN)
+                    .set(dsl.newRecord(AUDITORIA_LOGIN, auditoriaLogin))
+                    .execute();
+            if (rows < 1) {
+                throw new IllegalStateException("No se insertó auditoria_login", returningFailed);
+            }
+            return auditoriaLogin;
+        }
     }
 
     /**
@@ -446,7 +455,7 @@ public class LoginRepository implements ILoginRepository {
      * {@inheritDoc}
      */
     @Override
-    public List<VistaAdminAuditoriaLoginReciente> findVistaAuditoriaReciente(Integer dias) {
+    public List<Map<String, Object>> findVistaAuditoriaReciente(Integer dias) {
         int d = (dias == null || dias < 1) ? 30 : Math.min(dias, 365);
         // Tabla directa (no la vista con WHERE fijo 30d): el admin ve el rango pedido.
         return dsl.select(
@@ -455,31 +464,31 @@ public class LoginRepository implements ILoginRepository {
                         AUDITORIA_LOGIN.EVENTO,
                         USUARIOS.USERNAME,
                         USUARIOS.FULL_NAME,
+                        ROLES.NOMBRE,
                         AUDITORIA_LOGIN.EMAIL_INTENTO,
                         AUDITORIA_LOGIN.IP_ADDRESS,
                         AUDITORIA_LOGIN.USER_AGENT,
                         AUDITORIA_LOGIN.DETALLE)
                 .from(AUDITORIA_LOGIN)
                 .leftJoin(USUARIOS).on(AUDITORIA_LOGIN.USUARIO_ID.eq(USUARIOS.ID))
+                .leftJoin(ROLES).on(USUARIOS.ROL_ID.eq(ROLES.ID))
                 .where(AUDITORIA_LOGIN.FECHA_EVENTO.ge(LocalDateTime.now().minusDays(d)))
                 .orderBy(AUDITORIA_LOGIN.FECHA_EVENTO.desc())
                 .limit(500)
                 .fetch(r -> {
-                    VistaAdminAuditoriaLoginReciente row = new VistaAdminAuditoriaLoginReciente();
-                    row.setId(r.get(AUDITORIA_LOGIN.ID));
-                    row.setFechaEvento(r.get(AUDITORIA_LOGIN.FECHA_EVENTO));
+                    Map<String, Object> map = new java.util.LinkedHashMap<>();
+                    map.put("id", r.get(AUDITORIA_LOGIN.ID));
+                    map.put("fechaEvento", r.get(AUDITORIA_LOGIN.FECHA_EVENTO));
                     var ev = r.get(AUDITORIA_LOGIN.EVENTO);
-                    if (ev != null) {
-                        row.setEvento(com.odsProject.odsProject.database.jooq.ods_login.enums
-                                .VistaAdminAuditoriaLoginRecienteEvento.lookupLiteral(ev.getLiteral()));
-                    }
-                    row.setUsername(r.get(USUARIOS.USERNAME));
-                    row.setFullName(r.get(USUARIOS.FULL_NAME));
-                    row.setEmailIntento(r.get(AUDITORIA_LOGIN.EMAIL_INTENTO));
-                    row.setIpAddress(r.get(AUDITORIA_LOGIN.IP_ADDRESS));
-                    row.setUserAgent(r.get(AUDITORIA_LOGIN.USER_AGENT));
-                    row.setDetalle(r.get(AUDITORIA_LOGIN.DETALLE));
-                    return row;
+                    map.put("evento", ev != null ? ev.getLiteral() : null);
+                    map.put("username", r.get(USUARIOS.USERNAME));
+                    map.put("fullName", r.get(USUARIOS.FULL_NAME));
+                    map.put("rol", r.get(ROLES.NOMBRE));
+                    map.put("emailIntento", r.get(AUDITORIA_LOGIN.EMAIL_INTENTO));
+                    map.put("ipAddress", r.get(AUDITORIA_LOGIN.IP_ADDRESS));
+                    map.put("userAgent", r.get(AUDITORIA_LOGIN.USER_AGENT));
+                    map.put("detalle", r.get(AUDITORIA_LOGIN.DETALLE));
+                    return map;
                 });
     }
 

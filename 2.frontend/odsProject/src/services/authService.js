@@ -224,12 +224,18 @@ export const authService = {
 
   _mapAuditEntry(row) {
     if (!row) return null;
+    const rol = (row.rol || row.role || '').toString().trim().toLowerCase();
+    const fullName = row.fullName || row.full_name || '';
+    const username = row.username || row.usuario || '';
     return {
       id: row.id,
       fecha: row.fechaEvento || row.fecha_evento || row.fecha,
       evento: row.evento || '',
-      usuario: row.username || row.usuario || row.fullName || row.full_name || row.emailIntento || '—',
-      fullName: row.fullName || row.full_name || '',
+      // Display principal = rol (admin|gestor|consultor|evaluador)
+      usuario: rol || username || fullName || row.emailIntento || '—',
+      rol: rol || '',
+      username,
+      fullName,
       ip: row.ipAddress || row.ip_address || row.ip || '—',
       userAgent: row.userAgent || row.user_agent || '',
       detalle: row.detalle || '',
@@ -238,7 +244,7 @@ export const authService = {
 
   /**
    * GET /login/admin/audit-recent — Bearer admin.
-   * Campos: usuario, fecha, ip, evento (LOGIN_OK | LOGIN_FALLIDO | LOGOUT).
+   * Campos: usuario (rol), fullName, fecha, ip, evento.
    */
   async getAuditRecent(dias = 30) {
     try {

@@ -79,12 +79,23 @@ for (const f of sprintScripts) {
     if (hasResumen) {
       closedReadable.push({ name, file: f, hasPlan, hasResumen });
     } else {
-      staleNeedsResumen.push({ name, file: f, hasPlan, hasResumen });
-      problems.push({
-        code: "FASE6_INCOMPLETA",
-        message: `Sprint «${name}» sin issues abiertos y sin resumen_sprint_${name}.html — completar Fase 6 (resumen + epic Completed). No borrar aún.`,
-        name,
+      // Distinguir: plan sin create aún vs sprint Done sin resumen (Fase 6)
+      const st = spawnSync(process.execPath, [join(scriptsDir, f), "status"], {
+        encoding: "utf8",
+        cwd: root,
       });
+      const stOut = `${st.stdout || ""}${st.stderr || ""}`;
+      const hadDoneIssues = /\[Done\]/i.test(stOut) || /\bDone\b/.test(stOut);
+      if (hasPlan && !hadDoneIssues) {
+        active.push({ name, file: f, hasPlan, hasResumen, pendingCreate: true });
+      } else {
+        staleNeedsResumen.push({ name, file: f, hasPlan, hasResumen });
+        problems.push({
+          code: "FASE6_INCOMPLETA",
+          message: `Sprint «${name}» sin issues abiertos y sin resumen_sprint_${name}.html — completar Fase 6 (resumen + epic Completed). No borrar aún.`,
+          name,
+        });
+      }
     }
   }
 }

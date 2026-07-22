@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumen — Bitácora mostrar rol · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+  :root{--green900:#0f3d2e;--green700:#1b5e42;--cream50:#f7f4ec;--cream100:#efe9dc;--ink900:#1c2622;--ink600:#4a5852;--bg:var(--cream50);--surf:#fff;--border:rgba(15,61,46,.12);--muted:var(--ink600);--green:var(--green700)}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink900);font-family:'DM Sans',system-ui,sans-serif;line-height:1.6}
+  .hero{margin:24px 48px 0;padding:36px 40px;border-radius:16px;background:linear-gradient(135deg,var(--green900),var(--green700));color:#fff}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:12px}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800}
+  h1 em{font-style:normal;color:#cfe6da}
+  .sub{margin-top:12px;font-size:14px;color:rgba(255,255,255,.88);max-width:820px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);padding:4px 12px;border-radius:999px}
+  .al{margin:20px 48px 0;padding:14px 18px;border-radius:12px;background:#e8f5ef;border:1px solid #b7e0c8;font-size:13px}
+  .sec{padding:36px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:14px}
+  .tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--surf);border-radius:12px;overflow:hidden}
+  .tbl th{text-align:left;font-size:11px;text-transform:uppercase;color:var(--muted);padding:10px 12px;background:var(--cream100)}
+  .tbl td{padding:10px 12px;border-top:1px solid var(--border)}
+  .ok{color:var(--green);font-weight:600}
+  code{font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--cream100);padding:1px 5px;border-radius:4px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+  .box{border-radius:10px;padding:14px;font-size:13px}.box.bad{background:#fdeceb}.box.good{background:#e8f5ef}
+  .box h4{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;margin-bottom:8px}
+  footer{margin:48px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .utn{font-family:'Syne',sans-serif;font-weight:800;color:var(--green700)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="ey">ODS UTN · Sprint · Resumen · linear_ods</div>
+  <h1>Bitácora de ingresos<br><em>columna = rol</em></h1>
+  <p class="sub">La bitácora admin muestra <code>admin</code> / <code>gestor</code> / <code>consultor</code> / <code>evaluador</code> en la celda principal; el nombre completo va como subtítulo.</p>
+  <div class="chips">
+    <div class="chip">Estado <strong>DONE</strong></div>
+    <div class="chip">ODS-246 Done</div>
+    <div class="chip">ODS-247 Done</div>
+    <div class="chip">Epic Completed</div>
+  </div>
+</header>
+<div class="al"><strong>Fase 6 completa.</strong> Artefactos legibles hasta el próximo trabajo (Fase 0).</div>
+
+<section class="sec">
+  <div class="sl">Objetivo resuelto</div>
+  <div class="st">Problema → solución</div>
+  <div class="compare">
+    <div class="box bad"><h4>Antes</h4>Celda = username (<code>gestor_general</code>).</div>
+    <div class="box good"><h4>Después</h4>Celda = rol; subtítulo = fullName.</div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Issue</th><th>Entrega</th></tr></thead>
+    <tbody>
+      <tr><td>ODS-246</td><td class="ok">JOIN roles; JSON <code>rol</code>; vista SQL actualizada</td></tr>
+      <tr><td>ODS-247</td><td class="ok">authService + BitacoraAdminPage th «Rol»</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Archivos</div>
+  <div class="st">Cambios técnicos</div>
+  <table class="tbl">
+    <thead><tr><th>Archivo</th><th>Qué</th></tr></thead>
+    <tbody>
+      <tr><td><code>LoginRepository.java</code></td><td>LEFT JOIN roles → map con rol</td></tr>
+      <tr><td><code>LoginController.java</code> / Service / interfaces</td><td>audit-recent → List&lt;Map&gt; con rol</td></tr>
+      <tr><td><code>1. login_system.sql</code></td><td>vista con columna rol</td></tr>
+      <tr><td><code>authService.js</code> / <code>BitacoraAdminPage.jsx</code> / <code>useLoginAudit.js</code></td><td>display + filtro por rol</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Fase 6 / Fase 0</div>
+  <div class="st">Legible ahora</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>Resumen</td><td class="ok">_linear/plans/resumen_sprint_bitacora_rol.html</td></tr>
+      <tr><td>Cleanup</td><td>Al próximo trabajo: <code>sprint_bitacora_rol.mjs cleanup</code> + purge si hace falta</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>resumen_sprint_bitacora_rol.html</div>
+</footer>
+</body>
+</html>

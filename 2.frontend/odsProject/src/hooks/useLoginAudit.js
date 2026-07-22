@@ -4,12 +4,20 @@ import { authService } from '../services/authService';
 const EVENTOS = ['LOGIN_OK', 'LOGIN_FALLIDO', 'LOGOUT'];
 const PAGE_SIZE = 50;
 
-const todayIso = () => {
-  const d = new Date();
+const toIsoDate = (d) => {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   return `${y}-${m}-${day}`;
+};
+
+const todayIso = () => toIsoDate(new Date());
+
+/** Fecha ISO de hace `n` días (default bitácora: últimos 30). */
+const daysAgoIso = (n) => {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return toIsoDate(d);
 };
 
 const daysBetween = (from, to) => {
@@ -31,7 +39,7 @@ export function useLoginAudit(initialFilters = {}) {
   const [error, setError] = useState('');
   const [page, setPage] = useState(0);
   const [filters, setFilters] = useState({
-    fechaDesde: initialFilters.fechaDesde ?? todayIso(),
+    fechaDesde: initialFilters.fechaDesde ?? daysAgoIso(30),
     fechaHasta: initialFilters.fechaHasta ?? todayIso(),
     usuario: initialFilters.usuario || '',
     evento: initialFilters.evento || '',
@@ -66,7 +74,7 @@ export function useLoginAudit(initialFilters = {}) {
       if (eventoQ && String(row.evento || '').toUpperCase() !== eventoQ) return false;
 
       if (userQ) {
-        const hay = `${row.usuario || ''} ${row.fullName || ''}`.toLowerCase();
+        const hay = `${row.usuario || ''} ${row.rol || ''} ${row.fullName || ''} ${row.username || ''}`.toLowerCase();
         if (!hay.includes(userQ)) return false;
       }
 

@@ -361,20 +361,34 @@ export function registerSprint(cfg) {
     } else {
       console.log("\n  (sin issues en el epic)");
     }
-    // Borrar el proyecto/epic en Linear — no dejar epics Completed acumulados
+    // Borrar el proyecto/epic en Linear — no dejar epics Completed en Projects/all
+    // Nota: archiveProject NO basta (siguen visibles en https://linear.app/.../projects/all).
     try {
       await linear.deleteProject(epic.id);
-      console.log(`  ✓ epic eliminado: ${EPIC_NAME}\n`);
+      console.log(`  ✓ epic eliminado: ${EPIC_NAME}`);
     } catch (e) {
-      // Fallback: archivar si la API no permite delete
       try {
-        await linear.archiveProject(epic.id);
-        console.log(`  ✓ epic archivado (delete no disponible): ${EPIC_NAME}\n`);
+        const m = `mutation($id: String!) { projectDelete(id: $id) { success } }`;
+        await linear.client.rawRequest(m, { id: epic.id });
+        console.log(`  ✓ epic eliminado (gql): ${EPIC_NAME}`);
       } catch (e2) {
-        console.error(`\n❌ No se pudo borrar/archivar epic «${EPIC_NAME}»: ${e2.message || e2}\n`);
+        console.error(`\n❌ No se pudo borrar epic «${EPIC_NAME}»: ${e2.message || e.message}`);
+        console.error("   No usar solo archive — quedan en Projects/all. Reintentá o:");
+        console.error("   node scripts/purge-completed-projects.mjs\n");
         process.exit(1);
       }
     }
+    // Verificar que ya no aparece como activo (Linear delete = archive)
+    const check = await linear.projects({
+      filter: { name: { eq: EPIC_NAME } },
+      includeArchived: false,
+    });
+    if (check.nodes.length) {
+      console.error(`\n❌ Epic «${EPIC_NAME}» sigue activo tras delete. Corré:`);
+      console.error("   node scripts/purge-completed-projects.mjs\n");
+      process.exit(1);
+    }
+    console.log("  (si aparece en Projects/all: es archivado — filtrá Active)\n");
   }
 
   function cmdHelp() {
