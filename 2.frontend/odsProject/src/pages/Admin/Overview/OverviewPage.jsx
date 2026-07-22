@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth.jsx';
 import { useProjects } from '../../../hooks/useProjects.jsx';
-import { formatDate, getEstadoLabel, getEstadoClass, matchesProjectStatusFilter } from '../../../utils/formatters';
+import { formatDate, getEstadoLabel, getEstadoClass, matchesProjectStatusFilter, PROJECT_STATUS_FILTER_OPTIONS } from '../../../utils/formatters';
 import './OverviewPage.css';
 
 const AdminProjectOverviewPage = () => {
@@ -148,10 +148,9 @@ const AdminProjectOverviewPage = () => {
             </select>
             
             <select name="status" value={filter.status} onChange={handleFilterChange} className="filter-select">
-              <option value="all">Todos los estados</option>
-              <option value="active">Activos</option>
-              <option value="in_review">En evaluación</option>
-              <option value="completed">Evaluados</option>
+              {PROJECT_STATUS_FILTER_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
             </select>
 
             <button className="btn-icon-clear" onClick={() => setFilter({ user: '', objective: '', status: 'all' })} title="Limpiar Filtros">

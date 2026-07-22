@@ -175,15 +175,21 @@ export const isEvaluationRejection = (project) => {
 };
 
 /**
- * Filtro UI (valores en inglés del select) contra ENUM español de BD.
+ * Filtro UI contra ENUM español de BD (1:1).
+ * Valores válidos: planificacion | activo | en_revision | completado | cancelado
  */
+export const PROJECT_STATUS_FILTER_OPTIONS = [
+  { value: 'all', label: 'Todos los estados' },
+  { value: 'planificacion', label: 'Planificación' },
+  { value: 'activo', label: 'Activo' },
+  { value: 'en_revision', label: 'En evaluación' },
+  { value: 'completado', label: 'Evaluado' },
+  { value: 'cancelado', label: 'Cancelado' },
+];
+
 export const matchesProjectStatusFilter = (project, filterStatus) => {
   if (!filterStatus || filterStatus === 'all') return true;
-  const s = getProjectWorkflowStatus(project);
-  if (filterStatus === 'active') return s === 'activo' || s === 'active' || s === 'planificacion';
-  if (filterStatus === 'completed') return s === 'completado' || s === 'completed';
-  if (filterStatus === 'in_review') return s === 'en_revision';
-  return s === filterStatus;
+  return getProjectWorkflowStatus(project) === filterStatus;
 };
 
 /**

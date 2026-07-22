@@ -47,11 +47,6 @@ export default function BulkProjectExportPanel({ className = '' }) {
         <FileDown size={18} />
         <div>
           <h2>Reporte institucional SODSI</h2>
-          <p>
-            Excel consolidado (5 hojas) de proyectos evaluados por sede y año — glosario Conare/UTN.
-            Matriz: Meta = nombres de indicador (no apodos de fórmula); Unidad encargada = dependencia
-            del perfil SODSI; Usuario = quien descarga.
-          </p>
         </div>
       </div>
       <div className="bulk-export-controls">

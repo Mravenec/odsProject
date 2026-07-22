@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumen — Filtro estados proyecto · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+  :root{--green900:#0f3d2e;--green700:#1b5e42;--cream50:#f7f4ec;--cream100:#efe9dc;--ink900:#1c2622;--muted:#4a5852;--bg:var(--cream50);--surf:#fff}
+  body{background:var(--bg);color:var(--ink900);font-family:'DM Sans',system-ui,sans-serif;line-height:1.6;margin:0}
+  .hero{margin:24px 48px 0;padding:36px 40px;border-radius:16px;background:linear-gradient(135deg,var(--green900),var(--green700));color:#fff}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.75;margin-bottom:12px}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;margin:0}
+  h1 em{font-style:normal;color:#cfe6da}
+  .sub{margin-top:12px;opacity:.9;font-size:14px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);padding:4px 12px;border-radius:999px}
+  .al{margin:20px 48px 0;padding:14px 18px;border-radius:12px;background:#e8f5ef;font-size:13px}
+  .sec{padding:36px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:14px}
+  .tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--surf);border-radius:12px;overflow:hidden}
+  .tbl th{text-align:left;padding:10px 12px;background:var(--cream100);font-size:11px;text-transform:uppercase;color:var(--muted)}
+  .tbl td{padding:10px 12px;border-top:1px solid rgba(15,61,46,.08)}
+  .ok{color:var(--green700);font-weight:600}
+  code{font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--cream100);padding:1px 5px;border-radius:4px}
+  footer{margin:48px;padding-top:20px;border-top:1px solid rgba(15,61,46,.1);display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .utn{font-family:'Syne',sans-serif;font-weight:800;color:var(--green700)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="ey">ODS UTN · Sprint · Resumen · linear_ods</div>
+  <h1>Filtro de proyectos<br><em>estados ENUM correctos</em></h1>
+  <p class="sub">Select alineado a <code>planificacion | activo | en_revision | completado | cancelado</code>. Texto largo del export SODSI oculto.</p>
+  <div class="chips">
+    <div class="chip">DONE</div>
+    <div class="chip">ODS-248 Done</div>
+    <div class="chip">Epic Completed</div>
+  </div>
+</header>
+<div class="al"><strong>Fase 6 completa.</strong> Legible hasta el próximo trabajo (Fase 0).</div>
+<section class="sec">
+  <div class="sl">Entrega</div>
+  <div class="st">ODS-248</div>
+  <table class="tbl">
+    <thead><tr><th>Cambio</th><th>Detalle</th></tr></thead>
+    <tbody>
+      <tr><td><code>formatters.js</code></td><td class="ok">PROJECT_STATUS_FILTER_OPTIONS + matcher 1:1</td></tr>
+      <tr><td><code>ProjectListPage</code> / <code>OverviewPage</code></td><td class="ok">Select con ENUM BD</td></tr>
+      <tr><td><code>BulkProjectExportPanel</code></td><td class="ok">Oculto párrafo descriptivo bajo el título</td></tr>
+    </tbody>
+  </table>
+</section>
+<section class="sec">
+  <div class="sl">Fase 6 / Fase 0</div>
+  <div class="st">Cleanup al próximo trabajo</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>Resumen</td><td class="ok">_linear/plans/resumen_sprint_filtro_estados.html</td></tr>
+      <tr><td>Cleanup</td><td><code>sprint_filtro_estados.mjs cleanup</code> + purge si aplica</td></tr>
+    </tbody>
+  </table>
+</section>
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>resumen_sprint_filtro_estados.html</div>
+</footer>
+</body>
+</html>

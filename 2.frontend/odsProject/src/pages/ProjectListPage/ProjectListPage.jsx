@@ -4,7 +4,7 @@ import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
 import { usePermissions } from '../../hooks/usePermissions';
 import AchievementBadge from '../../components/AchievementBadge';
-import { formatDate, getOdsColor, getEstadoLabel, getEstadoClass, matchesProjectStatusFilter, isProjectCompletado } from '../../utils/formatters';
+import { formatDate, getOdsColor, getEstadoLabel, getEstadoClass, matchesProjectStatusFilter, isProjectCompletado, PROJECT_STATUS_FILTER_OPTIONS } from '../../utils/formatters';
 import { useExport } from '../../hooks/useExport';
 import BulkProjectExportPanel from '../../components/projects/BulkProjectExportPanel';
 import { 
@@ -127,10 +127,9 @@ const ProjectListPage = () => {
           <div className="filters-box">
             <Filter size={18} className="filter-icon" />
             <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-              <option value="all">Todos los estados</option>
-              <option value="active">Activos</option>
-              <option value="in_review">En evaluación</option>
-              <option value="completed">Evaluados</option>
+              {PROJECT_STATUS_FILTER_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
             </select>
           </div>
         </section>
