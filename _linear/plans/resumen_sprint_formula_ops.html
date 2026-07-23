@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f3d2e">
+<title>Resumen — Fórmula ops + validación · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+  :root{
+    --green900:#0f3d2e;--green700:#1b5e42;--green500:#2e8b63;
+    --cream50:#f7f4ec;--cream100:#efe9dc;--copper600:#b06a2c;
+    --ink900:#1c2622;--ink600:#4a5852;--danger:#a23b2d;
+    --code-bg:#0f1a15;--code-fg:#e8f0ea;
+    --bg:var(--cream50);--surf:#fff;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink900);font-family:'DM Sans',system-ui,sans-serif;line-height:1.6}
+  .hero{margin:24px 48px 0;padding:36px 40px;border-radius:16px;background:linear-gradient(135deg,var(--green900),var(--green700));color:#fff;box-shadow:0 8px 24px rgba(15,61,46,.18)}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:12px}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:800;line-height:1.08}
+  h1 em{font-style:normal;color:#cfe6da}
+  .sub{margin-top:14px;font-size:14px;color:rgba(255,255,255,.88);max-width:860px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#e8f0ea;background:rgba(46,139,99,.35);border:1px solid rgba(255,255,255,.4);padding:4px 12px;border-radius:999px}
+  .chip span{font-weight:600;color:#fff}
+  .al{margin:20px 48px 0;padding:14px 18px;border-radius:12px;font-size:13px;display:flex;gap:12px;background:#f0f7f3;border:1px solid var(--cream100);border-left:5px solid var(--green500);color:var(--green900)}
+  .sec{padding:40px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink600);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--green900);margin-bottom:18px}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace;background:var(--surf);border-radius:10px;overflow:hidden;border:1px solid var(--cream100)}
+  .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding:10px 12px;text-align:left;background:var(--green700)}
+  .tbl td{padding:10px 12px;border-bottom:1px solid var(--cream100);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:var(--cream50)}
+  .ok{color:var(--green700)}
+  .issue{background:var(--surf);border:1px solid var(--cream100);border-radius:12px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr;gap:12px}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#fff;background:var(--green500);padding:3px 10px;border-radius:999px;height:fit-content}
+  .issue-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink600)}
+  .issue-title{font-size:14px;font-weight:600;margin-top:4px}
+  code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--cream100);color:var(--green900);padding:1px 6px;border-radius:5px}
+  .box{border-radius:12px;padding:16px 18px;font-size:12.5px;background:#f0f7f3;border:1px solid rgba(46,139,99,.25);border-left:5px solid var(--green500);color:var(--green900);margin-bottom:12px}
+  hr.sep{border:none;border-top:1px solid var(--cream100);margin:48px 48px 0}
+  footer{margin-top:48px;border-top:1px solid var(--cream100);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink600)}
+  .utn{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--green700)}
+  @media(max-width:720px){.hero{margin:12px 16px 0;padding:24px 20px}.sec,.al,footer,hr.sep{padding-left:16px;padding-right:16px;margin-left:0;margin-right:0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="ey">ODS UTN · Sprint formula_ops · Completado · linear_ods</div>
+  <h1>Fórmula indicador<br><em>÷100 · √ · ^ · validación estricta</em></h1>
+  <p class="sub">Chips extendidos en IndicatorConfigModal; motor BE documentado y probado (mismo evaluateFormula para evaluación a futuro); Guardar bloqueado con panel rojo si la fórmula es inválida. Puerto 8080 liberado tras la prueba.</p>
+  <div class="chips">
+    <div class="chip">Estado <span>COMPLETADO</span></div>
+    <div class="chip">Issues <span>ODS-254 · ODS-255 Done</span></div>
+  </div>
+</header>
+
+<div class="al"><div>✓</div><div><strong>Sprint cerrado.</strong> Resumen legible — no borrar hasta Fase 0 del próximo trabajo.</div></div>
+
+<section class="sec">
+  <div class="sl">Linear — Proceso obligatorio (7 fases)</div>
+  <div class="st">Cierre Fase 6</div>
+  <table class="tbl">
+    <thead><tr><th>Fase</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>0 — Limpieza</td><td class="ok">✓</td></tr>
+      <tr><td>1–4 — Plan · APROBADO · create</td><td class="ok">✓</td></tr>
+      <tr><td>5 — Multi-agente ODS-254 → ODS-255</td><td class="ok">✓ Done</td></tr>
+      <tr><td>6 — Resumen + Epic Completed</td><td class="ok">✓</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Objetivo</div>
+  <div class="st">Qué se resolvió</div>
+  <div class="box">
+    <strong>Entregado:</strong> chips <code>÷ 100</code>, <code>√</code> (<code>sqrt(</code>), <code>^</code>; documentación BE (+ − * / ^ sqrt); tests + HTTP preview/validar; FE panel rojo + botón Guardar deshabilitado si inválida. Misma API en evaluación futura.
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Problema</th><th>Solución entregada</th></tr></thead>
+    <tbody>
+      <tr><td>Sin ÷100 / raíz / potencia en UI; Guardar con fórmula rota</td><td class="ok">Chips + motor + bloqueo guardar</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear</div>
+  <div class="st">Issues completados</div>
+  <div class="issue"><div class="badge">Done</div><div><div class="issue-id">ODS-254 · role:backend</div><div class="issue-title">Motor: documentar + HTTP √ / ^ / ÷100</div></div></div>
+  <div class="issue"><div class="badge">Done</div><div><div class="issue-id">ODS-255 · role:frontend</div><div class="issue-title">Chips ÷100 √ ^ + panel rojo + bloquear Guardar</div></div></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Fase 6 — Entregable de cierre</div>
+  <div class="st">resumen_sprint_formula_ops.html · Epic Completed</div>
+  <p>Artefactos conservados para lectura. Cleanup solo al iniciar trabajo nuevo (Fase 0).</p>
+</section>
+
+<section class="sec">
+  <div class="sl">Aprobación</div>
+  <div class="st">Estado APROBADO / cerrado</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>Estado</td><td class="ok">APROBADO → Done</td></tr>
+      <tr><td>Validación FE</td><td><code>npm run build</code> OK</td></tr>
+      <tr><td>Puerto 8080</td><td class="ok">Liberado tras prueba</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="sep">
+<footer>
+  <div class="utn">UTN · ODS Platform</div>
+  <div>resumen_sprint_formula_ops.html</div>
+</footer>
+</body>
+</html>

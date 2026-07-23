@@ -176,8 +176,15 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
         const res = await validarFormula(formula, declaradas);
         setValidation(res);
       } catch (e) {
-        // Sin backend: validación visual se omite, no bloqueamos el flujo
-        setValidation(v => ({ ...v, sintaxisValida: true, valida: true }));
+        // Fail-closed: sin backend o error inesperado → no permitir guardar
+        setValidation({
+          valida: false,
+          sintaxisValida: false,
+          variablesEnFormula: [],
+          faltantes: [],
+          sobrantes: [],
+          error: e?.message || 'Error de validación',
+        });
       } finally {
         setValidating(false);
       }
@@ -224,11 +231,16 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     });
     if (Object.keys(errors).some((k) => k.startsWith('param_'))) errors.params = true;
     if (validation.faltantes && validation.faltantes.length > 0) errors.faltantes = true;
-    if (validation.sintaxisValida === false) errors.formula = true;
+    if (formula.trim() && (validation.sintaxisValida === false || validation.valida === false)) {
+      errors.formula = true;
+    }
+    if (validating) errors.formula = true;
 
     setFieldErrors(errors);
     if (Object.keys(errors).length > 0) {
-      if (errors.faltantes) {
+      if (validating) {
+        alert('Espere a que termine la validación de la fórmula.');
+      } else if (errors.faltantes) {
         alert(
           `Complete las variables faltantes en la fórmula: ${validation.faltantes.join(', ')}`
         );
@@ -271,10 +283,17 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
     { label: '−', insert: ' - ' },
     { label: '×', insert: ' * ' },
     { label: '÷', insert: ' / ' },
-    { label: '× 100', insert: ' * 100' }
+    { label: '× 100', insert: ' * 100' },
+    { label: '÷ 100', insert: ' / 100' },
+    { label: '√', insert: 'sqrt(' },
+    { label: '^', insert: '^' },
   ];
 
   const namedParams = parameters.filter(p => p.name.trim());
+  const formulaInvalid =
+    Boolean(formula.trim()) &&
+    (validation.valida === false || validation.sintaxisValida === false);
+  const saveBlocked = validating || formulaInvalid;
 
   return (
     <div className="modal-overlay">
@@ -357,10 +376,10 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
                 clearFieldError('faltantes');
                 setFormula(e.target.value);
               }}
-              className={`formula-textarea${fieldErrors.formula || fieldErrors.faltantes ? ' is-invalid' : ''}`}
+              className={`formula-textarea${fieldErrors.formula || fieldErrors.faltantes || formulaInvalid ? ' is-invalid' : ''}`}
               placeholder="Ej: (total_becados / total_estudiantes) * 100"
               spellCheck={false}
-              aria-invalid={!!(fieldErrors.formula || fieldErrors.faltantes)}
+              aria-invalid={!!(fieldErrors.formula || fieldErrors.faltantes || formulaInvalid)}
             />
 
             {/* Chips de inserción rápida — variables */}
@@ -395,17 +414,19 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
             </div>
 
             {/* Panel de validación en vivo */}
-            <div className="formula-validation" style={{
+            <div
+              className={`formula-validation${formulaInvalid ? ' is-invalid' : ''}`}
+              style={{
               marginTop: 12,
               padding: '10px 12px',
               borderRadius: 8,
               fontSize: 12,
-              background: validation.valida ? '#f0fdf4' : '#fff7ed',
-              border: `1px solid ${validation.valida ? '#bbf7d0' : '#fed7aa'}`,
-              color: '#374151'
+              background: formulaInvalid ? '#fef2f2' : (validation.valida ? '#f0fdf4' : '#fff7ed'),
+              border: `1px solid ${formulaInvalid ? '#fecaca' : (validation.valida ? '#bbf7d0' : '#fed7aa')}`,
+              color: formulaInvalid ? '#7f1d1d' : '#374151'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <strong>{validation.valida ? '✓' : '⚠'} Validación</strong>
+                <strong>{formulaInvalid ? '✗' : (validation.valida ? '✓' : '⚠')} Validación</strong>
                 {validating && <span style={{ color: '#6b7280' }}>verificando…</span>}
               </div>
               {validation.variablesEnFormula?.length > 0 && (
@@ -424,8 +445,13 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
                 </div>
               )}
               {!validation.sintaxisValida && (
+                <div style={{ marginTop: 4, color: '#b91c1c', fontWeight: 600 }}>
+                  Error de sintaxis en la fórmula. Revise paréntesis y operadores (ej. p1/p2)*100 no es válido).
+                </div>
+              )}
+              {formulaInvalid && (
                 <div style={{ marginTop: 4, color: '#b91c1c' }}>
-                  Error de sintaxis en la fórmula.
+                  Corrija la fórmula antes de guardar la configuración.
                 </div>
               )}
             </div>
@@ -501,7 +527,12 @@ const IndicatorConfigModal = ({ indicator, existingConfig, onSave, onClose }) =>
 
         <div className="modal-footer">
           <button className="btn-secondary" onClick={onClose}>Cancelar</button>
-          <button className="btn-primary" onClick={handleSave}>
+          <button
+            className="btn-primary"
+            onClick={handleSave}
+            disabled={saveBlocked}
+            title={saveBlocked ? 'Corrija la fórmula o espere la validación' : undefined}
+          >
             Guardar Configuración
           </button>
         </div>

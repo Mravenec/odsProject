@@ -188,6 +188,39 @@ class EvaluationServiceTest {
         assertTrue(svc.validateFormula("(p1+p2)/p3"));
     }
 
+    @Test
+    void evaluateDivisionPorCien() {
+        Map<String, BigDecimal> params = Map.of("p1", new BigDecimal("250"));
+        BigDecimal result = svc.evaluateFormula("p1 / 100", params);
+        assertEquals(0, result.compareTo(new BigDecimal("2.5000")));
+    }
+
+    @Test
+    void evaluateSqrt() {
+        Map<String, BigDecimal> params = Map.of("p1", new BigDecimal("16"));
+        BigDecimal result = svc.evaluateFormula("sqrt(p1)", params);
+        assertEquals(0, result.compareTo(new BigDecimal("4.0000")));
+    }
+
+    @Test
+    void evaluatePotencia() {
+        Map<String, BigDecimal> params = Map.of("p1", new BigDecimal("3"));
+        BigDecimal result = svc.evaluateFormula("p1^2", params);
+        assertEquals(0, result.compareTo(new BigDecimal("9.0000")));
+    }
+
+    @Test
+    void validateSqrtYPotenciaConVariables() {
+        assertTrue(svc.validateFormula("sqrt(p1)", Set.of("p1")));
+        assertTrue(svc.validateFormula("p1^2", Set.of("p1")));
+        assertTrue(svc.validateFormula("p1 / 100", Set.of("p1")));
+    }
+
+    @Test
+    void validateParentesisDesbalanceadoEsFalse() {
+        assertFalse(svc.validateFormula("p1/p2)*100", Set.of("p1", "p2")));
+    }
+
     // ── metaAlcanzada ─────────────────────────────────────────────────────
 
     @Test

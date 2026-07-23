@@ -1,5 +1,5 @@
-### EvaluationController — motor fórmulas (+ − * /)
-### GATE_HTTP ODS-225 — preview / validar-formula con asserts numéricos
+### EvaluationController — motor fórmulas (+ − * / ^ sqrt)
+### GATE_HTTP formula_ops — preview / validar-formula con asserts numéricos
 @baseUrl = http://localhost:8080
 
 ### Preview (100+100)/1 → 200
@@ -124,5 +124,98 @@ GET {{baseUrl}}/api/evaluacion/variables?formula=A+B/Z
     client.assert(response.status === 200, "status 200");
     const vars = response.body.variables;
     client.assert(vars.indexOf("A") >= 0 && vars.indexOf("B") >= 0 && vars.indexOf("Z") >= 0, "A,B,Z");
+  });
+%}
+
+### Preview p1/100 → 2.5
+# @name previewDivCien
+POST {{baseUrl}}/api/evaluacion/preview
+Content-Type: application/json
+
+{
+  "formula": "p1 / 100",
+  "parametros": { "p1": 250 },
+  "metaValor": 2.5
+}
+
+> {%
+  client.test("preview p1/100 = 2.5", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.ok === true, "ok");
+    client.assert(Number(response.body.valor) === 2.5, "valor=2.5 got " + response.body.valor);
+  });
+%}
+
+### Preview sqrt(p1) → 4
+# @name previewSqrt
+POST {{baseUrl}}/api/evaluacion/preview
+Content-Type: application/json
+
+{
+  "formula": "sqrt(p1)",
+  "parametros": { "p1": 16 },
+  "metaValor": 4
+}
+
+> {%
+  client.test("preview sqrt(p1) = 4", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.ok === true, "ok");
+    client.assert(Number(response.body.valor) === 4, "valor=4 got " + response.body.valor);
+  });
+%}
+
+### Preview p1^2 → 9
+# @name previewPotencia
+POST {{baseUrl}}/api/evaluacion/preview
+Content-Type: application/json
+
+{
+  "formula": "p1^2",
+  "parametros": { "p1": 3 },
+  "metaValor": 9
+}
+
+> {%
+  client.test("preview p1^2 = 9", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.ok === true, "ok");
+    client.assert(Number(response.body.valor) === 9, "valor=9 got " + response.body.valor);
+  });
+%}
+
+### Validar ÷100 / sqrt / ^ OK
+# @name validarOpsExtendidas
+POST {{baseUrl}}/api/evaluacion/validar-formula
+Content-Type: application/json
+
+{
+  "formula": "(p1 / 100) + sqrt(p2) + p3^2",
+  "variablesDeclaradas": ["p1", "p2", "p3"]
+}
+
+> {%
+  client.test("validar ops extendidas", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.valida === true, "valida");
+    client.assert(response.body.sintaxisValida === true, "sintaxis");
+  });
+%}
+
+### Validar paréntesis desbalanceado
+# @name validarParenInvalido
+POST {{baseUrl}}/api/evaluacion/validar-formula
+Content-Type: application/json
+
+{
+  "formula": "p1/p2)*100",
+  "variablesDeclaradas": ["p1", "p2"]
+}
+
+> {%
+  client.test("validar p1/p2)*100 inválida", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.sintaxisValida === false, "sintaxis false");
+    client.assert(response.body.valida === false, "no valida");
   });
 %}

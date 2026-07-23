@@ -323,6 +323,19 @@
   box-shadow: var(--shadow-md);
 }
 
+.modal-footer .btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.formula-validation.is-invalid {
+  background: #fef2f2 !important;
+  border-color: #fecaca !important;
+  color: #7f1d1d !important;
+}
+
 /* ─── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .modal-overlay { padding: 0; align-items: flex-end; }

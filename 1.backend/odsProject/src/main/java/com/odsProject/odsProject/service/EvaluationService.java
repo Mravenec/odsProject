@@ -18,8 +18,9 @@ import java.util.Set;
  * definidas dinámicamente en el catálogo de indicadores.
  *
  * Reglas de diseño:
- *   - Operadores de producto: + − * / (paréntesis y variables por nombreVariable).
- *     No se añaden potencia, raíz ni logaritmo como API de negocio en este motor.
+ *   - Operadores de producto: + − * / ^ (potencia) y función sqrt (raíz), más
+ *     paréntesis y variables por nombreVariable. Misma API en preview, validar-formula
+ *     y evaluación de mediciones a futuro (un solo motor exp4j).
  *   - Todas las variables se declaran en exp4j ANTES de evaluar (evita errores de
  *     "Unknown variable").
  *   - El resultado se trunca a 4 decimales con HALF_UP (mismo patrón que la columna
