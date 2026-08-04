@@ -48,6 +48,18 @@ const ProjectListPage = () => {
   useEffect(() => {
     if (allProjectsHook) {
       let filtered = [...allProjectsHook];
+
+      // Refuerzo: gestor solo ve proyectos propios (userId o email del dueño)
+      if (user?.role === 'gestor' && user?.id) {
+        const email = (user.email || '').toLowerCase();
+        filtered = filtered.filter((p) => {
+          if (p.userId != null && Number(p.userId) === Number(user.id)) return true;
+          if (email && p.gestorEmail && String(p.gestorEmail).toLowerCase() === email) return true;
+          // Si el API ya filtró y no trae dueño, no ocultar (lista vacía incorrecta)
+          if (p.userId == null && !p.gestorEmail) return true;
+          return false;
+        });
+      }
       
       if (searchTerm) {
         filtered = filtered.filter(p => 
@@ -62,7 +74,7 @@ const ProjectListPage = () => {
       
       setProjects(filtered);
     }
-  }, [allProjectsHook, searchTerm, filterStatus]);
+  }, [allProjectsHook, searchTerm, filterStatus, user]);
 
   const handleDelete = async (e, id) => {
     e.stopPropagation();

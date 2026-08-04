@@ -15,13 +15,18 @@ import java.util.Map;
 public interface IMasterProjectController {
 
     @GetMapping
-    ResponseEntity<List<Proyectos>> getAllProyectos();
+    ResponseEntity<List<Proyectos>> getAllProyectos(
+            @RequestHeader(value = "Authorization", required = false) String authorization);
 
     @GetMapping("/{id}")
-    ResponseEntity<Proyectos> getProyectoById(@PathVariable Integer id);
+    ResponseEntity<Proyectos> getProyectoById(
+            @PathVariable Integer id,
+            @RequestHeader(value = "Authorization", required = false) String authorization);
 
     @GetMapping("/user/{userId}")
-    ResponseEntity<List<Proyectos>> getProyectosByUsuario(@PathVariable Integer userId);
+    ResponseEntity<List<Proyectos>> getProyectosByUsuario(
+            @PathVariable Integer userId,
+            @RequestHeader(value = "Authorization", required = false) String authorization);
 
     @PostMapping
     ResponseEntity<Proyectos> createProyecto(@RequestBody Proyectos proyecto);
@@ -83,7 +88,8 @@ public interface IMasterProjectController {
      */
     @GetMapping("/with-ods")
     ResponseEntity<List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>>
-        getAllProyectosWithOds();
+        getAllProyectosWithOds(
+                @RequestHeader(value = "Authorization", required = false) String authorization);
 
     /**
      * GET /api/projects/user/{userId}/with-ods
@@ -91,7 +97,9 @@ public interface IMasterProjectController {
      */
     @GetMapping("/user/{userId}/with-ods")
     ResponseEntity<List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>>
-        getProyectosWithOdsByUsuario(@PathVariable Integer userId);
+        getProyectosWithOdsByUsuario(
+                @PathVariable Integer userId,
+                @RequestHeader(value = "Authorization", required = false) String authorization);
 
     /**
      * GET /api/projects/{id}/with-ods
@@ -99,7 +107,9 @@ public interface IMasterProjectController {
      */
     @GetMapping("/{id}/with-ods")
     ResponseEntity<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
-        getProyectoWithOdsById(@PathVariable Integer id);
+        getProyectoWithOdsById(
+                @PathVariable Integer id,
+                @RequestHeader(value = "Authorization", required = false) String authorization);
 
     // ═════════════════════════════════════════════════════════════════════
     //  Sprint 15 — Transición genérica de estado (admin-only fallback)

@@ -70,6 +70,11 @@ public class RoleAuthorizationService implements IRoleAuthorizationService {
         return role != null && BULK_EXPORT_ROLES.contains(role.toLowerCase());
     }
 
+    @Override
+    public boolean canViewAllProjects(String role) {
+        return role != null && BULK_EXPORT_ROLES.contains(role.toLowerCase());
+    }
+
     private SecretKey signingKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }

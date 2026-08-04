@@ -1,8 +1,10 @@
 package com.odsProject.odsProject.controller;
 
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
+import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds;
 import com.odsProject.odsProject.service.interfaces.IMasterProjectService;
 import com.odsProject.odsProject.service.interfaces.IPlanificacionEdicionService;
+import com.odsProject.odsProject.service.interfaces.IRoleAuthorizationService;
 import com.odsProject.odsProject.controller.interfaces.IMasterProjectController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,24 +27,53 @@ public class MasterProjectController implements IMasterProjectController {
     @Autowired
     private IPlanificacionEdicionService planificacionEdicionService;
 
+    @Autowired
+    private IRoleAuthorizationService roleAuthorizationService;
+
     @Override
     @GetMapping
-    public ResponseEntity<List<Proyectos>> getAllProyectos() {
-        return ResponseEntity.ok(masterProjectService.getAllProyectos());
+    public ResponseEntity<List<Proyectos>> getAllProyectos(
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        Actor actor = requireActor(authorization);
+        if (actor == null) return ResponseEntity.status(401).build();
+        if (roleAuthorizationService.canViewAllProjects(actor.role)) {
+            return ResponseEntity.ok(masterProjectService.getAllProyectos());
+        }
+        if (isGestor(actor.role)) {
+            return ResponseEntity.ok(masterProjectService.getProyectosByUsuario(actor.userId));
+        }
+        return ResponseEntity.status(403).build();
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Proyectos> getProyectoById(@PathVariable Integer id) {
+    public ResponseEntity<Proyectos> getProyectoById(
+            @PathVariable Integer id,
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        Actor actor = requireActor(authorization);
+        if (actor == null) return ResponseEntity.status(401).build();
         return masterProjectService.getProyectoById(id)
-                .map(ResponseEntity::ok)
+                .map(p -> canViewProject(actor, p.getUsuarioId())
+                        ? ResponseEntity.ok(p)
+                        : ResponseEntity.status(403).<Proyectos>build())
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @Override
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Proyectos>> getProyectosByUsuario(@PathVariable Integer userId) {
-        return ResponseEntity.ok(masterProjectService.getProyectosByUsuario(userId));
+    public ResponseEntity<List<Proyectos>> getProyectosByUsuario(
+            @PathVariable Integer userId,
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        Actor actor = requireActor(authorization);
+        if (actor == null) return ResponseEntity.status(401).build();
+        if (roleAuthorizationService.canViewAllProjects(actor.role)) {
+            return ResponseEntity.ok(masterProjectService.getProyectosByUsuario(userId));
+        }
+        if (isGestor(actor.role)) {
+            if (!actor.userId.equals(userId)) return ResponseEntity.status(403).build();
+            return ResponseEntity.ok(masterProjectService.getProyectosByUsuario(actor.userId));
+        }
+        return ResponseEntity.status(403).build();
     }
 
     @Override
@@ -165,22 +196,48 @@ public class MasterProjectController implements IMasterProjectController {
 
     @Override
     @GetMapping("/with-ods")
-    public ResponseEntity<List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>>
-            getAllProyectosWithOds() {
-        return ResponseEntity.ok(masterProjectService.getAllProyectosWithOds());
+    public ResponseEntity<List<VistaResumenProyectosOds>> getAllProyectosWithOds(
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        Actor actor = requireActor(authorization);
+        if (actor == null) return ResponseEntity.status(401).build();
+        if (roleAuthorizationService.canViewAllProjects(actor.role)) {
+            return ResponseEntity.ok(masterProjectService.getAllProyectosWithOds());
+        }
+        if (isGestor(actor.role)) {
+            return ResponseEntity.ok(masterProjectService.getProyectosWithOdsByUsuario(actor.userId));
+        }
+        return ResponseEntity.status(403).build();
     }
 
     @Override
     @GetMapping("/user/{userId}/with-ods")
-    public ResponseEntity<List<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>>
-            getProyectosWithOdsByUsuario(@PathVariable Integer userId) {
-        return ResponseEntity.ok(masterProjectService.getProyectosWithOdsByUsuario(userId));
+    public ResponseEntity<List<VistaResumenProyectosOds>> getProyectosWithOdsByUsuario(
+            @PathVariable Integer userId,
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        Actor actor = requireActor(authorization);
+        if (actor == null) return ResponseEntity.status(401).build();
+        if (roleAuthorizationService.canViewAllProjects(actor.role)) {
+            return ResponseEntity.ok(masterProjectService.getProyectosWithOdsByUsuario(userId));
+        }
+        if (isGestor(actor.role)) {
+            if (!actor.userId.equals(userId)) return ResponseEntity.status(403).build();
+            return ResponseEntity.ok(masterProjectService.getProyectosWithOdsByUsuario(actor.userId));
+        }
+        return ResponseEntity.status(403).build();
     }
 
     @Override
     @GetMapping("/{id}/with-ods")
-    public ResponseEntity<com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.VistaResumenProyectosOds>
-            getProyectoWithOdsById(@PathVariable Integer id) {
+    public ResponseEntity<VistaResumenProyectosOds> getProyectoWithOdsById(
+            @PathVariable Integer id,
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        Actor actor = requireActor(authorization);
+        if (actor == null) return ResponseEntity.status(401).build();
+        var proyecto = masterProjectService.getProyectoById(id);
+        if (proyecto.isEmpty()) return ResponseEntity.notFound().build();
+        if (!canViewProject(actor, proyecto.get().getUsuarioId())) {
+            return ResponseEntity.status(403).build();
+        }
         return masterProjectService.getProyectoWithOdsById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -293,4 +350,22 @@ public class MasterProjectController implements IMasterProjectController {
         try { return Integer.parseInt(String.valueOf(v).trim()); }
         catch (NumberFormatException e) { return null; }
     }
+
+    private Actor requireActor(String authorization) {
+        Integer userId = roleAuthorizationService.extractUserIdFromAuthorizationHeader(authorization);
+        String role = roleAuthorizationService.extractRoleFromAuthorizationHeader(authorization);
+        if (userId == null || role == null || role.isBlank()) return null;
+        return new Actor(userId, role.trim().toLowerCase());
+    }
+
+    private static boolean isGestor(String role) {
+        return "gestor".equalsIgnoreCase(role);
+    }
+
+    private boolean canViewProject(Actor actor, Integer ownerUserId) {
+        if (roleAuthorizationService.canViewAllProjects(actor.role)) return true;
+        return isGestor(actor.role) && actor.userId.equals(ownerUserId);
+    }
+
+    private record Actor(Integer userId, String role) {}
 }

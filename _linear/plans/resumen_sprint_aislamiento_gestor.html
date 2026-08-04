@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3d2e">
-<title>Resumen — Aviso fuerza mayor · ODS UTN</title>
+<title>Resumen — Aislamiento gestores · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
   :root{--green900:#0f3d2e;--green700:#1b5e42;--cream50:#f7f4ec;--cream100:#efe9dc;--ink600:#4a5852;--surf:#fff}
@@ -12,14 +12,14 @@
   body{background:var(--cream50);color:#1c2622;font-family:'DM Sans',system-ui,sans-serif;line-height:1.6}
   .hero{margin:24px 48px 0;padding:36px 40px;border-radius:16px;background:linear-gradient(135deg,var(--green900),var(--green700));color:#fff}
   .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:12px}
-  h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800;line-height:1.1}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800}
   .sub{margin-top:12px;font-size:14px;color:rgba(255,255,255,.88)}
   .sec{padding:36px 48px 0}
   .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink600);margin-bottom:8px}
   .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--green900);margin-bottom:16px}
   .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace;background:var(--surf);border-radius:10px;overflow:hidden;border:1px solid var(--cream100)}
   .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding:10px 12px;text-align:left;background:var(--green700)}
-  .tbl td{padding:10px 12px;border-bottom:1px solid var(--cream100);vertical-align:top}
+  .tbl td{padding:10px 12px;border-bottom:1px solid var(--cream100)}
   .ok{color:var(--green700);font-weight:600}
   code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--cream100);padding:1px 6px;border-radius:5px}
   footer{margin-top:40px;border-top:1px solid var(--cream100);padding:24px 48px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink600)}
@@ -27,35 +27,32 @@
 </head>
 <body>
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint fuerza_mayor_notif · Resumen · Epic Completed</div>
-  <h1>Fuerza mayor → aviso al gestor</h1>
-  <p class="sub">Al cancelar por fuerza mayor se registra resolución en la bandeja del gestor; el banner global muestra el mensaje sin F5.</p>
+  <div class="ey">ODS UTN · Sprint aislamiento_gestor · Resumen · Epic Completed</div>
+  <h1>Aislamiento entre gestores</h1>
+  <p class="sub">Ana no ve proyectos de Carlos (ni viceversa). Backend filtra por JWT; front limpia cache al logout y refuerza el filtro.</p>
 </header>
-
 <section class="sec">
   <div class="sl">Entregado</div>
-  <div class="st">Issues ODS-498 · ODS-499</div>
+  <div class="st">ODS-500 · ODS-501</div>
   <table class="tbl">
-    <thead><tr><th>Issue</th><th>Rol</th><th>Qué</th><th>Estado</th></tr></thead>
+    <thead><tr><th>Issue</th><th>Qué</th><th>Estado</th></tr></thead>
     <tbody>
-      <tr><td>ODS-498</td><td>backend</td><td><code>insertResuelta</code> tras <code>fuerzaMayor</code>; GET recientes incluye ítem; .http</td><td class="ok">Done</td></tr>
-      <tr><td>ODS-499</td><td>frontend</td><td>Banner «cancelado por fuerza mayor» + nota; <code>npm run build</code></td><td class="ok">Done</td></tr>
+      <tr><td>ODS-500</td><td>GET with-ods / user / detalle: gestor solo dueño; IDOR 403; staff ve todos</td><td class="ok">Done</td></tr>
+      <tr><td>ODS-501</td><td><code>ProjectsSessionSync</code> + filtro defensivo lista/dashboard + build</td><td class="ok">Done</td></tr>
     </tbody>
   </table>
 </section>
-
 <section class="sec">
-  <div class="sl">Cómo probar</div>
+  <div class="sl">Probar</div>
   <div class="st">Local</div>
   <table class="tbl">
     <tbody>
-      <tr><td>1</td><td>Login evaluador → proyecto activo → Cancelar (fuerza mayor)</td></tr>
-      <tr><td>2</td><td>Login gestor dueño → banner fijo sin F5: «fue cancelado por fuerza mayor…»</td></tr>
-      <tr><td>3</td><td>Entendido → dismiss vía localStorage</td></tr>
+      <tr><td>1</td><td>Login ana.garcia@ods.cr → solo sus proyectos</td></tr>
+      <tr><td>2</td><td>Login carlos.rodriguez@ods.cr → solo los suyos</td></tr>
+      <tr><td>3</td><td>URL /projects/2/results como Ana → 403 / sin datos</td></tr>
     </tbody>
   </table>
 </section>
-
 <footer>Fase 6 · dejar legible · cleanup solo al próximo trabajo</footer>
 </body>
 </html>

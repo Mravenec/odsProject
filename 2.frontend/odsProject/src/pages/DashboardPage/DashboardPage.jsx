@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useProjects } from '../../hooks/useProjects.jsx';
@@ -14,7 +14,7 @@ const DashboardPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { 
-    projects, 
+    projects: projectsRaw, 
     globalDashboard,
     loading: projectsLoading, 
     error: projectsError, 
@@ -22,6 +22,17 @@ const DashboardPage = () => {
     fetchAdminProjects,
     fetchGlobalDashboard 
   } = useProjects();
+
+  const projects = useMemo(() => {
+    if (user?.role !== 'gestor' || !user?.id) return projectsRaw;
+    const email = (user.email || '').toLowerCase();
+    return (projectsRaw || []).filter((p) => {
+      if (p.userId != null && Number(p.userId) === Number(user.id)) return true;
+      if (email && p.gestorEmail && String(p.gestorEmail).toLowerCase() === email) return true;
+      if (p.userId == null && !p.gestorEmail) return true;
+      return false;
+    });
+  }, [projectsRaw, user]);
   
   const [loading, setLoading] = useState(true);
   const [loginAt] = useState(() => new Date());

@@ -35,6 +35,7 @@ export const projectService = {
       name: p.nombreProyecto || p.nombre_proyecto,
       description: p.descripcion,
       userId: p.usuarioId || p.usuario_id,
+      gestorEmail: p.gestorEmail || p.gestor_email || null,
       sedeId: p.sedeId || p.sede_id,
       // ODS primario: lo lee tanto del campo del view (odsPrimario)
       // como del fallback histórico (objetivoId / objetivo_id)

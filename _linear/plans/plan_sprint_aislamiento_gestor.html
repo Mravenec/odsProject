@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3d2e">
-<title>Propuesta — Aviso fuerza mayor · ODS UTN</title>
+<title>Propuesta — Aislamiento proyectos entre gestores · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
   :root{--green900:#0f3d2e;--green700:#1b5e42;--green500:#2e8b63;--cream50:#f7f4ec;--cream100:#efe9dc;--copper600:#b06a2c;--ink900:#1c2622;--ink600:#4a5852;--surf:#fff}
@@ -18,7 +18,7 @@
   .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
   .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(176,106,44,.35)}
   .chip span{font-weight:600;color:#fff}
-  .al{margin:20px 48px 0;padding:14px 18px;border-radius:12px;font-size:13px;display:flex;gap:12px;background:#fdf7f0;border-left:5px solid var(--copper600);color:#6b3d14}
+  .al{margin:20px 48px 0;padding:14px 18px;border-radius:12px;font-size:13px;display:flex;gap:12px;background:#f0f7f3;border-left:5px solid var(--green500);color:var(--green900)}
   .sec{padding:36px 48px 0}
   .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink600);margin-bottom:8px}
   .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--green900);margin-bottom:16px}
@@ -39,16 +39,14 @@
   .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#fff;background:var(--copper600);padding:3px 10px;border-radius:999px;height:fit-content}
   .issue-id{font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--ink600)}
   .issue-title{font-size:14px;font-weight:600;margin-top:4px}
-  hr.sep{border:none;border-top:1px solid var(--cream100);margin:48px 48px 0}
-  footer{margin-top:40px;border-top:1px solid var(--cream100);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink600)}
-  .utn{font-family:'Syne',sans-serif;font-weight:800;color:var(--green700)}
+  footer{margin-top:40px;border-top:1px solid var(--cream100);padding:24px 48px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink600)}
 </style>
 </head>
 <body>
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint fuerza_mayor_notif · Propuesta · linear_ods</div>
-  <h1>Fuerza mayor<br><em>Aviso al gestor</em></h1>
-  <p class="sub">Al cancelar por fuerza mayor, registrar resolución en bandeja del gestor para que GestorTransicionNotif muestre el banner (sin F5).</p>
+  <div class="ey">ODS UTN · Sprint aislamiento_gestor · Propuesta · linear_ods</div>
+  <h1>Aislamiento<br><em>proyectos entre gestores</em></h1>
+  <p class="sub">Ana no debe ver proyectos de Carlos (ni viceversa). El backend debe filtrar por JWT; el front refuerza y limpia estado al logout.</p>
   <div class="chips"><div class="chip">Estado <span>APROBADO</span></div><div class="chip">Issues <span>2</span></div></div>
 </header>
 <div class="al"><div>✓</div><div><strong>Aprobado en chat.</strong> Proceder a <code>create</code>.</div></div>
@@ -59,12 +57,12 @@
   <table class="tbl">
     <thead><tr><th>Fase</th><th>Qué</th><th>Gate</th><th>Estado</th></tr></thead>
     <tbody>
-      <tr><td>Fase 0 — Limpieza</td><td>cleanup notif_refresh</td><td>Sprint previo</td><td>✓</td></tr>
-      <tr><td>Fase 1–2 — Plan HTML</td><td>plan_sprint_fuerza_mayor_notif.html</td><td>validate-plan-html</td><td>✓</td></tr>
+      <tr><td>Fase 0 — Limpieza</td><td>cleanup fuerza_mayor_notif</td><td>Sprint previo</td><td>✓</td></tr>
+      <tr><td>Fase 1–2 — Plan HTML</td><td>plan_sprint_aislamiento_gestor.html</td><td>validate-plan-html</td><td>✓</td></tr>
       <tr><td>Fase 3 — Aprobación</td><td>✅ humano</td><td>APROBADO</td><td>✓</td></tr>
-      <tr><td>Fase 4 — MJS</td><td>sprint_fuerza_mayor_notif.mjs create</td><td>Tras Fase 3</td><td>—</td></tr>
+      <tr><td>Fase 4 — MJS</td><td>sprint_aislamiento_gestor.mjs create</td><td>Tras Fase 3</td><td>—</td></tr>
       <tr><td>Fase 5 — Multi-agente</td><td>BE → FE</td><td>GATE_HTTP</td><td>—</td></tr>
-      <tr><td>Fase 6 — Resumen</td><td>resumen_sprint_fuerza_mayor_notif.html</td><td>Epic Completed</td><td>—</td></tr>
+      <tr><td>Fase 6 — Resumen</td><td>resumen_sprint_aislamiento_gestor.html</td><td>Epic Completed</td><td>—</td></tr>
     </tbody>
   </table>
 </section>
@@ -74,9 +72,10 @@
   <div class="st">EPIC_NAME · script · equipo linear_ods</div>
   <table class="tbl">
     <tbody>
-      <tr><td>EPIC_NAME</td><td>Aviso gestor al cancelar por fuerza mayor</td></tr>
-      <tr><td>SPRINT_NAME</td><td>fuerza_mayor_notif</td></tr>
-      <tr><td>Script</td><td><code>_linear/scripts/sprint_fuerza_mayor_notif.mjs</code></td></tr>
+      <tr><td>EPIC_NAME</td><td>Aislamiento proyectos entre gestores</td></tr>
+      <tr><td>SPRINT_NAME</td><td>aislamiento_gestor</td></tr>
+      <tr><td>Script</td><td><code>_linear/scripts/sprint_aislamiento_gestor.mjs</code></td></tr>
+      <tr><td>Equipo</td><td>linear_ods</td></tr>
     </tbody>
   </table>
 </section>
@@ -90,8 +89,8 @@
       <tr><td>GATE_SQL</td><td>N/A</td><td>—</td><td>—</td></tr>
       <tr><td>GATE_BD</td><td>N/A</td><td>—</td><td>Sin drop_db</td></tr>
       <tr><td>GATE_JOOQ</td><td>N/A</td><td>—</td><td>—</td></tr>
-      <tr><td>GATE_HTTP</td><td>Sí</td><td>BE</td><td>fuerza-mayor → recientes incluye ítem</td></tr>
-      <tr><td>GATE_FE</td><td>Sí</td><td>FE</td><td>npm run build + texto banner</td></tr>
+      <tr><td>GATE_HTTP</td><td>Sí</td><td>BE</td><td>gestor JWT → solo suyos; IDOR 403; staff ve todos</td></tr>
+      <tr><td>GATE_FE</td><td>Sí</td><td>FE</td><td>logout limpia context; filtro userId; npm run build</td></tr>
     </tbody>
   </table>
 </section>
@@ -102,8 +101,8 @@
   <table class="tbl">
     <thead><tr><th>Id</th><th>Rol</th><th>Pts</th><th>Título</th><th>blocks</th><th>Archivos</th></tr></thead>
     <tbody>
-      <tr><td>BE</td><td>role:backend</td><td>2</td><td>Registrar resolución al fuerzaMayor</td><td>—</td><td>TransicionPlanificacionService/Repo, .http</td></tr>
-      <tr><td>FE</td><td>role:frontend</td><td>1</td><td>Texto banner fuerza mayor</td><td>BE</td><td>GestorTransicionNotif.jsx</td></tr>
+      <tr><td>BE</td><td>role:backend</td><td>3</td><td>Filtrar listados/detalle por JWT dueño gestor</td><td>—</td><td>MasterProjectController/Service, RoleAuthorization, .http</td></tr>
+      <tr><td>FE</td><td>role:frontend</td><td>2</td><td>Logout limpia projects + filtro defensivo</td><td>BE</td><td>useAuth, useProjects, ProjectListPage, Dashboard</td></tr>
     </tbody>
   </table>
 </section>
@@ -128,12 +127,12 @@ state ODS-N Done</div>
 <section class="sec">
   <div class="sl">Linear — Comandos del script</div>
   <div class="st">create · next · checklist · handoff · state · cleanup</div>
-  <div class="cb2">node scripts/sprint_fuerza_mayor_notif.mjs create
+  <div class="cb2">node scripts/sprint_aislamiento_gestor.mjs create
 node scripts/sprint-next.mjs
-node scripts/sprint_fuerza_mayor_notif.mjs checklist ODS-N 1
-node scripts/sprint_fuerza_mayor_notif.mjs handoff ODS-M 1
-node scripts/sprint_fuerza_mayor_notif.mjs state ODS-N Done
-node scripts/sprint_fuerza_mayor_notif.mjs cleanup</div>
+node scripts/sprint_aislamiento_gestor.mjs checklist ODS-N 1
+node scripts/sprint_aislamiento_gestor.mjs handoff ODS-M 1
+node scripts/sprint_aislamiento_gestor.mjs state ODS-N Done
+node scripts/sprint_aislamiento_gestor.mjs cleanup</div>
 </section>
 
 <section class="sec">
@@ -142,8 +141,8 @@ node scripts/sprint_fuerza_mayor_notif.mjs cleanup</div>
   <table class="tbl">
     <thead><tr><th>Issue</th><th>Rol</th><th>Comandos Testing</th><th>Done</th></tr></thead>
     <tbody>
-      <tr><td>BE</td><td>role:backend</td><td>fuerza-mayor + GET recientes</td><td>ítem cancelado/fuerza mayor en items</td></tr>
-      <tr><td>FE</td><td>role:frontend</td><td>npm run build</td><td>banner menciona fuerza mayor + motivo</td></tr>
+      <tr><td>BE</td><td>role:backend</td><td>.http gestor Ana vs Carlos; with-ods staff</td><td>Ana solo suyos; IDOR 403; staff 200 todos</td></tr>
+      <tr><td>FE</td><td>role:frontend</td><td>login Ana / Carlos / npm run build</td><td>listas sin cruzar; logout limpia</td></tr>
     </tbody>
   </table>
 </section>
@@ -152,29 +151,30 @@ node scripts/sprint_fuerza_mayor_notif.mjs cleanup</div>
   <div class="sl">Linear — Descripciones issue (verbatim para create)</div>
   <div class="st">Checklists - [ ] copiar al .mjs</div>
   <div class="cb2"><span class="dc">## BE</span>
-<span class="da">- [ ] Tras fuerzaMayor OK: insertar resolución (destino cancelado, aprobada, nota «Fuerza mayor: …») para el dueño</span>
-<span class="da">- [ ] Aparece en GET solicitudes/recientes del gestor</span>
+<span class="da">- [ ] GET with-ods / user/{id}/with-ods / {id}/with-ods: gestor solo dueño (JWT); staff ve todos</span>
+<span class="da">- [ ] IDOR: gestor pediendo userId ajeno → 403</span>
 <span class="da">- [ ] .http + Testing GATE_HTTP</span>
 <span class="da">- [ ] Handoff FE ítem 1</span>
 
 <span class="dc">## FE</span>
 <span class="da">- [ ] ⏸ Gate: NO iniciar hasta BE handoff ítem 1 [x]</span>
-<span class="da">- [ ] GestorTransicionNotif: mensaje claro si nota/motivo es fuerza mayor</span>
+<span class="da">- [ ] Logout / cambio de usuario: invalidateProjects</span>
+<span class="da">- [ ] Dashboard/lista: filtro defensivo userId si rol gestor</span>
 <span class="da">- [ ] npm run build</span></div>
 </section>
 
 <section class="sec">
   <div class="sl">Fase 6 — Entregable de cierre</div>
-  <div class="st">resumen_sprint_fuerza_mayor_notif.html · Epic Completed</div>
+  <div class="st">resumen_sprint_aislamiento_gestor.html · Epic Completed</div>
 </section>
 
 <section class="sec">
-  <div class="sl">Objetivo</div>
-  <div class="st">Qué se busca resolver</div>
+  <div class="sl">Objetivo producto</div>
+  <div class="st">Problema ↔ solución</div>
   <table class="tbl">
     <thead><tr><th>Problema</th><th>Solución propuesta</th></tr></thead>
     <tbody>
-      <tr><td>Fuerza mayor no genera aviso al gestor</td><td class="ok">Registrar resolución + banner global existente</td></tr>
+      <tr><td>Gestores ven proyectos ajenos (API abierta)</td><td class="ok">Filtrar por JWT en BE + refuerzo FE al logout/lista</td></tr>
     </tbody>
   </table>
 </section>
@@ -187,34 +187,31 @@ node scripts/sprint_fuerza_mayor_notif.mjs cleanup</div>
     <div class="pla">→</div>
     <div class="pln"><div class="plname">JOOQ</div><div class="plnote">N/A</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">BE</div><div class="plnote">fuerzaMayor + insert</div></div>
+    <div class="pln"><div class="plname">BE</div><div class="plnote">JWT isolation</div></div>
     <div class="pla">→</div>
     <div class="pln"><div class="plname">.http</div><div class="plnote">GATE_HTTP</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">FE</div><div class="plnote">banner texto</div></div>
+    <div class="pln"><div class="plname">FE</div><div class="plnote">logout + filter</div></div>
   </div>
 </section>
 
 <section class="sec">
   <div class="sl">Linear</div>
   <div class="st">Issues planificados</div>
-  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">BE · role:backend</div><div class="issue-title">Registrar resolución al fuerzaMayor</div></div></div>
-  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">FE · role:frontend</div><div class="issue-title">Texto banner fuerza mayor</div></div></div>
+  <div class="issue"><span class="badge">BE</span><div><div class="issue-id">role:backend · 3 pts</div><div class="issue-title">Filtrar listados/detalle por JWT dueño gestor</div></div></div>
+  <div class="issue"><span class="badge">FE</span><div><div class="issue-id">role:frontend · 2 pts</div><div class="issue-title">Logout limpia projects + filtro defensivo</div></div></div>
 </section>
 
 <section class="sec">
-  <div class="sl">Aprobación</div>
-  <div class="st">Estado PENDIENTE / APROBADO</div>
+  <div class="sl">Linear — Aprobación</div>
+  <div class="st">Estado</div>
   <table class="tbl">
     <tbody>
-      <tr><td>Estado</td><td>APROBADO</td></tr>
-      <tr><td>Validación</td><td><code>node scripts/validate-plan-html.mjs plans/plan_sprint_fuerza_mayor_notif.html</code></td></tr>
-      <tr><td>Para aprobar</td><td>✅ APROBADO en chat → create</td></tr>
+      <tr><td>Estado</td><td class="ok">APROBADO</td></tr>
     </tbody>
   </table>
 </section>
 
-<hr class="sep">
-<footer><div class="utn">UTN · ODS Platform</div><div>plan_sprint_fuerza_mayor_notif.html</div></footer>
+<footer>Sprint aislamiento_gestor · linear_ods</footer>
 </body>
 </html>

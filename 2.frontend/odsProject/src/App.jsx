@@ -19,6 +19,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import StaffGlobalChatWidget from './components/planificacion/StaffGlobalChatWidget.jsx';
 import GestorTransicionNotif from './components/planificacion/GestorTransicionNotif.jsx';
 import ProjectsAutoRefresh from './components/projects/ProjectsAutoRefresh.jsx';
+import ProjectsSessionSync from './components/projects/ProjectsSessionSync.jsx';
 import { ProjectsProvider } from './hooks/useProjects.jsx';
 
 function App() {
@@ -57,6 +58,7 @@ function AppContent() {
     <div className="App">
       <StaffGlobalChatWidget />
       <GestorTransicionNotif />
+      <ProjectsSessionSync />
       <ProjectsAutoRefresh />
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
