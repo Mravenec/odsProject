@@ -55,6 +55,13 @@ const ProjectResultsPage = () => {
 
   useEffect(() => { fetchProjectFull(); }, [fetchProjectFull]);
 
+  // Tras error / no encontrado: redirigir al dashboard a los 5 s
+  useEffect(() => {
+    if (loading || (!error && project)) return undefined;
+    const t = setTimeout(() => navigate('/dashboard', { replace: true }), 5000);
+    return () => clearTimeout(t);
+  }, [loading, error, project, navigate]);
+
   if (loading) return (
     <div className="global-loader-container"><div className="loader"></div>
       <div className="loader-content"><p>Cargando proyecto...</p></div></div>
@@ -64,6 +71,9 @@ const ProjectResultsPage = () => {
       <div className="error-container fade-in">
         <h2>Error al cargar el proyecto</h2>
         <p>{error || 'No disponible.'}</p>
+        <p className="error-redirect-hint" style={{ marginTop: '0.75rem', opacity: 0.75, fontSize: '0.9rem' }}>
+          Redirigiendo al dashboard en 5 segundos…
+        </p>
         <button className="btn-primary" onClick={() => navigate('/dashboard')}>Volver</button>
       </div>
     </div>
