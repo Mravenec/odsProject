@@ -16,6 +16,14 @@ public class TransicionPlanificacionController implements ITransicionPlanificaci
     private ITransicionPlanificacionService transicionPlanificacionService;
 
     @Override
+    @GetMapping("/planificacion/solicitudes/recientes")
+    public ResponseEntity<Map<String, Object>> listarRecientes(
+            @RequestParam Integer actorUserId,
+            @RequestParam String actorRole) {
+        return handle(() -> transicionPlanificacionService.listarRecientes(actorUserId, actorRole));
+    }
+
+    @Override
     @PostMapping("/{id}/planificacion/solicitud")
     public ResponseEntity<Map<String, Object>> crearSolicitud(
             @PathVariable Integer id,

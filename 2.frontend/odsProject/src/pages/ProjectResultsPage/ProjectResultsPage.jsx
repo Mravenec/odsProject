@@ -220,6 +220,7 @@ const ProjectResultsPage = () => {
         <PlanificacionTransicionBar
           user={user}
           transicion={transicion}
+          projectId={Number(projectId)}
         />
       )}
 

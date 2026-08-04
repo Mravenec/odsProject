@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3d2e">
-<title>Propuesta — Filtros cola evaluación por estado · ODS UTN</title>
+<title>Propuesta — Aviso global + auto-refresh · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
   :root{--green900:#0f3d2e;--green700:#1b5e42;--green500:#2e8b63;--cream50:#f7f4ec;--cream100:#efe9dc;--copper600:#b06a2c;--ink900:#1c2622;--ink600:#4a5852;--surf:#fff}
@@ -14,7 +14,7 @@
   .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:12px}
   h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800;line-height:1.1}
   h1 em{font-style:normal;color:#cfe6da}
-  .sub{margin-top:12px;font-size:14px;color:rgba(255,255,255,.88);max-width:880px}
+  .sub{margin-top:12px;font-size:14px;color:rgba(255,255,255,.88);max-width:900px}
   .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
   .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(176,106,44,.35)}
   .chip span{font-weight:600;color:#fff}
@@ -48,12 +48,12 @@
 </head>
 <body>
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint cola_filtros · Propuesta · linear_ods</div>
-  <h1>Cola evaluación<br><em>Tabs por estado (sin «Todos»)</em></h1>
-  <p class="sub">Quitar «Todos» (mezclaba evaluados). Nueva barra: Planificación | Activos (sin doc) | En curso (con documento) | Pendientes | Evaluados. Cada tab solo su conjunto.</p>
-  <div class="chips"><div class="chip">Estado <span>PENDIENTE</span></div><div class="chip">Issues <span>1 FE</span></div></div>
+  <div class="ey">ODS UTN · Sprint notif_refresh · Propuesta · linear_ods</div>
+  <h1>Aviso global gestor<br><em>+ auto-refresh sin F5</em></h1>
+  <p class="sub">Al aprobar transición a activo, el gestor ve el banner verde en Dashboard (y cualquier ruta). Listas/cola/detalle se refrescan solos (poll silencioso) para todos los roles — sin recarga manual.</p>
+  <div class="chips"><div class="chip">Estado <span>PENDIENTE</span></div><div class="chip">Issues <span>2</span></div></div>
 </header>
-<div class="al"><div>⏳</div><div><strong>Propuesta pendiente.</strong> <code>validate-plan-html.mjs</code> → ✅ APROBADO → <code>create</code>.</div></div>
+<div class="al"><div>⏳</div><div><strong>Propuesta pendiente.</strong> Validar → ✅ APROBADO → <code>create</code>.</div></div>
 
 <section class="sec">
   <div class="sl">Linear — Proceso obligatorio (7 fases)</div>
@@ -61,12 +61,12 @@
   <table class="tbl">
     <thead><tr><th>Fase</th><th>Qué</th><th>Gate</th><th>Estado</th></tr></thead>
     <tbody>
-      <tr><td>Fase 0 — Limpieza</td><td>cleanup cola_tabs</td><td>Sprint previo</td><td>✓</td></tr>
-      <tr><td>Fase 1–2 — Plan HTML</td><td>plan_sprint_cola_filtros.html</td><td>validate-plan-html</td><td>PENDIENTE</td></tr>
+      <tr><td>Fase 0 — Limpieza</td><td>cleanup transicion_ux</td><td>Sprint previo</td><td>✓</td></tr>
+      <tr><td>Fase 1–2 — Plan HTML</td><td>plan_sprint_notif_refresh.html</td><td>validate-plan-html</td><td>PENDIENTE</td></tr>
       <tr><td>Fase 3 — Aprobación</td><td>✅ humano</td><td>APROBADO</td><td>PENDIENTE</td></tr>
-      <tr><td>Fase 4 — MJS</td><td>sprint_cola_filtros.mjs create</td><td>Tras Fase 3</td><td>—</td></tr>
-      <tr><td>Fase 5 — Multi-agente</td><td>FE checklist</td><td>GATE_FE</td><td>—</td></tr>
-      <tr><td>Fase 6 — Resumen</td><td>resumen_sprint_cola_filtros.html</td><td>Epic Completed</td><td>—</td></tr>
+      <tr><td>Fase 4 — MJS</td><td>sprint_notif_refresh.mjs create</td><td>Tras Fase 3</td><td>—</td></tr>
+      <tr><td>Fase 5 — Multi-agente</td><td>BE → FE</td><td>GATE_HTTP</td><td>—</td></tr>
+      <tr><td>Fase 6 — Resumen</td><td>resumen_sprint_notif_refresh.html</td><td>Epic Completed</td><td>—</td></tr>
     </tbody>
   </table>
 </section>
@@ -76,9 +76,9 @@
   <div class="st">EPIC_NAME · script · equipo linear_ods</div>
   <table class="tbl">
     <tbody>
-      <tr><td>EPIC_NAME</td><td>Cola evaluación — filtros Planificación / Activos / En curso / Pendientes / Evaluados</td></tr>
-      <tr><td>SPRINT_NAME</td><td>cola_filtros</td></tr>
-      <tr><td>Script</td><td><code>_linear/scripts/sprint_cola_filtros.mjs</code></td></tr>
+      <tr><td>EPIC_NAME</td><td>Notif transición global + auto-refresh UI</td></tr>
+      <tr><td>SPRINT_NAME</td><td>notif_refresh</td></tr>
+      <tr><td>Script</td><td><code>_linear/scripts/sprint_notif_refresh.mjs</code></td></tr>
     </tbody>
   </table>
 </section>
@@ -92,19 +92,20 @@
       <tr><td>GATE_SQL</td><td>N/A</td><td>—</td><td>—</td></tr>
       <tr><td>GATE_BD</td><td>N/A</td><td>—</td><td>Sin drop_db</td></tr>
       <tr><td>GATE_JOOQ</td><td>N/A</td><td>—</td><td>—</td></tr>
-      <tr><td>GATE_HTTP</td><td>N/A</td><td>—</td><td>Sin API</td></tr>
-      <tr><td>GATE_FE</td><td>Sí</td><td>FE</td><td>npm run build + smoke tabs</td></tr>
+      <tr><td>GATE_HTTP</td><td>Sí</td><td>BE</td><td>GET solicitudes recientes del gestor</td></tr>
+      <tr><td>GATE_FE</td><td>Sí</td><td>FE</td><td>npm run build + smoke sin F5</td></tr>
     </tbody>
   </table>
 </section>
 
 <section class="sec">
   <div class="sl">Linear — Tabla de issues</div>
-  <div class="st">Id · role:frontend · pts · blocks · archivos</div>
+  <div class="st">Id · role · pts · blocks · archivos</div>
   <table class="tbl">
     <thead><tr><th>Id</th><th>Rol</th><th>Pts</th><th>Título</th><th>blocks</th><th>Archivos</th></tr></thead>
     <tbody>
-      <tr><td>FE</td><td>role:frontend</td><td>2</td><td>Redefinir filterTabs y predicados</td><td>—</td><td>EvaluationQueuePage.jsx (+ CSS si hace falta)</td></tr>
+      <tr><td>BE</td><td>role:backend</td><td>3</td><td>GET bandeja resoluciones del gestor</td><td>—</td><td>Transicion*Controller/Service/Repo, .http</td></tr>
+      <tr><td>FE</td><td>role:frontend</td><td>4</td><td>Banner global + poll silencioso listas</td><td>BE</td><td>App, GestorNotifBanner, useProjects, useEvaluationQueue, usePlanificacionTransicion</td></tr>
     </tbody>
   </table>
 </section>
@@ -112,27 +113,29 @@
 <section class="sec">
   <div class="sl">Linear — Dependencias blocks + handoff</div>
   <div class="st">Cadena serial · handoff ítem 1 downstream</div>
-  <div class="cb2"><span class="dc">Sin blocks</span> — un solo issue FE
-<span class="dk">handoff</span> N/A</div>
+  <div class="cb2"><span class="dc">BE</span> blocks <span class="dk">FE</span>
+handoff FE 1</div>
 </section>
 
 <section class="sec">
   <div class="sl">Linear — Ciclo por issue (Fase 5)</div>
-  <div class="st">next → checklist → Testing → Done</div>
+  <div class="st">next → checklist → Testing → handoff → Done</div>
   <div class="cb2">node scripts/sprint-next.mjs
 checklist ODS-N &lt;n&gt;
 state ODS-N Testing
+handoff ODS-M 1
 state ODS-N Done</div>
 </section>
 
 <section class="sec">
   <div class="sl">Linear — Comandos del script</div>
   <div class="st">create · next · checklist · handoff · state · cleanup</div>
-  <div class="cb2">node scripts/sprint_cola_filtros.mjs create
+  <div class="cb2">node scripts/sprint_notif_refresh.mjs create
 node scripts/sprint-next.mjs
-node scripts/sprint_cola_filtros.mjs checklist ODS-N 1
-node scripts/sprint_cola_filtros.mjs state ODS-N Done
-node scripts/sprint_cola_filtros.mjs cleanup</div>
+node scripts/sprint_notif_refresh.mjs checklist ODS-N 1
+node scripts/sprint_notif_refresh.mjs handoff ODS-M 1
+node scripts/sprint_notif_refresh.mjs state ODS-N Done
+node scripts/sprint_notif_refresh.mjs cleanup</div>
 </section>
 
 <section class="sec">
@@ -141,7 +144,8 @@ node scripts/sprint_cola_filtros.mjs cleanup</div>
   <table class="tbl">
     <thead><tr><th>Issue</th><th>Rol</th><th>Comandos Testing</th><th>Done</th></tr></thead>
     <tbody>
-      <tr><td>FE</td><td>role:frontend</td><td>npm run build; smoke /evaluacion</td><td>5 tabs; Evaluados solo en su tab; Activos = activo sin doc; En curso = activo con doc</td></tr>
+      <tr><td>BE</td><td>role:backend</td><td>mvn compile; .http GET recientes</td><td>gestor ve últimas aprobadas/rechazadas de sus proyectos</td></tr>
+      <tr><td>FE</td><td>role:frontend</td><td>npm run build; smoke 2 browsers</td><td>Aprobar → banner en Dashboard sin F5; cola/listas se actualizan solas</td></tr>
     </tbody>
   </table>
 </section>
@@ -150,24 +154,25 @@ node scripts/sprint_cola_filtros.mjs cleanup</div>
   <div class="sl">Linear — Descripciones issue (verbatim para create)</div>
   <div class="st">Checklists - [ ] copiar al .mjs</div>
   <div class="box">
-    <strong>Reglas de filtro</strong><br>
-    Planificación → <code>status === planificacion</code><br>
-    Activos → <code>status === activo &amp;&amp; !hasDocs</code><br>
-    En curso (con documento) → <code>status === activo &amp;&amp; hasDocs</code><br>
-    Pendientes → <code>status === en_revision</code><br>
-    Evaluados → <code>status === completado</code><br>
-    Sin tab «Todos». Default: <code>pendientes</code>.
+    <strong>Problema hoy:</strong> el banner verde solo monta en ProjectResultsPage. Si el gestor está en Dashboard no lo ve. Listas no hacen poll (solo chat).
   </div>
-  <div class="cb2"><span class="dc">## FE</span>
-<span class="da">- [ ] Quitar tab Todos; counts + filtered según 5 reglas (planificacion / activos / en_curso / pendientes / evaluados)</span>
-<span class="da">- [ ] filterTabs orden: Planificación | Activos | En curso (con documento) | Pendientes de evaluación | Evaluados</span>
-<span class="da">- [ ] npm run build; smoke: evaluados no aparecen fuera de Evaluados; activos sin doc solo en Activos</span></div>
+  <div class="cb2"><span class="dc">## BE</span>
+<span class="da">- [ ] GET /api/projects/planificacion/solicitudes/recientes?actorUserId=&amp;actorRole=gestor → resoluciones recientes (aprobada/rechazada) de proyectos del dueño</span>
+<span class="da">- [ ] Incluir proyectoId, nombre, estadoDestino, estadoSolicitud, notaResolucion, resueltoEn</span>
+<span class="da">- [ ] .http 2xx con asserts</span>
+<span class="da">- [ ] Testing GATE_HTTP</span>
+<span class="da">- [ ] Handoff FE ítem 1</span>
+
+<span class="dc">## FE</span>
+<span class="da">- [ ] ⏸ Gate: NO iniciar hasta BE handoff ítem 1 [x]</span>
+<span class="da">- [ ] Widget global GestorTransicionNotif (App.jsx): poll recientes; banner verde aprobado/activo (y rojo rechazo) dismissible localStorage — visible en Dashboard y cualquier ruta</span>
+<span class="da">- [ ] useSilentPoll / intervals: useProjects, useEvaluationQueue, usePlanificacionTransicion, detalle proyecto (silent, sin spinner)</span>
+<span class="da">- [ ] npm run build; smoke: aprobar sin F5 → gestor en Dashboard ve aviso; cola admin se actualiza sola</span></div>
 </section>
 
 <section class="sec">
   <div class="sl">Fase 6 — Entregable de cierre</div>
-  <div class="st">resumen_sprint_cola_filtros.html · Epic Completed</div>
-  <p>Al cerrar: resumen + epic Completed. No cleanup hasta próximo trabajo nuevo.</p>
+  <div class="st">resumen_sprint_notif_refresh.html · Epic Completed</div>
 </section>
 
 <section class="sec">
@@ -176,7 +181,7 @@ node scripts/sprint_cola_filtros.mjs cleanup</div>
   <table class="tbl">
     <thead><tr><th>Problema</th><th>Solución propuesta</th></tr></thead>
     <tbody>
-      <tr><td>«Todos» muestra evaluados fuera del tab Evaluados; activos/planificación mezclados</td><td class="ok">5 tabs disjuntos por estado + documento</td></tr>
+      <tr><td>Gestor no ve aprobación fuera del detalle; hay que refrescar a mano</td><td class="ok">Bandeja BE + banner App-level + poll silencioso en listas</td></tr>
     </tbody>
   </table>
 </section>
@@ -189,18 +194,19 @@ node scripts/sprint_cola_filtros.mjs cleanup</div>
     <div class="pla">→</div>
     <div class="pln"><div class="plname">JOOQ</div><div class="plnote">N/A</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">BE</div><div class="plnote">N/A</div></div>
+    <div class="pln"><div class="plname">BE</div><div class="plnote">solicitudes/recientes</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">.http</div><div class="plnote">N/A</div></div>
+    <div class="pln"><div class="plname">.http</div><div class="plnote">GATE_HTTP</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">FE</div><div class="plnote">EvaluationQueuePage</div></div>
+    <div class="pln"><div class="plname">FE</div><div class="plnote">banner + polls</div></div>
   </div>
 </section>
 
 <section class="sec">
   <div class="sl">Linear</div>
   <div class="st">Issues planificados</div>
-  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">FE · role:frontend</div><div class="issue-title">Redefinir filterTabs y predicados</div></div></div>
+  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">BE · role:backend</div><div class="issue-title">GET bandeja resoluciones del gestor</div></div></div>
+  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">FE · role:frontend</div><div class="issue-title">Banner global + poll silencioso listas</div></div></div>
 </section>
 
 <section class="sec">
@@ -209,13 +215,13 @@ node scripts/sprint_cola_filtros.mjs cleanup</div>
   <table class="tbl">
     <tbody>
       <tr><td>Estado</td><td>PENDIENTE</td></tr>
-      <tr><td>Validación</td><td><code>node scripts/validate-plan-html.mjs plans/plan_sprint_cola_filtros.html</code></td></tr>
+      <tr><td>Validación</td><td><code>node scripts/validate-plan-html.mjs plans/plan_sprint_notif_refresh.html</code></td></tr>
       <tr><td>Para aprobar</td><td>✅ APROBADO en chat → create</td></tr>
     </tbody>
   </table>
 </section>
 
 <hr class="sep">
-<footer><div class="utn">UTN · ODS Platform</div><div>plan_sprint_cola_filtros.html</div></footer>
+<footer><div class="utn">UTN · ODS Platform</div><div>plan_sprint_notif_refresh.html</div></footer>
 </body>
 </html>

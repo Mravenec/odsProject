@@ -22,6 +22,7 @@ const EvaluationQueuePage = () => {
   const [filter, setFilter] = useState('pendientes');
 
   const counts = {
+    cancelados:    rows.filter(r => r.status === 'cancelado').length,
     planificacion: rows.filter(r => r.status === 'planificacion').length,
     activos:       rows.filter(r => r.status === 'activo' && !r.hasDocs).length,
     en_curso:      rows.filter(r => r.status === 'activo' && r.hasDocs).length,
@@ -30,6 +31,7 @@ const EvaluationQueuePage = () => {
   };
 
   const filtered = rows.filter(r => {
+    if (filter === 'cancelados')    return r.status === 'cancelado';
     if (filter === 'planificacion') return r.status === 'planificacion';
     if (filter === 'activos')       return r.status === 'activo' && !r.hasDocs;
     if (filter === 'en_curso')      return r.status === 'activo' && r.hasDocs;
@@ -39,6 +41,7 @@ const EvaluationQueuePage = () => {
   });
 
   const filterTabs = [
+    { k: 'cancelados',    label: 'Cancelados',                    count: counts.cancelados },
     { k: 'planificacion', label: 'Planificación',                 count: counts.planificacion },
     { k: 'activos',       label: 'Activos',                       count: counts.activos },
     { k: 'en_curso',      label: 'En curso (con documento)',      count: counts.en_curso },
@@ -47,8 +50,11 @@ const EvaluationQueuePage = () => {
   ];
 
   const openRow = (p) => {
-    if (p.status === 'completado') navigate(`/projects/${p.id}/results`);
-    else navigate(`/evaluacion/${p.id}`);
+    if (['completado', 'cancelado', 'planificacion'].includes(p.status)) {
+      navigate(`/projects/${p.id}/results`);
+    } else {
+      navigate(`/evaluacion/${p.id}`);
+    }
   };
 
   const fmtPromHoras = (h) => {

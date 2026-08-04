@@ -17,6 +17,8 @@ import EvaluationQueuePage from './pages/EvaluationQueuePage/EvaluationQueuePage
 import ForbiddenPage from './pages/ForbiddenPage/ForbiddenPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import StaffGlobalChatWidget from './components/planificacion/StaffGlobalChatWidget.jsx';
+import GestorTransicionNotif from './components/planificacion/GestorTransicionNotif.jsx';
+import ProjectsAutoRefresh from './components/projects/ProjectsAutoRefresh.jsx';
 import { ProjectsProvider } from './hooks/useProjects.jsx';
 
 function App() {
@@ -54,6 +56,8 @@ function AppContent() {
   return (
     <div className="App">
       <StaffGlobalChatWidget />
+      <GestorTransicionNotif />
+      <ProjectsAutoRefresh />
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />

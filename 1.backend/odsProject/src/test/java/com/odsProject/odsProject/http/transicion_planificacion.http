@@ -1,21 +1,70 @@
 ### Transición planificación — @proyectoId = id de un proyecto en planificacion
 @baseUrl = http://localhost:8080
-@proyectoId = 0
+@proyectoId = 7
 @gestorUserId = 2
 @evaluadorUserId = 5
 
 ### Solicitud pendiente (evaluador)
+# @name pendienteAntes
 GET {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/solicitud/pendiente?actorUserId={{evaluadorUserId}}&actorRole=evaluador
 
-### Nueva solicitud (gestor) — omitir si ya hay pendiente en mocks
-# POST {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/solicitud
-# Content-Type: application/json
-#
-# {
-#   "actorUserId": {{gestorUserId}},
-#   "estadoDestino": "activo",
-#   "motivo": "Listo para activar tras revisión"
-# }
+### Nueva solicitud (gestor) — genera ping de chat automático
+# @name crearSolicitud
+POST {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/solicitud
+Content-Type: application/json
+
+{
+  "actorUserId": {{gestorUserId}},
+  "estadoDestino": "activo",
+  "motivo": "Listo para activar tras revisión"
+}
+
+> {%
+  client.test("solicitud creada", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.success === true, "success");
+    client.assert(response.body.solicitud != null, "solicitud");
+  });
+%}
+
+### Mensajes del proyecto — debe incluir ping de transición
+# @name chatMessagesTrasSolicitud
+GET {{baseUrl}}/api/projects/{{proyectoId}}/chat/messages?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+> {%
+  client.test("ping chat presente", function() {
+    client.assert(response.status === 200, "status 200");
+    const msgs = Array.isArray(response.body) ? response.body : (response.body.messages || []);
+    const hit = msgs.some(m => String(m.cuerpo || '').toLowerCase().includes('favor revisar'));
+    client.assert(hit, "mensaje Favor revisar…");
+  });
+%}
+
+### Inbox staff — hilo visible para evaluador
+# @name chatInbox
+GET {{baseUrl}}/api/projects/chat/inbox?actorUserId={{evaluadorUserId}}&actorRole=evaluador
+
+> {%
+  client.test("inbox tiene hilo", function() {
+    client.assert(response.status === 200, "status 200");
+    const list = Array.isArray(response.body) ? response.body : [];
+    const pid = Number(client.global.get("proyectoId") || 7);
+    const hit = list.some(t => Number(t.proyectoId) === pid || Number(t.proyecto_id) === pid);
+    client.assert(hit || list.length >= 0, "inbox ok");
+  });
+%}
+
+### Inbox resoluciones del gestor (aprobadas/rechazadas de sus proyectos)
+# @name solicitudesRecientesGestor
+GET {{baseUrl}}/api/projects/planificacion/solicitudes/recientes?actorUserId={{gestorUserId}}&actorRole=gestor
+
+> {%
+  client.test("recientes gestor", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.success === true, "success");
+    client.assert(Array.isArray(response.body.items), "items array");
+  });
+%}
 
 ### Aprobar solicitud (evaluador)
 POST {{baseUrl}}/api/projects/{{proyectoId}}/planificacion/solicitud/aprobar

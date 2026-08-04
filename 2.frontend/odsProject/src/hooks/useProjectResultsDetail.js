@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { projectService } from '../services/projectService';
 import { documentService } from '../services/documentService';
 import { getObjetivoService } from './objetivoServicesMap';
 import { deriveEstado } from '../components/AchievementBadge';
+import { useSilentPoll } from './useSilentPoll';
 
 /**
  * Detalle de resultados por proyecto — Service → Hook → ProjectResultsPage.
@@ -114,6 +115,8 @@ export function useProjectResultsDetail(projectId) {
     const r = await documentService.listByProject(projectId);
     setHasEvidenceDocs((r.data || []).length > 0);
   }, [projectId]);
+
+  useSilentPoll(() => fetchProjectFull({ silent: true }), 8000, !!projectId);
 
   return {
     project,

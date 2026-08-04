@@ -13,4 +13,7 @@ public interface ITransicionPlanificacionService {
     Map<String, Object> rechazar(Integer proyectoId, Integer actorUserId, String actorRole, String nota);
 
     Map<String, Object> fuerzaMayor(Integer proyectoId, Integer actorUserId, String actorRole, String motivo);
+
+    /** Resoluciones recientes (aprobada/rechazada) para el gestor dueño. */
+    Map<String, Object> listarRecientes(Integer actorUserId, String actorRole);
 }

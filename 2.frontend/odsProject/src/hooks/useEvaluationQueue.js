@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { projectService } from '../services/projectService';
 import { documentService } from '../services/documentService';
+import { useSilentPoll } from './useSilentPoll';
 
 /**
  * Cola de evaluación — Service → Hook → EvaluationQueuePage.
@@ -11,9 +12,9 @@ export function useEvaluationQueue() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const load = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) setLoading(true);
+    if (!silent) setError(null);
     try {
       const [projRes, metricsRes] = await Promise.all([
         projectService.getAllProjects(),
@@ -32,15 +33,17 @@ export function useEvaluationQueue() {
       setRows(enriched);
       setMetrics(metricsRes.data || {});
     } catch (e) {
-      setError(e.message);
+      if (!silent) setError(e.message);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  useSilentPoll(() => load({ silent: true }), 10000, true);
 
   return { rows, metrics, loading, error, reload: load };
 }

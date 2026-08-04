@@ -46,4 +46,12 @@ export const transicionService = {
     });
     return { success: true, data: r.data };
   },
+
+  /** Resoluciones recientes (aprobada/rechazada) de proyectos del gestor. */
+  async listRecientes(actorUserId, actorRole = 'gestor') {
+    const r = await api.get('/projects/planificacion/solicitudes/recientes', {
+      params: { actorUserId, actorRole },
+    });
+    return { success: true, data: r.data };
+  },
 };

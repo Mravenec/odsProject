@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3d2e">
-<title>Resumen — Filtros cola evaluación · ODS UTN</title>
+<title>Resumen — Notif global + auto-refresh · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
   :root{--green900:#0f3d2e;--green700:#1b5e42;--green500:#2e8b63;--cream50:#f7f4ec;--cream100:#efe9dc;--ink600:#4a5852;--surf:#fff}
@@ -31,10 +31,10 @@
 </head>
 <body>
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint cola_filtros · Completado</div>
-  <h1>Cola evaluación<br><em>5 tabs disjuntos</em></h1>
-  <p class="sub">Sin «Todos». Planificación | Activos | En curso (con documento) | Pendientes | Evaluados.</p>
-  <div class="chip">Estado <strong>COMPLETADO</strong> · ODS-493 Done</div>
+  <div class="ey">ODS UTN · Sprint notif_refresh · Completado</div>
+  <h1>Notif global<br><em>+ auto-refresh</em></h1>
+  <p class="sub">Banner de transición en cualquier ruta (Dashboard incluido). Poll silencioso en listas/cola/detalle.</p>
+  <div class="chip">Estado <strong>COMPLETADO</strong> · ODS-496 · ODS-497</div>
 </header>
 <div class="al"><strong>Sprint cerrado.</strong> Resumen legible — no borrar hasta Fase 0 del próximo trabajo.</div>
 <section class="sec">
@@ -52,25 +52,23 @@
   <div class="sl">Objetivo</div>
   <div class="st">Qué se resolvió</div>
   <table class="tbl">
-    <thead><tr><th>Tab</th><th>Criterio</th></tr></thead>
+    <thead><tr><th>Entrega</th><th>Detalle</th></tr></thead>
     <tbody>
-      <tr><td>Planificación</td><td><code>planificacion</code></td></tr>
-      <tr><td>Activos</td><td><code>activo</code> sin documento</td></tr>
-      <tr><td>En curso</td><td><code>activo</code> con documento</td></tr>
-      <tr><td>Pendientes</td><td><code>en_revision</code></td></tr>
-      <tr><td>Evaluados</td><td><code>completado</code></td></tr>
+      <tr><td>BE recientes</td><td class="ok"><code>GET …/solicitudes/recientes</code></td></tr>
+      <tr><td>Banner global</td><td class="ok"><code>GestorTransicionNotif</code> en App (Dashboard y resto)</td></tr>
+      <tr><td>Auto-refresh</td><td class="ok">Poll silencioso proyectos, cola, transición, detalle</td></tr>
     </tbody>
   </table>
 </section>
 <section class="sec">
   <div class="sl">Fase 6 — Entregable de cierre</div>
-  <div class="st">resumen_sprint_cola_filtros.html · Epic Completed</div>
+  <div class="st">resumen_sprint_notif_refresh.html · Epic Completed</div>
 </section>
 <section class="sec">
   <div class="sl">Aprobación</div>
   <div class="st">Estado APROBADO / cerrado</div>
   <table class="tbl"><tbody><tr><td>Estado</td><td class="ok">APROBADO → Done</td></tr></tbody></table>
 </section>
-<footer><div class="utn">UTN · ODS Platform</div><div>resumen_sprint_cola_filtros.html</div></footer>
+<footer><div class="utn">UTN · ODS Platform</div><div>resumen_sprint_notif_refresh.html</div></footer>
 </body>
 </html>

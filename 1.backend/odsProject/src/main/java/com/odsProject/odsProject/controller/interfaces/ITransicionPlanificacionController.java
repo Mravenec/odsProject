@@ -24,4 +24,6 @@ public interface ITransicionPlanificacionController {
 
     ResponseEntity<Map<String, Object>> fuerzaMayor(
             @PathVariable Integer id, @RequestBody Map<String, Object> body);
+
+    ResponseEntity<Map<String, Object>> listarRecientes(Integer actorUserId, String actorRole);
 }

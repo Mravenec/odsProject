@@ -16,12 +16,12 @@ function useProjectsState() {
   const [loadedScope, setLoadedScope] = useState(null);
   const projectsRef = useRef([]);
 
-  const fetchUserProjects = useCallback(async (userId, odsId, { force = false } = {}) => {
+  const fetchUserProjects = useCallback(async (userId, odsId, { force = false, silent = false } = {}) => {
     const scope = `user:${userId}`;
     if (!force && loadedScope === scope && projectsRef.current.length > 0) {
       return projectsRef.current;
     }
-    setLoading(true);
+    if (!silent) setLoading(true);
     setError(null);
     try {
       const data = await projectService.getUserProjects(userId, odsId);
@@ -30,19 +30,19 @@ function useProjectsState() {
       setLoadedScope(scope);
       return data;
     } catch (err) {
-      setError(err.message);
+      if (!silent) setError(err.message);
       return [];
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, [loadedScope]);
 
-  const fetchAllProjects = useCallback(async ({ force = false } = {}) => {
+  const fetchAllProjects = useCallback(async ({ force = false, silent = false } = {}) => {
     const scope = 'all';
     if (!force && loadedScope === scope && projectsRef.current.length > 0) {
       return projectsRef.current;
     }
-    setLoading(true);
+    if (!silent) setLoading(true);
     setError(null);
     try {
       const result = await projectService.getAllProjects();
@@ -52,10 +52,10 @@ function useProjectsState() {
       setLoadedScope(scope);
       return data;
     } catch (err) {
-      setError(err.message);
+      if (!silent) setError(err.message);
       return [];
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, [loadedScope]);
 

@@ -4,12 +4,14 @@ import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.ProyectoT
 import com.odsProject.odsProject.database.jooq.ods_master.tables.pojos.Proyectos;
 import com.odsProject.odsProject.repository.interfaces.IMasterProjectRepository;
 import com.odsProject.odsProject.repository.interfaces.ITransicionPlanificacionRepository;
+import com.odsProject.odsProject.service.interfaces.IChatMensajeService;
 import com.odsProject.odsProject.service.interfaces.IMasterProjectService;
 import com.odsProject.odsProject.service.interfaces.ITransicionPlanificacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +29,9 @@ public class TransicionPlanificacionService implements ITransicionPlanificacionS
     @Autowired
     private IMasterProjectService masterProjectService;
 
+    @Autowired
+    private IChatMensajeService chatMensajeService;
+
     @Override
     public Map<String, Object> crearSolicitud(
             Integer proyectoId, Integer actorUserId, String estadoDestino, String motivo) {
@@ -41,26 +46,44 @@ public class TransicionPlanificacionService implements ITransicionPlanificacionS
             throw new IllegalArgumentException("estadoDestino debe ser activo o cancelado");
         ProyectoTransicionSolicitud sol = transicionRepository.insert(
                 proyectoId, actorUserId, dest, motivo);
+        postChatPing(p, actorUserId, dest, motivo);
         return Map.of("success", true, "solicitud", toDto(sol));
+    }
+
+    /** Avisa a admin/evaluador vía bandeja de chat (StaffGlobalChatWidget). */
+    private void postChatPing(Proyectos p, Integer actorUserId, String dest, String motivo) {
+        String nombre = p.getNombreProyecto() != null ? p.getNombreProyecto() : ("#" + p.getId());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Favor revisar y aprobar la transición a ")
+                .append(dest)
+                .append(" del proyecto «")
+                .append(nombre)
+                .append("».");
+        if (motivo != null && !motivo.isBlank()) {
+            sb.append(" Motivo: ").append(motivo.trim());
+        }
+        try {
+            chatMensajeService.sendMessage(p.getId(), actorUserId, "gestor", sb.toString());
+        } catch (RuntimeException e) {
+            // La solicitud ya quedó creada; no revertir por fallo de chat
+            org.slf4j.LoggerFactory.getLogger(TransicionPlanificacionService.class)
+                    .warn("No se pudo publicar ping de chat para proyecto {}: {}", p.getId(), e.getMessage());
+        }
     }
 
     @Override
     public Map<String, Object> obtenerPendiente(Integer proyectoId, Integer actorUserId, String actorRole) {
         Proyectos p = requireProyecto(proyectoId);
         assertCanViewSolicitud(p, actorUserId, actorRole);
-        return transicionRepository.findPendienteByProyectoId(proyectoId)
-                .map(s -> {
-                    Map<String, Object> resp = new LinkedHashMap<>();
-                    resp.put("success", true);
-                    resp.put("solicitud", toDto(s));
-                    return resp;
-                })
-                .orElseGet(() -> {
-                    Map<String, Object> resp = new LinkedHashMap<>();
-                    resp.put("success", true);
-                    resp.put("solicitud", null);
-                    return resp;
-                });
+        Map<String, Object> resp = new LinkedHashMap<>();
+        resp.put("success", true);
+        resp.put("solicitud", transicionRepository.findPendienteByProyectoId(proyectoId)
+                .map(this::toDto)
+                .orElse(null));
+        resp.put("ultimaSolicitud", transicionRepository.findLatestByProyectoId(proyectoId)
+                .map(this::toDto)
+                .orElse(null));
+        return resp;
     }
 
     @Override
@@ -107,6 +130,21 @@ public class TransicionPlanificacionService implements ITransicionPlanificacionS
         if (motivo == null || motivo.isBlank())
             throw new IllegalArgumentException("motivo es obligatorio");
         return masterProjectService.transitionState(proyectoId, "cancelado", actorUserId, actorRole, motivo);
+    }
+
+    @Override
+    public Map<String, Object> listarRecientes(Integer actorUserId, String actorRole) {
+        if (actorUserId == null)
+            throw new IllegalArgumentException("actorUserId es requerido");
+        String role = normalizeRole(actorRole);
+        if (!"gestor".equals(role))
+            throw new SecurityException("Solo el gestor puede consultar su bandeja de resoluciones");
+        List<Map<String, Object>> items =
+                transicionRepository.findRecientesResueltasByGestor(actorUserId, 20);
+        Map<String, Object> resp = new LinkedHashMap<>();
+        resp.put("success", true);
+        resp.put("items", items);
+        return resp;
     }
 
     private Proyectos requireProyecto(Integer proyectoId) {

@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { transicionService } from '../services/transicionService';
+import { useSilentPoll } from './useSilentPoll';
 
 export function usePlanificacionTransicion(projectId, user, projectStatus, onProjectUpdated) {
   const [solicitud, setSolicitud] = useState(null);
+  const [ultimaSolicitud, setUltimaSolicitud] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [motivo, setMotivo] = useState('');
@@ -20,21 +22,26 @@ export function usePlanificacionTransicion(projectId, user, projectStatus, onPro
 
   const load = useCallback(async () => {
     if (!projectId || !actorUserId || !role) return;
-    if (!inPlanificacion && !isReviewer) return;
+    // Gestor dueño también carga en activo (banner de aprobación)
+    if (!inPlanificacion && !isReviewer && !(isGestor && inActivo)) return;
     setLoading(true);
     setError('');
     try {
       const r = await transicionService.getPendiente(projectId, actorUserId, role);
       setSolicitud(r.data?.solicitud ?? null);
+      setUltimaSolicitud(r.data?.ultimaSolicitud ?? r.data?.solicitud ?? null);
     } catch (e) {
       setError(e.response?.data?.error || 'Error al cargar solicitud');
       setSolicitud(null);
+      setUltimaSolicitud(null);
     } finally {
       setLoading(false);
     }
-  }, [projectId, actorUserId, role, inPlanificacion, isReviewer]);
+  }, [projectId, actorUserId, role, inPlanificacion, inActivo, isReviewer, isGestor]);
 
   useEffect(() => { load(); }, [load]);
+
+  useSilentPoll(load, 5000, !!(projectId && actorUserId && (inPlanificacion || inActivo || isReviewer)));
 
   const refreshAfterAction = async () => {
     if (onProjectUpdated) {
@@ -113,8 +120,23 @@ export function usePlanificacionTransicion(projectId, user, projectStatus, onPro
     }
   };
 
+  const rechazoVisible =
+    isGestor &&
+    inPlanificacion &&
+    !solicitud &&
+    ultimaSolicitud?.estadoSolicitud === 'rechazada';
+
+  const aprobacionActivoVisible =
+    isGestor &&
+    inActivo &&
+    ultimaSolicitud?.estadoSolicitud === 'aprobada' &&
+    String(ultimaSolicitud?.estadoDestino || '').toLowerCase() === 'activo';
+
   return {
     solicitud,
+    ultimaSolicitud,
+    rechazoVisible,
+    aprobacionActivoVisible,
     loading,
     error,
     motivo,

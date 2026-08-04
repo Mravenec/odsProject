@@ -1,17 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function PlanificacionTransicionBar({ user, transicion }) {
+const dismissKey = (projectId, solicitudId) =>
+  `ods-transicion-aprobada-seen-${projectId}-${solicitudId}`;
+
+export default function PlanificacionTransicionBar({ user, transicion, projectId }) {
   const t = transicion;
+  const [hideAprobado, setHideAprobado] = useState(false);
+
+  useEffect(() => {
+    if (!t?.aprobacionActivoVisible || !t?.ultimaSolicitud?.id || !projectId) {
+      setHideAprobado(false);
+      return;
+    }
+    try {
+      setHideAprobado(localStorage.getItem(dismissKey(projectId, t.ultimaSolicitud.id)) === '1');
+    } catch {
+      setHideAprobado(false);
+    }
+  }, [t?.aprobacionActivoVisible, t?.ultimaSolicitud?.id, projectId]);
 
   if (!user || !t) return null;
 
   const showBar =
     (t.inPlanificacion && (t.isGestor || t.isReviewer)) ||
-    (t.inActivo && t.isReviewer);
+    (t.inActivo && (t.isReviewer || t.aprobacionActivoVisible));
 
   if (!showBar) return null;
 
   const pendiente = t.solicitud?.estadoSolicitud === 'pendiente';
+  const showAprobadoBanner = t.aprobacionActivoVisible && !hideAprobado;
+
+  const dismissAprobado = () => {
+    if (projectId && t.ultimaSolicitud?.id) {
+      try {
+        localStorage.setItem(dismissKey(projectId, t.ultimaSolicitud.id), '1');
+      } catch { /* ignore */ }
+    }
+    setHideAprobado(true);
+  };
 
   return (
     <section
@@ -20,8 +46,12 @@ export default function PlanificacionTransicionBar({ user, transicion }) {
         maxWidth: 'var(--container-max, 1200px)',
         margin: '1rem auto 1.5rem',
         padding: '1.25rem',
-        background: 'rgba(249, 115, 22, 0.08)',
-        border: '1px solid rgba(249, 115, 22, 0.25)',
+        background: showAprobadoBanner
+          ? 'rgba(22, 163, 74, 0.1)'
+          : 'rgba(249, 115, 22, 0.08)',
+        border: showAprobadoBanner
+          ? '1px solid rgba(22, 163, 74, 0.35)'
+          : '1px solid rgba(249, 115, 22, 0.25)',
         borderRadius: '12px',
       }}
     >
@@ -29,15 +59,70 @@ export default function PlanificacionTransicionBar({ user, transicion }) {
         Transición de planificación
       </h3>
 
+      {showAprobadoBanner && (
+        <div
+          style={{
+            marginBottom: '1rem',
+            padding: '0.85rem 1rem',
+            borderRadius: '8px',
+            background: '#ecfdf5',
+            border: '1px solid #86efac',
+            color: '#166534',
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: '12px',
+            alignItems: 'flex-start',
+          }}
+        >
+          <p style={{ margin: 0, fontWeight: 600, fontSize: '0.95rem' }}>
+            Su proyecto ha sido aprobado y se encuentra activo.
+          </p>
+          <button
+            type="button"
+            onClick={dismissAprobado}
+            style={{
+              border: 'none',
+              background: 'transparent',
+              color: '#166534',
+              cursor: 'pointer',
+              fontWeight: 700,
+              flexShrink: 0,
+            }}
+          >
+            Entendido
+          </button>
+        </div>
+      )}
+
       {t.error && (
-        <p style={{ color: '#FCA5A5', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
+        <p style={{ color: '#b91c1c', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
           {t.error}
         </p>
       )}
 
+      {t.rechazoVisible && (
+        <div
+          style={{
+            marginBottom: '1rem',
+            padding: '0.85rem 1rem',
+            borderRadius: '8px',
+            background: '#fef2f2',
+            border: '1px solid #fecaca',
+            color: '#7f1d1d',
+          }}
+        >
+          <strong>Solicitud rechazada.</strong> Puede editar la planificación y volver a solicitar.
+          {t.ultimaSolicitud?.notaResolucion && (
+            <p style={{ margin: '6px 0 0', fontSize: '0.9rem' }}>
+              Nota del revisor: {t.ultimaSolicitud.notaResolucion}
+            </p>
+          )}
+        </div>
+      )}
+
       {t.inPlanificacion && t.isGestor && !pendiente && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <p style={{ fontSize: '0.9rem', color: '#94A3B8', margin: 0 }}>
+          <p style={{ fontSize: '0.9rem', color: '#64748b', margin: 0 }}>
             Solicite pasar el proyecto a activo o cancelado. Un revisor debe aprobar.
           </p>
           <label style={{ fontSize: '0.85rem' }}>
@@ -68,7 +153,7 @@ export default function PlanificacionTransicionBar({ user, transicion }) {
         <div style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>
           <strong>Solicitud pendiente</strong> → {t.solicitud.estadoDestino}
           {t.solicitud.motivo && (
-            <p style={{ margin: '4px 0 0', color: '#94A3B8' }}>{t.solicitud.motivo}</p>
+            <p style={{ margin: '4px 0 0', color: '#64748b' }}>{t.solicitud.motivo}</p>
           )}
         </div>
       )}
@@ -95,7 +180,7 @@ export default function PlanificacionTransicionBar({ user, transicion }) {
 
       {t.inActivo && t.isReviewer && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <p style={{ fontSize: '0.9rem', color: '#94A3B8', margin: 0 }}>
+          <p style={{ fontSize: '0.9rem', color: '#64748b', margin: 0 }}>
             Fuerza mayor: cancelar proyecto en estado activo.
           </p>
           <textarea
