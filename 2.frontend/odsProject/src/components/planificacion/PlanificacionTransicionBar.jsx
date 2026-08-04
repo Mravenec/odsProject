@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './PlanificacionTransicionBar.css';
 
 const dismissKey = (projectId, solicitudId) =>
   `ods-transicion-aprobada-seen-${projectId}-${solicitudId}`;
@@ -79,15 +80,9 @@ export default function PlanificacionTransicionBar({ user, transicion, projectId
           </p>
           <button
             type="button"
+            className="ptb-btn ptb-btn--primary"
             onClick={dismissAprobado}
-            style={{
-              border: 'none',
-              background: 'transparent',
-              color: '#166534',
-              cursor: 'pointer',
-              fontWeight: 700,
-              flexShrink: 0,
-            }}
+            style={{ flexShrink: 0, minHeight: '2rem', padding: '0.35rem 0.9rem', fontSize: '0.82rem' }}
           >
             Entendido
           </button>
@@ -128,24 +123,31 @@ export default function PlanificacionTransicionBar({ user, transicion, projectId
           <label style={{ fontSize: '0.85rem' }}>
             Destino:
             <select
+              className="ptb-select"
               value={t.destino}
               onChange={(e) => t.setDestino(e.target.value)}
-              style={{ marginLeft: '8px' }}
             >
               <option value="activo">Activo</option>
               <option value="cancelado">Cancelado</option>
             </select>
           </label>
           <textarea
+            className="ptb-field"
             placeholder="Motivo de la solicitud…"
             value={t.motivo}
             onChange={(e) => t.setMotivo(e.target.value)}
             rows={2}
-            style={{ width: '100%', padding: '0.5rem' }}
           />
-          <button type="button" disabled={t.loading} onClick={t.solicitar}>
-            {t.loading ? 'Enviando…' : 'Solicitar transición'}
-          </button>
+          <div className="ptb-actions">
+            <button
+              type="button"
+              className="ptb-btn ptb-btn--accent"
+              disabled={t.loading}
+              onClick={t.solicitar}
+            >
+              {t.loading ? 'Enviando…' : 'Solicitar transición'}
+            </button>
+          </div>
         </div>
       )}
 
@@ -161,17 +163,27 @@ export default function PlanificacionTransicionBar({ user, transicion, projectId
       {t.inPlanificacion && t.isReviewer && pendiente && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <textarea
+            className="ptb-field"
             placeholder="Nota de aprobación o rechazo (mín. 10 caracteres para rechazar)…"
             value={t.nota}
             onChange={(e) => t.setNota(e.target.value)}
             rows={2}
-            style={{ width: '100%', padding: '0.5rem' }}
           />
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button type="button" disabled={t.loading} onClick={t.aprobar}>
+          <div className="ptb-actions">
+            <button
+              type="button"
+              className="ptb-btn ptb-btn--primary"
+              disabled={t.loading}
+              onClick={t.aprobar}
+            >
               Aprobar
             </button>
-            <button type="button" disabled={t.loading} onClick={t.rechazar}>
+            <button
+              type="button"
+              className="ptb-btn ptb-btn--ghost"
+              disabled={t.loading}
+              onClick={t.rechazar}
+            >
               Rechazar
             </button>
           </div>
@@ -184,15 +196,22 @@ export default function PlanificacionTransicionBar({ user, transicion, projectId
             Fuerza mayor: cancelar proyecto en estado activo.
           </p>
           <textarea
+            className="ptb-field"
             placeholder="Motivo obligatorio…"
             value={t.motivo}
             onChange={(e) => t.setMotivo(e.target.value)}
             rows={2}
-            style={{ width: '100%', padding: '0.5rem' }}
           />
-          <button type="button" disabled={t.loading} onClick={t.cancelarFuerzaMayor}>
-            Cancelar (fuerza mayor)
-          </button>
+          <div className="ptb-actions">
+            <button
+              type="button"
+              className="ptb-btn ptb-btn--danger"
+              disabled={t.loading}
+              onClick={t.cancelarFuerzaMayor}
+            >
+              Cancelar (fuerza mayor)
+            </button>
+          </div>
         </div>
       )}
     </section>

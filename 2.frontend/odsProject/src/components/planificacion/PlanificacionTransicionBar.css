@@ -1,0 +1,94 @@
+.planificacion-transicion-bar .ptb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.planificacion-transicion-bar .ptb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.5rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease, background 0.15s ease;
+}
+
+.planificacion-transicion-bar .ptb-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.planificacion-transicion-bar .ptb-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.planificacion-transicion-bar .ptb-btn--primary {
+  background: var(--utn-azul, #012169);
+  color: #fff;
+  box-shadow: 0 8px 16px -6px rgba(1, 33, 105, 0.35);
+}
+
+.planificacion-transicion-bar .ptb-btn--primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: 0 12px 20px -6px rgba(1, 33, 105, 0.4);
+}
+
+.planificacion-transicion-bar .ptb-btn--accent {
+  background: #dc4405;
+  color: #fff;
+  box-shadow: 0 8px 16px -6px rgba(220, 68, 5, 0.35);
+}
+
+.planificacion-transicion-bar .ptb-btn--accent:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow: 0 10px 18px -4px rgba(220, 68, 5, 0.4);
+}
+
+.planificacion-transicion-bar .ptb-btn--danger {
+  background: #b91c1c;
+  color: #fff;
+  box-shadow: 0 8px 16px -6px rgba(185, 28, 28, 0.35);
+}
+
+.planificacion-transicion-bar .ptb-btn--danger:hover:not(:disabled) {
+  filter: brightness(1.06);
+  box-shadow: 0 10px 18px -4px rgba(185, 28, 28, 0.4);
+}
+
+.planificacion-transicion-bar .ptb-btn--ghost {
+  background: #fff;
+  color: #7f1d1d;
+  border: 1px solid #fecaca;
+}
+
+.planificacion-transicion-bar .ptb-btn--ghost:hover:not(:disabled) {
+  background: #fef2f2;
+}
+
+.planificacion-transicion-bar .ptb-field {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 8px;
+  font: inherit;
+  resize: vertical;
+  background: #fff;
+}
+
+.planificacion-transicion-bar .ptb-select {
+  margin-left: 8px;
+  padding: 0.35rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: #fff;
+  font: inherit;
+}
