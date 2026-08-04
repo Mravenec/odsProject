@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f3d2e">
+<title>Propuesta — Filtros cola evaluación por estado · ODS UTN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+  :root{--green900:#0f3d2e;--green700:#1b5e42;--green500:#2e8b63;--cream50:#f7f4ec;--cream100:#efe9dc;--copper600:#b06a2c;--ink900:#1c2622;--ink600:#4a5852;--surf:#fff}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream50);color:var(--ink900);font-family:'DM Sans',system-ui,sans-serif;line-height:1.6}
+  .hero{margin:24px 48px 0;padding:36px 40px;border-radius:16px;background:linear-gradient(135deg,var(--green900),var(--green700));color:#fff}
+  .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:12px}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800;line-height:1.1}
+  h1 em{font-style:normal;color:#cfe6da}
+  .sub{margin-top:12px;font-size:14px;color:rgba(255,255,255,.88);max-width:880px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(176,106,44,.35)}
+  .chip span{font-weight:600;color:#fff}
+  .al{margin:20px 48px 0;padding:14px 18px;border-radius:12px;font-size:13px;display:flex;gap:12px;background:#fdf7f0;border-left:5px solid var(--copper600);color:#6b3d14}
+  .sec{padding:36px 48px 0}
+  .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink600);margin-bottom:8px}
+  .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--green900);margin-bottom:16px}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace;background:var(--surf);border-radius:10px;overflow:hidden;border:1px solid var(--cream100)}
+  .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding:10px 12px;text-align:left;background:var(--green700)}
+  .tbl td{padding:10px 12px;border-bottom:1px solid var(--cream100);vertical-align:top}
+  .tbl tr:nth-child(even) td{background:var(--cream50)}
+  .ok{color:var(--green700)}
+  code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--cream100);padding:1px 6px;border-radius:5px}
+  .cb2{background:#0f1a15;color:#e8f0ea;border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;white-space:pre;overflow-x:auto}
+  .da{color:#9fd4b5}.dk{color:#a8d4f0}.dc{color:#8a9a92}
+  .plf{display:flex;flex-wrap:wrap;border-radius:12px;overflow:hidden;border:1px solid var(--cream100);margin:12px 0 20px;background:var(--surf)}
+  .pln{background:var(--cream50);padding:12px 16px;border-right:1px solid var(--cream100)}
+  .pla{display:flex;align-items:center;padding:0 8px;color:var(--ink600)}
+  .plname{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--green900)}
+  .plnote{font-size:10px;color:var(--ink600)}
+  .issue{background:var(--surf);border:1px solid var(--cream100);border-radius:12px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr;gap:12px}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#fff;background:var(--copper600);padding:3px 10px;border-radius:999px;height:fit-content}
+  .issue-id{font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--ink600)}
+  .issue-title{font-size:14px;font-weight:600;margin-top:4px}
+  .box{border-radius:12px;padding:14px 16px;font-size:13px;margin:10px 0;background:#f0f7f3;border-left:5px solid var(--green500);color:var(--green900)}
+  hr.sep{border:none;border-top:1px solid var(--cream100);margin:48px 48px 0}
+  footer{margin-top:40px;border-top:1px solid var(--cream100);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink600)}
+  .utn{font-family:'Syne',sans-serif;font-weight:800;color:var(--green700)}
+  @media(max-width:720px){.hero,.sec,.al,footer,hr.sep{margin-left:0;margin-right:0;padding-left:16px;padding-right:16px}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="ey">ODS UTN · Sprint cola_filtros · Propuesta · linear_ods</div>
+  <h1>Cola evaluación<br><em>Tabs por estado (sin «Todos»)</em></h1>
+  <p class="sub">Quitar «Todos» (mezclaba evaluados). Nueva barra: Planificación | Activos (sin doc) | En curso (con documento) | Pendientes | Evaluados. Cada tab solo su conjunto.</p>
+  <div class="chips"><div class="chip">Estado <span>PENDIENTE</span></div><div class="chip">Issues <span>1 FE</span></div></div>
+</header>
+<div class="al"><div>⏳</div><div><strong>Propuesta pendiente.</strong> <code>validate-plan-html.mjs</code> → ✅ APROBADO → <code>create</code>.</div></div>
+
+<section class="sec">
+  <div class="sl">Linear — Proceso obligatorio (7 fases)</div>
+  <div class="st">Mismas fases siempre</div>
+  <table class="tbl">
+    <thead><tr><th>Fase</th><th>Qué</th><th>Gate</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>Fase 0 — Limpieza</td><td>cleanup cola_tabs</td><td>Sprint previo</td><td>✓</td></tr>
+      <tr><td>Fase 1–2 — Plan HTML</td><td>plan_sprint_cola_filtros.html</td><td>validate-plan-html</td><td>PENDIENTE</td></tr>
+      <tr><td>Fase 3 — Aprobación</td><td>✅ humano</td><td>APROBADO</td><td>PENDIENTE</td></tr>
+      <tr><td>Fase 4 — MJS</td><td>sprint_cola_filtros.mjs create</td><td>Tras Fase 3</td><td>—</td></tr>
+      <tr><td>Fase 5 — Multi-agente</td><td>FE checklist</td><td>GATE_FE</td><td>—</td></tr>
+      <tr><td>Fase 6 — Resumen</td><td>resumen_sprint_cola_filtros.html</td><td>Epic Completed</td><td>—</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Metadatos del sprint</div>
+  <div class="st">EPIC_NAME · script · equipo linear_ods</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>EPIC_NAME</td><td>Cola evaluación — filtros Planificación / Activos / En curso / Pendientes / Evaluados</td></tr>
+      <tr><td>SPRINT_NAME</td><td>cola_filtros</td></tr>
+      <tr><td>Script</td><td><code>_linear/scripts/sprint_cola_filtros.mjs</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Gates (qué aplica / qué no)</div>
+  <div class="st">GATE_SQL · GATE_BD · GATE_JOOQ · GATE_HTTP · GATE_FE</div>
+  <table class="tbl">
+    <thead><tr><th>Gate</th><th>¿Aplica?</th><th>Issue</th><th>Comandos</th></tr></thead>
+    <tbody>
+      <tr><td>GATE_SQL</td><td>N/A</td><td>—</td><td>—</td></tr>
+      <tr><td>GATE_BD</td><td>N/A</td><td>—</td><td>Sin drop_db</td></tr>
+      <tr><td>GATE_JOOQ</td><td>N/A</td><td>—</td><td>—</td></tr>
+      <tr><td>GATE_HTTP</td><td>N/A</td><td>—</td><td>Sin API</td></tr>
+      <tr><td>GATE_FE</td><td>Sí</td><td>FE</td><td>npm run build + smoke tabs</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Tabla de issues</div>
+  <div class="st">Id · role:frontend · pts · blocks · archivos</div>
+  <table class="tbl">
+    <thead><tr><th>Id</th><th>Rol</th><th>Pts</th><th>Título</th><th>blocks</th><th>Archivos</th></tr></thead>
+    <tbody>
+      <tr><td>FE</td><td>role:frontend</td><td>2</td><td>Redefinir filterTabs y predicados</td><td>—</td><td>EvaluationQueuePage.jsx (+ CSS si hace falta)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Dependencias blocks + handoff</div>
+  <div class="st">Cadena serial · handoff ítem 1 downstream</div>
+  <div class="cb2"><span class="dc">Sin blocks</span> — un solo issue FE
+<span class="dk">handoff</span> N/A</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Ciclo por issue (Fase 5)</div>
+  <div class="st">next → checklist → Testing → Done</div>
+  <div class="cb2">node scripts/sprint-next.mjs
+checklist ODS-N &lt;n&gt;
+state ODS-N Testing
+state ODS-N Done</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Comandos del script</div>
+  <div class="st">create · next · checklist · handoff · state · cleanup</div>
+  <div class="cb2">node scripts/sprint_cola_filtros.mjs create
+node scripts/sprint-next.mjs
+node scripts/sprint_cola_filtros.mjs checklist ODS-N 1
+node scripts/sprint_cola_filtros.mjs state ODS-N Done
+node scripts/sprint_cola_filtros.mjs cleanup</div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Testing local por rol</div>
+  <div class="st">Tabla issue × comandos × criterio Done</div>
+  <table class="tbl">
+    <thead><tr><th>Issue</th><th>Rol</th><th>Comandos Testing</th><th>Done</th></tr></thead>
+    <tbody>
+      <tr><td>FE</td><td>role:frontend</td><td>npm run build; smoke /evaluacion</td><td>5 tabs; Evaluados solo en su tab; Activos = activo sin doc; En curso = activo con doc</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear — Descripciones issue (verbatim para create)</div>
+  <div class="st">Checklists - [ ] copiar al .mjs</div>
+  <div class="box">
+    <strong>Reglas de filtro</strong><br>
+    Planificación → <code>status === planificacion</code><br>
+    Activos → <code>status === activo &amp;&amp; !hasDocs</code><br>
+    En curso (con documento) → <code>status === activo &amp;&amp; hasDocs</code><br>
+    Pendientes → <code>status === en_revision</code><br>
+    Evaluados → <code>status === completado</code><br>
+    Sin tab «Todos». Default: <code>pendientes</code>.
+  </div>
+  <div class="cb2"><span class="dc">## FE</span>
+<span class="da">- [ ] Quitar tab Todos; counts + filtered según 5 reglas (planificacion / activos / en_curso / pendientes / evaluados)</span>
+<span class="da">- [ ] filterTabs orden: Planificación | Activos | En curso (con documento) | Pendientes de evaluación | Evaluados</span>
+<span class="da">- [ ] npm run build; smoke: evaluados no aparecen fuera de Evaluados; activos sin doc solo en Activos</span></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Fase 6 — Entregable de cierre</div>
+  <div class="st">resumen_sprint_cola_filtros.html · Epic Completed</div>
+  <p>Al cerrar: resumen + epic Completed. No cleanup hasta próximo trabajo nuevo.</p>
+</section>
+
+<section class="sec">
+  <div class="sl">Objetivo</div>
+  <div class="st">Qué se busca resolver</div>
+  <table class="tbl">
+    <thead><tr><th>Problema</th><th>Solución propuesta</th></tr></thead>
+    <tbody>
+      <tr><td>«Todos» muestra evaluados fuera del tab Evaluados; activos/planificación mezclados</td><td class="ok">5 tabs disjuntos por estado + documento</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sl">Pipeline visual</div>
+  <div class="st">DB → JOOQ → BE → .http → FE (N/A explícito si omitido)</div>
+  <div class="plf">
+    <div class="pln"><div class="plname">DB</div><div class="plnote">N/A</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">JOOQ</div><div class="plnote">N/A</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">BE</div><div class="plnote">N/A</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">.http</div><div class="plnote">N/A</div></div>
+    <div class="pla">→</div>
+    <div class="pln"><div class="plname">FE</div><div class="plnote">EvaluationQueuePage</div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sl">Linear</div>
+  <div class="st">Issues planificados</div>
+  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">FE · role:frontend</div><div class="issue-title">Redefinir filterTabs y predicados</div></div></div>
+</section>
+
+<section class="sec">
+  <div class="sl">Aprobación</div>
+  <div class="st">Estado PENDIENTE / APROBADO</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>Estado</td><td>PENDIENTE</td></tr>
+      <tr><td>Validación</td><td><code>node scripts/validate-plan-html.mjs plans/plan_sprint_cola_filtros.html</code></td></tr>
+      <tr><td>Para aprobar</td><td>✅ APROBADO en chat → create</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="sep">
+<footer><div class="utn">UTN · ODS Platform</div><div>plan_sprint_cola_filtros.html</div></footer>
+</body>
+</html>

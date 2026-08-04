@@ -22,24 +22,28 @@ const EvaluationQueuePage = () => {
   const [filter, setFilter] = useState('pendientes');
 
   const counts = {
-    all:        rows.length,
-    pendientes: rows.filter(r => r.status === 'en_revision').length,
-    en_curso:   rows.filter(r => ['activo', 'planificacion'].includes(r.status) && r.hasDocs).length,
-    evaluados:  rows.filter(r => r.status === 'completado').length,
+    planificacion: rows.filter(r => r.status === 'planificacion').length,
+    activos:       rows.filter(r => r.status === 'activo' && !r.hasDocs).length,
+    en_curso:      rows.filter(r => r.status === 'activo' && r.hasDocs).length,
+    pendientes:    rows.filter(r => r.status === 'en_revision').length,
+    evaluados:     rows.filter(r => r.status === 'completado').length,
   };
 
   const filtered = rows.filter(r => {
-    if (filter === 'pendientes') return r.status === 'en_revision';
-    if (filter === 'en_curso')   return ['activo', 'planificacion'].includes(r.status) && r.hasDocs;
-    if (filter === 'evaluados')  return r.status === 'completado';
-    return true;
+    if (filter === 'planificacion') return r.status === 'planificacion';
+    if (filter === 'activos')       return r.status === 'activo' && !r.hasDocs;
+    if (filter === 'en_curso')      return r.status === 'activo' && r.hasDocs;
+    if (filter === 'pendientes')    return r.status === 'en_revision';
+    if (filter === 'evaluados')     return r.status === 'completado';
+    return false;
   });
 
   const filterTabs = [
-    { k: 'all',        label: 'Todos',                       count: counts.all },
-    { k: 'pendientes', label: 'Pendientes de evaluación',    count: counts.pendientes },
-    { k: 'en_curso',   label: 'En curso (con documento)',    count: counts.en_curso },
-    { k: 'evaluados',  label: 'Evaluados',                   count: counts.evaluados },
+    { k: 'planificacion', label: 'Planificación',                 count: counts.planificacion },
+    { k: 'activos',       label: 'Activos',                       count: counts.activos },
+    { k: 'en_curso',      label: 'En curso (con documento)',      count: counts.en_curso },
+    { k: 'pendientes',    label: 'Pendientes de evaluación',      count: counts.pendientes },
+    { k: 'evaluados',     label: 'Evaluados',                     count: counts.evaluados },
   ];
 
   const openRow = (p) => {
