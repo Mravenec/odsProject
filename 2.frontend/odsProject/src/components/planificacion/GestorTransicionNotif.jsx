@@ -1,21 +1,34 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { transicionService } from '../../services/transicionService';
 import { useSilentPoll } from '../../hooks/useSilentPoll';
 
 const dismissKey = (solicitudId) => `ods-transicion-global-seen-${solicitudId}`;
+const AUTO_DISMISS_MS = 5000;
 
 /**
  * Banner global para gestor: resoluciones de transición (aprobada → activo / rechazada).
  * Visible en Dashboard y cualquier ruta autenticada.
+ * Si el usuario no pulsa Entendido, se oculta solo a los 5 s (y no vuelve a aparecer).
  */
 export default function GestorTransicionNotif() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
+  const autoTimersRef = useRef(new Map());
 
   const isGestor = user?.role === 'gestor' && user?.id;
+
+  const dismiss = useCallback((id) => {
+    const tid = autoTimersRef.current.get(id);
+    if (tid) {
+      clearTimeout(tid);
+      autoTimersRef.current.delete(id);
+    }
+    try { localStorage.setItem(dismissKey(id), '1'); } catch { /* ignore */ }
+    setItems((prev) => prev.filter((x) => x.id !== id));
+  }, []);
 
   const load = useCallback(async () => {
     if (!isGestor) return;
@@ -44,12 +57,28 @@ export default function GestorTransicionNotif() {
   useEffect(() => { load(); }, [load]);
   useSilentPoll(load, 5000, !!isGestor);
 
-  if (!isGestor || items.length === 0) return null;
+  // Un timer por ítem desde la primera aparición (el poll no reinicia el conteo).
+  useEffect(() => {
+    const visibleIds = new Set(items.map((it) => it.id));
+    for (const [id, tid] of autoTimersRef.current) {
+      if (!visibleIds.has(id)) {
+        clearTimeout(tid);
+        autoTimersRef.current.delete(id);
+      }
+    }
+    for (const it of items) {
+      if (autoTimersRef.current.has(it.id)) continue;
+      const tid = setTimeout(() => dismiss(it.id), AUTO_DISMISS_MS);
+      autoTimersRef.current.set(it.id, tid);
+    }
+  }, [items, dismiss]);
 
-  const dismiss = (id) => {
-    try { localStorage.setItem(dismissKey(id), '1'); } catch { /* ignore */ }
-    setItems((prev) => prev.filter((x) => x.id !== id));
-  };
+  useEffect(() => () => {
+    for (const tid of autoTimersRef.current.values()) clearTimeout(tid);
+    autoTimersRef.current.clear();
+  }, []);
+
+  if (!isGestor || items.length === 0) return null;
 
   return (
     <div
