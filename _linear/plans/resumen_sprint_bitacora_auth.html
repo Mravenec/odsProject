@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3d2e">
-<title>Resumen — Aislamiento gestores · ODS UTN</title>
+<title>Resumen — Bitácora admin JWT · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
   :root{--green900:#0f3d2e;--green700:#1b5e42;--cream50:#f7f4ec;--cream100:#efe9dc;--ink600:#4a5852;--surf:#fff}
@@ -27,18 +27,17 @@
 </head>
 <body>
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint aislamiento_gestor · Resumen · Epic Completed</div>
-  <h1>Aislamiento entre gestores</h1>
-  <p class="sub">Ana no ve proyectos de Carlos (ni viceversa). Backend filtra por JWT; front limpia cache al logout y refuerza el filtro.</p>
+  <div class="ey">ODS UTN · Sprint bitacora_auth · Resumen · Epic Completed</div>
+  <h1>Bitácora solo admin JWT</h1>
+  <p class="sub">Sin token → 401. Gestor → 403. Admin → 200. Cerrada la fuga de audit-recent / failed-attempts / login-history / active-users.</p>
 </header>
 <section class="sec">
   <div class="sl">Entregado</div>
-  <div class="st">ODS-500 · ODS-501</div>
+  <div class="st">ODS-502</div>
   <table class="tbl">
     <thead><tr><th>Issue</th><th>Qué</th><th>Estado</th></tr></thead>
     <tbody>
-      <tr><td>ODS-500</td><td>GET with-ods / user / detalle: gestor solo dueño; IDOR 403; staff ve todos</td><td class="ok">Done</td></tr>
-      <tr><td>ODS-501</td><td><code>ProjectsSessionSync</code> + filtro defensivo lista/dashboard + build</td><td class="ok">Done</td></tr>
+      <tr><td>ODS-502</td><td><code>denyUnlessAdmin</code> + <code>isAdmin</code> en LoginController</td><td class="ok">Done</td></tr>
     </tbody>
   </table>
 </section>
@@ -47,12 +46,12 @@
   <div class="st">Local</div>
   <table class="tbl">
     <tbody>
-      <tr><td>1</td><td>Login ana.garcia@ods.cr → solo sus proyectos</td></tr>
-      <tr><td>2</td><td>Login carlos.rodriguez@ods.cr → solo los suyos</td></tr>
-      <tr><td>3</td><td>URL /projects/2/results como Ana → 403 / sin datos</td></tr>
+      <tr><td>1</td><td>Sin Authorization: GET audit-recent → 401</td></tr>
+      <tr><td>2</td><td>Token gestor → 403</td></tr>
+      <tr><td>3</td><td>admin@ods.local → Bitácora UI carga OK</td></tr>
     </tbody>
   </table>
 </section>
-<footer>Fase 6 · dejar legible · cleanup solo al próximo trabajo</footer>
+<footer>Fase 6 · dejar legible</footer>
 </body>
 </html>

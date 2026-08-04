@@ -1,52 +1,81 @@
-### GATE_HTTP — Bitácora ingresos (ODS-235)
-### Epic: Ingreso formal + marca UTN + bitácora de accesos
-### Endpoints: GET /api/login/admin/audit-recent , GET /api/login/users/{id}/login-history
-### Eventos esperados: LOGIN_OK | LOGIN_FALLIDO | LOGOUT (sin telemetría de proyecto)
-
+### GATE_HTTP — Bitácora solo admin JWT (bitacora_auth)
 @baseUrl = http://localhost:8080
-@adminEmail = admin@ods.local
-@password = Admin1234!
 
-### Login admin
-# @name loginAdmin
+### @name loginAdmin
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "{{adminEmail}}",
-  "password": "{{password}}"
+  "email": "admin@ods.local",
+  "password": "Admin1234!"
 }
 
-### Logout (genera LOGOUT en auditoria_login / sesiones)
-POST {{baseUrl}}/api/login/auth/logout
-Authorization: Bearer {{loginAdmin.response.body.token}}
+> {%
+  client.global.set("tokenAdmin", response.body.token);
+  client.test("login admin", function() {
+    client.assert(response.status === 200, "200");
+    client.assert(!!response.body.token, "token");
+  });
+%}
 
-### Re-login admin tras logout
-# @name loginAdmin2
+### @name loginGestor
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "{{adminEmail}}",
-  "password": "{{password}}"
+  "email": "ana.garcia@ods.cr",
+  "password": "password123"
 }
 
-@adminToken = {{loginAdmin2.response.body.token}}
-@adminUserId = {{loginAdmin2.response.body.user.id}}
+> {%
+  client.global.set("tokenGestor", response.body.token);
+%}
 
-### Audit reciente (admin) — usuario, fecha, ip, evento
-GET {{baseUrl}}/api/login/admin/audit-recent?dias=30
-Authorization: Bearer {{adminToken}}
+### Sin token → 401
+GET {{baseUrl}}/api/login/admin/audit-recent?dias=7
 
-### Historial login de un usuario
-GET {{baseUrl}}/api/login/users/{{adminUserId}}/login-history?dias=30
-Authorization: Bearer {{adminToken}}
+> {%
+  client.test("sin token 401", function() {
+    client.assert(response.status === 401, "401");
+  });
+%}
 
-### Login fallido (para dejar LOGIN_FALLIDO en bitácora)
-POST {{baseUrl}}/api/login/auth/login
-Content-Type: application/json
+### Gestor → 403
+GET {{baseUrl}}/api/login/admin/audit-recent?dias=7
+Authorization: Bearer {{tokenGestor}}
 
-{
-  "email": "{{adminEmail}}",
-  "password": "wrongpassword"
-}
+> {%
+  client.test("gestor 403", function() {
+    client.assert(response.status === 403, "403");
+  });
+%}
+
+### Admin → 200
+GET {{baseUrl}}/api/login/admin/audit-recent?dias=7
+Authorization: Bearer {{tokenAdmin}}
+
+> {%
+  client.test("admin 200", function() {
+    client.assert(response.status === 200, "200");
+    client.assert(Array.isArray(response.body), "array");
+  });
+%}
+
+### Failed attempts sin token → 401
+GET {{baseUrl}}/api/login/auth/failed-attempts?horas=24
+
+> {%
+  client.test("failed 401", function() {
+    client.assert(response.status === 401, "401");
+  });
+%}
+
+### Active users gestor → 403
+GET {{baseUrl}}/api/login/admin/active-users
+Authorization: Bearer {{tokenGestor}}
+
+> {%
+  client.test("active-users gestor 403", function() {
+    client.assert(response.status === 403, "403");
+  });
+%}

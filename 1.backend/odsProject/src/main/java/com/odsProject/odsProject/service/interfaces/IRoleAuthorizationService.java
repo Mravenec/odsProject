@@ -30,4 +30,7 @@ public interface IRoleAuthorizationService {
 
     /** admin, evaluador y consultor ven todos los proyectos; gestor solo los propios. */
     boolean canViewAllProjects(String role);
+
+    /** Solo rol admin (bitácora, active-users, etc.). */
+    boolean isAdmin(String role);
 }

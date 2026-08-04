@@ -280,7 +280,10 @@ public interface ILoginController {
      * @return ResponseEntity con lista de registros de auditoría
      */
     @GetMapping("/users/{id}/login-history")
-    ResponseEntity<List<Map<String, Object>>> getLoginHistory(@PathVariable("id") Integer usuarioId, @RequestParam(defaultValue = "30") Integer dias);
+    ResponseEntity<List<Map<String, Object>>> getLoginHistory(
+            @PathVariable("id") Integer usuarioId,
+            @RequestParam(defaultValue = "30") Integer dias,
+            @RequestHeader(value = "Authorization", required = false) String authorization);
     
     /**
      * Endpoint para obtener intentos fallidos recientes
@@ -289,7 +292,9 @@ public interface ILoginController {
      * @return ResponseEntity con lista de intentos fallidos
      */
     @GetMapping("/auth/failed-attempts")
-    ResponseEntity<List<Map<String, Object>>> getFailedLoginAttempts(@RequestParam(defaultValue = "24") Integer horas);
+    ResponseEntity<List<Map<String, Object>>> getFailedLoginAttempts(
+            @RequestParam(defaultValue = "24") Integer horas,
+            @RequestHeader(value = "Authorization", required = false) String authorization);
     
     /**
      * Endpoint para bloquear usuario por seguridad
@@ -318,7 +323,9 @@ public interface ILoginController {
      * @return ResponseEntity con lista de auditorías recientes
      */
     @GetMapping("/admin/audit-recent")
-    ResponseEntity<List<Map<String, Object>>> getVistaAuditoriaReciente(@RequestParam(defaultValue = "7") Integer dias);
+    ResponseEntity<List<Map<String, Object>>> getVistaAuditoriaReciente(
+            @RequestParam(defaultValue = "7") Integer dias,
+            @RequestHeader(value = "Authorization", required = false) String authorization);
     
     /**
      * Endpoint para obtener resumen general administrativo
@@ -334,7 +341,8 @@ public interface ILoginController {
      * @return ResponseEntity con lista de usuarios activos
      */
     @GetMapping("/admin/active-users")
-    ResponseEntity<List<Map<String, Object>>> getVistaUsuariosActivos();
+    ResponseEntity<List<Map<String, Object>>> getVistaUsuariosActivos(
+            @RequestHeader(value = "Authorization", required = false) String authorization);
     
     /**
      * Endpoint para obtener detalles de indicadores

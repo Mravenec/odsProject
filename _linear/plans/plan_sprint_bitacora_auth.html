@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3d2e">
-<title>Propuesta — Aislamiento proyectos entre gestores · ODS UTN</title>
+<title>Propuesta — Bitácora admin solo con JWT · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
   :root{--green900:#0f3d2e;--green700:#1b5e42;--green500:#2e8b63;--cream50:#f7f4ec;--cream100:#efe9dc;--copper600:#b06a2c;--ink900:#1c2622;--ink600:#4a5852;--surf:#fff}
@@ -18,7 +18,7 @@
   .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
   .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(176,106,44,.35)}
   .chip span{font-weight:600;color:#fff}
-  .al{margin:20px 48px 0;padding:14px 18px;border-radius:12px;font-size:13px;display:flex;gap:12px;background:#f0f7f3;border-left:5px solid var(--green500);color:var(--green900)}
+  .al{margin:20px 48px 0;padding:14px 18px;border-radius:12px;font-size:13px;display:flex;gap:12px;background:#fdf7f0;border-left:5px solid var(--copper600);color:#6b3d14}
   .sec{padding:36px 48px 0}
   .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink600);margin-bottom:8px}
   .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--green900);margin-bottom:16px}
@@ -44,10 +44,10 @@
 </head>
 <body>
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint aislamiento_gestor · Propuesta · linear_ods</div>
-  <h1>Aislamiento<br><em>proyectos entre gestores</em></h1>
-  <p class="sub">Ana no debe ver proyectos de Carlos (ni viceversa). El backend debe filtrar por JWT; el front refuerza y limpia estado al logout.</p>
-  <div class="chips"><div class="chip">Estado <span>APROBADO</span></div><div class="chip">Issues <span>2</span></div></div>
+  <div class="ey">ODS UTN · Sprint bitacora_auth · Propuesta · linear_ods</div>
+  <h1>Bitácora admin<br><em>solo con JWT admin</em></h1>
+  <p class="sub">Cerrar fuga: GET /login/admin/audit-recent (y endpoints admin/login-history/failed-attempts relacionados) deben exigir Bearer + rol admin. Sin token → 401; otro rol → 403.</p>
+  <div class="chips"><div class="chip">Estado <span>APROBADO</span></div><div class="chip">Issues <span>1</span></div></div>
 </header>
 <div class="al"><div>✓</div><div><strong>Aprobado en chat.</strong> Proceder a <code>create</code>.</div></div>
 
@@ -57,12 +57,12 @@
   <table class="tbl">
     <thead><tr><th>Fase</th><th>Qué</th><th>Gate</th><th>Estado</th></tr></thead>
     <tbody>
-      <tr><td>Fase 0 — Limpieza</td><td>cleanup fuerza_mayor_notif</td><td>Sprint previo</td><td>✓</td></tr>
-      <tr><td>Fase 1–2 — Plan HTML</td><td>plan_sprint_aislamiento_gestor.html</td><td>validate-plan-html</td><td>✓</td></tr>
+      <tr><td>Fase 0 — Limpieza</td><td>cleanup aislamiento_gestor</td><td>Sprint previo</td><td>✓</td></tr>
+      <tr><td>Fase 1–2 — Plan HTML</td><td>plan_sprint_bitacora_auth.html</td><td>validate-plan-html</td><td>✓</td></tr>
       <tr><td>Fase 3 — Aprobación</td><td>✅ humano</td><td>APROBADO</td><td>✓</td></tr>
-      <tr><td>Fase 4 — MJS</td><td>sprint_aislamiento_gestor.mjs create</td><td>Tras Fase 3</td><td>—</td></tr>
-      <tr><td>Fase 5 — Multi-agente</td><td>BE → FE</td><td>GATE_HTTP</td><td>—</td></tr>
-      <tr><td>Fase 6 — Resumen</td><td>resumen_sprint_aislamiento_gestor.html</td><td>Epic Completed</td><td>—</td></tr>
+      <tr><td>Fase 4 — MJS</td><td>sprint_bitacora_auth.mjs create</td><td>Tras Fase 3</td><td>—</td></tr>
+      <tr><td>Fase 5 — Multi-agente</td><td>BE (+ FE smoke)</td><td>GATE_HTTP</td><td>—</td></tr>
+      <tr><td>Fase 6 — Resumen</td><td>resumen_sprint_bitacora_auth.html</td><td>Epic Completed</td><td>—</td></tr>
     </tbody>
   </table>
 </section>
@@ -72,9 +72,9 @@
   <div class="st">EPIC_NAME · script · equipo linear_ods</div>
   <table class="tbl">
     <tbody>
-      <tr><td>EPIC_NAME</td><td>Aislamiento proyectos entre gestores</td></tr>
-      <tr><td>SPRINT_NAME</td><td>aislamiento_gestor</td></tr>
-      <tr><td>Script</td><td><code>_linear/scripts/sprint_aislamiento_gestor.mjs</code></td></tr>
+      <tr><td>EPIC_NAME</td><td>Bitácora login solo admin JWT</td></tr>
+      <tr><td>SPRINT_NAME</td><td>bitacora_auth</td></tr>
+      <tr><td>Script</td><td><code>_linear/scripts/sprint_bitacora_auth.mjs</code></td></tr>
       <tr><td>Equipo</td><td>linear_ods</td></tr>
     </tbody>
   </table>
@@ -89,8 +89,8 @@
       <tr><td>GATE_SQL</td><td>N/A</td><td>—</td><td>—</td></tr>
       <tr><td>GATE_BD</td><td>N/A</td><td>—</td><td>Sin drop_db</td></tr>
       <tr><td>GATE_JOOQ</td><td>N/A</td><td>—</td><td>—</td></tr>
-      <tr><td>GATE_HTTP</td><td>Sí</td><td>BE</td><td>gestor JWT → solo suyos; IDOR 403; staff ve todos</td></tr>
-      <tr><td>GATE_FE</td><td>Sí</td><td>FE</td><td>logout limpia context; filtro userId; npm run build</td></tr>
+      <tr><td>GATE_HTTP</td><td>Sí</td><td>BE</td><td>sin token 401; gestor 403; admin 200</td></tr>
+      <tr><td>GATE_FE</td><td>N/A</td><td>—</td><td>UI ya gated; sin cambios salvo smoke</td></tr>
     </tbody>
   </table>
 </section>
@@ -101,8 +101,7 @@
   <table class="tbl">
     <thead><tr><th>Id</th><th>Rol</th><th>Pts</th><th>Título</th><th>blocks</th><th>Archivos</th></tr></thead>
     <tbody>
-      <tr><td>BE</td><td>role:backend</td><td>3</td><td>Filtrar listados/detalle por JWT dueño gestor</td><td>—</td><td>MasterProjectController/Service, RoleAuthorization, .http</td></tr>
-      <tr><td>FE</td><td>role:frontend</td><td>2</td><td>Logout limpia projects + filtro defensivo</td><td>BE</td><td>useAuth, useProjects, ProjectListPage, Dashboard</td></tr>
+      <tr><td>BE</td><td>role:backend</td><td>3</td><td>Exigir JWT admin en audit/login-history/failed-attempts</td><td>—</td><td>LoginController, RoleAuthorizationService, bitacora_audit.http</td></tr>
     </tbody>
   </table>
 </section>
@@ -110,8 +109,8 @@
 <section class="sec">
   <div class="sl">Linear — Dependencias blocks + handoff</div>
   <div class="st">Cadena serial · handoff ítem 1 downstream</div>
-  <div class="cb2"><span class="dc">BE</span> blocks <span class="dk">FE</span>
-handoff FE 1</div>
+  <div class="cb2"><span class="dc">BE solo</span> — sin FE downstream
+(sin handoff)</div>
 </section>
 
 <section class="sec">
@@ -120,19 +119,17 @@ handoff FE 1</div>
   <div class="cb2">node scripts/sprint-next.mjs
 checklist ODS-N &lt;n&gt;
 state ODS-N Testing
-handoff ODS-M 1
 state ODS-N Done</div>
 </section>
 
 <section class="sec">
   <div class="sl">Linear — Comandos del script</div>
   <div class="st">create · next · checklist · handoff · state · cleanup</div>
-  <div class="cb2">node scripts/sprint_aislamiento_gestor.mjs create
+  <div class="cb2">node scripts/sprint_bitacora_auth.mjs create
 node scripts/sprint-next.mjs
-node scripts/sprint_aislamiento_gestor.mjs checklist ODS-N 1
-node scripts/sprint_aislamiento_gestor.mjs handoff ODS-M 1
-node scripts/sprint_aislamiento_gestor.mjs state ODS-N Done
-node scripts/sprint_aislamiento_gestor.mjs cleanup</div>
+node scripts/sprint_bitacora_auth.mjs checklist ODS-N 1
+node scripts/sprint_bitacora_auth.mjs state ODS-N Done
+node scripts/sprint_bitacora_auth.mjs cleanup</div>
 </section>
 
 <section class="sec">
@@ -141,8 +138,7 @@ node scripts/sprint_aislamiento_gestor.mjs cleanup</div>
   <table class="tbl">
     <thead><tr><th>Issue</th><th>Rol</th><th>Comandos Testing</th><th>Done</th></tr></thead>
     <tbody>
-      <tr><td>BE</td><td>role:backend</td><td>.http gestor Ana vs Carlos; with-ods staff</td><td>Ana solo suyos; IDOR 403; staff 200 todos</td></tr>
-      <tr><td>FE</td><td>role:frontend</td><td>login Ana / Carlos / npm run build</td><td>listas sin cruzar; logout limpia</td></tr>
+      <tr><td>BE</td><td>role:backend</td><td>bitacora_audit.http + curl sin token / gestor / admin</td><td>401 / 403 / 200</td></tr>
     </tbody>
   </table>
 </section>
@@ -151,21 +147,15 @@ node scripts/sprint_aislamiento_gestor.mjs cleanup</div>
   <div class="sl">Linear — Descripciones issue (verbatim para create)</div>
   <div class="st">Checklists - [ ] copiar al .mjs</div>
   <div class="cb2"><span class="dc">## BE</span>
-<span class="da">- [ ] GET with-ods / user/{id}/with-ods / {id}/with-ods: gestor solo dueño (JWT); staff ve todos</span>
-<span class="da">- [ ] IDOR: gestor pediendo userId ajeno → 403</span>
-<span class="da">- [ ] .http + Testing GATE_HTTP</span>
-<span class="da">- [ ] Handoff FE ítem 1</span>
-
-<span class="dc">## FE</span>
-<span class="da">- [ ] ⏸ Gate: NO iniciar hasta BE handoff ítem 1 [x]</span>
-<span class="da">- [ ] Logout / cambio de usuario: invalidateProjects</span>
-<span class="da">- [ ] Dashboard/lista: filtro defensivo userId si rol gestor</span>
-<span class="da">- [ ] npm run build</span></div>
+<span class="da">- [ ] Helper JWT: requireAdmin (401 sin token, 403 si no admin)</span>
+<span class="da">- [ ] Proteger: audit-recent, failed-attempts, users/{id}/login-history (+ active-users si mismo patrón)</span>
+<span class="da">- [ ] .http + Testing GATE_HTTP (sin token / gestor / admin)</span>
+<span class="da">- [ ] Smoke: BitacoraAdminPage con admin sigue cargando</span></div>
 </section>
 
 <section class="sec">
   <div class="sl">Fase 6 — Entregable de cierre</div>
-  <div class="st">resumen_sprint_aislamiento_gestor.html · Epic Completed</div>
+  <div class="st">resumen_sprint_bitacora_auth.html · Epic Completed</div>
 </section>
 
 <section class="sec">
@@ -174,7 +164,7 @@ node scripts/sprint_aislamiento_gestor.mjs cleanup</div>
   <table class="tbl">
     <thead><tr><th>Problema</th><th>Solución propuesta</th></tr></thead>
     <tbody>
-      <tr><td>Gestores ven proyectos ajenos (API abierta)</td><td class="ok">Filtrar por JWT en BE + refuerzo FE al logout/lista</td></tr>
+      <tr><td>Bitácora y datos de login abiertos por GET sin JWT</td><td class="ok">Exigir Bearer + rol admin en endpoints sensibles</td></tr>
     </tbody>
   </table>
 </section>
@@ -187,19 +177,18 @@ node scripts/sprint_aislamiento_gestor.mjs cleanup</div>
     <div class="pla">→</div>
     <div class="pln"><div class="plname">JOOQ</div><div class="plnote">N/A</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">BE</div><div class="plnote">JWT isolation</div></div>
+    <div class="pln"><div class="plname">BE</div><div class="plnote">JWT admin gate</div></div>
     <div class="pla">→</div>
     <div class="pln"><div class="plname">.http</div><div class="plnote">GATE_HTTP</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">FE</div><div class="plnote">logout + filter</div></div>
+    <div class="pln"><div class="plname">FE</div><div class="plnote">N/A (smoke)</div></div>
   </div>
 </section>
 
 <section class="sec">
   <div class="sl">Linear</div>
   <div class="st">Issues planificados</div>
-  <div class="issue"><span class="badge">BE</span><div><div class="issue-id">role:backend · 3 pts</div><div class="issue-title">Filtrar listados/detalle por JWT dueño gestor</div></div></div>
-  <div class="issue"><span class="badge">FE</span><div><div class="issue-id">role:frontend · 2 pts</div><div class="issue-title">Logout limpia projects + filtro defensivo</div></div></div>
+  <div class="issue"><span class="badge">BE</span><div><div class="issue-id">role:backend · 3 pts</div><div class="issue-title">Exigir JWT admin en audit/login-history/failed-attempts</div></div></div>
 </section>
 
 <section class="sec">
@@ -212,6 +201,6 @@ node scripts/sprint_aislamiento_gestor.mjs cleanup</div>
   </table>
 </section>
 
-<footer>Sprint aislamiento_gestor · linear_ods</footer>
+<footer>Sprint bitacora_auth · linear_ods</footer>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.odsProject.odsProject.controller;
 
 import com.odsProject.odsProject.service.LoginService;
+import com.odsProject.odsProject.service.interfaces.IRoleAuthorizationService;
 import com.odsProject.odsProject.controller.interfaces.ILoginController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,9 @@ public class LoginController implements ILoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private IRoleAuthorizationService roleAuthorizationService;
 
     // ── Autenticación ──
 
@@ -421,7 +425,12 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/users/{id}/login-history")
-    public ResponseEntity<List<Map<String, Object>>> getLoginHistory(@PathVariable("id") Integer usuarioId, @RequestParam(defaultValue = "30") Integer dias) {
+    public ResponseEntity<List<Map<String, Object>>> getLoginHistory(
+            @PathVariable("id") Integer usuarioId,
+            @RequestParam(defaultValue = "30") Integer dias,
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        ResponseEntity<List<Map<String, Object>>> denied = denyUnlessAdmin(authorization);
+        if (denied != null) return denied;
         List<AuditoriaLogin> result = loginService.getLoginHistory(usuarioId, dias);
         return ResponseEntity.ok(result.stream().map(audit -> {
             Map<String, Object> map = new HashMap<>();
@@ -437,7 +446,11 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/auth/failed-attempts")
-    public ResponseEntity<List<Map<String, Object>>> getFailedLoginAttempts(@RequestParam(defaultValue = "24") Integer horas) {
+    public ResponseEntity<List<Map<String, Object>>> getFailedLoginAttempts(
+            @RequestParam(defaultValue = "24") Integer horas,
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        ResponseEntity<List<Map<String, Object>>> denied = denyUnlessAdmin(authorization);
+        if (denied != null) return denied;
         List<AuditoriaLogin> result = loginService.getFailedLoginAttempts(horas);
         return ResponseEntity.ok(result.stream().map(audit -> {
             Map<String, Object> map = new HashMap<>();
@@ -478,7 +491,11 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/admin/audit-recent")
-    public ResponseEntity<List<Map<String, Object>>> getVistaAuditoriaReciente(@RequestParam(defaultValue = "7") Integer dias) {
+    public ResponseEntity<List<Map<String, Object>>> getVistaAuditoriaReciente(
+            @RequestParam(defaultValue = "7") Integer dias,
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        ResponseEntity<List<Map<String, Object>>> denied = denyUnlessAdmin(authorization);
+        if (denied != null) return denied;
         return ResponseEntity.ok(loginService.getVistaAuditoriaReciente(dias));
     }
 
@@ -510,7 +527,10 @@ public class LoginController implements ILoginController {
      */
     @Override
     @GetMapping("/admin/active-users")
-    public ResponseEntity<List<Map<String, Object>>> getVistaUsuariosActivos() {
+    public ResponseEntity<List<Map<String, Object>>> getVistaUsuariosActivos(
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        ResponseEntity<List<Map<String, Object>>> denied = denyUnlessAdmin(authorization);
+        if (denied != null) return denied;
         List<VistaAdminUsuariosActivos> result = loginService.getVistaUsuariosActivos();
         return ResponseEntity.ok(result.stream().map(user -> {
             Map<String, Object> map = new HashMap<>();
@@ -686,6 +706,19 @@ public class LoginController implements ILoginController {
         m.put("createdAt", u.getCreatedAt());
         m.put("updatedAt", u.getUpdatedAt());
         return m;
+    }
+
+    /** 401 sin JWT válido; 403 si el rol no es admin. */
+    private <T> ResponseEntity<T> denyUnlessAdmin(String authorization) {
+        Integer userId = roleAuthorizationService.extractUserIdFromAuthorizationHeader(authorization);
+        String role = roleAuthorizationService.extractRoleFromAuthorizationHeader(authorization);
+        if (userId == null || role == null || role.isBlank()) {
+            return ResponseEntity.status(401).build();
+        }
+        if (!roleAuthorizationService.isAdmin(role)) {
+            return ResponseEntity.status(403).build();
+        }
+        return null;
     }
 }
 
