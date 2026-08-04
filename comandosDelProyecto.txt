@@ -23,7 +23,7 @@ cd 2.frontend/odsProject; npm run dev
 
 
 
-#5. Login desarrollo (tras load_mocks.py) — fuente: 0.database/propuesta_actual/21. ods_mocks.sql
+#5. Login (admin nace en setup_db; demos UTN tras load_mocks.py)
 
 #    Frontend: http://localhost:5173  ·  API: http://localhost:8080
 
@@ -33,13 +33,13 @@ cd 2.frontend/odsProject; npm run dev
 
 #    -------------|----|----------------------------|------------------
 
-#    admin        |  1 | admin@utn.ac.cr            | Admin1234!
+#    admin        |  1 | admin@utn.ac.cr            | Admin1234!   ← setup_db
 
-#    gestor       |  2 | jartavia@utn.ac.cr         | password123
+#    gestor       |  2 | jartavia@utn.ac.cr         | password123  ← load_mocks
 
-#    evaluador    |  3 | khernandez@utn.ac.cr       | password123
+#    evaluador    |  3 | khernandez@utn.ac.cr       | password123  ← load_mocks
 
-#    consultor    |  4 | mlopez@utn.ac.cr           | password123
+#    consultor    |  4 | mlopez@utn.ac.cr           | password123  ← load_mocks
 
 #
 

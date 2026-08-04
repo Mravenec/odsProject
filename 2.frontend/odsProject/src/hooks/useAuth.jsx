@@ -38,9 +38,8 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  // Login
+  // Login — no tocar `loading` (es solo bootstrap); si no, App desmonta LoginPage y borra el form
   const login = async (credentials) => {
-    setLoading(true);
     try {
       const response = await authService.login(credentials);
       
@@ -49,28 +48,23 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         localStorage.setItem('token', response.data.token);
         return { success: true };
-      } else {
-        return { success: false, error: response.error };
       }
+      return { success: false, error: response.error };
     } catch (error) {
       return { success: false, error: 'Error de conexión' };
-    } finally {
-      setLoading(false);
     }
   };
 
   // Logout
   const logout = async () => {
-    setLoading(true);
     try {
       await authService.logout();
-      setUser(null);
-      setIsAuthenticated(false);
-      localStorage.removeItem('token');
     } catch (error) {
       console.error('Error en logout:', error);
     } finally {
-      setLoading(false);
+      setUser(null);
+      setIsAuthenticated(false);
+      localStorage.removeItem('token');
     }
   };
   

@@ -191,15 +191,22 @@
 .login-button:active:not(:disabled) { transform: translateY(0); }
 
 .error-message {
-  padding: 0.875rem 1rem;
+  padding: 0.9rem 1rem;
   background: #fef2f2;
+  border: 1px solid #fecaca;
   border-left: 4px solid var(--error);
-  color: #991b1b;
-  font-size: 0.85rem;
+  color: #7f1d1d;
+  font-size: 0.9rem;
   font-weight: 600;
+  line-height: 1.35;
   border-radius: var(--radius-sm);
-  margin-top: 0.25rem;
+  margin: 0.35rem 0 0.15rem;
   animation: fadeIn 0.3s ease;
+}
+
+.login-form .input-wrapper:has(input[aria-invalid="true"]) input {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(197, 48, 48, 0.12);
 }
 
 .login-footer {

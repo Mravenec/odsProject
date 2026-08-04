@@ -59,9 +59,15 @@ export const authService = {
         }
       };
     } catch (error) {
+      const status = error.response?.status;
+      const raw = error.userMessage || error.response?.data?.message || '';
+      const isAuthFail = status === 400 || status === 401
+        || /login failed|credenciales|incorrect/i.test(String(raw));
       return {
         success: false,
-        error: error.response?.data?.message || 'Credenciales incorrectas'
+        error: isAuthFail
+          ? 'Correo o contraseña incorrectos. Verificá e intentá de nuevo.'
+          : (raw || 'No se pudo iniciar sesión. Intentá de nuevo.')
       };
     }
   },

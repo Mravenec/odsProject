@@ -87,7 +87,7 @@ public class LoginController implements ILoginController {
         } else {
             Map<String, Object> errorResponse = Map.of(
                 "success", false,
-                "message", "Login failed"
+                "message", "Correo o contraseña incorrectos"
             );
             return ResponseEntity.badRequest().body(errorResponse);
         }

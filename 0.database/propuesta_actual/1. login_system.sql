@@ -458,15 +458,14 @@ CREATE INDEX idx_auditoria_login_fecha_evento ON auditoria_login(fecha_evento, e
 CREATE INDEX idx_sesiones_expira_revocada      ON sesiones(expira_en, revocada);
 
 -- ────────────────────────────────────────────────────────────
--- DATOS DE EJEMPLO: usuario administrador inicial
--- IMPORTANTE: cambiar la contraseña en producción
--- password_hash corresponde a bcrypt de 'Admin1234!'
+-- DATOS DE SISTEMA: usuario administrador inicial (parte de la instalación)
+-- password_hash = bcrypt cost 12 de 'Admin1234!'
 -- LOGIN: admin@utn.ac.cr / Admin1234!
 -- ────────────────────────────────────────────────────────────
 
 INSERT IGNORE INTO usuarios (username, email, password_hash, full_name, rol_id, is_active, email_verificado)
 VALUES ('admin', 'admin@utn.ac.cr',
-        '$2b$12$MOCK_HASH_1234567890',
+        '$2b$12$4NK2SGLqwC.FGlCUpp6Is.QfrDn0WNyuYEKdy2VDf/aZ/zkLF315i',
         'Administrador del Sistema', 1, TRUE, TRUE);
 
 -- ────────────────────────────────────────────────────────────

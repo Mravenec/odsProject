@@ -10,7 +10,8 @@ const LoginPage = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const { login, loading } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setCredentials({
@@ -28,10 +29,14 @@ const LoginPage = () => {
       return;
     }
 
-    const result = await login(credentials);
-    
-    if (!result.success) {
-      setError(result.error);
+    setSubmitting(true);
+    try {
+      const result = await login(credentials);
+      if (!result.success) {
+        setError(result.error || 'Correo o contraseña incorrectos. Verificá e intentá de nuevo.');
+      }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -65,8 +70,10 @@ const LoginPage = () => {
                   value={credentials.email}
                   onChange={handleChange}
                   placeholder="correo@ejemplo.com"
-                  disabled={loading}
+                  disabled={submitting}
                   autoComplete="email"
+                  aria-invalid={!!error}
+                  aria-describedby={error ? 'login-error' : undefined}
                 />
               </div>
             </div>
@@ -81,14 +88,16 @@ const LoginPage = () => {
                   value={credentials.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  disabled={loading}
+                  disabled={submitting}
                   autoComplete="current-password"
+                  aria-invalid={!!error}
+                  aria-describedby={error ? 'login-error' : undefined}
                 />
                 <button
                   type="button"
                   className="password-toggle"
                   onClick={() => setShowPassword(v => !v)}
-                  disabled={loading}
+                  disabled={submitting}
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                   aria-pressed={showPassword}
                   aria-controls="password"
@@ -98,14 +107,18 @@ const LoginPage = () => {
               </div>
             </div>
             
-            {error && <div className="error-message">{error}</div>}
+            {error && (
+              <div id="login-error" className="error-message" role="alert" aria-live="assertive">
+                {error}
+              </div>
+            )}
             
             <button 
               type="submit" 
-              className={`login-button ${loading ? 'loading' : ''}`}
-              disabled={loading}
+              className={`login-button ${submitting ? 'loading' : ''}`}
+              disabled={submitting}
             >
-              {loading ? (
+              {submitting ? (
                 <span className="spinner"></span>
               ) : 'Ingresar'}
             </button>

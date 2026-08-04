@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3d2e">
-<title>Resumen — setup sin mocks · ODS UTN</title>
+<title>Resumen — Admin seed bcrypt · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
-  :root{--green900:#0f3d2e;--green700:#1b5e42;--cream50:#f7f4ec;--cream100:#efe9dc;--ink600:#4a5852;--surf:#fff}
+  :root{--green900:#0f3d2e;--green700:#1b5e42;--cream50:#f7f4ec;--cream100:#efe9dc;--ink600:#4a5852}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--cream50);color:#1c2622;font-family:'DM Sans',system-ui,sans-serif;line-height:1.6}
   .hero{margin:24px 48px 0;padding:36px 40px;border-radius:16px;background:linear-gradient(135deg,var(--green900),var(--green700));color:#fff}
@@ -18,31 +18,23 @@
   .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--green900);margin-bottom:16px}
   ul{margin:0 0 12px 18px;font-size:14px}
   code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--cream100);padding:1px 6px;border-radius:5px}
-  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace;background:var(--surf);border:1px solid var(--cream100)}
-  .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding:10px 12px;text-align:left;background:var(--green700)}
-  .tbl td{padding:10px 12px;border-bottom:1px solid var(--cream100)}
   footer{margin-top:40px;border-top:1px solid var(--cream100);padding:24px 48px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink600)}
 </style>
 </head>
 <body>
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint setup_sin_mocks · Resumen Fase 6 · Epic Completed</div>
-  <h1>setup_db sin mocks</h1>
+  <div class="ey">ODS UTN · Sprint admin_seed · Resumen Fase 6 · Epic Completed</div>
+  <h1>Admin seed bcrypt</h1>
 </header>
 <section class="sec">
   <div class="sl">Resultado</div>
   <div class="st">Qué quedó hecho</div>
   <ul>
-    <li><code>00_run_all.sql</code> ya no hace <code>SOURCE 21. ods_mocks.sql</code>.</li>
-    <li><code>setup_db.py</code> = schema (+ admin seed de login_system).</li>
-    <li><code>load_mocks.py</code> = seeds 22 + mocks 21.</li>
-    <li>Verificado: post-setup 1 usuario / 0 proyectos; post-mocks 4 usuarios / 7 proyectos.</li>
+    <li><code>login_system.sql</code>: hash bcrypt real de <code>Admin1234!</code> (ya no <code>MOCK_HASH</code>).</li>
+    <li>Verificado: <code>drop</code> → <code>setup_db</code> (sin mocks) → login <code>admin@utn.ac.cr</code> / <code>Admin1234!</code> → 200.</li>
+    <li>Admin = parte del sistema; demos UTN siguen en <code>load_mocks</code>.</li>
   </ul>
-  <table class="tbl">
-    <thead><tr><th>Id</th><th>Título</th><th>Estado</th></tr></thead>
-    <tbody><tr><td>ODS-508</td><td>DB · Separar setup y load_mocks</td><td>Done</td></tr></tbody>
-  </table>
 </section>
-<footer>Sprint <code>setup_sin_mocks</code></footer>
+<footer>Sprint <code>admin_seed</code> · ODS-509 Done</footer>
 </body>
 </html>

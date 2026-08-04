@@ -9,7 +9,7 @@
 -- ────────────────────────────────────────────────────────────
 USE ods_login;
 
--- Admin inicial (creado en login_system.sql): mantener hash bcrypt al recargar mocks
+-- Admin inicial (seed en login_system.sql con bcrypt Admin1234!): reafirmar hash al recargar mocks
 UPDATE usuarios SET password_hash = '$2b$12$4NK2SGLqwC.FGlCUpp6Is.QfrDn0WNyuYEKdy2VDf/aZ/zkLF315i'
 WHERE email = 'admin@utn.ac.cr';
 
