@@ -27,7 +27,8 @@ INSERT INTO sodsi_area (id, codigo, nombre, orden) VALUES
   (3, 'VIDA_EST',  'Vida Estudiantil',                 3),
   (4, 'INVEST',    'Investigación',                    4),
   (5, 'EXTENSION', 'Extensión y Acción Social',        5),
-  (6, '5038',      'Área Gestión Administrativa (Sedes)', 6);
+  (6, '5038',      'Área Gestión Administrativa (Sedes)', 6),
+  (7, 'AEAS',      'AEAS',                             7);
 
 -- ────────────────────────────────────────────────────────────
 -- Dependencia organizacional (columna Dependencia en Excel SODSI)
@@ -50,7 +51,10 @@ INSERT INTO sodsi_dependencia (id, codigo, nombre, orden) VALUES
   (3, '5034', 'Escuela de Ingeniería en Sistemas',   3),
   (4, '5035', 'Unidad de Extensión',                 4),
   (5, '5036', 'Unidad de Investigación',             5),
-  (6, '5037', 'Coordinación Vida Estudiantil',     6);
+  (6, '5037', 'Coordinación Vida Estudiantil',     6),
+  (7, 'PETICS', 'PETICS',                            7),
+  (8, 'PAEAS',  'Proyectos AEAS',                    8),
+  (9, 'DIR',    'Dirección',                         9);
 
 -- ────────────────────────────────────────────────────────────
 -- Rol de dependencia (columna Rol de dependencia en Excel SODSI)
@@ -69,7 +73,8 @@ INSERT INTO sodsi_rol_dependencia (id, codigo, nombre, orden) VALUES
   (1, '1', 'Coordinador',    1),
   (2, '2', 'Profesor',       2),
   (3, '3', 'Investigador',   3),
-  (4, '4', 'Extensionista',  4);
+  (4, '4', 'Extensionista',  4),
+  (5, '5', 'Director',       5);
 
 -- ────────────────────────────────────────────────────────────
 -- Provincias CR → Región Mideplan (derivación automática en export)

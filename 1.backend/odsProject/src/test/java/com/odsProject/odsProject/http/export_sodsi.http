@@ -2,9 +2,9 @@
 ### QA: proyecto #6 completado sede 2 año 2024 · #7 planificación
 
 @baseUrl = http://localhost:8080
-@emailConsultor = consultor@ods.local
+@emailConsultor = mlopez@utn.ac.cr
 @passwordConsultor = Consultor2026!
-@emailGestor = ana.garcia@ods.cr
+@emailGestor = jartavia@utn.ac.cr
 @passwordGestor = password123
 @sedeId = 2
 @anio = 2024

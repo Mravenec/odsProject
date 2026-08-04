@@ -11,7 +11,7 @@ USE ods_login;
 
 -- Admin inicial (creado en login_system.sql): mantener hash bcrypt al recargar mocks
 UPDATE usuarios SET password_hash = '$2b$12$4NK2SGLqwC.FGlCUpp6Is.QfrDn0WNyuYEKdy2VDf/aZ/zkLF315i'
-WHERE email = 'admin@ods.local';
+WHERE email = 'admin@utn.ac.cr';
 
 SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE sesiones;
@@ -33,22 +33,18 @@ INSERT INTO sedes (id, nombre, descripcion) VALUES
   (7, 'Sede Limón', 'Sede Regional Limón — UTN (7ª sede SODSI)');
 
 -- Credenciales de desarrollo (contraseña en texto → hash bcrypt cost 12 en password_hash):
---   password123    → usuarios id 2–6 y consultor_general maria.jimenez@ods.cr
---   Consultor2026! → consultor@ods.local (id 7)
---   Admin1234!     → admin@ods.local (login_system.sql + UPDATE arriba)
+--   password123    → jartavia / khernandez / mlopez (@utn.ac.cr)
+--   Admin1234!     → admin@utn.ac.cr (login_system.sql + UPDATE arriba)
 
 INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sede_id,
   area_id, dependencia_id, rol_dependencia_id, unidad_programatica_id, telefono_contacto, is_active, email_verificado) VALUES
-  (2, 'gestor_pobreza', 'ana.garcia@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Ana García López', 2, 2, 6, 1, 1, 10, '8888-9999', TRUE, TRUE),
-  (3, 'gestor_hambre', 'carlos.rodriguez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Carlos Rodríguez Mora', 2, 5, 2, 3, 2, 14, '7777-8888', TRUE, TRUE),
-  (4, 'consultor_general', 'maria.jimenez@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'María Jiménez Solano', 3, 2, NULL, NULL, NULL, 10, NULL, TRUE, TRUE),
-  (5, 'evaluador_general', 'evaluador@ods.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Luis Vargas Castro', 4, 2, NULL, NULL, NULL, 10, NULL, TRUE, TRUE),
-  (6, 'gestor_general', 'gestor@ods.com', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Gestor General ODS', 2, 2, 5, 4, 4, 13, '6666-7777', TRUE, TRUE);
+  (2, 'jartavia', 'jartavia@utn.ac.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Joaquín Artavia', 2, 2, 7, 7, 1, 18, '24355000', TRUE, TRUE),
+  (3, 'khernandez', 'khernandez@utn.ac.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Karina Hernández', 4, 2, 7, 8, 1, 18, '24355000', TRUE, TRUE),
+  (4, 'mlopez', 'mlopez@utn.ac.cr', '$2b$12$k47TtiACGyZylvK057dRW.X705iWMTY/yymuTA9A40aF/uKLj4Vhq', 'Marco López', 3, 2, 7, 9, 5, 18, '24355000', TRUE, TRUE);
 
 INSERT INTO permisos_ods (usuario_id, ods_num, puede_crear, puede_editar, puede_ver) VALUES
-  (2, 1, TRUE, TRUE, TRUE), 
-  (3, 2, TRUE, TRUE, TRUE),
-  (6, 1, TRUE, TRUE, TRUE);
+  (2, 1, TRUE, TRUE, TRUE),
+  (2, 2, TRUE, TRUE, TRUE);
 
 -- ────────────────────────────────────────────────────────────
 -- 1.1 CONFIGURACIÓN DE PROYECTOS CENTRALIZADOS (ods_master)
@@ -67,9 +63,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 INSERT INTO proyectos (id, usuario_id, sede_id, nombre_proyecto, descripcion, fecha_inicio, fecha_fin, meta_general, estado) VALUES
   (1, 2, 2, 'Reducción Pobreza Extrema - Chorotega', 'Iniciativa para reducir la brecha de pobreza', '2023-01-01', '2024-12-31', 'Reducir un 5%', 'activo'),
-  (2, 3, 5, 'Seguridad Alimentaria San Carlos', 'Fondo de ayuda alimentaria', '2023-02-01', '2024-12-01', NULL, 'activo'),
+  (2, 2, 5, 'Seguridad Alimentaria San Carlos', 'Fondo de ayuda alimentaria', '2023-02-01', '2024-12-01', NULL, 'activo'),
   (3, 2, 2, 'Mortalidad Materna Regional', 'Salud pública materna', '2023-01-01', '2024-12-31', NULL, 'activo'),
-  (4, 3, 2, 'Bilingüismo Nacional', 'Programa de educación bilingüe', '2023-01-01', '2025-12-31', NULL, 'activo'),
+  (4, 2, 2, 'Bilingüismo Nacional', 'Programa de educación bilingüe', '2023-01-01', '2025-12-31', NULL, 'activo'),
   (5, 2, 4, 'Reforestación Manglares Puntarenas', 'Conservación de ecosistemas marinos', '2023-10-01', '2025-10-01', NULL, 'activo');
 
 -- Vinculación explícita Proyecto ↔ ODS
@@ -111,10 +107,10 @@ INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_par
   (6, 2, 'Población Total', 'p2', 'Decimal', 500000);
 
 INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, fecha_medicion, responsable) VALUES
-  (1, 1, 3.1, '2023-06-15', 'Ana García'),
-  (2, 1, 2.8, '2023-12-15', 'Ana García'),
-  (3, 1, 2.5, '2024-03-30', 'Ana García'),
-  (4, 2, 2.0, '2024-04-01', 'Ana García');
+  (1, 1, 3.1, '2023-06-15', 'Joaquín Artavia'),
+  (2, 1, 2.8, '2023-12-15', 'Joaquín Artavia'),
+  (3, 1, 2.5, '2024-03-30', 'Joaquín Artavia'),
+  (4, 2, 2.0, '2024-04-01', 'Joaquín Artavia');
 
 INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES
   (1, 1, 15500), (1, 2, 500000),
@@ -144,8 +140,8 @@ INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_par
   (4, 2, 'Población Total', 'p2', 'Decimal', 300000);
 
 INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, fecha_medicion, responsable) VALUES
-  (1, 1, 1.8, '2023-08-10', 'Carlos Rodríguez'),
-  (2, 2, 0.5, '2023-09-10', 'Carlos Rodríguez');
+  (1, 1, 1.8, '2023-08-10', 'Joaquín Artavia'),
+  (2, 2, 0.5, '2023-09-10', 'Joaquín Artavia');
 
 INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES
   (1, 1, 5400), (1, 2, 300000),
@@ -209,8 +205,8 @@ INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_par
   (2, 1, 'Área marina total jurisdicción (km²)', 'p2', 'Decimal', 50.0);
 
 INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, fecha_medicion, responsable) VALUES
-  (1, 1, 20.0, '2024-02-15', 'Ana García López'),
-  (2, 1, 30.0, '2024-05-15', 'Ana García López');
+  (1, 1, 20.0, '2024-02-15', 'Joaquín Artavia'),
+  (2, 1, 30.0, '2024-05-15', 'Joaquín Artavia');
 
 INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES
   (1, 1, 10.0), (1, 2, 50.0),
@@ -265,14 +261,9 @@ INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_par
   (10, 5, 'Población Total', 'p2', 'Decimal', 0);
 
 -- ────────────────────────────────────────────────────────────
--- 5.1 SPRINT CONSULTOR — Usuario QA + proyecto completado auditado
--- Rol consultor (rol_id=3), export Excel, QA read-only
+-- 5.1 SPRINT CONSULTOR — proyecto completado auditado (export Excel QA)
+-- Consultor: mlopez (id 4); auditor: khernandez (id 3)
 -- ────────────────────────────────────────────────────────────
-USE ods_login;
-
-INSERT INTO usuarios (id, username, email, password_hash, full_name, rol_id, sede_id, is_active, email_verificado) VALUES
-  (7, 'consultor_qa', 'consultor@ods.local', '$2b$12$JQk2UAZcF3H.6/iY4qrC8eANsyds3P3HQaEYP.ZLs626Pe8VgP3DK', 'Consultor QA Local', 3, 2, TRUE, TRUE);
-
 USE ods_master;
 
 INSERT INTO proyectos (
@@ -316,7 +307,7 @@ INSERT INTO proyecto_indicador_parametros (id, proyecto_indicador_id, nombre_par
   (8, 4, 'Población Total', 'p2', 'Decimal', 100000);
 
 INSERT INTO mediciones_historicas (id, proyecto_indicador_id, valor_calculado, fecha_medicion, responsable) VALUES
-  (5, 4, 3.0, '2024-10-01', 'Ana García López');
+  (5, 4, 3.0, '2024-10-01', 'Joaquín Artavia');
 
 INSERT INTO medicion_parametro_valores (medicion_id, parametro_id, valor_ingresado) VALUES
   (5, 7, 3000), (5, 8, 100000);
@@ -326,7 +317,7 @@ USE ods_master;
 
 UPDATE proyectos SET
   estado = 'completado',
-  auditado_por = 5,
+  auditado_por = 3,
   auditado_en = '2024-12-15 10:00:00',
   observaciones_cierre = 'Proyecto auditado y cerrado correctamente. Indicadores y evidencias verificados.',
   fecha_envio_revision = '2024-11-01 08:00:00'

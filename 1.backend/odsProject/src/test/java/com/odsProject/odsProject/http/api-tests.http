@@ -10,7 +10,7 @@ POST {{base}}/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "ana.garcia@ods.cr",
+  "email": "jartavia@utn.ac.cr",
   "password": "password123",
   "ip": "127.0.0.1",
   "userAgent": "http-client"
@@ -144,7 +144,7 @@ Content-Type: application/json
   "proyectoIndicadorId": 6,
   "valorCalculado": 2.4,
   "fechaMedicion": "2024-06-15",
-  "responsable": "Ana García"
+  "responsable": "Joaquín Artavia"
 }
 
 ###
@@ -173,7 +173,7 @@ POST {{base}}/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@ods.local",
+  "email": "admin@utn.ac.cr",
   "password": "Admin1234!",
   "ip": "127.0.0.1",
   "userAgent": "http-client"

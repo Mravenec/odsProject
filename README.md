@@ -209,10 +209,10 @@ Creadas por `21. ods_mocks.sql`:
 
 | Rol | Email | Contraseña |
 |-----|-------|-----------|
-| Administrador | `admin@ods.local` | `Admin1234!` |
-| Gestor ODS 01 | `ana.garcia@ods.cr` | `password123` |
-| Gestor ODS 02 | `carlos.rodriguez@ods.cr` | `password123` |
-| Consultor | `maria.jimenez@ods.cr` | `password123` |
+| Administrador | `admin@utn.ac.cr` | `Admin1234!` |
+| Gestor | `jartavia@utn.ac.cr` | `password123` |
+| Evaluador | `khernandez@utn.ac.cr` | `password123` |
+| Consultor | `mlopez@utn.ac.cr` | `password123` |
 
 ---
 

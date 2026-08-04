@@ -1067,7 +1067,7 @@ Los scripts temporales de una tarea **se borran al implementarla**. Lo que queda
 | **Recarga** | Tras cambiar hashes: `python 0.database/load_mocks.py` (incluye `UPDATE` del admin) |
 | **Prohibido** | `$2b$12$MOCK_HASH_*`, contraseñas hardcodeadas en `LoginService` u otros servicios |
 
-Credenciales QA habituales (ver comentarios en `21. ods_mocks.sql`): `password123` (gestores/consultor general), `Consultor2026!` (`consultor@ods.local`), `Admin1234!` (`admin@ods.local`).
+Credenciales QA habituales (ver comentarios en `21. ods_mocks.sql`): `password123` (jartavia / khernandez / mlopez @utn.ac.cr), `Admin1234!` (`admin@utn.ac.cr`).
 
 ### Pipeline post-cambio de schema (solo si hubo cambios en BD)
 

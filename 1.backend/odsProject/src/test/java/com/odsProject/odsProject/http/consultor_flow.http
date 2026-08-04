@@ -3,7 +3,7 @@
 ### Proyecto QA completado id=6 · activo id=1
 
 @baseUrl = http://localhost:8080
-@emailConsultor = consultor@ods.local
+@emailConsultor = mlopez@utn.ac.cr
 @passwordConsultor = Consultor2026!
 @idCompletado = 6
 @idActivo = 1

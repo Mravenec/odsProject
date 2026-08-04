@@ -6,7 +6,7 @@ POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@ods.local",
+  "email": "admin@utn.ac.cr",
   "password": "Admin1234!"
 }
 
@@ -34,7 +34,7 @@ POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@ods.local",
+  "email": "admin@utn.ac.cr",
   "password": "Admin1234!"
 }
 
@@ -47,7 +47,7 @@ POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "ana.garcia@ods.cr",
+  "email": "jartavia@utn.ac.cr",
   "password": "password123"
 }
 

@@ -41,6 +41,7 @@ INSERT INTO sodsi_unidades_programaticas (id, codigo, nombre, tipo, sede_ref, or
   ( 15, 'UTN-U-015',  'Dirección Administrativa — Puntarenas',   'direccion', 'Sede Puntarenas', 15),
   ( 16, 'UTN-U-016',  'Coordinación Vida Estudiantil — CFP',     'unidad', 'CFP',           16),
   ( 17, 'UTN-U-017',  'Unidad Programática — Limón (placeholder)', 'unidad', 'Sede Limón', 17),
+  ( 18, 'UTN-U-018',  'Aeas',                                     'unidad', 'Sede Central', 18),
   ( 99, 'UTN-U-099',  'Unidad programática UTN (placeholder)',     'otro', NULL,            99);
 
 -- ────────────────────────────────────────────────────────────

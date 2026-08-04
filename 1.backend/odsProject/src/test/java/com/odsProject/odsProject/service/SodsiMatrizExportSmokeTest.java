@@ -26,7 +26,7 @@ class SodsiMatrizExportSmokeTest {
 
     @Test
     void exportMatrizTieneUnaHojaY21Columnas() throws Exception {
-        // id 4 = maria.jimenez@ods.cr (consultor); gestor del proyecto QA es Ana García (id 2)
+        // id 4 = mlopez@utn.ac.cr (consultor); gestor del proyecto QA es Joaquín Artavia (id 2)
         byte[] data = exportService.exportProyectosEvaluadosPorSedeYAnio(2, 2024, 4);
         try (Workbook wb = new XSSFWorkbook(new ByteArrayInputStream(data))) {
             Assertions.assertEquals(1, wb.getNumberOfSheets());
@@ -51,10 +51,10 @@ class SodsiMatrizExportSmokeTest {
                 Assertions.assertEquals("Universidad Técnica Nacional (UTN)", institucion);
                 Assertions.assertFalse(usuario.isBlank(), "Usuario (descargante) no debe estar vacío");
                 Assertions.assertTrue(
-                        usuario.contains("María") || usuario.contains("Maria"),
+                        usuario.contains("Marco") || usuario.contains("mlopez"),
                         "Usuario debe ser quien descarga el reporte, no el gestor");
                 Assertions.assertFalse(contacto.isBlank(), "Contacto (gestor) no debe estar vacío");
-                Assertions.assertTrue(contacto.contains("Ana García") || contacto.contains("ana.garcia"),
+                Assertions.assertTrue(contacto.contains("Joaquín") || contacto.contains("Artavia") || contacto.contains("jartavia"),
                         "Contacto debe ser del gestor del proyecto");
                 Assertions.assertFalse(objetivo.isBlank(), "Objetivo no debe estar vacío");
                 Assertions.assertTrue(objetivo.startsWith("[1]"), "Objetivo debe incluir ODS vinculado [n]");

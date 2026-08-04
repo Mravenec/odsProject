@@ -1,34 +1,21 @@
-### Aislamiento gestor — Ana (id=2) vs Carlos (id=3)
+### Aislamiento gestor — un solo gestor UTN (jartavia id=2)
 @baseUrl = http://localhost:8080
 
-### @name loginAna
+### @name loginGestor
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "ana.garcia@ods.cr",
+  "email": "jartavia@utn.ac.cr",
   "password": "password123"
 }
 
 > {%
-  client.global.set("tokenAna", response.body.token);
-  client.test("login Ana", function() {
+  client.global.set("tokenGestor", response.body.token);
+  client.test("login gestor", function() {
     client.assert(response.status === 200, "status 200");
     client.assert(!!response.body.token, "token");
   });
-%}
-
-### @name loginCarlos
-POST {{baseUrl}}/api/login/auth/login
-Content-Type: application/json
-
-{
-  "email": "carlos.rodriguez@ods.cr",
-  "password": "password123"
-}
-
-> {%
-  client.global.set("tokenCarlos", response.body.token);
 %}
 
 ### @name loginEvaluador
@@ -36,7 +23,7 @@ POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "evaluador@ods.cr",
+  "email": "khernandez@utn.ac.cr",
   "password": "password123"
 }
 
@@ -44,53 +31,27 @@ Content-Type: application/json
   client.global.set("tokenEval", response.body.token);
 %}
 
-### Ana — with-ods solo suyos (no ve proyecto 2 de Carlos)
-# @name anaWithOds
+### Gestor — with-ods solo suyos
 GET {{baseUrl}}/api/projects/with-ods
-Authorization: Bearer {{tokenAna}}
+Authorization: Bearer {{tokenGestor}}
 
 > {%
-  client.test("Ana solo propios", function() {
+  client.test("gestor solo propios", function() {
     client.assert(response.status === 200, "200");
     const list = response.body || [];
+    client.assert(list.length >= 1, "tiene proyectos");
     const ids = list.map(p => p.proyectoId || p.proyecto_id || p.id);
-    client.assert(!ids.includes(2), "sin proyecto 2 Carlos");
-    client.assert(!ids.includes(4), "sin proyecto 4 Carlos");
-    client.assert(ids.includes(7) || ids.includes(1) || ids.includes(3), "tiene al menos un propio");
+    client.assert(ids.includes(7) || ids.includes(1), "incluye mock propio");
   });
 %}
 
-### Ana — IDOR user/3 → 403
+### Gestor — IDOR user/3 (evaluador) → 403
 GET {{baseUrl}}/api/projects/user/3/with-ods
-Authorization: Bearer {{tokenAna}}
+Authorization: Bearer {{tokenGestor}}
 
 > {%
   client.test("IDOR 403", function() {
     client.assert(response.status === 403, "403");
-  });
-%}
-
-### Ana — detalle proyecto Carlos (id=2) → 403
-GET {{baseUrl}}/api/projects/2/with-ods
-Authorization: Bearer {{tokenAna}}
-
-> {%
-  client.test("detalle ajeno 403", function() {
-    client.assert(response.status === 403, "403");
-  });
-%}
-
-### Carlos — with-ods
-GET {{baseUrl}}/api/projects/with-ods
-Authorization: Bearer {{tokenCarlos}}
-
-> {%
-  client.test("Carlos solo propios", function() {
-    client.assert(response.status === 200, "200");
-    const list = response.body || [];
-    const ids = list.map(p => p.proyectoId || p.proyecto_id || p.id);
-    client.assert(!ids.includes(1), "sin proyecto 1 Ana");
-    client.assert(!ids.includes(7), "sin proyecto 7 Ana");
   });
 %}
 

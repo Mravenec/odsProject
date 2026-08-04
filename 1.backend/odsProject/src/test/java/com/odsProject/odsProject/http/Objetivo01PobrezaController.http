@@ -162,7 +162,7 @@ Content-Type: application/json
   "proyectoIndicadorId": {{indicadorId}},
   "valorCalculado": 3.1,
   "fechaMedicion": "2023-06-15",
-  "responsable": "Ana García"
+  "responsable": "Joaquín Artavia"
 }
 
 # ── 6. Utilidades y Estadísticas ──

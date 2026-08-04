@@ -461,11 +461,11 @@ CREATE INDEX idx_sesiones_expira_revocada      ON sesiones(expira_en, revocada);
 -- DATOS DE EJEMPLO: usuario administrador inicial
 -- IMPORTANTE: cambiar la contraseña en producción
 -- password_hash corresponde a bcrypt de 'Admin1234!'
--- LOGIN: admin@ods.local / Admin1234!
+-- LOGIN: admin@utn.ac.cr / Admin1234!
 -- ────────────────────────────────────────────────────────────
 
 INSERT IGNORE INTO usuarios (username, email, password_hash, full_name, rol_id, is_active, email_verificado)
-VALUES ('admin', 'admin@ods.local',
+VALUES ('admin', 'admin@utn.ac.cr',
         '$2b$12$MOCK_HASH_1234567890',
         'Administrador del Sistema', 1, TRUE, TRUE);
 

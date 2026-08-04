@@ -2,7 +2,7 @@
 ### Base URL: http://localhost:8080
 
 @baseUrl = http://localhost:8080
-@adminEmail = admin@ods.local
+@adminEmail = admin@utn.ac.cr
 @adminPassword = password123
 
 # ── 0. Login admin ──
@@ -84,7 +84,7 @@ Content-Type: application/json
 
 {
   "username": "otro_user",
-  "email": "ana.garcia@ods.cr",
+  "email": "jartavia@utn.ac.cr",
   "fullName": "Duplicado",
   "rolId": 2,
   "sedeId": 1,

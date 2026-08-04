@@ -3,9 +3,9 @@
 ### ODS-242: Unidad encargada = sodsi_unidades_programaticas del actor ([codigo] nombre)
 
 @baseUrl = http://localhost:8080
-@emailAdmin = admin@ods.local
+@emailAdmin = admin@utn.ac.cr
 @passwordAdmin = Admin1234!
-@emailEvaluador = evaluador@ods.cr
+@emailEvaluador = khernandez@utn.ac.cr
 @passwordEvaluador = password123
 @evaluadorUserId = 5
 @sedeId = 2
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 {
   "username": "evaluador_general",
-  "email": "evaluador@ods.cr",
+  "email": "khernandez@utn.ac.cr",
   "fullName": "Luis Vargas Castro",
   "rolId": 4,
   "sedeId": 2,

@@ -7,23 +7,23 @@
 
 # ── 1. Autenticación (ods_login) ──
 
-### Login: gestor_pobreza (Ana García)
-# @name loginAna
+### Login: jartavia (gestor)
+# @name loginGestor
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "ana.garcia@ods.cr",
+  "email": "jartavia@utn.ac.cr",
   "password": "password123"
 }
 
-### Login: gestor_hambre (Carlos Rodríguez)
-# @name loginCarlos
+### Login: khernandez (evaluador)
+# @name loginEvaluador
 POST {{baseUrl}}/api/login/auth/login
 Content-Type: application/json
 
 {
-  "email": "carlos.rodriguez@ods.cr",
+  "email": "khernandez@utn.ac.cr",
   "password": "password123"
 }
 

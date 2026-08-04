@@ -1,10 +1,10 @@
 ### API beneficiarios SODSI — gestor crea / admin desactiva
-### QA: gestor ana.garcia@ods.cr · admin admin@ods.local
+### QA: gestor jartavia@utn.ac.cr · admin admin@utn.ac.cr
 
 @baseUrl = http://localhost:8080
-@emailGestor = ana.garcia@ods.cr
+@emailGestor = jartavia@utn.ac.cr
 @passwordGestor = password123
-@emailAdmin = admin@ods.local
+@emailAdmin = admin@utn.ac.cr
 @passwordAdmin = Admin1234!
 
 ### @name login_gestor

@@ -3,13 +3,13 @@
 
 @baseUrl = http://localhost:8080
 
-@emailConsultor = consultor@ods.local
+@emailConsultor = mlopez@utn.ac.cr
 @passwordConsultor = Consultor2026!
-@emailAdmin = admin@ods.local
+@emailAdmin = admin@utn.ac.cr
 @passwordAdmin = Admin1234!
-@emailEvaluador = evaluador@ods.cr
+@emailEvaluador = khernandez@utn.ac.cr
 @passwordEvaluador = password123
-@emailGestor = ana.garcia@ods.cr
+@emailGestor = jartavia@utn.ac.cr
 @passwordGestor = password123
 
 @sedeId = 2
