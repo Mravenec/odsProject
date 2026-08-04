@@ -129,7 +129,22 @@ public class TransicionPlanificacionService implements ITransicionPlanificacionS
             throw new IllegalStateException("Fuerza mayor solo aplica desde estado activo");
         if (motivo == null || motivo.isBlank())
             throw new IllegalArgumentException("motivo es obligatorio");
-        return masterProjectService.transitionState(proyectoId, "cancelado", actorUserId, actorRole, motivo);
+        String motivoTrim = motivo.trim();
+        Map<String, Object> transition = masterProjectService.transitionState(
+                proyectoId, "cancelado", actorUserId, actorRole, motivoTrim);
+        String nota = "Fuerza mayor: " + motivoTrim;
+        ProyectoTransicionSolicitud sol = transicionRepository.insertResuelta(
+                proyectoId,
+                p.getUsuarioId(),
+                actorUserId,
+                "cancelado",
+                motivoTrim,
+                nota);
+        Map<String, Object> resp = new LinkedHashMap<>();
+        resp.put("success", true);
+        resp.put("solicitud", toDto(sol));
+        resp.putAll(transition);
+        return resp;
     }
 
     @Override

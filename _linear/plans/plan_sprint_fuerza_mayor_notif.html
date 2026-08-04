@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3d2e">
-<title>Propuesta — Aviso global + auto-refresh · ODS UTN</title>
+<title>Propuesta — Aviso fuerza mayor · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
   :root{--green900:#0f3d2e;--green700:#1b5e42;--green500:#2e8b63;--cream50:#f7f4ec;--cream100:#efe9dc;--copper600:#b06a2c;--ink900:#1c2622;--ink600:#4a5852;--surf:#fff}
@@ -14,7 +14,7 @@
   .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:12px}
   h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800;line-height:1.1}
   h1 em{font-style:normal;color:#cfe6da}
-  .sub{margin-top:12px;font-size:14px;color:rgba(255,255,255,.88);max-width:900px}
+  .sub{margin-top:12px;font-size:14px;color:rgba(255,255,255,.88)}
   .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
   .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(176,106,44,.35)}
   .chip span{font-weight:600;color:#fff}
@@ -39,21 +39,19 @@
   .badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#fff;background:var(--copper600);padding:3px 10px;border-radius:999px;height:fit-content}
   .issue-id{font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--ink600)}
   .issue-title{font-size:14px;font-weight:600;margin-top:4px}
-  .box{border-radius:12px;padding:14px 16px;font-size:13px;margin:10px 0;background:#f0f7f3;border-left:5px solid var(--green500);color:var(--green900)}
   hr.sep{border:none;border-top:1px solid var(--cream100);margin:48px 48px 0}
   footer{margin-top:40px;border-top:1px solid var(--cream100);padding:24px 48px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink600)}
   .utn{font-family:'Syne',sans-serif;font-weight:800;color:var(--green700)}
-  @media(max-width:720px){.hero,.sec,.al,footer,hr.sep{margin-left:0;margin-right:0;padding-left:16px;padding-right:16px}}
 </style>
 </head>
 <body>
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint notif_refresh · Propuesta · linear_ods</div>
-  <h1>Aviso global gestor<br><em>+ auto-refresh sin F5</em></h1>
-  <p class="sub">Al aprobar transición a activo, el gestor ve el banner verde en Dashboard (y cualquier ruta). Listas/cola/detalle se refrescan solos (poll silencioso) para todos los roles — sin recarga manual.</p>
-  <div class="chips"><div class="chip">Estado <span>PENDIENTE</span></div><div class="chip">Issues <span>2</span></div></div>
+  <div class="ey">ODS UTN · Sprint fuerza_mayor_notif · Propuesta · linear_ods</div>
+  <h1>Fuerza mayor<br><em>Aviso al gestor</em></h1>
+  <p class="sub">Al cancelar por fuerza mayor, registrar resolución en bandeja del gestor para que GestorTransicionNotif muestre el banner (sin F5).</p>
+  <div class="chips"><div class="chip">Estado <span>APROBADO</span></div><div class="chip">Issues <span>2</span></div></div>
 </header>
-<div class="al"><div>⏳</div><div><strong>Propuesta pendiente.</strong> Validar → ✅ APROBADO → <code>create</code>.</div></div>
+<div class="al"><div>✓</div><div><strong>Aprobado en chat.</strong> Proceder a <code>create</code>.</div></div>
 
 <section class="sec">
   <div class="sl">Linear — Proceso obligatorio (7 fases)</div>
@@ -61,12 +59,12 @@
   <table class="tbl">
     <thead><tr><th>Fase</th><th>Qué</th><th>Gate</th><th>Estado</th></tr></thead>
     <tbody>
-      <tr><td>Fase 0 — Limpieza</td><td>cleanup transicion_ux</td><td>Sprint previo</td><td>✓</td></tr>
-      <tr><td>Fase 1–2 — Plan HTML</td><td>plan_sprint_notif_refresh.html</td><td>validate-plan-html</td><td>PENDIENTE</td></tr>
-      <tr><td>Fase 3 — Aprobación</td><td>✅ humano</td><td>APROBADO</td><td>PENDIENTE</td></tr>
-      <tr><td>Fase 4 — MJS</td><td>sprint_notif_refresh.mjs create</td><td>Tras Fase 3</td><td>—</td></tr>
+      <tr><td>Fase 0 — Limpieza</td><td>cleanup notif_refresh</td><td>Sprint previo</td><td>✓</td></tr>
+      <tr><td>Fase 1–2 — Plan HTML</td><td>plan_sprint_fuerza_mayor_notif.html</td><td>validate-plan-html</td><td>✓</td></tr>
+      <tr><td>Fase 3 — Aprobación</td><td>✅ humano</td><td>APROBADO</td><td>✓</td></tr>
+      <tr><td>Fase 4 — MJS</td><td>sprint_fuerza_mayor_notif.mjs create</td><td>Tras Fase 3</td><td>—</td></tr>
       <tr><td>Fase 5 — Multi-agente</td><td>BE → FE</td><td>GATE_HTTP</td><td>—</td></tr>
-      <tr><td>Fase 6 — Resumen</td><td>resumen_sprint_notif_refresh.html</td><td>Epic Completed</td><td>—</td></tr>
+      <tr><td>Fase 6 — Resumen</td><td>resumen_sprint_fuerza_mayor_notif.html</td><td>Epic Completed</td><td>—</td></tr>
     </tbody>
   </table>
 </section>
@@ -76,9 +74,9 @@
   <div class="st">EPIC_NAME · script · equipo linear_ods</div>
   <table class="tbl">
     <tbody>
-      <tr><td>EPIC_NAME</td><td>Notif transición global + auto-refresh UI</td></tr>
-      <tr><td>SPRINT_NAME</td><td>notif_refresh</td></tr>
-      <tr><td>Script</td><td><code>_linear/scripts/sprint_notif_refresh.mjs</code></td></tr>
+      <tr><td>EPIC_NAME</td><td>Aviso gestor al cancelar por fuerza mayor</td></tr>
+      <tr><td>SPRINT_NAME</td><td>fuerza_mayor_notif</td></tr>
+      <tr><td>Script</td><td><code>_linear/scripts/sprint_fuerza_mayor_notif.mjs</code></td></tr>
     </tbody>
   </table>
 </section>
@@ -92,8 +90,8 @@
       <tr><td>GATE_SQL</td><td>N/A</td><td>—</td><td>—</td></tr>
       <tr><td>GATE_BD</td><td>N/A</td><td>—</td><td>Sin drop_db</td></tr>
       <tr><td>GATE_JOOQ</td><td>N/A</td><td>—</td><td>—</td></tr>
-      <tr><td>GATE_HTTP</td><td>Sí</td><td>BE</td><td>GET solicitudes recientes del gestor</td></tr>
-      <tr><td>GATE_FE</td><td>Sí</td><td>FE</td><td>npm run build + smoke sin F5</td></tr>
+      <tr><td>GATE_HTTP</td><td>Sí</td><td>BE</td><td>fuerza-mayor → recientes incluye ítem</td></tr>
+      <tr><td>GATE_FE</td><td>Sí</td><td>FE</td><td>npm run build + texto banner</td></tr>
     </tbody>
   </table>
 </section>
@@ -104,8 +102,8 @@
   <table class="tbl">
     <thead><tr><th>Id</th><th>Rol</th><th>Pts</th><th>Título</th><th>blocks</th><th>Archivos</th></tr></thead>
     <tbody>
-      <tr><td>BE</td><td>role:backend</td><td>3</td><td>GET bandeja resoluciones del gestor</td><td>—</td><td>Transicion*Controller/Service/Repo, .http</td></tr>
-      <tr><td>FE</td><td>role:frontend</td><td>4</td><td>Banner global + poll silencioso listas</td><td>BE</td><td>App, GestorNotifBanner, useProjects, useEvaluationQueue, usePlanificacionTransicion</td></tr>
+      <tr><td>BE</td><td>role:backend</td><td>2</td><td>Registrar resolución al fuerzaMayor</td><td>—</td><td>TransicionPlanificacionService/Repo, .http</td></tr>
+      <tr><td>FE</td><td>role:frontend</td><td>1</td><td>Texto banner fuerza mayor</td><td>BE</td><td>GestorTransicionNotif.jsx</td></tr>
     </tbody>
   </table>
 </section>
@@ -130,12 +128,12 @@ state ODS-N Done</div>
 <section class="sec">
   <div class="sl">Linear — Comandos del script</div>
   <div class="st">create · next · checklist · handoff · state · cleanup</div>
-  <div class="cb2">node scripts/sprint_notif_refresh.mjs create
+  <div class="cb2">node scripts/sprint_fuerza_mayor_notif.mjs create
 node scripts/sprint-next.mjs
-node scripts/sprint_notif_refresh.mjs checklist ODS-N 1
-node scripts/sprint_notif_refresh.mjs handoff ODS-M 1
-node scripts/sprint_notif_refresh.mjs state ODS-N Done
-node scripts/sprint_notif_refresh.mjs cleanup</div>
+node scripts/sprint_fuerza_mayor_notif.mjs checklist ODS-N 1
+node scripts/sprint_fuerza_mayor_notif.mjs handoff ODS-M 1
+node scripts/sprint_fuerza_mayor_notif.mjs state ODS-N Done
+node scripts/sprint_fuerza_mayor_notif.mjs cleanup</div>
 </section>
 
 <section class="sec">
@@ -144,8 +142,8 @@ node scripts/sprint_notif_refresh.mjs cleanup</div>
   <table class="tbl">
     <thead><tr><th>Issue</th><th>Rol</th><th>Comandos Testing</th><th>Done</th></tr></thead>
     <tbody>
-      <tr><td>BE</td><td>role:backend</td><td>mvn compile; .http GET recientes</td><td>gestor ve últimas aprobadas/rechazadas de sus proyectos</td></tr>
-      <tr><td>FE</td><td>role:frontend</td><td>npm run build; smoke 2 browsers</td><td>Aprobar → banner en Dashboard sin F5; cola/listas se actualizan solas</td></tr>
+      <tr><td>BE</td><td>role:backend</td><td>fuerza-mayor + GET recientes</td><td>ítem cancelado/fuerza mayor en items</td></tr>
+      <tr><td>FE</td><td>role:frontend</td><td>npm run build</td><td>banner menciona fuerza mayor + motivo</td></tr>
     </tbody>
   </table>
 </section>
@@ -153,26 +151,21 @@ node scripts/sprint_notif_refresh.mjs cleanup</div>
 <section class="sec">
   <div class="sl">Linear — Descripciones issue (verbatim para create)</div>
   <div class="st">Checklists - [ ] copiar al .mjs</div>
-  <div class="box">
-    <strong>Problema hoy:</strong> el banner verde solo monta en ProjectResultsPage. Si el gestor está en Dashboard no lo ve. Listas no hacen poll (solo chat).
-  </div>
   <div class="cb2"><span class="dc">## BE</span>
-<span class="da">- [ ] GET /api/projects/planificacion/solicitudes/recientes?actorUserId=&amp;actorRole=gestor → resoluciones recientes (aprobada/rechazada) de proyectos del dueño</span>
-<span class="da">- [ ] Incluir proyectoId, nombre, estadoDestino, estadoSolicitud, notaResolucion, resueltoEn</span>
-<span class="da">- [ ] .http 2xx con asserts</span>
-<span class="da">- [ ] Testing GATE_HTTP</span>
+<span class="da">- [ ] Tras fuerzaMayor OK: insertar resolución (destino cancelado, aprobada, nota «Fuerza mayor: …») para el dueño</span>
+<span class="da">- [ ] Aparece en GET solicitudes/recientes del gestor</span>
+<span class="da">- [ ] .http + Testing GATE_HTTP</span>
 <span class="da">- [ ] Handoff FE ítem 1</span>
 
 <span class="dc">## FE</span>
 <span class="da">- [ ] ⏸ Gate: NO iniciar hasta BE handoff ítem 1 [x]</span>
-<span class="da">- [ ] Widget global GestorTransicionNotif (App.jsx): poll recientes; banner verde aprobado/activo (y rojo rechazo) dismissible localStorage — visible en Dashboard y cualquier ruta</span>
-<span class="da">- [ ] useSilentPoll / intervals: useProjects, useEvaluationQueue, usePlanificacionTransicion, detalle proyecto (silent, sin spinner)</span>
-<span class="da">- [ ] npm run build; smoke: aprobar sin F5 → gestor en Dashboard ve aviso; cola admin se actualiza sola</span></div>
+<span class="da">- [ ] GestorTransicionNotif: mensaje claro si nota/motivo es fuerza mayor</span>
+<span class="da">- [ ] npm run build</span></div>
 </section>
 
 <section class="sec">
   <div class="sl">Fase 6 — Entregable de cierre</div>
-  <div class="st">resumen_sprint_notif_refresh.html · Epic Completed</div>
+  <div class="st">resumen_sprint_fuerza_mayor_notif.html · Epic Completed</div>
 </section>
 
 <section class="sec">
@@ -181,7 +174,7 @@ node scripts/sprint_notif_refresh.mjs cleanup</div>
   <table class="tbl">
     <thead><tr><th>Problema</th><th>Solución propuesta</th></tr></thead>
     <tbody>
-      <tr><td>Gestor no ve aprobación fuera del detalle; hay que refrescar a mano</td><td class="ok">Bandeja BE + banner App-level + poll silencioso en listas</td></tr>
+      <tr><td>Fuerza mayor no genera aviso al gestor</td><td class="ok">Registrar resolución + banner global existente</td></tr>
     </tbody>
   </table>
 </section>
@@ -194,19 +187,19 @@ node scripts/sprint_notif_refresh.mjs cleanup</div>
     <div class="pla">→</div>
     <div class="pln"><div class="plname">JOOQ</div><div class="plnote">N/A</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">BE</div><div class="plnote">solicitudes/recientes</div></div>
+    <div class="pln"><div class="plname">BE</div><div class="plnote">fuerzaMayor + insert</div></div>
     <div class="pla">→</div>
     <div class="pln"><div class="plname">.http</div><div class="plnote">GATE_HTTP</div></div>
     <div class="pla">→</div>
-    <div class="pln"><div class="plname">FE</div><div class="plnote">banner + polls</div></div>
+    <div class="pln"><div class="plname">FE</div><div class="plnote">banner texto</div></div>
   </div>
 </section>
 
 <section class="sec">
   <div class="sl">Linear</div>
   <div class="st">Issues planificados</div>
-  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">BE · role:backend</div><div class="issue-title">GET bandeja resoluciones del gestor</div></div></div>
-  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">FE · role:frontend</div><div class="issue-title">Banner global + poll silencioso listas</div></div></div>
+  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">BE · role:backend</div><div class="issue-title">Registrar resolución al fuerzaMayor</div></div></div>
+  <div class="issue"><div class="badge">Backlog</div><div><div class="issue-id">FE · role:frontend</div><div class="issue-title">Texto banner fuerza mayor</div></div></div>
 </section>
 
 <section class="sec">
@@ -214,14 +207,14 @@ node scripts/sprint_notif_refresh.mjs cleanup</div>
   <div class="st">Estado PENDIENTE / APROBADO</div>
   <table class="tbl">
     <tbody>
-      <tr><td>Estado</td><td>PENDIENTE</td></tr>
-      <tr><td>Validación</td><td><code>node scripts/validate-plan-html.mjs plans/plan_sprint_notif_refresh.html</code></td></tr>
+      <tr><td>Estado</td><td>APROBADO</td></tr>
+      <tr><td>Validación</td><td><code>node scripts/validate-plan-html.mjs plans/plan_sprint_fuerza_mayor_notif.html</code></td></tr>
       <tr><td>Para aprobar</td><td>✅ APROBADO en chat → create</td></tr>
     </tbody>
   </table>
 </section>
 
 <hr class="sep">
-<footer><div class="utn">UTN · ODS Platform</div><div>plan_sprint_notif_refresh.html</div></footer>
+<footer><div class="utn">UTN · ODS Platform</div><div>plan_sprint_fuerza_mayor_notif.html</div></footer>
 </body>
 </html>

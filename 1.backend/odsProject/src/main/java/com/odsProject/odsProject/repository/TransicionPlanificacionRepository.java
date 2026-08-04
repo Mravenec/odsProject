@@ -136,4 +136,31 @@ public class TransicionPlanificacionRepository implements ITransicionPlanificaci
                 .where(PROYECTO_TRANSICION_SOLICITUD.ID.eq(id))
                 .fetchOneInto(ProyectoTransicionSolicitud.class);
     }
+
+    @Override
+    public ProyectoTransicionSolicitud insertResuelta(
+            Integer proyectoId,
+            Integer solicitadoPor,
+            Integer resueltoPor,
+            String estadoDestino,
+            String motivo,
+            String notaResolucion) {
+        ProyectoTransicionSolicitudEstadoDestino dest = ProyectoTransicionSolicitudEstadoDestino
+                .lookupLiteral(estadoDestino.toLowerCase());
+        if (dest == null)
+            throw new IllegalArgumentException("estadoDestino inválido: " + estadoDestino);
+        LocalDateTime now = LocalDateTime.now();
+        return dsl.insertInto(PROYECTO_TRANSICION_SOLICITUD)
+                .set(PROYECTO_TRANSICION_SOLICITUD.PROYECTO_ID, proyectoId)
+                .set(PROYECTO_TRANSICION_SOLICITUD.SOLICITADO_POR, solicitadoPor)
+                .set(PROYECTO_TRANSICION_SOLICITUD.ESTADO_DESTINO, dest)
+                .set(PROYECTO_TRANSICION_SOLICITUD.MOTIVO, motivo)
+                .set(PROYECTO_TRANSICION_SOLICITUD.ESTADO_SOLICITUD,
+                        ProyectoTransicionSolicitudEstadoSolicitud.aprobada)
+                .set(PROYECTO_TRANSICION_SOLICITUD.RESUELTO_POR, resueltoPor)
+                .set(PROYECTO_TRANSICION_SOLICITUD.RESUELTO_EN, now)
+                .set(PROYECTO_TRANSICION_SOLICITUD.NOTA_RESOLUCION, notaResolucion)
+                .returning()
+                .fetchOneInto(ProyectoTransicionSolicitud.class);
+    }
 }

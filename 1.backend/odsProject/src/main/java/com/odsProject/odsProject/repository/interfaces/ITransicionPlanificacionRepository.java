@@ -30,4 +30,16 @@ public interface ITransicionPlanificacionRepository {
             String estadoSolicitud,
             Integer resueltoPor,
             String notaResolucion);
+
+    /**
+     * Inserta resolución ya cerrada (p. ej. fuerza mayor activo→cancelado)
+     * para que el gestor la vea en solicitudes/recientes.
+     */
+    ProyectoTransicionSolicitud insertResuelta(
+            Integer proyectoId,
+            Integer solicitadoPor,
+            Integer resueltoPor,
+            String estadoDestino,
+            String motivo,
+            String notaResolucion);
 }

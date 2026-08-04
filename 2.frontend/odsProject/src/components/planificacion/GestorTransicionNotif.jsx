@@ -70,12 +70,19 @@ export default function GestorTransicionNotif() {
       {items.map((it) => {
         const aprobada = String(it.estadoSolicitud).toLowerCase() === 'aprobada';
         const activo = String(it.estadoDestino).toLowerCase() === 'activo';
+        const cancelado = String(it.estadoDestino).toLowerCase() === 'cancelado';
         const green = aprobada && activo;
+        const nombre = it.nombreProyecto || '#' + it.proyectoId;
+        const nota = String(it.notaResolucion || '');
+        const motivo = String(it.motivo || '');
+        const esFuerzaMayor = /fuerza\s*mayor/i.test(nota) || /fuerza\s*mayor/i.test(motivo);
         const msg = green
-          ? `Su proyecto «${it.nombreProyecto || '#' + it.proyectoId}» ha sido aprobado y se encuentra activo.`
-          : aprobada
-            ? `Su proyecto «${it.nombreProyecto || '#' + it.proyectoId}» fue pasado a cancelado.`
-            : `Solicitud rechazada para «${it.nombreProyecto || '#' + it.proyectoId}».${it.notaResolucion ? ' Nota: ' + it.notaResolucion : ''} Puede editar y volver a solicitar.`;
+          ? `Su proyecto «${nombre}» ha sido aprobado y se encuentra activo.`
+          : aprobada && cancelado && esFuerzaMayor
+            ? `Su proyecto «${nombre}» fue cancelado por fuerza mayor.${nota ? ' ' + nota : ''}`
+            : aprobada && cancelado
+              ? `Su proyecto «${nombre}» fue pasado a cancelado.`
+              : `Solicitud rechazada para «${nombre}».${nota ? ' Nota: ' + nota : ''} Puede editar y volver a solicitar.`;
 
         return (
           <div

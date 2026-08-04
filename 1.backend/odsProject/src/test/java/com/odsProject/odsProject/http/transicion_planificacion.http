@@ -97,12 +97,45 @@ Content-Type: application/json
 #   "nombreProyecto": "Intento bloqueado"
 # }
 
-### Fuerza mayor activo→cancelado (proyecto en activo)
-# POST {{baseUrl}}/api/projects/1/planificacion/fuerza-mayor
-# Content-Type: application/json
-#
-# {
-#   "actorUserId": {{evaluadorUserId}},
-#   "actorRole": "evaluador",
-#   "motivo": "Cancelación por fuerza mayor documentada"
-# }
+### Fuerza mayor activo→cancelado — deja resolución en bandeja del gestor
+# @name fuerzaMayor
+# Usar @proyectoActivoId = id de un proyecto en estado activo
+@proyectoActivoId = 1
+POST {{baseUrl}}/api/projects/{{proyectoActivoId}}/planificacion/fuerza-mayor
+Content-Type: application/json
+
+{
+  "actorUserId": {{evaluadorUserId}},
+  "actorRole": "evaluador",
+  "motivo": "Cancelación por fuerza mayor documentada"
+}
+
+> {%
+  client.test("fuerza mayor OK", function() {
+    client.assert(response.status === 200, "status 200");
+    client.assert(response.body.success === true, "success");
+    client.assert(response.body.solicitud != null, "solicitud");
+    client.assert(String(response.body.solicitud.estadoDestino).toLowerCase() === "cancelado", "destino cancelado");
+    client.assert(String(response.body.solicitud.estadoSolicitud).toLowerCase() === "aprobada", "aprobada");
+    client.assert(String(response.body.solicitud.notaResolucion || "").toLowerCase().includes("fuerza mayor"), "nota FM");
+  });
+%}
+
+### Tras fuerza mayor — recientes del gestor incluye el ítem
+# @name solicitudesRecientesTrasFm
+GET {{baseUrl}}/api/projects/planificacion/solicitudes/recientes?actorUserId={{gestorUserId}}&actorRole=gestor
+
+> {%
+  client.test("recientes incluye fuerza mayor", function() {
+    client.assert(response.status === 200, "status 200");
+    const items = response.body.items || [];
+    const pid = Number(client.global.get("proyectoActivoId") || 1);
+    const hit = items.some(it =>
+      Number(it.proyectoId) === pid
+      && String(it.estadoDestino).toLowerCase() === "cancelado"
+      && String(it.estadoSolicitud).toLowerCase() === "aprobada"
+      && String(it.notaResolucion || "").toLowerCase().includes("fuerza mayor")
+    );
+    client.assert(hit, "ítem FM en recientes");
+  });
+%}
