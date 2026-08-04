@@ -20,6 +20,8 @@ def run_db_setup():
         subprocess.run(f'docker cp "{local_db_dir}/." {container_name}:/tmp/sql/', shell=True, check=True)
 
         # 2. Ejecutar el script maestro dentro del contenedor
+        #    00_run_all.sql = solo schema/catálogos (sin 21. ods_mocks.sql).
+        #    Datos demo: python 0.database/load_mocks.py
         print("⚙️ Ejecutando script maestro en MariaDB (Docker)...")
         # Usamos sh -c para que la redirección '<' sea interpretada por el shell del CONTENEDOR
         # Usamos -w /tmp/sql para que las rutas relativas en SOURCE funcionen

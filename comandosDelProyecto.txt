@@ -4,10 +4,11 @@ python 0.database/drop_db.py
 
 
 
-# 2. Instalar y Cargar Mocks ya que de momento no se esta usando en produccion aun
+# 2. Instalar schema (sin mocks) y luego cargar mocks de desarrollo
 
-python 0.database/setup_db.py; python 0.database/load_mocks.py
+python 0.database/setup_db.py
 
+python 0.database/load_mocks.py
 
 
 #3. Backend para instalar el JOOQ, Creacion de POJOS para Repositorio, Servicio, Controlador y pruebas en .http

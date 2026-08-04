@@ -59,10 +59,10 @@ SOURCE propuesta_actual/19. ods16_database.sql;
 SOURCE propuesta_actual/20. ods17_database.sql;
 
 -- ─────────────────────────────────────────────────────────────────
--- PASO 4: Datos de prueba / mocks
---         ÚLTIMO — requiere que todas las BDs existan
+-- PASO 4: Datos de prueba / mocks — NO aquí
+--         Usar: python 0.database/load_mocks.py
+--         (carga 22. indicador_parametros_master_seeds.sql + 21. ods_mocks.sql)
 -- ─────────────────────────────────────────────────────────────────
-SOURCE propuesta_actual/21. ods_mocks.sql;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
