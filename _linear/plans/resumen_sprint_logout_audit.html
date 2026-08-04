@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3d2e">
-<title>Resumen — Bitácora admin JWT · ODS UTN</title>
+<title>Resumen — LOGOUT fiable en bitácora · ODS UTN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
   :root{--green900:#0f3d2e;--green700:#1b5e42;--cream50:#f7f4ec;--cream100:#efe9dc;--ink600:#4a5852;--surf:#fff}
@@ -13,45 +13,59 @@
   .hero{margin:24px 48px 0;padding:36px 40px;border-radius:16px;background:linear-gradient(135deg,var(--green900),var(--green700));color:#fff}
   .ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:12px}
   h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800}
+  h1 em{font-style:normal;color:#cfe6da}
   .sub{margin-top:12px;font-size:14px;color:rgba(255,255,255,.88)}
   .sec{padding:36px 48px 0}
   .sl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink600);margin-bottom:8px}
   .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--green900);margin-bottom:16px}
-  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace;background:var(--surf);border-radius:10px;overflow:hidden;border:1px solid var(--cream100)}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-family:'IBM Plex Mono',monospace;background:var(--surf);border:1px solid var(--cream100);border-radius:10px;overflow:hidden}
   .tbl th{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding:10px 12px;text-align:left;background:var(--green700)}
   .tbl td{padding:10px 12px;border-bottom:1px solid var(--cream100)}
-  .ok{color:var(--green700);font-weight:600}
+  ul{margin:0 0 12px 18px;font-size:14px}
   code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--cream100);padding:1px 6px;border-radius:5px}
   footer{margin-top:40px;border-top:1px solid var(--cream100);padding:24px 48px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink600)}
 </style>
 </head>
 <body>
 <header class="hero">
-  <div class="ey">ODS UTN · Sprint bitacora_auth · Resumen · Epic Completed</div>
-  <h1>Bitácora solo admin JWT</h1>
-  <p class="sub">Sin token → 401. Gestor → 403. Admin → 200. Cerrada la fuga de audit-recent / failed-attempts / login-history / active-users.</p>
+  <div class="ey">ODS UTN · Sprint logout_audit · Resumen Fase 6 · Epic Completed</div>
+  <h1>LOGOUT<br><em>siempre en bitácora</em></h1>
+  <p class="sub">Cerrar sesión registra LOGOUT desde el JWT, sin depender de <code>sp_logout</code> ni duplicar eventos.</p>
 </header>
+
 <section class="sec">
-  <div class="sl">Entregado</div>
-  <div class="st">ODS-502</div>
+  <div class="sl">Resultado</div>
+  <div class="st">Qué quedó hecho</div>
+  <ul>
+    <li><strong>ODS-503</strong> — <code>LoginService.logout</code>: parse JWT → <code>revocarSesion</code> → <code>registerLoginAudit(LOGOUT)</code> siempre; ya no llama a <code>executeSpLogout</code>.</li>
+    <li>FE <code>authService.logout</code> envía <code>Authorization: Bearer</code> explícito.</li>
+    <li>Smoke: login → logout → un solo <code>LOGOUT</code> nuevo en <code>audit-recent</code> (detalle «Sesión cerrada»).</li>
+  </ul>
+</section>
+
+<section class="sec">
+  <div class="sl">Issues</div>
+  <div class="st">Cierre Linear</div>
   <table class="tbl">
-    <thead><tr><th>Issue</th><th>Qué</th><th>Estado</th></tr></thead>
+    <thead><tr><th>Id</th><th>Título</th><th>Estado</th></tr></thead>
     <tbody>
-      <tr><td>ODS-502</td><td><code>denyUnlessAdmin</code> + <code>isAdmin</code> en LoginController</td><td class="ok">Done</td></tr>
+      <tr><td>ODS-503</td><td>BE · Logout: auditar LOGOUT desde JWT</td><td>Done</td></tr>
     </tbody>
   </table>
 </section>
+
 <section class="sec">
-  <div class="sl">Probar</div>
-  <div class="st">Local</div>
-  <table class="tbl">
-    <tbody>
-      <tr><td>1</td><td>Sin Authorization: GET audit-recent → 401</td></tr>
-      <tr><td>2</td><td>Token gestor → 403</td></tr>
-      <tr><td>3</td><td>admin@ods.local → Bitácora UI carga OK</td></tr>
-    </tbody>
-  </table>
+  <div class="sl">Cómo verificar</div>
+  <div class="st">En local</div>
+  <ul>
+    <li>Login admin → Cerrar sesión → Bitácora (Actualizar) → fila <code>LOGOUT</code> del usuario.</li>
+    <li>O <code>bitacora_audit.http</code>: login → logout → login → <code>GET /api/login/admin/audit-recent</code>.</li>
+  </ul>
 </section>
-<footer>Fase 6 · dejar legible</footer>
+
+<footer>
+  Sprint <code>logout_audit</code> · Artefactos legibles (Fase 0 solo al próximo trabajo) ·
+  <code>plan_sprint_logout_audit.html</code> · <code>sprint_logout_audit.mjs</code>
+</footer>
 </body>
 </html>

@@ -97,9 +97,13 @@ export const authService = {
   // Logout real
   async logout() {
     try {
-      await api.post('/login/auth/logout');
+      const token = localStorage.getItem('token');
+      await api.post('/login/auth/logout', null, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       return { success: true };
     } catch (error) {
+      console.error('[AuthService] logout:', error);
       return { success: true };
     }
   },

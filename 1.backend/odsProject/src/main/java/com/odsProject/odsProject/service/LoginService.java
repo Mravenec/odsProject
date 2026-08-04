@@ -181,11 +181,31 @@ public class LoginService implements ILoginService {
             }
             String actualToken = token.startsWith("Bearer ") ? token.substring(7).trim() : token.trim();
 
-            // Ejecutar stored procedure de logout (token sin prefijo Bearer)
-            loginRepository.executeSpLogout(actualToken);
+            Integer userId = null;
+            String email = null;
+            try {
+                Claims claims = Jwts.parser().verifyWith(getSigningKey()).build()
+                        .parseSignedClaims(actualToken).getPayload();
+                userId = Integer.parseInt(claims.getSubject());
+                Optional<Usuarios> u = loginRepository.findUsuarioById(userId);
+                if (u.isPresent()) {
+                    email = u.get().getEmail();
+                }
+            } catch (Exception e) {
+                log.warn("Logout: JWT inválido: {}", e.getMessage());
+                return false;
+            }
 
-            // Revocar sesión
-            loginRepository.revocarSesion(actualToken);
+            // Revocar sesión en BD (sin sp_logout: ese SP también inserta LOGOUT y duplicaría)
+            try {
+                loginRepository.revocarSesion(actualToken);
+            } catch (Exception e) {
+                log.warn("revocarSesion: {}", e.getMessage());
+            }
+
+            // Bitácora: siempre LOGOUT desde JWT
+            registerLoginAudit(userId, email, AuditoriaLoginEvento.LOGOUT, "127.0.0.1", null,
+                    "Sesión cerrada");
 
             return true;
 

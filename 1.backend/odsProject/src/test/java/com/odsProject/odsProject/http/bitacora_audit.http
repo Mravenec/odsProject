@@ -1,4 +1,4 @@
-### GATE_HTTP — Bitácora solo admin JWT (bitacora_auth)
+### GATE_HTTP — Bitácora admin + LOGOUT fiable (logout_audit)
 @baseUrl = http://localhost:8080
 
 ### @name loginAdmin
@@ -16,6 +16,30 @@ Content-Type: application/json
     client.assert(response.status === 200, "200");
     client.assert(!!response.body.token, "token");
   });
+%}
+
+### @name logoutAdmin
+POST {{baseUrl}}/api/login/auth/logout
+Authorization: Bearer {{tokenAdmin}}
+
+> {%
+  client.test("logout admin", function() {
+    client.assert(response.status === 200, "200");
+    client.assert(response.body === true || response.body === "true", "true");
+  });
+%}
+
+### @name loginAdminAfterLogout
+POST {{baseUrl}}/api/login/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ods.local",
+  "password": "Admin1234!"
+}
+
+> {%
+  client.global.set("tokenAdmin", response.body.token);
 %}
 
 ### @name loginGestor
