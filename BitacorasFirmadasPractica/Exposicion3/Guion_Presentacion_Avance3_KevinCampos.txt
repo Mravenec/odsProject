@@ -1,0 +1,368 @@
+============================================================
+SLIDE 1  ·  PORTADA
+Sistema ODS Agenda 2030 — Avance III
+~15 segundos
+============================================================
+
+Buenas tardes. Soy Kevin Campos González.
+
+Hoy traigo el tercer avance de mi práctica: Sistema
+ODS Agenda 2030, semanas nueve a doce, con corte al siete
+de agosto del dos mil veintiséis.
+
+
+
+============================================================
+SLIDE 2  ·  DIAPOSITIVA 2 — PRESENTACIÓN GENERAL
+La institución y el área de práctica
+~12 segundos
+============================================================
+
+El contexto institucional ya se vio en los avances
+anteriores: sigo en Planificación, Unidad de Gestión de
+Proyectos, con el Magíster Joaquín Artavia.
+
+
+
+============================================================
+SLIDE 3  ·  DIAPOSITIVA 3 — CONTEXTO TÉCNICO
+El proyecto: Sistema ODS Agenda 2030 — estado en Avance III
+~25 segundos
+============================================================
+
+Recordemos el sistema, el cual es el seguimiento de proyectos UTN
+alineados a los diecisiete ODS. En el Avance I construimos
+las diecinueve bases de datos, en el Avance II la capa de
+aplicación con jOOQ, Spring Boot y los controladores REST.
+
+Lo de este avance es el frontend: React dieciocho con Vite
+cinco, conectado al backend con datos reales. En eso me voy
+a enfocarme.
+
+
+
+============================================================
+SLIDE 4  ·  DIAPOSITIVA 4A — TAREAS REALIZADAS
+Semana 9: Proyecto React, LoginPage e identidad visual
+~70 segundos
+============================================================
+
+Entrando ya al detalle de las tareas realizadas, en la
+novena semana mi trabajo se centró en arrancar el frontend
+y dejar lista la primera pantalla funcional.
+
+Tenía tres actividades planeadas y las tres las cumplí al
+100%. Primero creé el proyecto de React con Vite y organicé
+la estructura de carpetas para páginas, servicios y
+componentes, eliminando los datos mock que venían por
+defecto para trabajar con datos reales del backend. Segundo,
+desarrollé LoginPage conectado al endpoint POST
+barra api barra auth barra login del backend; el login
+funciona y guarda el token en localStorage, con authService
+punto js y el hook useAuth. Y tercero, apliqué la identidad
+visual UTN: la paleta azul cero uno dos uno seis nueve,
+celeste nueve ocho B A D F y gris C ocho C nueve C siete,
+usando variables CSS y las tipografías Century Gothic y
+Helvetica Neue.
+
+Algo importante que no estaba planeado fue que tomé la
+propuesta de diseño de mi supervisor como base para la
+estructura del dashboard. Eso implicó revisar la maqueta que
+él había compartido y adaptarla al proyecto actual, lo que
+llevó más tiempo del esperado, pero resultó en una interfaz
+más alineada con la institución.
+
+(Durante la novena semana me enfoqué en iniciar el frontend y dejar lista la primera pantalla funcional. Completé las tres actividades planificadas: creé el proyecto React con Vite y organicé su estructura, eliminando los datos mock para trabajar con el backend real; desarrollé el LoginPage conectado al endpoint de autenticación, almacenando el token en localStorage mediante authService.js y useAuth; y apliqué la identidad visual de la UTN con su paleta de colores, variables CSS y tipografías institucionales. Además, tomé como base la propuesta de diseño de mi supervisor para estructurar el dashboard, adaptándola al proyecto actual, lo que requirió más tiempo del previsto, pero permitió obtener una interfaz más alineada con la institución.)
+
+
+
+============================================================
+SLIDE 5  ·  DIAPOSITIVA 4B — TAREAS REALIZADAS
+Semana 10: Dashboard, servicios Axios y hooks
+~80 segundos
+============================================================
+
+Para la décima semana ya empecé a producir entregables
+concretos a escala. Fueron tres entregables principales.
+
+El primero fue DashboardPage con tarjetas para el total de
+proyectos, indicadores y logros. Encontré que las métricas
+aparecían en cero porque el backend devuelve los campos en
+snake underscore case y el frontend los esperaba en
+camelCase; corregí el mapeo en el servicio.
+
+El segundo entregable fueron los diecisiete servicios Axios,
+de objetivo01Service a objetivo17Service, cada uno con los
+métodos getIndicators, saveIndicator, getMetasProyecto,
+saveMetaProyecto y getMedicionesHistoricas. También creé
+api punto js como instancia base de Axios con interceptores
+para el token JWT.
+
+Y el tercero fueron los diecisiete hooks, de useObjetivo01 a
+useObjetivo17, más useProjects. Cada hook maneja los estados
+de loading, error y datos, y expone los métodos necesarios
+para que las páginas los consuman directamente.
+
+Como hallazgo no planeado de esta semana, al probar el
+dashboard con datos reales encontré que también fallaba la
+integración con sedes. Tuve que agregar el endpoint de
+sedes al backend con GeoController y el servicio
+geoService punto js en el frontend para que el formulario
+de creación de proyectos funcionara más adelante.
+
+(Durante la décima semana empecé a generar entregables concretos a mayor escala. Desarrollé el DashboardPage con tarjetas para mostrar proyectos, indicadores y logros, y corregí un problema de mapeo entre los campos del backend en snake_case y los esperados por el frontend en camelCase. También implementé los 17 servicios Axios, de objetivo01Service a objetivo17Service, junto con la instancia base api.js y sus interceptores para manejar el token JWT. Además, desarrollé los 17 hooks correspondientes, de useObjetivo01 a useObjetivo17, junto con useProjects, encargados de manejar estados, errores y datos. Finalmente, durante las pruebas con datos reales detecté un problema adicional con la integración de sedes, por lo que agregué el endpoint correspondiente en el backend y geoService.js en el frontend.)
+
+
+
+============================================================
+SLIDE 6  ·  DIAPOSITIVA 4C — TAREAS REALIZADAS
+Semana 11: Creación de proyectos e indicadores
+~75 segundos
+============================================================
+
+En la semana once logré avanzar en la pantalla más compleja
+del sistema: la creación de proyectos con sus ODS e
+indicadores.
+
+Completé ProjectCreationPage al 100%, con el selector de
+ODS en cuadrícula, carga dinámica de indicadores del
+catálogo por ODS, y configuración de meta y fórmula por
+indicador, siguiendo la identidad UTN.
+
+También creé IndicatorConfigModal, al setenta por ciento,
+con un textarea para escribir la fórmula y botones de
+operadores: suma, resta, multiplicación, división y
+paréntesis. Ahí encontré un bug: al presionar un operador,
+el texto se insertaba siempre al final en vez de donde
+estaba el cursor. Intenté corregirlo con setTimeout, pero no
+funcionó del todo, así que quedó pendiente para la siguiente
+semana.
+
+Y como hallazgo no planeado, descubrí que el proyecto se
+guardaba en la base de datos, pero sin los ODS vinculados
+correctamente: el backend creaba el registro en la tabla
+proyectos, pero no en proyecto_ods ni en
+proyecto_indicadores. Se descubrió que el backend
+necesitaba un nuevo endpoint POST barra api barra projects
+barra full, que recibiera en una sola llamada los datos del
+proyecto, los ODS seleccionados y los indicadores con sus
+fórmulas, en vez de las múltiples llamadas por separado que
+hacía el frontend antes.
+
+
+(Durante la semana once avancé en la pantalla más compleja del sistema: la creación de proyectos con sus ODS e indicadores. Completé ProjectCreationPage al 100%, incluyendo el selector de ODS, la carga dinámica de indicadores y la configuración de metas y fórmulas, además de desarrollar IndicatorConfigModal al 70%, donde detecté un problema con la posición de los operadores dentro del campo de fórmula que quedó pendiente. Como hallazgo no planificado, descubrí que los proyectos se guardaban en la base de datos, pero no se vinculaban correctamente con los ODS e indicadores, por lo que fue necesario incorporar un nuevo endpoint POST /api/projects/full que recibiera toda la información del proyecto en una sola llamada.)
+
+============================================================
+SLIDE 7  ·  DIAPOSITIVA 4D — TAREAS REALIZADAS
+Semana 12: Persistencia transaccional y corrección de bugs
+~80 segundos
+============================================================
+
+Y la semana doce, que es la más reciente, la dediqué a
+cerrar la persistencia de proyectos y corregir los
+pendientes de la semana anterior.
+
+Primero agregué la tabla proyecto_ods a
+ods_master_database.sql, con llave única de proyecto_id y
+ods_id. Puse un trigger para manejar el ODS primario, pero
+al probarlo encontré el error 1442 de MariaDB: un trigger
+no puede modificar la misma tabla que lo activa. Eliminé el
+trigger y moví esa lógica al repositorio de Java.
+
+Segundo, implementé MasterProjectService punto
+createFullProject, que orquesta el guardado del proyecto en
+ods_master, la vinculación de ODS en proyecto_ods y la
+creación de indicadores con sus parámetros en los diecisiete
+servicios ODS correspondientes, todo en una sola operación
+transaccional: si algo falla, se deshace lo que ya se había
+guardado. También corregí ahí un error de clave duplicada en
+saveMetaProyecto usando INSERT ON DUPLICATE KEY UPDATE en
+los diecisiete repositorios.
+
+Tercero, corregí por fin el bug del cursor en
+IndicatorConfigModal, esta vez usando useRef de React para
+mantener la referencia al textarea y leyendo
+selectionStart y selectionEnd; ahora el operador se inserta
+en la posición exacta del cursor y se reposiciona con
+requestAnimationFrame.
+
+Y como hallazgo no planeado, descubrí que aunque el proyecto
+ya se guardaba con sus ODS, el listado de proyectos mostraba
+"Objetivo Desconocido" porque el query del repositorio no
+hacía JOIN con proyecto_ods. Creé una vista en ods_master y
+actualicé los endpoints de listado para que devolvieran los
+datos enriquecidos.
+
+El proyecto hoy guarda proyectos completos con sus ODS e
+indicadores de forma confiable. Para la próxima semana
+quedan pendientes EvaluationPage, para que el auditor pueda
+ingresar los valores de los parámetros de cada indicador, y
+corregir ProjectResultsPage, que todavía muestra datos
+incorrectos del esquema anterior.
+
+(Durante la semana doce, la más reciente, me enfoqué en cerrar la persistencia de proyectos y resolver los pendientes de la semana anterior. Agregué la tabla proyecto_ods y ajusté la lógica del ODS primario, trasladándola de un trigger a Java después de encontrar una limitación de MariaDB. También implementé MasterProjectService.createFullProject para guardar de forma transaccional el proyecto, sus ODS e indicadores, y corregí un problema de claves duplicadas en los repositorios. Además, solucioné definitivamente el bug del cursor en IndicatorConfigModal utilizando useRef y la posición real de selección del textarea. Como hallazgo adicional, detecté que el listado mostraba "Objetivo Desconocido" porque faltaba el JOIN con proyecto_ods, por lo que creé una vista y actualicé los endpoints. Actualmente, los proyectos se guardan correctamente con sus ODS e indicadores, quedando pendientes EvaluationPage y la corrección de ProjectResultsPage.
+)
+
+
+
+============================================================
+SLIDE 8  ·  DIAPOSITIVA 4E — VISIÓN GLOBAL DEL AVANCE
+Mapa de lo construido hasta hoy
+~70 segundos
+============================================================
+
+Esta diapositiva me sirve para darles una visión global
+de hasta dónde he llegado y qué viene después.
+
+En la parte superior pueden ver el recorrido de las cuatro
+semanas, desde el proyecto de React y el login hasta tener
+la creación de proyectos guardando de forma transaccional
+con sus ODS e indicadores.
+
+En la columna verde —lo que ya construí para este tercer
+avance— están el proyecto React más Vite con la identidad
+UTN, LoginPage conectado al backend con JWT, DashboardPage
+con métricas reales, los diecisiete servicios Axios más los
+diecisiete hooks y useProjects, ProjectCreationPage con
+IndicatorConfigModal, y createFullProject guardando de
+forma transaccional el proyecto, sus ODS y sus indicadores.
+
+Y en la columna azul están las actividades que vienen para
+el Avance IV. Lo primero será EvaluationPage, para que el
+auditor pueda ingresar los valores de los parámetros de cada
+indicador. Luego sigue corregir ProjectResultsPage, el motor
+de evaluación de fórmulas con exp4j, la seguridad JWT en el
+flujo real de roles, y finalmente dashboards e indicadores
+más avanzados.
+
+(Esta diapositiva me sirve para darles una visión global de hasta dónde he llegado y qué viene después. En la parte superior pueden ver el recorrido de estas cuatro semanas, desde la creación del proyecto React y el login hasta tener la creación de proyectos funcionando con persistencia transaccional de sus ODS e indicadores. En la columna verde, que corresponde a lo construido para este tercer avance, están el proyecto React con Vite e identidad UTN, LoginPage conectado al backend mediante JWT, DashboardPage con métricas reales, los 17 servicios Axios y sus respectivos hooks, ProjectCreationPage con IndicatorConfigModal, y createFullProject para guardar de forma transaccional el proyecto, sus ODS e indicadores. En la columna azul están las actividades previstas para el Avance IV: primero EvaluationPage, para que el auditor pueda ingresar los valores de los parámetros de cada indicador; luego corregir ProjectResultsPage, implementar el motor de evaluación de fórmulas con exp4j, completar la seguridad JWT con el flujo real de roles y, finalmente, desarrollar dashboards e indicadores más avanzados.
+)
+
+============================================================
+SLIDE 9  ·  DIAPOSITIVA 5 — CUMPLIMIENTO DEL PLAN
+Cronograma propuesto vs. ejecutado
+~50 segundos
+============================================================
+
+En cuanto al cronograma propuesto versus el ejecutado,
+puedo reportar un cumplimiento del cien por ciento durante
+las cuatro semanas del avance —semanas nueve a doce—.
+
+Las tablas muestran tanto el horario propuesto como el
+ejecutado: de lunes a viernes, de ocho de la mañana a doce
+mediodía, en modalidad virtual, para un total de veinte
+horas semanales. Y como se puede notar, ambas tablas son
+idénticas, porque el cronograma lo ejecuté exactamente como
+lo propuse.
+
+Esto lo respaldo con las cuatro bitácoras semanales firmadas
+por mi coordinador, donde quedaron registradas
+consistentemente las veinte horas y el cumplimiento del cien
+por ciento, tanto en las actividades planeadas como en las
+que surgieron sobre la marcha: la adaptación de la maqueta
+del dashboard, la integración con sedes, el endpoint
+projects full, y el error del trigger mil cuatrocientos
+cuarenta y dos.
+
+(En cuanto al cronograma propuesto versus el ejecutado, puedo reportar un cumplimiento del 100% durante las cuatro semanas del avance, correspondientes a las semanas nueve a doce. Las tablas muestran el horario propuesto y el ejecutado: de lunes a viernes, de 8 de la mañana a 12 del mediodía, en modalidad virtual, para un total de 20 horas semanales. Ambas tablas son idénticas, ya que el cronograma se ejecutó exactamente como fue propuesto. Esto está respaldado por las cuatro bitácoras semanales firmadas por mi coordinador, donde se registraron consistentemente las 20 horas y el cumplimiento del 100%, tanto de las actividades planeadas como de los trabajos que surgieron durante el desarrollo, como la adaptación de la maqueta del dashboard, la integración con sedes, el endpoint projects/full y la corrección del error 1442 del trigger.
+)
+
+============================================================
+SLIDE 10  ·  DIAPOSITIVA 6 — REFLEXIÓN DEL PERIODO
+Comentario personal
+~80 segundos
+============================================================
+
+Como comentario personal, quisiera compartir cuatro
+aprendizajes que me dejó este tercer periodo, sobre la
+interacción de lo desarrollado en la empresa.
+
+El primero es que trabajar el frontend contra el backend
+real, sin datos mock, desde el inicio, revela discrepancias
+que uno no ve trabajando con datos de prueba: el mapeo
+snake_case contra camelCase y los endpoints de sedes
+faltantes aparecieron precisamente por probar temprano con
+datos reales.
+
+El segundo aprendizaje fue el valor de la transaccionalidad.
+Implementar createFullProject me enseñó que guardar
+entidades relacionadas —proyecto, ODS e indicadores— exige
+una operación atómica con posibilidad de deshacer, porque
+si algo falla a la mitad, la base de datos queda en un
+estado inconsistente.
+
+El tercero, la importancia de diagnosticar antes de asumir.
+El error mil cuatrocientos cuarenta y dos del trigger no se
+resolvía intentando parches; hubo que entender la causa
+raíz —que un trigger no puede modificar la misma tabla que
+lo activa— antes de mover la lógica a Java.
+
+Y el cuarto, el valor del trabajo institucional. Las
+reuniones de coordinación con mi supervisor y el seguimiento
+semanal mediante bitácora firmada me han fortalecido mucho
+en disciplina de planificación y en rendición de cuentas.
+
+(Como comentario personal, quisiera compartir cuatro aprendizajes que me dejó este tercer periodo sobre la interacción entre lo desarrollado y el entorno real del proyecto. El primero es que trabajar el frontend directamente contra el backend real, sin datos mock, permite detectar desde temprano problemas que no son evidentes con datos de prueba, como las diferencias entre snake_case y camelCase o los endpoints de sedes que faltaban. El segundo es el valor de la transaccionalidad: implementar createFullProject me permitió comprender la importancia de guardar de forma atómica entidades relacionadas como proyectos, ODS e indicadores, evitando que la base de datos quede en un estado inconsistente si algo falla. El tercero es la importancia de diagnosticar antes de asumir, ya que el error 1442 del trigger no se solucionó con parches(El error **1442 de MariaDB** ocurre cuando un trigger intenta modificar la misma tabla que activó ese trigger, algo que MariaDB no permite.), sino entendiendo primero su causa raíz y trasladando la lógica a Java. Finalmente, aprendí el valor del trabajo institucional, ya que las reuniones con mi supervisor y el seguimiento mediante bitácoras firmadas han fortalecido mi disciplina de planificación y rendición de cuentas.)
+
+============================================================
+SLIDE 11  ·  DIAPOSITIVA 7 — INCONVENIENTES SOBRE LA MARCHA
+Tres inconvenientes presentados durante la práctica
+~80 segundos
+============================================================
+
+Por último, quiero compartir tres inconvenientes que se me
+presentaron sobre la marcha de la práctica, en este tercer
+avance.
+
+El primero: el bug de cursor en IndicatorConfigModal. Al
+presionar un operador, el texto se insertaba siempre al
+final en vez de en la posición del cursor. Quedó pendiente
+en la semana once y lo resolví en la semana doce usando
+useRef y selectionStart, selectionEnd.
+
+El segundo: la vinculación incompleta de ODS e indicadores.
+El proyecto se guardaba en la base de datos, pero sin sus
+ODS ni sus indicadores vinculados correctamente. Tuve que
+crear el endpoint POST projects full para guardar todo en
+una sola operación transaccional.
+
+Y el tercero: el error de trigger en MariaDB, mil
+cuatrocientos cuarenta y dos. Un trigger no puede modificar
+la misma tabla que lo activa. Eliminé el trigger de
+proyecto_ods y moví esa lógica al repositorio de Java para
+que el guardado quedara confiable.
+
+(Por último, quiero compartir tres inconvenientes que se me presentaron durante este tercer avance de la práctica. El primero fue el bug del cursor en IndicatorConfigModal, donde los operadores se insertaban siempre al final del texto en lugar de la posición del cursor; este problema quedó pendiente en la semana once y lo resolví en la semana doce utilizando useRef, selectionStart y selectionEnd. El segundo fue la vinculación incompleta de los ODS e indicadores, ya que el proyecto se guardaba en la base de datos, pero sus relaciones no se registraban correctamente, por lo que fue necesario crear el endpoint POST /projects/full para realizar todo el proceso en una sola operación transaccional. El tercero fue el error 1442 de MariaDB, provocado porque un trigger no puede modificar la misma tabla que lo activa; por esta razón eliminé el trigger de proyecto_ods y trasladé esa lógica al repositorio de Java, logrando que el proceso de guardado fuera más confiable.
+)
+
+============================================================
+SLIDE 12  ·  CIERRE
+Gracias
+~25 segundos
+============================================================
+
+Con esto cierro la presentación del tercer avance.
+
+Quiero agradecer por su atención, y de manera especial al
+profesor Joaquín Artavia Chaves.
+
+Muchas gracias.
+
+
+
+============================================================
+MAPA RÁPIDO DE NAVEGACIÓN
+============================================================
+
+  SLIDE 1   →  Portada
+  SLIDE 2   →  Diapositiva 2  (Presentación general)
+  SLIDE 3   →  Diapositiva 3  (Contexto técnico)
+  SLIDE 4   →  Diapositiva 4A (Semana 9)
+  SLIDE 5   →  Diapositiva 4B (Semana 10)
+  SLIDE 6   →  Diapositiva 4C (Semana 11)
+  SLIDE 7   →  Diapositiva 4D (Semana 12)
+  SLIDE 8   →  Diapositiva 4E (Mapa global)
+  SLIDE 9   →  Diapositiva 5  (Cronograma)
+  SLIDE 10  →  Diapositiva 6  (Comentario personal)
+  SLIDE 11  →  Diapositiva 7  (Tres inconvenientes)
+  SLIDE 12  →  Cierre (Gracias)

@@ -1,0 +1,404 @@
+============================================================
+SLIDE 1  ·  PORTADA
+Sistema ODS Agenda 2030 — Avance I
+~40 segundos
+============================================================
+
+Muy buenas tardes a todos y todas. Mi nombre es Kevin
+Campos González, soy estudiante de Bachillerato en
+Ingeniería del Software aquí en la Universidad Técnica
+Nacional.
+
+El día de hoy les voy a presentar el primer avance de mi
+práctica profesional, que estoy realizando en la Dirección
+de Planificación de la UTN, dentro de la Unidad de Gestión
+de Proyectos, bajo la supervisión del Magíster Joaquín
+Artavia Chaves.
+
+El proyecto que estoy desarrollando se llama Sistema ODS
+Agenda 2030, y como su nombre lo indica, busca apoyar a la
+universidad en el seguimiento de proyectos institucionales
+alineados a los diecisiete Objetivos de Desarrollo
+Sostenible de Naciones Unidas. Esta presentación cubre las
+primeras cuatro semanas de la práctica, con corte al doce
+de junio del dos mil veintiséis.
+
+
+
+============================================================
+SLIDE 2  ·  DIAPOSITIVA 2 — PRESENTACIÓN GENERAL
+La institución y el área de práctica
+~55 segundos
+============================================================
+
+En esta diapositiva quiero contextualizar la institución
+y el área específica donde estoy haciendo la práctica.
+
+La Universidad Técnica Nacional es una institución pública
+de educación superior costarricense con sede central en
+Alajuela. Forma profesionales en ingenierías, ciencias
+administrativas, agropecuarias y de la salud, entre otras...
+
+Dentro de la universidad, mi práctica se ubica en la
+Dirección de Planificación, específicamente en la Unidad
+de Gestión de Proyectos. Esta unidad es la responsable
+institucional del seguimiento y evaluación de los
+proyectos estratégicos de la UTN.
+
+Su misión es brindar soporte técnico y de planificación
+a las direcciones de la universidad mediante el
+desarrollo de sistemas que faciliten el registro,
+seguimiento y evaluación de proyectos institucionales.
+Y su visión es consolidarse como una unidad de
+referencia en la planificación institucional,
+contribuyendo al cumplimiento de los compromisos que
+tiene la UTN con la Agenda 2030.
+
+
+
+============================================================
+SLIDE 3  ·  DIAPOSITIVA 3 — CONTEXTO TÉCNICO
+El proyecto: Sistema ODS Agenda 2030
+~75 segundos
+============================================================
+
+Acá ya entro al proyecto en concreto.
+
+Como dije anteriormente, el Sistema ODS Agenda 2030 es una plataforma web
+institucional que estoy diseñando para que la UTN pueda
+registrar, configurar y evaluar sus proyectos vinculados
+a los diecisiete Objetivos de Desarrollo Sostenible.
+Cada proyecto en el sistema se asocia a uno o varios
+ODS, y cuenta con indicadores configurables, fórmulas
+personalizables y metas medibles.
+
+Para que tengan una idea del tamaño, el sistema
+contempla 19 bases de datos diseñadas, los
+17 ODS de la Agenda 2030, 239 indicadores oficiales tomados directamente del
+marco de Naciones Unidas, y cuatro roles distintos de
+usuario: el administrador con acceso total, el gestor
+que crea y edita sus proyectos, el consultor con acceso
+de solo lectura, y el evaluador que revisa y cierra la
+evaluación de los proyectos.
+
+A nivel técnico, en el panel de la derecha pueden ver el
+stack completo: MariaDB 10.11 como base de
+datos, Spring Boot 3.5 con Java 21
+para el backend, jOOQ como herramienta de generación de
+código y mapeo a base de datos, Maven para la
+construcción, autenticación con JWT, y un motor de
+fórmulas llamado exp4j. El frontend lo voy a trabajar a
+futuro con React y Vite, pero no es parte de este primer
+avance.
+
+
+
+============================================================
+SLIDE 4  ·  DIAPOSITIVA 4A — TAREAS REALIZADAS
+Semana 1: Arranque y configuración del entorno
+~70 segundos
+============================================================
+
+Entrando ya al detalle de las tareas realizadas, en la
+primera semana mi trabajo se centró en el arranque y la
+configuración del entorno de desarrollo.
+
+Tenía tres actividades planeadas y las tres las cumplí al
+100%. Primero tuve la reunión de arranque con
+el profesor Joaquin, donde definimos el alcance, los objetivos
+del sistema y los roles del proyecto. Segundo, configuré
+todo el ambiente de desarrollo local: Java 21,
+Maven, MariaDB 10.11, Node js 18,
+y Git. Dejé el proyecto clonado y compilando contra el
+repositorio institucional. Y tercero, revisé la propuesta
+inicial de base de datos para entender la estructura de
+los 17 ODS.
+
+Algo importante que no estaba planeado fue que, al
+revisar la propuesta original de base de datos, detecté
+inconsistencias en los nombres de las tablas entre los
+distintos ODS. Si hubiera empezado a codificar con eso,
+habría tenido problemas mayores más adelante. Entonces
+lo que hice fue elaborar un documento de análisis
+comparativo y, con un ejemplo que habia hecho el profe Joaquin, decidi
+trabajar con una carpeta nueva llamada propuesta_actual,
+que contiene los scripts definitivos al prototipo del profe que el habia hecho en Base 44. Esa decisión,
+tomada en la primera semana, me ahorró bastante trabajo
+después.
+
+
+
+============================================================
+SLIDE 5  ·  DIAPOSITIVA 4B — TAREAS REALIZADAS
+Semana 2: Diseño de bases de datos centrales
+~80 segundos
+============================================================
+
+Para la segunda semana ya empecé a producir entregables
+concretos. Fueron tres entregables principales, los 3
+al 100 por ciento.
+
+El primero fue el script login_system.sql, que contiene
+las tablas de roles, usuarios, sedes, y el catálogo de
+ODS. En este script también inserté los diecisiete ODS
+oficiales de la Agenda 2030 como datos base.
+
+El segundo entregable fue ods_master_database.sql, que
+contiene la tabla maestra de proyectos. Esta tabla
+referencia mediante llaves foráneas a las tablas de
+usuarios y sedes del primer script, e incluye los campos
+de estado, fechas y ubicación geográfica.
+
+Y el tercero fueron las cuatro primeras bases de datos
+por ODS: ods01, ods02, ods03 y ods04. Cada una sigue el
+mismo patrón: tiene una tabla de proyecto-indicadores,
+una de parámetros, una de mediciones históricas y una de
+auditoría propia.
+
+Como hallazgo no planeado de esta semana, descubrí que
+las llaves foráneas entre bases de datos distintas no
+funcionaban con el motor de tabla que viene por defecto
+en MariaDB. La solución fue agregar la cláusula ENGINE
+igual a InnoDB en todas las tablas de las diecinueve
+bases, y con eso garanticé la integridad referencial
+entre ods_login, ods_master y las 17 bases ODS.
+
+
+
+============================================================
+SLIDE 6  ·  DIAPOSITIVA 4C — TAREAS REALIZADAS
+Semana 3: 19 bases de datos completas
+~75 segundos
+============================================================
+
+En la tercera semana logré completar la totalidad de la
+arquitectura de bases de datos.
+
+Como pueden ver en el diagrama de la izquierda, hablamos
+de 19 bases conectadas entre sí: ods_login que es
+la base central de autenticación y catálogos, ods_master
+que es la base de gestión de proyectos, y las diecisiete
+bases, una por cada Objetivo de Desarrollo Sostenible.
+
+Lo que completé durante esta semana, al 100%,
+fueron 13 scripts adicionales —del ods05 al ods17—
+siguiendo exactamente el mismo patrón que ya había
+definido. También corregí un detalle en ods16 que tenía
+un error en el nombre de la tabla de auditoría.
+Adicionalmente, ejecuté el script maestro llamado
+00_run_all.sql, que orquesta la instalación de las
+19 bases en el orden correcto y sin errores.
+Verifiqué con INFORMATION_SCHEMA que todas las llaves
+foráneas entre bases estuvieran activas.
+
+La única actividad que me quedó al 80 por ciento fue
+el inicio de la configuración del plugin jOOQ. Encontré
+varios errores con la ubicación de los paquetes y con el
+driver de MariaDB, y eso me quedó pendiente para
+resolverlo en la siguiente semana.
+
+
+
+============================================================
+SLIDE 7  ·  DIAPOSITIVA 4D — TAREAS REALIZADAS
+Semana 4: jOOQ funcionando con generación automática
+~65 segundos
+============================================================
+
+Y la cuarta semana, que es la más reciente, la dediqué
+precisamente a resolver lo que me había quedado
+pendiente: la configuración del plugin jOOQ.
+
+Lo que hice fue depurar el archivo pom.xml, donde tuve
+que arreglar tres errores distintos. El primero fue la
+versión de Java: el plugin estaba intentando usar Java
+25, cuando lo correcto para mi computador era Java 21. El
+segundo fue el nombre del paquete: estaba como
+com.projectods, y debía ser com.odsProject.odsProject.database.jooq. Y el tercero era que la ruta
+de salida del código generado estaba apuntando a un
+directorio inválido; la apunté correctamente a
+src/main/java.
+
+Como pueden ver en el panel de la derecha, el resultado
+fue que jOOQ ahora genera código automáticamente para
+cada una de las 19 bases de datos. Por cada base
+se generan 3 tipos de archivos: las clases Tables que
+representan las estructuras, los Records que son los
+registros, y los POJOs que son los objetos Java planos.
+Con esto el proyecto compila, levanta correctamente y se
+conecta a MariaDB.
+
+
+
+============================================================
+SLIDE 8  ·  DIAPOSITIVA 4E — VISIÓN GLOBAL DEL AVANCE
+Mapa de lo construido hasta hoy
+~70 segundos
+============================================================
+
+Esta diapositiva me sirve para darles una visión global
+de hasta dónde he llegado y qué viene después.
+
+En la parte superior pueden ver el recorrido de las
+cuatro semanas, desde el arranque hasta tener jOOQ
+funcionando.
+
+En la columna verde —lo que ya construí para este primer
+avance— está el diseño completo de las 19 bases
+de datos, el catálogo institucional sembrado con los
+19 ODS y los 239
+indicadores oficiales, la integridad referencial activa
+con InnoDB y llaves foráneas verificadas, el script
+maestro funcional, y la generación automática de POJOs,
+Records y Tables vía jOOQ.
+
+Y en la columna azul están las actividades que vienen
+para el Avance II. Lo primero será crear la interfaz
+base IOdsBaseRepository, que va a contener los métodos
+comunes para los diecisiete repositorios ODS, y la
+interfaz ILoginRepository para el sistema de
+autenticación. Luego sigue la capa de servicios y
+controladores REST, la implementación de seguridad con
+JWT, y finalmente el motor de evaluación de fórmulas con
+exp4j.
+
+
+
+============================================================
+SLIDE 9  ·  DIAPOSITIVA 5 — CUMPLIMIENTO DEL PLAN
+Cronograma propuesto vs. ejecutado
+~50 segundos
+============================================================
+
+En cuanto al cronograma propuesto versus el ejecutado,
+puedo reportar un cumplimiento del cien por ciento
+durante las cuatro semanas del avance.
+
+Las tablas muestran tanto el horario propuesto como el
+ejecutado: de lunes a viernes, de ocho de la mañana a
+doce mediodía, en modalidad virtual, para un total de
+veinte horas semanales. Y como pueden notar, ambas
+tablas son idénticas, porque el cronograma lo ejecuté
+exactamente como lo propuse.
+
+Esto lo respaldo con las cuatro bitácoras semanales
+firmadas por mi coordinador, donde quedaron registradas
+consistentemente las veinte horas y el cumplimiento del
+cien por ciento, tanto en las actividades planeadas como
+en las que surgieron sobre la marcha: el documento
+comparativo de la propuesta original, el cambio a motor
+InnoDB, la corrección de ods16, y la configuración
+completa de jOOQ.
+
+
+
+============================================================
+SLIDE 10  ·  DIAPOSITIVA 6 — REFLEXIÓN DEL PERIODO
+Comentario personal
+~80 segundos
+============================================================
+
+Como comentario personal, quisiera compartir cuatro
+aprendizajes que me dejó este primer periodo.
+
+El primero, y quizá el más importante, es que en un
+proyecto institucional el diseño de la base de datos es
+la decisión más cara de cambiar. Cada hora que invertí
+en revisar la propuesta antes de codificar terminó
+ahorrándome horas de retrabajo después. Esa cita del
+recuadro azul resume bastante bien la idea.
+
+El segundo aprendizaje fue el valor de hacer un
+diagnóstico técnico riguroso. Resolver la configuración
+de jOOQ no fue un solo problema; fueron tres errores
+distintos que tuve que aislar uno por uno: la versión de
+Java, el nombre del paquete y la ruta de salida.
+Atenderlos por separado fue lo que me permitió llegar a
+una solución estable.
+
+El tercero, la importancia de definir patrones
+replicables. Establecer un único patrón de tablas y
+replicarlo en las diecisiete bases ODS me permitió
+escalar el diseño manteniendo consistencia.
+
+Y el cuarto, el valor del trabajo institucional. Las
+reuniones de coordinación con mi supervisor y el
+seguimiento semanal mediante bitácora firmada me han
+fortalecido mucho en disciplina de planificación y en
+rendición de cuentas.
+
+
+
+============================================================
+SLIDE 11  ·  DIAPOSITIVA 7 — APORTE DIFERENCIAL
+Tres actividades que diferencian la práctica del puesto
+laboral
+~80 segundos
+============================================================
+
+Por último, quiero compartir tres actividades de mi
+práctica que la diferencian de un puesto laboral
+regular.
+
+La primera: el diseño desde cero de un sistema
+multi-schema. En un puesto laboral operativo lo más
+común es que uno trabaje sobre una base de datos que ya
+existe. Acá lo que hice fue diseñar desde cero la
+arquitectura completa: diecinueve bases relacionadas,
+llaves foráneas entre esquemas distintos, y la siembra
+del catálogo institucional con los doscientos treinta y
+nueve indicadores oficiales de la Agenda 2030.
+
+La segunda: la toma de decisiones técnicas sin código
+preexistente. Tuve que decidir el motor InnoDB para las
+llaves foráneas entre esquemas, el patrón uniforme de
+tablas para los diecisiete ODS, y la configuración de
+generación de POJOs, Records y Tables vía jOOQ. Cada
+decisión la tuve que fundamentar y documentar, lo cual
+va más allá del soporte habitual que se hace en un
+puesto regular.
+
+Y la tercera: la vinculación directa con la Agenda 2030
+de Naciones Unidas. Este no es un proyecto comercial
+estándar. Lo que hace es traducir un instrumento
+internacional —como son los doscientos treinta y nueve
+indicadores oficiales de los diecisiete ODS— en una
+plataforma usable por la UTN. Esa traducción de norma
+global a institución local es un ejercicio académico
+que no se da en un puesto laboral típico.
+
+
+
+============================================================
+SLIDE 12  ·  CIERRE
+Gracias
+~25 segundos
+============================================================
+
+Con esto cierro la presentación del primer avance.
+
+Quiero agradecerles a ustedes por su atención, y de
+manera especial al Magíster Joaquín Artavia Chaves por
+el acompañamiento durante estas cuatro semanas. Quedo
+atento a cualquier pregunta o comentario que tengan.
+
+Muchas gracias.
+
+
+
+============================================================
+MAPA RÁPIDO DE NAVEGACIÓN
+============================================================
+
+  SLIDE 1   →  Portada
+  SLIDE 2   →  Diapositiva 2  (Presentación general)
+  SLIDE 3   →  Diapositiva 3  (Contexto técnico)
+  SLIDE 4   →  Diapositiva 4A (Semana 1)
+  SLIDE 5   →  Diapositiva 4B (Semana 2)
+  SLIDE 6   →  Diapositiva 4C (Semana 3)
+  SLIDE 7   →  Diapositiva 4D (Semana 4)
+  SLIDE 8   →  Diapositiva 4E (Mapa global)
+  SLIDE 9   →  Diapositiva 5  (Cronograma)
+  SLIDE 10  →  Diapositiva 6  (Comentario personal)
+  SLIDE 11  →  Diapositiva 7  (Aporte diferencial)
+  SLIDE 12  →  Cierre (Gracias)

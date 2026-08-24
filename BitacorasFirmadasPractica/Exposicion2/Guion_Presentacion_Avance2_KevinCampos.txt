@@ -1,0 +1,342 @@
+============================================================
+SLIDE 1  ·  PORTADA
+Sistema ODS Agenda 2030 — Avance II
+~15 segundos
+============================================================
+
+Buenas tardes. Soy Kevin Campos González.
+
+Hoy traigo el segundo avance de mi práctica: Sistema
+ODS Agenda 2030, semanas cinco a ocho, con corte al diez
+de julio del dos mil veintiséis.
+
+
+
+============================================================
+SLIDE 2  ·  DIAPOSITIVA 2 — PRESENTACIÓN GENERAL
+La institución y el área de práctica
+~12 segundos
+============================================================
+
+El contexto institucional ya se vio en el Avance I:
+sigo en Planificación, Unidad de Gestión de Proyectos,
+con el Magíster Joaquín Artavia. 
+
+
+============================================================
+SLIDE 3  ·  DIAPOSITIVA 3 — CONTEXTO TÉCNICO
+El proyecto: Sistema ODS Agenda 2030 — estado en Avance II
+~25 segundos
+============================================================
+
+Recordemos el sistema, el cual es el seguimiento de proyectos UTN
+alineados a los diecisiete ODS, mismo stack —MariaDB,
+Spring Boot con jOOQ como ORM.
+
+En los primeros avances desarrollamos la capa de base de datos.
+
+Lo de este avance es la capa de aplicación: servicios,
+controladores REST, repositorios y pruebas. En eso me voy a enfocarme.
+
+
+
+============================================================
+SLIDE 4  ·  DIAPOSITIVA 4A — TAREAS REALIZADAS
+Semana 5: Interfaces base y primeros repositorios
+~70 segundos
+============================================================
+
+Entrando ya al detalle de las tareas realizadas, en la
+quinta semana mi trabajo se centró en las interfaces base
+y en los primeros repositorios del backend.
+
+Tenía tres actividades planeadas y las tres las cumplí al
+100%. Primero creé IOdsBaseRepository.java como interfaz
+genérica con seis parámetros de tipo —T, E, P, M, MH y A—
+que representan las entidades de lectura, escritura y
+auditoría, con los métodos base para proyectos,
+indicadores, parámetros y mediciones. Segundo, creé
+ILoginRepository, ILoginService e ILoginController, en esas capas, para
+el módulo de autenticación. Y tercero, implementé
+Objetivo01PobrezaRepository y
+Objetivo02HambreCeroRepository usando jOOQ con
+DSLContext, documentados con su respectiva descripcion.
+
+Algo importante que no estaba planeado fue que, al
+revisar la interfaz IOdsBaseRepository, detecté un error
+en el nombre del primer objetivo: le faltaba una «b» en
+«Pobreza». Si hubiera seguido sin corregirlo, habría
+tenido confusiones al escalar a los diecisiete ODS.
+Esa corrección, tomada en la quinta semana, me ahorró
+problemas de nomenclatura después.
+
+
+
+============================================================
+SLIDE 5  ·  DIAPOSITIVA 4B — TAREAS REALIZADAS
+Semana 6: 17 repositorios ODS + LoginRepository
+~80 segundos
+============================================================
+
+Para la sexta semana ya empecé a producir entregables
+concretos a escala. Fueron tres entregables principales,
+los tres al 100 por ciento.
+
+El primero fue completar los diecisiete repositorios ODS,
+de Objetivo01 a Objetivo17. Cada uno implementa
+IOdsBaseRepository con sus tipos concretos de jOOQ, y
+tiene los métodos de CRUD para proyectos, indicadores,
+parámetros y mediciones históricas.
+
+El segundo entregable fueron IOdsBaseService.java e
+IOdsBaseController.java. Estas interfaces definen el
+contrato que deben cumplir todos los servicios y
+controladores ODS, incluyendo findAllIndicadoresByProyecto
+y findIndicadoresByMeta.
+
+Y el tercero fue LoginRepository.java implementando
+ILoginRepository con jOOQ, e iniciar LoginService.java,
+que orquesta las consultas de login y las vistas de
+indicadores.
+
+Como hallazgo no planeado de esta semana, reorganicé las
+carpetas del proyecto para que la estructura quedara
+clara: database/jooq, repository/interfaces,
+service/interfaces y controller/interfaces. Eso facilitó
+navegar el código mientras crecía el volumen de clases.
+
+
+
+============================================================
+SLIDE 6  ·  DIAPOSITIVA 4C — TAREAS REALIZADAS
+Semana 7: 18 servicios y 18 controladores REST
+~75 segundos
+============================================================
+
+En la séptima semana logré completar la capa de servicios
+y de controladores REST.
+
+Lo que completé durante esta semana, al 100%,
+fueron los dieciocho servicios —LoginService más
+Objetivo01Service a Objetivo17Service— y los dieciocho
+controladores con sus endpoints REST. En LoginController
+dejé autenticación, obtención de usuarios, sedes e
+indicadores, y agregué agregué la respectiva documentacion y descripcion en todos los
+controladores  con @inheritDoc en todos los
+controladores para que la documentación de la interfaz
+se heredara automáticamente.
+
+Durante la implementación de LoginService encontré un
+error en getVistaDetalleIndicadores: el método recibía
+el parámetro proyectoId pero no lo usaba correctamente.
+Lo corregí junto con la interfaz y el controlador.
+
+Y como actividad no planeada, tuve que reparar la
+consistencia entre ILoginRepository, LoginRepository,
+ILoginService, LoginService, ILoginController y
+LoginController, porque al corregir ese error se
+descubrió que la firma del método no era igual en todos
+los archivos. Sin esa reparación, el backend no habría
+quedado confiable.
+
+
+
+============================================================
+SLIDE 7  ·  DIAPOSITIVA 4D — TAREAS REALIZADAS
+Semana 8: Pruebas HTTP, mocks SQL y levantamiento
+~75 segundos
+============================================================
+
+Y la octava semana, que es la más reciente, la dediqué
+precisamente a probar y levantar el proyecto completo.
+
+Lo que hice fue crear los archivos punto http para
+LoginController, MasterProjectController y los diecisiete
+controladores ODS. Probé primero el endpoint GET de
+Objetivo01PobrezaController y funcionó correctamente,
+retornando los proyectos desde la base de datos.
+
+También creé ods_mocks.sql con usuarios de prueba —
+admin, gestor_pobreza, gestor_hambre y
+consultor_general— y proyectos de ejemplo. El endpoint
+de login funcionó. Y al levantar Base de datos más
+Spring Boot, corregí JooqConfig.java, que tenía
+importaciones incorrectas que impedían arrancar.
+
+Como imprevisto adicional, Objetivo05GeneroController
+tenía errores de lint por importaciones no usadas, y lo
+mismo LoginController; limpie esos imports para una mejor poder
+compilacion.
+
+El proyecto hoy levanta correctamente. Los endpoints
+principales funcionan al setenta y cinco por ciento:
+algunos tienen problemas menores  de escritura  que voy a
+corregir la próxima semana, antes de iniciar el frontend
+con React y Vite.
+
+
+
+============================================================
+SLIDE 8  ·  DIAPOSITIVA 4E — VISIÓN GLOBAL DEL AVANCE
+Mapa de lo construido hasta hoy
+~70 segundos
+============================================================
+
+Esta diapositiva me sirve para darles una visión global
+de hasta dónde he llegado y qué viene después.
+
+En la parte superior pueden ver el recorrido de las
+cuatro semanas, desde las interfaces base hasta tener
+el backend REST levantando con datos reales.
+
+En la columna verde —lo que ya construí para este segundo
+avance— están IOdsBaseRepository y las interfaces de
+login, los diecisiete repositorios ODS más
+LoginRepository, IOdsBaseService e IOdsBaseController,
+los dieciocho servicios y dieciocho controladores REST,
+las pruebas con archivos punto http, ods_mocks.sql, y
+el arranque de Spring Boot conectado a MariaDB.
+
+Y en la columna azul están las actividades que vienen
+para el Avance III. Lo primero será corregir los
+endpoints de escritura que quedaron pendientes. Luego
+sigue iniciar el frontend con React y Vite —página de
+login y navegación básica—, la implementación de
+seguridad con JWT en el flujo real, y finalmente el
+motor de evaluación de fórmulas con exp4j.
+
+
+
+============================================================
+SLIDE 9  ·  DIAPOSITIVA 5 — CUMPLIMIENTO DEL PLAN
+Cronograma propuesto vs. ejecutado
+~50 segundos
+============================================================
+
+En cuanto al cronograma propuesto versus el ejecutado,
+puedo reportar un cumplimiento del cien por ciento
+durante las cuatro semanas del avance —semanas cinco a
+ocho—.
+
+Las tablas muestran tanto el horario propuesto como el
+ejecutado: de lunes a viernes, de ocho de la mañana a
+doce mediodía, en modalidad virtual, para un total de
+veinte horas semanales. Y como se puede notar, ambas
+tablas son idénticas, porque el cronograma lo ejecuté
+exactamente como lo propuse.
+
+Esto lo respaldo con las cuatro bitácoras semanales
+firmadas por mi coordinador, donde quedaron registradas
+consistentemente las veinte horas y el cumplimiento del
+cien por ciento, tanto en las actividades planeadas como
+en las que surgieron sobre la marcha: la corrección de
+nomenclatura en IOdsBaseRepository, la reorganización de
+carpetas, la reparación de firmas en la capa de login, y
+la depuración de JooqConfig para levantar el proyecto.
+
+
+
+============================================================
+SLIDE 10  ·  DIAPOSITIVA 6 — REFLEXIÓN DEL PERIODO
+Comentario personal
+~80 segundos
+============================================================
+
+Como comentario personal, quisiera compartir cuatro
+aprendizajes que me dejó este segundo periodo, sobre la
+interacción de lo desarrollado en la empresa.
+
+El primero, y quizá el más importante, es que una
+arquitectura por capas solo funciona si los contratos —
+las interfaces— se definen antes de implementarse. Cada
+hora que invertí en IOdsBaseRepository, IOdsBaseService
+e IOdsBaseController terminó acelerando la
+implementación uniforme de los diecisiete ODS. Esa cita
+del recuadro azul resume bastante bien la idea.
+
+El segundo aprendizaje fue el valor de hacer un
+diagnóstico técnico riguroso entre capas. Resolver
+getVistaDetalleIndicadores no fue un solo cambio; hubo
+que aislar la inconsistencia de firmas en seis archivos
+distintos. Atenderlos por separado fue lo que me permitió
+llegar a una solución estable.
+
+El tercero, la importancia de probar temprano con datos
+reales. Los archivos punto http y ods_mocks.sql revelaron
+que JooqConfig impedía arrancar y que la escritura aún
+no estaba al cien por ciento.
+
+Y el cuarto, el valor del trabajo institucional. Las
+reuniones de coordinación con mi supervisor y el
+seguimiento semanal mediante bitácora firmada me han
+fortalecido mucho en disciplina de planificación y en
+rendición de cuentas.
+
+
+
+============================================================
+SLIDE 11  ·  DIAPOSITIVA 7 — INCONVENIENTES SOBRE LA MARCHA
+Tres inconvenientes presentados durante la práctica
+~80 segundos
+============================================================
+
+Por último, quiero compartir tres inconvenientes que se
+me presentaron sobre la marcha de la práctica, en este
+segundo avance.
+
+El primero: la inconsistencia de firmas en la capa de
+login. Al corregir getVistaDetalleIndicadores —que
+recibía proyectoId pero no lo usaba bien— se descubrió
+que la firma del método no era igual en ILoginRepository,
+LoginRepository, ILoginService, LoginService,
+ILoginController y LoginController. Tuve que reparar
+toda esa cadena para que el backend quedara consistente.
+
+El segundo: el fallo de arranque por JooqConfig.java.
+Al levantar Base de datos más Spring Boot, las
+importaciones incorrectas impedían iniciar el proyecto.
+Depuré esa configuración hasta lograr un arranque
+estable y poder probar los endpoints contra MariaDB.
+
+Y el tercero: endpoints de escritura incompletos y
+errores de lint. Después de las pruebas punto http, la
+lectura funcionó bien, pero varios endpoints de
+escritura quedaron al setenta y cinco por ciento.
+Además, imports no usados en Objetivo05GeneroController
+y LoginController bloquearon la compilación hasta
+limpiarlos. Eso queda planificado para cerrarlo en la
+siguiente semana, antes del frontend.
+
+
+
+============================================================
+SLIDE 12  ·  CIERRE
+Gracias
+~25 segundos
+============================================================
+
+Con esto cierro la presentación del segundo avance.
+
+Quiero agradecer por su atención, y de
+manera especial al profesor Joaquín Artavia Chaves 
+
+Muchas gracias.
+
+
+
+============================================================
+MAPA RÁPIDO DE NAVEGACIÓN
+============================================================
+
+  SLIDE 1   →  Portada
+  SLIDE 2   →  Diapositiva 2  (Presentación general)
+  SLIDE 3   →  Diapositiva 3  (Contexto técnico)
+  SLIDE 4   →  Diapositiva 4A (Semana 5)
+  SLIDE 5   →  Diapositiva 4B (Semana 6)
+  SLIDE 6   →  Diapositiva 4C (Semana 7)
+  SLIDE 7   →  Diapositiva 4D (Semana 8)
+  SLIDE 8   →  Diapositiva 4E (Mapa global)
+  SLIDE 9   →  Diapositiva 5  (Cronograma)
+  SLIDE 10  →  Diapositiva 6  (Comentario personal)
+  SLIDE 11  →  Diapositiva 7  (Tres inconvenientes)
+  SLIDE 12  →  Cierre (Gracias)
