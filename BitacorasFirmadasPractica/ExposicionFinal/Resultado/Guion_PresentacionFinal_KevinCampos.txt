@@ -92,20 +92,27 @@ Objetivos específicos
 ~45 segundos
 ============================================================
 
-De ese objetivo general se desprenden seis objetivos
-específicos, y les adelanto que los seis se cumplieron.
+De ese objetivo general se desprenden 6 objetivos
+específicos, y les adelanto que los 6 se cumplieron.
 
 El primero, diseñar la arquitectura de datos multiesquema
-en MariaDB. El segundo, construir la capa de aplicación con
+en MariaDB. 
+
+El segundo, construir la capa de aplicación con
 Spring Boot y jOOQ, con una API REST documentada y probada.
+
 El tercero, desarrollar la interfaz web en React con Vite,
 respetando el Manual de Identidad Gráfica de la UTN.
 
 El cuarto, implementar un motor de fórmulas configurable:
 que cada proyecto pueda definir sus propias variables, su
-propio cálculo y su propia meta. El quinto, implementar la
+propio cálculo y su propia meta. 
+
+El quinto, implementar la
 separación de responsabilidades por rol, con seguridad JWT
-y bitácora de accesos. Y el sexto, automatizar la
+y bitácora de accesos. 
+
+Y el sexto, automatizar la
 generación del reporte institucional SODSI.
 
 
@@ -118,14 +125,14 @@ Antecedentes históricos y ubicación
 
 Sobre la organización. La Universidad Técnica Nacional es
 la universidad pública más joven de Costa Rica: fue creada
-mediante la Ley ocho mil seiscientos treinta y ocho, del
-año dos mil ocho, a partir de la integración de varias
+mediante la Ley 8638, del
+año 2008, a partir de la integración de varias
 instituciones parauniversitarias que ya existían. Su
 mandato es ofrecer educación superior de carácter técnico y
 tecnológico al servicio del desarrollo nacional.
 
 En cuanto a ubicación, la Sede Central está en Alajuela,
-con presencia regional en siete sedes y centros del país.
+con presencia regional en 5 sedes y centros del país.
 Es una institución de financiamiento público, y su aporte
 económico se da por la vía de la formación técnica y de la
 vinculación con el sector productivo de cada región.
@@ -144,22 +151,25 @@ Infraestructura física y tecnológica
 ~40 segundos
 ============================================================
 
-En infraestructura física, la Universidad tiene campus en
-las siete sedes, con edificios académicos y
-administrativos, laboratorios y talleres. La Dirección de
+En infraestructura física, como dije anteriormente, la universidad cuenta 5 sedes regionales, 
+con edificios académicos y
+administrativos, laboratorios y talleres. 
+
+La Dirección de
 Planificación opera desde la Sede Central, en Alajuela.
 
 En infraestructura tecnológica, en el panel oscuro está lo
-que efectivamente se utilizó en este proyecto: MariaDB
-diez punto once sobre Docker, Spring Boot tres punto cinco
-con Java veintiuno, Maven y jOOQ para la generación de
-código, React dieciocho con Vite cinco en el cliente,
+que efectivamente se utilizó en este proyecto: 
+MariaDB
+10.11 sobre Docker, Spring Boot 3.5
+con Java 21, Maven y jOOQ para la generación de
+código, React 18 con Vite 5 en el cliente,
 seguridad con JWT, el motor de cálculo exp4j y Apache POI
 para generar los archivos de Excel.
 
 Sobre la modalidad de trabajo: fue virtual, de lunes a
-viernes, de ocho de la mañana a doce mediodía, veinte horas
-por semana. El ambiente completo de desarrollo lo monté en
+viernes, de 8 de la mañana a 12 mediodía, 20 horas
+por semana. El ambiente completo de desarrollo lo monté en mi
 equipo propio.
 
 
@@ -234,8 +244,8 @@ UTN. Mi práctica no se ubicó en esa dirección.
 
 Y tercera: cuando Planificación necesita una solución
 tecnológica, la aborda como un proyecto específico. En este
-caso, ese rol lo asumí yo, con la orientación del
-coordinador del área.
+caso, ese rol lo asumí yo, con la orientación del profesor y 
+coordinador Joaquin Artavia.
 
 Por eso, un aporte concreto de la práctica fue dejar
 documentada la arquitectura, el modelo de datos y el flujo
