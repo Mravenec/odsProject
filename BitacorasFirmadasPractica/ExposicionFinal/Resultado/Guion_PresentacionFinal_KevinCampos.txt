@@ -24,21 +24,19 @@ Presentación Final de Resultados — Sistema ODS Agenda 2030
 ~40 segundos
 ============================================================
 
-Muy buenas tardes a todas y a todos. Mi nombre es Kevin
-Campos González, soy estudiante de Bachillerato en
-Ingeniería del Software aquí en la Universidad Técnica
-Nacional, Sede Central.
+Muy buenas noches Profesor Wilmer, Profesor Joaquin y Profesor Luis Alvarado. 
+Como ya saben mi nombre es Kevin Campos González, soy estudiante de Bachillerato en
+Ingeniería del Software aquí en la Universidad Técnica Nacional, Sede Central.
 
 Hoy les traigo la presentación final de resultados de mi
 práctica profesional. La realicé en la propia Universidad,
-en la Dirección de Planificación, dentro de la Unidad de
-Gestión de Proyectos, bajo la supervisión del Magíster
-Joaquín Artavia Chaves.
+en la Unidad de Gestión de Proyectos, bajo la supervisión del profesor
+Joaquín Artavia Chaves tambien junto con la Dirección de Planificación. 
 
 El proyecto se llama Sistema ODS Agenda 2030. La práctica
-se ejecutó del veintidós de mayo al veintiuno de agosto del
-dos mil veintiséis: catorce semanas, veinte horas
-semanales, doscientas ochenta horas en total, todas
+se ejecutó del 22 de mayo al 21 de agosto del
+2026, en un lapso de 14 semanas, 20
+semanales, 280 horas en total, todas
 respaldadas con bitácora semanal firmada.
 
 
@@ -52,8 +50,7 @@ Contenido de la presentación
 Esta es la ruta que vamos a seguir. Empiezo con los
 objetivos de la práctica; luego la organización y su
 estrategia; después las funciones que realicé; los
-resultados, que es donde les voy a mostrar el sistema
-funcionando; el cronograma propuesto contra el ejecutado;
+resultados, el cronograma propuesto contra el ejecutado;
 y cierro con conclusiones y recomendaciones.
 
 
@@ -67,7 +64,7 @@ Objetivo general de la práctica
 El objetivo general fue desarrollar e implementar una
 plataforma web institucional que le permita a la
 Universidad registrar, configurar, evaluar y reportar sus
-proyectos vinculados a los diecisiete Objetivos de
+proyectos vinculados a los 17 Objetivos de
 Desarrollo Sostenible de la Agenda 2030.
 
 Quiero subrayar la última parte del objetivo, porque ahí
@@ -76,12 +73,15 @@ hojas de cálculo. La idea era sustituir ese registro manual
 por un sistema con trazabilidad, con control de roles y con
 generación automática del reporte institucional.
 
-Eso implicó cuatro cosas. Centralizar: un solo repositorio
-para los proyectos de las siete sedes. Estandarizar: usar
-los doscientos treinta y nueve indicadores oficiales de
-Naciones Unidas como catálogo único. Auditar: separar
-responsabilidades por rol y dejar registro de todo. Y
-reportar: producir el archivo institucional de forma
+Eso implicó cuatro cosas. 
+
+Centralizar: un solo repositorio para los proyectos de las 7 sedes. 
+
+Estandarizar: usar los 239 indicadores oficiales de
+Naciones Unidas como catálogo único. 
+Auditar: separar responsabilidades por rol y dejar registro de todo. 
+
+Y reportar: producir el archivo institucional de forma
 automática, en el formato exacto que la Universidad ya usa.
 
 
