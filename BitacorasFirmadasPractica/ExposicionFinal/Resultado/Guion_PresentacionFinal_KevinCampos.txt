@@ -24,20 +24,9 @@ Presentación Final de Resultados — Sistema ODS Agenda 2030
 ~40 segundos
 ============================================================
 
-Muy buenas noches Profesor Wilmer, Profesor Joaquin y Profesor Luis Alvarado. 
-Como ya saben mi nombre es Kevin Campos González, soy estudiante de Bachillerato en
-Ingeniería del Software aquí en la Universidad Técnica Nacional, Sede Central.
+Muy buenas noches, profesor Wilmer, profesor Joaquín y profesor Luis Alvarado. Como ya saben, mi nombre es Kevin Campos González, soy estudiante de Bachillerato en Ingeniería del Software de la Universidad Técnica Nacional, Sede Central.
 
-Hoy les traigo la presentación final de resultados de mi
-práctica profesional. La realicé en la propia Universidad,
-en la Unidad de Gestión de Proyectos, bajo la supervisión del profesor
-Joaquín Artavia Chaves tambien junto con la Dirección de Planificación. 
-
-El proyecto se llama Sistema ODS Agenda 2030. La práctica
-se ejecutó del 22 de mayo al 21 de agosto del
-2026, en un lapso de 14 semanas, 20
-semanales, 280 horas en total, todas
-respaldadas con bitácora semanal firmada.
+Hoy les presentaré los resultados de mi práctica profesional, realizada en la Unidad de Gestión de Proyectos, bajo la supervisión del profesor Joaquín Artavia Chaves y junto con la Dirección de Planificación. El proyecto se llama Sistema ODS Agenda 2030 y se desarrolló del 22 de mayo al 21 de agosto de 2026, durante 14 semanas, 20 horas semanales, para un total de 280 horas respaldadas mediante bitácoras.
 
 
 
@@ -47,11 +36,9 @@ Contenido de la presentación
 ~20 segundos
 ============================================================
 
-Esta es la ruta que vamos a seguir. Empiezo con los
-objetivos de la práctica; luego la organización y su
-estrategia; después las funciones que realicé; los
-resultados, el cronograma propuesto contra el ejecutado;
-y cierro con conclusiones y recomendaciones.
+Esta es la ruta que vamos a seguir: primero, los objetivos de la práctica; luego, la organización y su estrategia; después, las funciones realizadas y los resultados.
+
+Finalmente, veremos el cronograma propuesto contra el ejecutado, las conclusiones y las recomendaciones.
 
 
 
@@ -61,28 +48,9 @@ Objetivo general de la práctica
 ~50 segundos
 ============================================================
 
-El objetivo general fue desarrollar e implementar una
-plataforma web institucional que le permita a la
-Universidad registrar, configurar, evaluar y reportar sus
-proyectos vinculados a los 17 Objetivos de
-Desarrollo Sostenible de la Agenda 2030.
+El objetivo general fue desarrollar e implementar una plataforma web institucional que permita registrar, configurar, evaluar y reportar proyectos vinculados a los 17 Objetivos de Desarrollo Sostenible de la Agenda 2030.
 
-Quiero subrayar la última parte del objetivo, porque ahí
-está el problema real: hoy esa información se maneja en
-hojas de cálculo. La idea era sustituir ese registro manual
-por un sistema con trazabilidad, con control de roles y con
-generación automática del reporte institucional.
-
-Eso implicó cuatro cosas. 
-
-Centralizar: un solo repositorio para los proyectos de las 7 sedes. 
-
-Estandarizar: usar los 239 indicadores oficiales de
-Naciones Unidas como catálogo único. 
-Auditar: separar responsabilidades por rol y dejar registro de todo. 
-
-Y reportar: producir el archivo institucional de forma
-automática, en el formato exacto que la Universidad ya usa.
+La necesidad era sustituir el manejo mediante hojas de cálculo por un sistema que permitiera centralizar los proyectos de las 5 sedes, estandarizar utilizando los 239 indicadores oficiales de Naciones Unidas, auditar mediante roles y trazabilidad, y reportar automáticamente en el formato institucional.
 
 
 
@@ -92,28 +60,9 @@ Objetivos específicos
 ~45 segundos
 ============================================================
 
-De ese objetivo general se desprenden 6 objetivos
-específicos, y les adelanto que los 6 se cumplieron.
+De este objetivo se desprenden seis objetivos específicos, y los seis fueron cumplidos.
 
-El primero, diseñar la arquitectura de datos multiesquema
-en MariaDB. 
-
-El segundo, construir la capa de aplicación con
-Spring Boot y jOOQ, con una API REST documentada y probada.
-
-El tercero, desarrollar la interfaz web en React con Vite,
-respetando el Manual de Identidad Gráfica de la UTN.
-
-El cuarto, implementar un motor de fórmulas configurable:
-que cada proyecto pueda definir sus propias variables, su
-propio cálculo y su propia meta. 
-
-El quinto, implementar la
-separación de responsabilidades por rol, con seguridad JWT
-y bitácora de accesos. 
-
-Y el sexto, automatizar la
-generación del reporte institucional SODSI.
+Incluyen diseñar la arquitectura multiesquema en MariaDB; desarrollar el backend con Spring Boot y jOOQ y su API REST; construir el frontend con React y Vite; implementar un motor de fórmulas configurable; establecer la separación de responsabilidades mediante roles, JWT y bitácora de accesos; y finalmente automatizar la generación del reporte institucional SODSI.
 
 
 
@@ -123,25 +72,9 @@ Antecedentes históricos y ubicación
 ~50 segundos
 ============================================================
 
-Sobre la organización. La Universidad Técnica Nacional es
-la universidad pública más joven de Costa Rica: fue creada
-mediante la Ley 8638, del
-año 2008, a partir de la integración de varias
-instituciones parauniversitarias que ya existían. Su
-mandato es ofrecer educación superior de carácter técnico y
-tecnológico al servicio del desarrollo nacional.
+La Universidad Técnica Nacional es la universidad pública más joven de Costa Rica. Fue creada mediante la Ley 8638, en 2008, a partir de la integración de varias instituciones parauniversitarias, con el propósito de ofrecer educación superior técnica y tecnológica al servicio del desarrollo nacional.
 
-En cuanto a ubicación, la Sede Central está en Alajuela,
-con presencia regional en 5 sedes y centros del país.
-Es una institución de financiamiento público, y su aporte
-económico se da por la vía de la formación técnica y de la
-vinculación con el sector productivo de cada región.
-
-Y esto no es un dato decorativo para el proyecto: en el
-sistema, cada proyecto queda asociado a una sede, a una
-región Mideplan y a una provincia, cantón y distrito. Esa
-trazabilidad territorial es justamente lo que la
-institución necesita para poder reportar.
+La Sede Central está en Alajuela y existe presencia regional en 5 sedes y centros del país. Para este proyecto esto es importante porque cada proyecto queda asociado a una sede, región Mideplan, provincia, cantón y distrito, manteniendo la trazabilidad territorial necesaria para los reportes.
 
 
 
@@ -151,26 +84,9 @@ Infraestructura física y tecnológica
 ~40 segundos
 ============================================================
 
-En infraestructura física, como dije anteriormente, la universidad cuenta 5 sedes regionales, 
-con edificios académicos y
-administrativos, laboratorios y talleres. 
+En infraestructura física, la Universidad cuenta con 5 sedes regionales, edificios académicos y administrativos, laboratorios y talleres. La Dirección de Planificación opera desde la Sede Central, en Alajuela.
 
-La Dirección de
-Planificación opera desde la Sede Central, en Alajuela.
-
-En infraestructura tecnológica, en el panel oscuro está lo
-que efectivamente se utilizó en este proyecto: 
-MariaDB
-10.11 sobre Docker, Spring Boot 3.5
-con Java 21, Maven y jOOQ para la generación de
-código, React 18 con Vite 5 en el cliente,
-seguridad con JWT, el motor de cálculo exp4j y Apache POI
-para generar los archivos de Excel.
-
-Sobre la modalidad de trabajo: fue virtual, de lunes a
-viernes, de 8 de la mañana a 12 mediodía, 20 horas
-por semana. El ambiente completo de desarrollo lo monté en mi
-equipo propio.
+Para el proyecto utilicé MariaDB 10.11 sobre Docker, Spring Boot 3.5 con Java 21, Maven, jOOQ, React 18 con Vite 5, JWT, exp4j y Apache POI. La modalidad fue virtual, de lunes a viernes, de 8 de la mañana a 12 mediodía, utilizando mi propio equipo de desarrollo.
 
 
 
@@ -180,15 +96,7 @@ Estructura organizacional
 ~30 segundos
 ============================================================
 
-Esta es la línea jerárquica que me interesa dejar clara,
-porque explica dónde estuve ubicado.
-
-Arriba está el Consejo Universitario, luego la Rectoría, de
-ahí depende la Dirección de Planificación Universitaria, y
-dentro de esa Dirección está la Unidad de Gestión de
-Proyectos, que es el área donde hice la práctica. Es un
-organigrama simplificado, a propósito: solo la rama que
-corresponde.
+Esta es la línea jerárquica donde estuve ubicado: Consejo Universitario, Rectoría, Dirección de Planificación Universitaria y, dentro de ella, la Unidad de Gestión de Proyectos, que fue el área donde realicé la práctica.
 
 
 
@@ -198,25 +106,11 @@ Misión y visión
 ~45 segundos
 ============================================================
 
-En la parte de arriba está la misión y la visión
-institucionales de la Universidad: brindar educación
-superior técnica y tecnológica con enfoque humanista,
-aportando al desarrollo del país; y ser una universidad
-pública de referencia en esa formación, articulada con el
-sector productivo y comprometida con el desarrollo
-sostenible.
+La misión y visión institucionales están orientadas a brindar educación superior técnica y tecnológica, contribuir al desarrollo del país y mantener el compromiso con el desarrollo sostenible.
 
-Abajo está lo del área donde trabajé. La misión de la
-Unidad de Gestión de Proyectos es brindar soporte técnico y
-de planificación a las direcciones de la UTN, mediante
-instrumentos y sistemas que faciliten el registro,
-seguimiento y evaluación de los proyectos institucionales.
-Y la visión es consolidarse como unidad de referencia en la
-planificación institucional, contribuyendo al cumplimiento
-de los compromisos que la UTN adquirió con la Agenda 2030.
+En la Unidad de Gestión de Proyectos, la misión se enfoca en brindar soporte técnico y de planificación para registrar, dar seguimiento y evaluar proyectos institucionales, mientras que su visión busca consolidarla como una unidad de referencia en planificación y en el cumplimiento de los compromisos de la UTN con la Agenda 2030.
 
-Fíjense que el sistema que construí cae exactamente dentro
-de esa misión: es el instrumento del que habla.
+Por eso, el sistema desarrollado encaja directamente dentro de esa misión.
 
 
 
@@ -226,33 +120,11 @@ Misión TI, visión TI y organigrama de TI
 ~45 segundos
 ============================================================
 
-Aquí tengo que ser honesto con un punto que el formato pide
-explícitamente.
+Aquí hay un punto importante: el área donde realicé la práctica no tiene una misión, visión ni organigrama propio de Tecnologías de Información formalizado.
 
-El área donde hice la práctica no tiene misión, visión ni
-organigrama de Tecnologías de Información propios y
-formalizados. Y el porqué son tres razones.
+La Unidad de Gestión de Proyectos pertenece a Planificación, no a TI. La Universidad sí cuenta con una función de TI centralizada, pero mi práctica no se realizó dentro de esa dirección. En este caso, la solución tecnológica se manejó como un proyecto específico, con la orientación del profesor Joaquín Artavia.
 
-Primera: la Unidad de Gestión de Proyectos no es un área de
-TI. Pertenece a Planificación, y su función es planificar,
-dar seguimiento y evaluar proyectos, no operar
-infraestructura ni desarrollar software.
-
-Segunda: la Universidad sí tiene función de TI, pero está
-centralizada a nivel institucional y atiende a toda la
-UTN. Mi práctica no se ubicó en esa dirección.
-
-Y tercera: cuando Planificación necesita una solución
-tecnológica, la aborda como un proyecto específico. En este
-caso, ese rol lo asumí yo, con la orientación del profesor y 
-coordinador Joaquin Artavia.
-
-Por eso, un aporte concreto de la práctica fue dejar
-documentada la arquitectura, el modelo de datos y el flujo
-de trabajo, para que la Unidad pueda trasladar el sistema a
-la dirección institucional de TI cuando lo ponga en
-producción.
-
+Por eso, uno de los aportes fue dejar documentados la arquitectura, el modelo de datos y el flujo de trabajo para facilitar un futuro traslado a TI.
 
 
 ============================================================
@@ -261,23 +133,9 @@ SLIDE 10  ·  DESCRIPCIÓN DE FUNCIONES
 ~40 segundos
 ============================================================
 
-Concretando el área: Dirección de Planificación, Unidad de
-Gestión de Proyectos, con el Magíster Joaquín Artavia
-Chaves, Coordinador del Programa en TICS, como supervisor.
+La práctica se realizó en la Dirección de Planificación, Unidad de Gestión de Proyectos, con el Magíster Joaquín Artavia Chaves como supervisor.
 
-Las funciones del departamento son cinco. Acompañar a las
-sedes y direcciones en la formulación de proyectos y darles
-seguimiento. Evaluar el cumplimiento de metas e indicadores
-con base en evidencia. Consolidar la información de las
-siete sedes para los reportes institucionales. Alinear los
-proyectos con los diecisiete ODS y con los ejes del plan
-nacional de desarrollo. Y rendir cuentas: producir la
-información oficial sobre la contribución de la UTN al
-desarrollo sostenible.
-
-Cada una de esas cinco funciones tiene hoy un módulo que le
-corresponde dentro del sistema.
-
+El departamento acompaña la formulación y seguimiento de proyectos, evalúa metas e indicadores, consolida información de las siete sedes, alinea proyectos con los 17 ODS y produce la información oficial sobre la contribución de la UTN al desarrollo sostenible.
 
 
 ============================================================
@@ -286,39 +144,11 @@ Funciones principales realizadas
 ~55 segundos
 ============================================================
 
-Ahora, mis funciones. Como fui el único desarrollador del
-sistema, tuve que asumir de forma secuencial los cinco
-roles técnicos del proyecto.
+Como fui el único desarrollador, asumí las diferentes funciones técnicas del proyecto.
 
-Como arquitecto de datos: diecinueve esquemas de MariaDB,
-ciento diez tablas, cincuenta y cuatro vistas, llaves
-foráneas entre esquemas distintos, triggers de auditoría
-por cada ODS, y el catálogo de doscientos treinta y nueve
-indicadores.
+En datos trabajé con 19 esquemas, 110 tablas, 54 vistas y 239 indicadores. En backend, con Spring Boot, jOOQ, 27 controladores, 201 endpoints REST, JWT y exp4j. En frontend, con React y Vite, 10 páginas, 15 rutas protegidas, 26 servicios y 40 hooks.
 
-Como desarrollador backend: Spring Boot con jOOQ,
-veintisiete controladores, doscientos un endpoints REST,
-seguridad JWT por rol y el motor de fórmulas con exp4j.
-
-Como desarrollador frontend: React con Vite, diez páginas,
-quince rutas protegidas, veintiséis servicios y cuarenta
-hooks, todo con la identidad gráfica de la UTN.
-
-En pruebas y calidad: treinta y seis archivos punto http,
-pruebas unitarias con JUnit, pruebas por cada rol de
-usuario y el flujo completo de extremo a extremo.
-
-Y en documentación y coordinación: el README técnico de
-instalación, la documentación de las interfaces, las
-catorce bitácoras semanales firmadas y las reuniones con el
-supervisor.
-
-Lo importante del recuadro azul: el trabajo se organizó por
-incrementos verificables. Cada cambio pasaba por base de
-datos, backend, archivo de prueba y frontend antes de darse
-por terminado.
-
-
+También realicé pruebas con 36 archivos .http, pruebas unitarias y pruebas por rol, además de la documentación técnica, las 14 bitácoras y la coordinación con el supervisor. El trabajo se organizó mediante incrementos verificables.
 
 ============================================================
 SLIDE 12  ·  RESULTADOS
@@ -326,27 +156,9 @@ Arquitectura de la solución
 ~45 segundos
 ============================================================
 
-Entrando a resultados. Esta es la arquitectura, en tres
-capas.
+La solución está organizada en tres capas: presentación con React y Vite; aplicación con Spring Boot, Java 21 y jOOQ, incluyendo seguridad, fórmulas y exportación a Excel; y datos con MariaDB y 19 esquemas.
 
-Arriba la capa de presentación: React con Vite, diez
-páginas y quince rutas que se protegen según el rol de
-quien entra. En el medio la capa de aplicación: Spring Boot
-con Java veintiuno y jOOQ, con los doscientos un endpoints,
-la seguridad, el motor de fórmulas y la exportación a
-Excel. Y abajo la capa de datos: MariaDB con diecinueve
-esquemas.
-
-Ese número, diecinueve, tiene una explicación de diseño que
-quiero destacar. No es una base de datos con todo adentro.
-Hay una base de login, con usuarios, roles, sedes, el
-catálogo de los diecisiete ODS y sus indicadores. Hay una
-base maestra, con los proyectos, las evidencias y las
-transiciones de estado. Y luego hay diecisiete bases, una
-por cada Objetivo, cada una con sus propios indicadores,
-parámetros, mediciones y su propia tabla de auditoría.
-
-Así, cada ODS crece por su lado sin afectar a los demás.
+Estos esquemas incluyen la información de login y catálogo, una base maestra para los proyectos y 17 esquemas, uno por cada ODS, con sus indicadores, parámetros, mediciones y auditoría. Esto permite que cada ODS pueda evolucionar de manera independiente.
 
 
 
@@ -356,27 +168,11 @@ Flujo de trabajo: roles y estados del proyecto
 ~50 segundos
 ============================================================
 
-Esta diapositiva, para mí, es la más importante de todas,
-porque resume la regla que le da sentido al sistema: el que
-propone no mide, y el que mide no propone. Esa frase salió
-de una conversación con mi supervisor, no de un documento
-de requerimientos.
+Esta diapositiva resume una regla central del sistema: quien propone no mide, y quien mide no propone.
 
-El flujo funciona así. Un proyecto nace en planificación,
-donde el gestor lo formula. Cuando está listo, solicita
-pasar a activo, y esa transición la aprueba un
-administrador o un evaluador. Ya en activo, el gestor sube
-la evidencia y envía el proyecto a revisión. Ahí lo recibe
-el evaluador, que ingresa los valores y calcula el
-resultado. Cuando cierra, el proyecto queda completado y
-firmado.
+El gestor formula el proyecto, solicita activarlo, agrega evidencia y lo envía a revisión. El administrador o evaluador aprueba la transición y posteriormente el evaluador registra los valores, calcula el resultado y cierra el proyecto.
 
-Abajo está la matriz de responsabilidades. El gestor crea,
-configura y sube evidencia, pero no mide. El evaluador mide
-y cierra, pero no propone. El administrador gestiona
-usuarios y catálogos y revisa la bitácora. Y el consultor
-solo lee.
-
+En cuanto a responsabilidades, el gestor crea y configura; el evaluador mide y cierra; el administrador gestiona usuarios, catálogos y bitácora; y el consultor tiene acceso únicamente de lectura.
 
 
 ============================================================
@@ -385,25 +181,9 @@ El sistema en funcionamiento — formulación del proyecto
 ~50 segundos
 ============================================================
 
-Estas son capturas del sistema corriendo, no maquetas.
+Estas son capturas del sistema funcionando. Primero tenemos el ingreso con correo institucional y autenticación mediante token.
 
-La primera es el ingreso. La persona entra con su correo
-institucional y el token que se genera define qué puede
-hacer y qué no.
-
-La segunda es la selección de ODS. El gestor ve los
-diecisiete objetivos con sus íconos oficiales y marca los
-que aplican a su proyecto. Puede marcar varios, porque en
-la realidad un proyecto casi nunca toca un solo ODS.
-
-Y la tercera es la parte que más trabajo me costó y de la
-que más orgulloso estoy: el configurador de fórmulas. La
-persona declara sus propias variables —con el nombre que
-necesite, no con nombres impuestos—, escribe la fórmula
-usando los operadores que ven ahí, y establece la meta. El
-sistema no impone un cálculo fijo, porque cada proyecto
-mide cosas distintas.
-
+Después, el gestor puede seleccionar entre los 17 ODS aquellos relacionados con su proyecto. Finalmente, está el configurador de fórmulas, donde puede definir sus propias variables, escribir la fórmula y establecer la meta. Esto permite adaptar el cálculo a las necesidades particulares de cada proyecto.
 
 
 ============================================================
@@ -412,27 +192,11 @@ El sistema en funcionamiento — evaluación y resultados
 ~50 segundos
 ============================================================
 
-Del otro lado del flujo está el evaluador.
+En el lado del evaluador tenemos primero su cola de proyectos, organizada por estado y con sus respectivas métricas.
 
-A la izquierda, su cola de evaluación: los proyectos
-separados por estado, con métricas en tiempo real de
-cuántos tiene pendientes, cuántos en curso y cuántos ya
-evaluó.
+Durante la evaluación puede consultar el indicador, la fórmula y la meta, ingresar las variables y calcular el resultado. El cálculo se realiza en el servidor mediante exp4j y se almacena.
 
-En el centro, el momento de la evaluación. El evaluador ve
-el indicador, ve la fórmula que definió el gestor, ve la
-meta, e ingresa el valor de cada variable. Al presionar
-calcular, el cálculo no lo hace el navegador: lo hace el
-servidor con exp4j, y el resultado se guarda.
-
-Y a la derecha, el resultado ya cerrado y firmado: quién lo
-evaluó, en qué fecha, con qué observación y con el
-porcentaje de logro.
-
-Como dice el recuadro de abajo, toda medición queda
-registrada con su fecha, con la persona que la ingresó y
-con el valor de cada variable. Después del cierre, el
-resultado ya no se puede alterar.
+Al cerrar, quedan registrados el evaluador, la fecha, la observación y el porcentaje de logro. Además, cada medición conserva su información histórica y, una vez cerrado el resultado, ya no puede modificarse.
 
 
 
@@ -442,31 +206,11 @@ El proceso mejorado: el reporte institucional SODSI
 ~55 segundos
 ============================================================
 
-Ahora, ¿cuál es el proceso que efectivamente mejoró?
+Uno de los procesos que se mejoró fue la generación del reporte SODSI.
 
-Antes, la matriz de acciones se llenaba a mano en un
-archivo de Excel. La información se pedía por correo a cada
-sede, se copiaba y se pegaba, y cada persona podía escribir
-el nombre de un objetivo, de una meta o de un beneficiario
-de forma distinta. Es un proceso lento y muy difícil de
-verificar.
+Anteriormente, la matriz se llenaba manualmente en Excel, solicitando información a las sedes y copiándola posteriormente. Con el sistema, se selecciona la sede y el año y se genera automáticamente el archivo con las 21 columnas exactas del formato institucional.
 
-Después, el reporte se genera desde el sistema. Se escoge
-la sede y el año de evaluación, y la plataforma produce el
-archivo con las veintiuna columnas exactas del formato
-institucional, tomando los datos que ya fueron validados en
-los proyectos evaluados.
-
-Esas veintiuna columnas son las que ven en el centro de la
-diapositiva: año, institución, usuario, unidad encargada,
-acción, objetivo, meta, eje de planes, y así hasta el
-enlace. Son exactamente las del archivo que la Universidad
-ya utiliza; no inventé un formato nuevo.
-
-Y quiero recalcar que esto está verificado en ejecución: se
-descargó el reporte de la Sede Central para el año dos mil
-veinticuatro y el archivo salió con el proyecto evaluado y
-sus veintiún campos completos.
+Esto fue verificado en ejecución con el reporte de la Sede Central para 2024, que se generó con el proyecto evaluado y sus 21 campos completos.
 
 
 
@@ -476,25 +220,11 @@ Resultados en números
 ~40 segundos
 ============================================================
 
-Un resumen en números, para dimensionar el entregable.
+Para resumir los resultados: 19 esquemas, 110 tablas, 54 vistas, 239 indicadores y 17 ODS.
 
-Diecinueve esquemas de base de datos, ciento diez tablas,
-cincuenta y cuatro vistas. Los doscientos treinta y nueve
-indicadores oficiales de Naciones Unidas y los diecisiete
-Objetivos, sembrados y verificados en la base.
+También se obtuvieron 201 endpoints REST, 27 controladores, 36 archivos de prueba, 4 roles y las 7 sedes modeladas.
 
-Doscientos un endpoints REST repartidos en veintisiete
-controladores, treinta y seis archivos de prueba, cuatro
-roles con su matriz de permisos y las siete sedes
-modeladas.
-
-Y en volumen: alrededor de treinta y un mil cuatrocientas
-líneas de código Java —sin contar lo que genera jOOQ
-automáticamente—, unas veintidós mil setecientas del
-cliente web, unas seis mil quinientas de scripts SQL, y las
-doscientas ochenta horas registradas en las catorce
-bitácoras firmadas.
-
+En volumen de código, aproximadamente 31.400 líneas de Java, 22.700 del cliente web y 6.500 de scripts SQL, además de las 280 horas registradas en las 14 bitácoras.
 
 
 ============================================================
@@ -503,26 +233,11 @@ Cronograma propuesto contra cronograma ejecutado
 ~45 segundos
 ============================================================
 
-Sobre el cronograma, puedo reportar cumplimiento del cien
-por ciento en las catorce semanas, con las veinte horas
-semanales, para las doscientas ochenta horas totales.
+El cronograma tuvo un cumplimiento del 100% durante las 14 semanas, con las 20 horas semanales y las 280 horas totales.
 
-Semanas uno a tres, base de datos: se cumplió, con los
-diecinueve esquemas y los indicadores verificados. Semanas
-cuatro a ocho, backend: se cumplió, con los repositorios,
-servicios y controladores probados con archivos punto http.
-Semanas nueve a doce, frontend: se cumplió, con la
-identidad UTN y el guardado transaccional del proyecto.
+Las semanas 1 a 3 correspondieron a base de datos; de la 4 a la 8, al backend; de la 9 a la 12, al frontend; y las semanas 13 y 14, a evaluación y cierre.
 
-Y las semanas trece y catorce, evaluación y cierre: se
-cumplió y además se amplió. Ahí entraron cosas que no
-estaban en el plan original: las evidencias documentales,
-el chat de planificación, la administración de usuarios, la
-bitácora de accesos y el reporte SODSI en Excel.
-
-Ese es el análisis honesto: el horario propuesto y el
-ejecutado coinciden. Las desviaciones no fueron de tiempo,
-fueron de alcance. El sistema creció más de lo previsto.
+En estas últimas semanas el alcance incluso se amplió con evidencias, chat de planificación, administración de usuarios, bitácora de accesos y reporte SODSI. Por eso, la diferencia estuvo en el alcance, no en el tiempo.
 
 
 
@@ -532,29 +247,11 @@ Conclusiones
 ~55 segundos
 ============================================================
 
-Tres conclusiones.
+Como primera conclusión, confirmé que la necesidad de la UTN no era simplemente contar con otro sistema, sino tener un instrumento que hiciera verificable y trazable la información relacionada con los ODS.
 
-Sobre la organización. La UTN tiene un compromiso real con
-la Agenda 2030, pero hasta ahora lo administraba con
-herramientas ofimáticas. Trabajar dentro de Planificación
-me permitió confirmar que la necesidad no era «un sistema
-más», sino un instrumento que hiciera verificable y
-trazable la información que la Universidad ya reporta.
+La segunda es que la separación entre quien propone y quien mide terminó siendo una de las decisiones de diseño más importantes.
 
-Sobre el área de práctica. La Unidad de Gestión de
-Proyectos aporta la regla que le da valor al sistema: quien
-propone un proyecto no puede ser quien mide su resultado.
-Esa separación, que nació de una conversación y no de un
-requerimiento escrito, terminó siendo la decisión de diseño
-más importante de toda la plataforma.
-
-Y sobre el proceso realizado. Se cumplieron los objetivos y
-el alcance se amplió. El aprendizaje central fue que en un
-proyecto institucional las decisiones caras son las
-tempranas —el modelo de datos y los contratos entre capas—
-y que probar contra datos reales desde el inicio revela
-problemas que los datos de prueba esconden.
-
+Y finalmente, se cumplieron los objetivos y se amplió el alcance. El principal aprendizaje fue la importancia de tomar buenas decisiones desde el modelo de datos y los contratos entre capas, además de probar con datos reales desde etapas tempranas.
 
 
 ============================================================
@@ -563,28 +260,11 @@ Recomendaciones
 ~50 segundos
 ============================================================
 
-Y tres recomendaciones.
+La primera recomendación es trasladar la plataforma a la dirección institucional de Tecnologías de Información para llevarla a producción, con servidor, respaldos y una persona responsable del mantenimiento.
 
-A la organización: trasladar la plataforma a la dirección
-institucional de tecnologías de información para ponerla en
-producción, con servidor, respaldos y una persona
-responsable del mantenimiento. El sistema quedó documentado
-y con su script de instalación precisamente para que ese
-traslado no dependa de mí.
+La segunda es validar oficialmente los catálogos institucionales de unidades, dependencias y sectores beneficiarios. Y para el proceso, mantener la bitácora semanal y el trabajo mediante incrementos pequeños y verificables.
 
-Al área de práctica: levantar y aprobar formalmente el
-catálogo institucional de unidades, dependencias y sectores
-beneficiarios. Hoy el sistema los sostiene como catálogos
-administrables, pero su contenido oficial lo tiene que
-validar la Universidad para que el reporte sea plenamente
-confiable.
-
-Y sobre el proceso: para futuras prácticas, mantener la
-bitácora semanal firmada y el trabajo por incrementos
-pequeños y verificables. Como deuda técnica para una
-versión dos punto cero, recomiendo ampliar la cobertura de
-pruebas automatizadas y capacitar a las personas usuarias
-antes de la puesta en marcha.
+Como deuda técnica para una versión 2.0, recomiendo ampliar las pruebas automatizadas y capacitar a las personas usuarias antes de la puesta en marcha.
 
 
 
@@ -594,12 +274,9 @@ Gracias
 ~20 segundos
 ============================================================
 
-Con esto cierro la presentación final de resultados de mi
-práctica profesional.
+Con esto cierro la presentación final de resultados de mi práctica profesional.
 
-Agradezco a ustedes por su atención, y de manera muy
-especial al Magíster Joaquín Artavia Chaves por el
-acompañamiento durante estas catorce semanas.
+Les agradezco mucho por su atención y, especialmente, al Magíster Joaquín Artavia Chaves por el acompañamiento durante estas catorce semanas.
 
 Quedo atento a sus preguntas y comentarios. Muchas gracias.
 
@@ -672,6 +349,7 @@ R: Con tres cosas. Primero, la separación de roles: quien
    usuario, rol, fecha e IP.
 
 P: ¿Qué pasa si una fórmula está mal escrita o divide entre
+
    cero?
 R: El servicio valida la sintaxis antes de evaluar y declara
    todas las variables previamente, para evitar el error de
